@@ -1,0 +1,55 @@
+# Local environments and generated runtime state
+.venv*/
+**/__pycache__/
+*.py[cod]
+.cache/
+.playwright-cli/
+node_modules/
+runtime/
+tools/runtime/
+artifacts/
+output/
+eval/results/
+**/private/
+**/.acps-cli/
+**/.git/
+
+# Credentials and machine-specific configuration
+**/.env
+**/.env.*
+!**/.env.example
+**/*.env
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.pfx
+*.p12
+id_rsa
+id_ed25519
+integration/browser-session.json
+integration/acps-cli.toml
+deploy/native-runtime.json
+demo-runtime.json
+LATEST.txt
+*.pid
+*.log
+
+# Databases, models and downloaded binaries
+*.sqlite*
+*.db
+*.db-*
+*.gguf
+*.onnx
+*.pt
+*.pth
+*.exe
+*.dll
+*.msi
+*.tar
+*.tar.gz
+*.zip
+*.7z
+
+# Source vendor SDK/CLI, filtered baselines, evidence and research stay tracked.

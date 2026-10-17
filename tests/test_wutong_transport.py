@@ -1,0 +1,100 @@
+from datetime import datetime, timezone
+from pathlib import Path
+import sys
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest.mock import AsyncMock, patch
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(ROOT), str(ROOT / "vendor/ACPs-community/acps-sdk")]
+from incident.wutong_transport import WutongTransport
+
+
+class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
+    def transport(self, directory, name="run"):
+        config = {"leader": {"aic": "coordinator", "cert": "unused", "key": "unused"},
+                  "term_journal_path": str(Path(directory) / "terms.sqlite"),
+                  "discovery_url": "https://unused.invalid/discover", "skills": {"database": "db.observe"}}
+        with patch("incident.wutong_transport.AmpRuntime"):
+            transport = WutongTransport(config, Path(directory) / name)
+        transport.selected = {"database": "primary"}
+        transport.descriptions = {"database": {"resource_scope": {"database": "orders"}}}
+        transport.session = SimpleNamespace(session_id="group-session")
+        transport.runtime = SimpleNamespace(force_remove_partner=AsyncMock())
+        transport._describe = AsyncMock(return_value={"executor_aic": "backup",
+            "resource_scope": {"database": "orders"}, "tools": ["db.restore_writes"]})
+        return transport
+
+    def payload(self, transport):
+        return {"schema_version": "ifc/1.0", "incident_id": "incident", "logical_task_id": "logical",
+                "kind": "act", "tool": "db.restore_writes", "args": {}, "operation_id": "operation",
+                "fence": {"coordinator_term": transport.term, "takeover_version": 0}}
+
+    async def exercise(self, state, status="ok"):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            control = {"status": status, "logical_task_id": "logical", "operation": {"state": state,
+                "active_fence": {"coordinator_term": transport.term, "takeover_version": 1}}, "facts": []}
+            transport._send = AsyncMock(side_effect=[TimeoutError(), control,
+                {"status": "ok", "facts": [], "operation": {"state": "applied"}}])
+            with patch("incident.wutong_transport.discover_candidates", AsyncMock(return_value=[{"aic": "primary"}, {"aic": "backup"}])):
+                result = await transport.call(self.payload(transport))
+            calls = transport._send.call_args_list
+            return result, calls, transport
+
+    async def test_coordinator_term_persists_across_output_directories(self):
+        with tempfile.TemporaryDirectory() as directory:
+            first = self.transport(directory, "first")
+            second = self.transport(directory, "second")
+            self.assertGreater(second.term, first.term)
+
+    async def test_applied_operation_is_reconciled_without_second_modification(self):
+        result, calls, transport = await self.exercise("skipped_already_applied")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[1].args[0]["kind"], "resume")
+        self.assertEqual(calls[1].args[0]["operation_id"], "operation")
+        self.assertEqual(transport.selected["database"], "backup")
+        transport.runtime.force_remove_partner.assert_awaited_once()
+
+    async def test_unknown_effect_is_not_retried(self):
+        result, calls, _ = await self.exercise("unknown", "unknown")
+        self.assertEqual(result["status"], "unknown")
+        self.assertEqual(len(calls), 2)
+
+    async def test_received_operation_reuses_identity_with_confirmed_fence(self):
+        result, calls, _ = await self.exercise("received")
+        self.assertEqual(result["status"], "ok")
+        retry = calls[2].args[0]
+        self.assertEqual(retry["logical_task_id"], "logical")
+        self.assertEqual(retry["operation_id"], "operation")
+        self.assertEqual(retry["fence"]["takeover_version"], 1)
+
+    async def test_same_skill_on_different_resource_cannot_take_over(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport._describe.return_value["resource_scope"] = {"database": "other"}
+            transport._send = AsyncMock(side_effect=TimeoutError())
+            with patch("incident.wutong_transport.discover_candidates", AsyncMock(return_value=[{"aic": "backup"}])):
+                with self.assertRaises(RuntimeError):
+                    await transport.call(self.payload(transport))
+            self.assertEqual(transport._send.await_count, 1)
+            transport.runtime.force_remove_partner.assert_not_awaited()
+
+    async def test_handover_does_not_refresh_old_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.evidence["incident"] = [
+                {"key": "old", "observed_at": "2020-01-01T00:00:00+00:00"},
+                {"key": "unknown"},
+                {"key": "fresh", "observed_at": datetime.now(timezone.utc).isoformat()}]
+            refs = transport._handover_evidence("incident")
+            now = datetime.now(timezone.utc).timestamp()
+            self.assertLess(refs[0]["expires_at"], now)
+            self.assertEqual(refs[1]["expires_at"], 0)
+            self.assertGreater(refs[2]["expires_at"], now)
+
+
+if __name__ == "__main__":
+    unittest.main()

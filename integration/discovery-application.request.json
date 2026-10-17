@@ -1,0 +1,12 @@
+{
+  "type": "filtered",
+  "limit": 5,
+  "filter": {
+    "logic": "and",
+    "conditions": [
+      {"field": "active", "op": "eq", "value": true},
+      {"field": "skills.id", "op": "eq", "value": "incident.application.inspect"},
+      {"field": "endPoints.transport", "op": "eq", "value": "AMQP"}
+    ]
+  }
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>架构图解：你的智能体要干什么、怎么开发</title>
+<style>
+:root{color-scheme:light;--ink:#1d2433;--sub:#5b6475;--line:#e3e6ec;--bg:#f7f8fa;
+--coord:#3b5bdb;--app:#2b8a3e;--db:#c2410c;--ops:#7048e8;--ver:#0c8599;--wt:#495057}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;color:var(--ink);background:var(--bg);line-height:1.65}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:20px;margin:40px 0 12px;padding-left:10px;border-left:4px solid var(--coord)}
+p.lead{color:var(--sub);margin:0 0 18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.analogy{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
+.analogy div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:14px}
+.analogy b{display:block;font-size:15px}
+/* 组织图 */
+.orgs{display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:stretch}
+.zone{border:2px dashed var(--line);border-radius:12px;padding:12px;background:#fff}
+.zone h3{margin:0 0 8px;font-size:14px;color:var(--sub);font-weight:600}
+.agent{border-radius:9px;padding:10px 12px;margin:8px 0;color:#fff}
+.agent .name{font-weight:700;font-size:15px}
+.agent .meta{font-size:12.5px;opacity:.92}
+.a-coord{background:var(--coord)}.a-app{background:var(--app)}.a-db{background:var(--db)}.a-ops{background:var(--ops)}.a-ver{background:var(--ver)}
+.key{display:inline-block;background:rgba(255,255,255,.22);border-radius:4px;padding:0 6px;margin-left:6px;font-size:12px}
+.platform{grid-column:1/-1;background:#fff;border:2px solid var(--wt);border-radius:12px;padding:12px 14px;text-align:center}
+.platform .pills span{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin:4px;font-size:13px;background:var(--bg)}
+.note{font-size:13px;color:var(--sub)}
+/* 角色表 */
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{background:#f1f3f6;font-weight:600}
+td.r{font-weight:700;white-space:nowrap}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+/* 时间线 */
+.tl{position:relative;margin-left:8px}
+.step{position:relative;display:grid;grid-template-columns:44px 1fr;gap:10px;margin-bottom:12px}
+.num{width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--coord);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--coord)}
+.step .body{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.chip{display:inline-block;color:#fff;border-radius:4px;padding:0 7px;font-size:12.5px;margin-right:4px}
+.c-coord{background:var(--coord)}.c-app{background:var(--app)}.c-db{background:var(--db)}.c-ops{background:var(--ops)}.c-ver{background:var(--ver)}.c-wt{background:var(--wt)}.c-user{background:#868e96}
+code,pre{font-family:Consolas,"Cascadia Mono",monospace;font-size:12.5px}
+pre{background:#f1f3f6;border-radius:6px;padding:8px 10px;margin:6px 0 0;white-space:pre-wrap;word-break:break-all}
+.hl{background:#fff4e6;border-left:3px solid var(--db);padding:6px 10px;border-radius:4px;margin-top:6px;font-size:13.5px}
+/* 代码结构 */
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.three .card h3{margin:0 0 6px;font-size:16px}
+.tag{display:inline-block;font-size:12px;border-radius:4px;padding:0 6px;margin-left:6px}
+.t-have{background:#d3f9d8;color:#2b8a3e}.t-new{background:#ffe8cc;color:#c2410c}
+/* 开发步骤 */
+.dev{counter-reset:d}
+.dev .row{display:grid;grid-template-columns:52px 1.3fr 1fr;gap:10px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:8px;align-items:start}
+.dev .row .n{font-weight:800;color:var(--coord);font-size:18px}
+.dev .row .see{background:#ebfbee;border-radius:6px;padding:6px 8px;font-size:13.5px}
+.dev .row .see b{color:#2b8a3e}
+.dev .hdr{background:transparent;border:none;font-size:13px;color:var(--sub);padding:0 12px}
+.small{font-size:13px;color:var(--sub)}
+@media (max-width:760px){.orgs{grid-template-columns:1fr}.dev .row{grid-template-columns:40px 1fr}.dev .row .see{grid-column:2}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>你的智能体要干什么、怎么开发</h1>
+<p class="lead">配合《高分方案_需求架构创新与任务_20261017.md》阅读。这一页只讲三件事：每个智能体是谁、一次故障里它们怎么配合、代码从哪里下手。</p>
+
+<div class="card">
+<b>先用一个比喻：医院多科会诊。</b> 病人（订单网站）突然出问题，总值班医生（协调智能体）自己不能碰任何检查设备，只能请各科医生（应用、数据库、运维智能体）用本科室的设备检查，再根据结果决定下一步查什么、谁来治。各科的设备钥匙（账号密码）从不交给别人，这就是“凭据不出域”。
+<div class="analogy">
+<div><b>梧桐平台 = 医院系统</b>挂号建档（注册）、按科室找医生（发现）、拉会诊群（群组通信）、监控与记录（AMP 日志）</div>
+<div><b>协调智能体 = 总值班医生</b>不动手，只问诊、开检查单、定治疗方案、写病历</div>
+<div><b>各域智能体 = 专科医生</b>只能用自己科室的设备，查完把结果报回来</div>
+<div><b>业务验证智能体 = 复查科</b>治完之后真的下几单，确认病人好了</div>
+<div><b>操作账本 = 手术记录本</b>某医生中途离开，接班医生先看记录，做过的手术不再做第二遍</div>
+</div>
+</div>
+
+<h2>一、有哪些智能体，分属谁</h2>
+<div class="orgs">
+  <div class="zone">
+    <h3>业务负责人（协调机，可以就是你的电脑）</h3>
+    <div class="agent a-coord"><div class="name">协调智能体 <span class="key">无任何资源密码</span></div><div class="meta">已有 leader 身份，要改造：从“固定顺序”变成“看证据决定下一步”</div></div>
+    <div class="agent a-ver"><div class="name">业务验证智能体</div><div class="meta">已有 verification 身份：持续下单、查单、取消，判断业务是否真的恢复</div></div>
+    <p class="note">另有“故障工作台”网页：发起事故、看证据、点审批、看结果。</p>
+  </div>
+  <div class="zone">
+    <h3>三个“组织”（资源机，本地 Docker 里跑）</h3>
+    <div class="agent a-app"><div class="name">应用智能体 <span class="key">持有：应用管理权限</span></div><div class="meta">已有 application 身份 · 管订单网站本身</div></div>
+    <div class="agent a-db"><div class="name">数据库智能体（主 + 备） <span class="key">持有：数据库账号</span></div><div class="meta">已有 database 身份 + 新注册一个“备” · 内部 = 网关 + 开源 Postgres 工具</div></div>
+    <div class="agent a-ops"><div class="name">运维智能体 <span class="key">持有：Docker 权限</span></div><div class="meta">新注册 · 内部 = 网关 + 开源 Docker 工具 + 自写路由工具</div></div>
+  </div>
+  <div class="platform">
+    <b>梧桐平台（wt.ioa.pub）</b> —— 所有智能体之间的消息都经过这里，互相之间不直连
+    <div class="pills"><span>注册 / 证书</span><span>ADP 按技能发现</span><span>AMQPS 群组任务</span><span>AMP 日志 → 访问量</span></div>
+  </div>
+</div>
+
+<h2>二、每个智能体具体能做什么</h2>
+<table>
+<tr><th style="width:150px">智能体</th><th>它能“看”（观察，只读）</th><th>它能“做”（修改，要记账）</th><th>它绝不做</th></tr>
+<tr><td class="r"><span class="dot" style="background:var(--coord)"></span>协调</td><td>收各方报回的结果；读平台上各智能体的心跳</td><td>决定下一步派谁查什么；生成恢复计划；必要时找替补</td><td>直接连数据库、Docker、网站后台</td></tr>
+<tr><td class="r"><span class="dot" style="background:var(--app)"></span>应用</td><td>网站最近的报错、当前版本、连接池占用、直连网站能否读写</td><td>回退应用配置；重建数据库连接池</td><td>改数据库设置、重启容器</td></tr>
+<tr><td class="r"><span class="dot" style="background:var(--db)"></span>数据库</td><td>数据库是不是只读；有没有长事务锁住表；连接数；某个请求键的订单回执</td><td>把只读改回读写；结束指定的卡住会话（只限实验业务用户）</td><td>执行任意 SQL；碰白名单外的库</td></tr>
+<tr><td class="r"><span class="dot" style="background:var(--ops)"></span>运维</td><td>容器是不是退出了、容器日志；网关当前转发到哪个版本</td><td>重启带项目标签的容器；把路由切回已登记的版本</td><td>操作别的容器；写任意网关配置</td></tr>
+<tr><td class="r"><span class="dot" style="background:var(--ver)"></span>业务验证</td><td>每秒一单的成功/失败/未知统计；原来超时的那单到底成没成</td><td>用原请求键补办用户原本要做的事</td><td>改任何资源</td></tr>
+</table>
+
+<h2>三、一次故障从头到尾（主演示场景 F10 + F15）</h2>
+<p class="small">故障：有人把网关指回了旧版本，同时数据库被设成只读。处理到一半，数据库智能体进程崩了。</p>
+<div class="tl">
+
+<div class="step"><div class="num">1</div><div class="body"><span class="chip c-ver">业务验证</span>发现下单从成功变成 502，工作台亮红。<span class="chip c-user">你</span>点“发起事故”。</div></div>
+
+<div class="step"><div class="num">2</div><div class="body"><span class="chip c-coord">协调</span>→<span class="chip c-wt">梧桐 ADP</span>“给我找会查应用、数据库、运维的智能体”。平台返回候选名单；协调者拉一个会诊群，用 Inbox 邀请它们入群，再问每个人“你管哪些资源、会哪些工具”。</div></div>
+
+<div class="step"><div class="num">3</div><div class="body"><span class="chip c-coord">协调</span>同时派两个检查单：
+<pre>→ 运维：{"kind":"observe","tool":"ops.route_status"}
+→ 应用：{"kind":"observe","tool":"app.recent_errors"}</pre>
+<span class="chip c-ops">运维</span>回报：“网关转发到 v1（旧版）”。<span class="chip c-app">应用</span>回报：“v2 直连能读，但写入报 read-only 错误，我怀疑是数据库的问题”。</div></div>
+
+<div class="step"><div class="num">4</div><div class="body"><span class="chip c-coord">协调</span>把症状和结果交给大模型：“可能原因有哪些？” 大模型列出：路由错、数据库只读、应用容器挂了……排序规则算出“查数据库只读”最能区分剩下的原因，于是派：
+<pre>→ 数据库：{"kind":"observe","tool":"db.read_only_status"}</pre>
+<span class="chip c-db">数据库</span>回报：“default_transaction_read_only = on”。原因收敛为两个：<b>路由错 + 数据库只读</b>。</div></div>
+
+<div class="step"><div class="num">5</div><div class="body"><span class="chip c-coord">协调</span>生成计划：①回退路由 → ②恢复读写 → ③重建应用连接池。②是高风险，工作台弹窗，<span class="chip c-user">你</span>点“批准”。</div></div>
+
+<div class="step"><div class="num">6</div><div class="body"><span class="chip c-ops">运维</span>执行①，路由切回 v2。<span class="chip c-db">数据库（主）</span>收到②，<b>先在账本写“op-2 执行中”</b>，执行成功，账本改为“已完成”——<b>正要回报时进程崩了。</b>
+<div class="hl">没有账本的话，协调者不知道 ② 做没做，只能重做或干等。</div></div></div>
+
+<div class="step"><div class="num">7</div><div class="body"><span class="chip c-coord">协调</span>等不到回报，问状态也没回应 → 判定掉线。重新去<span class="chip c-wt">ADP</span>找同技能的候选，找到<span class="chip c-db">数据库（备）</span>，邀请入群，发“交接包”（已知证据、剩余任务、op-2 状态未知、新的隔离令牌）。</div></div>
+
+<div class="step"><div class="num">8</div><div class="body"><span class="chip c-db">数据库（备）</span>查同一本账本：“op-2 已完成”，再实际查一次数据库确认可写 → 回报“已完成，跳过，不重复执行”。旧的主进程即使活过来，拿旧令牌也改不了任何东西。</div></div>
+
+<div class="step"><div class="num">9</div><div class="body"><span class="chip c-app">应用</span>执行③重建连接池。<span class="chip c-ver">业务验证</span>处理故障期间超时的那几单（按原请求键查到底成没成），再连续下单 30 秒，全部成功。</div></div>
+
+<div class="step"><div class="num">10</div><div class="body"><span class="chip c-coord">协调</span>结案，工作台显示：每一步依据了什么证据、谁做了什么修改、接管过程、业务曲线。所有任务都在梧桐平台留有记录，每次访问都通过 AMP 日志计入平台后台访问量。</div></div>
+</div>
+
+<h2>四、智能体的代码长什么样</h2>
+<div class="three">
+<div class="card"><h3>1. 参与者骨架 <span class="tag t-have">已有</span></h3>
+<p class="small">现有 <code>integration/wutong_incident.py</code> 里的 <code>BusinessTask</code> 已经做好了：连梧桐、收任务、接受 → 执行 → 回报结果。所有参与者共用这套骨架，<b>不用重写</b>。</p>
+<pre>收到任务(start)
+  → accept / working
+  → output = execute_business_action(...)   ← 只有这里因角色不同
+  → submit_for_completion(结果)</pre></div>
+
+<div class="card"><h3>2. 工具箱 <span class="tag t-new">主要新写</span></h3>
+<p class="small">“开发一个智能体”基本就是给它写工具箱：一个工具名对应一个函数，函数去操作本组织的资源，返回事实。</p>
+<pre>TOOLS = {
+  "db.read_only_status": 查只读设置,
+  "db.blocking_sessions": 查锁,
+  "db.set_read_write":   改回读写,  # 高风险, 要审批+记账
+}
+def handle(task):
+    检查 发送者是不是协调者
+    检查 工具在不在白名单
+    如果是修改 → 先查账本, 再执行, 再记账
+    return {"facts": [...], "operation": {...}}</pre>
+<p class="small">数据库和运维不用自己写这些函数：<b>网关</b>把开源 MCP 工具自动变成这张表（创新二）。</p></div>
+
+<div class="card"><h3>3. 协调者 = 决策循环 <span class="tag t-new">改造</span></h3>
+<p class="small">现在是写死的 8 步顺序。改成循环：</p>
+<pre>发现参与者, 拉群
+while 没恢复 and 没超预算:
+    假设 = 大模型(症状, 已有证据)
+    下一步 = 排序规则(假设, 可用工具)
+    结果 = 派任务给对应智能体
+    更新证据, 每一步写入任务日志
+    if 原因确定: 生成计划 → 审批 → 依次执行
+    if 有人掉线: 找替补 + 发交接包
+业务验证 → 结案</pre></div>
+</div>
+
+<h2>五、本地开发顺序（每一步都能看到效果）</h2>
+<div class="dev">
+<div class="row hdr"><div></div><div>做什么（对应任务编号）</div><div>做完你能看到</div></div>
+<div class="row"><div class="n">1</div><div>装 WSL2 + Docker Desktop，用 docker compose 起订单网站 v1/v2、PostgreSQL、Nginx（T02、T10、T11）</div><div class="see">浏览器打开 <b>localhost</b> 能下单、查单、取消</div></div>
+<div class="row"><div class="n">2</div><div>写故障开关脚本：一条命令让数据库只读、路由指错、容器停掉，另一条命令复原（T12）</div><div class="see">运行 <b>inject F07</b>，网站下单立刻失败；<b>restore</b> 后恢复</div></div>
+<div class="row"><div class="n">3</div><div>先给四个现有智能体接日志上报和转发（T04-T06），让它们挂着跑巡检（T07）</div><div class="see">梧桐后台出现<b>在线状态和访问次数</b>，并且开始自己往上涨</div></div>
+<div class="row"><div class="n">4</div><div>应用智能体换成真工具箱：查报错、查版本、重建连接池（T14）</div><div class="see">协调者发“查报错”，收到<b>真实的 read-only 错误</b></div></div>
+<div class="row"><div class="n">5</div><div>写网关，接开源 Postgres 工具，换掉数据库智能体内部（T20-T23）</div><div class="see">经梧桐发“查只读”，返回 <b>true</b>；越权 SQL 被拒</div></div>
+<div class="row"><div class="n">6</div><div>同一个网关接 Docker 工具 + 路由工具，注册运维智能体（T03、T24）</div><div class="see">经梧桐发“查路由”，返回 <b>当前指向 v1</b></div></div>
+<div class="row"><div class="n">7</div><div>协调者先用固定顺序把 F10 修好，端到端跑通（T45 中的 M0）</div><div class="see">一条命令：注入 F10 → 自动修好 → 下单恢复</div></div>
+<div class="row"><div class="n">8</div><div>加大模型假设 + 探测排序 + 动态计划（T40-T42）</div><div class="see">F01 和 F02 同样是 502，<b>走出不同的排查路线</b></div></div>
+<div class="row"><div class="n">9</div><div>改官方 SDK：任务日志、账本、隔离令牌、找替补（T30-T32）</div><div class="see">处理中手动结束数据库主进程，<b>备自动接上，不重复修改</b></div></div>
+<div class="row"><div class="n">10</div><div>工作台三个页面、审批弹窗、跑对照实验、录视频写报告（T44、T50、T60-T63、T90-T96）</div><div class="see">完整的演示视频和实验图表</div></div>
+</div>
+<p class="small">第 3 步故意放在前面：访问数据是攒出来的，越早开始越多。第 7 步之前不需要大模型，先保证“真实故障 → 跨组织修好”这条主线能跑通。</p>
+
+</div>
+</body>
+</html>

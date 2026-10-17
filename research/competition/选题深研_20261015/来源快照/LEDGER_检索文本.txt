@@ -1,0 +1,1906 @@
+                  LEDGER: Scaling Agentic Document Editing with
+                      Dependency-aware Graph Retrieval
+
+               Mike Hang Wang           Utkarsh Garg Reza Davari Huitian Jiao
+                    Hao Cheng           Baolin Peng Si-Qing Chen Tao Ge
+                                               Microsoft
+                                   {wangmike, taoge}@microsoft.com
+
+
+
+                      Abstract                               document editing fundamentally more challeng-
+                                                             ing. For example, a simple terminology change
+    We introduce LEDGER to tackle the novel                  such as renaming “Microsoft” to “MS” in one sec-
+    context engineering challenge of agentic doc-
+                                                             tion—requires identifying and updating multiple
+    ument editing, where localized edits to long,
+    structured documents must be applied effi-               surface forms (Microsoft, MS, MSFT) across the
+    ciently without breaking cross-references or             document without a syntactic anchor, turning con-
+    semantic consistency. LEDGER constructs a                sistency into a pattern recognition problem rather
+    lightweight dependency graph that explicitly             than a deterministic replacement. Stylistic edits in-
+    models document structure, including hierar-             troduce even subtler dependencies. Revising a para-
+    chical organization, explicit references, implicit       graph from passive to active voice requires careful
+    dependencies, and semantic relationships. For
+                                                             alignment with its adjacent paragraphs to avoid
+    each edit, graph-guided retrieval selects only
+    the necessary context, avoiding full-document
+                                                             abrupt stylistic breaks. Moreover, once a stylistic
+    processing while preserving consistency. We              modification is introduced, its downstream impact
+    evaluate LEDGER on a curated benchmark                   must be considered: related sections elsewhere in
+    of 1.9k test cases with various document types           the document may now violate the intended global
+    and lengths, spanning six state-of-the-art mod-          style and require corresponding updates, even if
+    els: LEDGER improves consistency from 56%                they are not directly adjacent or explicitly refer-
+    to 76% across all six models and test sce-               enced. Cross-references further complicate this
+    narios while reducing token usage. Notably,
+                                                             process: revising a figure caption may invalidate
+    LEDGER with low reasoning effort matches
+    baseline performance at high reasoning effort            descriptions in distant paragraphs that refer to “the
+    using fewer tokens, showing that explicit de-            linear scaling shown in the figure” without explicit
+    pendency representations can partially substi-           citations.
+    tute for expensive internal reasoning in agentic            These loose dependencies create a consistency
+    document editing.                                        challenge that is fundamentally a context engineer-
+                                                             ing problem in agentic document editing. In par-
+                                                             ticular, preserving consistency in long documents
+1   Introduction
+                                                             requires the agent to reason over structural and
+Agentic document editing (e.g., ChatGPT Canvas               semantic dependencies across the document, yet
+and Agent Mode in Word) represents a new inter-              naively providing the full document as context for
+action paradigm for working with long, structured            every edit is both inefficient and counterproductive:
+documents. Instead of manually editing content,              beyond incurring prohibitive token cost and latency
+users issue high-level natural language instructions         as document length grows, full-document process-
+such as “clarify the experiment description,” “up-           ing can distract the model from the most relevant
+date terminology,” or “revise the tone of Section 4”,        regions, diluting attention and increasing the risk
+while an AI agent plans and executes the concrete            of unfocused or incorrect edits. Retrieval-based
+document modifications. This paradigm mirrors                editing improves efficiency by selecting a subset of
+recent code agents, where users specify intent and           context, but existing approaches primarily rely on
+the agent handles low-level edits, refactoring, and          topical similarity and frequently miss structural de-
+consistency checks. However, unlike code, doc-               pendencies critical for consistency, such as explicit
+uments lack formal semantics, executable struc-              cross-references, implicit mentions, or downstream
+ture, or compiler-level guarantees, making agentic           sections that depend on the edited content. As a
+                                                         10614
+                Findings of the Association for Computational Linguistics: ACL 2026, pages 10614–10644
+                             July 2-7, 2026 ©2026 Association for Computational Linguistics
+Figure 1: Overview of LEDGER. (1) Graph construction converts documents to DOM trees, extracts units, and
+applies LLM-based extraction protocols to create a dependency graph with four edge types. (2) Dependency-aware
+retrieval identifies target nodes, expands to dependencies through graph traversal, prioritizes by edge type, and
+packs within token budget. (3) Consistency verification checks reference integrity, terminology consistency, and
+semantic coherence after modifications, then updates the graph incrementally.
+
+result, agentic document editing faces a persistent        baseline performance at high reasoning effort while
+tension: efficient partial editing risks inconsistency,    using fewer tokens, suggesting explicit dependency
+while comprehensive context provision is expen-            representations can substitute for expensive inter-
+sive and can impair the agent’s ability to focus on        nal reasoning. This has broad implications for
+the most consequential dependencies.                       designing efficient agentic systems operating on
+                                                           structured data such as coding agent.
+   We introduce LEDGER (see illustration in Fig-
+ure 1), a framework that addresses this context en-           Our contributions are: (1) A dependency-aware
+gineering bottleneck through explicit dependency-          framework that applies explicit semantic graphs
+aware graph retrieval. The core insight is that            to document editing, resolving the context engi-
+structured documents exhibit dependency patterns           neering bottleneck through typed dependency ex-
+that can be extracted once and queried efficiently.        traction and graph-guided retrieval; (2) A curated
+LEDGER constructs a lightweight semantic graph             benchmark for evaluating consistency in agentic
+where nodes represent document elements and                document editing, comprising 1.9k test cases across
+typed edges encode explicit references ("Theorem           diverse document types, edit scenarios, and com-
+2"), implicit connections ("this result"), and seman-      plexity levels; (3) Evidence that explicit structural
+tic relationships (conceptually related content). For      guidance substitutes for reasoning effort, establish-
+each edit, graph traversal identifies relevant depen-      ing a design principle for efficient agentic systems
+dencies: both upstream context (what the target            operating on structured artifacts such as natural
+relies on) and downstream impacts (what depends            language documents.
+on it). This retrieval is selective, gathering only nec-
+essary elements within token budgets. After mod-           2   Related Work
+ifications, consistency verification validates struc-
+                                                           Context Engineering for LLM Agents. Manag-
+tural invariants, ensuring that references resolve
+                                                           ing context for large language models on exten-
+correctly, terminology remains consistent, and se-
+                                                           sive documents presents fundamental scalability
+mantic relationships are preserved. The graph is
+                                                           challenges (Zhang et al., 2025). Full-context meth-
+then updated incrementally to reflect the changes.
+                                                           ods maintain comprehensive awareness (An et al.,
+   We evaluate LEDGER across the curated 1.9k              2024) but face prohibitive scaling costs. Retrieval-
+test cases spanning six state-of-the-art models            augmented generation (Lewis et al., 2020; La-
+(Claude 4.5 Haiku/Sonnet/Opus, GPT-4.1/5/5.2).             ban et al., 2024) and efficient attention mecha-
+LEDGER achieves 76% consistency versus 56%                 nisms (Lai et al., 2025; Martins et al., 2020; Song
+baseline while maintaining constant token usage            et al., 2024; Hooper et al., 2025; Liu et al., 2024a)
+( 1,500 tokens per edit regardless of document             reduce costs through semantic search and computa-
+size), achieving up to 85% reduction versus full-          tional optimization, but struggle with structural de-
+document regeneration in scalability tests. Criti-         pendencies beyond topical similarity. A section ref-
+cally, LEDGER with low reasoning effort matches            erencing “Figure 3” exhibits structural connections
+                                                      10615
+that embeddings cannot reliably capture. Mem-               vant context Ccontext ⊆ U to generate modifications
+ory systems (Maharana et al., 2024; Wang et al.,            ∆t while preserving structural consistency.
+2023; Xiao et al., 2024) maintain interaction history           The core challenge is selecting context that sat-
+rather than artifact structure, while long-context          isfies three objectives simultaneously: consistency
+models (Liu et al., 2024b; Jin et al., 2024) lack           (preserving structural invariants), efficiency (achiev-
+explicit dependency tracking. Code editing sys-             ing |Ccontext | = O(1) rather than O(|D|)), and
+tems (Chen et al., 2023; Wang et al., 2024; Shinn           quality (correctly addressing instructions). Full-
+et al., 2023) employ syntax-aware retrieval but tar-        document methods achieve consistency but incur
+get narrow domains. Our work differs by explicitly          O(|D|) costs; retrieval-based methods achieve ef-
+representing structural dependencies through typed          ficiency but miss structural dependencies. For ex-
+graph edges, enabling constant time retrieval with          ample, editing a theorem in Section 3 requires re-
+comprehensive dependency awareness.                         trieving Section 7’s proof that explicitly references
+Graph-Based Representations for Structured                  it, despite low topical similarity that embedding-
+Tasks. Graph structures enable dependency track-            based retrieval cannot capture. As illustrated
+ing across domains: abstract syntax trees for               in Figure 1, LEDGER addresses this through
+program analysis (Allamanis et al., 2018; Guo               three integrated components: graph construction,
+et al., 2021), knowledge graphs for semantic coher-         dependency-aware retrieval, and consistency verifi-
+ence (Yasunaga et al., 2021; Zhang et al., 2022),           cation. The detailed prompt is in Section A.
+and directed acyclic graphs for workflow dependen-
+                                                            3.1   Semantic Graph Construction
+cies (Huang et al., 2022; Chen et al., 2021). Graph
+neural networks (Kipf and Welling, 2017; Hamilton           Given document D with units U                            =
+et al., 2017; Xu et al., 2019) provide learning archi-      {u1 , u2 , . . . , un },        LEDGER constructs a
+tectures for such data. We synthesize these insights        graph G = (V, E) where each node vi ∈ V
+for agentic editing, demonstrating that explicit de-        corresponds to unit ui ∈ U . We convert the
+pendency graphs enable efficient context selection          document to HTML and parse it into a DOM tree,
+and automated consistency verification. Critically,         where each structural element (section, paragraph,
+our experiments show that structural guidance sub-          figure, table, equation) becomes a unit with unique
+stitutes for expensive internal reasoning: cheaper          identifier idi , content ci , type τi , and position pi .
+inference modes match or exceed quality achiev-                 Each unit ui maps to graph node vi =
+able through costly extended reasoning alone. This          (idi , si , ei , τi , pi , ti ) where si is a summary of
+reasoning substitution effect, validated across six         ci , ei ∈ Rd is the embedding vector, and ti
+models and multiple domains, establishes a design           is the modification timestamp. The edge set
+principle for efficient agentic systems operating on        E ⊆ V × V × T encodes four dependency types:
+structured data.                                            EREF = {(vi , vj , REFERENCES) | rexp (ui , uj )} for
+                                                            explicit references, EDEP = {(vi , vj , DEPENDS) |
+3   LEDGER                                                  rimp (ui , uj )} for implicit dependencies, ECON =
+                                                            {(vi , vj , CONTAINS) | uj ∈ ui } for hierarchical
+We formalize document editing as an iterative pro-          containment, and EREL = {(vi , vj , RELATED) |
+cess where an AI agent receives edit requests and           rsem (ui , uj )} for semantic relationships.
+applies modifications while maintaining structural          Explicit references. For edges where rexp (ui , uj )
+consistency. A document D consists of units                 holds, content ci contains a substring m that ex-
+U = {u1 , u2 , . . . , un } organized hierarchically,       plicitly refers to identifier idj . The computa-
+where each unit ui (section, paragraph, figure, equa-       tional challenge is ensuring three critical proper-
+tion) has content ci , type τi , position pi , and unique   ties. First, minimality: the substring m must be
+identifier idi . Units connect through three rela-          minimal such that removing any token breaks the
+tionship types beyond the hierarchical tree: explicit       reference. Second, unambiguity: the reference
+references (direct citations like "Figure 2"), implicit     must explicitly name idj rather than relying on
+dependencies (pronouns and contextual references            semantic similarity. Third, validation: the iden-
+requiring coreference resolution), and semantic re-         tified idj must exist in {id1 , . . . , idn }. We imple-
+lationships (topically related content). At time t,         ment these requirements through a structured ex-
+the agent receives edit request Et specifying an in-        traction protocol (Appendix A) that queries a lan-
+struction, target, and scope, and must retrieve rele-       guage model with formal constraints and parses
+                                                       10616
+the structured output, returning validated pairs             3.2   Dependency-Aware Context Retrieval
+{(m1 , idj1 ), (m2 , idj2 ), . . .} where each mk is a
+minimal span and idjk ∈ {id1 , . . . , idn }, enabling       For edit request Et = (instruction, target, scope),
+edge creation (vi , vj , REFERENCES).                        LEDGER retrieves context Ccontext ⊆ U through
+Implicit dependencies.            For edges where            graph traversal in four steps.
+rimp (ui , uj ) holds, unit uj provides semantic pre-        Step 1: Target identification. We identify tar-
+requisites necessary to interpret ui . The computa-          get nodes Ntarget ⊆ V . If the instruction spec-
+tional challenge is determining whether removing             ifies an explicit target (e.g., "Figure 3"), we re-
+uj would make ui semantically incomplete, am-                solve it directly: Ntarget = {vj | idj = target}.
+biguous, or ill-defined. This requires evaluating ne-        Otherwise, we compute the instruction embedding
+cessity rather than mere relatedness: uj is a prereq-        eE = Embed(instruction) and select the most simi-
+uisite only if ui relies on definitions, assumptions,        lar nodes based on cosine similarity sim(eE , ei ).
+variables, or conceptual constructs introduced in uj
+that cannot be resolved from generic background              Step 2: Dependency expansion. We expand to
+knowledge. We must also verify directionality: the           include all connected nodes: Ndeps = Ntarget ∪
+dependency must be uj → ui , not bidirectional or            Nupstream ∪ Ndownstream where upstream dependen-
+circular. We implement this through a counterfac-            cies (what targets depend on) are Nupstream = {vj |
+tual testing protocol (Appendix A) that presents             ∃vi ∈ Ntarget , (vi , vj , t) ∈ E} and downstream im-
+both units to the language model with formal test-           pacts (what depends on targets) are Ndownstream =
+ing procedures, returning a directional dependency           {vj | ∃vi ∈ Ntarget , (vj , vi , t) ∈ E}.
+judgment enabling edge creation (vi , vj , DEPENDS)          Step 3: Priority scoring. We prioritize nodes in
+when rimp (ui , uj ) = 1.                                    Ndeps based on their relationship to target nodes.
+Semantic relationships.           For edges where            Target nodes receive highest priority. Among
+rsem (ui , uj ) holds, units discuss related topics.         connected nodes, we prioritize explicit references
+We compute cosine similarity sim(ei , ej ) =                 (REFERENCES) as critical for structural integrity,
+  ei ·ej
+∥ei ∥∥ej ∥ and create edge (vi , vj , RELATED) when
+                                                             followed by implicit dependencies (DEPENDS) as
+sim(ei , ej ) > θ, provided (vi , vj ) ∈
+                                       / EREF ∪ EDEP .       necessary for semantic completeness, then contain-
+The threshold θ balances precision and recall; we            ment relationships (CONTAINS) for hierarchical con-
+use θ = 0.7 based on standard practice for high-             text, and finally semantic relationships (RELATED)
+confidence semantic similarity (Kandola et al.,              as optional background. This ordering reflects de-
+2002). The embeddings ei require summaries si                pendency criticality: REFERENCES violations
+that capture semantic content, which we extract              cause immediate hard failures (broken citations),
+through type-specific protocols (Appendix A). Hi-            DEPENDS violations cause semantic incomplete-
+erarchical edges ECON come directly from the DOM             ness, and RELATED violations lose only optional
+tree structure.                                              context. Crucially, the exact numerical weights
+                                                             matter less than their relative ordering: any con-
+Edge directionality. RELATED edges are symmet-
+                                                             figuration preserving targets > REFERENCES >
+ric: sim(ei , ej ) = sim(ej , ei ), so the relationship is
+                                                             DEPENDS > RELATED retrieves an identical con-
+stored bidirectionally. DEPENDS edges are strictly
+                                                             text set given a fixed token budget where all critical
+directional: rimp (ui , uj ) = 1 means uj → ui (uj is
+                                                             dependencies fit (empirically validated across doc-
+a prerequisite for ui ), not vice versa—this prevents
+                                                             ument sizes in Appendix E.4, Table 10).
+circular dependencies that would break the topo-
+logical retrieval ordering required for consistent           Step 4: Budget-constrained packing. Given
+context assembly. REFERENCES edges are simi-                 token budget B, we construct context by select-
+larly directional, recording which unit cites which          ing nodes in descending score order. We define
+target. Complexity: Graph construction requires              Ccontext = {ui | vi ∈ Pack(Ndeps , B)} where
+O(n) for document parsing plus O(n·k) for depen-                                                sorted by score
+                                                             Pack(N , B) greedily selects nodes P
+dency extraction, where k is the average number              until the cumulative token count vi ∈selected |ci |
+of candidate pairs per unit (typically 5–10 nearby           exceeds budget B. This achieves |Ccontext | = O(1)
+units for implicit dependencies, avoiding all-pairs          tokens regardless of |D|, typically retrieving 10
+O(n2 ) computation). Full details are provided in            to 15% of total content while ensuring all critical
+Appendix A.                                                  dependencies are included.
+                                                        10617
+                                                Full Doc.                                                        LEDGER
+     Model
+                    Consistency   Ref. Valid.      Edit Quality   Pass    Tokens   Consistency↑   Ref. Valid.↑    Edit Quality ↑   Pass ↑   Tokens ↓
+Claude Haiku 4.5      53.23         63.41             63.18       35.72    1,759      80.12          80.36            83.05        84.27     1,479
+Claude Sonnet 4.5     55.48         58.62             67.19       36.54    1,725      74.31          72.44            70.26        73.58     1,575
+Claude Opus 4.5       61.17         69.53             70.28       43.61    1,736      75.42          77.18            78.34        77.66     1,508
+    GPT-4.1           54.69         60.71             62.44       43.22    1,974      74.53          81.29            79.16        74.84     1,478
+   GPT-5 Chat         57.36         66.24             68.57       41.63    1,825      77.08          74.19            76.42        82.11     1,489
+  GPT-5.2-High        57.59         67.33             71.14       45.26    1,910      77.44          74.61            75.38        75.92     1,683
+    Average           56.59         64.31             67.13       41.00    1,822      76.48          76.68            77.10        78.06     1,535
+
+
+Table 1: Comparison of LEDGER and baseline approaches across six language models. For each method, the first
+four columns report percentage (%) metrics (Consistency, Reference Validity, Edit Quality, and Overall Pass), while
+the last column reports the average number of tokens per edit. Results are the average value over testing cases.
+
+
+3.3 Consistency Verification                                                   maintaining cross-reference validity (e.g., "move
+                                                                               Section 4.2 before Section 4.1"). Content addition
+After applying modifications ∆t to produce Dt+1 ,
+                                                                               (120 cases) inserts new material while preserving
+LEDGER validates structural invariants on the set
+                                                                               coherence. Iterative editing (160 cases) applies 3
+of modified nodes Nmod ⊆ V through three checks.
+                                                                               to 5 dependent edits testing multi-step consistency.
+Reference integrity. For all outgoing reference
+                                                                               Scalability tests (120 cases) apply identical opera-
+edges from modified nodes, we verify targets
+                                                                               tions to documents from 5K to 100K tokens, testing
+exist in the updated graph: Vref = {(vi , vj ) |
+                                                                               whether token usage remains constant as document
+(vi , vj , REFERENCES) ∈ E, vi ∈ Nmod , vj ∈ / Vt+1 }.
+                                                                               size increases.1
+Any pair in Vref represents a broken reference re-
+                                                                               Models. We evaluate six models: Claude 4.5
+quiring correction.
+                                                                               Haiku/Sonnet/Opus and GPT-4.1/5/5.2, with GPT-
+Terminology consistency. For modified nodes, we
+                                                                               5.2 tested across four reasoning effort levels. Our
+extract key terms T (ci ) from content and compare
+                                                                               primary baseline is the full-document approach,
+with dependent nodes: Vterm = {(vi , vj ) | vi ∈
+                                                                               where the entire document is provided as input con-
+Nmod , (vj , vi , t) ∈ E, T (cnew        old
+                              i ) ̸= T (ci )}. These                           text to the LLM for each edit operation, but only
+indicate terminology changes requiring review of
+                                                                               the targeted section is modified. Note that token
+dependent content.
+                                                                               usage in this case reflects the input context pro-
+Semantic coherence. We recompute embeddings                                    vided to generate modifications, not full document
+enew
+  i    = Embed(cnew  i ) for modified nodes and iden-                          regeneration output. For scalability analysis (Fig-
+tify cases where semantic relationships have weak-                             ure 7), we additionally compare against theoretical
+ened significantly: Vsem = {(vi , vj ) | vi ∈                                  full-document regeneration, which would require
+Nmod , (vi , vj , RELATED) ∈ E, sim(enew  i , ej ) <                           regenerating all 5K-100K tokens as output and thus
+        old
+sim(ei , ej )}. These indicate potential semantic                              scales linearly with document size. We measure
+drift requiring review.                                                        consistency (structural validity and cross-reference
+    The graph updates incrementally by removing                                integrity), reference validity (percentage of correct
+old edges incident to Nmod and recomputing new                                 cross-references), edit quality (correctness of modi-
+edges using the construction algorithm, maintain-                              fications), overall pass rate (percentage meeting all
+ing G synchronized with document state Dt+1 .                                  criteria), and token usage per edit.
+                                                                               Baselines. We compare LEDGER against full-
+4    Experiments                                                               document regeneration (processes entire document
+Evaluation Benchmark. We curated 1,900 test                                    for each edit, our primary baseline), sliding win-
+cases across six editing scenarios: Local refine-                              dow (fixed 4K token context), RAG-based retrieval
+ment (120 cases) targets specific paragraphs with-                             (semantic search without structural awareness),
+out structural changes (e.g., "make this paragraph                             Claude+Memory (built-in memory without explicit
+more concise"). Cross-reference updates (200                                   graph structure), and Hierarchical RAG (seman-
+cases) modify content referenced elsewhere, re-                                tically similar chunks expanded to parent/sibling
+quiring the system to identify all citing sections                                 1
+                                                                                     These counts reflect the primary scenario categories; Ap-
+(e.g., editing Figure 3’s caption affects all para-                            pendix D (Table 6) reports the full breakdown including sub-
+                                                                               categories (e.g., local refinement expands to paragraph refine-
+graphs referencing it). Structural reorganization                              ment, local enhancement, and error correction), totaling 1,900
+(160 cases) moves or renumbers sections while                                  cases.
+
+                                                                          10618
+nodes via DOM-tree containment, equivalent to                                                     90
+
+
+
+
+                                                                      Average Quality Score (%)
+ECON only). Table 7 (Appendix E.1) provides a qual-                                               80
+                                                                                                                                         Content Addition     Local Refinement
+                                                                                                                                         Iterative Editing    Consistency Critical
+itative comparison of how each method differs in                                                  70                                     Cross-Ref Updates
+                                                                                                                                         Scalability Tests
+                                                                                                                                                              Structural Reorg
+
+input context and structural awareness. Full quanti-                                              60
+
+tative results for all baselines are in Appendix E.                                               50
+                                                                                                           500        1000        1500            2000            2500
+Metrics. We measure consistency (reference va-                                                                                    Output Tokens
+
+lidity, structural coherence, and overall preserva-         Content Addition                                                                                      85%89%
+                                                                                                                                                                       92%
+tion of structural constraints), efficiency (token us-       Iterative Editing                                                                                        90%
+                                                                                                                                                                      90%
+                                                                                                                                                                    87%
+                                                                                                                                                                     88%
+age per edit and percentage reduction versus base-        Cross-Ref Updates                                                                                        86%91%
+                                                             Scalability Tests                                                                     64% 73% 81%
+line), and quality (correctness of edits and overall        Local Refinement                                                                             77% 83%
+                                                                                                                                                        75%
+                                                                                                                                         50%
+pass rate combining all criteria). Consistency met-      Consistency Critical                                                             51%55%
+                                                                                                                                              57%
+                                                                                                                                                                     Consistency
+                                                                                                                                                                     Ref Validity
+                                                            Structural Reorg                                                                54% 61%
+rics are computed via programmatic rule-based                                                          0         20          40              60              80
+                                                                                                                                                                     Edit Quality
+                                                                                                                                                                            100
+validators that do not involve LLMs, eliminating                                                                              Quality Score (%)
+
+circularity: a reference validator checks all cross-
+                                                         Figure 2: Performance breakdown by edit operations.
+references resolve to existing targets, a terminology    Top chart shows token usage and quality metrics across
+validator tracks key-term usage, and a hierarchy val-    seven edit categories. Bottom bar chart shows the per-
+idator checks section numbering and containment          formance of LEDGER on different editing categories.
+(see Appendix Section C). LLM-as-judge is used
+exclusively for edit quality assessment, comparing       levels strain graph construction capabilities.
+outputs against gold-standard human edits for 200        Consistency Evaluation. Figure 3 visualizes the
+test cases. Two annotators independently evaluated       efficiency-quality frontier across all models and
+these 200 cases; automated validators achieve 94%        configurations. LEDGER configurations (filled
+agreement with majority human judgment.                  markers) cluster in the upper-left quadrant with con-
+                                                         sistency exceeding 70% and token usage between
+4.1 Main Results                                         1,200 to 2,000 tokens. Baseline points (hollow
+Table 1 presents results comparing LEDGER                markers) scatter across lower consistency regions
+against full-document baseline across all six mod-       (40-65%) with widely varying token usage. Pareto
+els. LEDGER achieves 76% average consistency             frontier analysis reveals most LEDGER configu-
+versus 56% baseline, a 20 percentage point im-           rations lie on or near the optimal frontier, meaning
+provement that remains consistent across model           no alternative configuration achieves substantially
+families. This translates to 78% overall pass rate       better quality without increasing tokens, or better
+versus 41% baseline. Token usage averages 1,535          efficiency without decreasing quality.
+tokens per edit for LEDGER versus 1,822 for base-
+line. The benefits prove particularly pronounced for
+smaller models: Claude Haiku 4.5 with LEDGER
+achieves 80% consistency versus 53% baseline (27
+point gain), while larger models show 14 to 20
+point gains. This suggests explicit structural mem-
+ory provides larger relative benefits when model
+capacity is constrained.
+Performance over Editing Types. Figure 2 breaks
+down LEDGER performance across editing sce-
+narios. Cross-reference updates (86% consistency),
+content addition (88%), and iterative editing (86%)
+achieve the strongest results because these scenar-      Figure 3: Efficiency-quality tradeoff analysis. Scat-
+ios heavily exercise dependency tracking. Local          ter plot with Pareto frontier showing the relationship
+refinement achieves 85% consistency with minimal         between token efficiency (x-axis, lower is better) and
+token usage (560 tokens), reflecting efficient tar-      consistency preservation (y-axis, higher is better) across
+geted retrieval. Structural reorganization achieves      all experimental conditions. Each point represents one
+                                                         (model, edit type) combination.
+only 54% consistency despite higher token usage
+(2,749 tokens), representing the most challenging        Token Efficiency. Figure 4 compares average to-
+category where cascading updates across structural       ken usage between baseline and LEDGER across
+                                                    10619
+six models for documents ranging from 5K to 100K                                                                      Reasoning Level Method     Cons. (%) Ref. Val. (%) Pass (%) Tok./Edit ↓
+
+tokens. LEDGER consistently achieves 85 to 92%                                                                        None
+                                                                                                                                     Full Doc.
+                                                                                                                                     LEDGER
+                                                                                                                                                   39.28
+                                                                                                                                                   67.14
+                                                                                                                                                               46.61
+                                                                                                                                                               69.37
+                                                                                                                                                                          28.43
+                                                                                                                                                                          65.82
+                                                                                                                                                                                     1,521
+                                                                                                                                                                                     1,497
+token reduction across all models when compared                                                                                      Full Doc.     48.52       55.18      34.64      1,494
+                                                                                                                      Low
+to full-document regeneration at scale, with mean                                                                                    LEDGER        80.12       82.41      79.33      1,508
+
+reduction of 88.5%. The consistency demonstrates                                                                      Medium
+                                                                                                                                     Full Doc.     42.67       50.39      30.58      1,837
+                                                                                                                                     LEDGER        77.26       79.14      75.49      1,522
+model-independent efficiency gains.                                                                                                  Full Doc.     57.59       67.33      45.26      1,910
+                                                                                                                      High
+                                                                                                                                     LEDGER        78.08       79.46      77.19      1,653
+
+
+                                                                                                                      Table 2: GPT-5.2 performance across reasoning efforts.
+
+                                                                                                                      4.2      Reasoning Effort Analysis
+                                                                                                                      Table 2 presents GPT-5.2 performance across rea-
+                                                                                                                      soning effort levels. LEDGER with low reason-
+                                                                                                                      ing effort achieves 80% consistency substantially
+                                                                                                                      outperforming baseline with high reasoning effort
+                                                                                                                      (57% consistency). This demonstrates that explicit
+                                                                                                                      structural representations can substitute for approx-
+                                                                                                                      imately one level of internal reasoning while us-
+                                                                                                                      ing 70% fewer tokens. LEDGER provides consis-
+                                                                                                                      tent 20-32 percentage point improvements across
+                                                                                                                      all reasoning levels. The baseline exhibits non-
+Figure 4: Token efficiency comparison across models                                                                   monotonic performance where medium reasoning
+in scalability tests. Bar chart comparing average token                                                               (43% consistency) underperforms both low (49%)
+usage between baseline and LEDGER across six mod-                                                                     and high (57%), suggesting increased computation
+els for documents ranging from 5K to 100K tokens.
+                                                                                                                      without structural guidance can introduce complex-
+                                                                                                                      ity rather than resolve it.
+                                                                                                                         Figure 6 visualizes this reasoning substitution
+                                                                                               60                     effect. The left panel shows LEDGER maintains
+        Claude Haiku 4.5       27%       43%         52%        54%       20%        17%                              stable consistency (71-80%) across all reasoning
+                                                                                               50
+         Claude Opus 4.5       14%       41%         48%        37%        8%        8%                               levels, while baseline exhibits a U-shaped pattern
+                                                                                               40                     with medium reasoning (51%) underperforming
+                                                                                                    Improvement (%)
+
+
+
+
+        Claude Sonnet 4.5      19%       46%         51%        50%        3%        14%
+                                                                                                                      both low (58%) and high (57%). The right panel
+Model
+
+
+
+
+                                                                                               30
+                 GPT-4.1       20%       36%         37%        45%       17%        21%                              shows both systems experience increasing token
+                                                                                               20
+              GPT-5 Chat       20%       47%         58%        51%        8%        8%                               usage with higher reasoning effort, but LEDGER
+                                                                                               10                     consistently requires 11-15% fewer tokens at equiv-
+                 GPT-5.2       20%       27%         41%        41%        4%        7%
+                            Consistency Explicit    Implicit   Semantic    Edit       Ref      0                      alent levels. The stability of LEDGER across rea-
+                                         Deps        Deps        Deps
+                                                   Quality Dimension
+                                                                          Quality   Validity
+                                                                                                                      soning modes indicates that explicit dependency
+Figure 5: Quality metrics preservation across models                                                                  information provides structural guidance that com-
+and evaluation dimensions. Heatmap showing consis-                                                                    pensates for limited reasoning capacity, reducing
+tency preservation, reference validity, and edit quality                                                              the burden of inferring relationships through ex-
+percentages for both baseline and LEDGER.                                                                             tended internal deliberation.
+
+                                                                                                                      4.3      Scalability Analysis
+Editing Quality Analysis. Figure 5 visualizes
+quality preservation across models and evaluation                                                                     Figure 7 demonstrates that LEDGER maintains
+dimensions. LEDGER maintains or improves                                                                              constant token usage averaging 1.5k tokens per
+quality across all dimensions: consistency preser-                                                                    edit across all document lengths from 5K to 100K
+vation (74-80%), reference validity (72-81%), and                                                                     tokens, while full-document regeneration scales
+edit quality (70-83%). The heatmap shows con-                                                                         linearly. At 100K tokens, LEDGER maintains ap-
+sistent performance across model families with no                                                                     proximately 1.5k tokens per edit. This constant
+systematic degradation, suggesting benefits stem                                                                      time behavior emerges from dependency-aware
+from framework architecture rather than model-                                                                        graph retrieval’s architectural properties. For each
+specific capabilities.                                                                                                edit, graph traversal identifies a locally relevant
+                                                                                                            10620
+                                  (a) Quality vs. Reasoning Effort                           Configuration                  Consistency (%) ↑   Ref Valid (%) ↑   Overall Pass (%) ↑
+
+                         120                                                  Full Doc.      LEDGER (Full System)                76.18              76.01               78.06
+                                                                              LEDGER         w/o Dependency Tracking             62.47              65.12               58.69
+       Consistency (%)   100                                                                 w/o Graph-based Retrieval           68.33              71.58               65.41
+                                                                                             w/o Consistency Verification        71.06              72.44               70.27
+                          80
+                                       Cross-over                                            GPT-5.2-High (Full Doc)             57.59              67.33               45.26
+                          60
+                          40                                                                 Table 3: Ablation study removing individual compo-
+                          20                                                                 nents. All three components contribute to overall perfor-
+                              0                                                              mance, with dependency tracking providing the largest
+                                  None               Low        Medium             High      single contribution.
+                                                     Reasoning Effort
+                                  (b) Token Usage vs. Reasoning Effort                       Token Budget        % of Doc      Consistency ↑       Ref. Valid. ↑      Pass Rate ↑
+                      4000                                                    Full Doc.      500                    5%              71.24              72.13             65.42
+                      3500                                                    LEDGER         1,000                 10%              75.83              75.94             77.12
+                      3000                                                                   1,500                 15%              76.48              76.68             78.06
+    Output Tokens
+
+
+
+
+                      2500                                                                   2,000                 20%              76.51              76.71             78.09
+                                                                                             3,000                 30%              76.44              76.58             77.94
+                      2000
+                                                                                             Full Doc              100%             56.59              64.31             67.13
+                      1500
+                      1000
+                                                                                             Table 4: Token budget sensitivity on 10K-token docu-
+                       500
+                         0
+                                                                                             ments. Bold row is the default LEDGER setting. “%
+                                  None               Low        Medium             High      of Doc” is the retrieved context fraction.
+                                                     Reasoning Effort
+
+Figure 6: Impact of reasoning effort on performance                                          not the entire document structure. Additional anal-
+(GPT-5.2). Top panel: Consistency preservation versus
+                                                                                             ysis is provided in Figure 8, where per-model scal-
+reasoning effort level. Bottom panel: Token usage ver-
+sus reasoning efforts.                                                                       ability demonstrates architecture-independent con-
+                                                                                             stant token usage across all six models.
+                              (a) Token Usage Scaling Across Approaches
+                                       Full Doc.
+                                       Sliding Window                                        4.4      Ablation Study
+                                       RAG-based
+                                       Claude+Memory                                         Table 3 isolates the contribution of individual com-
+    Tokens per Edit
+
+
+
+
+                                       LEDGER (Ours)
+                      104                                                                    ponents. Removing dependency tracking (relying
+                                                                                             only on semantic similarity) reduces consistency
+                                                                                             to 62%, a 14 point drop, validating that explicit
+                                                                                             tracking of structural edges is crucial. Removing
+                      103                                                                    graph-based retrieval (using full-document context
+                                  5K           10K                      50K       100K
+                                               Document Size (tokens)                        instead) achieves 68% consistency, indicating that
+                                                                                             targeted context selection improves consistency
+                              (b) Consistency Preservation Scaling
+                         90
+                                                                        Full Doc.
+                                                                                             beyond simply providing more context. Remov-
+                         80
+                                                                        LEDGER (Ours)        ing consistency verification achieves 71% consis-
+                                                                                             tency, showing that post-edit validation prevents
+       Consistency (%)
+
+
+
+
+                         70
+                                                                                             error propagation. All three components contribute
+                         60                                                                  independently to overall performance. A progres-
+                         50                                                                  sive edge-type ablation that isolates the marginal
+                                                                                             contribution of each typed edge beyond what Hier-
+                         40
+                                                                                             archical RAG already provides is reported in Ap-
+                                  5K           10K                      50K       100K
+                  Document Size (tokens)                                                     pendix E (Table 9).
+  Figure 7: Token usage across editing approaches.
+                                                                                             4.5      Token Budget Sensitivity Analysis
+subset of nodes and retrieves only their content.                                            Table 4 examines performance as token budget
+Crucially, whether the full document contains 50                                             varies from 5% to 100% of a 10K-token docu-
+nodes or 5,000 nodes, the retrieved context size                                             ment. Below 10% (500 tokens), performance drops
+remains comparable because dependencies are in-                                              sharply as critical dependency nodes are cut off by
+herently local rather than global. A paragraph edit                                          the budget constraint. At 10–15% (1,000–1,500
+requires awareness of its containing section, refer-                                         tokens), performance plateaus: the full dependency
+enced definitions, and downstream citations, but                                             neighborhood is covered and additional budget pro-
+                                                                                          10621
+                                               Claude Haiku 4.5                                          Claude Opus 4.5                                      Claude Sonnet 4.5
+                                              Full Doc.
+                                              Sliding Window
+                                              RAG-based
+                                              Claude+Mem
+
+                Tokens per Edit
+
+
+
+
+                                                                          Tokens per Edit
+
+
+
+
+                                                                                                                                Tokens per Edit
+                                  104         LEDGER                                        104                                                   104
+
+
+
+
+                                  103                                                       103                                                   103
+
+
+
+                                        5K      10K              50K   100K                       5K      10K          50K   100K                       5K      10K             50K   100K
+                                             Document Size (tokens)                                    Document Size (tokens)                                Document Size (tokens)
+                                                      GPT-4.1                                               GPT-5 Chat                                                GPT-5.2
+                Tokens per Edit
+
+
+
+
+                                                                          Tokens per Edit
+
+
+
+
+                                                                                                                                Tokens per Edit
+                                  104                                                       104                                                   104
+
+
+
+
+                                  103                                                       103                                                   103
+
+
+
+                                        5K      10K              50K   100K                       5K      10K          50K   100K                       5K      10K             50K   100K
+                                             Document Size (tokens)                                    Document Size (tokens)                                Document Size (tokens)
+
+Figure 8: Per-model scalability analysis across six LLM models. All models demonstrate consistent patterns:
+LEDGER maintains constant efficiency across document sizes.
+
+Threshold θ                        Graph Density               Consistency ↑                Ref. Valid. ↑        higher thresholds (θ ≥ 0.8) miss genuinely re-
+0.5                      High (dense, noisy)                       73.1                           72.8           lated content. Importantly, performance is rela-
+0.6                        Medium-high                             75.4                           75.1
+0.7 (Default)            Medium (balanced)                         76.5                           76.7
+                                                                                                                 tively stable in the range 0.6–0.8 (within 1.1%),
+0.8                         Medium-low                             75.8                           75.5           confirming robustness of this design choice. This
+0.9                         Low (sparse)                           74.2                           73.9           is consistent with the standard practice for high-
+                                                                                                                 confidence semantic similarity (Kandola et al.,
+Table 5: Cosine similarity threshold θ sensitivity for RE-
+                                                                                                                 2002), where θ = 0.7 balances precision (avoid-
+LATED edge creation. Bold row is the default setting.
+                                                                                                                 ing spurious edges) and recall (capturing semantic
+                                                                                                                 relationships).
+vides no meaningful benefit. Beyond 15%, gains
+are negligible (+0.03 pp at 20%), and a slight degra-                                                            5     Conclusion
+dation appears at 30% as irrelevant context begins                                                               We introduce LEDGER, a dependency-aware
+to introduce noise—consistent with the “lost in the                                                              graph retrieval framework for agentic document
+middle” phenomenon (Liu et al., 2024b), where                                                                    editing that achieves 76% consistency versus 56%
+performance degrades when irrelevant context is                                                                  baseline while reducing token usage by 85%. Our
+present alongside relevant content. These results                                                                benchmark of 1,900 test cases enables evaluation
+confirm that the bottleneck is dependency coverage                                                               across diverse document types and edit scenarios.
+quality, not budget size: once all critical dependen-                                                            Notably, LEDGER with minimal internal reason-
+cies are retrieved, adding more context hurts rather                                                             ing outperforms baselines relying on expensive ex-
+than helps, validating the 10–15% empirically ob-                                                                tended reasoning, showing that explicit structural
+served retrieval fraction described in Section 3.2.                                                              representations can substitute for costly compu-
+                                                                                                                 tation. The edge structure (REFERENCES, DE-
+4.6 Threshold Sensitivity Analysis                                                                               PENDS, CONTAINS) maps naturally to code arti-
+Table 5 examines how the cosine similarity thresh-                                                               facts such as call graphs and data-flow dependen-
+old θ for RELATED edge creation affects perfor-                                                                  cies, suggesting extensions to code refactoring and
+mance across research paper documents. The de-                                                                   software maintenance. Future directions include
+fault θ = 0.7 achieves the best balance: lower                                                                   richer dependency detection incorporating corefer-
+thresholds (θ ≤ 0.6) introduce noisy RELATED                                                                     ence resolution and discourse structure . Domain-
+edges that crowd out critical REFERENCES and                                                                     adaptive learned weights for edge prioritization is
+DEPENDS edges within the token budget, while                                                                     a promising avenue for specialized applications.
+                                                                                                           10622
+Limitations                                              require careful prompt engineering and may ex-
+                                                         hibit inconsistent performance across document do-
+While LEDGER demonstrates consistent improve-
+                                                         mains, with technical specifications having clearer
+ments across diverse test cases, several limitations
+                                                         structural patterns than creative or conversational
+warrant discussion. First, the framework is opti-
+                                                         content. Additionally, the graph construction and
+mized for structured documents with clear hier-
+                                                         incremental update processes introduce computa-
+archical organization and explicit identifiers (sec-
+                                                         tional overhead: while amortized across multiple
+tions, figures, equations), and may perform sub-
+                                                         edits, the initial graph construction for very large
+optimally on unstructured content such as cre-
+                                                         documents (>100,000 tokens) or documents with
+ative writing, conversational text, or documents
+                                                         dense interconnections can be time-consuming.
+lacking consistent formatting conventions. Sec-
+                                                         The semantic similarity threshold for RELATED
+ond, our evaluation focuses primarily on English-
+                                                         edges represents a design choice that balances pre-
+language documents; the dependency extraction
+                                                         cision and recall but may require domain-specific
+protocols may require adaptation for languages
+                                                         tuning. Furthermore, the method assumes docu-
+with different syntactic structures, particularly for
+                                                         ment structure can be reliably parsed into DOM
+implicit dependency detection that relies on coref-
+                                                         trees, which may fail for poorly formatted docu-
+erence resolution. Third, although we demonstrate
+                                                         ments, legacy formats, or content with inconsistent
+generalization across six models, the quality of
+                                                         markup. Finally, the framework’s reliance on ex-
+dependency extraction and editing operations re-
+                                                         ternal graph memory introduces a synchronization
+mains bounded by the underlying LLM’s capa-
+                                                         challenge: if the graph becomes desynchronized
+bilities—weaker models may produce less accu-
+                                                         from the document state due to external edits or
+rate dependency graphs, partially offsetting effi-
+                                                         system failures, consistency guarantees no longer
+ciency gains. Fourth, the framework assumes a
+                                                         hold until the graph is reconstructed.
+relatively stable document structure during edit-
+ing sessions; operations that fundamentally reor-
+ganize document architecture (e.g., merging chap-
+                                                         Ethical Considerations
+ters, restructuring entire sections) may require full
+                                                         The deployment of AI agents for automated doc-
+graph reconstruction rather than incremental up-
+                                                         ument editing raises several ethical concerns that
+dates. Fifth, our experiments focus on single-agent
+                                                         warrant careful consideration. First, the system’s
+editing scenarios, and the framework’s behavior
+                                                         ability to maintain cross-document consistency and
+under concurrent multi-agent editing with potential
+                                                         propagate changes efficiently could facilitate unau-
+conflicts requires further investigation. Sixth, while
+                                                         thorized modifications or manipulation of collab-
+we evaluate consistency through reference validity
+                                                         orative documents if access controls are inade-
+and structural coherence metrics, these may not
+                                                         quate, particularly in settings involving multiple
+fully capture subtle semantic inconsistencies that
+                                                         stakeholders or version-controlled content. Second,
+human readers would detect. Finally, the constant
+                                                         while the framework assists human editors, over-
+token usage achieved by LEDGER represents an
+                                                         reliance on automated editing agents may reduce
+average across test cases; pathological documents
+                                                         critical human oversight, potentially allowing er-
+with extremely dense interconnections might re-
+                                                         rors or inappropriate modifications to propagate
+quire retrieving larger context subgraphs, though
+                                                         undetected through dependency chains. The LLM-
+this remains substantially more efficient than full-
+                                                         based dependency extraction and editing compo-
+document processing.
+                                                         nents may also inherit biases present in their train-
+                                                         ing data, potentially affecting how relationships are
+Potential Risk
+                                                         identified or how edits are formulated across dif-
+The proposed method’s effectiveness depends crit-        ferent document types, domains, or writing styles.
+ically on the accuracy of LLM-based dependency           Third, the system processes document content to
+extraction protocols. Errors in identifying explicit     construct semantic graphs and generate embed-
+references, implicit dependencies, or semantic re-       dings, raising privacy concerns when applied to
+lationships during graph construction propagate          sensitive or confidential documents—organizations
+through subsequent editing operations, potentially       must ensure appropriate data handling practices
+causing the system to miss critical dependencies or      and consider on-premises deployment for sensi-
+retrieve irrelevant context. The extraction protocols    tive applications. Fourth, the framework’s effec-
+                                                    10623
+tiveness in maintaining consistency might create           Wenlong Huang, Pieter Abbeel, Deepak Pathak, and
+false confidence in fully automated editing work-           Igor Mordatch. 2022. Language models as zero-shot
+                                                            planners: Extracting actionable knowledge for em-
+flows, whereas human judgment remains essential
+                                                            bodied agents. In International Conference on Ma-
+for evaluating semantic appropriateness, stylistic          chine Learning.
+coherence, and domain-specific correctness that
+automated systems cannot fully capture. We em-             Hongye Jin, Xiaotian Han, Jingfeng Yang, Zhimeng
+                                                             Jiang, Zirui Liu, Chia-Yuan Chang, Huiyuan Chen,
+phasize that LEDGER is designed as an assistive              and Xia Hu. 2024. LLM maybe LongLM: Self-
+tool augmenting human editors rather than replac-            extend LLM context window without tuning. In
+ing them, and recommend that deployed systems                International Conference on Machine Learning.
+include human-in-the-loop verification for critical        Jaz Kandola, Nello Cristianini, and John Shawe-taylor.
+editing operations, maintain comprehensive au-                2002. Learning semantic similarity. Advances in
+dit trails, and provide transparency about which              neural information processing systems, 15.
+modifications were AI-generated versus human-
+                                                           Thomas N Kipf and Max Welling. 2017. Semi-
+authored.                                                    supervised classification with graph convolutional
+                                                             networks. In International Conference on Learning
+                                                             Representations.
+References
+                                                           Philippe Laban, Alexander Richard Fabbri, Caiming
+Miltiadis Allamanis, Marc Brockschmidt, and Mah-             Xiong, and Chien-Sheng Wu. 2024. Summary of a
+  moud Khademi. 2018. Learning to represent pro-             haystack: A challenge to long-context llms and rag
+  grams with graphs. In International Conference on          systems. In Proceedings of the 2024 Conference on
+  Learning Representations.                                  Empirical Methods in Natural Language Processing,
+                                                             pages 9885–9903.
+Shengnan An, Zexiong Ma, Zeqi Lin, Nanning Zheng,
+  Jian-Guang Lou, and Weizhu Chen. 2024. Make              Xunhao Lai, Jianqiao Lu, Yao Luo, Yiyuan Ma, and
+  your llm fully utilize the context. Advances in Neural     Xun Zhou. 2025. Flexprefill: A context-aware sparse
+  Information Processing Systems, 37:62160–62188.            attention mechanism for efficient long-sequence in-
+                                                             ference. arXiv preprint arXiv:2502.20766.
+Jiawen Chen, Yajun Yang, Chenyang Wang, Heng
+   Zhang, Chao Qiu, and Xiaofei Wang. 2021. Mul-           Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio
+   titask offloading strategy optimization based on di-      Petroni, Vladimir Karpukhin, Naman Goyal, Hein-
+   rected acyclic graphs for edge computing. IEEE            rich Küttler, Mike Lewis, Wen-tau Yih, Tim Rock-
+   Internet of Things Journal, 9(12):9367–9378.              täschel, Sebastian Riedel, and Douwe Kiela. 2020.
+                                                             Retrieval-augmented generation for knowledge-
+Xinyun Chen, Maxwell Lin, Nathanael Schärli, and             intensive NLP tasks. In Advances in Neural Infor-
+  Denny Zhou. 2023. Teaching large language mod-             mation Processing Systems, volume 33, pages 9459–
+  els to self-debug. In International Conference on          9474.
+  Learning Representations.
+                                                           Di Liu, Meng Chen, Baotong Lu, Huiqiang Jiang,
+                                                             Zhenhua Han, Qianxi Zhang, Qi Chen, Chen-
+Daya Guo, Shuo Ren, Shuai Lu, Zhangyin Feng, Duyu
+                                                             gruidong Zhang, Bailu Ding, Kai Zhang, and 1 others.
+  Tang, Shujie Liu, Long Zhou, Nan Duan, Alexey Svy-
+                                                             2024a. Retrievalattention: Accelerating long-context
+  atkovskiy, Shengyu Fu, Michele Tufano, Shao Kun
+                                                             llm inference via vector retrieval. arXiv preprint
+  Deng, Colin Clement, Dawn Drain, Neel Sundaresan,
+                                                             arXiv:2409.10516.
+  Jian Yin, Daxin Jiang, and Ming Zhou. 2021. Graph-
+  CodeBERT: Pre-training code representations with         Nelson F Liu, Kevin Lin, John Hewitt, Ashwin Paran-
+  data flow. In International Conference on Learning         jape, Michele Bevilacqua, Fabio Petroni, and Percy
+  Representations.                                           Liang. 2024b. Lost in the middle: How language
+                                                             models use long contexts. Transactions of the Asso-
+William L Hamilton, Rex Ying, and Jure Leskovec.             ciation for Computational Linguistics, 12:157–173.
+  2017. Inductive representation learning on large
+  graphs. In Advances in Neural Information Process-       Adyasha Maharana, Dong-Ho Lee, Sergey Tulyakov,
+  ing Systems, volume 30.                                    Mohit Bansal, Francesco Barbieri, and Yuwei
+                                                             Fang. 2024. Evaluating very long-term conver-
+Coleman Richard Charles Hooper, Sehoon Kim, Hiva             sational memory of llm agents. arXiv preprint
+  Mohammadzadeh, Monishwaran Maheswaran, Se-                 arXiv:2402.17753.
+  bastian Zhao, June Paik, Michael W Mahoney, Kurt
+  Keutzer, and Amir Gholami. 2025. Squeezed atten-         André Martins, António Farinhas, Marcos Treviso, Vlad
+  tion: Accelerating long context length llm inference.      Niculae, Pedro Aguiar, and Mario Figueiredo. 2020.
+  In Proceedings of the 63rd Annual Meeting of the           Sparse and continuous attention mechanisms. Ad-
+  Association for Computational Linguistics (Volume          vances in Neural Information Processing Systems,
+  1: Long Papers), pages 32631–32652.                        33:20989–21001.
+                                                      10624
+Noah Shinn, Federico Cassano, Beck Labash, Ashwin         Appendix
+  Gopinath, Karthik Narasimhan, and Shunyu Yao.
+  2023. Reflexion: Language agents with verbal rein-      Appendix A Dependency Extraction Protocols
+  forcement learning. In Advances in Neural Informa-          ◦ Explicit Reference Relation (rexp )
+  tion Processing Systems, volume 36.                         ◦ Implicit Semantic Dependency Relation
+Lin Song, Yukang Chen, Shuai Yang, Xiaohan Ding,                (rimp )
+  Yixiao Ge, Ying-Cong Chen, and Ying Shan. 2024.             ◦ Semantic Relatedness Relation (rsem )
+  Low-rank approximation for sparse attention in multi-       ◦ Implementation Notes
+  modal llms. In Proceedings of the IEEE/CVF Con-
+  ference on Computer Vision and Pattern Recognition,     Appendix B LEDGER Aided Document Edit-
+  pages 13763–13773.                                        ing Examples
+Weizhi Wang, Li Dong, Hao Cheng, Xiaodong Liu,                ◦ Example Task: Revising a Theorem State-
+ Xifeng Yan, Jianfeng Gao, and Furu Wei. 2023. Aug-              ment with Cascading Updates
+ menting language models with long-term memory.
+                                                          Appendix C Evaluation Metrics and Examples
+ Advances in Neural Information Processing Systems,
+ 36:74530–74543.                                              ◦ Metric Definitions
+                                                              ◦ Evaluation Examples (3 cases)
+Xingyao Wang, Yangyi Chen, Lifan Yuan, Yizhe Zhang,
+  Yunzhu Li, Hao Peng, and Heng Ji. 2024. Executable          ◦ Metric Computation
+  code actions elicit better LLM agents. In Interna-      Appendix D Benchmark Construction
+  tional Conference on Machine Learning.
+                                                              ◦ Benchmark Overview
+Chaojun Xiao, Pengle Zhang, Xu Hu, Guangxuan Liu,             ◦ Test Scenario Taxonomy (7 categories)
+  Yichuan Xu, Chenyang Lin, Chengqiang Wang, Yishi
+  Dong, Furu Wei, and Yeyun Cao. 2024. InfLLM:
+                                                              ◦ Document Generation Process
+  Training-free long-context extrapolation for LLMs           ◦ Benchmark Statistics
+  with an efficient context memory. In Advances in            ◦ Evaluation Protocol
+  Neural Information Processing Systems, volume 37.
+                                                          Appendix E Additional Experimental Results
+Keyulu Xu, Weihua Hu, Jure Leskovec, and Stefanie             ◦ Method Comparison: Context and Struc-
+  Jegelka. 2019. How powerful are graph neural net-
+  works? In International Conference on Learning
+                                                                tural Awareness
+  Representations.                                            ◦ Extended Baseline Comparison (including
+                                                                Hierarchical RAG)
+Michihiro Yasunaga, Hongyu Ren, Antoine Bosselut,
+  Percy Liang, and Jure Leskovec. 2021. QA-GNN:               ◦ Progressive Edge-Type Ablation
+  Reasoning with language models and knowledge                ◦ Retrieval Weight Sensitivity Across Docu-
+  graphs for question answering. In Proceedings of              ment Sizes
+  the 2021 Conference of the North American Chap-
+  ter of the Association for Computational Linguistics:   Appendix F Pseudocode for LEDGER Algo-
+  Human Language Technologies, pages 535–546.               rithms
+                                                               ◦ Semantic Graph Construction
+Qizheng Zhang, Changran Hu, Shubhangi Upasani,
+  Boyuan Ma, Fenglu Hong, Vamsidhar Kamanuru, Jay              ◦ Dependency-Aware Context Retrieval
+  Rainton, Chen Wu, Mengmeng Ji, Hanchen Li, and 1             ◦ Consistency Verification
+  others. 2025. Agentic context engineering: Evolving
+  contexts for self-improving language models. arXiv
+  preprint arXiv:2510.04618.
+Xikun Zhang, Antoine Bosselut, Michihiro Yasunaga,
+  Hongyu Ren, Percy Liang, Christopher D Manning,
+  and Jure Leskovec. 2022. GreaseLM: Graph REA-
+  soning enhanced language models for question an-
+  swering. In International Conference on Learning
+  Representations.
+
+
+
+
+                                                     10625
+A     Dependency Extraction Protocols                           example, “the matrix operation discussed ear-
+                                                                lier” is NOT an explicit reference unless it
+This section provides the complete extraction pro-
+                                                                includes an identifier.
+tocols for each dependency type. Each protocol
+is designed to operationalize the formal relation            4. LaTeX references: Include LaTeX cross-
+definitions from Section 3 through structured con-              references     (e.g.,  \ref{sec:method},
+straints that ensure mathematical rigor.                        \eqref{eq:loss}, \cite{smith2020}) as
+    Remark on the token cost for Graph Con-                     explicit references when the label can be
+    struction. Graph construction incurs a one-                 resolved to idj .
+    time cost of O(n) for document parsing and              Output format: Return a set of pairs
+    embedding computation, plus O(n · k) for de-         {(m1 , idj1 ), (m2 , idj2 ), . . .} where each mk is the
+    pendency extraction, where k is the average          minimal substring and idjk is the referenced identi-
+    number of candidate dependencies per unit            fier. If no such spans exist, return an empty set.
+    (typically 5-10 nearby units for implicit de-           Example:
+    pendencies, avoiding all-pairs O(n2 ) compu-
+    tation). For a typical 10K token document                 • Input: “The method described in Section 2.1
+    with 100 units, this requires approximately                 extends Theorem 4 from (?).”
+    500 pairwise LLM calls for implicit depen-
+    dency extraction, completing in 2-3 minutes.              • Output: (“Section 2.1”, “sec-2-1”), (“Theo-
+    This cost is amortized across multiple editing              rem 4”, “thm-4”), (“(?)”, “cite-jones2019”)
+    operations on the same document, with incre-         A.2     Implicit Semantic Dependency Relation
+    mental updates (Algorithm 2) adding minimal                  (rimp )
+    overhead per edit.
+                                                         Operator definition reminder: rimp (ui , uj ) = 1
+                                                         if and only if uj provides semantic prerequisites
+A.1 Explicit Reference Relation (rexp )                  necessary to interpret ui .
+Operator definition reminder: rexp (ui , uj ) = 1           Extraction Protocol for rimp :
+if and only if there exists a minimal span m ⊂ ui           You are given two text units (ui , uj ) from the
+that explicitly refers to identifier idj .               same document, where uj appears before ui in
+   Extraction Protocol for rexp :                        document order.
+   You are given a text unit ui from a technical            Task: Determine whether uj is a necessary se-
+document with known identifiers {id1 , . . . , idn }.    mantic prerequisite for understanding ui .
+   Task: Identify all substrings m ⊂ ui that estab-         Test procedure:
+lish explicit references to other units.
+                                                             1. Counterfactual removal: Consider ui in iso-
+   Constraints:
+                                                                lation, assuming that uj (and only uj ) is re-
+    1. Explicit naming: The substring m must ex-                moved from the document. All other units
+       plicitly and unambiguously refer to another              remain available.
+       document unit by identifier (e.g., section num-
+                                                             2. Semantic completeness check: Decide
+       ber “Section 2.1”, equation label “Equation 3”,
+                                                                whether ui becomes semantically incomplete,
+       figure caption “Figure 5”, named definition
+                                                                ambiguous, or ill-defined due to missing con-
+       “Theorem 1”).
+                                                                tent from uj . Specifically, check if ui relies
+    2. Minimality: The span m must be minimal –                 on:
+       removing any token from m must break the                    • Definitions or terminology introduced in
+       reference. For example, in “as shown in Fig-                  uj
+       ure 3 above”, the minimal span is “Figure 3”,
+                                                                   • Mathematical notation or variables de-
+       not “Figure 3 above”.
+                                                                     fined in uj
+    3. Surface-level only: Do not infer references                 • Assumptions, constraints, or problem
+       that rely on semantic similarity, paraphras-                  setup from uj
+       ing, or topic relatedness. Only surface-level,              • Conceptual constructs or frameworks es-
+       identifier-based references are allowed. For                  tablished in uj
+                                                     10626
+Figure 9: LEDGER workflow for document editing with dependency awareness. The system constructs a semantic
+graph from the input document, capturing hierarchical relationships (solid blue lines) and implict, explict and
+semantic connections (dotted orange lines). When an edit instruction is received, the graph guides context retrieval
+to identify relevant dependencies (highlighted in red). The editing agent applies edits with consistency verification,
+and the semantic graph is updated incrementally. Example operations include updating cross-references (e.g., figure
+references), reorganizing sections (e.g., update Chapter 1 → 2), and adding examples while maintaining consistency
+across all dependent elements.
+
+
+         • Results, lemmas, or intermediate conclu-          A.3    Semantic Relatedness Relation (rsem )
+           sions from uj                                     Operator definition reminder: rsem (ui , uj ) = 1
+                                                             if and only if units ui and uj discuss semantically
+  3. Specificity requirement: Identify the specific
+                                                             related topics, quantified as sim(ei , ej ) > θ where
+     elements in ui that rely on content introduced
+                                                             ei , ej are embedding vectors and θ is a threshold.
+     in uj . The dependency must be concrete, not
+                                                                 Extraction Protocol for rsem :
+     merely topical similarity.
+                                                                 You are given a text unit ui of type τi ∈
+  4. Generic knowledge exclusion: The depen-                 {section, paragraph, figure, table, equation}.
+     dency must not be resolvable by generic back-               Task: Generate a concise summary si that cap-
+     ground knowledge in the domain. For ex-                 tures the semantic content of ui for embedding-
+     ample, if ui uses the term “gradient descent”           based similarity computation.
+     and uj defines it, but gradient descent is com-             Type-specific protocols:
+     mon knowledge in machine learning, this does                For sections (τi = section):
+     NOT establish rimp (ui , uj ).
+                                                               1. Extract the main claim or thesis of the section
+  5. Directionality: Verify that the dependency is                (1 sentence)
+     strictly directional: uj → ui . The relationship          2. Identify 2-3 key contributions, findings, or
+     cannot be bidirectional or circular.                         concepts introduced
+   Output format: Return True if all conditions                3. Exclude: Structural markers (“In this sec-
+are satisfied, establishing rimp (ui , uj ) = 1. Other-           tion...”), transitional phrases, citations
+wise, return False. If True, also return the specific
+elements in ui that depend on uj .                             4. Target length: 50-100 tokens
+   Example:
+                                                               For paragraphs (τi = paragraph):
+     uj : “We define the loss function L(θ) =
+   • P
+        n                                                      1. Identify the central idea or main point (1-2
+        i=1 (yi − fθ (xi )) .”
+                           2
+                                                                  sentences)
+   • ui : “To minimize L(θ), we compute the gra-
+                                                               2. Include key technical terms or concepts
+     dient with respect to θ.”
+                                                               3. Exclude: Supporting details, examples, cita-
+   • Output: True, with dependency elements:                      tions
+     {“L(θ)”, “loss function definition”}
+                                                               4. Target length: 30-50 tokens
+   • Justification: Without uj , the symbol L(θ) in
+     ui is undefined.                                          For figures (τi = figure):
+                                                       10627
+  1. Use the figure caption directly as si                A.4    Implementation Notes
+                                                          Validation and quality control:
+  2. If caption is very long (>100 tokens), extract
+     the first sentence and key technical terms               • For rexp : Validate that all extracted idj exist in
+                                                                the known identifier set {id1 , . . . , idn }. Dis-
+  3. Include figure type (e.g., “graph showing”,                card any references to non-existent identifiers.
+     “architecture diagram of”)
+                                                              • For rimp : Apply the protocol to unit pairs
+  For tables (τi = table):                                      (ui , uj ) where j < i (i.e., uj precedes ui ).
+                                                                The test is computationally expensive, so pri-
+  1. Use the table caption as si
+                                                                oritize pairs where ui is close to uj in docu-
+  2. If caption is uninformative, describe what is              ment order (e.g., within 5-10 units).
+     being compared or measured (e.g., “Perfor-               • For      rsem :         Compute      embed-
+     mance comparison of methods on datasets”)                  dings     using    a     consistent   model
+                                                                (e.g.,           text-embedding-ada-002,
+  3. Include column/row headers if they convey
+                                                                sentence-transformers/all-mpnet-base-v2).
+     key concepts
+                                                                The threshold θ = 0.7 balances precision
+  For equations (τi = equation):                                (avoiding spurious edges) and recall (captur-
+                                                                ing true semantic relationships).
+  1. Extract any accompanying description or in-
+                                                             Edge priority: When multiple edge types could
+     line explanation
+                                                          connect the same unit pair, prioritize: EREF >
+  2. If no description exists, describe the equation      EDEP > EREL . This ensures explicit dependencies
+     type (e.g., “optimization objective”, “proba-        take precedence over semantic relationships.
+     bility distribution”)
+                                                          B     LEDGER aided Document Editing
+  3. Target length: 20-40 tokens                                Examples
+                                                          B.1    Example Task: Revising a Theorem
+  Output format: Return summary si as a coher-
+                                                                 Statement with Cascading Updates
+ent text string. The embedding ei = Embed(si ) is
+computed from this summary.                               Task Description: Revise Theorem 2 in Section
+  Semantic edge creation: After computing em-             3.2 by tightening the revenue bound from O(log n)
+beddings for all units, create edge (vi , vj , RELATED)   to O(1), ensuring all dependent sections remain
+when:                                                     consistent with the updated statement.
+                                                             Document Context: A 10,000-token academic
+                       e ·e
+   • sim(ei , ej ) = ∥ei i∥∥ejj ∥ > θ where θ = 0.7       paper on dynamic pricing for hotel room alloca-
+                                                          tion, containing 7 sections with multiple cross-
+                / EREF ∪ EDEP (not already connected
+   • (vi , vj ) ∈                                         references between theoretical results, algorithm
+     by explicit or implicit dependency)                  descriptions, case study validation, and discussion.
+
+  Example:                                                B.1.1 Dependency Graph Construction
+                                                          LEDGER constructs a semantic graph identifying
+   • Input (section): “This section introduces our        three types of dependencies:
+     novel attention mechanism. We propose a
+     multi-head cross-attention layer that attends to     Explicit References:
+     both encoder and decoder states. Experiments
+                                                              • Theorem 2 (Section 3.2) ← cited by [Section
+     show significant improvements over baseline
+                                                                4.para1, Section 5.para2, Section 6.para1]
+     transformers.”
+                                                              • Lemma 1 (Section 3.1) ← cited by [Section
+   • Output: “Novel attention mechanism using                   3.2.para2, Section 4.para2]
+     multi-head cross-attention over encoder and
+     decoder states, improving transformer perfor-            • Equation (5) (Section 2.2) ← cited by [Section
+     mance.” (18 tokens)                                        3.1.proof, Section 4.para3, Section 5.para3]
+                                                      10628
+Implicit References:                                      • Section 4.para3:     Update reference to
+                                                            “constant-gap guarantee specified in Theorem
+  • “the optimality guarantee” (Section 4.para1)            2”
+    → Theorem 2
+                                                          • Section 5.para2: Replace “O(log n) bound”
+  • “our main theorem” (Section 5.para2) → The-             with “O(1) bound”
+    orem 2
+                                                          • Section 6.para1: Insert “preserving the con-
+  • “this bound” (Section 3.2.proof.para2) →                stant additive gap”
+    Lemma 1
+                                                     B.1.3 Efficiency Analysis
+Semantic Dependencies:                               Token Utilization:
+  • Section 4.para1 builds_on Theorem 2 (algo-            • Total document: 10,000 tokens
+    rithmic extension)
+                                                          • Retrieved context: ∼1,200 tokens (12% of
+  • Section 5.para2 validates Theorem 2 (em-                document)
+    pirical confirmation)
+                                                               – Theorem 2 statement and proof
+  • Section 6.para1 extends Theorem 2 (multi-                  – Explicit dependencies: [4.para1, 4.para3,
+    hotel generalization)                                        5.para2, 6.para1]
+B.1.2 Edit Execution with Dependency                           – Implicit reference text
+      Tracking                                            • Processing overhead: 7 targeted paragraph
+LEDGER identifies that modifying Theorem 2                  replacements
+triggers the critical dependency rule: If Theo-
+rem 2 changes → MUST verify [4.para1, 5.para2,       Comparison to Baseline Approaches:
+6.para1]. The agent executes targeted edits in de-
+                                                          • Full document rewrite: Would require pro-
+pendency order:
+                                                            cessing all 10,000 tokens, with risk of intro-
+Step 1: Update Theorem 2 statement (Section                 ducing inconsistencies in unrelated sections
+3.2)
+                                                          • Local edit without dependency tracking:
+    Original: “...within O(log n) of the op-                Would update Theorem 2 but miss the 6 de-
+    timal offline benchmark”                                pendent references, breaking document con-
+    Revised: “...within O(1) of the optimal                 sistency
+    offline benchmark”
+                                                          • LEDGER approach: Processes 12% of doc-
+Step 2: Update proof outline to align with new              ument tokens while maintaining global con-
+bound                                                       sistency through explicit dependency tracking
+
+    Original: “Combining these bounds                B.1.4 Consistency Verification
+    across n periods and applying harmonic           LEDGER ensures consistency across multiple di-
+    series properties yields the O(log n)            mensions:
+    gap”
+    Revised: “...we charge each deviation to              1. Referential Integrity: All explicit citations
+    a constant decrease in a suitable potential              to Theorem 2 now correctly describe the O(1)
+    function, implying only O(1) total loss”                 bound
+
+Steps 3–7: Propagate to dependent sections                2. Semantic Coherence: Algorithm design and
+                                                             case study sections align with the tightened
+  • Section 3.2 proof paragraph: Update to                   theoretical guarantee
+    “horizon-independent constant bound”
+                                                          3. Proof Validity: Proof outline mecha-
+  • Section 4.para1: Change “optimality guaran-              nism (potential-based charging) supports the
+    tee” to “constant-gap optimality guarantee”              stronger constant bound
+                                                  10629
+    4. Terminology Consistency: Uniform use of                 is computed as the percentage of semantic de-
+       “constant additive gap” and “O(1) bound”                pendencies correctly identified through graph
+       throughout dependent sections                           edges.
+
+  The edit preserves document flow while imple-             Efficiency Metrics:
+menting a substantial theoretical improvement that
+cascades through algorithm description, empirical           • Token Efficiency: Measures the ratio of to-
+validation, and discussion sections—demonstrating             kens retrieved for an edit operation to the to-
+LEDGER’s capability to maintain consistency in                tal document size. An efficient system re-
+complex, interconnected technical documents.                  trieves only the minimal context necessary
+                                                              for consistency. This metric is computed
+C     Evaluation Metrics and Examples                         as: Token Efficiency = TotalTokens Retrieved
+                                                                                            Document Tokens ×
+                                                              100%. Lower percentages indicate higher ef-
+This appendix provides formal definitions of the
+                                                              ficiency, with typical values ranging from 10
+evaluation metrics used to assess LEDGER per-
+                                                              to 15% for LEDGER versus 100% for full
+formance, along with concrete examples from our
+                                                              document approaches.
+benchmark dataset illustrating how each metric is
+evaluated.
+                                                            Quality Metrics:
+C.1 Metric Definitions
+                                                            • Reference Validity: Measures whether all
+We evaluate system performance across seven com-              explicit references (section numbers, figure
+plementary metrics organized into three categories:           citations, table references) remain correct after
+dependency awareness, efficiency, and quality.                an edit operation. This metric is computed
+   Dependency Awareness Metrics:                              as the percentage of explicit references that
+                                                              correctly resolve to their intended targets after
+    • Dependency Detection (Explicit): Measures
+                                                              modifications. A broken reference (e.g., citing
+      whether the system correctly identifies all ex-
+                                                              “Figure 3” when only Figures 1 and 2 exist)
+      plicit references in the document, including
+                                                              constitutes a failure.
+      section citations (“Section 3.2”), figure refer-
+      ences (“Figure 1”), table references (“Table          • Consistency Preservation:          Measures
+      2”), equation citations (“Equation (1)”), and           whether edits maintain semantic coherence
+      algorithm references (“Algorithm 1”). This              with dependent content.       This includes
+      metric is computed as the percentage of ex-             verifying that implicit references remain
+      plicit references correctly identified and in-          meaningful, terminology changes propagate
+      cluded in the retrieved context.                        to dependent sections, and semantic relation-
+                                                              ships remain valid. This metric is computed
+    • Dependency Detection (Implicit): Measures
+                                                              as the percentage of dependent elements that
+      whether the system correctly resolves im-
+                                                              remain consistent with the edited content.
+      plicit references such as anaphoric expres-
+      sions (“this approach”, “the metric”, “these
+                                                            • Edit Quality: Measures whether the edit cor-
+      results”) and contextual references (“the pre-
+                                                              rectly addresses the instruction while main-
+      ceding computation”, “as described earlier”).
+                                                              taining appropriate style, clarity, and factual
+      This metric is computed as the percentage of
+                                                              accuracy. This metric is computed through
+      implicit references correctly resolved to their
+                                                              comparison with gold standard human edits,
+      referents.
+                                                              assessing whether the modification achieves
+    • Dependency Detection (Semantic): Mea-                   the stated goal without introducing errors or
+      sures whether the system recognizes seman-              unintended changes.
+      tic relationships between document elements
+      that lack explicit citations, such as concep-      C.2    Evaluation Examples
+      tual dependencies (one section building on         We present three representative examples from our
+      another), comparisons (contrasting methods),       benchmark dataset to illustrate how these metrics
+      and synthesis (combining results). This metric     are applied in practice.
+                                                    10630
+C.2.1   Example 1: Local Paragraph                       ists. Pass criterion: All explicit references remain
+        Refinement                                       valid.
+  Scenario: Academic paper (12K tokens) with                Consistency Preservation: Updated paragraph
+  6 sections. Edit instruction: “Improve the             must maintain coherence with the implicit refer-
+  clarity of the second paragraph in Section 4.1         ence “the metric” and align with the memory over-
+  (Limitations) by presenting a more balanced            head discussion in Section 5 paragraph 2. Pass
+  discussion of memory overhead and suggest-             criterion: No semantic contradictions introduced.
+  ing potential mitigation strategies.”                     Edit Quality: Paragraph provides balanced dis-
+     Document Structure:                                 cussion of memory overhead, adds at least one con-
+                                                         crete mitigation strategy (e.g., “implementing lazy
+      • Explicit references: Figure 2 cited in 4         loading of intermediate matrices”), and improves
+        locations; Definition “token efficiency”         clarity without altering factual content. Pass crite-
+        cited in 2 locations; Algorithm 1 cited in       rion: Instruction requirements satisfied, no factual
+        3 locations                                      errors.
+      • Implicit references: “the metric” in Sec-        C.2.2    Example 2: Content Addition with
+        tion 4.1 refers to Definition “token effi-                Dependencies
+        ciency”
+                                                             Scenario: Technical document (5K tokens)
+      • Semantic dependencies: Section 4.1                   explaining credit risk calculations. Edit in-
+        builds on Algorithm 1; Section 5 syn-                struction: “Insert a concrete example illustrat-
+        thesizes findings from Section 4                     ing the Probability of Default (PD) component
+                                                             of the Expected Credit Loss calculation at the
+   Metric Evaluation:                                        end of the second paragraph of Section 3.1.”
+   Dependency Detection (Explicit): System must                 Document Structure:
+identify that Figure 2 appears in paragraphs 1.3,
+3.2.2, 4.1, and 5.2; Algorithm 1 appears in sections            • Explicit references: Figure 2 cited in
+2.2 and 4.1; Definition “token efficiency” appears                Overview, Section 3.1, Section 4.1, Sec-
+in sections 3.1 and 4.1. Pass criterion: All 5 ex-                tion 6; Equation (1) in Section 3.1
+plicit reference types correctly identified.                    • Implicit references: “the preceding com-
+   Dependency Detection (Implicit): System must                   putation” in Section 3.2 refers to Equa-
+resolve that “the metric” in Section 4.1 paragraph                tion (1)
+2 refers to Definition “token efficiency” in Section
+3.1, requiring coreference resolution across sec-               • Semantic dependencies: Section 6 com-
+tions. Pass criterion: Implicit reference correctly               pares Section 3 methodology with legacy
+resolved and included in context.                                 approaches
+   Dependency Detection (Semantic): System must
+recognize that Section 4 paragraph 1 semantically            Metric Evaluation:
+compares baseline methods with the Local Refine-             Dependency Detection (Explicit): System iden-
+ment Module from Section 3.2, despite no explicit        tifies explicit references to Figure 2 in 4 locations,
+citation. Pass criterion: Semantic comparison re-        Table 1 in 3 locations, Equation (1) in Section 3.1,
+lationship detected.                                     and Definition PD in Section 2.2. Pass criterion:
+   Token Efficiency: System should retrieve: Sec-        All explicit references in relevant sections identi-
+tion 4.1 second paragraph (target, 150 tokens) +         fied.
+Definition “token efficiency” (80 tokens) + Algo-            Dependency Detection (Implicit): System re-
+rithm 1 (200 tokens) + Figure 2 caption (70 tokens)      solves that “the preceding computation” in Section
++ Table 1 caption (50 tokens) = approximately 550        3.2 paragraph 2 refers to Equation (1) in Section
+tokens. Pass criterion: Retrieved tokens ≤ 1,500         3.1, ensuring the new example aligns with this im-
+tokens (12.5% of 12K document).                          plicit reference. Pass criterion: Implicit reference
+   Reference Validity: After refinement, all explicit    correctly resolved.
+references in Section 4.1 paragraph 2 must cor-              Dependency Detection (Semantic): System rec-
+rectly resolve: Algorithm 1 still exists, Definition     ognizes that Section 6 paragraph 2 semantically
+“token efficiency” still exists, Section 3.1 still ex-   compares Section 3 methodology with legacy
+                                                     10631
+spreadsheet approaches, despite no explicit cita-                previous signature” in Section 6 refers to
+tions. The new example may affect this comparison.               old parameter names
+Pass criterion: Semantic comparison relationship
+                                                               • Semantic dependencies: Listing 3 builds
+detected.
+                                                                 on authentication flow; Section 5 com-
+   Token Efficiency: System should retrieve: Sec-
+                                                                 pares reserveRoom vs cancelBooking
+tion 3.1 all paragraphs (300 tokens) + Definition
+PD from Section 2.2 (50 tokens) + Table 1 (60 to-           Metric Evaluation:
+kens) + Equation (1) (40 tokens) + Figure 2 caption         Dependency Detection (Explicit): System identi-
+(50 tokens) = approximately 500 tokens. Pass cri-        fies all explicit references: Figure 1 in sections 1.2,
+terion: Retrieved tokens < 10% of 5K document            3.1, and 4.1; Endpoint “/api/v1/reserveRoom” in
+(500 tokens).                                            Listings 2, 3, and Section 5.1; Table 1 in sections
+   Reference Validity: All explicit references (Fig-     2.2, 4.1.3, and 4.2.4. Pass criterion: All explicit
+ure 2, Table 1, Equation (1), Definition PD, Section     references to endpoint and parameters identified.
+2.2) must remain valid after inserting the new ex-          Dependency Detection (Implicit): System re-
+ample. No renumbering should be triggered. Pass          solves: “this endpoint” in Section 4.1 paragraph
+criterion: All explicit references still resolve cor-    2 refers to Section 3.2 reserveRoom definition;
+rectly.                                                  “these examples” in Section 5 paragraph 2 refers to
+   Consistency Preservation: The implicit refer-         Listings 2 and 3; “the previous signature” in Sec-
+ence “the preceding computation” in Section 3.2          tion 6 paragraph 1 refers to reserveRoom(hotelId,
+and semantic comparisons in Section 6 remain ac-         guestInfo). Pass criterion: All implicit references
+curate after example insertion. The new content          correctly resolved.
+must not contradict existing methodology descrip-           Dependency Detection (Semantic): System in-
+tions. Pass criterion: No contradictions with im-        fers: Listing 3 builds on authentication flow from
+plicit or semantic dependencies.                         Section 4.2; Section 5 paragraph 3 compares re-
+   Edit Quality: The inserted example clearly            serveRoom versus cancelBooking semantically;
+demonstrates PD calculation using a simple nu-           Section 4.1 paragraph 3 synthesizes Table 1 with
+merical scenario (e.g., “For a borrower with credit      Listing 2 output. Pass criterion: Semantic depen-
+score 650 and debt ratio 0.4, the estimated PD is        dencies identified.
+2.3%”), is positioned correctly after Section 3.1           Token Efficiency: System should retrieve: Sec-
+paragraph 2, and uses consistent terminology. Pass       tion 3.2 endpoint definition (200 tokens) + Listings
+criterion: Example is clear, concrete, and properly      2 and 3 (400 tokens each) + all paragraphs ref-
+positioned.                                              erencing endpoint or parameters (600 tokens) +
+                                                         changelog line (50 tokens) = approximately 1,650
+C.2.3   Example 3: Cross-Reference Update
+                                                         tokens. Pass criterion: Retrieved tokens < 10%
+  Scenario: API documentation (20K to-                   of 20K document (2,000 tokens).
+  kens) with code examples. Edit instruc-                   Reference Validity: After updating parameter
+  tion: “Update the signature of the reserve-            names from camelCase to snake_case, all explicit
+  Room endpoint in Section 3.2 from re-                  references must still resolve correctly: Figure 1
+  serveRoom(hotelId, guestInfo) to reserve-              references unchanged, endpoint path unchanged,
+  Room(hotel_id, guest_profile) and make sure            listing citations unchanged. Pass criterion: All
+  every code example and reference throughout            explicit references remain valid.
+  the document is updated consistently.”                    Consistency Preservation: Implicit references
+     Document Structure:                                 (“this endpoint”, “the previous signature”) and se-
+                                                         mantic comparisons remain meaningful after pa-
+     • Explicit references: Figure 1 cited in 3 lo-
+                                                         rameter name changes. Text referring to “hotelId”
+       cations; Endpoint “/api/v1/reserveRoom”
+                                                         must be updated to “hotel_id” throughout. Pass
+       in 3 code listings; Listings 2 and 3 cited
+                                                         criterion: Terminology changes propagated to all
+       in 2 locations
+                                                         dependent text.
+     • Implicit references: “this endpoint” in              Edit Quality: reserveRoom signature updated in
+       Section 4.1 refers to Section 3.2; “the           definition and all code examples (Listings 2, 3, and
+                                                         inline examples); code compiles without errors;
+                                                         explanatory text aligns with new parameter names
+                                                      10632
+using snake_case convention consistently. Pass          D     Benchmark Construction
+criterion: All occurrences updated, code valid,
+terminology consistent.                                 We construct a comprehensive benchmark to evalu-
+                                                        ate consistency preservation, efficiency, and scala-
+                                                        bility in agentic document editing. This appendix
+C.3 Metric Computation                                  describes the test scenario taxonomy, document
+For each test case, we compute metrics through          generation process, and evaluation framework.
+automated validation:
+                                                        D.1     Benchmark Overview
+   Dependency Detection Metrics: We program-
+matically compare the set of dependencies identi-       Our benchmark comprises 1,900 test cases span-
+fied by the system against the ground truth depen-      ning seven categories of editing operations, de-
+dency annotations in each test case. For explicit       signed to systematically evaluate agent perfor-
+references, we extract all citations using pattern      mance across diverse document structures, edit
+matching (e.g., “Figure \d+”, “Section \d+.\d+”).       complexities, and document sizes. Each test case
+For implicit references, we verify that anaphoric ex-   consists of: (1) a source document with explicit
+pressions resolve to the correct antecedents through    structure and dependencies, (2) a natural language
+coreference chains. For semantic dependencies,          editing instruction, (3) ground-truth expected modi-
+we check that the graph contains edges represent-       fications, and (4) validation criteria for consistency,
+ing conceptual relationships marked in the ground       quality, and efficiency.
+truth.                                                     The benchmark is designed around the core chal-
+   Token Efficiency: We measure the total number        lenges of document editing identified in Section 1:
+of tokens in the context provided to the model for      maintaining cross-references during modifications,
+each edit operation and compute the ratio to total      preserving semantic consistency across dependent
+document size. This is measured directly through        sections, and scaling efficiently with document
+tokenization of the retrieved content.                  size. Test cases range from localized refinements
+                                                        with minimal dependencies to structural reorga-
+   Reference Validity: We parse the edited doc-
+                                                        nizations requiring global updates, enabling fine-
+ument to extract all explicit references and verify
+                                                        grained analysis of system capabilities.
+that each reference target exists in the updated doc-
+ument. For example, a citation to “Figure 3” must       D.2     Test Scenario Taxonomy
+correspond to an actual figure with that identifier.
+References are validated through programmatic           We organize test scenarios into seven categories,
+document structure analysis.                            each targeting specific aspects of dependency-
+                                                        aware editing.
+   Consistency Preservation: We check that im-
+plicit references remain resolvable and that termi-     D.2.1    Category 1: Local Refinement Edits
+nology changes propagate correctly. For example,
+                                                        Local refinements modify specific paragraphs or
+if a definition is modified, we verify that depen-
+                                                        sections with minimal cross-document dependen-
+dent sections using that term are also updated. We
+                                                        cies. These scenarios evaluate whether systems
+also check semantic coherence by comparing em-
+                                                        can apply targeted improvements without unneces-
+beddings of related sections to ensure similarity
+                                                        sary context retrieval or unintended modifications
+remains above threshold θ = 0.7.
+                                                        to unrelated content.
+   Edit Quality: For a subset of 200 test cases,        Subcategories:
+we compare system outputs against gold standard
+human edits. We assess whether the modification             • Paragraph and section refinement (120
+achieves the instruction goal, maintains appropri-            cases): Instructions targeting clarity improve-
+ate style and tone, preserves factual accuracy, and           ments, argument strengthening, or content
+introduces no unintended changes. Quality scores              simplification within localized scope. Exam-
+are aggregated across these dimensions.                       ples include “Improve the clarity of the sec-
+   Final scores for each metric represent the per-            ond paragraph in Section 3.2” and “Make the
+centage of test cases that meet the pass criterion,           proof in Section 4.1 more concise while pre-
+averaged across all applicable test cases and mod-            serving logical steps.” These test the system’s
+els.                                                          ability to retrieve minimal context (target para-
+                                                   10633
+     graph plus containing section) while avoiding           (paragraphs relying on the definition without
+     unnecessary full-document processing.                   citation).
+
+   • Local content enhancement (80 cases):                  • API and code example updates (60 cases):
+     Adding examples, definitions, or explanatory             Changing function signatures, parameter
+     text within sections. Examples include “Add              names, or code structures used in mul-
+     a concrete example demonstrating the algo-               tiple examples. Example: “Update the
+     rithm after its description in Section 3.1” and          reserveRoom endpoint signature from re-
+     “Insert a worked example illustrating the cal-           serveRoom(hotelId, guestInfo) to reserve-
+     culation process.” These test whether systems            Room(hotel_id, guest_profile) throughout all
+     can identify the appropriate insertion point             code examples.” Tests tracking of both ex-
+     and maintain local coherence without disrupt-            plicit code references and implicit dependen-
+     ing document structure.                                  cies where examples build on earlier code.
+   • Error correction (60 cases): Fixing typos,             • Theorem and mathematical content up-
+     incorrect values, broken references, or out-             dates (50 cases): Modifying theorems, lem-
+     dated information. Examples include “Fix the             mas, or equations referenced in proofs or
+     typo in the third paragraph of Section 2.1” and          derivations. Example: “Revise Theorem 2’s
+     “Correct the incorrect parameter value in the            bound from O(n log n) to O(n) and verify
+     code example.” These test precision in locat-            dependent proofs remain valid.” Tests math-
+     ing and modifying specific elements without              ematical dependency tracking and semantic
+     introducing unintended changes.                          coherence validation.
+Expected behavior: Systems should retrieve only
+                                                            • Citation and bibliography updates
+the target section and immediate structural context,
+                                                              (40 cases): Modifying citation formats,
+typically 200-800 tokens. Consistency require-
+                                                              adding/removing references, or updating
+ments are minimal since dependencies are local.
+                                                              bibliography entries. Example: “Change all
+Token efficiency is the primary evaluation focus.
+                                                              citations to use APA format instead of ACM
+D.2.2   Category 2: Cross-Reference                           format.” Tests systematic updates across
+        Dependent Edits                                       the document while maintaining reference
+Cross-reference edits modify content that is refer-           integrity.
+enced by or depends on multiple other sections,
+                                                         Expected behavior: Systems should identify
+requiring the system to identify and update all de-
+                                                         all sections containing explicit references (via
+pendent locations.
+                                                         REFERENCES edges), implicit dependencies (via
+Subcategories:
+                                                         DEPENDS edges), and semantically related content
+   • Figure and table caption updates (80 cases):        (via RELATED edges). Context retrieval should be
+     Modifying captions for elements referenced          proportional to the number of dependencies (typi-
+     throughout the document. Example: “Update           cally 800-2,000 tokens for elements with 4-6 ref-
+     Figure 3’s caption to clarify the x-axis label”     erences). Consistency preservation is the primary
+     where Figure 3 appears in 4-6 sections. Tests       evaluation focus.
+     whether the system identifies all referencing
+                                                         D.2.3   Category 3: Structural Reorganization
+     sections and includes them in context to verify
+     descriptions remain accurate.                       Structural reorganizations involve section reorder-
+                                                         ing, merging, splitting, or hierarchy changes that
+   • Definition and terminology changes (70              require updating all cross-references and maintain-
+     cases): Revising definitions or changing ter-       ing document coherence.
+     minology used consistently across the docu-         Subcategories:
+     ment. Example: “Revise the definition of ’to-
+     ken efficiency’ in Section 2.1 to add precision”       • Section reordering (60 cases): Moving sec-
+     where the term appears in 5-8 locations. Tests           tions to different positions while updating
+     both explicit reference tracking (e.g., “see Sec-        numbering and cross-references. Example:
+     tion 2.1 for the definition”) and implicit usage         “Move Section 5 to appear before Section 3”
+                                                    10634
+     requires updating all references like “as de-         • New subsection addition (40 cases): Adding
+     scribed in Section 5” and renumbering subse-            complete subsections that extend existing sec-
+     quent sections. Tests whether systems track             tions. Example: “Insert a new subsection
+     both forward and backward references.                   comparing the proposed approach with the
+                                                             baseline method after Section 4.1” requires
+   • Section merging and splitting (50 cases):
+                                                             understanding both approaches and maintain-
+     Combining or dividing sections while main-
+                                                             ing consistent comparison criteria.
+     taining hierarchy. Example: “Split Section 4
+     into two sections: ’Methodology Overview’             • Cross-cutting content addition (20 cases):
+     and ’Implementation Details”’ requires up-              Adding content that synthesizes or references
+     dating section numbers, redistributing subsec-          multiple existing sections. Example: “Add
+     tions, and adjusting cross-references. Tests            a paragraph synthesizing findings from Sec-
+     hierarchical consistency maintenance.                   tions 3, 4, and 5 at the beginning of Section 6”
+                                                             requires retrieving context from all referenced
+   • Section deletion and addition (30 cases): Re-
+                                                             sections and maintaining semantic coherence.
+     moving or inserting sections while updating
+     references. Example: “Delete Section 3.2           Expected behavior: Systems should retrieve all
+     and merge its content into Section 3.1” re-        sections referenced in the instruction plus semanti-
+     quires identifying all references to 3.2, updat-   cally related content to ensure stylistic and termino-
+     ing them to reference 3.1, and renumbering         logical consistency. Context retrieval should scale
+     subsequent subsections. Tests dangling refer-      with the number of sections involved (800-1,800
+     ence detection.                                    tokens). Coherence with existing content is the
+   • Hierarchy restructuring (20 cases): Chang-         primary evaluation focus.
+     ing nesting levels and parent-child relation-      D.2.5    Category 5: Multi-Round Iterative
+     ships. Example: “Promote all subsections of                 Editing
+     Section 4 to be top-level sections” requires
+                                                        Iterative editing scenarios simulate realistic collab-
+     restructuring the containment hierarchy and
+                                                        orative writing workflows with sequences of 3-5
+     updating all hierarchical references. Tests
+                                                        dependent edits, where each edit builds on previous
+     CONTAINS edge maintenance.
+                                                        modifications.
+Expected behavior: Systems should retrieve the          Subcategories:
+entire structural hierarchy affected by the reorga-
+nization, including all sections with references to        • Sequential refinement workflow (40 cases):
+moved/modified sections. Token usage varies sig-             Progressive refinements to improve content
+nificantly (1,500-4,000 tokens) based on reorgani-           quality. Example: Three-step sequence: (1)
+zation scope. Both structural integrity and refer-           “Revise Section 3.2 to emphasize the key con-
+ence validity are critical evaluation dimensions.            tribution,” (2) “Add supporting experimen-
+                                                             tal evidence after the revised paragraph,” (3)
+D.2.4   Category 4: Content Addition with                    “Strengthen connections between Section 3.2
+        Integration                                          and the results in Section 5.” Tests whether the
+Content addition scenarios require inserting new             graph updates incrementally and subsequent
+material that integrates coherently with existing            edits have access to previous modifications.
+structure, maintaining appropriate cross-references
+and dependencies.                                          • Iterative restructuring workflow (35 cases):
+Subcategories:                                               Multiple structural changes building on each
+                                                             other. Example: Three-step sequence: (1)
+   • Example and illustration addition (60                   “Move Section 4 earlier,” (2) “Merge it with
+     cases): Inserting examples, case studies, or            Section 2,” (3) “Add new content to the
+     visual elements that reference existing con-            merged section.” Tests incremental graph
+     tent. Example: “Add a detailed walkthrough              updates and consistency maintenance across
+     example demonstrating the three-phase work-             multiple structural operations.
+     flow described in Section 2” requires under-
+     standing the workflow definition and creating         • Content development workflow (35 cases):
+     consistent terminology and structure.                   Incremental content addition across sections.
+                                                   10635
+     Example: Three-step sequence: (1) “Add a           demonstrating O(1) rather than O(|D|) behav-
+     definition of ’context efficiency’ in Section      ior. This validates the core efficiency claim that
+     2,” (2) “Add an example using this definition      dependency-aware retrieval enables scalable edit-
+     in Section 3,” (3) “Reference both the defi-       ing.
+     nition and example when discussing results
+                                                        D.2.7    Category 7: Consistency Critical
+     in Section 5.” Tests dependency creation and
+                                                                 Scenarios
+     tracking across editing rounds.
+                                                        Consistency-critical scenarios are designed as
+   • Complete revision workflow (50 cases):             pass/fail tests where any consistency violation (bro-
+     End-to-end revision cycles combining mul-          ken reference, terminology mismatch, semantic
+     tiple edit types. Example: Four-step sequence:     contradiction) constitutes failure.
+     (1) “Revise the introduction,” (2) “Update Fig-    Subcategories:
+     ure 2’s caption,” (3) “Strengthen the argument
+     in Section 4,” (4) “Reorganize section order.”        • Cascading reference updates (50 cases): Ed-
+     Tests sustained consistency over complex edit-          its that should trigger automatic updates in
+     ing workflows.                                          all dependent locations. Example: “Rename
+                                                             Section 4 to ’Experimental Methodology’ ”
+Expected behavior: Systems must update the de-               should update all references like “see Section
+pendency graph after each edit and use the updated           4” or “as described in the Methods section.”
+graph for subsequent operations. Token usage                 Failure modes include: missing references,
+should remain constant per edit even as document             partially updated references, or broken cross-
+state evolves. Overall consistency across the edit-          reference links.
+ing sequence is the primary evaluation focus.
+                                                           • Dependency chain edits (30 cases): Modi-
+D.2.6 Category 6: Scalability Test Scenarios                 fications to foundational content that affects
+Scalability scenarios apply identical editing oper-          derived content. Example: “Modify the defi-
+ations to documents of varying lengths (5K, 10K,             nition of ’retrieval precision’ in Section 2 to
+20K, 50K, 100K tokens) to test whether token us-             include a threshold parameter” should propa-
+age remains constant as document size increases.             gate to all calculations, examples, and results
+Test configurations:                                         using this metric. Failure modes include: or-
+                                                             phaned dependencies, inconsistent terminol-
+   • Local edits across sizes (20 operations × 5
+                                                             ogy, or contradictory statements.
+     sizes = 100 cases): Simple refinements like
+     “Improve clarity of a paragraph in Section 3.2.”      • Structural integrity tests (40 cases): Reor-
+     Expected token usage should remain constant             ganizations that could violate hierarchy if not
+     ( 500 tokens) regardless of document size.              handled correctly. Example: “Delete Section
+   • Cross-reference edits across sizes (10 oper-            3 which contains subsections 3.1, 3.2, 3.3”
+     ations × 5 sizes = 50 cases): Dependency-               should properly handle the child sections (ei-
+     heavy edits like “Update Figure 3’s caption”            ther delete them or promote them). Failure
+     where the figure is referenced in 4-6 sections          modes include: orphaned subsections, broken
+     (constant across document sizes). Expected              containment relationships, or incorrect section
+     token usage should remain constant ( 1,500 to-          numbering.
+     kens) even though total document size varies       Expected behavior: Systems must achieve 100%
+     by 20×.                                            consistency on these test cases. Any broken refer-
+                                                        ence, terminology inconsistency, or structural vio-
+   • Structural edits across sizes (10 operations
+                                                        lation is considered a failure. These cases validate
+     × 5 sizes = 50 cases): Reorganizations like
+                                                        the reliability of dependency tracking and consis-
+     “Move Section 5 to appear before Section 3.”
+                                                        tency verification mechanisms.
+     Expected token usage should scale sublinearly,
+     retrieving only affected sections rather than      D.3     Document Generation Process
+     the entire document.
+                                                        We generate synthetic documents with controlled
+Expected behavior: Token usage should remain            structure and dependencies to enable systematic
+constant or scale sublinearly with document size,       evaluation.
+                                                   10636
+Document structure: Each document follows a            Category               Cases   Avg. Deps   Avg. Tokens
+hierarchical structure with 5-12 top-level sections,   Local Refinement        260          1.2           650
+2-5 subsections per section, and 3-8 paragraphs        Cross-Reference         300          5.8         1,520
+                                                       Structural Reorg.       160          8.4         2,350
+per subsection. Documents include structural ele-      Content Addition        120          3.6           980
+ments (sections, paragraphs), referenced elements      Iterative Editing       160          4.2         1,180
+(figures, tables, equations), and semantic content     Scalability Tests       780          2-6     500-2,800
+                                                       Consistency Critical    120          6.5         1,640
+(definitions, examples, proofs). We ensure con-
+trolled dependency density: each figure/table is       Total / Average        1,900         4.7         1,380
+referenced by 4-6 paragraphs, each definition is
+                                                       Table 6: Benchmark statistics. “Avg. Deps” indicates
+used in 5-8 locations, and each theorem is cited by    average number of dependency edges per target element.
+2-4 dependent results.                                 “Avg. Tokens” indicates expected context size for opti-
+Size variations: We generate five document size        mal retrieval. Scalability tests span multiple document
+categories by varying content length while main-       sizes, hence the range.
+taining consistent structural complexity:
+   • Small (5K tokens): 5 sections, 15 subsec-         Dependency complexity distribution: 35% of
+     tions, 60 paragraphs                              test cases involve localized edits with ≤2 depen-
+   • Medium (10K tokens): 7 sections, 21 sub-          dencies (testing efficiency), 45% involve moderate
+     sections, 100 paragraphs                          dependencies with 3-8 dependent sections (test-
+                                                       ing consistency), and 20% involve high-complexity
+   • Large (20K tokens): 9 sections, 30 subsec-        scenarios with >8 dependencies or structural re-
+     tions, 150 paragraphs                             organizations (testing scalability and robustness).
+                                                       This distribution ensures comprehensive coverage
+   • Very large (50K tokens): 11 sections, 40
+                                                       of real-world editing complexity.
+     subsections, 250 paragraphs
+                                                       Document type distribution: Documents are
+   • Extreme (100K tokens): 12 sections, 50 sub-       evenly distributed across four domains to test gen-
+     sections, 400 paragraphs                          eralization: technical reports (25%, emphasis on
+Dependency injection: We programmatically in-          figures and algorithms), research papers (25%, em-
+ject dependencies during document generation to        phasis on theorems and proofs), API documenta-
+ensure reproducibility. Explicit references are in-    tion (25%, emphasis on code examples and spec-
+serted using templates (“as shown in Figure X”,        ifications), and policy documents (25%, empha-
+“see Section Y”). Implicit dependencies are cre-       sis on cross-referencing and hierarchical structure).
+ated through pronoun chains and contextual ref-        Domain diversity ensures the evaluation does not
+erences (“This approach...”, “The aforementioned       overfit to specific document styles.
+method...”). Semantic relationships emerge from
+                                                       D.5   Evaluation Protocol
+topical coherence within sections and subsections
+discussing related concepts.                           For each test case, we measure four dimensions
+Ground truth: For each test case, we generate          aligned with our optimization objectives (Sec-
+ground-truth expected modifications by applying        tion 3):
+the edit operation programmatically to the docu-       1. Consistency preservation: We compute three
+ment structure. For reference-updating edits, we       sub-metrics: (a) Reference validity checks whether
+identify all affected locations through dependency     all cross-references resolve correctly after edits
+analysis. For structural reorganizations, we re-       (e.g., “see Section 4” still points to an existing Sec-
+compute section numbering and update all cross-        tion 4), (b) Terminology consistency verifies that
+references. For content additions, we specify inser-   all usages of modified terms or definitions remain
+tion points and expected integration patterns. This    aligned, and (c) Semantic coherence ensures no
+ground truth enables automated evaluation metrics      contradictions are introduced between dependent
+described below.                                       sections. Consistency is measured as the percent-
+                                                       age of test cases where all three sub-metrics pass.
+D.4 Benchmark Statistics                               2. Token efficiency: We measure tokens per edit as
+Table 6 summarizes the distribution of test cases      the sum of input context tokens (document content
+across categories and complexity levels.               provided to the LLM) and output tokens (generated
+                                                  10637
+modifications). For scalability tests, we addition-      E.1   Method Comparison: Context and
+ally compute the scaling coefficient by fitting token          Structural Awareness
+usage as a function of document size and verifying
+                                                         Table 7 characterizes each method along three di-
+it approaches O(1) rather than O(|D|).
+                                                         mensions: the input context provided to the LLM
+3. Edit quality: We assess whether modifications         per edit, the output scope, and the degree of struc-
+correctly address the instruction using LLM-as-          tural dependency awareness. This clarifies the key
+judge evaluation. A subset of 200 test cases in-         architectural distinction between LEDGER and
+cludes human-annotated gold-standard edits for           retrieval-based baselines.
+validation. Quality is measured as the percentage
+                                                            The table highlights the progressive increase
+of test cases where the edit satisfies the instruction
+                                                         in structural awareness across methods. Full-
+without introducing errors.
+                                                         document and sliding-window approaches provide
+4. Overall pass rate: We compute the percent-            no structural guidance whatsoever. Flat RAG adds
+age of test cases passing all criteria (consistency,     semantic similarity but misses structural connec-
+efficiency within expected bounds, and quality),         tions (e.g., a citation to “Theorem 2” has no se-
+representing end-to-end system reliability.              mantic similarity signal). Hierarchical RAG cap-
+Automated validation: We implement program-              tures containment hierarchy but lacks the three
+matic validators for consistency metrics:                dependency-specific edge types. Claude+Memory
+                                                         tracks interaction state but not document struc-
+    • Reference validator: Parses all cross-             ture. LEDGER is the only method that explic-
+      references (“Section X”, “Figure Y”, “Theo-        itly represents all four dependency types, enabling
+      rem Z”) and verifies targets exist with correct    priority-based retrieval that places hard structural
+      identifiers                                        requirements (REFERENCES, DEPENDS) ahead
+                                                         of softer semantic context (RELATED).
+    • Terminology validator: Extracts key terms
+      from definitions and verifies consistent usage     E.2   Extended Baseline Comparison
+      across all mentions                                Table 8 extends the main comparison (Table 1)
+                                                         by adding three retrieval-based baselines: Slid-
+    • Hierarchy validator: Checks section num-           ing Window (fixed 4K token context window cen-
+      bering sequences, parent-child relationships,      tered on the target), RAG—Flat Semantic (top-k
+      and containment consistency                        chunks by cosine similarity, no structural aware-
+                                                         ness), Claude+Memory (interaction history with
+    • Semantic validator: Uses LLM-based en-             semantically retrieved chunks), and Hierarchical
+      tailment checking to detect contradictions be-     RAG (semantically similar chunks expanded to
+      tween dependent sections                           parent/sibling nodes via DOM tree containment,
+                                                         equivalent to activating only ECON in LEDGER).
+   These automated validators enable large-scale         All results are averages across six models.
+evaluation across 1,900 test cases while main-              Hierarchical RAG (63.47%) substantially out-
+taining reproducibility and consistency with hu-         performs Flat RAG (49.83%) and Full Docu-
+man judgments (validated on the 200-case human-          ment (56.59%), confirming that hierarchical struc-
+annotated subset with 94% agreement).                    ture helps. However, it remains 13.0 pp below
+                                                         LEDGER (76.48%), demonstrating that REFER-
+E    Additional Experimental Results                     ENCES and DEPENDS edges are essential beyond
+                                                         containment alone. The key distinction is typed
+This appendix provides four supplements: a qualita-      edges: Hierarchical RAG captures document hier-
+tive method comparison clarifying how each base-         archy but lacks (1) REFERENCES edges tracking
+line differs architecturally from LEDGER, quanti-        explicit citations, (2) DEPENDS edges encoding
+tative extended baseline results including Hierarchi-    implicit semantic prerequisites, and (3) priority-
+cal RAG, a progressive edge-type ablation tracing        based retrieval distinguishing structural necessity
+each edge type’s marginal contribution, and a re-        from semantic similarity. The remaining gap di-
+trieval weight sensitivity study across document         rectly quantifies the value of these additional de-
+sizes.                                                   pendency types.
+                                                    10638
+Method                    Input Context to LLM                            Output             Structural Awareness
+Full Document (Base- Entire document (5K–100K tokens)                     Targeted section   None — model must infer all dependen-
+line)                                                                     only               cies implicitly
+Sliding Window            Fixed 4K token window around target             Targeted section   None — proximity only
+                                                                          only
+RAG (Flat Semantic)       Top-k chunks by cosine similarity               Targeted section   None — semantic similarity only
+                                                                          only
+Hierarchical RAG          Semantically similar chunks + parent/child      Targeted section   CONTAINS hierarchy only; no typed
+                          nodes via DOM-tree expansion                    only               dependency edges
+Claude + Memory           Interaction history + semantically retrieved    Targeted section   Interaction-based; no structural graph
+                          chunks                                          only
+LEDGER (Ours)             Graph-traversed nodes via REFERENCES            Targeted section   4 typed edge types capturing explicit ci-
+                          + DEPENDS + CONTAINS + RELATED                  only               tations, implicit prerequisites, hierarchy,
+                          edges                                                              and semantics
+
+Table 7: Qualitative comparison of context selection strategies. All methods generate targeted edits (not full-
+document regeneration). The key distinction is typed structural awareness: only LEDGER explicitly tracks
+cross-references (REFERENCES), semantic prerequisites (DEPENDS), and hierarchical containment (CONTAINS)
+as first-class dependency types with priority-based retrieval.
+
+
+Method              Cons. Ref.V. Edit Q.         Pass        Tok.   ERENCES edges (+5.7 pp) provide the largest sin-
+                    (%)↑ (%)↑     (%)↑           (%)↑      /Edit↓   gle gain, reflecting the critical importance of ex-
+Sliding Window        44.21   50.18   52.34      31.47  ∼4K         plicit citation tracking. The cumulative 13.0 pp
+RAG (Flat Sem.)       49.83   55.62   58.77      35.21 ∼1.5K
+Full Doc. (Base.)     56.59   64.31   67.13      41.00 1,822
+                                                                    improvement over Hierarchical RAG confirms that
+Claude + Memory       58.34   62.47   64.21      43.18 ∼1.6K        all four edge types contribute independently.
+Hierarchical RAG      63.47   68.92   69.85      52.34 ∼1.7K
+LEDGER (Ours) 76.48           76.68   77.10      78.06     1,500    E.4   Retrieval Weight Sensitivity Across
+                                                                          Document Sizes
+Table 8: Extended baseline comparison averaged across
+                                                                    Table 10 examines robustness of the priority
+six models. Hierarchical RAG uses DOM-tree contain-
+ment (CONTAINS edges only); LEDGER adds typed                       weights used in Step 3 of the retrieval algorithm
+REFERENCES, DEPENDS, and RELATED edges.                             (Section 3.2) across document sizes of 5K, 50K,
+                                                                    and 100K tokens. Five weight configurations are
+                                                                    tested: the default (100/50/30/10), a uniformly
+E.3   Progressive Edge-Type Ablation                                scaled variant, two configurations boosting indi-
+                                                                    vidual edge types, and a degenerate uniform assign-
+Table 9 traces the marginal contribution of each
+                                                                    ment that destroys the priority ordering.
+edge type, starting from the Hierarchical RAG base-
+line (CONTAINS only) and progressively adding
+                                                                    Weight Config             Order Consistency (%) by Doc Size
+edge types in order of specificity.                                 (T / REF / DEP / REL)     Pres. 5K 50K            100K
+                                                                  100/50/30/10 (Default)        ✓      77.2   76.1          75.9
+Configuration       Edge Types           Cons. Ref.V.       Pass 10/5/3/1 (Scaled-down)         ✓      77.0   75.2          75.1
+                                         (%)↑ (%)↑          (%)↑ 100/80/30/10 (Boost REF)       ✓      76.3   76.2          76.0
+Hierarchical RAG    CON                  63.47     68.92    52.34 100/50/45/10 (Boost DEP)      ✓      77.1   76.0          75.8
++ Semantic edges    CON+REL              66.13     70.48    56.71 25/25/25/25 (Uniform)         ×      59.3   57.2          56.8
++ Implicit deps.    CON+REL+DEP          70.82     73.19    65.44
+LEDGER (all)        CON+REL+DEP+REF      76.48     76.68    78.06 Table 10: Retrieval weight sensitivity across document
+                                                                    sizes. “Order Pres.” indicates whether the priority or-
+Table 9: Progressive edge-type ablation. Each row                   dering targets > REF > DEP > REL is preserved. T =
+adds one edge type. CON=CONTAINS, REL=RELATED,                      target nodes.
+DEP=DEPENDS, REF=REFERENCES.
+                                                                      All configurations that preserve the priority or-
+   The results show a clear monotonic progression:                  dering (rows 1–4) achieve comparable performance
+adding RELATED edges (+2.7 pp) captures seman-                      (within 1.0 pp at each document size), regardless
+tic context missed by hierarchy alone; DEPENDS                      of exact numerical values. In contrast, the uni-
+edges (+4.7 pp) encode implicit prerequisites that                  form assignment—which destroys the ordering—
+semantic similarity cannot reliably recover; REF-                   degrades to near-baseline levels (∼58%), confirm-
+                                                              10639
+ing the design principle stated in Section 3.2: only
+the relative ordering of weights matters, not their
+absolute values. This robustness holds consistently
+across document sizes from 5K to 100K tokens.
+
+
+
+
+                                                  10640
+F     Pseudocode for LEDGER Algorithm
+F.1   LEDGER Algorithm Details
+We provide detailed algorithms for the three core components of LEDGER: semantic graph construction,
+dependency-aware context retrieval, and incremental consistency verification.
+F.1.1 Semantic Graph Construction
+Algorithm 1 describes how LEDGER constructs and maintains the semantic dependency graph.
+
+Algorithm 1 Semantic Graph Construction
+ 1: Input: Document D, Previous graph G = (V, E)
+ 2: Output: Updated graph G′ = (V ′ , E ′ )
+ 3:
+ 4: V ′ ← ParseSemanticUnits(D) {Extract sections, paragraphs, equations, figures}
+ 5:
+ 6: // Step 1: Build explicit reference edges
+ 7: Eexplicit ← ∅
+ 8: for each node vi ∈ V ′ do
+ 9:   refs ← ExtractReferences(vi ) {e.g., "Theorem 2", "Equation (5)", "Figure 1"}
+10:   for each reference r in refs do
+11:      vj ← ResolveTarget(r, V ′ )
+12:      Eexplicit ← Eexplicit ∪ {(vi , vj , REFERENCES)}
+13:   end for
+14: end for
+15:
+16: // Step 2: Build implicit reference edges
+17: Eimplicit ← ∅
+18: anaphora ← DetectAnaphoricExpressions(V ′ ) {e.g., "this bound", "the lemma"}
+19: for each (vi , expr, vj ) in anaphora do
+20:   Eimplicit ← Eimplicit ∪ {(vi , vj , DEPENDS)}
+21: end for
+22:
+23: // Step 3: Build semantic dependency edges
+24: Esemantic ← ∅
+25: for each node vi ∈ V ′ do
+26:    vi .embedding ← Embed(Summary(vi )) {DistilBERT embeddings}
+27: end for
+28: for each pair (vi , vj ) where i ̸= j do
+29:   sim ← CosineSimilarity(vi .embedding, vj .embedding)
+30:   if sim > θ and no explicit/implicit edge exists then
+31:      Esemantic ← Esemantic ∪ {(vi , vj , RELATED)}
+32:   end if
+33: end for
+34:
+35: E ′ ← Eexplicit ∪ Eimplicit ∪ Esemantic
+36: return G′ = (V ′ , E ′ )
+
+
+   The algorithm constructs a semantic graph in three steps. First, it extracts explicit references through
+pattern matching for citations like “Theorem 2”, “Equation (5)”, and “Figure 1” (lines 6-13). Second,
+it detects implicit references through coreference resolution to identify anaphoric expressions like “this
+bound” or “the lemma above” (lines 14-18). Third, it computes semantic embeddings using DistilBERT
+and connects nodes with high cosine similarity (θ = 0.7) that lack explicit connections (lines 19-28). The
+                                                      10641
+graph construction completes in 2-3 seconds for a typical 50-page paper with 150 semantic units, while
+incremental updates after edits complete in under 200ms by reprocessing only modified nodes.
+F.1.2 Dependency-Aware Context Retrieval
+Algorithm 2 describes how LEDGER efficiently retrieves relevant context for each edit operation.
+   The algorithm retrieves context in four steps. First, it identifies target nodes either through explicit
+mentions (e.g., “Section 3.2”) or semantic similarity for ambiguous instructions (lines 4-11). Second, it
+expands to include all nodes connected by dependency edges, capturing both upstream context (what the
+target relies on) and downstream impacts (what depends on the target) (lines 12-16). Third, it prioritizes
+nodes using an additive scoring scheme: direct targets (100 points), explicit references (50 points, critical
+for consistency), implicit dependencies (30 points), and semantic relations (10 points, optional context)
+(lines 17-28). Fourth, it packs content in priority order until the token budget B is exhausted (lines 29-38).
+This approach typically retrieves 10-15% of document tokens while ensuring all critical dependencies are
+included, as demonstrated in the Appendix example where only 1,200 of 10,000 tokens were needed.
+F.1.3 Consistency Verification
+Algorithm 3 describes how LEDGER validates document consistency after edits.
+
+
+
+
+                                                   10642
+Algorithm 2 Dependency-Aware Context Retrieval
+ 1: Input: Edit instruction E, Graph G = (V, E), Token budget B
+ 2: Output: Context C ⊆ V
+ 3:
+ 4: // Step 1: Identify target nodes
+ 5: Ntarget ← ∅
+ 6: if E specifies explicit target (e.g., "Section 3.2") then
+ 7:   Ntarget ← {ResolveNode(E.target, V )}
+ 8: else
+ 9:   eE ← Embed(E.instruction)
+10:   Ntarget ← TopKSimilar(eE , V, k = 3)
+11: end if
+12:
+13: // Step 2: Expand to dependencies
+14: Ndeps ← Ntarget
+15: for each v ∈ Ntarget do
+16:   Ndeps ← Ndeps ∪ {u : (u, v, t) ∈ E} {Upstream: what v depends on}
+17:   Ndeps ← Ndeps ∪ {u : (v, u, t) ∈ E} {Downstream: what depends on v}
+18: end for
+19:
+20: // Step 3: Prioritize by dependency type
+21: for each vi ∈ Ndeps do
+22:   score[vi ] ← 0
+23:   if vi ∈ Ntarget then
+24:      score[vi ] ← score[vi ] + 100 {Direct target}
+25:   end if
+26:   if ∃(vi , vj , REFERENCES) ∈ E : vj ∈ Ntarget then
+27:      score[vi ] ← score[vi ] + 50 {Explicit dependency (critical)}
+28:   end if
+29:   if ∃(vi , vj , DEPENDS) ∈ E : vj ∈ Ntarget then
+30:      score[vi ] ← score[vi ] + 30 {Implicit dependency}
+31:   end if
+32:   if ∃(vi , vj , RELATED) ∈ E : vj ∈ Ntarget then
+33:      score[vi ] ← score[vi ] + 10 {Semantic similarity}
+34:   end if
+35: end for
+36:
+37: // Step 4: Pack context within token budget
+38: ranked ← SortDescending(Ndeps , score)
+39: C ← {}, tokens ← 0
+40: for each vi in ranked do
+41:   ci ← Content(vi )
+42:   if tokens + |ci | ≤ B then
+43:       C ← C ∪ {ci }
+44:       tokens ← tokens + |ci |
+45:   else
+46:       break
+47:   end if
+48: end for
+49: return C
+
+
+                                                    10643
+Algorithm 3 Consistency Verification
+ 1: Input: Modified nodes Nmod ⊆ V , Updated document D ′ , Graph G = (V, E)
+ 2: Output: Violations V, Updated graph G′
+ 3:
+ 4: V ← ∅
+ 5:
+ 6: // Check 1: Reference integrity
+ 7: for each (vi , vj , REFERENCES) ∈ E : vi ∈ Nmod do
+ 8:   if vj does not exist in D′ then
+ 9:      V ← V ∪ {(BROKEN_REF, vi , vj )}
+10:   end if
+11: end for
+12:
+13: // Check 2: Terminology consistency
+14: for each vi ∈ Nmod do
+15:   for each (vj , vi , t) ∈ E : t ∈ {REFERENCES, DEPENDS} do
+16:      orig_term ← ExtractTerminology(vi .before)
+17:      new_term ← ExtractTerminology(vi .after)
+18:      if orig_term ̸= new_term then
+19:         V ← V ∪ {(TERM_CHANGE, vi , vj , orig, new)}
+20:      end if
+21:   end for
+22: end for
+23:
+24: // Check 3: Semantic coherence
+25: for each vi ∈ Nmod do
+26:   enew ← Embed(Summary(vi .after))
+27:   for each (vi , vj , RELATED) ∈ E do
+28:      sim ← CosineSimilarity(enew , vj .embedding)
+29:      if sim < θmin then
+30:         V ← V ∪ {(SEM_DRIFT, vi , vj )}
+31:      end if
+32:   end for
+33: end for
+34:
+35: // Update graph incrementally
+36: G′ ← G
+37: for each vi ∈ Nmod do
+38:   Remove old edges incident to vi from G′
+39:   Recompute edges for vi using Algorithm 1
+40:   Add new edges to G′
+41: end for
+42: return V, G′
+
+
+
+
+                                                10644
+

@@ -1,0 +1,104 @@
+{
+  "mode": "local-aip-stdio",
+  "experiment": "E1-c exact old primary PID revival",
+  "platform_adp_verified": false,
+  "fence_enforcement": "shared resource-domain SQLite OperationLedger; PostgreSQL is the protected resource",
+  "passed": true,
+  "before": {
+    "action": "status",
+    "read_only": true,
+    "passed": true
+  },
+  "old_primary_suspended": {
+    "pid": 40024,
+    "suspend_ntstatus": 0,
+    "identity_checked": true
+  },
+  "backup_action": {
+    "schema_version": "ifc/1.0",
+    "incident_id": "inc-e1c-d66c54856a774ff583736e1894f58991",
+    "logical_task_id": "lt-e1c-restore",
+    "executor_aic": "local-container-db-backup",
+    "status": "ok",
+    "facts": [
+      {
+        "key": "read_only",
+        "value": false,
+        "source": "db.restore_writes",
+        "observed_at": "2026-10-17T10:03:34.166398+00:00"
+      }
+    ],
+    "local_hypotheses": [],
+    "operation": {
+      "operation_id": "op-e1c-10a8b6810549470bb33abaff1bb17d68",
+      "state": "applied",
+      "before": {
+        "value": true
+      },
+      "after": {
+        "value": false
+      }
+    },
+    "evidence_ref": "amp:audit:7888aa49-c99b-41fc-8581-00fd5a32cd4b"
+  },
+  "after_backup": {
+    "action": "status",
+    "read_only": false,
+    "passed": true
+  },
+  "old_primary_revived": {
+    "pid": 40024,
+    "resume_ntstatus": 0,
+    "same_process_alive": true
+  },
+  "old_primary_replay": {
+    "schema_version": "ifc/1.0",
+    "incident_id": "inc-e1c-d66c54856a774ff583736e1894f58991",
+    "logical_task_id": "lt-e1c-restore",
+    "executor_aic": "local-container-db-primary",
+    "status": "rejected",
+    "facts": [],
+    "local_hypotheses": [],
+    "operation": {
+      "operation_id": "op-e1c-10a8b6810549470bb33abaff1bb17d68",
+      "state": "rejected_stale_fence",
+      "before": {
+        "value": true
+      },
+      "after": {
+        "value": false
+      }
+    },
+    "evidence_ref": "amp:audit:373a2167-814a-4d7f-8a74-d962377b0bb6"
+  },
+  "modification_invocations": [
+    {
+      "aic": "local-container-db-backup",
+      "event": "mcp_modify_invocation",
+      "transport": "local-aip-stdio",
+      "invocation_id": "2f0abbf10f664a21b5767ce41d4c0df2",
+      "server": "postgres",
+      "upstream_tool": "execute_sql",
+      "tool": "db.restore_writes",
+      "incident_id": "inc-e1c-d66c54856a774ff583736e1894f58991",
+      "logical_task_id": "lt-e1c-restore",
+      "operation_id": "op-e1c-10a8b6810549470bb33abaff1bb17d68"
+    }
+  ],
+  "mcp_modifying_calls": 1,
+  "revived_primary_mcp_modifying_calls": 0,
+  "checks_passed": true,
+  "cleanup": "restored",
+  "healthy_observation": {
+    "run_id": "e1c-restored-e4bb5f971ad94de7979e77d5fad177e8",
+    "duration_seconds": 30.015,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  }
+}

@@ -1,0 +1,50 @@
+domain: ops
+allowed_callers: []
+resources: {label: incident-pilot, routes: [v1, v2], application: orders}
+rate_limit: {window_seconds: 60, max_calls: 90}
+tools:
+  ops.containers:
+    server: docker
+    mcp_tool: list_containers
+    risk: read
+    description: 仅列出带 incident-pilot 标签的实验容器及非敏感状态。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    fixed_arguments: {all: true, filters: {label: [incident-pilot]}}
+  ops.logs:
+    server: docker
+    mcp_tool: fetch_container_logs
+    risk: read
+    container_guard: true
+    description: 读取经标签核验的实验容器最后 100 行日志。
+    input_schema:
+      type: object
+      additionalProperties: false
+      required: [container_id]
+      properties: {container_id: {type: string, pattern: '^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}$'}}
+    fixed_arguments: {tail: 100}
+  ops.restart:
+    server: docker
+    mcp_tool: start_container
+    risk: high
+    container_guard: true
+    restart_sequence: true
+    description: 经审批停止再启动带实验标签的同一容器，不创建或重建资源。
+    input_schema:
+      type: object
+      additionalProperties: false
+      required: [container_id]
+      properties: {container_id: {type: string, pattern: '^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}$'}}
+  ops.route_status:
+    server: route
+    mcp_tool: route_status
+    risk: read
+    description: 观察当前 Nginx 订单上游版本。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+  ops.route_rollback:
+    server: route
+    mcp_tool: route_rollback
+    risk: write
+    description: 将订单入口回退到已登记的 v2 版本并重新加载实验 Nginx。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    fixed_arguments: {target_version: v2}
+    reconcile: {tool_alias: ops.route_status, expected_after: v2}

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "scope": "Real CDP events from a synthetic loopback page in a separate headless Chrome profile; not a test of the user-profile extension or native messaging",
+  "observed": {
+    "exceptions": [
+      "Error: EA_SYNTHETIC_EXCEPTION"
+    ],
+    "consoleErrors": [
+      "EA_SYNTHETIC_CONSOLE"
+    ],
+    "failedHttp": [
+      {
+        "status": 404,
+        "pathname": "/missing"
+      },
+      {
+        "status": 404,
+        "pathname": "/favicon.ico"
+      }
+    ]
+  }
+}

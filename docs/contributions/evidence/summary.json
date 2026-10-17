@@ -1,0 +1,208 @@
+{
+  "upstream": {
+    "repository": "AIP-PUB/ACPs-community",
+    "base_commit": "3985c1330209f075c124669cc9d31f0e75448140",
+    "sdk_version": "2.2.0"
+  },
+  "task_order": {
+    "source": "eval/results/platform/container-postgres-mcp-20261017-initial/coordinator/journal.sqlite",
+    "received_history": [
+      {
+        "event_id": 3,
+        "state": "accepted",
+        "recorded_at": "2026-10-17T09:57:16.104137+00:00",
+        "state_changed_at": "2026-10-17T09:57:16.042798+00:00",
+        "sent_at": "2026-10-17T09:57:16.042791+00:00",
+        "product_count": 0
+      },
+      {
+        "event_id": 4,
+        "state": "awaiting-completion",
+        "recorded_at": "2026-10-17T09:57:16.147161+00:00",
+        "state_changed_at": "2026-10-17T09:57:16.092857+00:00",
+        "sent_at": "2026-10-17T09:57:16.092854+00:00",
+        "product_count": 1
+      },
+      {
+        "event_id": 5,
+        "state": "working",
+        "recorded_at": "2026-10-17T09:57:16.187712+00:00",
+        "state_changed_at": "2026-10-17T09:57:16.068235+00:00",
+        "sent_at": "2026-10-17T09:57:16.068230+00:00",
+        "product_count": 0
+      }
+    ],
+    "final_projected_states_before_fix": [
+      "working"
+    ]
+  },
+  "mq": {
+    "snapshot_date": "2026-10-17",
+    "public_bundle": "https://wt.ioa.pub/registry/static/js/client_list-BFH51SW2.js",
+    "bundle_http_status": 200,
+    "compiled_group_api": "https://localhost:9007",
+    "successful_group_api": "https://wt.ioa.pub:9007",
+    "broker": "amqps://wt.ioa.pub:5671/acps",
+    "bidirectional_run_success": true,
+    "round_states": [
+      [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ]
+    ],
+    "protocol_value_only_failure_reproduced": false
+  },
+  "discovery": {
+    "source": "integration/incident/discovery-root-cause.json",
+    "only_change": "extFilter",
+    "queries": [
+      {
+        "label": "default",
+        "observed_at": "2026-10-17T04:20:47.014555+00:00",
+        "status": 200,
+        "ext_filter": null,
+        "acs_count": 0,
+        "alive_map_present": false
+      },
+      {
+        "label": "all-alive-statuses",
+        "observed_at": "2026-10-17T04:20:47.848885+00:00",
+        "status": 200,
+        "ext_filter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        },
+        "acs_count": 2,
+        "alive_map_present": false
+      }
+    ]
+  },
+  "access": {
+    "native_start_tasks": 33,
+    "expected_access_records": 66,
+    "actual_access_records": 66,
+    "missing_records": 0,
+    "extra_records": 0,
+    "incomplete_task_lifecycles": [],
+    "passed": true,
+    "scope": "exact local AIP stdio capture versus official AMP access files; no platform statistics inferred"
+  },
+  "post_fix_platform": {
+    "source": "eval/results/platform/container-postgres-mcp-20261017-order-fix-v2/results.json",
+    "started_at": "2026-10-17T10:07:47.814717+00:00",
+    "finished_at": "2026-10-17T10:08:02.269419+00:00",
+    "status": "completed",
+    "mode": "wutong-amqps",
+    "participant_roles": [
+      "application",
+      "database",
+      "verification"
+    ],
+    "full_p0_acceptance": false,
+    "fault_injection": false,
+    "facts": [
+      {
+        "key": "read_only",
+        "value": false,
+        "source": "db.read_only_status",
+        "observed_at": "2026-10-17T10:07:59.128696+00:00"
+      }
+    ],
+    "task_lifecycles": [
+      {
+        "task": "task-1",
+        "states": [
+          "accepted",
+          "working",
+          "awaiting-completion",
+          "completed"
+        ]
+      },
+      {
+        "task": "task-2",
+        "states": [
+          "accepted",
+          "working",
+          "awaiting-completion",
+          "completed"
+        ]
+      },
+      {
+        "task": "task-3",
+        "states": [
+          "accepted",
+          "working",
+          "awaiting-completion",
+          "completed"
+        ]
+      },
+      {
+        "task": "task-4",
+        "states": [
+          "accepted",
+          "working",
+          "awaiting-completion",
+          "completed"
+        ]
+      }
+    ]
+  },
+  "local_f15": [
+    {
+      "crash_point": "after_observation",
+      "status": "passed",
+      "transport": "local-aip-stdio",
+      "discovery": "local process directory",
+      "platform_adp_verified": false,
+      "db_mcp_modify_invocations": 1,
+      "duplicate_modifying_calls": 0,
+      "old_fence_rejected": true,
+      "business_recovered": true
+    },
+    {
+      "crash_point": "before_modification",
+      "status": "passed",
+      "transport": "local-aip-stdio",
+      "discovery": "local process directory",
+      "platform_adp_verified": false,
+      "db_mcp_modify_invocations": 1,
+      "duplicate_modifying_calls": 0,
+      "old_fence_rejected": true,
+      "business_recovered": true
+    },
+    {
+      "crash_point": "after_applied",
+      "status": "passed",
+      "transport": "local-aip-stdio",
+      "discovery": "local process directory",
+      "platform_adp_verified": false,
+      "db_mcp_modify_invocations": 1,
+      "duplicate_modifying_calls": 0,
+      "old_fence_rejected": true,
+      "business_recovered": true
+    }
+  ],
+  "validation": {
+    "ordering_tests_passed": 3,
+    "sdk_resumable_tests_passed": 25,
+    "basis": "Executed successfully in this development session; terminal tool results retained by the session, no new test run performed for the prose."
+  }
+}

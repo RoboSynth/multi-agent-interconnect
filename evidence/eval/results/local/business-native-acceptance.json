@@ -1,0 +1,209 @@
+{
+  "environment": "actual local Windows PostgreSQL16 + Nginx + FastAPI",
+  "started_at": "2026-10-17T08:50:21.030778+00:00",
+  "scenarios": [
+    {
+      "scenario": "F01",
+      "checks": [
+        {
+          "name": "stopped app produces actual gateway 502",
+          "passed": true,
+          "http_status": 502
+        }
+      ],
+      "started_at": "2026-10-17T08:50:21.228817+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-1396a7d82e85405d96e08f3ffcd597d1",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.329,
+      "passed": true
+    },
+    {
+      "scenario": "F02",
+      "checks": [
+        {
+          "name": "v1 route misses v2 response field",
+          "passed": false,
+          "http_status": 200,
+          "response": {
+            "operation_key": "accept-7fad2464bf8842049ab40f5755ef6ebf-write",
+            "operation_kind": "create",
+            "outcome": "committed",
+            "order_id": "56fe9018-eb98-45c3-8d23-bdd95a3a9f42",
+            "order": {
+              "id": "56fe9018-eb98-45c3-8d23-bdd95a3a9f42",
+              "request_key": "accept-7fad2464bf8842049ab40f5755ef6ebf-write",
+              "item": "native-acceptance",
+              "quantity": 1,
+              "status": "CREATED",
+              "created_at": "2026-10-17T08:50:53.012412+00:00",
+              "updated_at": "2026-10-17T08:50:53.012412+00:00"
+            },
+            "changed": true,
+            "order_api_version": "v2"
+          }
+        }
+      ],
+      "started_at": "2026-10-17T08:50:52.618078+00:00",
+      "error": "AssertionError: v1 route misses v2 response field",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-7fad2464bf8842049ab40f5755ef6ebf",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 30.75,
+      "passed": false
+    },
+    {
+      "scenario": "F06",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "TimeoutError",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "lock wait uses PostgreSQL cancellation code",
+          "passed": true,
+          "code": "TimeoutError"
+        }
+      ],
+      "started_at": "2026-10-17T08:51:23.389161+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-d7819388eae14c6180a17c06e6ddcd03",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 34.047,
+      "passed": true
+    },
+    {
+      "scenario": "F07",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "25006",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "PostgreSQL reports real read-only SQLSTATE",
+          "passed": true,
+          "code": "25006"
+        }
+      ],
+      "started_at": "2026-10-17T08:51:57.479756+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-7b7de6e0d3944c80a0ebc75b19db6f7a",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 30.657,
+      "passed": true
+    },
+    {
+      "scenario": "F10",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "25006",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "PostgreSQL reports real read-only SQLSTATE",
+          "passed": true,
+          "code": "25006"
+        },
+        {
+          "name": "route repair alone leaves read-only write failure",
+          "passed": true,
+          "http_status": 503
+        }
+      ],
+      "started_at": "2026-10-17T08:52:28.199457+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-4de20794617d4b77ab19e66395fcc234",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.688,
+      "passed": true
+    }
+  ],
+  "unsupported": {
+    "F15": "Requires the database participant's three precise interrupt hooks; use the resumable-task experiment runner. F07 alone is not an F15 result.",
+    "F19": "Requires a registered operations-participant process and heartbeat experiment runner; no participant PID is inferred or killed."
+  },
+  "passed": false
+}

@@ -1,0 +1,633 @@
+{
+  "passed": true,
+  "third_party_server": "mcp-server-docker==0.3.0",
+  "transport": "official MCP SDK stdio",
+  "container_backend_tested": true,
+  "platform_group_tested": false,
+  "checks": {
+    "ops.containers": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.containers",
+      "executor_aic": "local-docker-acceptance",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "containers",
+          "value": [
+            {
+              "id": "738bf4588415f025ec9da626a7790a1227ec4ebe5416fb62cd5cb18a2f690d43",
+              "name": "incident-pilot-container-nginx-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "4649862dff5625cd91c39bc246aa40542a239c13daf2ae6bf009a6d7382dd34c",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "app-v1:service_healthy:false,app-v2:service_healthy:false",
+                "com.docker.compose.image": "sha256:1c7709d5f4d86d38773f8f908825dbc968da1fe2ee9d1d2542eeeb504a6a4fa8",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "nginx",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "operations",
+                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 2338,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:39:12.356180949Z",
+                "FinishedAt": "0001-01-01T00:00:00Z"
+              }
+            },
+            {
+              "id": "a8d7b677ee95ebc0f75c7b6546c2b94c0244af0d61e3e484a3183e5ac3a3edf4",
+              "name": "incident-pilot-container-app-v2-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "0979495ee09d36e97b56b23386076e6288ebdf5215e6b4ab1ecab8ccfa0cca88",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "postgres:service_healthy:false",
+                "com.docker.compose.image": "sha256:26cbe3577c430ea5e3abe67efa99ba72da046bf8ceb79fd831e4c63df5da461b",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "app-v2",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "application"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 2073,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:39:01.643689551Z",
+                "FinishedAt": "0001-01-01T00:00:00Z",
+                "Health": {
+                  "Status": "healthy",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:45:45.465088101-07:00",
+                      "End": "2026-10-17T02:45:45.5472352-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:45:55.548446264-07:00",
+                      "End": "2026-10-17T02:45:55.640140794-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:05.641258467-07:00",
+                      "End": "2026-10-17T02:46:05.726384991-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.726932716-07:00",
+                      "End": "2026-10-17T02:46:15.816188686-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.81706579-07:00",
+                      "End": "2026-10-17T02:46:25.895588696-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "77b3c19166db6b3aa919f7cfa313d60a4982235b435da80dd3c9695d2115e7cf",
+              "name": "incident-pilot-container-app-v1-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "08e823cbe50f0fea5d7c0cd524d0eb8802ced082cdab439302725a075ef9abc8",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "postgres:service_healthy:false",
+                "com.docker.compose.image": "sha256:66776df6a3ba01594613f513559eb554af83235eb6fac52c89da42c10eeac132",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "app-v1",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "application"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 2072,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:39:01.63970571Z",
+                "FinishedAt": "0001-01-01T00:00:00Z",
+                "Health": {
+                  "Status": "healthy",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:45:45.465056825-07:00",
+                      "End": "2026-10-17T02:45:45.548875463-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:45:55.549299493-07:00",
+                      "End": "2026-10-17T02:45:55.645513953-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:05.646217019-07:00",
+                      "End": "2026-10-17T02:46:05.71947349-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.71976144-07:00",
+                      "End": "2026-10-17T02:46:15.816156666-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.81703597-07:00",
+                      "End": "2026-10-17T02:46:25.89507213-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "a8915babd82b8cce7143e5d6e3fead0c0fa2f4709481e064a26cbb4b2aa144a0",
+              "name": "incident-pilot-container-postgres-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "0d79ce8f4cb747ef5d897d355f50747cc0de614ba9fbac5b5d4bf22a7df9f30f",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:530a5243e576c08debb4860c981029bd9896b96686a65140da9e3b11c92f698e",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "postgres",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "database"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 1846,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:38:55.816280935Z",
+                "FinishedAt": "0001-01-01T00:00:00Z",
+                "Health": {
+                  "Status": "healthy",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:46:05.295956298-07:00",
+                      "End": "2026-10-17T02:46:05.349434182-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:10.350305177-07:00",
+                      "End": "2026-10-17T02:46:10.397521742-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.398912959-07:00",
+                      "End": "2026-10-17T02:46:15.449898205-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:20.451187598-07:00",
+                      "End": "2026-10-17T02:46:20.507806751-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.508136717-07:00",
+                      "End": "2026-10-17T02:46:25.549136688-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "source": "ops.containers",
+          "observed_at": "2026-10-17T09:46:29.034640+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "ops.logs": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.logs",
+      "executor_aic": "local-docker-acceptance",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_logs",
+          "value": {
+            "logs": [
+              "INFO:     Started server process [1]",
+              "INFO:     Waiting for application startup.",
+              "INFO:     Application startup complete.",
+              "INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)",
+              ""
+            ]
+          },
+          "source": "ops.logs",
+          "observed_at": "2026-10-17T09:46:30.429576+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "missing_approval": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.restart",
+      "executor_aic": "local-docker-acceptance",
+      "status": "rejected",
+      "facts": [],
+      "local_hypotheses": [],
+      "reason": "high risk tool requires a valid independent approval proof"
+    },
+    "restart": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.restart",
+      "executor_aic": "local-docker-acceptance",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_state",
+          "value": "exited",
+          "source": "ops.restart",
+          "observed_at": "2026-10-17T09:46:32.212720+00:00"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-real-docker-restart",
+        "state": "applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    },
+    "duplicate": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.restart",
+      "executor_aic": "local-docker-acceptance",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_state",
+          "observed_at": "2026-10-17T09:46:32.212720+00:00",
+          "source": "ops.restart",
+          "value": "exited"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-real-docker-restart",
+        "state": "skipped_already_applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    },
+    "after_containers": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-docker",
+      "logical_task_id": "lt-ops.containers",
+      "executor_aic": "local-docker-acceptance",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "containers",
+          "value": [
+            {
+              "id": "738bf4588415f025ec9da626a7790a1227ec4ebe5416fb62cd5cb18a2f690d43",
+              "name": "incident-pilot-container-nginx-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "4649862dff5625cd91c39bc246aa40542a239c13daf2ae6bf009a6d7382dd34c",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "app-v1:service_healthy:false,app-v2:service_healthy:false",
+                "com.docker.compose.image": "sha256:1c7709d5f4d86d38773f8f908825dbc968da1fe2ee9d1d2542eeeb504a6a4fa8",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "nginx",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "operations",
+                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 2338,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:39:12.356180949Z",
+                "FinishedAt": "0001-01-01T00:00:00Z"
+              }
+            },
+            {
+              "id": "a8d7b677ee95ebc0f75c7b6546c2b94c0244af0d61e3e484a3183e5ac3a3edf4",
+              "name": "incident-pilot-container-app-v2-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "0979495ee09d36e97b56b23386076e6288ebdf5215e6b4ab1ecab8ccfa0cca88",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "postgres:service_healthy:false",
+                "com.docker.compose.image": "sha256:26cbe3577c430ea5e3abe67efa99ba72da046bf8ceb79fd831e4c63df5da461b",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "app-v2",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "application"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 6250,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:46:32.059191378Z",
+                "FinishedAt": "2026-10-17T09:46:31.740356183Z",
+                "Health": {
+                  "Status": "starting",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:45:45.465088101-07:00",
+                      "End": "2026-10-17T02:45:45.5472352-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:45:55.548446264-07:00",
+                      "End": "2026-10-17T02:45:55.640140794-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:05.641258467-07:00",
+                      "End": "2026-10-17T02:46:05.726384991-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.726932716-07:00",
+                      "End": "2026-10-17T02:46:15.816188686-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.81706579-07:00",
+                      "End": "2026-10-17T02:46:25.895588696-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "77b3c19166db6b3aa919f7cfa313d60a4982235b435da80dd3c9695d2115e7cf",
+              "name": "incident-pilot-container-app-v1-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "08e823cbe50f0fea5d7c0cd524d0eb8802ced082cdab439302725a075ef9abc8",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "postgres:service_healthy:false",
+                "com.docker.compose.image": "sha256:66776df6a3ba01594613f513559eb554af83235eb6fac52c89da42c10eeac132",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "app-v1",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "application"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 2072,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:39:01.63970571Z",
+                "FinishedAt": "0001-01-01T00:00:00Z",
+                "Health": {
+                  "Status": "healthy",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:45:45.465056825-07:00",
+                      "End": "2026-10-17T02:45:45.548875463-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:45:55.549299493-07:00",
+                      "End": "2026-10-17T02:45:55.645513953-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:05.646217019-07:00",
+                      "End": "2026-10-17T02:46:05.71947349-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.71976144-07:00",
+                      "End": "2026-10-17T02:46:15.816156666-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.81703597-07:00",
+                      "End": "2026-10-17T02:46:25.89507213-07:00",
+                      "ExitCode": 0,
+                      "Output": ""
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "id": "a8915babd82b8cce7143e5d6e3fead0c0fa2f4709481e064a26cbb4b2aa144a0",
+              "name": "incident-pilot-container-postgres-1",
+              "status": "running",
+              "labels": {
+                "com.docker.compose.config-hash": "0d79ce8f4cb747ef5d897d355f50747cc0de614ba9fbac5b5d4bf22a7df9f30f",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:530a5243e576c08debb4860c981029bd9896b96686a65140da9e3b11c92f698e",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "incident-pilot-container",
+                "com.docker.compose.project.config_files": "/mnt/d/AI + 开源/incident-pilot/deploy/compose.yml",
+                "com.docker.compose.project.environment_file": "/mnt/d/AI + 开源/incident-pilot/runtime/private/container.env",
+                "com.docker.compose.project.working_dir": "/mnt/d/AI + 开源/incident-pilot/deploy",
+                "com.docker.compose.service": "postgres",
+                "com.docker.compose.version": "2.40.3",
+                "incident-pilot": "true",
+                "incident-pilot.domain": "database"
+              },
+              "state": {
+                "Status": "running",
+                "Running": true,
+                "Paused": false,
+                "Restarting": false,
+                "OOMKilled": false,
+                "Dead": false,
+                "Pid": 1846,
+                "ExitCode": 0,
+                "Error": "",
+                "StartedAt": "2026-10-17T09:38:55.816280935Z",
+                "FinishedAt": "0001-01-01T00:00:00Z",
+                "Health": {
+                  "Status": "healthy",
+                  "FailingStreak": 0,
+                  "Log": [
+                    {
+                      "Start": "2026-10-17T02:46:10.350305177-07:00",
+                      "End": "2026-10-17T02:46:10.397521742-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:15.398912959-07:00",
+                      "End": "2026-10-17T02:46:15.449898205-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:20.451187598-07:00",
+                      "End": "2026-10-17T02:46:20.507806751-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:25.508136717-07:00",
+                      "End": "2026-10-17T02:46:25.549136688-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                      "Start": "2026-10-17T02:46:30.550073715-07:00",
+                      "End": "2026-10-17T02:46:30.594015391-07:00",
+                      "ExitCode": 0,
+                      "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "source": "ops.containers",
+          "observed_at": "2026-10-17T09:46:34.012349+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    }
+  },
+  "tool_names": [
+    "list_containers",
+    "create_container",
+    "run_container",
+    "recreate_container",
+    "start_container",
+    "fetch_container_logs",
+    "stop_container",
+    "remove_container",
+    "list_images",
+    "pull_image",
+    "push_image",
+    "build_image",
+    "remove_image",
+    "list_networks",
+    "create_network",
+    "remove_network",
+    "list_volumes",
+    "create_volume",
+    "remove_volume"
+  ],
+  "audit_event_count": 6
+}

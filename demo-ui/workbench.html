@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跨域故障协同工作台</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23126d9c'/%3E%3Cpath d='M8 10h16v12H8z' fill='white'/%3E%3C/svg%3E"><link rel="stylesheet" href="/assets/workbench.css"><script src="/assets/workbench.js" defer></script></head>
+<body>
+<header><a class="brand" href="/">跨域故障协同</a><span id="connection" role="status">连接参与者</span></header>
+<main>
+<section class="intro"><h1>循证排查，跨域恢复。</h1><p>应用、数据库与运维分别提供证据。每次修改留痕，高风险操作由你审批。</p></section>
+<div class="layout">
+<aside><form id="incident-form"><h2>发起排障</h2><label for="symptom">业务症状</label><textarea id="symptom" required maxlength="2000" rows="4">订单提交异常，请查明原因并恢复业务。</textarea>
+<label for="original-key">原请求键（可选）</label><input id="original-key" maxlength="128" placeholder="超时下单的原始请求键"><button id="start" type="submit">开始排查</button></form>
+<section class="participants"><h2>协作参与者</h2><div id="participants"><p class="empty">等待连接各资源域。</p></div></section>
+<p class="mode-note" id="mode-note"></p><details><summary>运行资料</summary><p id="artifacts"></p></details></aside>
+<section class="workspace">
+<div class="incident-head"><div><h2 id="incident-title">尚未发起事故</h2><p id="incident-id">输入业务症状，开始收集证据。</p></div><span class="status" id="incident-status">等待任务</span></div>
+<p class="error" id="error" role="alert" hidden></p>
+<nav class="tabs" role="tablist" aria-label="事故视图"><button role="tab" aria-controls="evidence" aria-selected="true" id="tab-evidence">证据与计划</button><button role="tab" aria-controls="operations" aria-selected="false" id="tab-operations">操作与接续</button><button role="tab" aria-controls="results" aria-selected="false" id="tab-results">业务与记录</button></nav>
+<section id="evidence" role="tabpanel" aria-labelledby="tab-evidence"><div id="hypotheses" class="hypotheses"></div><h3>已确认的证据</h3><div id="facts" class="empty">参与者观察结果将在这里出现。</div><h3>排查过程</h3><ol id="events" class="timeline"></ol></section>
+<section id="operations" role="tabpanel" aria-labelledby="tab-operations" hidden><div id="approvals"></div><h3>恢复操作</h3><div id="actions" class="empty">尚未提出修改。</div><h3>接续记录</h3><div id="takeovers" class="empty">尚未发生接管。</div></section>
+<section id="results" role="tabpanel" aria-labelledby="tab-results" hidden><div id="business" class="empty">业务验证尚未开始。</div><h3>请求结果曲线</h3><svg id="order-chart" viewBox="0 0 640 120" role="img" aria-label="订单请求结果时间序列"></svg><h3>AIP 任务</h3><div class="table-wrap"><table><thead><tr><th>任务</th><th>类型</th><th>结果</th><th>耗时</th></tr></thead><tbody id="tasks"></tbody></table></div><details><summary>事故记录原文</summary><pre id="raw"></pre></details></section>
+</section></div></main><footer>资源凭据留在各域进程中。运行模式与实际证据随本次事故记录保存。</footer>
+<dialog id="approval-dialog" aria-labelledby="approval-title"><h2 id="approval-title">确认高风险恢复操作</h2><div id="approval-dialog-content"></div><button type="button" id="approval-later">稍后处理</button></dialog>
+</body></html>

@@ -1,0 +1,123 @@
+{
+  "environment": "actual local Windows PostgreSQL16 + Nginx + FastAPI",
+  "started_at": "2026-10-17T08:54:09.264910+00:00",
+  "scenarios": [
+    {
+      "scenario": "F02",
+      "checks": [
+        {
+          "name": "v1 route misses v2 response field",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "operation_key": "accept-efc16e3533c544b0928287e7b7a35404-write",
+            "operation_kind": "create",
+            "outcome": "committed",
+            "order_id": "fd789d49-de6f-4371-9670-0ac691ddb2ca",
+            "order": {
+              "id": "fd789d49-de6f-4371-9670-0ac691ddb2ca",
+              "request_key": "accept-efc16e3533c544b0928287e7b7a35404-write",
+              "item": "native-acceptance",
+              "quantity": 1,
+              "status": "CREATED",
+              "created_at": "2026-10-17T08:54:10.410035+00:00",
+              "updated_at": "2026-10-17T08:54:10.410035+00:00"
+            },
+            "changed": true
+          }
+        }
+      ],
+      "started_at": "2026-10-17T08:54:09.473698+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-efc16e3533c544b0928287e7b7a35404",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.984,
+      "passed": true
+    },
+    {
+      "scenario": "F12",
+      "checks": [
+        {
+          "name": "client times out after backend commit",
+          "passed": true
+        },
+        {
+          "name": "original receipt resolves unknown result",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "order": {
+              "id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+              "item": "native-acceptance",
+              "status": "CREATED",
+              "quantity": 1,
+              "created_at": "2026-10-17T08:54:44.044499+00:00",
+              "updated_at": "2026-10-17T08:54:44.044499+00:00",
+              "request_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write"
+            },
+            "changed": true,
+            "outcome": "committed",
+            "order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+            "operation_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write",
+            "operation_kind": "create",
+            "order_api_version": "v2"
+          }
+        },
+        {
+          "name": "same-key retry returns the committed order",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "order": {
+              "id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+              "item": "native-acceptance",
+              "status": "CREATED",
+              "quantity": 1,
+              "created_at": "2026-10-17T08:54:44.044499+00:00",
+              "updated_at": "2026-10-17T08:54:44.044499+00:00",
+              "request_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write"
+            },
+            "changed": true,
+            "outcome": "committed",
+            "order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+            "operation_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write",
+            "operation_kind": "create",
+            "order_api_version": "v2"
+          }
+        }
+      ],
+      "started_at": "2026-10-17T08:54:41.477693+00:00",
+      "original_order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-140a37f705b04c688fa6b2cadbf3b41f",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 35.094,
+      "passed": true
+    }
+  ],
+  "unsupported": {
+    "F15": "Requires the database participant's three precise interrupt hooks; use the resumable-task experiment runner. F07 alone is not an F15 result.",
+    "F19": "Requires a registered operations-participant process and heartbeat experiment runner; no participant PID is inferred or killed."
+  },
+  "passed": true
+}

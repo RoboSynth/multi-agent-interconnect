@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A ranking can recover most of what an edit changed and still miss the edited sentence | Telegrapher</title>
+<meta name="description" content="RippleKB scores whether a ranking recovers every statement one edit changes across linked documents. Recall and complete recovery rank systems differently.">
+<link rel="canonical" href="https://telegrapher.ai/research/ripplekb/">
+<link rel="alternate" type="text/markdown" href="/research/ripplekb.md"><meta property="og:site_name" content="Telegrapher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A ranking can recover most of what an edit changed and still miss the edited sentence | Telegrapher">
+<meta property="og:description" content="RippleKB scores whether a ranking recovers every statement one edit changes across linked documents. Recall and complete recovery rank systems differently.">
+<meta property="og:url" content="https://telegrapher.ai/research/ripplekb/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css?v=293f046f">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+<button class="tbtn burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="railnav"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+<a class="brand" href="/"><span class="morse mark" data-text="TE" title="TE in Morse code" aria-hidden="true">
+<em class="mw"><i class="h"></i><b></b><i class="d"></i></em></span>telegrapher</a>
+<span class="spacer"></span>
+</header>
+<div class="backdrop"></div>
+<div class="shell">
+
+<aside class="rail-left" id="railnav">
+<div class="rail-head">
+<a class="brand" href="/"><span class="morse mark" data-text="TE" title="TE in Morse code" aria-hidden="true">
+<em class="mw"><i class="h"></i><b></b><i class="d"></i></em></span>telegrapher</a>
+<div class="brand-sub">We study where language models actually break, and how to fix them without retraining.</div>
+</div>
+<nav aria-label="Site">
+<a class="navlink" href="/"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span class="lbl">Home</span></a>
+<a class="navlink active" href="/research/" aria-current="page"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19V5a2 2 0 0 1 2-2h13v14H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h13"/></svg><span class="lbl">Research</span><small>15</small></a>
+<a class="navlink" href="/blog/"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span class="lbl">Blog</span><small>15</small></a>
+<a class="navlink" href="/people/"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6"/></svg><span class="lbl">People</span><small>6</small></a>
+<a class="navlink" href="/about/"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg><span class="lbl">About</span></a>
+<div class="navlabel">Research lines</div>
+<a class="navlink ac-signal" href="/research/#errors"><span class="swatch" aria-hidden="true"></span><span class="lbl">Error-accumulation</span></a>
+<a class="navlink ac-brass" href="/research/#telegraph"><span class="swatch" aria-hidden="true"></span><span class="lbl">Telegraph English</span></a>
+<a class="navlink ac-patina" href="/research/#reasoning"><span class="swatch" aria-hidden="true"></span><span class="lbl">Verifiable reasoning</span></a>
+<a class="navlink ac-steel" href="/research/#applied"><span class="swatch" aria-hidden="true"></span><span class="lbl">Conversation analytics</span></a>
+</nav>
+<div class="rail-foot">
+<a href="/llms.txt">llms.txt</a>
+<a href="/api/index.json">api/index.json</a>
+</div>
+</aside>
+
+<main id="main" class="ac-brass">
+<nav class="crumbs" aria-label="Breadcrumb"><ol>
+<li><a href="/">Home</a></li><li><a href="/research/">Research</a></li><li aria-current="page">RippleKB</li></ol></nav><article>
+<header class="paper-head">
+<div class="sig"><span class="morse " data-text="RKB ICLR" title="RKB ICLR in Morse code" data-key="load" role="img" aria-label="RKB ICLR in Morse code">
+<em class="mw"><i class="d"></i><i class="h"></i><i class="d"></i><b></b><i class="h"></i><i class="d"></i><i class="h"></i><b></b><i class="h"></i><i class="d"></i><i class="d"></i><i class="d"></i></em><b class="w"></b><em class="mw"><i class="d"></i><i class="d"></i><b></b><i class="h"></i><i class="d"></i><i class="h"></i><i class="d"></i><b></b><i class="d"></i><i class="h"></i><i class="d"></i><i class="d"></i><b></b><i class="d"></i><i class="h"></i><i class="d"></i></em></span><span class="plain decode" aria-hidden="true">RKB ICLR</span><a href="/research/#telegraph">Telegraph English</a></div>
+<h1>A ranking can recover most of what an edit changed and still miss the edited sentence</h1>
+<p class="ptitle">RippleKB: Finding What an Edit Changes Across Linked Documents</p>
+<p class="cite-line"><a href="/people/sisong-bei/">Sisong Bei</a>, <a href="/people/mikhail-arbuzov/">Mikhail L Arbuzov</a>, <a href="/people/ziwei-dong/">Ziwei Dong</a>, <a href="/people/alexey-shvets/">Alexey Shvets</a>, <a href="/people/dmitri-kalaev/">Dmitri Kalaev</a></p>
+<p class="cite-line">ICLR 2027 submission, August 2026</p>
+<div class="linkrow">
+<a class="btn primary" href="/research/ripplekb/read/"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 5h7a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H2zM22 5h-7a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h8z"/></svg>Read the paper</a>
+<a class="btn" href="/papers/ripplekb/ripplekb.pdf" download><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>PDF, 21 pages</a>
+<a class="btn" href="https://openreview.net/forum?id=zRZ3MrSLIj">OpenReview</a><a class="btn" href="/blog/ripplekb/">Blog post</a></div>
+</header>
+
+<p class="tldr">Asking whether a ranking finds every statement an edit changes, not just most, reorders systems. Embedding reranking nudged BM25&#39;s recall up and completed fewer sets; one model scored well on recall while missing the edited sentence itself.</p>
+<aside class="gist" aria-labelledby="h-gist">
+<div class="ghead"><h2 id="h-gist">Paper gist</h2><span class="for">for agents: <a href="/research/ripplekb.md">.md</a> <a href="/api/papers/ripplekb.json">.json</a></span></div>
+<dl><dt>Claim</dt><dd>A ranking can recover most of what an edit changed and still miss the edited sentence</dd><dt>TL;DR</dt><dd>Asking whether a ranking finds every statement an edit changes, not just most, reorders systems. Embedding reranking nudged BM25&#x27;s recall up and completed fewer sets; one model scored well on recall while missing the edited sentence itself.</dd><dt>Method</dt><dd>150 machine-validated items regenerated from MuSiQue, each a numeric edit over three or four linked documents with a hidden dependency closure of four to seven units, were ranked by deterministic baselines (random, render and identifier order, token overlap, BM25), BM25 with Titan Text Embeddings V2 reranking, Qwen3 32B, Llama 3.3 70B and Claude Sonnet 4.5, plus four hosted models added after the initial results were seen (Claude Sonnet 5, Claude Opus 5, Claude Fable 5.1, Grok 4.6), and scored by complete-closure@2G, Recall@2G, Recall@G and exact-copy fidelity under a no-repair parser.</dd><dt>Key result</dt><dd>Complete recovery, Claude Opus 5: <b>0%</b>; Complete recovery, BM25 with embedding reranking: <b>13%</b>; Complete recovery, Llama 3.3 70B: <b>65%</b></dd><dt>Why it matters</dt><dd>This is for people who maintain text that refers to other text: totals computed from figures held elsewhere, summaries that restate numbers from source pages, corpora that downstream answers lean on.</dd><dt>Limits</dt><dd>The answer key is the construction&#x27;s own.</dd><dt>Status</dt><dd>ICLR 2027 submission, August 2026</dd><dt>Read</dt><dd><a class="inline-link" href="/research/ripplekb/read/">reader</a>, <a class="inline-link" href="/papers/ripplekb/ripplekb.pdf">PDF</a></dd></dl>
+</aside>
+<section class="prose" aria-labelledby="h-sum">
+<h2 id="h-sum">What we did and found</h2>
+<p>In the paper's conceptual example, one sentence says the North store holds <em>n</em> crates, a second gives combined stock as <em>n + m</em>, and a third says combined stock is below <em>q</em>. Raise North's count far enough for the total to reach <em>q</em> and all three change. Two neighbours do not: South's count feeds the total but stays put, and a note that North opens at dawn shares the subject and stays true. The changed sentences form the item's <em>impact set</em>, which RippleKB proposes through a hidden <em>dependency closure</em>. Its 150 machine-validated items, regenerated from MuSiQue, each edit one numeric value across three or four linked documents of 14–26 candidate units, four to seven of them affected. A system sees the edit and the documents, then ranks units, giving each one's identifier and its text copied byte for byte. The scorer reads the top <em>K</em> = min(|U|, 2|G|) positions, a budget set by the hidden affected-set size, and reports two numbers from that one prefix: <b>Recall@2G</b>, the mean fraction found, and <b>complete-closure@2G</b>, the share of items found whole. Four shortcut rankings were tested against the key (identifier order, document position, lexical overlap with the edit, the original question's supporting facts), and lexical bridging came closest, completing at most 20% of the pooled items.</p><p>Recall and completion separate the systems, sometimes in opposite order. Under the doubled budget, random ordering already earns Recall@2G 0.54 while completing 1% of items. Reranking BM25 with embeddings raised the recall point estimate slightly and cut complete recovery from 20% to 13%. The stronger language-model rankings lift both: Llama 3.3 70B completed 65% of items at recall 0.91, and Claude Sonnet 5, one of four models added after the initial results were seen, 82% at 0.95. The gap is widest for Claude Opus 5, also a later addition, with recall 0.79 and no completed item; within its cutoff, it recovered the directly edited sentence on none of the items. Delivery is a separate loss. Claude Sonnet 4.5 wrapped every response in a code fence and scored zero under the no-repair parser, while the same saved responses, stripped of the fence, give 33% completion and recall 0.85. Copying is a third. Conditional exactness counts recovered units alone and runs high, from 0.942 for Llama upward among systems with parsed rankings. Opus's 0.999 on that measure sits beside numeric-span preservation of 0.28, because the span score also counts the units it left out.</p></section>
+<section aria-labelledby="h-nums">
+<h2 id="h-nums">Key numbers</h2>
+<table class="keynums"><tbody>
+<tr class="bad"><td>Complete recovery, Claude Opus 5<span class="ctx">with Recall@2G 0.79; its recovery of the directly edited sentence within the review cutoff was zero; added after the initial results were seen</span></td><td>0%</td></tr>
+<tr class="bad"><td>Complete recovery, BM25 with embedding reranking<span class="ctx">against 20% for BM25 alone, while the Recall@2G point estimate rose from 0.66 to 0.68</span></td><td>13%</td></tr>
+<tr><td>Complete recovery, Llama 3.3 70B<span class="ctx">Recall@2G 0.91; the later-added Claude Sonnet 5 reached 82% at 0.95</span></td><td>65%</td></tr>
+<tr><td>Recall@2G, random ordering<span class="ctx">with complete-closure@2G of 1%; the doubled review budget alone hands out substantial partial credit</span></td><td>0.54</td></tr>
+<tr class="bad"><td>Complete recovery, Claude Sonnet 4.5, primary parser<span class="ctx">every response arrived in a code fence; stripping the fence from the same responses gives 33% and Recall@2G 0.85</span></td><td>0%</td></tr>
+</tbody></table>
+</section>
+<aside class="editorial" aria-labelledby="h-why">
+<h2 id="h-why">Why it matters</h2>
+<p>This is for people who maintain text that refers to other text: totals computed from figures held elsewhere, summaries that restate numbers from source pages, corpora that downstream answers lean on. After a correction, the operational question is whether anything affected is still unreviewed. Average recall does not answer it. A reranker that edges recall up can finish fewer review sets, and a model can post a respectable recall while leaving the very sentence that was edited outside its review cutoff. Report complete recovery beside recall, at a stated review budget, and both failures show.</p><p>The paper also keeps apart failures that a single score would merge. An unparsable response counts as an empty ranking, so delivery is part of what is measured; harsh, but a pipeline that cannot read a ranking has no ranking. The fence-stripping reparse of the same responses is reported beside it as a diagnosis, not a replacement. Selection and copying are scored apart too, since a correct identifier can carry altered text and perfect copies can still leave members of the set missing.</p><p>RippleKB sits with the Telegraph English papers through its unit of account. <em>Telegraph English</em> rewrites text into lines that are each an independently addressable fact. A store of addressable facts invites edits one fact at a time, and RippleKB scores the question that follows: which other units did the edit change? Its units are sentences in constructed prose documents rather than TE lines, so the link is a shared question, not a shared result. The habit of measuring separately also runs through <em>What Survives Learned Symbolic Compression?</em>, which treats source fidelity, internal validity and what a consumer model recovers as different quantities.</p></aside>
+<section class="limits" aria-labelledby="h-lim">
+<h2 id="h-lim">What this does not show</h2>
+<p>The answer key is the construction's own. Scores measure recovery of a generated dependency closure on machine-validated candidates, and the released protocol for human review, which checks each proposed dependency against the text and looks for affected statements the closure missed, has no reported results. Edits are numeric, and each item is a small, finite collection of constructed English documents derived from Wikipedia material. The review cutoff uses the hidden affected-set size; a deployed reviewer would have to choose a cutoff without the answer key. Four hosted models were added after the initial results were seen and ran with provider-default sampling, and no provider run was repeated to estimate generation variability, so the intervals reflect source sampling alone. The evaluation pools all 150 candidates where the original plan named the report partition alone, and the construction-control report records access to selection and report labels before baseline outputs were available. Affected downstream sentences open with their named entity, a possible cue the shortcut rankings do not test. Prior model exposure to the source passages is unassessed, and independent replay needs item-level responses and executable scoring code beyond the aggregate materials. Grok 4.6 returned five parsable responses, so its row says little about how it ranks.</p>
+</section>
+<span class="verif">Every number above was checked against the paper text.</span><details class="absdetails"><summary>The authors' abstract</summary><p>Editing one fact can change a derived quantity, comparison, or other statement across linked documents. RippleKB evaluates whether systems can recover a constructed set of affected source units completely. Each item edits one source fact in a small set of linked documents. The proposed answer key is a hidden dependency closure, with unaffected units also present. A system returns a ranked list of source units, word for word, under a review rule tied to the constructed affected-set size. We regenerate every item from a public multi-hop corpus and test identifier-order, document-position, lexical, and supporting-fact rankings, alongside role and template concentration checks. We release the audit protocol under which the proposed closure is to be reviewed unit by unit. We report how far retrieval-style and language-model baselines get toward recovering the constructed closure completely on the machine-validated candidate set. Complete recovery tests whether a ranking includes the entire constructed target, while exact-copy measures separately assess preservation of source text.</p></details>
+
+<a class="postcta" href="/blog/ripplekb/"><span>On the blog</span><b>Finding most of what an edit changed is not finding all of it</b><span>We scored whether rankings recover every statement an edit changes, not just most. Recall and completion disagree, sometimes at the edited sentence itself.</span></a>
+
+<section aria-labelledby="h-rel">
+<h2 id="h-rel">More in Telegraph English</h2>
+<div class="related">
+<a href="/research/telegraph-english/"><b>Telegraph English: Semantic Prompt Compression via Structured Symbolic Rewriting</b><small>NeurIPS 2026 submission, May 2026</small></a>
+<a href="/research/context-compression-is-not-one-thing/"><b>Context Compression Is Not One Thing: Readable Symbolic Re-expression vs. Coherent Summary at Matched Budget</b><small>ACL ARR 2026 submission, May 2026</small></a>
+<a href="/research/what-survives-learned-symbolic-compression/"><b>What Survives Learned Symbolic Compression?</b><small>ICLR 2027 submission, August 2026</small></a>
+<a href="/research/relational-context-compression/"><b>Evaluating Relational Context Compression at Realized Token Budgets</b><small>ICLR 2027 submission, September 2026</small></a>
+</div>
+</section>
+
+<div class="breaker" role="separator"><span class="morse " data-text="&lt;BT&gt;" title="BT: the Morse prosign for start a new section" data-key="view" aria-hidden="true">
+<em class="mw"><i class="h"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="h"></i></em></span></div>
+<section aria-labelledby="h-cite">
+<h2 id="h-cite">Cite</h2>
+<div class="bib"><pre id="bibtex">@misc{bei2026ripplekb,
+  title         = {RippleKB: Finding What an Edit Changes Across Linked Documents},
+  author        = {Bei, Sisong and Arbuzov, Mikhail L and Dong, Ziwei and Shvets, Alexey and Kalaev, Dmitri},
+  year          = {2026},
+  note          = {ICLR 2027 submission},
+  url           = {https://telegrapher.ai/research/ripplekb/}
+}</pre><button class="copy js-only" type="button" data-copy="#bibtex">Copy</button></div>
+</section>
+
+<section aria-labelledby="h-refs">
+<h2 id="h-refs">Builds on</h2>
+<ol class="refs"><li>Trivedi et al. (2022). MuSiQue: Multihop Questions via Single-hop Question Composition.</li><li>Goknil et al. (2016). A Rule-Based Change Impact Analysis Approach in Software Architecture for Requirements Changes.</li><li>Cohen et al. (2024). Evaluating the Ripple Effects of Knowledge Editing in Language Models.</li><li>Zhong et al. (2023). MQuAKE: Assessing Knowledge Editing in Language Models via Multi-Hop Questions.</li><li>Logan IV et al. (2022). FRUIT: Faithfully Reflecting Updated Information in Text.</li></ol>
+</section>
+</article>
+</main>
+
+<aside class="rail-right" aria-label="More">
+<div class="panel">
+<h4>The trilogy</h4>
+<div class="sub">One argument about where LLM errors come from, in three parts.</div>
+<ol class="trilist">
+<li><a href="/research/beyond-exponential-decay/">Beyond Exponential Decay</a></li>
+<li><a href="/research/architecture-of-errors/">The Architecture of Errors</a></li>
+<li><a href="/research/frontier-and-localhost/">Frontier and Localhost</a></li>
+</ol>
+</div>
+<div class="panel">
+<h4>Built for agents</h4>
+<div class="sub">Every page ships machine-readable alongside the HTML.</div>
+<div class="endpoints">
+<div><a href="/llms.txt">/llms.txt</a></div>
+<div><a href="/api/index.json">/api/index.json</a></div>
+<div><a href="/research/ripplekb.md">this page as .md</a></div><div><a href="/api/papers/ripplekb.json">this page as .json</a></div></div>
+</div>
+</aside>
+
+</div>
+<footer class="site-foot"><div class="inner">
+<a class="brand" href="/"><span class="morse mark" data-text="TE" title="TE in Morse code" aria-hidden="true">
+<em class="mw"><i class="h"></i><b></b><i class="d"></i></em></span>telegrapher</a>
+<a href="/research/">Research</a>
+<a href="/blog/">Blog</a>
+<a href="/people/">People</a>
+<a href="/about/">About</a>
+<a href="/llms.txt">llms.txt</a>
+<a href="/api/index.json">API</a>
+<span class="fine">An independent, unfunded, unincorporated research collaboration.</span>
+</div></footer>
+<script src="/assets/site.js?v=982e87e8" defer></script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ScholarlyArticle", "abstract": "Editing one fact can change a derived quantity, comparison, or other statement across linked documents. RippleKB evaluates whether systems can recover a constructed set of affected source units completely. Each item edits one source fact in a small set of linked documents. The proposed answer key is a hidden dependency closure, with unaffected units also present. A system returns a ranked list of source units, word for word, under a review rule tied to the constructed affected-set size. We regenerate every item from a public multi-hop corpus and test identifier-order, document-position, lexical, and supporting-fact rankings, alongside role and template concentration checks. We release the audit protocol under which the proposed closure is to be reviewed unit by unit. We report how far retrieval-style and language-model baselines get toward recovering the constructed closure completely on the machine-validated candidate set. Complete recovery tests whether a ranking includes the entire constructed target, while exact-copy measures separately assess preservation of source text.", "author": [{"@type": "Person", "name": "Sisong Bei", "url": "https://telegrapher.ai/people/sisong-bei/"}, {"@type": "Person", "name": "Mikhail L Arbuzov", "url": "https://telegrapher.ai/people/mikhail-arbuzov/"}, {"@type": "Person", "name": "Ziwei Dong", "url": "https://telegrapher.ai/people/ziwei-dong/"}, {"@type": "Person", "name": "Alexey Shvets", "url": "https://telegrapher.ai/people/alexey-shvets/"}, {"@type": "Person", "name": "Dmitri Kalaev", "url": "https://telegrapher.ai/people/dmitri-kalaev/"}], "datePublished": "2026-08-25", "encoding": {"@type": "MediaObject", "contentUrl": "https://telegrapher.ai/papers/ripplekb/ripplekb.pdf", "encodingFormat": "application/pdf"}, "headline": "RippleKB: Finding What an Edit Changes Across Linked Documents", "name": "RippleKB: Finding What an Edit Changes Across Linked Documents", "url": "https://telegrapher.ai/research/ripplekb/"}</script>
+</body>
+</html>

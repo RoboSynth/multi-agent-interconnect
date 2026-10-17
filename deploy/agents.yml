@@ -1,0 +1,67 @@
+# Optional formal-platform participants. Every mount contains one domain only.
+# Config paths must already refer to /domain, /state, and container DNS names.
+x-agent: &agent
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile.agent
+  image: incident-pilot-agent:local
+  restart: unless-stopped
+  profiles: [agents]
+  init: true
+  read_only: true
+  tmpfs: [/tmp]
+
+services:
+  application-agent:
+    <<: *agent
+    volumes:
+      - ${AGENT_APPLICATION_DIR:-../runtime/container-domains/application}:/domain:ro
+      - application-agent-state:/state
+    labels: {incident-pilot: "true", incident-pilot.domain: application}
+    depends_on: {app-v2: {condition: service_healthy}}
+
+  verification-agent:
+    <<: *agent
+    volumes:
+      - ${AGENT_VERIFICATION_DIR:-../runtime/container-domains/verification}:/domain:ro
+      - verification-agent-state:/state
+    labels: {incident-pilot: "true", incident-pilot.domain: verification}
+    depends_on: {nginx: {condition: service_started}}
+
+  database-agent:
+    <<: *agent
+    command: [python, -m, acps_mcp_bridge, --config, /domain/bridge.json]
+    volumes:
+      - ${AGENT_DATABASE_DIR:-../runtime/container-domains/database}:/domain:ro
+      - database-agent-state:/state
+    labels: {incident-pilot: "true", incident-pilot.domain: database}
+    depends_on: {postgres: {condition: service_healthy}}
+
+  database-backup-agent:
+    <<: *agent
+    command: [python, -m, acps_mcp_bridge, --config, /domain/bridge.json]
+    volumes:
+      - ${AGENT_DATABASE_BACKUP_DIR:-../runtime/container-domains/database-backup}:/domain:ro
+      # Main and backup configs use the SAME /state/operations.sqlite path.
+      - database-agent-state:/state
+    labels: {incident-pilot: "true", incident-pilot.domain: database}
+    depends_on: {postgres: {condition: service_healthy}}
+
+  ops-agent:
+    <<: *agent
+    # Docker socket administration belongs only to this resource domain.
+    user: "0:0"
+    command: [python, -m, acps_mcp_bridge, --config, /domain/bridge.json]
+    volumes:
+      - ${AGENT_OPS_DIR:-../runtime/container-domains/ops}:/domain:ro
+      - ops-agent-state:/state
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./nginx/runtime:/route
+    labels: {incident-pilot: "true", incident-pilot.domain: operations}
+    depends_on: {nginx: {condition: service_started}}
+
+volumes:
+  application-agent-state:
+  verification-agent-state:
+  database-agent-state:
+  ops-agent-state:

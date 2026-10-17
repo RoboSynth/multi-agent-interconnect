@@ -1,0 +1,68 @@
+{
+  "native": {
+    "file_watcher": {
+      "passed": true,
+      "scope": "Only the synthetic log created in the requested probe directory"
+    },
+    "event_log_subscription": {
+      "passed": true,
+      "scope": "Future Application events subscription registration only; no log contents exported and no event injected"
+    },
+    "ui_automation_activation": {
+      "passed": true,
+      "scope": "COM activation only; no user windows inspected and no GUI error recognition tested"
+    },
+    "process_context": {
+      "elevated": false,
+      "powershell": "7.6.5"
+    },
+    "process_exit_code": 0
+  },
+  "controlled_repair": {
+    "passed": true,
+    "failure_captured": true,
+    "before_exit_code": 1,
+    "after_exit_code": 0,
+    "task_result_verified": true,
+    "original_config_restored": true,
+    "fault_reproduced_after_restore": true,
+    "original_config_sha256": "7baa58bb97816eb2ad9fb2bf698470493287b32b7971dd14df066ccad8becd10",
+    "scope": "Only a synthetic config in this run directory; deterministic fix, not real software or model evaluation"
+  },
+  "browser_cdp": {
+    "passed": true,
+    "scope": "Real CDP events from a synthetic loopback page in a separate headless Chrome profile; not a test of the user-profile extension or native messaging",
+    "observed": {
+      "exceptions": [
+        "Error: EA_SYNTHETIC_EXCEPTION"
+      ],
+      "consoleErrors": [
+        "EA_SYNTHETIC_CONSOLE"
+      ],
+      "failedHttp": [
+        {
+          "status": 404,
+          "pathname": "/missing"
+        },
+        {
+          "status": 404,
+          "pathname": "/favicon.ico"
+        }
+      ]
+    },
+    "probe_exit_code": 0
+  },
+  "owned_browser_cleanup": {
+    "passed": true,
+    "method": "Browser.close and process wait"
+  },
+  "metadata": {
+    "local_date": "2026-10-15",
+    "python": "3.13.3",
+    "model_api_calls": 0,
+    "external_accounts_changed": false,
+    "user_browser_profile_used": false,
+    "real_app_configs_modified": false,
+    "run_directory": "D:\\AI + 开源\\参赛资料_2026AIC_AI开源\\报错助手_可行性与架构_20261015\\验证\\运行记录\\20261015-143853"
+  }
+}

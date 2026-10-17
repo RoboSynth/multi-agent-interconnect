@@ -1,0 +1,15 @@
+{
+  "executor_aic": "REPLACE_WITH_DATABASE_AIC",
+  "allowed_callers": ["REPLACE_WITH_COORDINATOR_AIC"],
+  "policy": "policy.yaml",
+  "ledger_path": "../../output/database-domain/operations.sqlite",
+  "audit_path": "../../output/database-domain/amp_audit.jsonl",
+  "approval_secret_env": "INCIDENT_APPROVAL_SECRET",
+  "servers": {
+    "postgres": {
+      "command": "postgres-mcp",
+      "args": ["--access-mode=unrestricted"],
+      "env_names": ["DATABASE_URI"]
+    }
+  }
+}

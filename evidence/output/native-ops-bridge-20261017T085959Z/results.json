@@ -1,0 +1,146 @@
+{
+  "transport": "official MCP SDK stdio",
+  "backend": "native Windows process/Nginx",
+  "container_backend_tested": false,
+  "platform_group_tested": false,
+  "write_executed": true,
+  "checks": {
+    "ops.containers": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.containers",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_state",
+          "value": "running",
+          "source": "ops.containers",
+          "observed_at": "2026-10-17T09:00:03.006299+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "ops.route_status": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.route_status",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "route_version",
+          "value": "v2",
+          "source": "ops.route_status",
+          "observed_at": "2026-10-17T09:00:03.009871+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "ops.route_rollback": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.route_rollback",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "route_version",
+          "value": "v2",
+          "source": "ops.route_rollback",
+          "observed_at": "2026-10-17T09:00:03.222317+00:00"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-ops-1",
+        "state": "applied",
+        "before": {
+          "value": "v2"
+        },
+        "after": {
+          "value": "v2"
+        }
+      }
+    },
+    "ops.route_rollback.replay": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.route_rollback",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "route_version",
+          "observed_at": "2026-10-17T09:00:03.222317+00:00",
+          "source": "ops.route_rollback",
+          "value": "v2"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-ops-1",
+        "state": "skipped_already_applied",
+        "before": {
+          "value": "v2"
+        },
+        "after": {
+          "value": "v2"
+        }
+      }
+    },
+    "ops.restart": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.restart",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_state",
+          "value": "running",
+          "source": "ops.restart",
+          "observed_at": "2026-10-17T09:00:05.160416+00:00"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-ops-2",
+        "state": "applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    },
+    "ops.restart.replay": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-ops",
+      "logical_task_id": "lt-ops.restart",
+      "executor_aic": "ops-local",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "container_state",
+          "observed_at": "2026-10-17T09:00:05.160416+00:00",
+          "source": "ops.restart",
+          "value": "running"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-ops-2",
+        "state": "skipped_already_applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    }
+  },
+  "audit_event_count": 6
+}

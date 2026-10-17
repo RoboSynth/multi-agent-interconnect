@@ -1,0 +1,49 @@
+{
+  "finished_utc": "2026-10-17T03:58:57.973043+00:00",
+  "platform": "https://wt.ioa.pub/",
+  "registration": "APPROVED",
+  "aics": {
+    "leader": "1.2.156.3088.1.BUPT.8N4WSS.20H6L9.64A7HH.026G",
+    "partner": "1.2.156.3088.1.BUPT.8N4WSS.66WECD.I0BRQD.1DKM"
+  },
+  "client_certificates": "official clientAuth certificates issued for both AICs",
+  "broker": "amqps://wt.ioa.pub:5671/acps",
+  "group_api": "https://wt.ioa.pub:9007",
+  "run_success": true,
+  "exit_code": 0,
+  "rounds": [
+    {
+      "direction": "leader-to-partner",
+      "group_id": "group-smoke-0c94d009653649b09013d23258e80f22",
+      "task_id": "probe-253aac4e68a54d07b342da8c5c0735cf",
+      "states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "returned_message": "44b3945f01474779a2432d8ff38a3efc",
+      "returned_by": "1.2.156.3088.1.BUPT.8N4WSS.66WECD.I0BRQD.1DKM",
+      "completed": true
+    },
+    {
+      "direction": "partner-to-leader",
+      "group_id": "group-smoke-efb67e33a87d4f5b9ac33f8f2a5b0fd8",
+      "task_id": "probe-4f48dea8d448424a8a67a6e5b88842ab",
+      "states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "returned_message": "bd314a45691144d893019c617d03744f",
+      "returned_by": "1.2.156.3088.1.BUPT.8N4WSS.20H6L9.64A7HH.026G",
+      "completed": true
+    }
+  ],
+  "connections_closed": true,
+  "runtime": "two-agent/live-bidirectional-fixed-20261017T035844Z.json",
+  "first_run_with_close_timeout": "two-agent/live-bidirectional-20261017T035145Z.json",
+  "close_fix": "Move Partner DISBAND cleanup out of its AMQP consumer task; share the cleanup task with explicit close.",
+  "discovery_queries": "Approved agents were absent from the ADP responses recorded during this task; these two message tasks target the approved AICs directly."
+}

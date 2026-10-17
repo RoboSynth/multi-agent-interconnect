@@ -1,0 +1,115 @@
+{
+  "transport": "official MCP SDK stdio",
+  "upstream": "postgres-mcp==0.3.0",
+  "database": "loopback PostgreSQL16 orders",
+  "write_executed": true,
+  "checks": {
+    "db.health": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-db",
+      "logical_task_id": "lt-db.health",
+      "executor_aic": "db-primary",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "db_health",
+          "value": "Connection health: Connections healthy: 11 total, 0 idle\n",
+          "source": "db.health",
+          "observed_at": "2026-10-17T08:55:59.382239+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "db.read_only_status": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-db",
+      "logical_task_id": "lt-db.read_only_status",
+      "executor_aic": "db-primary",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "read_only",
+          "value": false,
+          "source": "db.read_only_status",
+          "observed_at": "2026-10-17T08:55:59.416242+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "db.blocking_sessions": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-db",
+      "logical_task_id": "lt-db.blocking_sessions",
+      "executor_aic": "db-primary",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "blocking_sessions",
+          "value": [],
+          "source": "db.blocking_sessions",
+          "observed_at": "2026-10-17T08:55:59.445683+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "minimum_privilege": [
+      {
+        "can_create": false
+      }
+    ],
+    "restore": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-db",
+      "logical_task_id": "lt-db.restore_writes",
+      "executor_aic": "db-primary",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "read_only",
+          "value": false,
+          "source": "db.restore_writes",
+          "observed_at": "2026-10-17T08:55:59.562458+00:00"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-live-restore",
+        "state": "applied",
+        "before": {
+          "value": false
+        },
+        "after": {
+          "value": false
+        }
+      }
+    },
+    "backup_replay": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-live-db",
+      "logical_task_id": "lt-db.restore_writes",
+      "executor_aic": "db-backup",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "read_only",
+          "observed_at": "2026-10-17T08:55:59.562458+00:00",
+          "source": "db.restore_writes",
+          "value": false
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-live-restore",
+        "state": "skipped_already_applied",
+        "before": {
+          "value": false
+        },
+        "after": {
+          "value": false
+        }
+      }
+    }
+  },
+  "audit_event_count": 5,
+  "platform_group_tested": false
+}

@@ -1,0 +1,103 @@
+{
+  "scenario": "F12",
+  "environment": "actual isolated Docker PostgreSQL/Nginx/FastAPI/reply-suppression proxy",
+  "platform_group_tested": false,
+  "passed": true,
+  "checks": [
+    {
+      "name": "reply is lost after actual backend write",
+      "passed": true,
+      "key_available_to_resolver": true
+    },
+    {
+      "name": "PostgreSQL contains exactly one committed order",
+      "passed": true
+    },
+    {
+      "name": "original key confirms the existing receipt",
+      "passed": true,
+      "result": {
+        "status": "committed",
+        "manual_required": false,
+        "receipt": {
+          "order": {
+            "id": "07f1c8c0-c27e-4aa6-affd-3e55bcfdeb7a",
+            "item": "isolated-unknown-receipt",
+            "status": "CREATED",
+            "quantity": 1,
+            "created_at": "2026-10-17T09:49:12.382917+00:00",
+            "updated_at": "2026-10-17T09:49:12.382917+00:00",
+            "request_key": "f12-docker-ec31bb5eb3d841d6b1ab4dddeee5d682"
+          },
+          "changed": true,
+          "outcome": "committed",
+          "order_id": "07f1c8c0-c27e-4aa6-affd-3e55bcfdeb7a",
+          "operation_key": "f12-docker-ec31bb5eb3d841d6b1ab4dddeee5d682",
+          "operation_kind": "create",
+          "order_api_version": "v2"
+        }
+      }
+    },
+    {
+      "name": "original-key retry returns the existing order",
+      "passed": true,
+      "response": {
+        "order": {
+          "id": "07f1c8c0-c27e-4aa6-affd-3e55bcfdeb7a",
+          "item": "isolated-unknown-receipt",
+          "status": "CREATED",
+          "quantity": 1,
+          "created_at": "2026-10-17T09:49:12.382917+00:00",
+          "updated_at": "2026-10-17T09:49:12.382917+00:00",
+          "request_key": "f12-docker-ec31bb5eb3d841d6b1ab4dddeee5d682"
+        },
+        "changed": true,
+        "outcome": "committed",
+        "order_id": "07f1c8c0-c27e-4aa6-affd-3e55bcfdeb7a",
+        "operation_key": "f12-docker-ec31bb5eb3d841d6b1ab4dddeee5d682",
+        "operation_kind": "create",
+        "order_api_version": "v2"
+      }
+    },
+    {
+      "name": "same-key retry still leaves one database order",
+      "passed": true
+    },
+    {
+      "name": "reply is lost after actual backend write",
+      "passed": true,
+      "key_available_to_resolver": false
+    },
+    {
+      "name": "PostgreSQL contains exactly one committed order",
+      "passed": true
+    },
+    {
+      "name": "missing original key remains unknown and requires manual resolution",
+      "passed": true,
+      "result": {
+        "status": "unknown",
+        "manual_required": true,
+        "reason": "original_request_key_missing",
+        "new_request_created": false
+      }
+    },
+    {
+      "name": "missing-key path creates no replacement order",
+      "passed": true
+    }
+  ],
+  "proxy_stopped": true,
+  "healthy_observation": {
+    "run_id": "f12-restored-b47d405d79534ca4a7c3948fa5a9784c",
+    "duration_seconds": 30.016,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  }
+}

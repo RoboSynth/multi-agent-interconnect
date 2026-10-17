@@ -1,0 +1,119 @@
+{
+  "scenario": "F06-real-MCP",
+  "checks": {
+    "blocking_observed": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-blocker",
+      "logical_task_id": "lt-db.blocking_sessions",
+      "executor_aic": "db-F06-test",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "blocking_sessions",
+          "value": [
+            {
+              "pid": 15488,
+              "state": "active",
+              "wait_event_type": "Lock",
+              "blocking_pids": [
+                35984
+              ]
+            }
+          ],
+          "source": "db.blocking_sessions",
+          "observed_at": "2026-10-17T09:11:23.700973+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "without_approval": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-blocker",
+      "logical_task_id": "lt-db.terminate_blocker",
+      "executor_aic": "db-F06-test",
+      "status": "rejected",
+      "facts": [],
+      "local_hypotheses": [],
+      "reason": "high risk tool requires a valid independent approval proof"
+    },
+    "non_blocking_target": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-blocker",
+      "logical_task_id": "lt-db.terminate_blocker",
+      "executor_aic": "db-F06-test",
+      "status": "rejected",
+      "facts": [],
+      "local_hypotheses": [],
+      "reason": "target PID is not an observed experiment blocking session"
+    },
+    "controlled_termination": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-blocker",
+      "logical_task_id": "lt-db.terminate_blocker",
+      "executor_aic": "db-F06-test",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "blocking_session_terminated",
+          "value": true,
+          "source": "db.terminate_blocker",
+          "observed_at": "2026-10-17T09:11:23.813896+00:00"
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-authorized-blocker",
+        "state": "applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    },
+    "waiter_released": {
+      "completed": true,
+      "count_is_nonnegative": true
+    },
+    "duplicate": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "inc-real-blocker",
+      "logical_task_id": "lt-db.terminate_blocker",
+      "executor_aic": "db-F06-test",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "blocking_session_terminated",
+          "observed_at": "2026-10-17T09:11:23.813896+00:00",
+          "source": "db.terminate_blocker",
+          "value": true
+        }
+      ],
+      "local_hypotheses": [],
+      "operation": {
+        "operation_id": "op-authorized-blocker",
+        "state": "skipped_already_applied",
+        "before": {
+          "value": null
+        },
+        "after": {
+          "value": null
+        }
+      }
+    }
+  },
+  "passed": true,
+  "after_health": {
+    "8082": {
+      "ok": true,
+      "api_version": "v2"
+    },
+    "8088": {
+      "ok": true,
+      "api_version": "v2"
+    }
+  },
+  "audit_event_count": 5,
+  "platform_group_tested": false
+}

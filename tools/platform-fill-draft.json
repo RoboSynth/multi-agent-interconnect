@@ -1,0 +1,8 @@
+{
+  "session": "wutong",
+  "args": [
+    "fill",
+    "e427",
+    "{\n  \"aic\": \"\",\n  \"active\": false,\n  \"lastModifiedTime\": \"2026-10-17T00:00:00+08:00\",\n  \"protocolVersion\": \"02.02\",\n  \"name\": \"故障协作应用探测智能体\",\n  \"description\": \"跨系统故障协作早期试验中的应用侧 Partner。读取隔离实验应用的健康状态、配置版本和故障证据，返回结构化结果供协调者和验证者使用。目前采用规则执行，不使用大模型；首轮平台接入仅开放只读探测，不接受生产环境操作。\",\n  \"version\": \"0.1.0\",\n  \"provider\": {},\n  \"securitySchemes\": {\n    \"mtls\": {\n      \"type\": \"mutualTLS\",\n      \"description\": \"接入时使用平台认可的 AIC 客户端身份证书进行双向 TLS 认证。草稿尚未取得证书。\"\n    }\n  },\n  \"endPoints\": [],\n  \"capabilities\": {\n    \"streaming\": false,\n    \"notification\": false,\n    \"messageQueue\": []\n  },\n  \"defaultInputModes\": [\n    \"application/json\"\n  ],\n  \"defaultOutputModes\": [\n    \"application/json\"\n  ],\n  \"skills\": [\n    {\n      \"id\": \"incident.application.inspect\",\n      \"name\": \"应用侧故障证据采集\",\n      \"description\": \"读取隔离实验应用的健康、连接配置及配置版本，返回结构化故障证据。只接受实验配置中指定的目标；不执行任意地址探测、Shell 命令或生产环境修复。输入为带 action=inspect 的 JSON 数据。\",\n      \"version\": \"0.1.0\",\n      \"tags\": [\n        \"故障诊断\",\n        \"应用探测\",\n        \"只读\",\n        \"隔离实验\",\n        \"incident-pilot\"\n      ],\n      \"examples\": [\n        \"检查实验订单应用是否可用，并提供应用侧证据。\"\n      ],\n      \"inputModes\": [\n        \"application/json\"\n      ],\n      \"outputModes\": [\n        \"application/json\"\n      ]\n    }\n  ]\n}"
+  ]
+}

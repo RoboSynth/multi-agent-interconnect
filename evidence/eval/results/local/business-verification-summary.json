@@ -1,0 +1,296 @@
+{
+  "evidence_level": "actual local Windows PostgreSQL16 + FastAPI + Nginx resources; business/injector acceptance only",
+  "generated_at": "2026-10-17T08:56:03.710556+00:00",
+  "http_and_real_postgres_tests": {
+    "command": "python -m unittest discover -s tests -p business_test.py -v; BUSINESS_TEST_DATABASE=1",
+    "tests_run": 9,
+    "passed": 9,
+    "skipped": 0
+  },
+  "accepted_scenarios": {
+    "F01": {
+      "scenario": "F01",
+      "checks": [
+        {
+          "name": "stopped app produces actual gateway 502",
+          "passed": true,
+          "http_status": 502
+        }
+      ],
+      "started_at": "2026-10-17T08:50:21.228817+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-1396a7d82e85405d96e08f3ffcd597d1",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.329,
+      "passed": true,
+      "source": "business-native-acceptance.json"
+    },
+    "F06": {
+      "scenario": "F06",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "TimeoutError",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "lock wait uses PostgreSQL cancellation code",
+          "passed": true,
+          "code": "TimeoutError"
+        }
+      ],
+      "started_at": "2026-10-17T08:51:23.389161+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-d7819388eae14c6180a17c06e6ddcd03",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 34.047,
+      "passed": true,
+      "source": "business-native-acceptance.json"
+    },
+    "F07": {
+      "scenario": "F07",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "25006",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "PostgreSQL reports real read-only SQLSTATE",
+          "passed": true,
+          "code": "25006"
+        }
+      ],
+      "started_at": "2026-10-17T08:51:57.479756+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-7b7de6e0d3944c80a0ebc75b19db6f7a",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 30.657,
+      "passed": true,
+      "source": "business-native-acceptance.json"
+    },
+    "F10": {
+      "scenario": "F10",
+      "checks": [
+        {
+          "name": "reads remain available",
+          "passed": true,
+          "http_status": 200
+        },
+        {
+          "name": "actual database write rejects or times out",
+          "passed": true,
+          "http_status": 503,
+          "response": {
+            "error": "database_operation_failed",
+            "code": "25006",
+            "outcome": "unknown"
+          }
+        },
+        {
+          "name": "PostgreSQL reports real read-only SQLSTATE",
+          "passed": true,
+          "code": "25006"
+        },
+        {
+          "name": "route repair alone leaves read-only write failure",
+          "passed": true,
+          "http_status": 503
+        }
+      ],
+      "started_at": "2026-10-17T08:52:28.199457+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-4de20794617d4b77ab19e66395fcc234",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.688,
+      "passed": true,
+      "source": "business-native-acceptance.json"
+    },
+    "F02": {
+      "scenario": "F02",
+      "checks": [
+        {
+          "name": "v1 route misses v2 response field",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "operation_key": "accept-efc16e3533c544b0928287e7b7a35404-write",
+            "operation_kind": "create",
+            "outcome": "committed",
+            "order_id": "fd789d49-de6f-4371-9670-0ac691ddb2ca",
+            "order": {
+              "id": "fd789d49-de6f-4371-9670-0ac691ddb2ca",
+              "request_key": "accept-efc16e3533c544b0928287e7b7a35404-write",
+              "item": "native-acceptance",
+              "quantity": 1,
+              "status": "CREATED",
+              "created_at": "2026-10-17T08:54:10.410035+00:00",
+              "updated_at": "2026-10-17T08:54:10.410035+00:00"
+            },
+            "changed": true
+          }
+        }
+      ],
+      "started_at": "2026-10-17T08:54:09.473698+00:00",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-efc16e3533c544b0928287e7b7a35404",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 31.984,
+      "passed": true,
+      "source": "business-native-acceptance-route-fix.json"
+    },
+    "F12": {
+      "scenario": "F12",
+      "checks": [
+        {
+          "name": "client times out after backend commit",
+          "passed": true
+        },
+        {
+          "name": "original receipt resolves unknown result",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "order": {
+              "id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+              "item": "native-acceptance",
+              "status": "CREATED",
+              "quantity": 1,
+              "created_at": "2026-10-17T08:54:44.044499+00:00",
+              "updated_at": "2026-10-17T08:54:44.044499+00:00",
+              "request_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write"
+            },
+            "changed": true,
+            "outcome": "committed",
+            "order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+            "operation_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write",
+            "operation_kind": "create",
+            "order_api_version": "v2"
+          }
+        },
+        {
+          "name": "same-key retry returns the committed order",
+          "passed": true,
+          "http_status": 200,
+          "response": {
+            "order": {
+              "id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+              "item": "native-acceptance",
+              "status": "CREATED",
+              "quantity": 1,
+              "created_at": "2026-10-17T08:54:44.044499+00:00",
+              "updated_at": "2026-10-17T08:54:44.044499+00:00",
+              "request_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write"
+            },
+            "changed": true,
+            "outcome": "committed",
+            "order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+            "operation_key": "accept-140a37f705b04c688fa6b2cadbf3b41f-write",
+            "operation_kind": "create",
+            "order_api_version": "v2"
+          }
+        }
+      ],
+      "started_at": "2026-10-17T08:54:41.477693+00:00",
+      "original_order_id": "42e36fdd-1382-4839-b665-4eb6319f14ad",
+      "restored": true,
+      "healthy_observation": {
+        "run_id": "accept-140a37f705b04c688fa6b2cadbf3b41f",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 0,
+        "passed": true
+      },
+      "duration_seconds": 35.094,
+      "passed": true,
+      "source": "business-native-acceptance-route-fix.json"
+    }
+  },
+  "all_six_scenarios_passed": true,
+  "retained_failures": [
+    "business-native-acceptance-wmi-failure.json",
+    "business-native-acceptance.json:F02"
+  ],
+  "not_verified": [
+    "Docker compose execution (Docker unavailable)",
+    "Linux/cloud cold start or continuous uptime",
+    "F15 precise participant interruption hooks",
+    "F19 participant heartbeat experiment",
+    "Registered AIP participants started by the business-only up script"
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "inc-aceed16009854b92",
+  "status": "completed",
+  "error": null,
+  "actions": [
+    [
+      "ops.route_rollback",
+      "ok",
+      {
+        "operation_id": "inc-aceed16009854b92:route",
+        "state": "applied",
+        "before": {
+          "value": "v1"
+        },
+        "after": {
+          "value": "v2"
+        }
+      }
+    ],
+    [
+      "db.restore_writes",
+      "ok",
+      {
+        "operation_id": "inc-aceed16009854b92:restore-writes",
+        "state": "applied",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      }
+    ],
+    [
+      "application.pool_rebuild",
+      "ok",
+      {
+        "operation_id": "inc-aceed16009854b92:pool",
+        "state": "applied"
+      }
+    ]
+  ],
+  "observation": {
+    "run_id": "inc-aceed16009854b92-lt-72a957e97cb2",
+    "duration_seconds": 30.016,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  },
+  "elapsed_seconds": 70.75
+}

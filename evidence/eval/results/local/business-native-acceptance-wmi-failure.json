@@ -1,0 +1,21 @@
+{
+  "environment": "actual local Windows PostgreSQL16 + Nginx + FastAPI",
+  "started_at": "2026-10-17T08:48:20.764156+00:00",
+  "scenarios": [
+    {
+      "scenario": "F01",
+      "checks": [],
+      "started_at": "2026-10-17T08:48:21.043825+00:00",
+      "error": "RuntimeError: powershell.exe failed (1): Get-CimInstance : 鎷掔粷璁块棶 \nAt line:1 char:6\n+ $p = Get-CimInstance Win32_Process -Filter 'ProcessId = 36540'; if ($ ...\n+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : PermissionDenied: (:) [Get-CimInstance], CimException\n    + FullyQualifiedErrorId : HRESULT 0x80041003,Microsoft.Management.Infrastructure.CimCmdlets.GetCimInstanceCommand\n \n",
+      "restored": false,
+      "restoration_error": "RuntimeError: powershell.exe failed (1): Get-CimInstance : 鎷掔粷璁块棶 \nAt line:1 char:6\n+ $p = Get-CimInstance Win32_Process -Filter 'ProcessId = 36540'; if ($ ...\n+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : PermissionDenied: (:) [Get-CimInstance], CimException\n    + FullyQualifiedErrorId : HRESULT 0x80041003,Microsoft.Management.Infrastructure.CimCmdlets.GetCimInstanceCommand\n \n",
+      "duration_seconds": 1.516,
+      "passed": false
+    }
+  ],
+  "unsupported": {
+    "F15": "Requires the database participant's three precise interrupt hooks; use the resumable-task experiment runner. F07 alone is not an F15 result.",
+    "F19": "Requires a registered operations-participant process and heartbeat experiment runner; no participant PID is inferred or killed."
+  },
+  "passed": false
+}

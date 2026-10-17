@@ -1,0 +1,65 @@
+{
+  "started_at": "2026-10-17T10:07:47.814717+00:00",
+  "mode": "wutong-amqps",
+  "scope": [
+    "application",
+    "database",
+    "verification"
+  ],
+  "full_p0_acceptance": false,
+  "fault_injection": false,
+  "status": "completed",
+  "participants": [
+    {
+      "role": "application",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+      "resources": [
+        "orders"
+      ]
+    },
+    {
+      "role": "database",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+      "resources": [
+        "orders"
+      ]
+    },
+    {
+      "role": "verification",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S",
+      "resources": [
+        "orders"
+      ]
+    }
+  ],
+  "tools": [
+    "application.config_rollback",
+    "application.pool_rebuild",
+    "application.status",
+    "db.blocking_sessions",
+    "db.health",
+    "db.read_only_status",
+    "db.restore_writes",
+    "db.terminate_blocker",
+    "incident.verification"
+  ],
+  "observation": {
+    "schema_version": "ifc/1.0",
+    "incident_id": "platform-smoke-5d2e56156a8945dc8d2a3742f9d76717",
+    "logical_task_id": "lt-cd70a906a6e2460baffc0075c977f9ec",
+    "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+    "status": "ok",
+    "facts": [
+      {
+        "key": "read_only",
+        "value": false,
+        "source": "db.read_only_status",
+        "observed_at": "2026-10-17T10:07:59.128696+00:00"
+      }
+    ],
+    "local_hypotheses": [],
+    "operation": null,
+    "evidence_ref": "amp:audit:ef77db5a-5afe-40c8-b158-1f340df2d8f3"
+  },
+  "finished_at": "2026-10-17T10:08:02.269419+00:00"
+}

@@ -1,0 +1,5 @@
+{
+  "session": "wutong",
+  "resultFile": "incident-pilot/output/playwright/browser-workflow-result.json",
+  "args": ["run-code", "async page => { await page.getByRole('combobox', {name:'选择要注入的故障'}).selectOption('combined'); await page.getByRole('button', {name:'开始一次协同修复', exact:true}).click(); await page.getByRole('heading', {name:'服务已恢复', exact:true}).waitFor({state:'visible',timeout:25000}); const result=await page.locator('#result-panel').innerText(); const steps=await page.locator('.workflow-step').allTextContents(); await page.screenshot({path:'incident-pilot/output/playwright/demo-complete.png',fullPage:true}); return {url:page.url(),title:await page.title(),result,steps,platform:await page.locator('.platform-strip').innerText(),agents:await page.locator('#agents-list').innerText()}; }"]
+}
