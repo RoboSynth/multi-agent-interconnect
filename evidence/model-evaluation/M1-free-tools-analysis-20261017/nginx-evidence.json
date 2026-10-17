@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-10-17T12:02:52.149Z",
+  "scope": "F01 M1 free-tools-v1 inc-e475bfa62c614982 route action 11:44:24..33Z only; necessary Nginx window only",
+  "log_timezone_offset": "-0700",
+  "notes": [
+    "source_observed_sha256 hashes the exact bytes read at capture; active source logs may append later",
+    "MCP raw error response body was not preserved; only is_error=true and ledger ToolExecutionError are directly recorded",
+    "two reload notices and seven public health client-timeout499 responses support route health-convergence failure; this causal classification is an inference"
+  ],
+  "sources": [
+    {
+      "source_path": "runtime/nginx/logs/error.log",
+      "source_observed_sha256": "a62de28301f0607708290190c3c45b418845bfd74bbc862e8d72235a8fdc2322",
+      "source_observed_bytes": 34623,
+      "selected_line_range": [
+        159,
+        160
+      ],
+      "selected_line_count": 2,
+      "rows": [
+        {
+          "line": 159,
+          "raw": "2026/10/17 04:44:24 [notice] 22592#33752: signal process started"
+        },
+        {
+          "line": 160,
+          "raw": "2026/10/17 04:44:32 [notice] 14764#45948: signal process started"
+        }
+      ]
+    },
+    {
+      "source_path": "runtime/nginx/logs/access.log",
+      "source_observed_sha256": "ef656decb43e8aa31afa5d142b52e18bfa1a854d72630458c5de5bd433dd9a85",
+      "source_observed_bytes": 865409,
+      "selected_line_range": [
+        6408,
+        6421
+      ],
+      "selected_line_count": 7,
+      "rows": [
+        {
+          "line": 6408,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:25 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6410,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:26 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6412,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:28 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6414,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:29 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6416,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:30 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6419,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:31 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        },
+        {
+          "line": 6421,
+          "raw": "127.0.0.1 - - [17/Oct/2026:04:44:32 -0700] \"GET /health HTTP/1.1\" 499 0 \"-\" \"Python-urllib/3.12\""
+        }
+      ]
+    }
+  ]
+}

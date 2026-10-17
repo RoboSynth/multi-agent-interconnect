@@ -1,5 +1,7 @@
 """ADP candidates need a group describe roundtrip before resource selection."""
 from __future__ import annotations
+import asyncio
+import math
 from urllib.parse import urlparse
 import httpx
 
@@ -35,14 +37,30 @@ async def discover_candidates(url, skill_id, *, client=None, record=None):
     return candidates
 
 
-async def select_participant(candidates, *, resource, tool, describe, excluded=()):
+async def select_participant(candidates, *, resource, tool, describe, excluded=(),
+                             trusted_aics=None, describe_timeout_seconds=30, record=None):
+    if (type(describe_timeout_seconds) not in (int, float)
+            or not math.isfinite(describe_timeout_seconds) or describe_timeout_seconds <= 0):
+        raise ValueError("describe_timeout_seconds must be finite and positive")
+    if trusted_aics is not None:
+        if (isinstance(trusted_aics, (str, bytes))
+                or not all(isinstance(aic, str) and aic.strip() for aic in trusted_aics)):
+            raise ValueError("trusted_aics must contain nonempty AIC strings")
+        trusted_aics = set(trusted_aics)
     matches = []
     for acs in sorted(candidates, key=lambda c: c["aic"]):
         if acs["aic"] in excluded:
             continue
+        if trusted_aics is not None and acs["aic"] not in trusted_aics:
+            if record:
+                record("participant_excluded", aic=acs["aic"], reason="not_in_trusted_aics")
+            continue
         try:
-            description = await describe(acs)
-        except (TimeoutError, OSError, RuntimeError):
+            description = await asyncio.wait_for(describe(acs), describe_timeout_seconds)
+        except (TimeoutError, OSError, RuntimeError) as exc:
+            if record:
+                record("participant_not_confirmed", aic=acs["aic"],
+                       error_class=type(exc).__name__, describe_timeout_seconds=describe_timeout_seconds)
             continue
         if not isinstance(description, dict) or description.get("executor_aic") != acs["aic"]:
             continue

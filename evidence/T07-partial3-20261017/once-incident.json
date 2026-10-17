@@ -1,0 +1,174 @@
+{
+  "id": "inc-ec192872424a44ce",
+  "symptom": "定时巡检 schedule-a5e03b2bd4be4eeda7354106fef3324c：检查订单业务，通过资源域确认并处理异常。",
+  "status": "needs_attention",
+  "started_at": "2026-10-17T11:02:58.575383+00:00",
+  "facts": [],
+  "hypotheses": [
+    {
+      "cause": "application_unavailable",
+      "because": [],
+      "predictions": {
+        "ops.containers": [
+          "exited"
+        ],
+        "application.status": [
+          "unreachable"
+        ]
+      }
+    },
+    {
+      "cause": "stale_route",
+      "because": [],
+      "predictions": {
+        "ops.route_status": [
+          "v1"
+        ],
+        "application.status": [
+          "reachable"
+        ]
+      }
+    },
+    {
+      "cause": "database_read_only",
+      "because": [],
+      "predictions": {
+        "db.read_only_status": [
+          "ro"
+        ],
+        "db.blocking_sessions": [
+          "clear"
+        ]
+      }
+    },
+    {
+      "cause": "database_blocked",
+      "because": [],
+      "predictions": {
+        "db.blocking_sessions": [
+          "blocked"
+        ],
+        "db.read_only_status": [
+          "rw"
+        ]
+      }
+    },
+    {
+      "cause": "healthy_or_other",
+      "because": [],
+      "predictions": {
+        "ops.containers": [
+          "running"
+        ],
+        "ops.route_status": [
+          "v2"
+        ],
+        "db.read_only_status": [
+          "rw"
+        ],
+        "db.blocking_sessions": [
+          "clear"
+        ]
+      }
+    }
+  ],
+  "plan": [],
+  "events": [
+    {
+      "at": "2026-10-17T11:02:58.584601+00:00",
+      "event": "probe_selected",
+      "tool": "db.read_only_status",
+      "reason": {
+        "reason": "按假设区分度与成本选择下一次观察",
+        "ranking": [
+          {
+            "tool": "db.read_only_status",
+            "score": 0.16666666666666669,
+            "discrimination": 0.2,
+            "median_seconds": 1
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "score": 0.11764705882352942,
+            "discrimination": 0.2,
+            "median_seconds": 1
+          },
+          {
+            "tool": "application.status",
+            "score": 0.08333333333333334,
+            "discrimination": 0.1,
+            "median_seconds": 1
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-17T11:02:58.589600+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-a47029b1ab43",
+      "tool": "db.read_only_status"
+    },
+    {
+      "at": "2026-10-17T11:03:18.860415+00:00",
+      "event": "takeover_started",
+      "logical_task_id": "lt-a47029b1ab43",
+      "failed_aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+      "reason": "TimeoutError",
+      "discovery": "official-adp"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-a47029b1ab43",
+      "tool": "db.read_only_status",
+      "kind": "observe",
+      "args": {},
+      "status": "failed",
+      "started_at": "2026-10-17T11:02:58.589600+00:00",
+      "error": "RuntimeError"
+    }
+  ],
+  "approvals": [],
+  "result": null,
+  "model_source": "rules",
+  "tokens": 0,
+  "original_request_key": null,
+  "error": "RuntimeError: no confirmed ADP replacement completed the takeover",
+  "transport": "wutong-amqps",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "按假设区分度与成本选择下一次观察",
+      "ranking": [
+        {
+          "tool": "db.read_only_status",
+          "score": 0.16666666666666669,
+          "discrimination": 0.2,
+          "median_seconds": 1
+        },
+        {
+          "tool": "db.blocking_sessions",
+          "score": 0.11764705882352942,
+          "discrimination": 0.2,
+          "median_seconds": 1
+        },
+        {
+          "tool": "application.status",
+          "score": 0.08333333333333334,
+          "discrimination": 0.1,
+          "median_seconds": 1
+        }
+      ]
+    }
+  ],
+  "model_calls": 0,
+  "model_source_counts": {
+    "llm": 0,
+    "rules": 1
+  },
+  "model_error": null,
+  "model_requests": [],
+  "token_usage_complete": true,
+  "finished_at": "2026-10-17T11:03:20.014984+00:00",
+  "elapsed_seconds": 21.438
+}

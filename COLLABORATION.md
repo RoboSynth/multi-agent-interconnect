@@ -71,3 +71,9 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [13页技术报告开发稿](deliverables/development-report-20261017/technical-report-development.pdf)为匿名、非最终提交版，证据截至2026-10-17 11:41:43 UTC；不含之后的完整工具M1 pilot。相邻目录保留编排源与最终检查记录。
 
 [公开来源标识分类](evidence/audit/public-source-token-classification-20261017.json)仅按既有13份官方HTML的完整文件hash及标识指纹保留公开前端配置/HTML属性；项目16项已知私密值仍全部阻止，未来未知值不在例外内。
+
+## 完整工具M1开发验收与T07巡检增量
+
+[两批M1对照](evidence/model-evaluation/M1-free-tools-analysis-20261017/comparison.md)分别保留首批2/3与共享路由守卫修复后3/3，每批只有F01三方法各一次，不是新版45项矩阵。首批M1为真实MCP调用1次/error1次但ok修改0次，并有必要窗口中2条Nginx reload信号和7条health499；不把信号当重载完成证明，health收敛失败归因为日志与源码支持的推断，未补造MCP错误正文。v2 M1最终恢复但仍多1次不必要high和1次ok修改。模型证据只公开真实响应、usage和参数，历史M1-observe保持原统计边界。
+
+[T07筛选后公开证据](evidence/T07-partial3-20261017/README.md)记录三旧域正式AMQPS健康once与30分钟inspect循环启动。once同一事故30.003秒、30请求、10完整流程全成功，unknown/pending/审批均0；原失败、包装器exit120和同事故续接保留。可信AIC筛选及候选describe截止时间有针对测试。循环keep-awake请求成功、drills/high自动审批关闭，当前不代表24小时或7天在线。详见[最新进度](docs/开发进度_高分方案.md)和[审计](docs/P0完成审计_20261017.md)。13页PDF仍保持11:41:43Z旧证据截止，不因本批重生成。

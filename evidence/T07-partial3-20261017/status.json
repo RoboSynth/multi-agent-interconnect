@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-10-17T12:07:44.192Z",
+  "status": "healthy_once_completed_loop_running",
+  "scope": "same-machine partial integration using three OLD identities over actual official ADP and wutong-amqps; not seven new roles",
+  "healthy_once": {
+    "incident_id": "inc-288551bbd09b423c",
+    "schedule_run_id": "schedule-2539f542c1ce4409bad3d7d799ec1a95",
+    "status": "completed",
+    "elapsed_seconds": 32.594,
+    "duration_seconds": 30.003,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "business_recovered": true,
+    "approval_count": 0,
+    "resource_repair_actions": 0,
+    "dispatches": 1,
+    "resumed_after_private_launcher_exit120": true
+  },
+  "workbench": {
+    "pid": 46332,
+    "launcher_pid": 44344,
+    "port": 8767,
+    "connected": true,
+    "mode": "wutong-amqps",
+    "resource_credential_count": 0,
+    "group_id": "group-incident-ce7ebe68f17f4e2c98a9ec89b6a70b0d",
+    "participants": [
+      {
+        "role": "application",
+        "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+        "resources": [
+          "orders"
+        ]
+      },
+      {
+        "role": "database",
+        "aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+        "resources": [
+          "orders"
+        ]
+      },
+      {
+        "role": "verification",
+        "aic": "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S",
+        "resources": [
+          "orders"
+        ]
+      }
+    ],
+    "active_incident": false
+  },
+  "orders": {
+    "port": 18088,
+    "ok": true,
+    "api_version": "v2"
+  },
+  "loop": {
+    "actual_pid": 35572,
+    "launcher_pid": 43540,
+    "started_at": "2026-10-17T12:05:36.517879+00:00",
+    "interval_seconds": 1800,
+    "next_due_inspect_epoch": 1792240490.142,
+    "next_due_inspect_iso": "2026-10-17T12:34:50.142Z",
+    "active": null,
+    "observed_first_segment_seconds": 127.675,
+    "first_segment_job_starts": 0,
+    "keep_awake": {
+      "at": "2026-10-17T12:05:36.517879+00:00",
+      "event": "keep_awake_request",
+      "success": true,
+      "requested_flags": "0x80000001",
+      "previous_execution_state": "0x80000000"
+    },
+    "keep_awake_release_observed": false,
+    "fault_drills_enabled": false,
+    "high_automatic_approval": false,
+    "loop_stderr_bytes": 0
+  },
+  "environment": {
+    "description": "explicit system whitelist plus project network variable NO_PROXY",
+    "actual_variable_count": 23,
+    "resource_variable_count": 0,
+    "unexpected_variable_count": 0,
+    "controlled_network_variables": {
+      "NO_PROXY": "wt.ioa.pub,127.0.0.1,localhost"
+    }
+  },
+  "lease": {
+    "actual_pid": 17780,
+    "wsl_pid": 9604,
+    "lifetime": "process only; no global power, WSL or proxy changes"
+  },
+  "historical_failures_preserved": [
+    "initial once needs_attention before stable WSL session",
+    "Read-only probe invitation rejected: One inbound group is already active",
+    "group-create ConnectTimeout on default environment proxy path",
+    "private launcher OSError9/exit120 after dispatch; same unique incident resumed"
+  ],
+  "evidence_limits": [
+    "first loop segment only; no second periodic cycle or 24-hour stability claim",
+    "registered new ADP candidates were excluded before invite; appearance does not prove identity issuance or approval",
+    "MCP/domain credentials remain local; public export excludes private configs and full protocol message trees"
+  ]
+}

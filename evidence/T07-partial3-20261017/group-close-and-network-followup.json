@@ -1,0 +1,86 @@
+{
+  "at": "2026-10-17T12:07:44.192Z",
+  "user_authorized_exact_group": "group-incident-cae62c25c8e74b71bf74ebc760ba7a4f",
+  "official_close_records": [
+    {
+      "event": "leader_inbox_passive",
+      "consumer_count": 0,
+      "message_count": 0
+    },
+    {
+      "event": "owned_group_exchange_exists",
+      "group_id": "group-incident-cae62c25c8e74b71bf74ebc760ba7a4f",
+      "name": "group_1.2.156.3088.1.BUPT.8N4WSS.AKAA8C.7HEMBG.1B4B_group-incident-cae62c25c8e74b71bf74ebc760ba7a4f"
+    },
+    {
+      "event": "owned_control_context_restored",
+      "group_id": "group-incident-cae62c25c8e74b71bf74ebc760ba7a4f"
+    },
+    {
+      "event": "official_group_dissolve_returned",
+      "group_id": "group-incident-cae62c25c8e74b71bf74ebc760ba7a4f",
+      "at": "2026-10-17T11:49:29.016187+00:00"
+    }
+  ],
+  "other_groups_manually_deleted": 0,
+  "acl_http_before": {
+    "effective_proxy_metadata": {
+      "http": {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 7890
+      },
+      "https": {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 7890
+      },
+      "ftp": {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 7890
+      }
+    },
+    "probes": [
+      {
+        "read_only_get_root": true,
+        "trust_env": true,
+        "http_status": 404,
+        "seconds": 5.219
+      },
+      {
+        "read_only_get_root": true,
+        "trust_env": false,
+        "http_status": 404,
+        "seconds": 0.25
+      }
+    ]
+  },
+  "acl_http_after_explicit_process_no_proxy": {
+    "effective_proxy_metadata": {},
+    "probes": [
+      {
+        "read_only_get_root": true,
+        "trust_env": true,
+        "http_status": 404,
+        "seconds": 0.328
+      },
+      {
+        "read_only_get_root": true,
+        "trust_env": false,
+        "http_status": 404,
+        "seconds": 0.141
+      }
+    ]
+  },
+  "network_conclusion": "Default HTTPX saw Windows proxy 127.0.0.1:7890; controlled NO_PROXY made direct GET responsive and subsequent official group creation/three-domain connection succeeded. The historical original ConnectTimeout leaf was not captured.",
+  "launcher_failure": {
+    "exit_code": 120,
+    "error_class": "OSError",
+    "errno": 9,
+    "windows_error_code": 6,
+    "phase": "Python output after durable incident dispatch",
+    "resumed_same_incident": "inc-288551bbd09b423c",
+    "duplicate_incidents": 0
+  }
+}

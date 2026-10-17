@@ -1,0 +1,223 @@
+{
+  "source": "runtime/private/schedule-platform-partial3-20261017/workbench/transport/events.jsonl",
+  "evidence_type": "actual official ADP candidate response; not identity issuance or review approval",
+  "event": {
+    "event": "official_discovery",
+    "skill_id": "incident.application",
+    "request": {
+      "type": "filtered",
+      "limit": 50,
+      "filter": {
+        "conditions": [
+          {
+            "field": "active",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "field": "skills.id",
+            "op": "eq",
+            "value": "incident.application"
+          }
+        ],
+        "logic": "and"
+      },
+      "extFilter": {
+        "logic": "and",
+        "conditions": [
+          {
+            "field": "alive",
+            "op": "in",
+            "value": [
+              "online",
+              "offline",
+              "unknown"
+            ]
+          }
+        ]
+      }
+    },
+    "response": {
+      "result": {
+        "acsMap": {
+          "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53": {
+            "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+            "name": "故障协作应用智能体",
+            "active": true,
+            "skills": [
+              {
+                "id": "incident.application",
+                "name": "应用智能体",
+                "tags": [
+                  "incident-pilot",
+                  "故障协作",
+                  "application"
+                ],
+                "version": "0.2.0",
+                "examples": [
+                  "{\"action\": \"inspect\"}"
+                ],
+                "inputModes": [
+                  "application/json"
+                ],
+                "description": "读取实验订单服务的访问结果和连接配置；根据数据库智能体返回的地址修正本实验应用连接配置，返回修改后的配置与版本。",
+                "outputModes": [
+                  "application/json"
+                ]
+              }
+            ],
+            "version": "0.2.0",
+            "provider": {
+              "name": "王骁逸"
+            },
+            "endPoints": [
+              {
+                "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+                "security": [
+                  {
+                    "mtls": []
+                  }
+                ],
+                "transport": "AMQP"
+              }
+            ],
+            "description": "读取实验订单服务的访问结果和连接配置；根据数据库智能体返回的地址修正本实验应用连接配置，返回修改后的配置与版本。",
+            "capabilities": {
+              "streaming": false,
+              "messageQueue": [
+                "amqp:0.9.1"
+              ],
+              "notification": false
+            },
+            "protocolVersion": "02.02",
+            "securitySchemes": {
+              "mtls": {
+                "type": "mutualTLS",
+                "description": "使用 AIC clientAuth 证书建立 AMQPS 连接，接收收件箱邀请并参与协作群组。"
+              }
+            },
+            "lastModifiedTime": "2026-10-17T12:35:43.192520+08:00",
+            "defaultInputModes": [
+              "application/json",
+              "text/plain"
+            ],
+            "defaultOutputModes": [
+              "application/json"
+            ]
+          },
+          "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5": {
+            "aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+            "name": "跨域订单应用智能体",
+            "active": true,
+            "skills": [
+              {
+                "id": "incident.application",
+                "name": "PostgreSQL 订单应用诊断与受控恢复",
+                "tags": [
+                  "incident-pilot",
+                  "ifc/1.0",
+                  "application"
+                ],
+                "version": "1.0.0",
+                "examples": [
+                  "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+                ],
+                "inputModes": [
+                  "application/json"
+                ],
+                "description": "以 ifc/1.0 返回订单应用版本、错误和连接池证据；执行登记配置回退及连接池重建；资源凭据只在应用域，修改经操作账本与隔离令牌。",
+                "outputModes": [
+                  "application/json"
+                ]
+              }
+            ],
+            "version": "1.0.0",
+            "provider": {
+              "name": "王骁逸"
+            },
+            "endPoints": [
+              {
+                "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+                "security": [
+                  {
+                    "mtls": []
+                  }
+                ],
+                "transport": "AMQP"
+              }
+            ],
+            "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+            "capabilities": {
+              "streaming": false,
+              "messageQueue": [
+                "amqp:0.9.1"
+              ],
+              "notification": false
+            },
+            "protocolVersion": "02.02",
+            "securitySchemes": {
+              "mtls": {
+                "type": "mutualTLS",
+                "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+              }
+            },
+            "lastModifiedTime": "2026-10-17T18:32:58.282892+08:00",
+            "defaultInputModes": [
+              "application/json"
+            ],
+            "defaultOutputModes": [
+              "application/json"
+            ]
+          }
+        },
+        "agents": [
+          {
+            "group": "filtered",
+            "agentSkills": [
+              {
+                "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+                "skillId": "incident.application",
+                "ranking": 1,
+                "memo": "Filtered query result"
+              },
+              {
+                "aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+                "skillId": "incident.application",
+                "ranking": 2,
+                "memo": "Filtered query result"
+              }
+            ]
+          }
+        ],
+        "routes": [
+          {
+            "forwardChain": [
+              "AIC-DS-A"
+            ],
+            "agentGroups": [
+              {
+                "group": "filtered",
+                "agentSkills": [
+                  {
+                    "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+                    "skillId": "incident.application",
+                    "ranking": 1,
+                    "memo": "Filtered query result"
+                  },
+                  {
+                    "aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+                    "skillId": "incident.application",
+                    "ranking": 2,
+                    "memo": "Filtered query result"
+                  }
+                ]
+              }
+            ],
+            "status": "ok",
+            "durationMs": 4
+          }
+        ]
+      }
+    }
+  }
+}

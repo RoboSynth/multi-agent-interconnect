@@ -1,0 +1,72 @@
+{
+  "scope": "two serial development cohorts; no pooled formal success estimate",
+  "completed_and_continuously_confirmed": {
+    "first": 2,
+    "shared-guard-v2": 3
+  },
+  "recorded_cases": {
+    "first": 3,
+    "shared-guard-v2": 3
+  },
+  "same_declared_inputs": {
+    "transport": true,
+    "scenarios": true,
+    "methods": true,
+    "repeats": true,
+    "model": true,
+    "sampling": true,
+    "budgets": true,
+    "method_order": true,
+    "held_out_instances": true,
+    "continuous_workload": true,
+    "time_metrics": true,
+    "symptom": true,
+    "method_definition_ids": true,
+    "M0": true,
+    "M1": true,
+    "M2": true,
+    "shared_safety": true,
+    "local_model_artifact": true
+  },
+  "changed_experiment_recorded_sources": {
+    "acps_mcp_bridge/bridge.py": {
+      "first": "ca4d0893d83f42c6e60ba390d88802f6360525cdb7afb4f1dcd031ac46958f70",
+      "shared_guard_v2": "0701d6db00c330ba377b73e7a6d67a3c4f7aa2587baf7f334476da1a7b4fa9f4"
+    }
+  },
+  "shared_guard_source": {
+    "source_sha256": {
+      "acps_mcp_bridge/bridge.py": "0701d6db00c330ba377b73e7a6d67a3c4f7aa2587baf7f334476da1a7b4fa9f4",
+      "domains/ops/policy.yaml": "5cfbc1794defcf79128e7c14d3633331b5e747df50b0a7f00a4efb6190843bc1",
+      "domains/ops/policy.native.yaml": "162ab8bde5093f315af7ff78891e27b49fd7230aa72cf78bc35b92874cbc3058"
+    },
+    "checked_at": "2026-10-17T11:53:12.417360+00:00",
+    "original_failure_retained": "eval/results/local/M1-full-tools-pilot-20261017",
+    "scope": "same F01 cases/model/budgets; common resource precondition added after the failed pilot"
+  },
+  "first_M1_failure": {
+    "status": "needs_attention",
+    "mcp_modify_calls": 1,
+    "ok_modifications": 0,
+    "nginx_window_counts": {
+      "reload_notices": 2,
+      "health_499": 7
+    },
+    "reload_evidence_level": "two selected signal process started notices; not proof of completed reload; health-convergence cause is inference from logs and tool code",
+    "original_mcp_error_text_complete": false,
+    "controller_os_exit_code": null
+  },
+  "v2_controller_finish": {
+    "exit_code": 0,
+    "finished_at": "2026-10-17T11:56:24.926540+00:00"
+  },
+  "limits": [
+    "Full-tool M1 formal 5 scenarios x 3 methods x 3 repeats is not complete.",
+    "The earlier 45-row comparison used historical observation-only M1 and remains separate.",
+    "Shared guard changed between cohorts; no single-source pooled six-case comparison.",
+    "Same F01 symptom, seed, model and budgets; adaptive observations and model choices differ.",
+    "Fixed seed does not guarantee identical outputs; provider prompt cache details are retained in usage.",
+    "Local native-process AIP stdio, not formal platform AMQPS/ADP.",
+    "High privilege and ok modifications have different semantics from actual MCP modify invocations."
+  ]
+}

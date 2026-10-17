@@ -72,8 +72,22 @@ class WutongTransport:
             if result["status"] != "ok":
                 raise RuntimeError("participant rejected capability confirmation")
             return {**result.get("description", {}), "executor_aic": result["executor_aic"]}
-        except Exception as exc:
+        except (Exception, asyncio.CancelledError) as exc:
             self.record("capability_confirmation_failed", aic=acs["aic"], phase=phase, error_class=type(exc).__name__)
+            raise
+
+    async def _select_participant(self, role, candidates, tool):
+        trusted = self.config.get("trusted_participant_aics", {}).get(role)
+        return await select_participant(candidates, resource="orders", tool=tool,
+            describe=self._describe, trusted_aics=trusted,
+            describe_timeout_seconds=self.config.get("participant_describe_timeout_seconds", 30),
+            record=lambda event, **data: self.record(event, role=role, **data))
+
+    async def _discover_candidates(self, role, skill):
+        try:
+            return await discover_candidates(self.config["discovery_url"], skill, record=self.record)
+        except Exception as exc:
+            self.record("official_discovery_failed", role=role, phase="official-adp", error_class=type(exc).__name__)
             raise
 
     def _capture(self, direction, message, peer):
@@ -97,7 +111,16 @@ class WutongTransport:
         self.term = int(self.runtime.term)
         await self.amp.start()
         await asyncio.wait_for(self.runtime.start_inbound(), 30)
-        self.session = await asyncio.wait_for(self.runtime.create_group_session("incident-"+uuid.uuid4().hex, []), 30)
+        session_id = "incident-"+uuid.uuid4().hex
+        self.record("group_session_creation_started", session_id=session_id, group_id="group-"+session_id,
+                    owner_aic=self.aic)
+        try:
+            self.session = await asyncio.wait_for(self.runtime.create_group_session(session_id, []), 30)
+        except Exception as exc:
+            self.record("group_session_creation_failed", session_id=session_id, phase="group-create",
+                        error_class=type(exc).__name__)
+            raise
+        self.record("group_session_created", session_id=session_id, group_id=self.session.group_id, owner_aic=self.aic)
         publisher = self.session.leader_mq_client.publish_message
         async def capture_published(message):
             await publisher(message)
@@ -110,8 +133,8 @@ class WutongTransport:
         required = {"application": "application.status", "database": "db.read_only_status",
                     "ops": "ops.route_status", "verification": "incident.verification"}
         for role, skill in queries.items():
-            candidates = await discover_candidates(self.config["discovery_url"], skill, record=self.record)
-            acs, description = await select_participant(candidates, resource="orders", tool=required[role], describe=self._describe)
+            candidates = await self._discover_candidates(role, skill)
+            acs, description = await self._select_participant(role, candidates, required[role])
             self.selected[role] = acs["aic"]
             self.descriptions[role] = description
             self.participants.append({"role": role, "aic": acs["aic"],
@@ -192,15 +215,14 @@ class WutongTransport:
             self.journal.record_takeover(incident, failed, reason)
             skill = self.config.get("skills", {}).get(role, {"database": "db.observe", "ops": "ops.observe",
                 "application": "incident.application", "verification": "incident.verification"}[role])
-            candidates = await discover_candidates(self.config["discovery_url"], skill, record=self.record)
+            candidates = await self._discover_candidates(role, skill)
             # Match the complete resource scope of the failed participant, not only a skill label.
             previous_scope = self.descriptions[role].get("resource_scope", self.descriptions[role].get("resources"))
             for candidate in sorted(candidates, key=lambda item: item["aic"]):
                 if candidate["aic"] == failed:
                     continue
                 try:
-                    acs, description = await select_participant([candidate], resource="orders",
-                        tool=original["tool"], describe=self._describe)
+                    acs, description = await self._select_participant(role, [candidate], original["tool"])
                     if description.get("resource_scope", description.get("resources")) != previous_scope:
                         continue
                     previous = self.active_fences.get(role, Fence(**original.get("fence", {
@@ -250,7 +272,11 @@ class WutongTransport:
         self.closing = True
         try:
             if self.session and self.runtime:
+                self.record("group_session_close_started", session_id=self.session.session_id,
+                            group_id=self.session.group_id)
                 await asyncio.wait_for(self.runtime.dissolve_group_session(self.session.session_id), 15)
+                self.record("group_session_close_completed", session_id=self.session.session_id,
+                            group_id=self.session.group_id)
         finally:
             try:
                 if self.runtime:

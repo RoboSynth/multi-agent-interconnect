@@ -1,0 +1,95 @@
+{
+  "transport": "local-aip-stdio",
+  "scenarios": [
+    "F01"
+  ],
+  "methods": [
+    "M0",
+    "M1",
+    "M2"
+  ],
+  "repeats": 1,
+  "model": "Qwen3-1.7B-Q8_0",
+  "sampling": {
+    "seed": 42,
+    "temperature": 0,
+    "top_p": 1,
+    "max_tokens": 768
+  },
+  "budgets": {
+    "tasks": 40,
+    "model_calls": 40,
+    "model_total_tokens": 65536,
+    "deadline_seconds": 600
+  },
+  "method_order": "rotate starting method by repeat within each scenario",
+  "held_out_instances": [
+    {
+      "repeat": 1,
+      "workload_seed": 101,
+      "precondition_pool_rebuilds": 0
+    }
+  ],
+  "continuous_workload": {
+    "requests_per_second": 1,
+    "http_timeout_seconds": 0.8,
+    "healthy_baseline_seconds": 3,
+    "minimum_fault_exposure_seconds": 3,
+    "contract": "successful public responses must contain order_api_version=v2",
+    "domain_verification": "independent additional 1rps for 30 seconds, identical for all methods"
+  },
+  "time_metrics": {
+    "seconds": "coordinator diagnosis plus domain verification; not pure repair latency",
+    "recovery_observed_seconds": "injection start to first successful request after the final bad sample; 1rps estimate",
+    "recovery_confirmed_seconds": "injection start to 30-second healthy window with at least 10 completed workflows"
+  },
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "method_definition_ids": {
+    "M0": "fixed-observations-v1",
+    "M1": "free-tools-v1",
+    "M2": "evidence-ranked-v1"
+  },
+  "M0": "frozen observation order, then confirmed repairs; no model calls",
+  "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
+  "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
+  "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification",
+  "local_model_artifact": {
+    "llama_release": "b11707",
+    "model_revision": "90862c4b9d2787eaed51d12237eafdfe7c5f6077",
+    "files": [
+      {
+        "name": "llama-b11707-bin-win-vulkan-x64.zip",
+        "source": "https://github.com/ggml-org/llama.cpp/releases/download/b11707/llama-b11707-bin-win-vulkan-x64.zip",
+        "bytes": 32260710,
+        "sha256": "9c7d17c12053bf95b03a179f9bcdf15fdeafe680a4f2845d23bc951bc18c0fa5"
+      },
+      {
+        "name": "Qwen3-1.7B-Q8_0.gguf",
+        "source": "https://huggingface.co/Qwen/Qwen3-1.7B-GGUF/resolve/90862c4b9d2787eaed51d12237eafdfe7c5f6077/Qwen3-1.7B-Q8_0.gguf",
+        "bytes": 1834426016,
+        "sha256": "061b54daade076b5d3362dac252678d17da8c68f07560be70818cace6590cb1a"
+      }
+    ]
+  },
+  "source_sha256": {
+    "eval/run.py": "a672b7987471f634c44cab278698213e644d9766379f47042af4906183663314",
+    "eval/methods/__init__.py": "cd0152c3c590a4147315747226d4e1c77d0eb9a9f11bb582189e70a789aec6fe",
+    "eval/methods/free_tools.py": "422768e8f867bbf1d5ddcfb2f0486db5c9b757b1571c85a2171af0f09843a429",
+    "incident/coordinator/hypothesis.py": "50caad18b67f80d5096b218fc245d3280b06e9e7d10633ab428a108ba3ff8849",
+    "incident/coordinator/planner.py": "594e4d49da9406e3ebe21fd7b72e3d71bfa7959e2ff8451eb2b98cf5779b0dbb",
+    "incident/coordinator/engine.py": "d3b11d7352c1c8d4e9dca9265bb6b0a3e6b47175a7e18005cad0d93619a99832",
+    "eval/observation.py": "82b0697a6b6d99b6995b30a58c09964929ab6bad9ff142dad39ed487e1705c5c",
+    "eval/inject.py": "f6db796c6af761951ea7057fb60d117df3096517311009a85a7953bcbef40f1b",
+    "business/load.py": "685d14deb1787c79201f498771c4b0b9de77eddbe7cbf4133061c7b86b551b6d",
+    "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+    "incident/local_transport.py": "cc99bae2d16fa919553635fdd46e545b8e3bd476d8e6ff47e3d694876bf47b72",
+    "incident/local_worker.py": "0a35848d9306fc0b0ae2ccfa4b4690f543158fa8ba5271072a45cc958fb0fbba",
+    "incident/partners.py": "9690c121f41c10b2598ea319e613aa268a8c5ab14c71291ae112e563546d23ba",
+    "business/order_app/main.py": "ea5341f629079f3b04a3bbb9f6bf312a2e7d0cfde91a123aca887d85f3fdf01d",
+    "business/order_app/store.py": "f5d19f9935473981168a341ee8d6c42669cb7c880644da973a0f87f5f7daca3a",
+    "acps_mcp_bridge/bridge.py": "ca4d0893d83f42c6e60ba390d88802f6360525cdb7afb4f1dcd031ac46958f70",
+    "acps_mcp_bridge/policy.py": "0f82a4af06e82536488b6b5e07ec02a175d278fc102f468587b371c0031ca4cb"
+  },
+  "scope": "F01 x three methods x one repeat; development only, not the 45-cell formal matrix",
+  "source_experiment_sha256": "437edec6b350e0249da5cf2cc8713cc8455b9e2a80ebaca0ab82d92d4c1afb33"
+}

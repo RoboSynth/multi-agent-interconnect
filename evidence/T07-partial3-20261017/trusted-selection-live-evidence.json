@@ -1,0 +1,152 @@
+{
+  "at": "2026-10-17T12:07:44.192Z",
+  "group": {
+    "event": "group_session_created",
+    "session_id": "incident-ce7ebe68f17f4e2c98a9ec89b6a70b0d",
+    "group_id": "group-incident-ce7ebe68f17f4e2c98a9ec89b6a70b0d",
+    "owner_aic": "1.2.156.3088.1.BUPT.8N4WSS.AKAA8C.7HEMBG.1B4B"
+  },
+  "trusted_role_aics": {
+    "application": [
+      "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53"
+    ],
+    "database": [
+      "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE"
+    ],
+    "verification": [
+      "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S"
+    ]
+  },
+  "events": [
+    {
+      "event": "participant_excluded",
+      "role": "application",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "reason": "not_in_trusted_aics"
+    },
+    {
+      "event": "adp_participant_confirmed",
+      "role": "application",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+      "description": {
+        "resources": [
+          "orders"
+        ],
+        "tools": [
+          "application.status",
+          "application.pool_rebuild",
+          "application.config_rollback"
+        ],
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53"
+      }
+    },
+    {
+      "event": "adp_participant_confirmed",
+      "role": "database",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+      "description": {
+        "schema_version": "ifc/1.0",
+        "interface_version": "1.0",
+        "domain": "db",
+        "resource_scope": {
+          "database": "orders",
+          "application_role": "orders_app"
+        },
+        "skills": [
+          "db.observe",
+          "db.act"
+        ],
+        "resources": [
+          "orders"
+        ],
+        "tools": [
+          {
+            "name": "db.health",
+            "risk": "read",
+            "description": "检查订单库连接健康，不接收任意 SQL。",
+            "inputSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {}
+            },
+            "mcp_tool": "analyze_db_health"
+          },
+          {
+            "name": "db.read_only_status",
+            "risk": "read",
+            "description": "检查 orders 数据库或 orders_app 角色是否配置默认只读。",
+            "inputSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {}
+            },
+            "mcp_tool": "execute_sql"
+          },
+          {
+            "name": "db.blocking_sessions",
+            "risk": "read",
+            "description": "观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+            "inputSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {}
+            },
+            "mcp_tool": "execute_sql"
+          },
+          {
+            "name": "db.restore_writes",
+            "risk": "high",
+            "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。",
+            "inputSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {}
+            },
+            "mcp_tool": "execute_sql"
+          },
+          {
+            "name": "db.terminate_blocker",
+            "risk": "high",
+            "description": "经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+            "inputSchema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pid"
+              ],
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 2147483647
+                }
+              }
+            },
+            "mcp_tool": "execute_sql"
+          }
+        ],
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE"
+      }
+    },
+    {
+      "event": "participant_excluded",
+      "role": "verification",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "reason": "not_in_trusted_aics"
+    },
+    {
+      "event": "adp_participant_confirmed",
+      "role": "verification",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S",
+      "description": {
+        "resources": [
+          "orders"
+        ],
+        "tools": [
+          "incident.verification"
+        ],
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S"
+      }
+    }
+  ]
+}

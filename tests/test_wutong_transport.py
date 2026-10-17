@@ -1,4 +1,6 @@
+import asyncio
 from datetime import datetime, timezone
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -94,6 +96,43 @@ class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
             self.assertLess(refs[0]["expires_at"], now)
             self.assertEqual(refs[1]["expires_at"], 0)
             self.assertGreater(refs[2]["expires_at"], now)
+
+    async def test_trusted_role_aics_are_filtered_before_any_invitation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.config["trusted_participant_aics"] = {"database": ["primary"]}
+            transport.runtime.invite_partner = AsyncMock()
+            transport._describe = WutongTransport._describe.__get__(transport, WutongTransport)
+            transport._send = AsyncMock(return_value={"status": "ok", "executor_aic": "primary",
+                "description": {"resources": ["orders"], "tools": ["db.read_only_status"]}})
+            chosen, _ = await transport._select_participant("database",
+                [{"aic": "new-unapproved"}, {"aic": "primary"}], "db.read_only_status")
+            self.assertEqual(chosen["aic"], "primary")
+            transport.runtime.invite_partner.assert_awaited_once()
+            self.assertEqual(transport.runtime.invite_partner.call_args.args[1].aic, "primary")
+            transport.config["trusted_participant_aics"]["database"] = []
+            with self.assertRaises(RuntimeError):
+                await transport._select_participant("database", [{"aic": "primary"}], "db.read_only_status")
+            self.assertEqual(transport.runtime.invite_partner.await_count, 1)
+
+    async def test_candidate_deadline_records_the_invitation_phase(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.config["participant_describe_timeout_seconds"] = 0.01
+            async def never_joins(*args, **kwargs):
+                await asyncio.Future()
+            transport.runtime.invite_partner = AsyncMock(side_effect=never_joins)
+            transport._describe = WutongTransport._describe.__get__(transport, WutongTransport)
+            transport._send = AsyncMock()
+            with self.assertRaises(RuntimeError):
+                await transport._select_participant("database", [{"aic": "primary"}], "db.read_only_status")
+            transport._send.assert_not_awaited()
+            events = [json.loads(row) for row in (transport.output / "events.jsonl").read_text().splitlines()]
+            failed = next(row for row in events if row["event"] == "capability_confirmation_failed")
+            self.assertEqual(failed["phase"], "invite")
+            self.assertEqual(failed["error_class"], "CancelledError")
+            self.assertTrue(any(row["event"] == "participant_not_confirmed"
+                and row["error_class"] == "TimeoutError" for row in events))
 
 
 if __name__ == "__main__":

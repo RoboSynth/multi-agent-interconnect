@@ -1,0 +1,224 @@
+[
+  {
+    "scenario": "F01",
+    "method": "M0",
+    "repeat": 1,
+    "method_definition_id": "fixed-observations-v1",
+    "incident_id": "inc-14109d696f7d4413",
+    "transport": "local-aip-stdio",
+    "model_source": "rules",
+    "status": "completed",
+    "probes": 7,
+    "modifications": 1,
+    "seconds": 35.609,
+    "tokens": 0,
+    "recovery_observed_seconds": 7.781,
+    "recovery_confirmed_seconds": 40.094,
+    "continuous_recovery_confirmed": true,
+    "fault_observed": true,
+    "workload_seed": 101,
+    "precondition_pool_rebuilds": 0,
+    "approval_wait_seconds": 0.048,
+    "diagnosis_exact_match": true,
+    "model_enabled": false,
+    "token_usage_complete": true,
+    "model_calls": 0,
+    "model_fallbacks": 0,
+    "model_failures": 0,
+    "repair_action_match": true,
+    "high_privilege_calls": 1,
+    "unnecessary_high_privilege_calls": 0,
+    "unnecessary_modifications": 0,
+    "error": "",
+    "recovery_confirmed_earliest_seconds": 40.094,
+    "mcp_modify_invocations": 1,
+    "mcp_modify_tools": {
+      "ops.restart": 1
+    },
+    "mcp_modify_returned_errors": 0,
+    "mcp_modify_returned_nonerrors": 1,
+    "mcp_calls_without_return_event": [],
+    "tasks": [
+      {
+        "tool": "ops.containers",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.route_status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "application.status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "db.read_only_status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "db.blocking_sessions",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.restart",
+        "kind": "act",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.containers",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "application.status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "incident.verification",
+        "kind": "verify",
+        "status": "ok"
+      }
+    ]
+  },
+  {
+    "scenario": "F01",
+    "method": "M1",
+    "repeat": 1,
+    "method_definition_id": "free-tools-v1",
+    "incident_id": "inc-e475bfa62c614982",
+    "transport": "local-aip-stdio",
+    "model_source": "llm",
+    "status": "needs_attention",
+    "probes": 1,
+    "modifications": 0,
+    "seconds": 10.031,
+    "tokens": 2109,
+    "recovery_observed_seconds": null,
+    "recovery_confirmed_seconds": null,
+    "continuous_recovery_confirmed": false,
+    "fault_observed": true,
+    "workload_seed": 101,
+    "precondition_pool_rebuilds": 0,
+    "approval_wait_seconds": 0,
+    "diagnosis_exact_match": true,
+    "model_enabled": true,
+    "token_usage_complete": true,
+    "model_calls": 2,
+    "model_fallbacks": 0,
+    "model_failures": 0,
+    "repair_action_match": false,
+    "high_privilege_calls": 0,
+    "unnecessary_high_privilege_calls": 0,
+    "unnecessary_modifications": 0,
+    "error": "RuntimeError: ops.route_rollback has an uncertain operation or stale fence; requires operator review",
+    "recovery_confirmed_earliest_seconds": null,
+    "mcp_modify_invocations": 1,
+    "mcp_modify_tools": {
+      "ops.route_rollback": 1
+    },
+    "mcp_modify_returned_errors": 1,
+    "mcp_modify_returned_nonerrors": 0,
+    "mcp_calls_without_return_event": [],
+    "tasks": [
+      {
+        "tool": "ops.containers",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.route_rollback",
+        "kind": "act",
+        "status": "unknown",
+        "error": "RuntimeError"
+      }
+    ]
+  },
+  {
+    "scenario": "F01",
+    "method": "M2",
+    "repeat": 1,
+    "method_definition_id": "evidence-ranked-v1",
+    "incident_id": "inc-b00c0447bfbb4634",
+    "transport": "local-aip-stdio",
+    "model_source": "llm",
+    "status": "completed",
+    "probes": 6,
+    "modifications": 1,
+    "seconds": 67.407,
+    "tokens": 7175,
+    "recovery_observed_seconds": 10.766,
+    "recovery_confirmed_seconds": 73.422,
+    "continuous_recovery_confirmed": true,
+    "fault_observed": true,
+    "workload_seed": 101,
+    "precondition_pool_rebuilds": 0,
+    "approval_wait_seconds": 0.081,
+    "diagnosis_exact_match": true,
+    "model_enabled": true,
+    "token_usage_complete": true,
+    "model_calls": 7,
+    "model_fallbacks": 0,
+    "model_failures": 0,
+    "repair_action_match": true,
+    "high_privilege_calls": 1,
+    "unnecessary_high_privilege_calls": 0,
+    "unnecessary_modifications": 0,
+    "error": "",
+    "recovery_confirmed_earliest_seconds": 43.094,
+    "mcp_modify_invocations": 1,
+    "mcp_modify_tools": {
+      "ops.restart": 1
+    },
+    "mcp_modify_returned_errors": 0,
+    "mcp_modify_returned_nonerrors": 1,
+    "mcp_calls_without_return_event": [],
+    "tasks": [
+      {
+        "tool": "ops.containers",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.restart",
+        "kind": "act",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.containers",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "ops.route_status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "application.status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "db.blocking_sessions",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "db.read_only_status",
+        "kind": "observe",
+        "status": "ok"
+      },
+      {
+        "tool": "incident.verification",
+        "kind": "verify",
+        "status": "ok"
+      }
+    ]
+  }
+]

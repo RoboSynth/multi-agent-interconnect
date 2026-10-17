@@ -157,7 +157,9 @@ class Scheduler:
         self.save()
         keep_awake = sys.platform == "win32" and self.config.get("keep_awake", False)
         if keep_awake:
-            ctypes.windll.kernel32.SetThreadExecutionState(0x80000001)
+            previous = int(ctypes.windll.kernel32.SetThreadExecutionState(0x80000001)) & 0xffffffff
+            self.record("keep_awake_request", success=previous != 0, requested_flags="0x80000001",
+                        previous_execution_state=hex(previous))
         try:
             while True:
                 for kind, interval in intervals.items():
@@ -171,7 +173,9 @@ class Scheduler:
                 await asyncio.sleep(5)
         finally:
             if keep_awake:
-                ctypes.windll.kernel32.SetThreadExecutionState(0x80000000)
+                previous = int(ctypes.windll.kernel32.SetThreadExecutionState(0x80000000)) & 0xffffffff
+                self.record("keep_awake_release", success=previous != 0, requested_flags="0x80000000",
+                            previous_execution_state=hex(previous))
 
 
 if __name__ == "__main__":

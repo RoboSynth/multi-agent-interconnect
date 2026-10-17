@@ -1,0 +1,253 @@
+[
+  {
+    "method": "M0",
+    "incident_id": "inc-14109d696f7d4413",
+    "source_incident_sha256": "d4248e54f205751d3e3666bd49760c504a7e998af05dcf452698b65dc64f805a",
+    "model_calls": 0,
+    "actual_total_tokens": 0,
+    "requests": []
+  },
+  {
+    "method": "M1",
+    "incident_id": "inc-e475bfa62c614982",
+    "source_incident_sha256": "f0e4b314636ef794c0d5b58ac5e51edb01e100ed02d8d70cb636730cb337ac86",
+    "model_calls": 2,
+    "actual_total_tokens": 2109,
+    "requests": [
+      {
+        "call": 1,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 7224,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 17,
+          "prompt_tokens": 900,
+          "total_tokens": 917,
+          "prompt_tokens_details": {
+            "cached_tokens": 100
+          }
+        },
+        "content": "{\n  \"tool\": \"ops.containers\",\n  \"args\": {}\n}",
+        "finish_reason": "stop",
+        "seconds": 0.734
+      },
+      {
+        "call": 2,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 7888,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 18,
+          "prompt_tokens": 1174,
+          "total_tokens": 1192,
+          "prompt_tokens_details": {
+            "cached_tokens": 878
+          }
+        },
+        "content": "{\n  \"tool\": \"ops.route_rollback\",\n  \"args\": {}\n}",
+        "finish_reason": "stop",
+        "seconds": 0.344
+      }
+    ]
+  },
+  {
+    "method": "M2",
+    "incident_id": "inc-b00c0447bfbb4634",
+    "source_incident_sha256": "1e0df2d4f4fb1d0d4f3d90d3ce37aaabdef09056003df53b43388ecbb8142e46",
+    "model_calls": 7,
+    "actual_total_tokens": 7175,
+    "requests": [
+      {
+        "call": 1,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 4069,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 330,
+          "prompt_tokens": 512,
+          "total_tokens": 842,
+          "prompt_tokens_details": {
+            "cached_tokens": 511
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"容器状态异常\",\n      \"predictions\": {\n        \"ops.containers\": [\"exited\"]\n      },\n      \"because\": [\n        \"容器状态为 exited，表明应用进程已终止，可能导致订单业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"路由版本不一致\",\n      \"predictions\": {\n        \"ops.route_status\": [\"v2\"]\n      },\n      \"because\": [\n        \"路由版本为 v2，可能与预期版本不一致，导致服务不可用或请求延迟。\"\n      ]\n    },\n    {\n      \"cause\": \"应用不可达\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"]\n      },\n      \"because\": [\n        \"应用状态为 unreachable，表明直接连接池状态异常，可能影响订单业务处理。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库读写分离\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\"]\n      },\n      \"because\": [\n        \"数据库处于 read-only 模式，可能影响订单业务的写入操作，导致业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库阻塞会话\",\n      \"predictions\": {\n        \"db.blocking_sessions\": [\"blocked\"]\n      },\n      \"because\": [\n        \"存在数据库阻塞会话，可能影响订单业务的并发处理，导致业务异常。\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 6.125
+      },
+      {
+        "call": 2,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 4069,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 330,
+          "prompt_tokens": 512,
+          "total_tokens": 842,
+          "prompt_tokens_details": {
+            "cached_tokens": 511
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"容器状态异常\",\n      \"predictions\": {\n        \"ops.containers\": [\"exited\"]\n      },\n      \"because\": [\n        \"容器状态为 exited，表明应用进程已终止，可能导致订单业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"路由版本不一致\",\n      \"predictions\": {\n        \"ops.route_status\": [\"v2\"]\n      },\n      \"because\": [\n        \"路由版本为 v2，可能与预期版本不一致，导致服务不可用或请求延迟。\"\n      ]\n    },\n    {\n      \"cause\": \"应用不可达\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"]\n      },\n      \"because\": [\n        \"应用状态为 unreachable，表明直接连接池状态异常，可能影响订单业务处理。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库读写分离\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\"]\n      },\n      \"because\": [\n        \"数据库处于 read-only 模式，可能影响订单业务的写入操作，导致业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库阻塞会话\",\n      \"predictions\": {\n        \"db.blocking_sessions\": [\"blocked\"]\n      },\n      \"because\": [\n        \"存在数据库阻塞会话，可能影响订单业务的并发处理，导致业务异常。\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 4.891
+      },
+      {
+        "call": 3,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 4210,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 295,
+          "prompt_tokens": 572,
+          "total_tokens": 867,
+          "prompt_tokens_details": {
+            "cached_tokens": 102
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"Container process exited\",\n      \"predictions\": {\n        \"ops.containers\": [\"exited\"]\n      },\n      \"because\": [\n        \"The container state is 'running' (observed at 2026-10-17T11:44:58.276721+00:00).\"\n      ]\n    },\n    {\n      \"cause\": \"Application is unreachable\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"]\n      },\n      \"because\": [\n        \"The application status is not explicitly reported, but the symptom indicates a potential issue with reachability.\"\n      ]\n    },\n    {\n      \"cause\": \"Database is in read-only mode\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\"]\n      },\n      \"because\": [\n        \"The database status is not explicitly reported, but the symptom indicates a potential issue with database availability.\"\n      ]\n    },\n    {\n      \"cause\": \"Application has blocking database sessions\",\n      \"predictions\": {\n        \"db.blocking_sessions\": [\"blocked\"]\n      },\n      \"because\": [\n        \"The database status is not explicitly reported, but the symptom indicates a potential issue with database blocking.\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 4.75
+      },
+      {
+        "call": 4,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 4348,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 415,
+          "prompt_tokens": 633,
+          "total_tokens": 1048,
+          "prompt_tokens_details": {
+            "cached_tokens": 161
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"Container process exited unexpectedly\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"],\n        \"db.blocking_sessions\": [\"clear\"]\n      },\n      \"because\": [\n        \"The container_state is 'running', but the application is unreachable, suggesting a potential failure in the container process.\",\n        \"The database is in read-only mode ('ro') and there are no blocking sessions, which may indicate no active database lock issues.\"\n      ]\n    },\n    {\n      \"cause\": \"Route version is outdated (v1)\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"],\n        \"db.blocking_sessions\": [\"clear\"]\n      },\n      \"because\": [\n        \"The route_version is 'v1', which may not be compatible with the current application, leading to service disruptions.\",\n        \"The database is in read-only mode and there are no blocking sessions, which may indicate no active database lock issues.\"\n      ]\n    },\n    {\n      \"cause\": \"Application is unreachable due to routing issues\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"],\n        \"db.blocking_sessions\": [\"clear\"]\n      },\n      \"because\": [\n        \"The route_version is 'v2', but the application is unreachable, suggesting a potential routing or configuration issue.\",\n        \"The database is in read-only mode and there are no blocking sessions, which may indicate no active database lock issues.\"\n      ]\n    },\n    {\n      \"cause\": \"Database is in read-only mode\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"],\n        \"db.blocking_sessions\": [\"clear\"]\n      },\n      \"because\": [\n        \"The database is in read-only mode ('ro'), which may prevent the application from functioning properly.\",\n        \"The application is unreachable, and there are no blocking sessions, which may indicate no active database lock issues.\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 6.094
+      },
+      {
+        "call": 5,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 4934,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 310,
+          "prompt_tokens": 869,
+          "total_tokens": 1179,
+          "prompt_tokens_details": {
+            "cached_tokens": 222
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"容器状态异常\",\n      \"predictions\": {\n        \"application.status\": [\"reachable\", \"unreachable\"],\n        \"db.read_only_status\": [\"ro\", \"rw\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"container_state is 'running'\",\n        \"application_reachable is 'true'\",\n        \"db.read_only_status is 'ro'\"\n      ]\n    },\n    {\n      \"cause\": \"路由版本不匹配\",\n      \"predictions\": {\n        \"application.status\": [\"reachable\", \"unreachable\"],\n        \"db.read_only_status\": [\"ro\", \"rw\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"route_version is 'v2'\",\n        \"application_reachable is 'true'\",\n        \"db.read_only_status is 'ro'\"\n      ]\n    },\n    {\n      \"cause\": \"数据库读写模式异常\",\n      \"predictions\": {\n        \"application.status\": [\"reachable\", \"unreachable\"],\n        \"db.read_only_status\": [\"ro\", \"rw\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"db.read_only_status is 'ro'\",\n        \"application_reachable is 'true'\",\n        \"db.blocking_sessions is 'blocked'\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 4.719
+      },
+      {
+        "call": 6,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 5076,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 241,
+          "prompt_tokens": 928,
+          "total_tokens": 1169,
+          "prompt_tokens_details": {
+            "cached_tokens": 458
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"Application container is running but not responding\",\n      \"predictions\": {\n        \"application.status\": [\"reachable\", \"unreachable\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"container_state is running\",\n        \"application_reachable is true\",\n        \"blocking_sessions is empty\"\n      ]\n    },\n    {\n      \"cause\": \"Route version mismatch\",\n      \"predictions\": {\n        \"ops.route_status\": [\"v1\", \"v2\"],\n        \"application.status\": [\"reachable\", \"unreachable\"]\n      },\n      \"because\": [\n        \"route_version is v2\",\n        \"application_reachable is true\"\n      ]\n    },\n    {\n      \"cause\": \"Database read-only mode\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\", \"rw\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"application_read_only is false\",\n        \"application_error_codes is empty\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 3.859
+      },
+      {
+        "call": 7,
+        "model": "Qwen3-1.7B-Q8_0",
+        "sampling": {
+          "seed": 42,
+          "temperature": 0,
+          "top_p": 1,
+          "max_tokens": 768
+        },
+        "max_tokens_sent": 768,
+        "prompt_token_upper_bound": 5212,
+        "status": "validated",
+        "http_status": 200,
+        "usage": {
+          "completion_tokens": 240,
+          "prompt_tokens": 988,
+          "total_tokens": 1228,
+          "prompt_tokens_details": {
+            "cached_tokens": 517
+          }
+        },
+        "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"Application container is running but not responding\",\n      \"predictions\": {\n        \"application.status\": [\"reachable\", \"unreachable\"],\n        \"db.read_only_status\": [\"ro\", \"rw\"],\n        \"db.blocking_sessions\": [\"blocked\", \"clear\"]\n      },\n      \"because\": [\n        \"container_state is running\",\n        \"application_reachable is true\",\n        \"blocking_sessions is empty\"\n      ]\n    },\n    {\n      \"cause\": \"Route version mismatch\",\n      \"predictions\": {\n        \"ops.route_status\": [\"v1\", \"v2\"],\n        \"application.status\": [\"reachable\", \"unreachable\"]\n      },\n      \"because\": [\n        \"route_version is v2\",\n        \"application_reachable is true\"\n      ]\n    },\n    {\n      \"cause\": \"Database read-only mode\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\", \"rw\"]\n      },\n      \"because\": [\n        \"read_only is false\",\n        \"application_read_only is false\"\n      ]\n    }\n  ]\n}",
+        "finish_reason": "stop",
+        "seconds": 3.875
+      }
+    ]
+  }
+]
