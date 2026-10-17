@@ -8,6 +8,13 @@
 `3985c1330209f075c124669cc9d31f0e75448140`；SDK 版本：2.2.0。
 这是 PR 正文草稿，尚未创建远端分支或提交 PR。
 
+本地审阅补丁已从冻结的 `incident-v0.2.0-20261017T045307Z` SDK 导出，限 SDK 内
+12 个文件（10 个新增、2 个修改；1535 行新增、9 行删除），共 91116 字节。
+补丁 SHA256 为 `2df10ba1c1e0552003c514cdc30a1eff6f343886a96cd1ebad34e10f450c64b9`。
+它已在该基线 SDK 的临时副本上通过 `git apply --check`，实际应用后每个改动文件的
+SHA256 均与所审阅源码一致；原 SDK 与冻结基线未修改。本包未重复运行已有测试。
+文件、来源及验证记录见 `sdk-review-20261017/{acps-sdk-high-score.patch,manifest.json,validation.json}`。
+
 ## 主要改动
 
 | 范围 | 最终行为 |
@@ -47,12 +54,17 @@ status 命令成功本身不能作为执行方存活证明。
 | 本地 access 对账 | 33 次原生 Start，对照发送/处理两侧合计 66 条 access，无缺失、多计 |
 | 正式 AMQPS 原始缺陷 | 只读 describe 的真实 journal 记录 accepted→awaiting-completion→更早时间的 working；该失败原样保留 |
 | 修复后正式 AMQPS 复验 | 三个正式身份经 ADP 与 describe 确认、完整任务生命周期、实际 PostgreSQL MCP 返回 read_only=false；结果 completed |
+| 后续本地 E1-a / E1-b | 用户授权后完成 18 例最终业务验证；17 例连续、1 例控制器中断后仅续验；MCP 修复共 18 次、重复 0、旧 fence 18/18 拒绝；正式平台接管仍未验收 |
 
 上述 3+25 项通过来自本轮开发验证记录。F15 使用本地 AIP stdio 与本地进程目录，不能
 称为正式 ADP 自动接管验收。access 对账也不证明平台 Monitor 入库。正式 AMQPS 的缺陷
 记录是修复依据；修复后成功结果单独保存在
 `eval/results/platform/container-postgres-mcp-20261017-order-fix-v2/`，并有原始发送与回执。
 该正式复验是已有身份的只读流程，不代替新主备的正式平台故障接续验收。
+旧本地 F15 是每断点一次，共三次，与后续 E1 数据分开。SDK 审阅快照导出时的“等待授权”
+是当时状态；后续本地 E1-a 为 8 连续、1 续验，E1-b 三策略各 3 连续，原控制器中断记录
+保留，不能称一个进程连续完成 18 次。正式平台 E1-a / E1-b 仍未完成。本次补丁导出自身
+没有启动模型、数据库工具或平台任务；后续资源实验见 `docs/resume_evaluation.md`。
 
 从本项目根目录可运行：
 
@@ -75,6 +87,11 @@ stale 拒绝；不把它当作真实 Broker / ADP 验收。
 
 运行输出、SQLite、AMP 日志、证书、EAB、项目业务配置不进入上游补丁。改动可按状态修复、
 可接续模块、可选统计三个独立提交审阅；现有协议模型与业务授权边界保持由相应层负责。
+
+审阅补丁路径目前以项目根目录为准，使用 `git -c core.autocrlf=false apply --check`；
+若从上游 ACPs-community 根目录检查同一补丁，使用 `git -c core.autocrlf=false apply -p3 --check`。
+SDK 外的三项乱序回归 `tests/test_task_ordering.py` 被来源清单引用，不在这份仅 SDK
+补丁中；正式提交前仍须移入上游测试目录并调整导入路径。
 
 请重点审阅时间相同时的合并策略、终态保护、SQLite 在外部副作用期间持锁的取舍、
 远程 fence 回调的契约，以及“首次尝试结果”是否适合作为 access 的可选口径。

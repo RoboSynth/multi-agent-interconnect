@@ -8,6 +8,7 @@ by this coordinator. Only a separate approval-key file may be read here.
 from __future__ import annotations
 
 import asyncio
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import inspect
@@ -83,7 +84,8 @@ class LocalWorker:
 class LocalAipStdioTransport:
     mode = "local-aip-stdio"
 
-    def __init__(self, config_path: str | Path | dict, directory: str | Path | None = None, *, on_event=None):
+    def __init__(self, config_path: str | Path | dict, directory: str | Path | None = None, *, on_event=None,
+                 resume_payload_factory=None):
         self.config_path = local_path(config_path) if not isinstance(config_path, dict) else None
         self.config = dict(config_path) if isinstance(config_path, dict) else json.loads(self.config_path.read_text(encoding="utf-8-sig"))
         self.directory = local_path(directory or self.config.get("directory", "output/local-aip"))
@@ -100,6 +102,7 @@ class LocalAipStdioTransport:
         self.leader._group_id = self.group_id
         self.leader.publish_message = self._publish
         self.on_event = on_event
+        self.resume_payload_factory = resume_payload_factory
         self.workers: dict[str, LocalWorker] = {}
         self.pending: dict[str, dict[str, Any]] = {}
         self.tools = [p.tool for p in PROBES]
@@ -409,6 +412,7 @@ class LocalAipStdioTransport:
                         fence=proposed)
                     resume = {**original, "kind": "resume", "operation_id": operation_id, "fence": proposed.to_dict(),
                               "args": {"advance_fence": True, "resume_package": package.to_dict()}}
+                    resume = await self._resume_payload(resume, package, original_fence=previous.to_dict())
                     control = await self._call_worker(candidate, resume)
                     confirmed = control.get("active_fence", control.get("operation", {}).get("active_fence"))
                     if not isinstance(confirmed, dict) or Fence(**confirmed) < proposed:
@@ -451,6 +455,42 @@ class LocalAipStdioTransport:
                     self.journal.record_takeover(incident_id, failed.spec["aic"], reason,
                         replacement=candidate.spec["aic"], state="candidate_failed:"+type(exc).__name__)
             raise RuntimeError("no confirmed local standby completed takeover")
+
+    async def _resume_payload(self, default: dict, package: ResumePackage, *, original_fence=None) -> dict:
+        """Customize handover information while preserving the fencing handshake.
+
+        The optional factory receives independent copies of (payload, package).
+        Only args may change; advance_fence must remain true. This is useful for
+        evaluator comparisons without giving a strategy new operation identity,
+        authority, deadline, or a chance to replay the original act directly.
+        """
+        if self.resume_payload_factory is None:
+            return default
+        expected = deepcopy(default)
+        value = self.resume_payload_factory(deepcopy(default), deepcopy(package))
+        if inspect.isawaitable(value):
+            value = await value
+        TaskPayload.model_validate(value)
+        if ({k: v for k, v in value.items() if k != "args"} !=
+                {k: v for k, v in expected.items() if k != "args"}):
+            raise ValueError("handover factory cannot change operation, fence, identity, approval or budget")
+        if value.get("args", {}).get("advance_fence") is not True:
+            raise ValueError("handover factory must retain args.advance_fence=true")
+        handover = value["args"].get("handover")
+        if handover is not None:
+            control = handover.get("control", {}) if isinstance(handover, dict) else {}
+            if (control.get("operation_id") != expected["operation_id"] or
+                    control.get("replacement_fence") != expected["fence"] or
+                    control.get("original_fence") != original_fence):
+                raise ValueError("handover information cannot change the original operation or fences")
+        # A supplied package must describe this exact logical operation and new
+        # fence. Omitting the package is allowed for a from-scratch comparison.
+        supplied = value["args"].get("resume_package")
+        if supplied is not None:
+            if not isinstance(supplied, dict) or any(supplied.get(key) != package.to_dict().get(key)
+                    for key in ("logical_task_id", "operations", "fence")):
+                raise ValueError("handover package cannot change operation identity or fence")
+        return value
 
     async def close(self):
         if self.closing:

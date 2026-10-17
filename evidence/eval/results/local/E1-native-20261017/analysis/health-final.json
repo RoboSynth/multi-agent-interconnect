@@ -1,0 +1,103 @@
+{
+  "source_case": "E1b/full_history-3",
+  "evidence_kind": "reuse final case cleanup-health; no extra resource probe",
+  "health": {
+    "checked_at": "2026-10-17T11:41:42.963433+00:00",
+    "endpoints": [
+      {
+        "port": 8081,
+        "path": "/ready",
+        "status": 200,
+        "version": "v1",
+        "passed": true
+      },
+      {
+        "port": 8082,
+        "path": "/ready",
+        "status": 200,
+        "version": "v2",
+        "passed": true
+      },
+      {
+        "port": 8088,
+        "path": "/health",
+        "status": 200,
+        "version": "v2",
+        "passed": true
+      },
+      {
+        "port": 8088,
+        "path": "/ready",
+        "status": 200,
+        "version": "v2",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "application_status": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "E1b-full_history-68f2b2b0ed:cleanup",
+      "logical_task_id": "E1b-full_history-68f2b2b0ed:cleanup:healthy-status",
+      "executor_aic": "local-application",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "application_reachable",
+          "value": true,
+          "source": "application.status",
+          "observed_at": "2026-10-17T11:41:43.217904+00:00"
+        },
+        {
+          "key": "application_pool_revision",
+          "value": 189,
+          "source": "application.status",
+          "observed_at": "2026-10-17T11:41:43.217904+00:00"
+        },
+        {
+          "key": "application_read_only",
+          "value": false,
+          "source": "application.status",
+          "observed_at": "2026-10-17T11:41:43.217904+00:00"
+        },
+        {
+          "key": "application_error_codes",
+          "value": [
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError",
+            "TimeoutError"
+          ],
+          "source": "application.status",
+          "observed_at": "2026-10-17T11:41:43.217904+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    }
+  }
+}

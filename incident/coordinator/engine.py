@@ -16,7 +16,8 @@ from .planner import EvidencePlanner, PROBES
 class IncidentCoordinator:
     def __init__(self, transport, directory, *, hypothesis=None, approval_issuer=None,
                  term=1, task_budget=40, on_update=None, planner_factory=EvidencePlanner,
-                 eager_actions=True, probe_selector=None, generate_hypotheses=True, entry_first=True):
+                 eager_actions=True, probe_selector=None, generate_hypotheses=True, entry_first=True,
+                 step_selector=None):
         self.transport = transport
         self.directory = Path(directory)
         self.directory.mkdir(parents=True, exist_ok=True)
@@ -27,6 +28,7 @@ class IncidentCoordinator:
         self.on_update = on_update
         self.planner_factory, self.eager_actions, self.probe_selector = planner_factory, eager_actions, probe_selector
         self.generate_hypotheses, self.entry_first = generate_hypotheses, entry_first
+        self.step_selector = step_selector
         self.runs = {}
         self.approvals = {}
 
@@ -56,7 +58,7 @@ class IncidentCoordinator:
         self.save(state)
         return state
 
-    async def _call(self, state, tool, *, kind="observe", args=None, node=None):
+    async def _call(self, state, tool, *, kind="observe", args=None, node=None, feedback=False):
         if len(state["tasks"]) >= self.task_budget:
             raise RuntimeError("task budget exhausted; requires operator review")
         task_id = "lt-" + uuid.uuid4().hex[:12]
@@ -85,7 +87,12 @@ class IncidentCoordinator:
             row.update(status=product.status, product=result,
                        elapsed_ms=round((time.monotonic()-started)*1000, 3))
             self.event(state, "task_returned", logical_task_id=task_id, tool=tool, status=product.status)
+            if feedback and (product.operation or {}).get("state") in {
+                    "unknown", "executing", "reconciliation_required", "stale_fence", "rejected_stale_fence"}:
+                raise RuntimeError(f"{tool} has an uncertain operation or stale fence; requires operator review")
             if product.status != "ok":
+                if feedback and (product.status == "rejected" or (kind != "act" and product.status == "tool_error")):
+                    return result
                 raise RuntimeError(f"{tool} returned {product.status}; review participant evidence")
             return result
         except Exception as exc:
@@ -132,6 +139,80 @@ class IncidentCoordinator:
         entry.update(status="approved" if approved else "declined", decided_at=utc_now())
         future.set_result(approved)
 
+    async def _verify(self, state, *, feedback=False):
+        verified = await self._call(state, "incident.verification", kind="verify",
+            args={"original_request_key": state["original_request_key"],
+                  "original_request_unknown": state.get("original_request_unknown", False)}, feedback=feedback)
+        if verified["status"] != "ok":
+            state["result"] = None
+            return None
+        facts = {f["key"]: f["value"] for f in verified["facts"]}
+        needs_original = state.get("original_request_unknown", False) or bool(state["original_request_key"])
+        if needs_original and (not state["original_request_key"] or facts.get("original_request_resolved") is not True):
+            # A healthy fresh workflow never proves a lost original intent.
+            # Also protect callers using an older verifier.
+            facts.setdefault("service_recovered", facts.get("business_recovered") is True)
+            facts.update(business_recovered=False, original_request_resolved=False, manual_required=True)
+            if not state["original_request_key"]:
+                facts["original_request_resolution"] = "unknown_missing_key"
+            elif facts.get("original_request_resolution") not in {"unknown_receipt_missing", "unknown_receipt_unavailable"}:
+                facts["original_request_resolution"] = "unknown"
+            self.event(state, "original_request_unresolved", reason=(
+                "原请求键已遗失，请人工核对原订单。" if not state["original_request_key"]
+                else "原请求结果仍未查清，请人工核对。"))
+        state["result"] = facts
+        return facts
+
+    async def _free_step(self, state, planner, available, local_hypotheses, tokens_before):
+        if len(state["tasks"]) >= self.task_budget:
+            raise RuntimeError("task budget exhausted; requires operator review")
+        planner.symptom, planner.local_hypotheses = state["symptom"], local_hypotheses
+        state["planning_history"] = planner.history
+        history_before = len(planner.history)
+        step = await self.step_selector(state, planner, available)
+        if (step.kind not in {"observe", "act", "verify"} or step.tool not in available
+                or not isinstance(step.args, dict)
+                or (step.kind == "verify" and (step.tool != "incident.verification" or step.args))
+                or (step.kind == "observe" and step.tool not in {probe.tool for probe in PROBES})):
+            raise ValueError("selector returned an invalid or unavailable tool step")
+        if len(planner.history) == history_before:
+            planner.history.append({"reason": "自由选择下一次工具调用", "tool": step.tool,
+                                    "kind": step.kind, "args": dict(step.args)})
+        state["model_source"], state["tokens"] = self.hypothesis.last_source, self.hypothesis.tokens - tokens_before
+        self.event(state, "tool_selected", tool=step.tool, kind=step.kind, args=step.args, reason=planner.history[-1])
+        if step.kind == "verify":
+            facts = await self._verify(state, feedback=True)
+            planner.history.append({"reason": "接收业务验证结果", "tool": step.tool,
+                                    "result": facts, "status": state["tasks"][-1]["status"]})
+            if facts is not None and facts.get("business_recovered") is True:
+                state["status"] = "completed"
+                return True
+            if (facts is not None and facts.get("service_recovered") is True
+                    and (facts.get("manual_required") is True or facts.get("original_request_resolved") is False)):
+                state["status"] = "needs_attention"
+                return True
+        else:
+            node = step.action_node() if step.kind == "act" else None
+            if node is not None:
+                if node.tool != step.tool or node.kind != "act" or node.args != step.args:
+                    raise ValueError("action node differs from the selected step")
+                state["plan"] = [asdict(node)]
+            result = await self._call(state, step.tool, kind=step.kind, args=step.args, node=node, feedback=True)
+            if result["status"] == "ok":
+                if node is not None:
+                    planner.action_completed(node)
+                else:
+                    planner.update(step.tool, result["facts"])
+                local_hypotheses.extend(result.get("local_hypotheses", []))
+                state["facts"] = list(planner.facts.values())
+                self.save(state)
+                return False
+            planner.history.append({"reason": "参与者拒绝或只读工具错误，反馈给下一次选择", "tool": step.tool,
+                                    "kind": step.kind, "status": result["status"]})
+        self.event(state, "tool_feedback", tool=step.tool, kind=step.kind, status=state["tasks"][-1]["status"],
+                   result=state["result"] if step.kind == "verify" else None)
+        return False
+
     async def run(self, state):
         planner = self.planner_factory()
         self.hypothesis.begin_run()
@@ -153,6 +234,10 @@ class IncidentCoordinator:
                     if key in planner.facts and predicate(planner.value(key)):
                         diagnosed.add(cause)
                 state["diagnosed_causes"] = sorted(diagnosed)
+                if self.step_selector is not None:
+                    if await self._free_step(state, planner, available, local_hypotheses, model_tokens_before):
+                        break
+                    continue
                 # Repair only confirmed facts. Compound faults keep other domains' evidence.
                 actions = planner.actions()
                 remaining_probes = [p for p in PROBES if p.tool in available and p.tool not in planner.observed]
@@ -180,24 +265,7 @@ class IncidentCoordinator:
                 state["tokens"] = self.hypothesis.tokens - model_tokens_before
                 state["planning_history"] = planner.history
                 if tool is None:
-                    verified = await self._call(state, "incident.verification", kind="verify",
-                        args={"original_request_key": state["original_request_key"],
-                              "original_request_unknown": state.get("original_request_unknown", False)})
-                    facts = {f["key"]: f["value"] for f in verified["facts"]}
-                    needs_original = state.get("original_request_unknown", False) or bool(state["original_request_key"])
-                    if needs_original and (not state["original_request_key"] or facts.get("original_request_resolved") is not True):
-                        # A healthy fresh workflow never proves a lost original
-                        # intent. Also protect callers using an older verifier.
-                        facts.setdefault("service_recovered", facts.get("business_recovered") is True)
-                        facts.update(business_recovered=False, original_request_resolved=False, manual_required=True)
-                        if not state["original_request_key"]:
-                            facts["original_request_resolution"] = "unknown_missing_key"
-                        elif facts.get("original_request_resolution") not in {"unknown_receipt_missing", "unknown_receipt_unavailable"}:
-                            facts["original_request_resolution"] = "unknown"
-                        self.event(state, "original_request_unresolved", reason=(
-                            "原请求键已遗失，请人工核对原订单。" if not state["original_request_key"]
-                            else "原请求结果仍未查清，请人工核对。"))
-                    state["result"] = facts
+                    facts = await self._verify(state)
                     if facts.get("business_recovered") is not True:
                         state["status"] = "needs_attention"
                     else:

@@ -20,7 +20,8 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine
-from eval.methods import FixedPlanner, FreeModelSelector
+from eval.methods import FixedPlanner
+from eval.methods.free_tools import FreeToolSelector
 from eval.observation import ContinuousObserver
 
 
@@ -79,7 +80,8 @@ async def run(args):
             "recovery_confirmed_seconds": "injection start to 30-second healthy window with at least 10 completed workflows"},
         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
         "M0": "frozen observation order, then confirmed repairs; no model calls",
-        "M1": "model freely selects remaining observations; confirmed repairs; no model fallback",
+        "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1"},
+        "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
@@ -89,7 +91,7 @@ async def run(args):
     if model_server.exists() and args.model_base_url == "http://127.0.0.1:8089/v1":
         manifest["local_model_server"] = json.loads(model_server.read_text(encoding="utf-8-sig"))
     manifest["source_sha256"] = {}
-    for relative in ("eval/run.py", "eval/methods/__init__.py", "incident/coordinator/hypothesis.py",
+    for relative in ("eval/run.py", "eval/methods/__init__.py", "eval/methods/free_tools.py", "incident/coordinator/hypothesis.py",
                      "incident/coordinator/planner.py", "incident/coordinator/engine.py",
                      "eval/observation.py", "eval/inject.py", "business/load.py",
                      "incident/contracts.py", "incident/local_transport.py", "incident/local_worker.py",
@@ -132,7 +134,7 @@ async def run(args):
                             max_calls=args.model_call_budget, token_budget=args.model_token_budget)
                         options = {"planner_factory": FixedPlanner, "eager_actions": False} if method == "M0" else {}
                         if method == "M1":
-                            options["probe_selector"] = FreeModelSelector(hypothesis)
+                            options["step_selector"] = FreeToolSelector(hypothesis)
                             options.update(generate_hypotheses=False, entry_first=False)
                         engine = IncidentCoordinator(transport, output / "incidents", hypothesis=hypothesis,
                             approval_issuer=transport.issue_approval, term=transport.term,
@@ -169,6 +171,7 @@ async def run(args):
                         approval_wait = sum((datetime.fromisoformat(a["decided_at"]) - datetime.fromisoformat(a["requested_at"])).total_seconds()
                                             for a in state["approvals"] if a.get("decided_at"))
                         row = {"scenario": scenario, "method": method, "repeat": repeat + 1,
+                            "method_definition_id": manifest["method_definition_ids"][method],
                             "incident_id": state["id"], "transport": transport.mode,
                             "model_source": state["model_source"], "status": state["status"],
                             "probes": sum(t["kind"] == "observe" for t in state["tasks"]),

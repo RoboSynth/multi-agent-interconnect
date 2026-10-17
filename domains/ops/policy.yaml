@@ -44,7 +44,7 @@ tools:
     server: route
     mcp_tool: route_rollback
     risk: write
-    description: 将订单入口回退到已登记的 v2 版本并重新加载实验 Nginx。
+    description: 仅当当前入口配置为 v1 时回退到已登记的 v2 版本并重新加载实验 Nginx。
     input_schema: {type: object, additionalProperties: false, properties: {}}
     fixed_arguments: {target_version: v2}
-    reconcile: {tool_alias: ops.route_status, expected_after: v2}
+    reconcile: {tool_alias: ops.route_status, expected_before: v1, expected_after: v2}

@@ -21,6 +21,11 @@ def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
     raw_path = Path(rows_file) if rows_file else directory / "results.json"
     rows = json.loads(raw_path.read_text(encoding="utf-8"))
     experiment = json.loads((directory / "experiment.json").read_text(encoding="utf-8"))
+    m1_definitions = {row.get("method_definition_id", experiment.get("method_definition_ids", {}).get("M1", "observation-only-v1"))
+                      for row in rows if row["method"] == "M1"}
+    if len(m1_definitions) > 1:
+        raise ValueError("M1 method definitions differ; report these cohorts separately")
+    m1_scope = "selects observations, actions and verification" if m1_definitions == {"free-tools-v1"} else "selects observations"
     output.mkdir(parents=True, exist_ok=True)
     scenarios, methods = experiment["scenarios"], experiment["methods"]
     expected = len(scenarios)*len(methods)*experiment["repeats"]
@@ -76,7 +81,7 @@ def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
     fig.legend(handles=legend, loc="lower right", bbox_to_anchor=(.985, .012), ncol=3, frameon=False)
     footnote = ("Recovery uses confirmed successes and 1 rps sampling; failed/unconfirmed counts remain in row labels.\n"
                 "Probe/token panels retain failures. Model fallbacks and diagnosis counts are in plot-data.json.\n"
-                "M0 is scripted; M1 selects observations; M2 ranks model hypotheses. These are local development results.")
+                f"M0 is scripted; M1 {m1_scope}; M2 ranks model hypotheses. These are local development results.")
     if composite:
         footnote += "\nDifferent source freezes: " + "; ".join(
             scenario + "=" + "/".join(versions) for scenario, versions in source_versions.items())
@@ -89,6 +94,7 @@ def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
     metadata = {"source": str(raw_path.resolve()), "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
                 "recorded_cells": len(rows), "expected_cells": expected, "matrix_complete": complete,
                 "formats": list(formats), "composite_source_versions": composite,
+                "M1_method_definition_ids": sorted(m1_definitions),
                 "source_versions_by_scenario": source_versions, "groups": counters}
     (output / "plot-data.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return metadata

@@ -1,0 +1,3387 @@
+[
+  {
+    "case": "after_observation-1",
+    "section": "E1a",
+    "source_result_sha256": "379404b77e321843097fd1de99bbb97c86ab06c0f9641359a0a5002171017111",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:13:15.956285Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "5a8316dbd1dd45d38051014cf9a3afa2",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-bbdc127fdefd4b66",
+        "logical_task_id": "lt-9cda0bcb8e12",
+        "operation_id": "inc-bbdc127fdefd4b66:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:13:15.539337Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_observation-c320ac123d",
+        "crash_point": "after_observation",
+        "logical_task_id": "lt-5ee2b059c992",
+        "operation_id": null
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-bbdc127fdefd4b66",
+        "logical_task_id": "lt-5ee2b059c992",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 13,
+          "takeover_version": 1
+        },
+        "operation_state": null,
+        "status": "ok",
+        "elapsed_seconds": 0.297,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-bbdc127fdefd4b66:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-bbdc127fdefd4b66-lt-1b24676272b8",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 13,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            13,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            1
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-bbdc127fdefd4b66:pool",
+            "applied",
+            13,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            13,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            36
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-bbdc127fdefd4b66:restore-writes",
+            "applied",
+            13,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "before_modification-1",
+    "section": "E1a",
+    "source_result_sha256": "11dbd8d4af39bf027a73c69b444a2daf9a466806c6c3ad1d67ddaa9d646e2deb",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:13:57.255832Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "71d4b11fc4784ccbbf5567f7d32c52e4",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-2990b8ca562f45c1",
+        "logical_task_id": "lt-a638b37bd352",
+        "operation_id": "inc-2990b8ca562f45c1:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:13:56.980700Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-before_modification-e002a256fe",
+        "crash_point": "before_modification",
+        "logical_task_id": "lt-a638b37bd352",
+        "operation_id": "inc-2990b8ca562f45c1:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-2990b8ca562f45c1",
+        "logical_task_id": "lt-a638b37bd352",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 14,
+          "takeover_version": 1
+        },
+        "operation_state": "applied",
+        "status": "ok",
+        "elapsed_seconds": 0.375,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-2990b8ca562f45c1:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-2990b8ca562f45c1-lt-84c501a54541",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 14,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            14,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-2990b8ca562f45c1:pool",
+            "applied",
+            14,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            14,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            37
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-2990b8ca562f45c1:restore-writes",
+            "applied",
+            14,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "after_applied-1",
+    "section": "E1a",
+    "source_result_sha256": "fbc737ae9f068ce4daba0ff71297ea9bc8f86d883765e9551c15d0fe8ef7e7e2",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:14:41.424496Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "4a36de8796864957b72638e9081b9d7d",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-c32d00387a404fba",
+        "logical_task_id": "lt-12f563cc4029",
+        "operation_id": "inc-c32d00387a404fba:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:14:41.498310Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_applied-3774ae5a13",
+        "crash_point": "after_applied",
+        "logical_task_id": "lt-12f563cc4029",
+        "operation_id": "inc-c32d00387a404fba:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-c32d00387a404fba",
+        "logical_task_id": "lt-12f563cc4029",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 15,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.203,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-c32d00387a404fba:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-c32d00387a404fba-lt-9ca7d69b6d6e",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 15,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            15,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            3
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-c32d00387a404fba:pool",
+            "applied",
+            15,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            15,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            38
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-c32d00387a404fba:restore-writes",
+            "applied",
+            15,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "after_observation-2",
+    "section": "E1a",
+    "source_result_sha256": "562fc25ef086548e4cf2d2d64b52e579d0c124da5aa5bc0203ce47676e052353",
+    "controller_continuation": true,
+    "original_controller_status": "controller_interrupted",
+    "original_baseline_HTTP_record_unavailable": true,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:15:23.324103Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "6e783bec6b534e97bbf314f51d7d8480",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-135eaf4f00fe4c63",
+        "logical_task_id": "lt-d3286f247e1d",
+        "operation_id": "inc-135eaf4f00fe4c63:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:15:22.913373Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_observation-fbedcb8e44",
+        "crash_point": "after_observation",
+        "logical_task_id": "lt-11a2a9b3fdd7",
+        "operation_id": null
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-135eaf4f00fe4c63",
+        "logical_task_id": "lt-11a2a9b3fdd7",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 16,
+          "takeover_version": 1
+        },
+        "operation_state": null,
+        "status": "ok",
+        "elapsed_seconds": 0.312,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-135eaf4f00fe4c63:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-135eaf4f00fe4c63-lt-34383757ba24:controller-continuation",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 17,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            16,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            4
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-135eaf4f00fe4c63:pool",
+            "applied",
+            16,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            16,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            39
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-135eaf4f00fe4c63:restore-writes",
+            "applied",
+            16,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "continuation_has_no_mcp_modification": true
+    }
+  },
+  {
+    "case": "before_modification-2",
+    "section": "E1a",
+    "source_result_sha256": "b711ed0b7ecd5408a939258d791b383d605acbe6f284a995d2b91b912c1c975d",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:32:17.044002Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "daf132ffe310458b8451ceb26ab1d2d1",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-2a0bc1bf9e114714",
+        "logical_task_id": "lt-046ade5013a8",
+        "operation_id": "inc-2a0bc1bf9e114714:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:32:16.576655Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-before_modification-dd057ebc8e",
+        "crash_point": "before_modification",
+        "logical_task_id": "lt-046ade5013a8",
+        "operation_id": "inc-2a0bc1bf9e114714:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-2a0bc1bf9e114714",
+        "logical_task_id": "lt-046ade5013a8",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 18,
+          "takeover_version": 1
+        },
+        "operation_state": "applied",
+        "status": "ok",
+        "elapsed_seconds": 0.641,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-2a0bc1bf9e114714:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-2a0bc1bf9e114714-lt-3cd836cb3e1c",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 18,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            18,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            5
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-2a0bc1bf9e114714:pool",
+            "applied",
+            18,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            18,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            40
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-2a0bc1bf9e114714:restore-writes",
+            "applied",
+            18,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "after_applied-2",
+    "section": "E1a",
+    "source_result_sha256": "4ac6d2e0078a523fc3ddaef8aad62c1c7ea5e1e8fd264a69f7c0e34f44cb039d",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:33:00.566611Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "48ccc74c164e4f63a2c5efe8c7a719e7",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-c9baa173adcf41da",
+        "logical_task_id": "lt-224ce3c9bf58",
+        "operation_id": "inc-c9baa173adcf41da:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:33:00.658980Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_applied-d2d65d1e85",
+        "crash_point": "after_applied",
+        "logical_task_id": "lt-224ce3c9bf58",
+        "operation_id": "inc-c9baa173adcf41da:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-c9baa173adcf41da",
+        "logical_task_id": "lt-224ce3c9bf58",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 19,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.312,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-c9baa173adcf41da:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-c9baa173adcf41da-lt-d4bb1b4f6645",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 19,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            19,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            6
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-c9baa173adcf41da:pool",
+            "applied",
+            19,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            19,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            41
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-c9baa173adcf41da:restore-writes",
+            "applied",
+            19,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "after_observation-3",
+    "section": "E1a",
+    "source_result_sha256": "08f7e7e8b1660f05995d9a63470abe2a0ed8b3757d0ee45cf9a56ced656736a6",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:33:42.236726Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "564f88126dea4d538c776a2ba3dc8db7",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-635d9efa5ae44748",
+        "logical_task_id": "lt-70cc61df5c62",
+        "operation_id": "inc-635d9efa5ae44748:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:33:41.837215Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_observation-f184c85224",
+        "crash_point": "after_observation",
+        "logical_task_id": "lt-75d8543486b1",
+        "operation_id": null
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-635d9efa5ae44748",
+        "logical_task_id": "lt-75d8543486b1",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 20,
+          "takeover_version": 1
+        },
+        "operation_state": null,
+        "status": "ok",
+        "elapsed_seconds": 0.281,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-635d9efa5ae44748:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-635d9efa5ae44748-lt-ef182da605ea",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 20,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            20,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            7
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-635d9efa5ae44748:pool",
+            "applied",
+            20,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            20,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            42
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-635d9efa5ae44748:restore-writes",
+            "applied",
+            20,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "before_modification-3",
+    "section": "E1a",
+    "source_result_sha256": "6d3c8379eb9aeb19b1fb9c4cc5ff4b1b9a19bed606efc771c430d83088b13282",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-backup",
+        "timestamp": "2026-10-17T11:34:22.927898Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "fa930038436c46eb9c993974824a6e05",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-4e1eeb0162764f19",
+        "logical_task_id": "lt-daf1ab1d060a",
+        "operation_id": "inc-4e1eeb0162764f19:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:34:22.647608Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-before_modification-6361968355",
+        "crash_point": "before_modification",
+        "logical_task_id": "lt-daf1ab1d060a",
+        "operation_id": "inc-4e1eeb0162764f19:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-4e1eeb0162764f19",
+        "logical_task_id": "lt-daf1ab1d060a",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 21,
+          "takeover_version": 1
+        },
+        "operation_state": "applied",
+        "status": "ok",
+        "elapsed_seconds": 0.375,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-4e1eeb0162764f19:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-4e1eeb0162764f19-lt-e8dc9a4d22ce",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 21,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            21,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            8
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-4e1eeb0162764f19:pool",
+            "applied",
+            21,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            21,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            43
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-4e1eeb0162764f19:restore-writes",
+            "applied",
+            21,
+            1
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "after_applied-3",
+    "section": "E1a",
+    "source_result_sha256": "7a40abe3d024138ef5d38ed88af6705331312c51ba7c016dee60483b19922388",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:35:03.887252Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "744cf599a59a497bb44f92986880d48e",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "inc-0d540d2f59db48a8",
+        "logical_task_id": "lt-021d4b25683d",
+        "operation_id": "inc-0d540d2f59db48a8:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:35:03.958153Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "F15-after_applied-3a6501a050",
+        "crash_point": "after_applied",
+        "logical_task_id": "lt-021d4b25683d",
+        "operation_id": "inc-0d540d2f59db48a8:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "inc-0d540d2f59db48a8",
+        "logical_task_id": "lt-021d4b25683d",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 22,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.204,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "inc-0d540d2f59db48a8:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "inc-0d540d2f59db48a8-lt-6dfeb0c3d8df",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 22,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            22,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            9
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "inc-0d540d2f59db48a8:pool",
+            "applied",
+            22,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            22,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            44
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "inc-0d540d2f59db48a8:restore-writes",
+            "applied",
+            22,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": null,
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true
+    }
+  },
+  {
+    "case": "from_scratch-1",
+    "section": "E1b",
+    "source_result_sha256": "deefbfc7ae5d575361cd61fbcda13d7921a26ac780d933dd5f93ce4840a2ce6e",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:35:44.280584Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "8518a06e3cab4d718df206aa9c4d923d",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-from_scratch-1321d2338e",
+        "logical_task_id": "E1b-from_scratch-1321d2338e:restore-writes",
+        "operation_id": "E1b-from_scratch-1321d2338e:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:35:44.348841Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-from_scratch-1321d2338e",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-from_scratch-1321d2338e:restore-writes",
+        "operation_id": "E1b-from_scratch-1321d2338e:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-from_scratch-1321d2338e",
+        "logical_task_id": "E1b-from_scratch-1321d2338e:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 23,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.203,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-from_scratch-1321d2338e:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-from_scratch-1321d2338e-E1b-from_scratch-1321d2338e:verify",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 23,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            23,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            10
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-from_scratch-1321d2338e:pool-rebuild",
+            "applied",
+            23,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            23,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            45
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-from_scratch-1321d2338e:restore-writes",
+            "applied",
+            23,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 1084,
+      "handover_information_utf8_bytes": 325,
+      "handover_information_estimated_tokens_bytes_div_4": 81.25,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-from_scratch-1321d2338e:restore-writes",
+      "original_fence": {
+        "coordinator_term": 23,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 23,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-from_scratch-1321d2338e:restore-writes",
+      "native_transmitted_ifc_text_bytes": 1084,
+      "replacement_acknowledged_handover_sha256": "5adbb6c97816556bc628dc51076f5e3a9b98419d8b946d5602dbd1e537b8f04f"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "full_history-1",
+    "section": "E1b",
+    "source_result_sha256": "d68f7f189c22bf07324648b7a27a9deca79a5459b55e1918f70e6af78f6f5fe7",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:36:24.159279Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "60c331065c7f4724a65dec69e51373c5",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-full_history-63c9fbf09f",
+        "logical_task_id": "E1b-full_history-63c9fbf09f:restore-writes",
+        "operation_id": "E1b-full_history-63c9fbf09f:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:36:24.228753Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-full_history-63c9fbf09f",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-full_history-63c9fbf09f:restore-writes",
+        "operation_id": "E1b-full_history-63c9fbf09f:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-full_history-63c9fbf09f",
+        "logical_task_id": "E1b-full_history-63c9fbf09f:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 24,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.219,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-full_history-63c9fbf09f:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-full_history-63c9fbf09f-E1b-full_history-63c9fbf09f:verify",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 24,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            24,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            11
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-full_history-63c9fbf09f:pool-rebuild",
+            "applied",
+            24,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            24,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            46
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-full_history-63c9fbf09f:restore-writes",
+            "applied",
+            24,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 4594,
+      "handover_information_utf8_bytes": 3835,
+      "handover_information_estimated_tokens_bytes_div_4": 958.75,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-full_history-63c9fbf09f:restore-writes",
+      "original_fence": {
+        "coordinator_term": 24,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 24,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-full_history-63c9fbf09f:restore-writes",
+      "native_transmitted_ifc_text_bytes": 4594,
+      "replacement_acknowledged_handover_sha256": "b094e6e1a4fed7ba6b72d3d8f781491f31df8d3324f7bf427febf7608c44ec2a"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "true_prior_conversation": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "resume_package-1",
+    "section": "E1b",
+    "source_result_sha256": "e43a9df9eca12c3755598e92dd50968f8dbd284f2141c5cd9097f1517f068af2",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:37:04.414144Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "c6e6156c71e041d0842b0746ae744536",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-resume_package-d9b9509af4",
+        "logical_task_id": "E1b-resume_package-d9b9509af4:restore-writes",
+        "operation_id": "E1b-resume_package-d9b9509af4:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:37:04.483231Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-resume_package-d9b9509af4",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-resume_package-d9b9509af4:restore-writes",
+        "operation_id": "E1b-resume_package-d9b9509af4:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-resume_package-d9b9509af4",
+        "logical_task_id": "E1b-resume_package-d9b9509af4:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 25,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.218,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-resume_package-d9b9509af4:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-resume_package-d9b9509af4-E1b-resume_package-d9b9509af4:verify",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 25,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            25,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            12
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-resume_package-d9b9509af4:pool-rebuild",
+            "applied",
+            25,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            25,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            47
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-resume_package-d9b9509af4:restore-writes",
+            "applied",
+            25,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 5223,
+      "handover_information_utf8_bytes": 2388,
+      "handover_information_estimated_tokens_bytes_div_4": 597.0,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-resume_package-d9b9509af4:restore-writes",
+      "original_fence": {
+        "coordinator_term": 25,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 25,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-resume_package-d9b9509af4:restore-writes",
+      "native_transmitted_ifc_text_bytes": 5223,
+      "replacement_acknowledged_handover_sha256": "0dd39e0b0415b934515194cb7023501090f57f27c2df3ee997acf38e04736318"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "same_package_in_compatibility_field": true,
+      "original_observation_expiry": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "from_scratch-2",
+    "section": "E1b",
+    "source_result_sha256": "d9264d6c9b46a3ebfc16fde8c47b70baa90c580e5174ba44fa6c52daa214f302",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:39:05.080437Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "2bc8b10368eb4c2fb25daf26d49e5ada",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-from_scratch-eaefdf4c4c",
+        "logical_task_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+        "operation_id": "E1b-from_scratch-eaefdf4c4c:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:39:05.147918Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-from_scratch-eaefdf4c4c",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+        "operation_id": "E1b-from_scratch-eaefdf4c4c:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-from_scratch-eaefdf4c4c",
+        "logical_task_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 28,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.531,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-from_scratch-eaefdf4c4c-E1b-from_scratch-eaefdf4c4c:verify",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 28,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            28,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            15
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-from_scratch-eaefdf4c4c:pool-rebuild",
+            "applied",
+            28,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            28,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            50
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-from_scratch-eaefdf4c4c:restore-writes",
+            "applied",
+            28,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 1084,
+      "handover_information_utf8_bytes": 325,
+      "handover_information_estimated_tokens_bytes_div_4": 81.25,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+      "original_fence": {
+        "coordinator_term": 28,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 28,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-from_scratch-eaefdf4c4c:restore-writes",
+      "native_transmitted_ifc_text_bytes": 1084,
+      "replacement_acknowledged_handover_sha256": "cc183dffeb4c5980d7fdb2f19f6ea7e888ce35cb89cbded945cdaa9f40b82588"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "full_history-2",
+    "section": "E1b",
+    "source_result_sha256": "559369fb040c71613b4057e627cfaba5165c56726da6071f2ce06fb074ff82cc",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:37:45.059847Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "2b08666045b84b7497445ff1751020b7",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-full_history-c635bceb5d",
+        "logical_task_id": "E1b-full_history-c635bceb5d:restore-writes",
+        "operation_id": "E1b-full_history-c635bceb5d:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:37:45.129936Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-full_history-c635bceb5d",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-full_history-c635bceb5d:restore-writes",
+        "operation_id": "E1b-full_history-c635bceb5d:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-full_history-c635bceb5d",
+        "logical_task_id": "E1b-full_history-c635bceb5d:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 26,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.219,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-full_history-c635bceb5d:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-full_history-c635bceb5d-E1b-full_history-c635bceb5d:verify",
+        "duration_seconds": 30.0,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 26,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            26,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            13
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-full_history-c635bceb5d:pool-rebuild",
+            "applied",
+            26,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            26,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            48
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-full_history-c635bceb5d:restore-writes",
+            "applied",
+            26,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 4594,
+      "handover_information_utf8_bytes": 3835,
+      "handover_information_estimated_tokens_bytes_div_4": 958.75,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-full_history-c635bceb5d:restore-writes",
+      "original_fence": {
+        "coordinator_term": 26,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 26,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-full_history-c635bceb5d:restore-writes",
+      "native_transmitted_ifc_text_bytes": 4594,
+      "replacement_acknowledged_handover_sha256": "311cf1d9496f65f9cbdddb7920bc7943137fb20561a44a6d2c2fa872c340f42d"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "true_prior_conversation": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "resume_package-2",
+    "section": "E1b",
+    "source_result_sha256": "e4e4fad0a97092d96f1dd7b339a25d55b81068dd3f5c04dab9efbbdaefcc3147",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:38:25.133497Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "4b044cc921dc48458db502381258b36c",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-resume_package-c9538ef9f8",
+        "logical_task_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+        "operation_id": "E1b-resume_package-c9538ef9f8:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:38:25.202914Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-resume_package-c9538ef9f8",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+        "operation_id": "E1b-resume_package-c9538ef9f8:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-resume_package-c9538ef9f8",
+        "logical_task_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 27,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.235,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-resume_package-c9538ef9f8-E1b-resume_package-c9538ef9f8:verify",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 27,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            27,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            14
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-resume_package-c9538ef9f8:pool-rebuild",
+            "applied",
+            27,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            27,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            49
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-resume_package-c9538ef9f8:restore-writes",
+            "applied",
+            27,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 5221,
+      "handover_information_utf8_bytes": 2387,
+      "handover_information_estimated_tokens_bytes_div_4": 596.75,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+      "original_fence": {
+        "coordinator_term": 27,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 27,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-resume_package-c9538ef9f8:restore-writes",
+      "native_transmitted_ifc_text_bytes": 5221,
+      "replacement_acknowledged_handover_sha256": "9363bad03461b1e48f330e021d2faf4485d82ebeea83f4144b5d87b37c019e33"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "same_package_in_compatibility_field": true,
+      "original_observation_expiry": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "from_scratch-3",
+    "section": "E1b",
+    "source_result_sha256": "c2a347f713d7129e3c57bd72760ee6043876a098609f9787832970290ef04eed",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:40:26.580042Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "b10552fc44b54834b681c4ab1132b64d",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-from_scratch-31fde5a88b",
+        "logical_task_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+        "operation_id": "E1b-from_scratch-31fde5a88b:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:40:26.651027Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-from_scratch-31fde5a88b",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+        "operation_id": "E1b-from_scratch-31fde5a88b:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-from_scratch-31fde5a88b",
+        "logical_task_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 30,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.406,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-from_scratch-31fde5a88b-E1b-from_scratch-31fde5a88b:verify",
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 30,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            30,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            17
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-from_scratch-31fde5a88b:pool-rebuild",
+            "applied",
+            30,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            30,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            52
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-from_scratch-31fde5a88b:restore-writes",
+            "applied",
+            30,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 1084,
+      "handover_information_utf8_bytes": 325,
+      "handover_information_estimated_tokens_bytes_div_4": 81.25,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+      "original_fence": {
+        "coordinator_term": 30,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 30,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-from_scratch-31fde5a88b:restore-writes",
+      "native_transmitted_ifc_text_bytes": 1084,
+      "replacement_acknowledged_handover_sha256": "a67f839a31775db71677e15fe9aa756fc8e8ec06f88a791df9722813c0ec948c"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "full_history-3",
+    "section": "E1b",
+    "source_result_sha256": "5d85280979649f456b8e58a6db37a49033eb1e6a6c034a51c90c87ef16fe42ef",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:41:10.770642Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "9081e2d73a6f4a84897caaebc28f4e92",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-full_history-68f2b2b0ed",
+        "logical_task_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+        "operation_id": "E1b-full_history-68f2b2b0ed:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:41:10.931281Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-full_history-68f2b2b0ed",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+        "operation_id": "E1b-full_history-68f2b2b0ed:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-full_history-68f2b2b0ed",
+        "logical_task_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 31,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.375,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-full_history-68f2b2b0ed-E1b-full_history-68f2b2b0ed:verify",
+        "duration_seconds": 30.031,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 31,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            31,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            18
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-full_history-68f2b2b0ed:pool-rebuild",
+            "applied",
+            31,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            31,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            53
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-full_history-68f2b2b0ed:restore-writes",
+            "applied",
+            31,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 4594,
+      "handover_information_utf8_bytes": 3835,
+      "handover_information_estimated_tokens_bytes_div_4": 958.75,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+      "original_fence": {
+        "coordinator_term": 31,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 31,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-full_history-68f2b2b0ed:restore-writes",
+      "native_transmitted_ifc_text_bytes": 4594,
+      "replacement_acknowledged_handover_sha256": "17cb4db35e736debfda6aa695e6628410c7ad02f21adb5bb6cd40d07c06621bb"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "true_prior_conversation": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  },
+  {
+    "case": "resume_package-3",
+    "section": "E1b",
+    "source_result_sha256": "441d2a6e2916b1cbed70f0e2292415a88477feb6cd28cdfe445ea8567772562e",
+    "controller_continuation": false,
+    "original_controller_status": null,
+    "original_baseline_HTTP_record_unavailable": false,
+    "modification_invocations": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:39:45.856085Z",
+        "event": "mcp_modify_invocation",
+        "transport": "local-aip-stdio",
+        "invocation_id": "7e7f832d47784237877fa6ccda933656",
+        "server": "postgres",
+        "upstream_tool": "execute_sql",
+        "tool": "db.restore_writes",
+        "incident_id": "E1b-resume_package-6f4de91a23",
+        "logical_task_id": "E1b-resume_package-6f4de91a23:restore-writes",
+        "operation_id": "E1b-resume_package-6f4de91a23:restore-writes"
+      }
+    ],
+    "crash_records": [
+      {
+        "aic": "local-database-primary",
+        "timestamp": "2026-10-17T11:39:45.928739Z",
+        "event": "experiment_worker_crash",
+        "experiment_id": "E1b-resume_package-6f4de91a23",
+        "crash_point": "after_applied",
+        "logical_task_id": "E1b-resume_package-6f4de91a23:restore-writes",
+        "operation_id": "E1b-resume_package-6f4de91a23:restore-writes"
+      }
+    ],
+    "takeovers": [
+      {
+        "event": "takeover_completed",
+        "transport": "local-aip-stdio",
+        "incident_id": "E1b-resume_package-6f4de91a23",
+        "logical_task_id": "E1b-resume_package-6f4de91a23:restore-writes",
+        "failed_aic": "local-database-primary",
+        "replacement_aic": "local-database-backup",
+        "fence": {
+          "coordinator_term": 29,
+          "takeover_version": 1
+        },
+        "operation_state": "skipped_already_applied",
+        "status": "ok",
+        "elapsed_seconds": 0.219,
+        "discovery": "local process directory"
+      }
+    ],
+    "old_fence_rejection": {
+      "status": "rejected",
+      "operation": {
+        "operation_id": "E1b-resume_package-6f4de91a23:restore-writes",
+        "state": "rejected_stale_fence",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "reason": null
+    },
+    "business_verification": {
+      "business_recovered": true,
+      "order_observation": {
+        "run_id": "E1b-resume_package-6f4de91a23-E1b-resume_package-6f4de91a23:verify",
+        "duration_seconds": 30.016,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      }
+    },
+    "allocated_term_after": 29,
+    "ledger_state_after": [
+      {
+        "domain": "application",
+        "active_fences": [
+          [
+            "application",
+            29,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "application",
+            "applied",
+            16
+          ]
+        ],
+        "incident_operations": [
+          [
+            "application",
+            "E1b-resume_package-6f4de91a23:pool-rebuild",
+            "applied",
+            29,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "database",
+        "active_fences": [
+          [
+            "database",
+            29,
+            1
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "database",
+            "applied",
+            51
+          ],
+          [
+            "database",
+            "unknown",
+            2
+          ]
+        ],
+        "incident_operations": [
+          [
+            "database",
+            "E1b-resume_package-6f4de91a23:restore-writes",
+            "applied",
+            29,
+            0
+          ]
+        ]
+      },
+      {
+        "domain": "ops",
+        "active_fences": [
+          [
+            "ops",
+            11,
+            0
+          ]
+        ],
+        "operation_state_counts": [
+          [
+            "ops",
+            "applied",
+            40
+          ]
+        ],
+        "incident_operations": []
+      }
+    ],
+    "handover_metrics": {
+      "resume_ifc_payload_utf8_bytes": 5229,
+      "handover_information_utf8_bytes": 2391,
+      "handover_information_estimated_tokens_bytes_div_4": 597.75,
+      "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+      "model_calls": 0,
+      "model_tokens": 0,
+      "original_operation_id": "E1b-resume_package-6f4de91a23:restore-writes",
+      "original_fence": {
+        "coordinator_term": 29,
+        "takeover_version": 0
+      },
+      "replacement_fence": {
+        "coordinator_term": 29,
+        "takeover_version": 1
+      },
+      "logical_task_id": "E1b-resume_package-6f4de91a23:restore-writes",
+      "native_transmitted_ifc_text_bytes": 5229,
+      "replacement_acknowledged_handover_sha256": "5ad03be307de01a30983b266cccbc8884f95c3299d4a63ddaed4fd984ea1294d"
+    },
+    "independent_checks": {
+      "passed": true,
+      "single_db_mcp_call": true,
+      "no_duplicate": true,
+      "old_fence": true,
+      "cleanup": true,
+      "business": true,
+      "duration": true,
+      "flows": true,
+      "requests": true,
+      "no_bad_requests": true,
+      "no_model": true,
+      "one_takeover": true,
+      "one_crash": true,
+      "actual_domain_amp_call_count": true,
+      "one_wire_resume": true,
+      "wire_bytes": true,
+      "information_bytes": true,
+      "receiver_hash": true,
+      "control_identity": true,
+      "same_package_in_compatibility_field": true,
+      "original_observation_expiry": true,
+      "reused_keys_within_transfer_to_action_TTL_bounds": true
+    }
+  }
+]

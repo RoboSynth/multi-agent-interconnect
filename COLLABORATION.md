@@ -55,3 +55,19 @@ pwsh -NoProfile -File deploy/local-up.ps1 -Install
 [E1c 三次证据汇总](evidence/eval/results/local/E1c-summary-20261017/summary.json)包含历史 retry 一次与之后两次复核，不是新冻结的同批三次实验。三次均复活同一旧主 PID，旧 fence 被共享资源域 SQLite OperationLedger 拦截，旧主实际 MCP 修改为 0、备侧修改一次，随后通过 30 秒/10 流程观察；这不是 PostgreSQL 原生 fence，也未验证平台 ADP 接管。历史原结果保持原位置，不重复复制。
 
 本批基于模型提交 56b6a4595a745ef7faccaea2e4f6b927458ddced，仅同步已验收 F12 白名单、F06 测试对齐及闭合 E1c 补证。后续自由工具基线、正式公平交接和 Bridge 可选 handover 仍另批验收。
+
+## 资料、SDK 审阅与本轮闭合证据
+
+**[团队资料导航](docs/资料导航.md)**：官方赛题原件、项目方案、研究资料和证据入口。
+
+本批增加 [SDK 独立审阅补丁](docs/contributions/sdk-review-20261017/README.md)，限12个SDK文件，已在冻结v0.2临时副本验证应用及哈希；尚未向上游公开提交。引用已有3项排序和25项接续测试，本次导出未重跑。
+
+[E1准备包](evidence/preparation/E1-20261017/preparation.json)保留当时审批阻止状态；用户随后明确授权。[E1闭合报告](evidence/eval/results/local/E1-native-20261017/analysis/report.md)包含18例最终业务验证：17连续、1控制器中断后仅续验，实际注入18、DB MCP修复18、重复0、旧fence18/18拒绝、实际模型0。ResumePackage信息比完整对话少37.7%，兼容重复字段却令完整IFC大13.7%；不能声称wire或模型token优势。本批只收筛选后的闭合数据/图/来源hash，不含私有源码冻结、原始日志或数据库，未验证正式ADP自动接管。
+
+M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全审批/工具/预算，无规则fallback。[模型schema烟测](evidence/model-evaluation/free-tool-model-schema-20261017/results.json)为一次合成健康上下文请求（1031tokens、0资源调用）；[engine行为证据](evidence/model-evaluation/free-tool-engine-20261017/results.json)为离线/fixture结果，不是新的真实模型资源矩阵。历史M1-observe数据及负面延迟结论保持原界限。后续正在运行的M1资源实验不在本批。
+
+共享路由前置守卫是E1闭合后的修复，[33项Gateway离线/stdio测试证据](evidence/product/route-precondition-20261017/results.json)单独记录；E1来源hash仍指向实验时旧Bridge，不能把E1结果当作新守卫验收。
+
+[13页技术报告开发稿](deliverables/development-report-20261017/technical-report-development.pdf)为匿名、非最终提交版，证据截至2026-10-17 11:41:43 UTC；不含之后的完整工具M1 pilot。相邻目录保留编排源与最终检查记录。
+
+[公开来源标识分类](evidence/audit/public-source-token-classification-20261017.json)仅按既有13份官方HTML的完整文件hash及标识指纹保留公开前端配置/HTML属性；项目16项已知私密值仍全部阻止，未来未知值不在例外内。

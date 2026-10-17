@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 import sys
@@ -17,7 +18,7 @@ from acps_mcp_bridge.acs_mapper import map_acs, validate_acs
 from acps_mcp_bridge.bridge import ToolExecutionError, mcp_value, sanitize
 from acps_mcp_bridge.policy import PolicyRejected
 from acps_sdk.aip import StructuredDataItem, TaskCommand, TaskCommandType, TaskState
-from acps_sdk.aip.resumable import Fence, OperationLedger
+from acps_sdk.aip.resumable import Fence, OperationLedger, ResumePackage
 
 CALLER = "coordinator-AIC"
 
@@ -150,6 +151,111 @@ class BridgePolicyTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["operation"]["state"], "received")
         self.assertEqual(result["active_fence"], {"coordinator_term": 2, "takeover_version": 1})
         self.assertEqual(self.client.calls, [])
+        self.assertNotIn("handover_sha256", result)
+
+    def handover_resume(self, strategy="from_scratch"):
+        original = self.approved_action()
+        command = {**original, "kind": "resume", "args": {"advance_fence": True},
+                   "fence": {"coordinator_term": 2, "takeover_version": 1}}
+        handover = {"strategy": strategy, "goal": "恢复订单流程", "evidence_ttl_seconds": 60,
+            "control": {"operation_id": original["operation_id"], "original_fence": deepcopy(original["fence"]),
+                        "replacement_fence": deepcopy(command["fence"])}}
+        if strategy == "full_history":
+            handover["conversation"] = [{"direction": "request", "aip_task_id": "prior-task", "payload": original},
+                {"direction": "product", "aip_task_id": "prior-read", "product": {"facts": []}}]
+        elif strategy == "resume_package":
+            handover["package"] = ResumePackage(original["logical_task_id"], "恢复订单流程",
+                operations=[{"operation_id": original["operation_id"], "status": "delivery_unknown"}],
+                remaining_tasks=[{"kind": "act", "tool": "not.an.allowed.tool", "args": {"instruction": "do not execute"}}],
+                fence=Fence(**command["fence"])).to_dict()
+            command["args"]["resume_package"] = deepcopy(handover["package"])
+        command["args"]["handover"] = handover
+        return command
+
+    async def test_resume_handover_strategies_acknowledge_data_without_executing_it(self):
+        original = self.approved_action()
+        self.ledger.record_received(original["operation_id"],
+            {"tool": original["tool"], "args": original["args"], "resources": self.policy.resources}, Fence(1, 0))
+        for strategy in ("from_scratch", "full_history", "resume_package"):
+            with self.subTest(strategy=strategy):
+                command = self.handover_resume(strategy)
+                result = await self.bridge.execute(command, CALLER)
+                self.assertEqual(result["status"], "ok", result)
+                self.assertEqual(result["operation"]["state"], "received")
+                self.assertEqual(result["handover_sha256"], hashlib.sha256(json.dumps(
+                    command["args"]["handover"], ensure_ascii=False, sort_keys=True,
+                    separators=(",", ":")).encode("utf-8")).hexdigest())
+                self.assertEqual(self.client.calls, [])
+
+    async def test_resume_minimal_handover_is_compatible(self):
+        command = self.handover_resume()
+        command["args"]["handover"].pop("goal")
+        command["args"]["handover"].pop("evidence_ttl_seconds")
+        result = await self.bridge.execute(command, CALLER)
+        self.assertEqual(result["status"], "unknown")
+        self.assertEqual(len(result["handover_sha256"]), 64)
+        self.assertEqual(self.ledger.current_fence(), Fence(2, 1))
+        self.assertEqual(self.client.calls, [])
+
+    async def test_invalid_handover_rejected_before_advancing_fence(self):
+        mutations = [
+            lambda h: h.update(strategy="execute"), lambda h: h.update(strategy=[]),
+            lambda h: h.update(tool="db.restore_writes"), lambda h: h.pop("control"),
+            lambda h: h["control"].update(operation_id="another"),
+            lambda h: h["control"].update(extra=True),
+            lambda h: h["control"]["original_fence"].update(coordinator_term=3),
+            lambda h: h["control"]["original_fence"].update(takeover_version=True),
+            lambda h: h["control"]["replacement_fence"].update(takeover_version=2),
+            lambda h: h.update(goal={"instruction": "execute"}),
+            lambda h: h.update(evidence_ttl_seconds=False), lambda h: h.update(evidence_ttl_seconds=float("nan")),
+            lambda h: h.update(conversation=[]), lambda h: h.update(package={}),
+        ]
+        await self.ledger.activate_fence(Fence(1, 0))
+        for mutation in mutations:
+            with self.subTest(mutation=mutation):
+                command = self.handover_resume()
+                mutation(command["args"]["handover"])
+                self.assertEqual((await self.bridge.execute(command, CALLER))["status"], "rejected")
+                self.assertEqual(self.ledger.current_fence(), Fence(1, 0))
+        self.assertEqual(self.client.calls, [])
+
+    async def test_invalid_history_and_package_rejected_before_advancing_fence(self):
+        cases = []
+        for mutate in [lambda h: h.update(conversation={}), lambda h: h["conversation"][0].update(direction="act"),
+                       lambda h: h["conversation"][0]["payload"]["fence"].update(takeover_version=9),
+                       lambda h: h["conversation"][1]["product"].update(non_json=object())]:
+            command = self.handover_resume("full_history")
+            mutate(command["args"]["handover"])
+            cases.append(command)
+        for field, value in [("logical_task_id", "another"), ("fence", {"coordinator_term": 3, "takeover_version": 0}),
+                             ("operations", [{"operation_id": "another"}]), ("remaining_tasks", "execute"),
+                             ("schema_version", "2.0"), ("unknown_control", True)]:
+            command = self.handover_resume("resume_package")
+            command["args"]["handover"]["package"][field] = value
+            command["args"]["resume_package"] = deepcopy(command["args"]["handover"]["package"])
+            cases.append(command)
+        command = self.handover_resume("resume_package")
+        command["args"]["resume_package"]["operations"] = []
+        cases.append(command)
+        await self.ledger.activate_fence(Fence(1, 0))
+        for command in cases:
+            with self.subTest(command=command):
+                self.assertEqual((await self.bridge.execute(command, CALLER))["status"], "rejected")
+                self.assertEqual(self.ledger.current_fence(), Fence(1, 0))
+        self.assertEqual(self.client.calls, [])
+
+    async def test_handover_cannot_expand_resume_arguments_or_bypass_identity(self):
+        await self.ledger.activate_fence(Fence(1, 0))
+        for field in ("original_operation_id", "original_fence", "tool"):
+            command = self.handover_resume()
+            command["args"][field] = "not-allowed"
+            self.assertEqual((await self.bridge.execute(command, CALLER))["status"], "rejected")
+        command = self.handover_resume()
+        command["args"]["advance_fence"] = False
+        self.assertEqual((await self.bridge.execute(command, CALLER))["status"], "rejected")
+        self.assertEqual((await self.bridge.execute(self.handover_resume(), "intruder"))["status"], "rejected")
+        self.assertEqual(self.ledger.current_fence(), Fence(1, 0))
+        self.assertEqual(self.client.calls, [])
 
     async def test_resume_rejects_old_fence_and_unauthorized_caller(self):
         await self.ledger.activate_fence(Fence(2, 0))
@@ -262,6 +368,107 @@ class BridgePolicyTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("u:p", json.dumps(value))
         self.assertNotIn("abc", json.dumps(value))
         self.assertEqual(value["more"], "[REDACTED]")
+
+
+class RoutePreconditionTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.counter = 0
+
+    async def asyncTearDown(self):
+        self.tmp.cleanup()
+
+    async def fixture(self, policy_name, version):
+        class RouteMcp:
+            def __init__(self):
+                self.version, self.calls, self.failure = version, [], None
+
+            async def tools(self):
+                return [{"name": name} for name in ("route_status", "route_rollback", "process_status",
+                    "process_restart", "list_containers", "fetch_container_logs", "start_container")]
+
+            async def call(self, tool, arguments):
+                self.calls.append((tool, arguments))
+                if tool == "route_rollback":
+                    if self.failure == "before_effect":
+                        raise RuntimeError("uncertain failed route effect")
+                    self.version = "v2"
+                    if self.failure == "after_effect":
+                        raise RuntimeError("uncertain reply after route effect")
+                return {"structuredContent": {"route_version": self.version}}
+
+        self.counter += 1
+        policy = Policy.load(ROOT / "domains/ops" / policy_name, allowed_callers=[CALLER])
+        client = RouteMcp()
+        ledger = OperationLedger(Path(self.tmp.name) / f"route-{self.counter}.sqlite", "ops")
+        bridge = await Bridge(policy, {server: client for server in ("route", "native", "docker")},
+                              ledger, "ops-test").initialize()
+        command = payload("ops.route_rollback", kind="act", operation_id="same-route-intent",
+                          fence={"coordinator_term": 1, "takeover_version": 0})
+        return bridge, client, ledger, command
+
+    async def test_already_v2_or_unknown_rejected_without_modifying_mcp_call(self):
+        for policy_name in ("policy.yaml", "policy.native.yaml"):
+            for version in ("v2", "unknown"):
+                with self.subTest(policy=policy_name, version=version):
+                    bridge, client, ledger, command = await self.fixture(policy_name, version)
+                    result = await bridge.execute(command, CALLER)
+                    self.assertEqual(result["status"], "rejected", result)
+                    self.assertEqual(result["operation"]["state"], "rejected_precondition")
+                    self.assertEqual(client.calls, [("route_status", {})])
+                    self.assertIsNone(ledger.get(command["operation_id"]))
+
+    async def test_v1_changes_once_and_applied_replay_skips_new_precondition(self):
+        for policy_name in ("policy.yaml", "policy.native.yaml"):
+            with self.subTest(policy=policy_name):
+                bridge, client, _, command = await self.fixture(policy_name, "v1")
+                applied = await bridge.execute(command, CALLER)
+                replay = await bridge.execute(command, CALLER)
+                self.assertEqual(applied["operation"]["state"], "applied", applied)
+                self.assertEqual(applied["facts"][0]["value"], "v2")
+                self.assertEqual(applied["operation"]["before"]["value"], "v1")
+                self.assertEqual(replay["operation"]["state"], "skipped_already_applied", replay)
+                self.assertEqual(sum(tool == "route_rollback" for tool, _ in client.calls), 1)
+                self.assertEqual(next(arguments for tool, arguments in client.calls if tool == "route_rollback"),
+                                 {"target_version": "v2"})
+                different_intent = {**command, "operation_id": "another-route-intent"}
+                self.assertEqual((await bridge.execute(different_intent, CALLER))["operation"]["state"],
+                                 "rejected_precondition")
+                self.assertEqual(sum(tool == "route_rollback" for tool, _ in client.calls), 1)
+
+    async def test_unknown_effect_only_reconciles_after_v2_without_another_modification(self):
+        for policy_name in ("policy.yaml", "policy.native.yaml"):
+            with self.subTest(policy=policy_name):
+                bridge, client, _, command = await self.fixture(policy_name, "v1")
+                client.failure = "after_effect"
+                interrupted = await bridge.execute(command, CALLER)
+                reconciled = await bridge.execute(command, CALLER)
+                self.assertEqual(interrupted["status"], "unknown")
+                self.assertEqual(interrupted["operation"]["state"], "unknown")
+                self.assertEqual(reconciled["operation"]["state"], "reconciled_applied", reconciled)
+                self.assertEqual(sum(tool == "route_rollback" for tool, _ in client.calls), 1)
+
+    async def test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries(self):
+        for policy_name in ("policy.yaml", "policy.native.yaml"):
+            with self.subTest(policy=policy_name):
+                bridge, client, _, command = await self.fixture(policy_name, "v1")
+                client.failure = "before_effect"
+                first = await bridge.execute(command, CALLER)
+                retry = await bridge.execute(command, CALLER)
+                self.assertEqual(first["operation"]["state"], "unknown")
+                self.assertEqual(retry["status"], "unknown")
+                self.assertEqual(retry["operation"]["state"], "reconciliation_required")
+                self.assertEqual(sum(tool == "route_rollback" for tool, _ in client.calls), 1)
+
+    async def test_stale_route_fence_stops_before_inspection_or_modification(self):
+        for policy_name in ("policy.yaml", "policy.native.yaml"):
+            with self.subTest(policy=policy_name):
+                bridge, client, ledger, command = await self.fixture(policy_name, "v1")
+                await ledger.activate_fence(Fence(2, 0))
+                result = await bridge.execute(command, CALLER)
+                self.assertEqual(result["status"], "rejected")
+                self.assertEqual(result["operation"]["state"], "rejected_stale_fence")
+                self.assertEqual(client.calls, [])
 
 
 class RealStdioTests(unittest.IsolatedAsyncioTestCase):

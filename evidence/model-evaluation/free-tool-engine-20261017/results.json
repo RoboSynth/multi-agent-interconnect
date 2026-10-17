@@ -1,0 +1,107 @@
+{
+  "recorded_at": "2026-10-17T11:07:52.075282+00:00",
+  "evidence_kind": "summary_of_completed_exec_tool_results_not_replayed_stdout",
+  "scope": "offline behavior and default regression; fake model HTTP and resource model; isolated local AIP stdio fixture",
+  "passed": true,
+  "test_runs": [
+    {
+      "pattern": "test_free_tool_*.py",
+      "tests": 15,
+      "seconds": 1.955,
+      "exit_code": 0,
+      "includes": {
+        "new_engine_tests": 10,
+        "existing_selector_tests": 5
+      },
+      "command_argv": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_free_tool_*.py",
+        "-v"
+      ]
+    },
+    {
+      "pattern": "test_coordinator.py",
+      "tests": 22,
+      "seconds": 6.778,
+      "exit_code": 0,
+      "includes": {
+        "existing_default_coordinator_regression": 22
+      },
+      "command_argv": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_coordinator.py",
+        "-v"
+      ]
+    }
+  ],
+  "source_whitelist": [
+    {
+      "path": "incident/coordinator/engine.py",
+      "sha256": "d3b11d7352c1c8d4e9dca9265bb6b0a3e6b47175a7e18005cad0d93619a99832"
+    },
+    {
+      "path": "tests/test_free_tool_engine.py",
+      "sha256": "6392e236a962fe30b17d98c6327a5c0328f6d604fbf0b143e91d02368fb8ad9c"
+    }
+  ],
+  "real_model_calls": 0,
+  "real_business_resource_calls": 0,
+  "covered_behaviors": [
+    "free action then verify without automatic rule probes/actions",
+    "failed verification feedback then observation, repair and successful verification",
+    "uncertain actions, executing/reconciliation-required and stale fences stop selection",
+    "explicit action rejection feeds next choice without bypassing domain guard/approval; stable operation identity",
+    "declined approval never dispatches action",
+    "explicit read rejection/tool_error feeds next choice; act tool_error stops",
+    "protocol/correlation/transport failures stop",
+    "task/model budgets stop without rule fallback or extra verification",
+    "service recovery with unresolved original intent remains needs_attention/manual",
+    "lost original intent does not skip service recovery",
+    "default constructor path and existing F12 original-intent regression"
+  ],
+  "initial_source_whitelist": [
+    {
+      "path": "incident/coordinator/engine.py",
+      "sha256": "a5ccf7a16203f04ac979c2c8bba42b079860ffe5b331999c31cb1a20bea57f4a"
+    },
+    {
+      "path": "tests/test_free_tool_engine.py",
+      "sha256": "d6ac8dcdd4b99106501f57f24eb8bc7744e70819f3a7ed21c8a428edaa064dbd"
+    }
+  ],
+  "initial_validation_total_tests": 37,
+  "total_unique_tests": 38,
+  "total_test_executions": 48,
+  "final_engine_validation": {
+    "tests": 11,
+    "seconds": 0.812,
+    "exit_code": 0,
+    "command_argv": [
+      "<workspace>\\.venv\\Scripts\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "<workspace>\\tests",
+      "-p",
+      "test_free_tool_engine.py",
+      "-v"
+    ],
+    "change": "non-ok verification clears state.result before feedback/next selection",
+    "reuse": "existing selector5/default coordinator22 passed earlier; final change only affects non-ok free-path verification, covered in new final engine suite"
+  },
+  "source_ready": true,
+  "source_frozen_at": "2026-10-17T11:12:19.430597+00:00"
+}

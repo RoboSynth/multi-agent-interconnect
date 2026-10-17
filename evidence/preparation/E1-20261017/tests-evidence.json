@@ -1,0 +1,36 @@
+{
+  "evidence_type": "summary of completed tool results; not reconstructed raw stdout",
+  "local_execution": [
+    {
+      "command": "& '<workspace>\\.venv\\Scripts\\python.exe' -m unittest discover -s '<workspace>\\tests' -p 'test_resume_transport.py' -v",
+      "tests": 5,
+      "elapsed_reported_seconds": 24.98,
+      "exit_code": 0,
+      "scope": "temporary fixture resources only; three crash points, unknown no retry, persistent shared terms"
+    },
+    {
+      "command": "& '<workspace>\\.venv\\Scripts\\python.exe' -m unittest discover -s '<workspace>\\tests' -p 'test_resume_comparison.py' -v",
+      "tests": 7,
+      "elapsed_reported_seconds": 6.64,
+      "exit_code": 0,
+      "scope": "authority mutation rejection, original TTL, genuine history, native fixture handover, replacement SHA acknowledgement, actual effect count one"
+    }
+  ],
+  "delegated_gateway_execution": {
+    "reported_by": "/root/bridge_gateway",
+    "tests": 28,
+    "exit_code": 0,
+    "scope": "official MCP stdio list/call/replay and new data-only handover validation/hash; rejected metadata checked before fence activation"
+  },
+  "preserved_initial_failure": {
+    "description": "First implementation added redundant original identity fields to default resume args; old bridge rejected invalid resume arguments. Default was restored to its original two keys before passing tests.",
+    "fixture_diagnostic": "artifacts/resume-fixture-diagnostic/transport/messages.jsonl",
+    "native_resources_modified": false
+  },
+  "formal_resource_suite": {
+    "state": "not_started",
+    "reason": "automatic approval review rejected explicit real PostgreSQL mutations without direct user authorization",
+    "process_created": false,
+    "faults_injected": 0
+  }
+}

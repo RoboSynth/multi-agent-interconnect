@@ -23,6 +23,8 @@ sys.path.insert(0, str(ROOT))
 
 from incident.coordinator.engine import IncidentCoordinator
 from incident.local_transport import LocalAipStdioTransport
+from eval.resume_support import (save, freeze_sources, assert_worker_sources,
+                                 authority_snapshot, baseline_health)
 
 POINTS = ("after_observation", "before_modification", "after_applied")
 
@@ -65,7 +67,13 @@ async def inject(action, runtime, record):
     process = await asyncio.create_subprocess_exec(sys.executable, str(ROOT / "eval/inject.py"), "F07", action,
         "--backend", "native", "--runtime", str(runtime), "--record", str(record),
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
-    _, _ = await process.communicate()
+    stdout, stderr = await process.communicate()
+    # Separate evaluator diagnostics stay private; the coordinator receives no
+    # resource credentials or fault truth from these files.
+    diagnostics = Path(record).parent / ("inject-"+action+"-"+uuid.uuid4().hex[:8])
+    diagnostics.parent.mkdir(parents=True, exist_ok=True)
+    diagnostics.with_suffix(".stdout.log").write_bytes(stdout)
+    diagnostics.with_suffix(".stderr.log").write_bytes(stderr)
     if process.returncode:
         # Injector stderr can contain process/resource diagnostics; preserve its
         # own logs rather than returning credentials through coordinator evidence.
@@ -85,6 +93,8 @@ def experiment_config(base, output, point, backup_bridge, experiment_id, verific
     backup.pop("crash_tool", None)
     config["workers"] = [w for w in config["workers"] if not (w["role"] == "database" and w.get("standby"))] + [backup]
     for worker in config["workers"]:
+        if worker["role"] == "application":
+            worker["ledger_path"] = str(ROOT / "runtime/application-operations.sqlite")
         if worker["role"] == "verification":
             worker["verification_duration"] = verification_duration
     return config
@@ -106,7 +116,11 @@ async def run_case(args, base, output, point):
     config = experiment_config(base, output, point, args.backup_bridge, experiment_id, args.verification_duration)
     config_path = output / "coordinator-experiment.json"
     config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8")
-    transport = LocalAipStdioTransport(config_path)
+    events_path = output / "events.jsonl"
+    def on_event(event):
+        with events_path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(event, ensure_ascii=False)+"\n")
+    transport = LocalAipStdioTransport(config_path, on_event=on_event)
     state = None
     setup_started = False
     result = {"experiment_id": experiment_id, "crash_point": point, "transport": transport.mode,
@@ -117,6 +131,10 @@ async def run_case(args, base, output, point):
         await transport.start()
         setup_started = True
         await inject("restore", args.runtime, output / "private/injections.jsonl")
+        result["baseline_health"] = await baseline_health(transport, incident_id=experiment_id+":baseline")
+        result["authority_before"] = authority_snapshot(transport)
+        if not result["baseline_health"]["passed"]:
+            raise RuntimeError("healthy baseline was not established")
         await inject("apply", args.runtime, output / "private/injections.jsonl")
         engine = IncidentCoordinator(transport, output / "incidents", term=transport.term,
                                      approval_issuer=transport.issue_approval)
@@ -129,7 +147,7 @@ async def run_case(args, base, output, point):
             await asyncio.sleep(0.05)
         await pending
         result.update(incident_id=state["id"], incident_status=state["status"], coordinator_term=transport.term,
-                      model_source=state["model_source"], model_tokens=state["tokens"])
+                      model_source=state["model_source"], model_tokens=state["tokens"], model_calls=engine.hypothesis.calls)
         original = next(t for t in state["tasks"] if t["kind"] == "act" and t["tool"] == "db.restore_writes")
         operation_id = state["id"] + ":restore-writes"
         stale = {"schema_version": "ifc/1.0", "incident_id": state["id"], "logical_task_id": original["logical_task_id"],
@@ -148,20 +166,27 @@ async def run_case(args, base, output, point):
             business_verification=state.get("result"), task_count=len(state["tasks"]),
             actual_attempt_count=len(transport.journal.list_tasks()))
         passed = (state["status"] == "completed" and len(writes) == 1 and len(crashes) == 1 and len(takeovers) == 1
-                  and result["old_fence_rejected"] and state.get("result", {}).get("business_recovered") is True)
+                  and result["old_fence_rejected"] and state.get("result", {}).get("business_recovered") is True
+                  and engine.hypothesis.calls == 0 and state["tokens"] == 0)
         result["status"] = "passed" if passed else "failed"
     except Exception as exc:
-        result.update(status="failed", error_class=type(exc).__name__)
+        result.update(status="failed", error_class=type(exc).__name__, error=str(exc))
         if state is not None:
             result.update(incident_id=state["id"], incident_status=state["status"], incident_error=state.get("error"))
     finally:
         try:
             if setup_started:
                 await inject("restore", args.runtime, output / "private/injections.jsonl")
+                result["cleanup_health"] = await baseline_health(transport, incident_id=experiment_id+":cleanup")
+                result["authority_after"] = authority_snapshot(transport, state["id"] if state else None)
+                if not result["cleanup_health"]["passed"]:
+                    raise RuntimeError("cleanup did not establish healthy baseline")
             result["cleanup"] = "restored" if setup_started else "not_needed"
         except Exception as exc:
             result.update(cleanup="failed", cleanup_error_class=type(exc).__name__, status="failed")
         await transport.close()
+        result.setdefault("domain_system_events", system_events(transport.amp_directory))
+        result.setdefault("takeovers", [row for row in transport.events if row["event"] == "takeover_completed"])
         result["elapsed_seconds"] = round(time.monotonic()-started, 3)
         (output / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     return result
@@ -171,22 +196,28 @@ async def run(args):
     points = args.crash_points.split(",")
     if any(point not in POINTS for point in points):
         raise ValueError("unknown crash point")
-    if args.verification_duration < 30:
+    if args.verification_duration < 30 or args.repeats < 1:
         raise ValueError("live F15 acceptance requires at least 30 seconds of business verification")
     base = json.loads(args.config.read_text(encoding="utf-8-sig"))
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:6]
     output = args.output or ROOT / "eval/results/local" / ("F15-" + stamp)
     output.mkdir(parents=True, exist_ok=False)
+    manifest = getattr(args, "frozen_manifest", None) or freeze_sources(output)
     results = []
-    for point in points:
-        result = await run_case(args, base, output / point, point)
-        results.append(result)
-        (output / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(json.dumps({key: result.get(key) for key in ("crash_point", "status", "db_mcp_modify_invocations",
-              "duplicate_modifying_calls", "old_fence_rejected", "elapsed_seconds", "cleanup")}, ensure_ascii=False), flush=True)
-        if result.get("cleanup") != "restored":
-            break
-    return 0 if len(results) == len(points) and all(r["status"] == "passed" for r in results) else 1
+    for repeat in range(args.repeats):
+        for point in points:
+            assert_worker_sources(manifest)
+            case_directory = output / point if args.repeats == 1 else output / (point+"-"+str(repeat+1))
+            result = await run_case(args, base, case_directory, point)
+            result["repeat"] = repeat+1
+            save(case_directory / "results.json", result)
+            results.append(result)
+            save(output / "results.json", results)
+            print(json.dumps({key: result.get(key) for key in ("crash_point", "repeat", "status", "db_mcp_modify_invocations",
+                  "duplicate_modifying_calls", "old_fence_rejected", "elapsed_seconds", "cleanup")}, ensure_ascii=False), flush=True)
+            if result.get("cleanup") != "restored":
+                return 1
+    return 0 if len(results) == len(points)*args.repeats and all(r["status"] == "passed" for r in results) else 1
 
 
 if __name__ == "__main__":
@@ -197,5 +228,6 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path)
     parser.add_argument("--crash-points", default=",".join(POINTS))
     parser.add_argument("--verification-duration", type=float, default=30)
+    parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--approve-high", action="store_true", help="Pre-authorize only this isolated evaluator's declared high-risk repair")
     raise SystemExit(asyncio.run(run(parser.parse_args())))

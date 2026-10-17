@@ -33,6 +33,13 @@ def summarize(directory):
     directory = Path(directory)
     manifest = json.loads((directory / "experiment.json").read_text(encoding="utf-8"))
     rows = json.loads((directory / "results.json").read_text(encoding="utf-8"))
+    m1_definitions = {row.get("method_definition_id", manifest.get("method_definition_ids", {}).get("M1", "observation-only-v1"))
+                      for row in rows if row["method"] == "M1"}
+    if len(m1_definitions) > 1:
+        raise ValueError("M1 method definitions differ; report these cohorts separately")
+    m1_scope = ("M1 freely selects observations, guarded actions and verification; no rule fallback."
+                if m1_definitions == {"free-tools-v1"} else
+                "Historical M1 freely selects observations and shares evidence-based repair rules.")
     # Keep raw rows immutable. Derive the earliest qualifying prefix rather than
     # treating the later observer-stop time as the recovery confirmation time.
     injections = []
@@ -72,9 +79,10 @@ def summarize(directory):
     result = {"expected_cells": expected, "recorded_cells": len(rows), "matrix_complete": complete,
         "completed_and_confirmed": sum(row["status"] == "completed" and row["continuous_recovery_confirmed"] for row in rows),
         "diagnosis_correct": sum(bool(row["diagnosis_exact_match"]) for row in rows),
+        "M1_method_definition_ids": sorted(m1_definitions),
         "token_usage_complete": all(row["token_usage_complete"] for row in rows), "groups": groups,
         "limits": ["Local native-process/AIP-stdio evidence; not formal platform AMQPS/ADP.",
-            "M1 freely selects observations and shares evidence-based repair rules.",
+            m1_scope,
             "Recovery time is a 1rps observation estimate; total coordination time includes 30s domain verification.",
             "Raw recovery_confirmed_seconds is the later observer-stop time; analysis-rows derives earliest 30s/10-flow confirmation from original requests and injection timestamps.",
             "Held-out instances vary workload seeds and resource revisions/PIDs within the same fault families.",

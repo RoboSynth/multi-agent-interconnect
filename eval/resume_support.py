@@ -1,0 +1,158 @@
+"""Evidence helpers shared by local E1 runners; never read resource env files."""
+from __future__ import annotations
+
+from contextlib import closing
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import sqlite3
+
+import httpx
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def save(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def freeze_sources(output):
+    """Copy the imported program and worker sources before any suite case."""
+    manifest = {"frozen_at": datetime.now(timezone.utc).isoformat(), "source_sha256": {},
+        "transport": "local-aip-stdio", "discovery": "local process directory",
+        "platform_adp_verified": False, "model_calls": 0, "model_tokens": 0,
+        "worker_imports": "fresh workers each case, unchanged source hashes checked before each case",
+        "parent_imports": "suite imports engine, transports and both runners once before this freeze"}
+    paths = []
+    for directory in ("eval", "incident", "acps_mcp_bridge", "business", "vendor/ACPs-community/acps-sdk/acps_sdk"):
+        paths.extend((ROOT / directory).rglob("*.py"))
+    paths.extend((ROOT / "domains").rglob("*.yaml"))
+    for relative in ("runtime/local-coordinator.json", "runtime/database-bridge.json",
+                     "runtime/database-backup-bridge.json", "runtime/ops-bridge.json"):
+        path = ROOT / relative
+        if path.exists():
+            paths.append(path)  # registered configuration paths; no env-file contents
+    for path in sorted(paths):
+        relative = path.relative_to(ROOT)
+        content = path.read_bytes()
+        manifest["source_sha256"][relative.as_posix()] = hashlib.sha256(content).hexdigest()
+        target = Path(output) / "source" / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
+    save(Path(output) / "source-manifest.json", manifest)
+    return manifest
+
+
+def assert_worker_sources(manifest):
+    # The suite parent has already imported engine. Root may develop a future
+    # engine during this run; fresh resource workers never import that module.
+    for relative, digest in manifest["source_sha256"].items():
+        if (relative.startswith(("acps_mcp_bridge/", "vendor/", "business/", "domains/", "runtime/")) or
+                relative in {"incident/local_worker.py", "incident/local_transport.py",
+                             "incident/contracts.py", "incident/partners.py", "incident/amp_setup.py"}):
+            if hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() != digest:
+                raise RuntimeError("worker source changed during frozen suite: " + relative)
+
+
+def authority_snapshot(transport, incident_id=None):
+    """Read authority metadata without resetting shared terms or business rows."""
+    rows = {"allocated_term": transport.term, "term_journal_path": transport.term_journal.path,
+            "attempt_journal_path": transport.journal.path, "ledgers": []}
+    with closing(sqlite3.connect(transport.term_journal.path)) as conn:
+        rows["coordinator_terms"] = [list(row) for row in conn.execute("SELECT name,term FROM coordinator_terms")]
+    seen = set()
+    for worker in transport.config["workers"]:
+        if worker.get("bridge_config"):
+            config_path = Path(worker["bridge_config"])
+            if not config_path.is_absolute():
+                config_path = ROOT / config_path
+            bridge = json.loads(config_path.read_text(encoding="utf-8-sig"))
+            path = Path(bridge["ledger_path"])
+            if not path.is_absolute():
+                path = config_path.parent / path
+        elif worker.get("ledger_path"):
+            path = Path(worker["ledger_path"])
+            if not path.is_absolute():
+                path = ROOT / path
+            bridge = {"ledger_domain": worker["role"]}
+        else:
+            continue
+        path = path.resolve()
+        if path in seen:
+            continue
+        seen.add(path)
+        item = {"path": str(path), "domain": bridge.get("ledger_domain", "default"), "exists": path.exists()}
+        if path.exists():
+            with closing(sqlite3.connect(path.as_uri()+"?mode=ro", uri=True)) as conn:
+                item["active_fences"] = [list(row) for row in conn.execute("SELECT * FROM operation_fences")]
+                item["operation_state_counts"] = [list(row) for row in conn.execute(
+                    "SELECT resource_domain,state,count(*) FROM operations GROUP BY resource_domain,state")]
+                if incident_id:
+                    item["incident_operations"] = [list(row) for row in conn.execute(
+                        "SELECT resource_domain,operation_id,state,coordinator_term,takeover_version FROM operations WHERE operation_id LIKE ?",
+                        (incident_id+":%",))]
+        rows["ledgers"].append(item)
+    return rows
+
+
+async def baseline_health(transport=None, *, incident_id="baseline"):
+    result = {"checked_at": datetime.now(timezone.utc).isoformat(), "endpoints": [], "passed": True}
+    async with httpx.AsyncClient(timeout=5, trust_env=False) as client:
+        for port, path, version in ((8081, "/ready", "v1"), (8082, "/ready", "v2"),
+                                    (8088, "/health", "v2"), (8088, "/ready", "v2")):
+            try:
+                response = await client.get(f"http://127.0.0.1:{port}{path}")
+                data = response.json()
+                actual = data.get("api_version", data.get("version", data.get("order_api_version")))
+                ok = response.status_code == 200 and actual == version
+                result["endpoints"].append({"port": port, "path": path, "status": response.status_code,
+                                            "version": actual, "passed": ok})
+                result["passed"] &= ok
+            except Exception as exc:
+                result["endpoints"].append({"port": port, "path": path, "error_class": type(exc).__name__})
+                result["passed"] = False
+    if transport is not None:
+        product = await transport.call({"incident_id": incident_id, "logical_task_id": incident_id+":healthy-status",
+            "kind": "observe", "tool": "application.status", "args": {}})
+        facts = {fact["key"]: fact["value"] for fact in product.get("facts", [])}
+        result["application_status"] = product
+        result["passed"] &= (product["status"] == "ok" and facts.get("application_read_only") is False
+                             and type(facts.get("application_pool_revision")) is int)
+    return result
+
+
+def semantic_history(messages_path, incident_id):
+    """Actual Start payloads and completed business products, with AIP IDs.
+
+    Lifecycle envelopes remain in messages.jsonl. No summaries or hypothetical
+    messages are introduced, and duplicate terminal products are collapsed.
+    """
+    records, seen = [], set()
+    if not Path(messages_path).exists():
+        return records
+    for line in Path(messages_path).read_text(encoding="utf-8").splitlines():
+        entry = json.loads(line)
+        message = entry["message"]
+        if message.get("sessionId") != incident_id:
+            continue
+        if entry["direction"] == "send" and message.get("command") == "start":
+            for item in message.get("dataItems", []):
+                payload = json.loads(item["text"]) if "text" in item else item.get("data")
+                if isinstance(payload, dict) and payload.get("kind") == "describe" and ":describe:" in payload.get("logical_task_id", ""):
+                    return records  # first replacement lookup: post-failure, not prior conversation
+                if isinstance(payload, dict) and payload.get("kind") != "describe":
+                    records.append({"direction": "request", "aip_task_id": message["taskId"], "payload": payload})
+        elif entry["direction"] == "receive":
+            for product in message.get("products", []):
+                for item in product.get("dataItems", []):
+                    data = item.get("data")
+                    if not isinstance(data, dict):
+                        continue
+                    key = (message["taskId"], json.dumps(data, sort_keys=True, ensure_ascii=False))
+                    if key not in seen:
+                        seen.add(key)
+                        records.append({"direction": "product", "aip_task_id": message["taskId"], "product": data})
+    return records

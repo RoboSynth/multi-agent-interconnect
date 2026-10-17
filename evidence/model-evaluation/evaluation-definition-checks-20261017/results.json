@@ -1,0 +1,58 @@
+{
+  "evidence_type": "summary of checks executed through Codex tools; raw stdout remains in the conversation",
+  "live_fault_matrix_run": false,
+  "checks": [
+    {
+      "python": ".venv-report/Scripts/python.exe",
+      "argv": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_evaluation_reports.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "passed": 3,
+      "skipped": 0,
+      "scope": "historical observation-only labels, full-tool report and SVG labels, rejection of mixed definitions"
+    },
+    {
+      "python": ".venv/Scripts/python.exe",
+      "argv": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_evaluation_reports.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "passed": 2,
+      "skipped": 1,
+      "skip_reason": "matplotlib is installed in the separate report environment"
+    },
+    {
+      "python": ".venv/Scripts/python.exe",
+      "argv": [
+        "eval/run.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "scope": "evaluation entry point imports and argparse help; no model or resource call"
+    }
+  ],
+  "initial_failed_check": {
+    "python": ".venv/Scripts/python.exe",
+    "error": "ModuleNotFoundError: matplotlib",
+    "resolution": "Report figure checks run in .venv-report; core environment skips only the optional figure check"
+  },
+  "limits": [
+    "No claim of real-fault performance for free-tools-v1",
+    "The existing v2 and F06-v3 M1 results remain observation-only evidence"
+  ]
+}

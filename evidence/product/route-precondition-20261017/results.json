@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-10-17T11:51:47.049510+00:00",
+  "scope": "offline shared resource-domain route precondition; fake MCP and temporary SQLite plus existing official stdio fixture",
+  "passed": true,
+  "test_count": 33,
+  "seconds": 11.539,
+  "exit_code": 0,
+  "command_argv": [
+    "<workspace>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "<workspace>\\tests",
+    "-p",
+    "test_bridge_gateway.py",
+    "-v"
+  ],
+  "evidence_kind": "completed exec tool output summary, not replayed stdout",
+  "all_reconcile_source_policies": [
+    {
+      "policy": "domains/database/policy.yaml",
+      "tool": "db.restore_writes",
+      "has_expected_before": false,
+      "expected_before": null,
+      "expected_after": false
+    },
+    {
+      "policy": "domains/ops/policy.native.yaml",
+      "tool": "ops.route_rollback",
+      "has_expected_before": true,
+      "expected_before": "v1",
+      "expected_after": "v2"
+    },
+    {
+      "policy": "domains/ops/policy.yaml",
+      "tool": "ops.route_rollback",
+      "has_expected_before": true,
+      "expected_before": "v1",
+      "expected_after": "v2"
+    }
+  ],
+  "behavior": [
+    "v2 or unknown rejected_precondition, route_rollback modifying calls zero",
+    "v1 applies once; existing applied replay skips even though current route now v2",
+    "existing unknown at v2 reconciles without another modification",
+    "existing unknown still at v1 remains reconciliation_required, never blind retry",
+    "stale fence stops before inspection/modification"
+  ],
+  "actual_resource_calls": 0,
+  "model_calls": 0,
+  "runtime_config_or_secret_changed": false,
+  "source_whitelist": [
+    {
+      "path": "acps_mcp_bridge/bridge.py",
+      "sha256": "0701d6db00c330ba377b73e7a6d67a3c4f7aa2587baf7f334476da1a7b4fa9f4"
+    },
+    {
+      "path": "domains/ops/policy.yaml",
+      "sha256": "5cfbc1794defcf79128e7c14d3633331b5e747df50b0a7f00a4efb6190843bc1"
+    },
+    {
+      "path": "domains/ops/policy.native.yaml",
+      "sha256": "162ab8bde5093f315af7ff78891e27b49fd7230aa72cf78bc35b92874cbc3058"
+    },
+    {
+      "path": "tests/test_bridge_gateway.py",
+      "sha256": "ce06d798dac35ae2a50105282c9957b292f519af801a80d51446237570a86591"
+    }
+  ]
+}

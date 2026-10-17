@@ -35,6 +35,18 @@
 | E09 | eval/results/local/F15-native-20261017-initial/results.json | 三个真实本地进程崩溃点、PG MCP 修改各一次、重复零次、旧 fence 拒绝 |
 | E10 | eval/results/platform/container-postgres-mcp-20261017-order-fix-v2/results.json 与 coordinator/messages.jsonl | 修复后的正式 ADP/三身份 describe/完整生命周期、实际 PG MCP 只读观察成功 |
 | E11 | eval/results/local/model-fairness-formal-v2-20261017/sdk-snapshot-addendum.json 与 source/vendor/ACPs-community/acps-sdk/ | 正式乱序修复前 67 份 SDK 文件快照；保留历史实验实际导入的字节 |
+| E12 | docs/contributions/sdk-review-20261017/manifest.json、acps-sdk-high-score.patch 与 validation.json | 冻结 v0.2 SDK 到当前 SDK 的独立 12 文件补丁；临时副本 apply-check 与应用后逐文件 hash 一致 |
+
+SDK 独立审阅补丁由 `prepare_sdk_patch.py` 调用既有 `sdk_patch(root, baseline)` 生成，
+不调用完整业务 overlay 导出器。旧 `artifacts/high-score-source-20261017/` 的 11 文件
+SDK 补丁缺少后续乱序修复，不与本次 12 文件补丁混用。补丁默认不覆盖已有输出目录，
+manifest 记录基线、逐文件来源 SHA256 与既有 3+25 项测试引用，未为导出重复运行测试。
+
+SDK 导出快照建立时，新 E1 曾因缺用户明确资源授权而被拒绝。之后用户授权并完成本地
+18 例最终验证：E1-a 为 8 连续、1 控制器中断后仅续验，E1-b 各策略 3 连续。数据库 MCP
+修复共 18 次、重复 0，旧 fence 18/18 拒绝，实际模型用量 0；独立分析问题 0。
+原中断、旧 F15 三个单次结果和三身份正式只读复验分别保留，不把这些称为正式 ADP
+接管验收。详见[接管评测记录](../resume_evaluation.md)，只读 SDK 导出快照及补丁字节保持不变。
 
 MQ 的 `transport=AMQP`、URL 的 `amqps://` 和能力值 `amqp:0.9.1` 属于不同字段。
 本轮未找到仅改变某个 MQ 协议值就造成发现失败的成对原始请求，故没有单独声称这一类

@@ -61,3 +61,8 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 - [官方代码](https://github.com/AIP-PUB/ACPs-community) · [梧桐文档](https://wt.ioa.pub/docs.html)
 - [构建记录](integration/BUILD-VERIFICATION.md) · [平台审核结果](integration/two-agent/rejection-analysis-v1.json)
+
+
+---
+
+**[团队资料导航](docs/资料导航.md)** · [协作快速开始](COLLABORATION.md) · [E1 闭合报告](evidence/eval/results/local/E1-native-20261017/analysis/report.md) · [技术报告开发稿PDF](deliverables/development-report-20261017/technical-report-development.pdf)

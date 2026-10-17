@@ -4,8 +4,10 @@ from __future__ import annotations
 import asyncio
 import ast
 from datetime import datetime, timezone
+import hashlib
 import inspect
 import json
+import math
 import re
 import time
 
@@ -58,6 +60,96 @@ def sanitize(value, secret_values=()):
     return value
 
 
+def _handover_digest(payload, args):
+    """Validate optional evidence metadata; nothing in it grants execution authority."""
+    from acps_sdk.aip.resumable import Fence
+
+    handover = args["handover"]
+    strategy = handover.get("strategy") if isinstance(handover, dict) else None
+    fields = {"from_scratch": set(), "full_history": {"conversation"}, "resume_package": {"package"}}
+    if not isinstance(strategy, str) or strategy not in fields:
+        raise PolicyRejected("invalid handover strategy")
+    if (set(handover) - ({"strategy", "goal", "evidence_ttl_seconds", "control"} | fields[strategy])
+            or not {"control", *fields[strategy]} <= set(handover)):
+        raise PolicyRejected("invalid handover representation")
+    if "goal" in handover and (not isinstance(handover["goal"], str) or not handover["goal"].strip()):
+        raise PolicyRejected("handover goal must be a nonempty string")
+    ttl = handover.get("evidence_ttl_seconds", 60)
+    if type(ttl) not in (int, float) or not math.isfinite(ttl) or ttl <= 0:
+        raise PolicyRejected("invalid handover evidence TTL")
+
+    def fence(value):
+        if not isinstance(value, dict) or set(value) != {"coordinator_term", "takeover_version"}:
+            raise PolicyRejected("invalid handover fence")
+        try:
+            return Fence(**value)
+        except (TypeError, ValueError) as exc:
+            raise PolicyRejected("invalid handover fence") from exc
+
+    control = handover["control"]
+    if not isinstance(control, dict) or set(control) != {"operation_id", "original_fence", "replacement_fence"}:
+        raise PolicyRejected("invalid handover control")
+    replacement = fence(control["replacement_fence"])
+    if (control["operation_id"] != payload["operation_id"] or replacement != fence(payload.get("fence"))
+            or fence(control["original_fence"]) > replacement):
+        raise PolicyRejected("handover control differs from the resume operation")
+    if args.get("advance_fence") is not True:
+        raise PolicyRejected("handover requires advance_fence=true")
+
+    if strategy == "full_history":
+        conversation = handover["conversation"]
+        if not isinstance(conversation, list):
+            raise PolicyRejected("handover conversation must be a list")
+        for item in conversation:
+            direction = item.get("direction") if isinstance(item, dict) else None
+            body = {"request": "payload", "product": "product"}.get(direction) if isinstance(direction, str) else None
+            if (body is None or set(item) != {"direction", "aip_task_id", body}
+                    or not isinstance(item["aip_task_id"], str) or not item["aip_task_id"]
+                    or not isinstance(item[body], dict)):
+                raise PolicyRejected("invalid handover conversation entry")
+            request = item[body]
+            if direction == "request" and request.get("operation_id") == payload["operation_id"]:
+                if (request.get("tool") != payload.get("tool") or request.get("incident_id") != payload["incident_id"]
+                        or fence(request.get("fence")) != fence(control["original_fence"])):
+                    raise PolicyRejected("handover history differs from the original operation")
+    if strategy == "resume_package":
+        package = handover["package"]
+        package_fields = {"schema_version", "logical_task_id", "goal", "evidence_refs", "hypotheses",
+                          "remaining_tasks", "operations", "fence", "created_at"}
+        if (not isinstance(package, dict) or set(package) - package_fields
+                or package.get("schema_version", "1.0") != "1.0"
+                or package.get("logical_task_id") != payload["logical_task_id"]
+                or not isinstance(package.get("goal"), str)
+                or fence(package.get("fence")) != replacement):
+            raise PolicyRejected("invalid handover resume package")
+        for key in ("evidence_refs", "hypotheses", "remaining_tasks", "operations"):
+            if not isinstance(package.get(key, []), list) or not all(isinstance(item, dict) for item in package.get(key, [])):
+                raise PolicyRejected("invalid handover resume package list")
+        if (not any(item.get("operation_id") == payload["operation_id"] for item in package.get("operations", []))
+                or package != args.get("resume_package")):
+            raise PolicyRejected("handover package differs from the resume operation or args.resume_package")
+    elif "resume_package" in args:
+        raise PolicyRejected("handover strategy does not use a resume package")
+
+    def json_data(value, depth=0):
+        if depth > 64:
+            return False
+        if value is None or type(value) in (str, int, bool):
+            return True
+        if type(value) is float:
+            return math.isfinite(value)
+        if type(value) is list:
+            return all(json_data(item, depth + 1) for item in value)
+        if type(value) is dict:
+            return all(type(key) is str and json_data(item, depth + 1) for key, item in value.items())
+        return False
+
+    if not json_data(handover):
+        raise PolicyRejected("handover must contain only JSON data")
+    encoded = json.dumps(handover, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
 class Bridge:
     def __init__(self, policy, clients: dict, ledger, executor_aic: str, *, audit=None,
                  resource_guard=None, secret_values=(), max_output_bytes=32768):
@@ -104,8 +196,10 @@ class Bridge:
                 if not isinstance(payload.get("operation_id"), str):
                     raise PolicyRejected("resume requires operation_id")
                 args = payload.get("args", {})
-                if not isinstance(args, dict) or set(args) - {"advance_fence", "resume_package"}:
+                if not isinstance(args, dict) or set(args) - {"advance_fence", "resume_package", "handover"}:
                     raise PolicyRejected("invalid resume arguments")
+                if "handover" in args:
+                    result["handover_sha256"] = _handover_digest(payload, args)
                 if args.get("advance_fence"):
                     if args["advance_fence"] is not True:
                         raise PolicyRejected("advance_fence must be boolean true")
@@ -194,6 +288,8 @@ class Bridge:
                             observed = mcp_value(await self.clients[reference["server"]].call(reference["mcp_tool"], query))
                             return self._facts(reference_alias, observed)[0]["value"]
                         ledger_options = {"inspect": inspect_resource, "expected_after": reconciliation["expected_after"]}
+                        if "expected_before" in reconciliation:
+                            ledger_options["expected_before"] = reconciliation["expected_before"]
                     # Deadline cancellation makes an in-flight action unknown in the durable ledger.
                     outcome = await asyncio.wait_for(self.ledger.execute(
                         payload["operation_id"], {"tool": call.alias, "args": payload.get("args", {}),

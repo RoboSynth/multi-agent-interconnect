@@ -16,6 +16,8 @@ class FixedPlanner(EvidencePlanner):
 
 
 class FreeModelSelector:
+    """Historical observation-only M1 used by the preserved v2/v3 cohorts."""
+
     def __init__(self, engine):
         if not engine.enabled or not engine.base_url or not engine.model:
             raise ValueError("M1 requires an explicitly enabled model endpoint; no rule fallback for comparisons")
