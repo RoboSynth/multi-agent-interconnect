@@ -42,12 +42,15 @@ class IncidentCoordinator:
         state["events"].append({"at": utc_now(), "event": event, **data})
         self.save(state)
 
-    def new(self, symptom, *, original_request_key=None):
+    def new(self, symptom, *, original_request_key=None, original_request_unknown=False):
+        if type(original_request_unknown) is not bool:
+            raise ValueError("original_request_unknown must be a boolean")
         incident_id = "inc-" + uuid.uuid4().hex[:16]
         state = {"id": incident_id, "symptom": symptom, "status": "running", "started_at": utc_now(),
                  "facts": [], "hypotheses": [], "plan": [], "events": [], "tasks": [],
                  "approvals": [], "result": None, "model_source": "rules", "tokens": 0,
-                 "original_request_key": original_request_key, "error": None,
+                 "original_request_key": original_request_key,
+                 "original_request_unknown": original_request_unknown or bool(original_request_key), "error": None,
                  "transport": getattr(self.transport, "mode", "unconfigured")}
         self.runs[incident_id] = state
         self.save(state)
@@ -178,8 +181,22 @@ class IncidentCoordinator:
                 state["planning_history"] = planner.history
                 if tool is None:
                     verified = await self._call(state, "incident.verification", kind="verify",
-                        args={"original_request_key": state["original_request_key"]})
+                        args={"original_request_key": state["original_request_key"],
+                              "original_request_unknown": state.get("original_request_unknown", False)})
                     facts = {f["key"]: f["value"] for f in verified["facts"]}
+                    needs_original = state.get("original_request_unknown", False) or bool(state["original_request_key"])
+                    if needs_original and (not state["original_request_key"] or facts.get("original_request_resolved") is not True):
+                        # A healthy fresh workflow never proves a lost original
+                        # intent. Also protect callers using an older verifier.
+                        facts.setdefault("service_recovered", facts.get("business_recovered") is True)
+                        facts.update(business_recovered=False, original_request_resolved=False, manual_required=True)
+                        if not state["original_request_key"]:
+                            facts["original_request_resolution"] = "unknown_missing_key"
+                        elif facts.get("original_request_resolution") not in {"unknown_receipt_missing", "unknown_receipt_unavailable"}:
+                            facts["original_request_resolution"] = "unknown"
+                        self.event(state, "original_request_unresolved", reason=(
+                            "原请求键已遗失，请人工核对原订单。" if not state["original_request_key"]
+                            else "原请求结果仍未查清，请人工核对。"))
                     state["result"] = facts
                     if facts.get("business_recovered") is not True:
                         state["status"] = "needs_attention"

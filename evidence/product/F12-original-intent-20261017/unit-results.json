@@ -1,0 +1,56 @@
+{
+  "completed_at": "2026-10-17T10:43:02.1777105Z",
+  "feature": "explicit original_request_unknown product input",
+  "source_files": [
+    "workbench_server.py",
+    "incident/coordinator/engine.py",
+    "incident/partners.py",
+    "demo-ui/workbench.html",
+    "demo-ui/workbench.js",
+    "demo-ui/workbench.css",
+    "tests/test_workbench.py",
+    "tests/test_coordinator.py",
+    "tests/business_verification_test.py"
+  ],
+  "checks": [
+    {
+      "tests": 3,
+      "suite": "test_workbench.py",
+      "passed": true
+    },
+    {
+      "tests": 6,
+      "suite": "business_verification_test.py",
+      "passed": true
+    },
+    {
+      "tests": 22,
+      "suite": "test_coordinator.py",
+      "passed": true
+    },
+    {
+      "tests": 1,
+      "suite": "test_coordinator.py -k original_unknown",
+      "purpose": "targeted check after final projection guard refinement",
+      "passed": true
+    },
+    {
+      "suite": "node --check demo-ui/workbench.js",
+      "passed": true
+    }
+  ],
+  "behavior": [
+    "strict boolean default false at API and verifier",
+    "provided original key automatically requires resolution",
+    "missing original key stays unknown/manual while service observation still runs",
+    "receipt 200 resolves original; 404/503/transport failure remain unknown without rebuilding original",
+    "coordinator continues F02 diagnosis and repair before verification",
+    "coordinator cannot complete missing-key intent even if verifier falsely reports success",
+    "fresh observations retain incident/task namespace"
+  ],
+  "actual_resource_access": false,
+  "services_restarted": [],
+  "browser_or_container_acceptance": "pending root verification",
+  "copied_to_collaboration_snapshot": false,
+  "test_basis": "actual unittest and node executions in this turn; HTTP, observer and coordinator resources mocked except independent AIP test fixtures"
+}

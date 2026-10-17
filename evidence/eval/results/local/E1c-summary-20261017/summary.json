@@ -1,0 +1,71 @@
+{
+  "experiment": "E1-c exact old-primary PID revival",
+  "transport": "local-aip-stdio",
+  "platform_adp_verified": false,
+  "fence_enforcement": "shared resource-domain SQLite OperationLedger, not a PostgreSQL-native fence",
+  "cohort_note": "Historical first result plus subsequent rechecks; not one newly frozen three-run experiment.",
+  "runs": [
+    {
+      "run": "E1c-container-20261017-retry",
+      "source_result_sha256": "fa05981c5e0055995e02f0e8cb53d6bc27b27d6ace4cede433550a020f73245c",
+      "source_cohort": "historical_initial",
+      "pid": 40024,
+      "checks": {
+        "identity_checked": true,
+        "same_pid": true,
+        "suspend_resume_succeeded": true,
+        "old_primary_rejected": true,
+        "one_backup_modification": true,
+        "resource_restored": true,
+        "healthy_window": true
+      },
+      "passed": true,
+      "mcp_modifying_calls": 1,
+      "old_primary_mcp_modifying_calls": 0,
+      "healthy_seconds": 30.015,
+      "workflows": 10
+    },
+    {
+      "run": "E1c-container-20261017-repeat2",
+      "source_result_sha256": "4ef4043be4f00289c46791671f991835cc39e35b1f638da50526f445116da224",
+      "source_cohort": "supplemental_recheck",
+      "pid": 38520,
+      "checks": {
+        "identity_checked": true,
+        "same_pid": true,
+        "suspend_resume_succeeded": true,
+        "old_primary_rejected": true,
+        "one_backup_modification": true,
+        "resource_restored": true,
+        "healthy_window": true
+      },
+      "passed": true,
+      "mcp_modifying_calls": 1,
+      "old_primary_mcp_modifying_calls": 0,
+      "healthy_seconds": 30.015,
+      "workflows": 10
+    },
+    {
+      "run": "E1c-container-20261017-repeat3",
+      "source_result_sha256": "2e1243b347e07e6f83519ce58a6c06d3a590d7a9be15ef3c8492edbb3bd9460c",
+      "source_cohort": "supplemental_recheck",
+      "pid": 36984,
+      "checks": {
+        "identity_checked": true,
+        "same_pid": true,
+        "suspend_resume_succeeded": true,
+        "old_primary_rejected": true,
+        "one_backup_modification": true,
+        "resource_restored": true,
+        "healthy_window": true
+      },
+      "passed": true,
+      "mcp_modifying_calls": 1,
+      "old_primary_mcp_modifying_calls": 0,
+      "healthy_seconds": 30.031,
+      "workflows": 10
+    }
+  ],
+  "passed_runs": 3,
+  "revived_primary_modifying_calls": 0
+}

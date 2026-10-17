@@ -8,7 +8,8 @@
 <section class="intro"><h1>循证排查，跨域恢复。</h1><p>应用、数据库与运维分别提供证据。每次修改留痕，高风险操作由你审批。</p></section>
 <div class="layout">
 <aside><form id="incident-form"><h2>发起排障</h2><label for="symptom">业务症状</label><textarea id="symptom" required maxlength="2000" rows="4">订单提交异常，请查明原因并恢复业务。</textarea>
-<label for="original-key">原请求键（可选）</label><input id="original-key" maxlength="128" placeholder="超时下单的原始请求键"><button id="start" type="submit">开始排查</button></form>
+<label class="check-option" for="original-unknown"><input id="original-unknown" type="checkbox">存在结果未知的原请求</label>
+<label for="original-key">原请求键（如有）</label><input id="original-key" maxlength="128" placeholder="超时下单的原始请求键" aria-describedby="original-hint"><p id="original-hint" class="input-note" hidden></p><button id="start" type="submit">开始排查</button></form>
 <section class="participants"><h2>协作参与者</h2><div id="participants"><p class="empty">等待连接各资源域。</p></div></section>
 <p class="mode-note" id="mode-note"></p><details><summary>运行资料</summary><p id="artifacts"></p></details></aside>
 <section class="workspace">

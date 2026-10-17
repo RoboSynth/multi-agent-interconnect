@@ -26,6 +26,7 @@ from acps_sdk.aip.resumable import TaskJournal, CoordinatorTerm
 class IncidentRequest(BaseModel):
     symptom: str = Field(min_length=1, max_length=2000)
     original_request_key: str | None = Field(default=None, max_length=128, pattern=r"^[A-Za-z0-9_.:-]+$")
+    original_request_unknown: StrictBool = False
 
 
 class ApprovalRequest(BaseModel):
@@ -136,7 +137,8 @@ def create_app(config_path=None, output=None, transport=None):
         if app.state.active and not app.state.active.done():
             raise HTTPException(409, "当前事故仍在处理")
         engine = app.state.engine
-        run = engine.new(body.symptom, original_request_key=body.original_request_key)
+        run = engine.new(body.symptom, original_request_key=body.original_request_key,
+                         original_request_unknown=body.original_request_unknown)
         app.state.active = asyncio.create_task(engine.run(run))
         return {"id": run["id"], "status": run["status"]}
 

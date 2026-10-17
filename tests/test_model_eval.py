@@ -17,7 +17,8 @@ import httpx
 from eval.methods import FixedPlanner, FreeModelSelector
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine, ModelBudgetExceeded, OBSERVABLE_TOOLS
-from incident.coordinator.planner import EvidencePlanner
+from incident.coordinator.planner import EvidencePlanner, blocking_root_pid
+from eval.inject import Injector
 from eval.observation import ContinuousObserver, VersionedClient
 from eval.scheduling_report import confirmation_time
 from test_coordinator import FakeHttpClient, FakeIncidentTransport
@@ -128,6 +129,28 @@ class ModelFairnessTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(confirmation_time(events, 100), 32)
         events.append({"at_monotonic": 162, "outcome": "unknown", "completed_workflows": 0})
         self.assertIsNone(confirmation_time(events, 100))
+
+    def test_blocker_is_graph_root_and_not_waiter_or_intermediate_session(self):
+        rows = [{"pid": 300, "blocking_pids": [200]}, {"pid": 200, "blocking_pids": [100]}]
+        for value in (rows, list(reversed(rows))):
+            self.assertEqual(blocking_root_pid(value), 100)
+            planner = EvidencePlanner()
+            planner.update("db.blocking_sessions", [{"key": "blocking_sessions", "value": value}])
+            self.assertEqual(planner.actions()[0].args, {"pid": 100})
+        self.assertIsNone(blocking_root_pid([{"pid": 100, "blocking_pids": [200]}, {"pid": 200, "blocking_pids": [100]}]))
+        self.assertIsNone(blocking_root_pid([{"pid": True, "blocking_pids": [100]}]))
+        self.assertEqual(blocking_root_pid([{"pid": 7301}]), 7301)
+
+    def test_native_f06_holder_uses_application_role_not_admin_credential(self):
+        injector = object.__new__(Injector)
+        injector.backend, injector.runtime = "native", {"pgport": 5432}
+        injector._environment = lambda key: {"PGPASSWORD": "unit-test-application-password"}[key]
+        captured = {}
+        injector._native_start = lambda *args, **kwargs: captured.update(kwargs["env"])
+        injector.sql = lambda sql: "1"
+        injector.lock(True)
+        self.assertEqual(captured["PGUSER"], "orders_app")
+        self.assertEqual(captured["PGPASSWORD"], "unit-test-application-password")
 
     async def test_diagnosis_is_evidence_based_and_independent_of_model_labels(self):
         with tempfile.TemporaryDirectory() as tmp:

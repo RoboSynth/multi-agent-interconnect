@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 import time
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 import httpx
 
 from incident.contracts import TaskPayload, utc_now
@@ -109,18 +109,32 @@ class VerificationPartner:
             return {**result, "description": {"resources": ["orders"], "tools": ["incident.verification"]}}
         if task.kind != "verify" or task.tool != "incident.verification":
             return {**result, "status": "rejected"}
-        original_resolved = task.args.get("original_request_key") is None
-        if not original_resolved:
-            async with httpx.AsyncClient(timeout=5, trust_env=False) as client:
-                response = await client.get(self.base_url + "/receipts/" + task.args["original_request_key"])
+        original_unknown = task.args.get("original_request_unknown", False)
+        original_key = task.args.get("original_request_key")
+        if type(original_unknown) is not bool or (original_key is not None and not isinstance(original_key, str)):
+            return {**result, "status": "rejected", "reason": "invalid_original_request_input"}
+        original_key = original_key or None
+        needs_original = original_unknown or original_key is not None
+        original_resolved = not needs_original
+        resolution = "not_required" if original_resolved else "unknown_missing_key"
+        if original_key is not None:
+            try:
+                async with httpx.AsyncClient(timeout=5, trust_env=False) as client:
+                    response = await client.get(self.base_url + "/receipts/" + quote(original_key, safe=""))
                 original_resolved = response.status_code == 200
+                resolution = ("resolved_receipt" if original_resolved else
+                              "unknown_receipt_missing" if response.status_code == 404 else "unknown_receipt_unavailable")
+            except httpx.TransportError:
+                resolution = "unknown_receipt_unavailable"
         # A repeated verification must exercise fresh writes, not replay receipts
         # from a previous healthy window under the same incident identifier.
         observation_id = f"{task.incident_id}-{task.logical_task_id}"
         summary = await OrderObserver(self.base_url, run_id=observation_id).observe(
             duration=self.duration, min_complete=max(1, int(self.duration // 3)))
-        recovered = summary["passed"]
+        service_recovered = summary["passed"] is True
         result["facts"] = [{"key": key, "value": value, "source": "order-workflows", "observed_at": utc_now()}
-            for key, value in {"business_recovered": bool(recovered and original_resolved),
-                "original_request_resolved": original_resolved, "order_observation": summary}.items()]
+            for key, value in {"business_recovered": service_recovered and original_resolved,
+                "service_recovered": service_recovered, "original_request_resolved": original_resolved,
+                "original_request_resolution": resolution, "manual_required": not original_resolved,
+                "order_observation": summary}.items()]
         return result

@@ -1,0 +1,218 @@
+{
+  "finished_at": "2026-10-17T10:49:58.158907+00:00",
+  "passed": true,
+  "scope": "real Playwright Chrome UI with isolated local AIP application/verification workers and real cold containers",
+  "mode": "local-aip-stdio",
+  "platform_amqps_tested": false,
+  "workbench_url": "http://127.0.0.1:8768/",
+  "workbench_pid": 42112,
+  "workbench_left_running": true,
+  "cold_project": "incident-pilot-team-cold",
+  "resource_ports_used": [
+    28082,
+    28088
+  ],
+  "other_workbenches_restarted": [],
+  "native_or_180xx_resources_accessed": false,
+  "resource_credential_count": 0,
+  "launcher_environment_check": {
+    "probe_only": true,
+    "launch_boundary": "same isolated process function as workbench",
+    "resource_credential_variable_names": [],
+    "passed": true
+  },
+  "application_private_env_variable_names": [
+    "APP_ADMIN_TOKEN"
+  ],
+  "application_private_env_whole_cold_env_copied": false,
+  "cases": [
+    {
+      "case": "unknown-missing-key",
+      "passed": true,
+      "incident_id": "inc-c18a29cb463643c2",
+      "incident_status": "needs_attention",
+      "service_recovered": true,
+      "business_recovered": false,
+      "original_request_resolved": false,
+      "original_request_resolution": "unknown_missing_key",
+      "manual_required": true,
+      "verification_args": {
+        "original_request_key": null,
+        "original_request_unknown": true
+      },
+      "duration_seconds": 30.016,
+      "requests": 30,
+      "completed_workflows": 10,
+      "independent_order_keys": [
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000000",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000001",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000002",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000003",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000004",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000005",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000006",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000007",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000008",
+        "load-inc-c18a29cb463643c2-lt-008b3e977a60-000009"
+      ],
+      "original_receipt_status": null,
+      "ui": {
+        "hint": "如果请求键已遗失，仍会排查并恢复服务；原订单需要人工核对。",
+        "status": "需要处理",
+        "businessText": "未通过\n业务验证\n已恢复\n服务状态\n10\n完整订单流程\n0\n本轮验证中未确认的请求\n30.016s\n观察窗口\n\n原请求键已遗失，请人工核对原订单。"
+      },
+      "browser_network": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8768/api/incidents",
+          "body": {
+            "symptom": "下单后结果未知，原请求键已遗失，请排查服务并保留人工核对。",
+            "original_request_key": null,
+            "original_request_unknown": true
+          }
+        }
+      ],
+      "screenshot": "<workspace>/output/playwright/f12-cold-ui-20261017/unknown-missing-key.png",
+      "screenshot_review": "Visually inspected: local test identities and test request key only, no provider/certificate/credential values."
+    },
+    {
+      "case": "unknown-receipt-404",
+      "passed": true,
+      "incident_id": "inc-76c5ebb784634037",
+      "incident_status": "needs_attention",
+      "service_recovered": true,
+      "business_recovered": false,
+      "original_request_resolved": false,
+      "original_request_resolution": "unknown_receipt_missing",
+      "manual_required": true,
+      "verification_args": {
+        "original_request_key": "f12-ui-missing-5de67a62655b4c",
+        "original_request_unknown": true
+      },
+      "duration_seconds": 30,
+      "requests": 30,
+      "completed_workflows": 10,
+      "independent_order_keys": [
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000000",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000001",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000002",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000003",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000004",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000005",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000006",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000007",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000008",
+        "load-inc-76c5ebb784634037-lt-cb005f2b3e7a-000009"
+      ],
+      "original_receipt_status": {
+        "before": 404,
+        "after": 404
+      },
+      "ui": {
+        "hint": "将使用原请求键核对下单结果。",
+        "status": "需要处理",
+        "businessText": "未通过\n业务验证\n已恢复\n服务状态\n10\n完整订单流程\n0\n本轮验证中未确认的请求\n30s\n观察窗口\n\n暂未查到原请求回执，请人工核对原订单。"
+      },
+      "browser_network": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:8768/api/incidents",
+          "body": {
+            "symptom": "下单后结果未知，请核对原请求结果；不要创建替代原订单。",
+            "original_request_key": "f12-ui-missing-5de67a62655b4c",
+            "original_request_unknown": true
+          }
+        }
+      ],
+      "screenshot": "<workspace>/output/playwright/f12-cold-ui-20261017/unknown-receipt-404.png",
+      "screenshot_review": "Visually inspected: local test identities and test request key only, no provider/certificate/credential values."
+    }
+  ],
+  "final_missing_original_receipt_http_status": 404,
+  "all_20_fresh_order_namespaces_disjoint": true,
+  "approvals": 0,
+  "resource_modification_actions": 0,
+  "business_workflow_writes": "two independent healthy create/query/cancel observation windows, no original request replay or replacement",
+  "readiness_after": [
+    {
+      "port": 28082,
+      "http_status": 200,
+      "body": {
+        "ok": true,
+        "api_version": "v2"
+      }
+    },
+    {
+      "port": 28088,
+      "http_status": 200,
+      "body": {
+        "ok": true,
+        "api_version": "v2"
+      }
+    }
+  ],
+  "secret_scan": {
+    "files_checked": 37,
+    "application_token_matches": 0
+  },
+  "source_files_changed_during_live_acceptance": [],
+  "source_feature_whitelist": [
+    "workbench_server.py",
+    "incident/coordinator/engine.py",
+    "incident/partners.py",
+    "demo-ui/workbench.html",
+    "demo-ui/workbench.js",
+    "demo-ui/workbench.css",
+    "tests/test_workbench.py",
+    "tests/test_coordinator.py",
+    "tests/business_verification_test.py"
+  ],
+  "collaboration_snapshot_modified": false,
+  "evidence": {
+    "full_case_records": [
+      "unknown-missing-key.json",
+      "unknown-receipt-404.json"
+    ],
+    "browser_network_embedded": true,
+    "nginx_access": "cold-nginx-access-final.log",
+    "aip_messages": "transport/messages.jsonl",
+    "screenshots": [
+      "unknown-missing-key.png",
+      "unknown-receipt-404.png"
+    ]
+  },
+  "nginx_missing_original_receipt_requests": 4,
+  "nginx_missing_original_receipt_all_404": true,
+  "aip_start_requests": [
+    {
+      "incident_id": "inc-c18a29cb463643c2",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "incident_id": "inc-c18a29cb463643c2",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": true
+      }
+    },
+    {
+      "incident_id": "inc-76c5ebb784634037",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "incident_id": "inc-76c5ebb784634037",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": "f12-ui-missing-5de67a62655b4c",
+        "original_request_unknown": true
+      }
+    }
+  ]
+}

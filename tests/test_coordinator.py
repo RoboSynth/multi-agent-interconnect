@@ -102,6 +102,7 @@ class FakeIncidentTransport:
         self.pool_ok = not self.read_only
         self.pool_revision = 3
         self.verification_fail = False
+        self.original_resolved = True
 
     async def call(self, payload):
         payload = deepcopy(payload)
@@ -142,6 +143,7 @@ class FakeIncidentTransport:
             recovered = (self.container == "running" and self.route == "v2" and not self.read_only
                          and not self.blockers and self.pool_ok and not self.verification_fail)
             fact("business_recovered", recovered)
+            fact("original_request_resolved", self.original_resolved)
             fact("original_request_key", payload["args"].get("original_request_key"))
         else:
             raise AssertionError("unexpected tool " + tool)
@@ -156,6 +158,36 @@ class CoordinatorTests(unittest.IsolatedAsyncioTestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    async def test_original_unknown_is_preserved_through_recovery_and_verification(self):
+        cases = [(False, None, True, "completed"), (True, None, True, "needs_attention"),
+                 (False, "request-one", True, "completed"), (False, "request-one", False, "needs_attention")]
+        for unknown, key, resolved, expected_status in cases:
+            with self.subTest(unknown=unknown, key=key, resolved=resolved):
+                transport = FakeIncidentTransport("F02" if unknown and not key else "healthy")
+                transport.original_resolved = resolved
+                engine = IncidentCoordinator(transport, self.temp.name)
+                state = engine.new("订单异常", original_request_key=key, original_request_unknown=unknown)
+                result = await engine.run(state)
+                self.assertIs(state["original_request_unknown"], unknown or key is not None)
+                self.assertEqual(result["status"], expected_status, result.get("error"))
+                verified = next(call for call in transport.calls if call["kind"] == "verify")
+                self.assertEqual(verified["args"], {"original_request_key": key,
+                    "original_request_unknown": unknown or key is not None})
+                if expected_status == "needs_attention":
+                    self.assertFalse(result["result"]["business_recovered"])
+                    self.assertFalse(result["result"]["original_request_resolved"])
+                    self.assertTrue(result["result"]["manual_required"])
+                if unknown and not key:
+                    self.assertEqual([call["tool"] for call in transport.calls if call["kind"] == "act"],
+                                     ["ops.route_rollback"])
+                    self.assertTrue(any(call["kind"] == "observe" for call in transport.calls))
+                    self.assertEqual(result["result"]["original_request_resolution"], "unknown_missing_key")
+
+    def test_engine_rejects_non_boolean_unknown_flag(self):
+        engine = IncidentCoordinator(FakeIncidentTransport(), self.temp.name)
+        with self.assertRaises(ValueError):
+            engine.new("订单异常", original_request_unknown="false")
 
     async def execute(self, scenario, *, approve=True, transport=None):
         transport = transport or FakeIncidentTransport(scenario, self.authority)

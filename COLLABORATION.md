@@ -47,3 +47,11 @@ pwsh -NoProfile -File deploy/local-up.ps1 -Install
 首快照提交为 800607c50a29b3527ff0713bd476a2efacfafd12；清单保留其 manifest 哈希与本次逐文件旧/新哈希。.gitattributes 使用 * -text 保留克隆字节，便于按清单复核。
 
 本地模型实际响应另附 [v2 的 209 条](evidence/model-evaluation/historical-v2/model-response-evidence.jsonl) 与 [F06 v3 的 39 条](evidence/model-evaluation/F06-v3/model-response-evidence.jsonl)，保留 content/usage/采样参数/HTTP 状态，不含上下文、认证或环境信息。它们是闭合调用的精简派生证据，不替代原始运行记录。
+
+## F12 产品输入与 E1c 独立补证
+
+[F12 单元检查](evidence/product/F12-original-intent-20261017/unit-results.json)和[真实 UI 验收](evidence/product/F12-original-intent-20261017/live-ui-results.json)分别归档。两轮在隔离容器 28082/28088 上各完成 30 秒、30 请求、10 个新订单流程；缺失原请求键或原键回执 404 时仍显示 needs_attention、原业务未知并需人工处理，没有创建替代原订单。工作台使用 local AIP stdio，未测试正式平台 AMQPS。截图只含本地测试身份及测试键。
+
+[E1c 三次证据汇总](evidence/eval/results/local/E1c-summary-20261017/summary.json)包含历史 retry 一次与之后两次复核，不是新冻结的同批三次实验。三次均复活同一旧主 PID，旧 fence 被共享资源域 SQLite OperationLedger 拦截，旧主实际 MCP 修改为 0、备侧修改一次，随后通过 30 秒/10 流程观察；这不是 PostgreSQL 原生 fence，也未验证平台 ADP 接管。历史原结果保持原位置，不重复复制。
+
+本批基于模型提交 56b6a4595a745ef7faccaea2e4f6b927458ddced，仅同步已验收 F12 白名单、F06 测试对齐及闭合 E1c 补证。后续自由工具基线、正式公平交接和 Bridge 可选 handover 仍另批验收。
