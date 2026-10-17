@@ -1,0 +1,264 @@
+{
+  "schema_version": "incident-defense-content/1.0",
+  "title": "凭据不出域的跨组织故障协同",
+  "subtitle": "可接续群组任务、受控MCP网关与证据驱动协调",
+  "status": "development_source_only_runtime_blocked",
+  "version": "T91-development-v1",
+  "cutoff_utc": "2026-10-17T12:50:41.317Z",
+  "audience": "智能体互联竞赛技术评审",
+  "slide_size": {"width": 1280, "height": 720},
+  "slides": [
+    {
+      "number": 1,
+      "purpose": "说明作品目标、开发稿属性及统一证据截止时间",
+      "title": "凭据不出域的\n跨组织故障协同",
+      "layout": "cover",
+      "statement": "协调者组织排障，资源域保留凭据与执行权。",
+      "body": ["基于官方ACPs SDK的可接续任务与MCP受控接入", "匿名答辩开发稿，非最终提交版"],
+      "footnote": "证据截至2026-10-17 12:50:41 UTC",
+      "sources": ["S01", "S02"],
+      "notes": "本稿按方案15页结构组织。只有已闭合结果进入数字图表。新版身份的客户端证书按用户安排暂缓领取，新七角色尚未启动。后续巡检不进入本稿截止窗口。"
+    },
+    {
+      "number": 2,
+      "purpose": "用真实失败说明局部症状和正确动作之间仍有距离",
+      "title": "真实失败时间线",
+      "layout": "timeline",
+      "statement": "应用已经退出，路由回退仍可能成为错误选择。",
+      "steps": [
+        {"label": "观察", "text": "模型收到应用退出的真实事实"},
+        {"label": "错误动作", "text": "M1选择路由回退，路由本来已是v2"},
+        {"label": "结果未知", "text": "工具等待健康确认失败，账本记录unknown"},
+        {"label": "保守停止", "text": "引擎停止修改，保留本次失败"}
+      ],
+      "body": ["F01首批开发验收：M0、M2恢复，M1失败。三种方法各一次。", "共享资源域随后增加路由前置条件，成功复验另存，不覆盖失败。"],
+      "footnote": "本地原生进程及AIP stdio，未使用正式平台群组",
+      "sources": ["S03", "S04"],
+      "notes": "这是首批完整工具M1的实际负面结果，不是模拟示例。route MCP发生过一次修改型调用。modifications=0只表示没有成功动作回执，不能解释为零修改尝试。unknown来自工具错误后的保守效果判定，不是旧fence拒绝。精确相对路径见证据S03；后续guard复验见S04。"
+    },
+    {
+      "number": 3,
+      "purpose": "解释跨权限域互联的业务必要性",
+      "title": "协调权限与资源权限",
+      "layout": "table",
+      "statement": "事实可以共享，资源凭据由各域保管。",
+      "table": {
+        "headers": ["职责", "协调入口", "资源与验证域"],
+        "rows": [
+          ["诊断", "接收症状、汇总事实、选择任务", "提供结构化事实与局部假设"],
+          ["资源修改", "发起请求、转交独立审批", "校验身份、参数、前置条件与账本"],
+          ["凭据", "本域身份证书和审批签发材料", "本域数据库或管理接口凭据"],
+          ["结案", "汇总服务与原请求状态", "独立验证新业务，另查原请求回执"]
+        ],
+        "widths": [180, 430, 510]
+      },
+      "body": ["已检查的工作台启动与证据范围：资源凭据计数为0。"],
+      "footnote": "这是指定范围的检查结果，不是整个系统或未归档历史的永久保证",
+      "sources": ["S05", "S06"],
+      "notes": "此表描述本作品的权限设计，不把假想单体系统当作实测基线。协调者拥有自己的客户端证书，审批密钥也不是资源凭据。application、database、ops各自持有本域所需材料，verification不需要管理凭据。凭据计数引用实际运行摘要，只覆盖明确检查范围。"
+    },
+    {
+      "number": 4,
+      "purpose": "给出可编辑的架构及信任域关系",
+      "title": "总体架构与信任域",
+      "layout": "architecture",
+      "statement": "官方协议连接参与者，资源动作在本域落地。",
+      "coordinator": "工作台与协调者\n任务日志、调度、审批",
+      "platform": "官方身份与能力发现\nAIP群组通信、AMP证据",
+      "domains": [
+        {"title": "应用域", "text": "状态、连接池、应用配置"},
+        {"title": "数据库主备域", "text": "Postgres MCP、共享操作账本"},
+        {"title": "运维域", "text": "Docker MCP、固定项目与目标"},
+        {"title": "独立验证域", "text": "新业务流程与原请求回执"}
+      ],
+      "body": ["接入体检域只检查公开发现与能力资料。", "资源凭据、资源账本、动作前置条件保留在对应域。"],
+      "footnote": "完整七角色为实现架构；当前正式运行证据只有三旧参与域",
+      "sources": ["S01", "S07", "S08"],
+      "notes": "此页是实现架构，不是七个新版身份已经在线的运行截图。IFC是本项目业务数据契约，不宣称是新的AIP标准。数据库主备共享本资源域账本。当前本地或同机容器边界不能代表生产环境的跨组织OS硬隔离。实现位置：incident/coordinator、incident/wutong_transport.py、incident/platform_worker.py、acps_mcp_bridge、domains。"
+    },
+    {
+      "number": 5,
+      "purpose": "明确官方复用、SDK修改与项目新增边界",
+      "title": "原生、改造与新增",
+      "layout": "table",
+      "statement": "贡献集中在任务接续、受控工具接入和协调逻辑。",
+      "table": {
+        "headers": ["类别", "实际内容", "实现位置"],
+        "rows": [
+          ["原生复用", "身份与证书、ACS、ADP、群组通信、AMP Emitter", "官方CLI、registry schema、acps_sdk"],
+          ["改造SDK", "持久任务记录、fence、操作账本、状态单调合并、群组打点", "aip/resumable、aip/_task_order.py、amp/group_access.py"],
+          ["项目新增", "MCP策略网关、能力确认、自由工具循环、工作台与业务验证", "acps_mcp_bridge、incident、domains、demo-ui"]
+        ],
+        "widths": [175, 575, 370]
+      },
+      "body": ["公开贡献正文与审阅补丁已准备，尚未发布Issue或PR。"],
+      "footnote": "代码存在、离线通过和真实平台验收分别记录",
+      "sources": ["S01", "S09"],
+      "notes": "官方基线版本为ACPs SDK 2.2.0，基线提交3985c1330209f075c124669cc9d31f0e75448140。GroupAccess是新增统计能力的语义设计，不能称为上游原有access故障。真实上游复现问题是TaskResult乱序导致旧Working覆盖较新状态。本项目保留原始失败与修复后的正式通信结果。"
+    },
+    {
+      "number": 6,
+      "purpose": "逐项呈现平台注册发现互联访问的实际状态",
+      "title": "平台接入进度",
+      "layout": "table",
+      "statement": "三旧参与域已完成真实通信，新七角色仍未运行。",
+      "table": {
+        "headers": ["环节", "已闭合", "待补"],
+        "rows": [
+          ["注册", "七新版身份显示审核通过，五个详情公开AIC已核实", "另两详情核实、七域证书领取"],
+          ["发现", "三旧域真实ADP与describe生命周期完成", "新版全角色发现及能力确认"],
+          ["互联", "正式AMQPS三旧域及真实Postgres只读查询", "新版运维、高风险恢复和主备接管"],
+          ["访问", "原始AIP生命周期、六类本地AMP证据存在", "Monitor后台入库、访问统计与排行"]
+        ],
+        "widths": [150, 575, 395]
+      },
+      "body": ["证书由用户选择稍后处理，当前新版EAB与客户端证书为0。"],
+      "footnote": "匿名稿以角色代替账号、组织命名空间和完整AIC，未嵌入Registry身份页",
+      "sources": ["S02", "S07", "S08"],
+      "notes": "注册审核通过不等于客户端证书签发，也不等于平台Inbox已经启动。旧身份使用新版代码的兼容结果，与新版ACS发布、运行结果分别记录。正式AMQPS消息乱序问题的失败及修复复验都存在。这里没有平台全流程完成的声明，后台截图仍是材料缺口。"
+    },
+    {
+      "number": 7,
+      "purpose": "说明接续机制的安全语义而不是把重发等同幂等",
+      "title": "可接续任务与效果核验",
+      "layout": "resume",
+      "statement": "交付状态、资源效果与业务结果分别记录。",
+      "steps": [
+        {"label": "任务记录", "text": "逻辑任务与多次传输尝试关联"},
+        {"label": "新任期接管", "text": "资源域先确认更高fence"},
+        {"label": "效果核验", "text": "已生效则跳过，未知则查资源"},
+        {"label": "业务验证", "text": "确认服务与原请求状态"}
+      ],
+      "body": ["同一操作ID绑定参数摘要及资源域，冲突参数不能复用。", "unknown没有可核验资源事实时保持未决，不盲目重试。", "旧令牌由资源域共享账本拒绝。"],
+      "footnote": "本地E1验证接续机制，正式平台ADP接管尚未证明",
+      "sources": ["S10", "S11"],
+      "notes": "实现位置：vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/{journal,ledger,partner,takeover}.py。applied重放返回skipped_already_applied。executing或unknown只能通过显式资源核验解析。fence发生在资源域账本，不是PostgreSQL原生fence。三策略共用账本，零重复不能归因于ResumePackage独有优势。"
+    },
+    {
+      "number": 8,
+      "purpose": "说明粗技能发现如何安全映射到域内细工具",
+      "title": "MCP到AIP的受控网关",
+      "layout": "table",
+      "statement": "粗粒度技能用于发现，细工具及风险由describe确认。",
+      "table": {
+        "headers": ["对外技能", "稳定事实或受控动作", "域内工具"],
+        "rows": [
+          ["db.observe", "read_only、blocking_sessions", "Postgres MCP读取模板"],
+          ["db.act", "恢复写入、终止实验阻塞根会话", "固定SQL模板、审批与账本"],
+          ["ops.observe", "container_state、route_version", "Docker MCP及域内路由查询"],
+          ["ops.act", "固定目标重启、受前置条件约束的回退", "不可变容器ID、项目与服务守卫"]
+        ],
+        "widths": [195, 525, 400]
+      },
+      "body": ["两项第三方MCP已有本地真实stdio验收。新Docker精确scope适配另经离线验证。"],
+      "footnote": "不接收任意LLM SQL或任意系统命令。新版Docker scope尚未真实平台验收",
+      "sources": ["S12", "S13", "S14"],
+      "notes": "真实第三方版本：postgres-mcp 0.3.0、mcp-server-docker 0.3.0。Docker上游list_containers的all默认false，正式新profile显式all=true并精确绑定Compose project、service、container name。三scope字段全配或全无；缺目标或不支持的状态返回unknown，不能推断exited。修改守卫解析immutable ID。现native行为及共享route guard保持，历史真实Docker验收早于本轮scope适配，不混写为同版本全通过。"
+    },
+    {
+      "number": 9,
+      "purpose": "清楚定义三种方法及共同公平边界",
+      "title": "证据驱动协调与比较方法",
+      "layout": "methods",
+      "statement": "方法负责选择，权限与效果判定由共同资源域约束。",
+      "methods": [
+        {"name": "M0 固定顺序", "text": "不调用模型，按固定观察顺序推进"},
+        {"name": "M1 完整工具循环", "text": "模型自由选择观察、受控动作与验证"},
+        {"name": "M2 假设排序", "text": "模型给出假设，按证据收益选择探测"}
+      ],
+      "body": ["同一审批、工具白名单、前置条件、账本与业务验证。", "动作unknown、旧fence或效果未决时停止；不靠规则偷偷替代M1。"],
+      "footnote": "历史45格中的M1只有自由观察。当前完整工具M1仅有F01开发验收",
+      "sources": ["S03", "S04", "S15"],
+      "notes": "实现位置：incident/coordinator/engine.py、eval/methods/free_tools.py及共享资源域。M1的明确关联rejected可以反馈后重选，act tool_error及unknown/executing/reconciliation_required/stale_fence须停止。方案中的新正式45格尚未运行，不能把历史观察M1数据改名为完整工具M1。模型小样本schema验证也不等于故障实验。"
+    },
+    {
+      "number": 10,
+      "purpose": "概括资源域的安全限制和原请求未决不变量",
+      "title": "安全边界与业务结案",
+      "layout": "safety",
+      "statement": "服务恢复后，原订单仍可能需要人工核对。",
+      "body": [
+        "调用方白名单与身份校验，审批由独立签发材料验证。",
+        "固定SQL、精确容器目标与动作前置条件共同约束资源修改。",
+        "高风险动作保留审批、操作ID、参数摘要与审计证据。",
+        "原请求键遗失或回执404时保持unknown/manual，不造替代原键。"
+      ],
+      "equation": "业务恢复 ＝ 服务已恢复 ＋ 原意图已解析",
+      "footnote": "新业务验证使用独立命名空间，不能代替原请求的结果",
+      "sources": ["S05", "S06", "S14"],
+      "notes": "F12端到端输入original_request_unknown为严格bool，默认false。提供原键时保持旧行为自动查询解析。未知且缺键、或原键receipt404，不发原请求重建，status为needs_attention/manual。service_recovered可以true，但original_request_resolved必须false，business_recovered不能true。共享route guard仅当策略明确配置expected_before时生效；路由已v2的多余rollback在修改前拒绝，三方法共用同一约束。"
+    },
+    {
+      "number": 11,
+      "purpose": "展示可追溯的真实UI验收而非计划中的主演示",
+      "title": "真实工作台的未决原请求",
+      "layout": "screenshot",
+      "statement": "缺失原键时，健康服务仍显示“需要处理”。",
+      "asset": "assets/f12-unknown-missing-key.png",
+      "body": ["真实浏览器勾选未知原请求，30.016秒完成10个新业务流程。", "服务已恢复，原订单仍待人工核对。修改任务与高风险审批均为0。"],
+      "footnote": "本地AIP stdio与同机隔离冷容器。F10＋F15连续主演示尚待录制",
+      "sources": ["S06"],
+      "notes": "这是一次真实Playwright浏览器和冷容器验收截图，未作为正式平台全流程截图。原键不存在的第二分支也完成30秒/10流程，原键receipt仍404，不造替代键。截图经本轮目视检查，无学校、账号、完整AIC、provider、密钥或绝对文件路径。截图是既有运行素材，本稿不重新操作服务。"
+    },
+    {
+      "number": 12,
+      "purpose": "用三张可编辑图展示历史小模型的收益与成本",
+      "title": "历史小模型结果",
+      "layout": "three_charts",
+      "statement": "探测少了8.3%，M2在五场景中的恢复中位数仍更慢。",
+      "charts": ["historical_recovery_medians", "historical_probe_totals", "historical_model_tokens"],
+      "body": ["Qwen3-1.7B-Q8_0，M1为历史自由观察版。", "45主格由四场景v2与F06-v3组合。原F06-v2九次失败保留。"],
+      "footnote": "恢复时间为1 rps采样估计，各场景各方法3次。组合版本，不是单次同源码冻结45格",
+      "sources": ["S15", "S16"],
+      "notes": "三图分别是恢复估计中位数、探测总数和模型token总数。M0/M1/M2探测108/99/99，token0/57335/122372，实际模型调用0/99/114。恢复中位数保留原数据三位小数，图中可显示一位小数以减少拥挤。跨场景为声明的两个源码版本，各场景内三方法条件一致。本结果不支持M2一般优于其他方法，不对其他模型或生产场景泛化。"
+    },
+    {
+      "number": 13,
+      "purpose": "分别展示接续结果与已闭合的短时平台巡检",
+      "title": "接续结果与平台稳定性边界",
+      "layout": "e1_platform",
+      "statement": "本地接续18例闭合，正式平台目前只有两次健康巡检。",
+      "chart": "E1_information_and_wire_bytes",
+      "body": ["E1：17例连续完成，1例控制器中断后续验。DB MCP修改18次、重复0、旧fence拒绝18次。", "三策略实际模型调用与token均为0。共享账本解释零重复，恢复包不享有独占安全收益。", "正式三旧域：30.003秒与30.002秒，两周期各30请求、10流程；未证明24小时。"],
+      "footnote": "ResumePackage信息量较少，实际wire却因兼容重复编码更大。本地E1不代表正式ADP接管",
+      "sources": ["S10", "S11", "S17"],
+      "notes": "E1-a三断点各3次，E1-b三策略各3次，总18次真实注入。A8连续加1controller续验，B9连续；不称一个进程连续18次。图值为E1-b各策略3次中位数：完整IFC字节1084/4594/5223，信息字节325/3835/2388。信息减少37.7%，实际wire增加13.7%，不能称模型token或wire收益。额外app观察1/0/0。续办30.531/30.390/30.375秒含验证与probe，排除检测和接管，不是纯恢复时延。T07是三旧域健康inspection，非故障恢复，高风险自动审批与演练关闭；周期2自然触发，不是人工刷量。"
+    },
+    {
+      "number": 14,
+      "purpose": "将已有贡献材料和工程新进展与外部验证缺口分开",
+      "title": "贡献准备与后续验收",
+      "layout": "table",
+      "statement": "代码与证据已可审阅，社区采纳和完整平台验收仍待完成。",
+      "table": {
+        "headers": ["方向", "已准备", "下一证据"],
+        "rows": [
+          ["开源贡献", "四条Issue草稿、SDK PR说明与审阅补丁", "实际公开Issue/PR及反馈"],
+          ["标准建议", "任务接续、MCP能力映射、AMP任务级对账", "官方或社区讨论与采纳"],
+          ["新版运行", "独立七角色配置与镜像断网只读验证通过", "证书、正式target preflight、全域平台任务"],
+          ["正式成效", "历史组合数据、F01开发复验、两周期巡检", "新版45格、平台接管、后台数据及24小时验收"]
+        ],
+        "widths": [175, 520, 425]
+      },
+      "footnote": "镜像临时检查未启动身份或Inbox。新机器部署、真实反馈与连续录屏仍待补",
+      "sources": ["S09", "S18", "S19"],
+      "notes": "最新镜像证据captured_at为2026-10-17T12:50:41.317Z：build/probe exit0，network none、root read-only、无env与挂载，以非root用户检查三类导入、官方ACS schema及12个固定源码SHA。它不是新七域部署成功或业务恢复记录。外部贡献尚未发布，不能称已提交或合并。本页贡献材料与标准建议不是已被官方接受的事实。"
+    },
+    {
+      "number": 15,
+      "purpose": "用明确的工程结论收束并给出正式验收目标",
+      "title": "工程结论与下一步",
+      "layout": "closing",
+      "statement": "跨域协同需要可核验的执行边界。",
+      "body": [
+        "任务接续依靠持久记录、资源效果核验与旧主隔离。",
+        "MCP网关让工具进入互联流程，同时保留域内权限和审批。",
+        "独立业务验证把服务健康与原订单未决分开。"
+      ],
+      "next": "正式验收下一步：新版身份领证与全域通信、冻结条件下的45格比较、连续运行与后台数据。",
+      "footnote": "匿名开发稿，证据截止2026-10-17 12:50:41 UTC。尚非最终提交材料",
+      "sources": ["S01", "S02"],
+      "notes": "本稿没有宣称完成全部P0。当前最重要的材料缺口是新版平台全角色真实任务、正式接管、后台入库及长期数据。后续仍需新的连续主演示和新机器验收。完整工具M1的首批负面结果和修复后的单场景复验都保留，不从材料中删除。"
+    }
+  ]
+}

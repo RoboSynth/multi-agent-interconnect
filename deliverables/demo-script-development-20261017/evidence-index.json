@@ -1,0 +1,191 @@
+{
+  "schema_version": "demo-evidence-index/1.0",
+  "captured_at": "2026-10-17T12:59:17.992Z",
+  "purpose": "旁白开发稿的来源定位；不是新实验结果",
+  "paths": "开发项目根目录相对的原件定位及SHA；不保证团队副本同路径存在。公开派生证据见团队资料导航。",
+  "sources": [
+    {
+      "id": "P01",
+      "path": "docs/高分方案_需求架构创新与任务_20261017.md",
+      "scope": "方案，不是运行证据",
+      "locator": "§10.3，624–636行；T92，580行",
+      "claims": [
+        "目标270秒，最终MP4为3–5分钟且不超过300MB",
+        "主事故使用同一次连续运行，剪辑只做加速与标注，不拼接不同运行"
+      ],
+      "sha256": "12168f9a7cdb13d6bd4fd37de907229b94ad3beb1e6cc2bc5b0da5d117af5c2a",
+      "bytes": 56855,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E01",
+      "path": "integration/incident/high-score-registration-20261017/review-status-and-public-aic-20261017T120745Z.json",
+      "scope": "公开审核状态的已保存观察",
+      "locator": "all_seven_approved / detail_aic_verified_count / certificate_issued_count",
+      "claims": [
+        "七个新版角色显示审核通过",
+        "五个详情身份已核对；新版证书已领取数量为0",
+        "证书由用户安排稍后处理，新身份未启动"
+      ],
+      "restriction": "原件含身份值；仅取角色与状态，画面隐藏账号、组织和完整身份值。",
+      "sha256": "0aa356a7d7d0456d9f0fa99f413073819e5d29dd47d3a9356b09904b78dcca17",
+      "bytes": 2256,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E02",
+      "path": "eval/results/platform/container-postgres-mcp-20261017-order-fix-v2/results.json",
+      "scope": "真实旧三域 AMQPS 兼容；只读资源任务",
+      "locator": "mode / status / fault_injection / observation.facts",
+      "claims": [
+        "真实发现、describe、AIP生命周期及第三方数据库MCP只读查询成功",
+        "没有故障注入，不是高风险恢复或平台接管验收"
+      ],
+      "restriction": "仅展示角色、工具和状态投影，隐藏原件身份值。",
+      "sha256": "4c2c49633c673b5e147e28da88b9de7372cd16e3e13ab83e09521561a1a7709b",
+      "bytes": 1676,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E03",
+      "path": "eval/results/local/ui-f10-complete.json",
+      "scope": "本地浏览器F10；独立事故",
+      "locator": "actions / observation / elapsed_seconds",
+      "claims": [
+        "路由v1到v2、恢复数据库写入、应用池重建均有applied回执",
+        "30.016秒、30请求、10完整流程通过，unknown=0、未决=0",
+        "总耗时70.75秒，包含审批和观察；不是正式平台连续闭环"
+      ],
+      "sha256": "920354ed3bb353f24b9d74c6406284076d541e81d621cb600588231022493778",
+      "bytes": 1158,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E04",
+      "path": "eval/results/local/E1-native-20261017/analysis/summary.json",
+      "scope": "本地stdio确定性E1-a/b；与F10分开的实验",
+      "locator": "cases / uninterrupted_cases / controller_interrupted_cases_with_continuation / db_mcp_modify_invocations / duplicate_db_mcp_calls / model_calls / model_tokens / platform_adp_verified",
+      "claims": [
+        "18例最终核验通过：17例连续、1例中断后续验",
+        "数据库MCP修改18次、重复0次，旧fence拒绝18例",
+        "实际模型calls=0、tokens=0；正式平台ADP接管未验证",
+        "零重复由共用资源域账本提供，不能归为模型优势"
+      ],
+      "sha256": "2db84da8fc20dc205fe3b069c55b6498f983951b71280e9a9baa602ecf25a030",
+      "bytes": 4177,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E05",
+      "path": "eval/results/local/E1c-summary-20261017/summary.json",
+      "scope": "本地stdio旧主真实复活；历史首结果加后续复核",
+      "locator": "transport / platform_adp_verified / fence_enforcement / cohort_note / passed_runs / revived_primary_modifying_calls",
+      "claims": [
+        "旧主真正恢复后，旧命令仍被拒绝；旧主修改调用0",
+        "3次结果来自历史首结果和后续复核，不称新冻结单批三重复",
+        "fence由共享资源域账本执行，不是数据库原生能力；非正式平台接管"
+      ],
+      "sha256": "8a0083fd748e74ea0fd6c7bd76491f41c2ec3d152a7dd27d30f45448514b9001",
+      "bytes": 2438,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E06",
+      "path": "eval/results/local/F12-container-20261017-initial.json",
+      "scope": "隔离容器F12；独立事故",
+      "locator": "checks / healthy_observation / platform_group_tested",
+      "claims": [
+        "真实提交后丢回复，沿原键查回执并同键重试，数据库始终一单",
+        "原键遗失时unknown/manual，不创建替代原订单",
+        "复原后30.016秒、30请求、10流程通过；非平台群组验收"
+      ],
+      "sha256": "ec21bec491d6903e3f31372360849811c43dc4e434c928043b371e7aed1250b9",
+      "bytes": 3231,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E07",
+      "path": "output/playwright/f12-cold-ui-20261017/results.json",
+      "scope": "真实本地浏览器F12产品分支；与F10/E1分开",
+      "locator": "cases / mode / platform_amqps_tested / resource_modification_actions",
+      "claims": [
+        "缺原键、原回执404两分支都保持needs_attention、业务未确认且需人工",
+        "新订单的30秒/10流程健康不代表原请求解决",
+        "两轮均无恢复动作和审批；不是平台恢复"
+      ],
+      "restriction": "候选截图需另行按最终匿名要求复核裁切，本开发稿没有复制截图。",
+      "sha256": "c50a56e1289e5ec0d6f19ec17d8c1aa72ffd425a19571a70b2b63cb4ec129c6c",
+      "bytes": 8035,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E08",
+      "path": "eval/results/platform/T07-scheduled-partial3-cycle2-20261017/summary.json",
+      "scope": "真实旧三域AMQPS健康巡检；无高风险恢复动作",
+      "locator": "natural_scheduler_trigger / healthy_business / resource_recovery_action_count / coverage",
+      "claims": [
+        "一次初始健康巡检后，第二次自然定时巡检完成",
+        "周期2为30.002秒、30请求、10流程、unknown/pending=0",
+        "无故障演练、恢复动作或自动high审批；未证明24小时或七天在线"
+      ],
+      "restriction": "只展示计数和结果，隐藏原件身份值、群组及进程详情。",
+      "sha256": "f875fb6338e7928e1c4390fc8757f872a969b50e9a18e1dd0d6bcde0332c061c",
+      "bytes": 3399,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E09",
+      "path": "artifacts/M1-free-tools-analysis-20261017/comparison.md",
+      "scope": "完整工具M1两批本地F01单次开发试跑；保留负面结果",
+      "locator": "两批表格与其后原因边界",
+      "claims": [
+        "首批三方法恢复2/3，M1执行错误路由动作，账本unknown，ok修改0不等于没有MCP调用",
+        "共同路由守卫修复后另批三方法恢复3/3，M1仍多一次不必要high",
+        "MCP错误正文未完整保存，重载日志只支持有限推断；不得补造错误原因",
+        "单次试跑不是完整工具M1的正式45项评测"
+      ],
+      "sha256": "49e842bd2ae69a78e007df9c64e9d0101c1a0beae7b8f958d0a863c53ee99cad",
+      "bytes": 2454,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E10",
+      "path": "docs/evaluation.md",
+      "scope": "闭合本地模型对比的口径索引",
+      "locator": "本次闭合数据与结果限制",
+      "claims": [
+        "历史45项v2保留F06九失败，F06补验另版九项；主对比按场景合并，不是同一源码连续45项",
+        "历史M1为自由观察版本，不能代表当前完整工具M1",
+        "本地小模型结果不支持M2更快，不能宣称普遍效率优势"
+      ],
+      "sha256": "2f41eb69aba222dc694d967000103944f09792e89d7285e95373777a78e2bff6",
+      "bytes": 9378,
+      "material_available": true,
+      "video_clip_available": false
+    },
+    {
+      "id": "E11",
+      "path": "artifacts/new7-image-build-20261017/image-proof.json",
+      "scope": "真实镜像构建及断网只读临时容器；不是身份运行",
+      "locator": "build / probe / source hashes",
+      "claims": [
+        "新tag构建通过；离线导入、官方schema和12项源码摘要核对通过",
+        "没有启动任何新身份、网络消费者或平台群组"
+      ],
+      "sha256": "b281ec888968faef6d12a9e251b01f7f55a62e0ccc5d5ab5f4e0d81b32208fab",
+      "bytes": 6030,
+      "material_available": true,
+      "video_clip_available": false
+    }
+  ]
+}

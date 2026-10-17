@@ -1,0 +1,125 @@
+{
+  "schema_version": "incident-defense-validation/1.0",
+  "status": "CONTENT_SOURCE_READY_FORMAT_BLOCKED",
+  "cutoff_utc": "2026-10-17T12:50:41.317Z",
+  "content_checks_passed": true,
+  "checks": [
+    {
+      "name": "exact_15_slides",
+      "passed": true,
+      "scope": "Includes cover."
+    },
+    {
+      "name": "cutoff_fixed",
+      "passed": true,
+      "scope": "Latest closed image proof; excludes later cycles."
+    },
+    {
+      "name": "page_purposes_and_notes",
+      "passed": true,
+      "scope": "Content coverage only, not visual layout."
+    },
+    {
+      "name": "notes_locators",
+      "passed": true,
+      "scope": "Original-project locators and SHA, not guaranteed team paths."
+    },
+    {
+      "name": "origin_and_copy_scope",
+      "passed": true,
+      "scope": "Team byte comparison is explicit, missing evidence stays missing."
+    },
+    {
+      "name": "historical_45_version_boundary",
+      "passed": true,
+      "scope": "No renaming old M1 or single-freeze claim."
+    },
+    {
+      "name": "editable_chart_data",
+      "passed": true,
+      "scope": "4 literal datasets. No chart object exported yet."
+    },
+    {
+      "name": "historical_probe_and_tokens",
+      "passed": true,
+      "scope": "Probe reduction = 9/108 = 8.333%, rounds to 8.3%."
+    },
+    {
+      "name": "E1_segmented_and_zero_models",
+      "passed": true,
+      "scope": "17 continuous + 1 controller continuation. Local AIP stdio."
+    },
+    {
+      "name": "E1_information_not_wire_savings",
+      "passed": true,
+      "scope": "No claimed wire or model-token savings."
+    },
+    {
+      "name": "full_tool_M1_failure_retained",
+      "passed": true,
+      "scope": "F01 only. Initial failure and extra high action retained."
+    },
+    {
+      "name": "platform_partial_short_run",
+      "passed": true,
+      "scope": "Two healthy cycles; not new7, 24h or fault recovery."
+    },
+    {
+      "name": "new7_offline_only",
+      "passed": true,
+      "scope": "Image build/probe does not imply deployed roles."
+    },
+    {
+      "name": "F12_manual_intent",
+      "passed": true,
+      "scope": "Values rechecked against original cases.0/cases.1 and receipt HTTP status."
+    },
+    {
+      "name": "anonymous_text_scope",
+      "passed": true,
+      "scope": "Four text sources only. Screenshot has separate manual observation; no finished PPTX/PDF exists to scan."
+    },
+    {
+      "name": "unchanged_reviewed_screenshot",
+      "passed": true,
+      "scope": "One actual view_image inspection this session, unchanged source bytes."
+    },
+    {
+      "name": "syntax_prepare.mjs",
+      "passed": true,
+      "scope": "Node parser only. No module execution, API or render validation."
+    },
+    {
+      "name": "syntax_build.mjs",
+      "passed": true,
+      "scope": "Node parser only. No module execution, API or render validation."
+    },
+    {
+      "name": "syntax_validate.mjs",
+      "passed": true,
+      "scope": "Node parser only. No module execution, API or render validation."
+    }
+  ],
+  "issues": [],
+  "format_outputs": {
+    "pptx_generated": false,
+    "pdf_generated": false,
+    "artifact_tool_executed": false,
+    "slides_rendered": 0,
+    "visual_QA": "not_run",
+    "native_PowerPoint_QA": "not_run",
+    "editable_objects_verified": false
+  },
+  "runtime_blocker": {
+    "tool": "load_workspace_dependencies not in current ALL_TOOLS",
+    "package": "@oai/artifact-tool not resolvable; no bundle found in bounded known-cache inspection",
+    "substitute_installed": false
+  },
+  "asset_review": {
+    "performed": true,
+    "method": "view_image full-size observation",
+    "images": 1,
+    "not_OCR": true
+  },
+  "final_submission_ready": false
+}

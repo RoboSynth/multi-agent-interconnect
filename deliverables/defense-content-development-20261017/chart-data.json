@@ -1,0 +1,148 @@
+{
+  "schema_version": "incident-defense-charts/1.0",
+  "cutoff_utc": "2026-10-17T12:50:41.317Z",
+  "charts": {
+    "historical_recovery_medians": {
+      "title": "恢复估计中位数",
+      "unit": "秒",
+      "source_ids": [
+        "S15",
+        "S16"
+      ],
+      "categories": [
+        "F01",
+        "F02",
+        "F06",
+        "F07",
+        "F10"
+      ],
+      "series": [
+        {
+          "name": "M0",
+          "values": [
+            7.844,
+            5.156,
+            5.328,
+            5.406,
+            8.985
+          ]
+        },
+        {
+          "name": "M1",
+          "values": [
+            6.109,
+            6.25,
+            7.125,
+            7.547,
+            9.562
+          ]
+        },
+        {
+          "name": "M2",
+          "values": [
+            10.469,
+            15.265,
+            25.766,
+            25.218,
+            33.515
+          ]
+        }
+      ],
+      "limitations": [
+        "每格3次，1rps采样估计",
+        "历史M1仅自由观察",
+        "四场景v2与F06-v3组合，不是一次同源码冻结"
+      ]
+    },
+    "historical_probe_totals": {
+      "title": "探测总数",
+      "unit": "次",
+      "source_ids": [
+        "S15",
+        "S16"
+      ],
+      "categories": [
+        "M0",
+        "M1",
+        "M2"
+      ],
+      "series": [
+        {
+          "name": "探测",
+          "values": [
+            108,
+            99,
+            99
+          ]
+        }
+      ],
+      "limitations": [
+        "总数来自45主格的组合版本",
+        "失败F06-v2另存，不从历史档案删除"
+      ]
+    },
+    "historical_model_tokens": {
+      "title": "模型token总数",
+      "unit": "token",
+      "source_ids": [
+        "S15",
+        "S16"
+      ],
+      "categories": [
+        "M0",
+        "M1",
+        "M2"
+      ],
+      "series": [
+        {
+          "name": "token",
+          "values": [
+            0,
+            57335,
+            122372
+          ]
+        }
+      ],
+      "limitations": [
+        "不是E1模型数据",
+        "M0没有模型调用"
+      ]
+    },
+    "E1_information_and_wire_bytes": {
+      "title": "E1-b交接字节中位数",
+      "unit": "UTF-8字节",
+      "source_ids": [
+        "S10",
+        "S11"
+      ],
+      "categories": [
+        "从头",
+        "完整历史",
+        "恢复包"
+      ],
+      "series": [
+        {
+          "name": "完整IFC",
+          "values": [
+            1084,
+            4594,
+            5223
+          ]
+        },
+        {
+          "name": "信息量",
+          "values": [
+            325,
+            3835,
+            2388
+          ]
+        }
+      ],
+      "limitations": [
+        "每策略3次",
+        "恢复包兼容字段重复编码，实际wire更大",
+        "实际模型调用与token均0"
+      ]
+    }
+  }
+}

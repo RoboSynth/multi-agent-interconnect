@@ -1,0 +1,2364 @@
+{
+  "schema_version": "incident-demo-development-draft/1.0",
+  "marker": "T92_DEMO_DEVELOPMENT_DRAFT_20261017",
+  "title": "Incident Pilot｜4分30秒演示开发稿",
+  "status": "开发稿／非完成视频",
+  "duration_seconds": 270,
+  "language": "zh-CN",
+  "intended_delivery": {
+    "container": "MP4",
+    "duration_range_seconds": [
+      180,
+      300
+    ],
+    "maximum_file_size_mb": 300
+  },
+  "anonymous_output": true,
+  "recording_performed": false,
+  "source_plan": "P01",
+  "timecode_convention": "每段使用[start_second,end_second)，相邻无空隙；seconds逐项覆盖0–269秒，270秒结束。",
+  "narration_note": "这是可读排练稿。正式平台主演示按当前事实说明待录状态；取得连续运行证据后才可改为现场结果旁白，不预填成功结果。",
+  "continuity_rules": [
+    "90–170秒全部属于同一次未来平台主事故录屏，当前整段待补录。",
+    "旧三域兼容、独立本地F10、E1、F12、模型试跑和健康巡检必须分章标明来源，不串成一场平台事故。",
+    "主事故原片从订单故障到最终验证连续保留；成片仅加速和标注，保留原始时钟与倍率。",
+    "未取得的证书、平台恢复/接管、后台访问与长期稳定性保持待办。"
+  ],
+  "cues": [
+    {
+      "id": "C01",
+      "start_second": 0,
+      "end_second": 8,
+      "duration_seconds": 8,
+      "section": "问题",
+      "screen": "标题与应用、数据库、运维三个域示意；只用角色名。",
+      "narration": "订单失败以后，应用、数据库和运维往往各有一部分证据。",
+      "evidence_ids": [
+        "P01"
+      ],
+      "capture_status": "图示待制作",
+      "continuity_group": "INTRO",
+      "recording_todo": "补匿名标题与三域图。",
+      "release_ready": false
+    },
+    {
+      "id": "C02",
+      "start_second": 8,
+      "end_second": 20,
+      "duration_seconds": 12,
+      "section": "问题",
+      "screen": "三域各自保留凭据；协调者只接收事实、任务和回执。",
+      "narration": "Incident Pilot让各域协作排查，资源凭据留在域内。修改由人确认，最后用订单流程验证。",
+      "evidence_ids": [
+        "P01",
+        "E02"
+      ],
+      "capture_status": "图示待制作",
+      "continuity_group": "INTRO",
+      "recording_todo": "用静态图说明职责，不画未实测性能数字。",
+      "release_ready": false
+    },
+    {
+      "id": "C03",
+      "start_second": 20,
+      "end_second": 31,
+      "duration_seconds": 11,
+      "section": "注册",
+      "screen": "角色列表、能力声明和工具映射的匿名局部；不展示登录页。",
+      "narration": "先看接入。每个角色有独立身份和能力声明，工具能力按统一契约公开。",
+      "evidence_ids": [
+        "E01",
+        "P01"
+      ],
+      "capture_status": "已有记录，画面待录",
+      "continuity_group": "REGISTRATION",
+      "recording_todo": "补经过匿名处理的角色状态与公开能力局部。",
+      "release_ready": false
+    },
+    {
+      "id": "C04",
+      "start_second": 31,
+      "end_second": 43,
+      "duration_seconds": 12,
+      "section": "注册",
+      "screen": "状态卡：七角色审核通过；证书待办；新身份未启动。",
+      "narration": "七个新角色已审核通过；证书领取仍待安排，当前没有启动这些新身份。",
+      "evidence_ids": [
+        "E01",
+        "E11"
+      ],
+      "capture_status": "证书待办",
+      "continuity_group": "REGISTRATION",
+      "recording_todo": "证书槽位保持待办，后续只录有效性状态，不展示证书正文。",
+      "release_ready": false
+    },
+    {
+      "id": "C05",
+      "start_second": 43,
+      "end_second": 52,
+      "duration_seconds": 9,
+      "section": "注册",
+      "screen": "独立标识“旧身份兼容验证”；显示应用、数据库、验证三域。",
+      "narration": "已跑通的是旧身份兼容链路。画面只显示角色和状态，身份值与证书内容全部隐藏。",
+      "evidence_ids": [
+        "E02"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "OLD3-COMPAT",
+      "recording_todo": "旧域与新角色画面必须有版本标签，不能暗示新身份已运行。",
+      "release_ready": false
+    },
+    {
+      "id": "C06",
+      "start_second": 52,
+      "end_second": 60,
+      "duration_seconds": 8,
+      "section": "注册",
+      "screen": "接入完成项和未完成项并列；镜像离线检查单独列出。",
+      "narration": "镜像构建和离线检查已经通过；这些结果不能代替平台任务运行。",
+      "evidence_ids": [
+        "E11"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "PACKAGING",
+      "recording_todo": "离线结果只作短卡，不录新容器或新平台。",
+      "release_ready": false
+    },
+    {
+      "id": "C07",
+      "start_second": 60,
+      "end_second": 70,
+      "duration_seconds": 10,
+      "section": "发现",
+      "screen": "旧三域发现响应的字段投影，随后显示describe能力表。",
+      "narration": "发现先查候选，再用describe核对技能和资源。能被查到，不等于任务已经完成。",
+      "evidence_ids": [
+        "E02"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "OLD3-COMPAT",
+      "recording_todo": "补旧三域真实记录的匿名字段投影，不补造发现响应。",
+      "release_ready": false
+    },
+    {
+      "id": "C08",
+      "start_second": 70,
+      "end_second": 80,
+      "duration_seconds": 10,
+      "section": "发现",
+      "screen": "可信名单筛选、描述超时与候选确认的流程示意。",
+      "narration": "只邀请可信名单内的身份。描述超时保留阶段和错误，再检查其他候选。",
+      "evidence_ids": [
+        "P01"
+      ],
+      "capture_status": "行为说明图待制作",
+      "continuity_group": "DISCOVERY-CONTRACT",
+      "recording_todo": "此处是实现说明图，不画成某次平台事故的实际超时。",
+      "release_ready": false
+    },
+    {
+      "id": "C09",
+      "start_second": 80,
+      "end_second": 90,
+      "duration_seconds": 10,
+      "section": "发现",
+      "screen": "旧三域只读任务的accepted到completed状态，附范围标签。",
+      "narration": "现有三旧域已完成发现、能力确认和只读任务；高风险平台恢复还待验收。",
+      "evidence_ids": [
+        "E02"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "OLD3-COMPAT",
+      "recording_todo": "旧只读任务可以展示；不接一段本地修改镜头冒充后续。",
+      "release_ready": false
+    },
+    {
+      "id": "C10",
+      "start_second": 90,
+      "end_second": 99,
+      "duration_seconds": 9,
+      "section": "互联",
+      "screen": "整屏待录卡，标“正式平台｜同一事故连续录屏”；保留订单失败起点。",
+      "narration": "主演示要从一次订单故障连续录起，直到恢复确认。正式平台这一段还要补录。",
+      "evidence_ids": [
+        "P01",
+        "E03"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "待具备身份与运行条件后单次连续录制；本任务不启动实验。",
+      "release_ready": false
+    },
+    {
+      "id": "C11",
+      "start_second": 99,
+      "end_second": 109,
+      "duration_seconds": 10,
+      "section": "互联",
+      "screen": "待录：同一事故的应用、路由和数据库观察并列，证据与假设分开。",
+      "narration": "应用、路由和数据库分别返回证据。假设只是排查方向，观察结果才能确认原因。",
+      "evidence_ids": [
+        "E03",
+        "P01"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "保留同一事故关联号、原始时间和观察来源；对外用中性别名。",
+      "release_ready": false
+    },
+    {
+      "id": "C12",
+      "start_second": 109,
+      "end_second": 118,
+      "duration_seconds": 9,
+      "section": "互联",
+      "screen": "待录：复合故障两项根因；只修一项后仍失败的业务反馈。",
+      "narration": "先拆开复合故障，确认旧路由与只读状态；只修一项，不能宣布恢复。",
+      "evidence_ids": [
+        "E03"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "同一事故内保留失败与补证，不借用别场故障的曲线。",
+      "release_ready": false
+    },
+    {
+      "id": "C13",
+      "start_second": 118,
+      "end_second": 129,
+      "duration_seconds": 11,
+      "section": "互联",
+      "screen": "待录：审批卡，展示对象、前置条件、影响与人工确认。",
+      "narration": "高风险动作先展示对象、前置条件和影响。人工确认以后，域内策略再检查一次。",
+      "evidence_ids": [
+        "E03"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "需真实人工审批；不自动批准high，不用动画按钮代替真实点击。",
+      "release_ready": false
+    },
+    {
+      "id": "C14",
+      "start_second": 129,
+      "end_second": 140,
+      "duration_seconds": 11,
+      "section": "互联",
+      "screen": "待录：同一事故的路由、写权限、连接池动作及回执。",
+      "narration": "本地版本已验证路由、写权限和连接池恢复。正式平台要在这条连续录屏里重新留下结果。",
+      "evidence_ids": [
+        "E03"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "本地F10结果仅供取景和指标口径参考，禁止粘入平台主镜头。",
+      "release_ready": false
+    },
+    {
+      "id": "C15",
+      "start_second": 140,
+      "end_second": 151,
+      "duration_seconds": 11,
+      "section": "互联",
+      "screen": "待录：原操作编号贯穿接管，账本显示applied/跳过，旧主命令被拒。",
+      "narration": "接管沿用原操作编号，先查询共享账本。已执行动作跳过，旧任期也不能回来再次修改。",
+      "evidence_ids": [
+        "E04",
+        "E05"
+      ],
+      "capture_status": "正式平台接管待验收、待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "现有接管是独立本地实验；不能放入平台主镜头，不声称数据库原生fence。",
+      "release_ready": false
+    },
+    {
+      "id": "C16",
+      "start_second": 151,
+      "end_second": 165,
+      "duration_seconds": 14,
+      "section": "互联",
+      "screen": "待录：完整观察窗口、30请求、10条创建/查询/取消闭环、未决计数。",
+      "narration": "服务返回成功还不够。继续观察至少三十秒，完成十个完整订单流程，并清空未决请求。",
+      "evidence_ids": [
+        "E03",
+        "E08"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "原录屏保留完整至少30秒；成片可标倍速并保留原始计时，不把14秒剪辑当30秒。",
+      "release_ready": false
+    },
+    {
+      "id": "C17",
+      "start_second": 165,
+      "end_second": 170,
+      "duration_seconds": 5,
+      "section": "互联",
+      "screen": "待录：同一事故最终结果与原请求状态分列。",
+      "narration": "这些条件一起满足，才确认业务恢复。",
+      "evidence_ids": [
+        "E03",
+        "E07"
+      ],
+      "capture_status": "正式平台连续主镜头待录",
+      "continuity_group": "MAIN-PLATFORM-TAKE-01",
+      "recording_todo": "须检查原请求也已解决；未知时保持需人工状态。",
+      "release_ready": false
+    },
+    {
+      "id": "C18",
+      "start_second": 170,
+      "end_second": 181,
+      "duration_seconds": 11,
+      "section": "安全与边界",
+      "screen": "明确切章“独立本地F12案例”；原键查询、同键重试、唯一订单示意。",
+      "narration": "另一个独立场景是回执丢失。有原请求键，就沿原键查证和重试，不能另建替代订单。",
+      "evidence_ids": [
+        "E06"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "F12-LOCAL-SEPARATE",
+      "recording_todo": "使用独立案例标签；原业务键只显示匿名一致性别名。",
+      "release_ready": false
+    },
+    {
+      "id": "C19",
+      "start_second": 181,
+      "end_second": 191,
+      "duration_seconds": 10,
+      "section": "安全与边界",
+      "screen": "独立F12产品分支：服务已恢复；原业务未知；需要人工核对。",
+      "narration": "原键遗失或回执查不到，即使新订单验证正常，原业务仍是未知，需要人工核对。",
+      "evidence_ids": [
+        "E07"
+      ],
+      "capture_status": "已有浏览器结果，素材待匿名复核",
+      "continuity_group": "F12-LOCAL-SEPARATE",
+      "recording_todo": "两个产品分支分别来自独立案例，不能画成同一请求的连续状态。",
+      "release_ready": false
+    },
+    {
+      "id": "C20",
+      "start_second": 191,
+      "end_second": 200,
+      "duration_seconds": 9,
+      "section": "安全与边界",
+      "screen": "匿名任务、审批、操作回执的关联图；已检查范围的凭据计数。",
+      "narration": "任务、审批和操作回执可以关联核查。扫描零命中，只代表检查过的文件和规则。",
+      "evidence_ids": [
+        "E02",
+        "E07",
+        "E08"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "AUDIT-EXPLANATION",
+      "recording_todo": "只引用指定证据的扫描范围，不扩大为全系统无泄漏保证。",
+      "release_ready": false
+    },
+    {
+      "id": "C21",
+      "start_second": 200,
+      "end_second": 211,
+      "duration_seconds": 11,
+      "section": "访问",
+      "screen": "旧三域巡检初次与自然周期2的两个独立时间点和完成计数。",
+      "narration": "平台健康巡检已完成两次，其中一次由定时循环自然触发，都通过三十秒、十流程验证。",
+      "evidence_ids": [
+        "E08"
+      ],
+      "capture_status": "已有结果，画面待录",
+      "continuity_group": "T07-HEALTH-SEPARATE",
+      "recording_todo": "不把两次健康检查说成故障恢复；保留无high和无演练标签。",
+      "release_ready": false
+    },
+    {
+      "id": "C22",
+      "start_second": 211,
+      "end_second": 221,
+      "duration_seconds": 10,
+      "section": "访问",
+      "screen": "范围卡：两次巡检；24小时和七天仍未验证；计划不计入结果。",
+      "narration": "这还不是全天稳定性结果，下一次计划时间也不是执行成功。访问量和排行要看后台实数。",
+      "evidence_ids": [
+        "E08"
+      ],
+      "capture_status": "已有结果及未完成边界",
+      "continuity_group": "T07-HEALTH-SEPARATE",
+      "recording_todo": "只能显示已完成次数，不延伸外推在线率或持续时长。",
+      "release_ready": false
+    },
+    {
+      "id": "C23",
+      "start_second": 221,
+      "end_second": 231,
+      "duration_seconds": 10,
+      "section": "访问",
+      "screen": "待录：同一时间范围的官方后台统计与任务证据对照，不填数字。",
+      "narration": "新身份上线后，还要补同一时间范围的后台统计，不能拿本地任务数代替平台访问量。",
+      "evidence_ids": [
+        "P01"
+      ],
+      "capture_status": "后台统计待取得、待录",
+      "continuity_group": "PLATFORM-COUNTERS-PENDING",
+      "recording_todo": "需后台真实访问量、排行、在线状态；缺一项就保留待办，不伪造曲线。",
+      "release_ready": false
+    },
+    {
+      "id": "C24",
+      "start_second": 231,
+      "end_second": 240,
+      "duration_seconds": 9,
+      "section": "访问",
+      "screen": "后台画面待录卡；匿名遮挡示意，数字位置保留空白。",
+      "narration": "这里保留后台画面的待录位。没有取得的数据，不填估算值，也不提前画增长曲线。",
+      "evidence_ids": [
+        "P01"
+      ],
+      "capture_status": "后台统计待取得、待录",
+      "continuity_group": "PLATFORM-COUNTERS-PENDING",
+      "recording_todo": "最终录制前再确认窗口、计数口径和匿名裁切；本任务不登录后台。",
+      "release_ready": false
+    },
+    {
+      "id": "C25",
+      "start_second": 240,
+      "end_second": 250,
+      "duration_seconds": 10,
+      "section": "效果与贡献",
+      "screen": "历史模型对比图，醒目标注按场景合并、旧观察版M1、小模型部署。",
+      "narration": "历史对比按场景合并两版结果，小模型没有让M2更快；不能代替完整工具M1的正式矩阵。",
+      "evidence_ids": [
+        "E10"
+      ],
+      "capture_status": "已有结果，图表镜头待制作",
+      "continuity_group": "MODEL-HISTORICAL-SEPARATE",
+      "recording_todo": "保留v2九项失败与F06补验来源；不称同源码一次45项全部通过。",
+      "release_ready": false
+    },
+    {
+      "id": "C26",
+      "start_second": 250,
+      "end_second": 260,
+      "duration_seconds": 10,
+      "section": "效果与贡献",
+      "screen": "完整工具M1两批试跑分开：首批unknown；修复后仍有额外high。",
+      "narration": "完整工具M1试跑保留了错误动作和未知结果；共同守卫修复后，仍有一次不必要的高权限操作。",
+      "evidence_ids": [
+        "E09"
+      ],
+      "capture_status": "已有负面结果，画面待录",
+      "continuity_group": "M1-PILOTS-SEPARATE",
+      "recording_todo": "首批2/3与复验3/3分开；错误正文未归档部分不补造。",
+      "release_ready": false
+    },
+    {
+      "id": "C27",
+      "start_second": 260,
+      "end_second": 270,
+      "duration_seconds": 10,
+      "section": "效果与贡献",
+      "screen": "本地E1范围卡：18例、17连续加1续验、模型用量0；源码与证据索引片尾。",
+      "narration": "本地接管十八例，模型用量为零。源码和证据可以复查；补齐平台恢复与接管，再定最终视频。",
+      "evidence_ids": [
+        "E04",
+        "P01"
+      ],
+      "capture_status": "已有结果，片尾待制作",
+      "continuity_group": "E1-LOCAL-SEPARATE",
+      "recording_todo": "片尾注明零重复来自共享账本；不展示账号、组织、仓库所有者或私有地址。",
+      "release_ready": false
+    }
+  ],
+  "seconds": [
+    {
+      "second": 0,
+      "cue_id": "C01",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 1,
+      "cue_id": "C01",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 2,
+      "cue_id": "C01",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 3,
+      "cue_id": "C01",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 4,
+      "cue_id": "C01",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 5,
+      "cue_id": "C01",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 6,
+      "cue_id": "C01",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 7,
+      "cue_id": "C01",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 8,
+      "cue_id": "C02",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 9,
+      "cue_id": "C02",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 10,
+      "cue_id": "C02",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 11,
+      "cue_id": "C02",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 12,
+      "cue_id": "C02",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 13,
+      "cue_id": "C02",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 14,
+      "cue_id": "C02",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 15,
+      "cue_id": "C02",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 16,
+      "cue_id": "C02",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 17,
+      "cue_id": "C02",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 18,
+      "cue_id": "C02",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 19,
+      "cue_id": "C02",
+      "offset_in_cue": 11,
+      "narration_onset": false,
+      "screen_group": "INTRO"
+    },
+    {
+      "second": 20,
+      "cue_id": "C03",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 21,
+      "cue_id": "C03",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 22,
+      "cue_id": "C03",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 23,
+      "cue_id": "C03",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 24,
+      "cue_id": "C03",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 25,
+      "cue_id": "C03",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 26,
+      "cue_id": "C03",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 27,
+      "cue_id": "C03",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 28,
+      "cue_id": "C03",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 29,
+      "cue_id": "C03",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 30,
+      "cue_id": "C03",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 31,
+      "cue_id": "C04",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 32,
+      "cue_id": "C04",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 33,
+      "cue_id": "C04",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 34,
+      "cue_id": "C04",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 35,
+      "cue_id": "C04",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 36,
+      "cue_id": "C04",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 37,
+      "cue_id": "C04",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 38,
+      "cue_id": "C04",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 39,
+      "cue_id": "C04",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 40,
+      "cue_id": "C04",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 41,
+      "cue_id": "C04",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 42,
+      "cue_id": "C04",
+      "offset_in_cue": 11,
+      "narration_onset": false,
+      "screen_group": "REGISTRATION"
+    },
+    {
+      "second": 43,
+      "cue_id": "C05",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 44,
+      "cue_id": "C05",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 45,
+      "cue_id": "C05",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 46,
+      "cue_id": "C05",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 47,
+      "cue_id": "C05",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 48,
+      "cue_id": "C05",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 49,
+      "cue_id": "C05",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 50,
+      "cue_id": "C05",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 51,
+      "cue_id": "C05",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 52,
+      "cue_id": "C06",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 53,
+      "cue_id": "C06",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 54,
+      "cue_id": "C06",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 55,
+      "cue_id": "C06",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 56,
+      "cue_id": "C06",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 57,
+      "cue_id": "C06",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 58,
+      "cue_id": "C06",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 59,
+      "cue_id": "C06",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "PACKAGING"
+    },
+    {
+      "second": 60,
+      "cue_id": "C07",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 61,
+      "cue_id": "C07",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 62,
+      "cue_id": "C07",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 63,
+      "cue_id": "C07",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 64,
+      "cue_id": "C07",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 65,
+      "cue_id": "C07",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 66,
+      "cue_id": "C07",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 67,
+      "cue_id": "C07",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 68,
+      "cue_id": "C07",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 69,
+      "cue_id": "C07",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 70,
+      "cue_id": "C08",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 71,
+      "cue_id": "C08",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 72,
+      "cue_id": "C08",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 73,
+      "cue_id": "C08",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 74,
+      "cue_id": "C08",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 75,
+      "cue_id": "C08",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 76,
+      "cue_id": "C08",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 77,
+      "cue_id": "C08",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 78,
+      "cue_id": "C08",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 79,
+      "cue_id": "C08",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "DISCOVERY-CONTRACT"
+    },
+    {
+      "second": 80,
+      "cue_id": "C09",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 81,
+      "cue_id": "C09",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 82,
+      "cue_id": "C09",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 83,
+      "cue_id": "C09",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 84,
+      "cue_id": "C09",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 85,
+      "cue_id": "C09",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 86,
+      "cue_id": "C09",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 87,
+      "cue_id": "C09",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 88,
+      "cue_id": "C09",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 89,
+      "cue_id": "C09",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "OLD3-COMPAT"
+    },
+    {
+      "second": 90,
+      "cue_id": "C10",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 91,
+      "cue_id": "C10",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 92,
+      "cue_id": "C10",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 93,
+      "cue_id": "C10",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 94,
+      "cue_id": "C10",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 95,
+      "cue_id": "C10",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 96,
+      "cue_id": "C10",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 97,
+      "cue_id": "C10",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 98,
+      "cue_id": "C10",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 99,
+      "cue_id": "C11",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 100,
+      "cue_id": "C11",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 101,
+      "cue_id": "C11",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 102,
+      "cue_id": "C11",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 103,
+      "cue_id": "C11",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 104,
+      "cue_id": "C11",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 105,
+      "cue_id": "C11",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 106,
+      "cue_id": "C11",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 107,
+      "cue_id": "C11",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 108,
+      "cue_id": "C11",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 109,
+      "cue_id": "C12",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 110,
+      "cue_id": "C12",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 111,
+      "cue_id": "C12",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 112,
+      "cue_id": "C12",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 113,
+      "cue_id": "C12",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 114,
+      "cue_id": "C12",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 115,
+      "cue_id": "C12",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 116,
+      "cue_id": "C12",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 117,
+      "cue_id": "C12",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 118,
+      "cue_id": "C13",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 119,
+      "cue_id": "C13",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 120,
+      "cue_id": "C13",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 121,
+      "cue_id": "C13",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 122,
+      "cue_id": "C13",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 123,
+      "cue_id": "C13",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 124,
+      "cue_id": "C13",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 125,
+      "cue_id": "C13",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 126,
+      "cue_id": "C13",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 127,
+      "cue_id": "C13",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 128,
+      "cue_id": "C13",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 129,
+      "cue_id": "C14",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 130,
+      "cue_id": "C14",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 131,
+      "cue_id": "C14",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 132,
+      "cue_id": "C14",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 133,
+      "cue_id": "C14",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 134,
+      "cue_id": "C14",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 135,
+      "cue_id": "C14",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 136,
+      "cue_id": "C14",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 137,
+      "cue_id": "C14",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 138,
+      "cue_id": "C14",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 139,
+      "cue_id": "C14",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 140,
+      "cue_id": "C15",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 141,
+      "cue_id": "C15",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 142,
+      "cue_id": "C15",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 143,
+      "cue_id": "C15",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 144,
+      "cue_id": "C15",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 145,
+      "cue_id": "C15",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 146,
+      "cue_id": "C15",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 147,
+      "cue_id": "C15",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 148,
+      "cue_id": "C15",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 149,
+      "cue_id": "C15",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 150,
+      "cue_id": "C15",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 151,
+      "cue_id": "C16",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 152,
+      "cue_id": "C16",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 153,
+      "cue_id": "C16",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 154,
+      "cue_id": "C16",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 155,
+      "cue_id": "C16",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 156,
+      "cue_id": "C16",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 157,
+      "cue_id": "C16",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 158,
+      "cue_id": "C16",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 159,
+      "cue_id": "C16",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 160,
+      "cue_id": "C16",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 161,
+      "cue_id": "C16",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 162,
+      "cue_id": "C16",
+      "offset_in_cue": 11,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 163,
+      "cue_id": "C16",
+      "offset_in_cue": 12,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 164,
+      "cue_id": "C16",
+      "offset_in_cue": 13,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 165,
+      "cue_id": "C17",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 166,
+      "cue_id": "C17",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 167,
+      "cue_id": "C17",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 168,
+      "cue_id": "C17",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 169,
+      "cue_id": "C17",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MAIN-PLATFORM-TAKE-01"
+    },
+    {
+      "second": 170,
+      "cue_id": "C18",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 171,
+      "cue_id": "C18",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 172,
+      "cue_id": "C18",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 173,
+      "cue_id": "C18",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 174,
+      "cue_id": "C18",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 175,
+      "cue_id": "C18",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 176,
+      "cue_id": "C18",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 177,
+      "cue_id": "C18",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 178,
+      "cue_id": "C18",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 179,
+      "cue_id": "C18",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 180,
+      "cue_id": "C18",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 181,
+      "cue_id": "C19",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 182,
+      "cue_id": "C19",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 183,
+      "cue_id": "C19",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 184,
+      "cue_id": "C19",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 185,
+      "cue_id": "C19",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 186,
+      "cue_id": "C19",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 187,
+      "cue_id": "C19",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 188,
+      "cue_id": "C19",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 189,
+      "cue_id": "C19",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 190,
+      "cue_id": "C19",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "F12-LOCAL-SEPARATE"
+    },
+    {
+      "second": 191,
+      "cue_id": "C20",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 192,
+      "cue_id": "C20",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 193,
+      "cue_id": "C20",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 194,
+      "cue_id": "C20",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 195,
+      "cue_id": "C20",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 196,
+      "cue_id": "C20",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 197,
+      "cue_id": "C20",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 198,
+      "cue_id": "C20",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 199,
+      "cue_id": "C20",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "AUDIT-EXPLANATION"
+    },
+    {
+      "second": 200,
+      "cue_id": "C21",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 201,
+      "cue_id": "C21",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 202,
+      "cue_id": "C21",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 203,
+      "cue_id": "C21",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 204,
+      "cue_id": "C21",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 205,
+      "cue_id": "C21",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 206,
+      "cue_id": "C21",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 207,
+      "cue_id": "C21",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 208,
+      "cue_id": "C21",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 209,
+      "cue_id": "C21",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 210,
+      "cue_id": "C21",
+      "offset_in_cue": 10,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 211,
+      "cue_id": "C22",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 212,
+      "cue_id": "C22",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 213,
+      "cue_id": "C22",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 214,
+      "cue_id": "C22",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 215,
+      "cue_id": "C22",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 216,
+      "cue_id": "C22",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 217,
+      "cue_id": "C22",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 218,
+      "cue_id": "C22",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 219,
+      "cue_id": "C22",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 220,
+      "cue_id": "C22",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "T07-HEALTH-SEPARATE"
+    },
+    {
+      "second": 221,
+      "cue_id": "C23",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 222,
+      "cue_id": "C23",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 223,
+      "cue_id": "C23",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 224,
+      "cue_id": "C23",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 225,
+      "cue_id": "C23",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 226,
+      "cue_id": "C23",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 227,
+      "cue_id": "C23",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 228,
+      "cue_id": "C23",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 229,
+      "cue_id": "C23",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 230,
+      "cue_id": "C23",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 231,
+      "cue_id": "C24",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 232,
+      "cue_id": "C24",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 233,
+      "cue_id": "C24",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 234,
+      "cue_id": "C24",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 235,
+      "cue_id": "C24",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 236,
+      "cue_id": "C24",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 237,
+      "cue_id": "C24",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 238,
+      "cue_id": "C24",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 239,
+      "cue_id": "C24",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "PLATFORM-COUNTERS-PENDING"
+    },
+    {
+      "second": 240,
+      "cue_id": "C25",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 241,
+      "cue_id": "C25",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 242,
+      "cue_id": "C25",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 243,
+      "cue_id": "C25",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 244,
+      "cue_id": "C25",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 245,
+      "cue_id": "C25",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 246,
+      "cue_id": "C25",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 247,
+      "cue_id": "C25",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 248,
+      "cue_id": "C25",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 249,
+      "cue_id": "C25",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "MODEL-HISTORICAL-SEPARATE"
+    },
+    {
+      "second": 250,
+      "cue_id": "C26",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 251,
+      "cue_id": "C26",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 252,
+      "cue_id": "C26",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 253,
+      "cue_id": "C26",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 254,
+      "cue_id": "C26",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 255,
+      "cue_id": "C26",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 256,
+      "cue_id": "C26",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 257,
+      "cue_id": "C26",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 258,
+      "cue_id": "C26",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 259,
+      "cue_id": "C26",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "M1-PILOTS-SEPARATE"
+    },
+    {
+      "second": 260,
+      "cue_id": "C27",
+      "offset_in_cue": 0,
+      "narration_onset": true,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 261,
+      "cue_id": "C27",
+      "offset_in_cue": 1,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 262,
+      "cue_id": "C27",
+      "offset_in_cue": 2,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 263,
+      "cue_id": "C27",
+      "offset_in_cue": 3,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 264,
+      "cue_id": "C27",
+      "offset_in_cue": 4,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 265,
+      "cue_id": "C27",
+      "offset_in_cue": 5,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 266,
+      "cue_id": "C27",
+      "offset_in_cue": 6,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 267,
+      "cue_id": "C27",
+      "offset_in_cue": 7,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 268,
+      "cue_id": "C27",
+      "offset_in_cue": 8,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    },
+    {
+      "second": 269,
+      "cue_id": "C27",
+      "offset_in_cue": 9,
+      "narration_onset": false,
+      "screen_group": "E1-LOCAL-SEPARATE"
+    }
+  ]
+}

@@ -89,3 +89,9 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [T07第二周期](evidence/T07-partial3-cycle2-20261017/README.md)是旧三身份/旧180xx目标的真实自然调度：业务30.002秒、30请求、10完整流程成功，4任务/24生命周期关联投影，无unknown/pending/act/审批；首段快照保留。它不证明新版身份已上线或24小时/七天稳定。13页PDF仍保持11:41:43Z证据截止。
 
 [新镜像隔离验证](evidence/new7-image-build-20261017/image-proof.json)实际build/probe均exit0；仅构建incident-pilot-agent:new7，并在network-none、只读根目录、无资源/证书挂载的临时容器中验证导入、官方ACS schema及12个固定源码SHA和实际模块路径。旧服务未重建，新身份/消费者未启动。integration仅10个顶层Python源；构建参数不兼容exit125及首probe漏stdin未执行的早期失败保留，不计为验证成功。该镜像证明不替代正式平台启动或E3矩阵。
+
+## 答辩与演示开发稿
+
+[答辩内容开发稿](deliverables/defense-content-development-20261017/README.md)提供内容、讲者备注、数据和JS生成源。官方技能运行时缺失，PPTX/PDF生成未执行；内容稿不能作为已交付演示文件。[4分30秒演示开发稿](deliverables/demo-script-development-20261017/README.md)提供旁白、分镜、逐秒索引与录制清单，尚未录制视频或音频。两份材料保留平台高风险恢复、接管、新七身份与后台统计的待验收项，没有新增实验。
+
+稿内原件locator和SHA指向原开发项目根目录，不保证团队仓库同路径存在；已上传公开派生请从[资料导航](docs/资料导航.md)进入。历史M1负例、修后额外high、E1本地stdio/零模型用量、17连续加1续验，以及旧身份巡检与新身份准备的区别均保留。13页技术PDF与先前实验快照维持原版本。
