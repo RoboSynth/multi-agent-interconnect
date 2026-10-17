@@ -16,9 +16,9 @@ COLORS = {"M0": "#68727d", "M1": "#2878b5", "M2": "#c87022"}
 MARKERS = {"M0": "o", "M1": "s", "M2": "D"}
 
 
-def plot(directory, output):
+def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
     directory, output = Path(directory), Path(output)
-    raw_path = directory / "results.json"
+    raw_path = Path(rows_file) if rows_file else directory / "results.json"
     rows = json.loads(raw_path.read_text(encoding="utf-8"))
     experiment = json.loads((directory / "experiment.json").read_text(encoding="utf-8"))
     output.mkdir(parents=True, exist_ok=True)
@@ -27,6 +27,9 @@ def plot(directory, output):
     groups = [(scenario, method, [r for r in rows if r["scenario"] == scenario and r["method"] == method])
               for scenario in scenarios for method in methods]
     complete = len(rows) == expected and all(len(selected) == experiment["repeats"] for _, _, selected in groups)
+    source_versions = {scenario: sorted({r["source_version"] for r in rows
+        if r["scenario"] == scenario and r.get("source_version")}) for scenario in scenarios}
+    composite = len({version for versions in source_versions.values() for version in versions}) > 1
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "pdf.fonttype": 42,
         "svg.fonttype": "none", "axes.spines.top": False, "axes.spines.right": False})
     fig, axes = plt.subplots(1, 3, figsize=(13.5, 9), sharey=True)
@@ -64,7 +67,8 @@ def plot(directory, output):
     axes[0].set_yticks(y_values, labels)
     axes[0].invert_yaxis()
     fig.suptitle("Scheduling comparison — local AIP stdio", x=.02, ha="left", y=.975, fontsize=17, weight="bold")
-    subtitle = f"{'COMPLETE' if complete else 'PARTIAL'}: {len(rows)}/{expected} recorded runs; "
+    label = "COMPOSITE" if composite and complete else "COMPLETE" if complete else "PARTIAL"
+    subtitle = f"{label}: {len(rows)}/{expected} recorded runs; "
     subtitle += "each point is one run, dark ticks are medians, lines show observed ranges"
     fig.text(.02, .938, subtitle, fontsize=10, color="#48515c")
     legend = [Line2D([0], [0], marker=MARKERS[m], color="none", markerfacecolor=COLORS[m],
@@ -73,13 +77,19 @@ def plot(directory, output):
     footnote = ("Recovery uses confirmed successes and 1 rps sampling; failed/unconfirmed counts remain in row labels.\n"
                 "Probe/token panels retain failures. Model fallbacks and diagnosis counts are in plot-data.json.\n"
                 "M0 is scripted; M1 selects observations; M2 ranks model hypotheses. These are local development results.")
+    if composite:
+        footnote += "\nDifferent source freezes: " + "; ".join(
+            scenario + "=" + "/".join(versions) for scenario, versions in source_versions.items())
+        footnote += ". Original failed F06 v2 runs remain in the historical report."
     fig.text(.02, .025, footnote, fontsize=8.5, color="#48515c", linespacing=1.5)
     fig.subplots_adjust(left=.225, right=.98, top=.88, bottom=.14, wspace=.25)
-    for suffix in ("png", "pdf", "svg"):
+    for suffix in formats:
         fig.savefig(output / ("scheduling-comparison."+suffix), dpi=180, facecolor="white")
     plt.close(fig)
     metadata = {"source": str(raw_path.resolve()), "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
-                "recorded_cells": len(rows), "expected_cells": expected, "matrix_complete": complete, "groups": counters}
+                "recorded_cells": len(rows), "expected_cells": expected, "matrix_complete": complete,
+                "formats": list(formats), "composite_source_versions": composite,
+                "source_versions_by_scenario": source_versions, "groups": counters}
     (output / "plot-data.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     return metadata
 
@@ -88,6 +98,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--formats", nargs="+", choices=("png", "pdf", "svg"), default=("png", "pdf", "svg"))
+    parser.add_argument("--rows-file", type=Path, help="Use analyzed or scenario-composite rows with this experiment's fixed parameters")
     args = parser.parse_args()
-    result = plot(args.directory, args.output)
+    result = plot(args.directory, args.output, args.formats, args.rows_file)
     print(json.dumps({key: result[key] for key in ("recorded_cells", "expected_cells", "matrix_complete")}))

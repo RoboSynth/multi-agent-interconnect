@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-17T10:34:34.945724+00:00",
+  "run": "model-fairness-formal-v2-20261017",
+  "sdk_before_fix_snapshot_at": "2026-10-17T10:02:05.213990+00:00",
+  "process_started_by_aic": {
+    "local-coordinator": [
+      "2026-10-17T09:49:34.861520Z"
+    ],
+    "local-verification": [
+      "2026-10-17T09:49:36.913959Z"
+    ],
+    "local-application": [
+      "2026-10-17T09:49:36.845035Z"
+    ],
+    "local-database-primary": [
+      "2026-10-17T09:49:36.869212Z"
+    ],
+    "local-database-backup": [
+      "2026-10-17T09:49:36.913959Z"
+    ],
+    "local-ops": [
+      "2026-10-17T09:49:36.909939Z"
+    ]
+  },
+  "takeover_table_counts": {
+    "takeover_events": 0
+  },
+  "conclusion": "One transport and five domain workers started once before the SDK ordering patch. All workers imported acps_sdk.aip and resumable at module top before their AMP process_started event. No per-cell worker/transport restart and no module reload path; all v2 ACPs SDK consumers retain pre-patch imports.",
+  "parent_module_boundary": "local_transport top-level imports Leader/TaskJournal; run.py transport.start once outside all scenario/repeat/method loops and close once after them.",
+  "worker_module_boundary": "local_worker.py top-level imports acps_sdk.aip, GroupPartnerMqClient and resumable before serve/AmpRuntime.start; start creates all five workers, including standby, exactly once.",
+  "fresh_per_cell_subprocesses": "eval/inject.py and resource business/fault-lock children load business/native_process, asyncpg or order_app, not ACPs GroupLeader/TaskJournal.",
+  "source_evidence": {
+    "source/eval/run.py": [
+      114,
+      115,
+      116,
+      118,
+      203
+    ],
+    "source/incident/local_transport.py": [
+      155,
+      156,
+      168,
+      195,
+      306,
+      307,
+      308
+    ],
+    "source/incident/local_worker.py": [
+      25,
+      26,
+      27
+    ]
+  },
+  "limits": "Provenance established from frozen startup/import code plus all persisted process-start records; no process memory dump or per-import file-open trace was collected."
+}

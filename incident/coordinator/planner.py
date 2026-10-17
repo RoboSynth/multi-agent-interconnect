@@ -31,6 +31,32 @@ def category(key, value):
     return str(value)
 
 
+def blocking_root_pid(rows):
+    """Resolve waiter -> blocker edges; never mistake a waiter for its blocker."""
+    if not isinstance(rows, list):
+        return None
+    waiting, blocking, direct = set(), set(), set()
+    valid = lambda pid: type(pid) is int and pid > 0
+    for row in rows:
+        if isinstance(row, dict) and "blocking_pids" in row:
+            pid, parents = row.get("pid"), row["blocking_pids"]
+            if not valid(pid) or not isinstance(parents, list) or any(not valid(parent) for parent in parents):
+                return None
+            if parents:
+                waiting.add(pid)
+                blocking.update(parents)
+        else:
+            # Retain the original adapter format that explicitly lists blockers.
+            pid = row.get("pid") if isinstance(row, dict) else row
+            if not valid(pid):
+                return None
+            direct.add(pid)
+    roots = blocking - waiting
+    if blocking:
+        return min(roots) if roots else None
+    return min(direct) if direct else None
+
+
 def rank_probes(hypotheses: list[Hypothesis], probes: list[Probe]):
     pairs = list(combinations(hypotheses, 2))
     rows = []
@@ -135,10 +161,10 @@ class EvidencePlanner:
         blockers = self.value("blocking_sessions", [])
         if blockers and "db.terminate_blocker" not in self.completed:
             # Only the diagnosed blocking session is selected, never all sessions.
-            blocker = blockers[0]
-            pid = blocker.get("pid") if isinstance(blocker, dict) else blocker
-            nodes.append(PlanNode("unblock", "db.terminate_blocker", "act", "database",
-                                  "阻塞链中确认的实验应用会话", {"pid": pid}, risk="high"))
+            pid = blocking_root_pid(blockers)
+            if pid is not None:
+                nodes.append(PlanNode("unblock", "db.terminate_blocker", "act", "database",
+                                      "阻塞链中确认的实验应用根会话", {"pid": pid}, risk="high"))
         stale_pool = conflict in self.confirmed_conflicts and self.value("read_only") is False and self.value("application_read_only") is True
         if ("db.restore_writes" in self.completed or stale_pool) and "application.pool_rebuild" not in self.completed:
             revision = self.value("application_pool_revision")

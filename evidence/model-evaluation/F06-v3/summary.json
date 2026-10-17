@@ -1,0 +1,81 @@
+{
+  "expected_cells": 9,
+  "recorded_cells": 9,
+  "matrix_complete": true,
+  "completed_and_confirmed": 9,
+  "diagnosis_correct": 9,
+  "token_usage_complete": true,
+  "groups": [
+    {
+      "scenario": "F06",
+      "method": "M0",
+      "n": 3,
+      "completed_and_confirmed": 3,
+      "diagnosis_correct": 3,
+      "model_sources": {
+        "rules": 3
+      },
+      "model_fallbacks": 0,
+      "model_failures": 0,
+      "unnecessary_high_privilege_calls": 0,
+      "median_probes": 6,
+      "median_modifications": 1,
+      "median_coordination_and_verification_seconds": 31.578,
+      "median_success_recovery_observed_seconds": 5.328,
+      "median_success_recovery_confirmed_earliest_seconds": 36.75,
+      "median_tokens": 0,
+      "median_model_calls": 0,
+      "median_approval_wait_seconds": 0.036
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "n": 3,
+      "completed_and_confirmed": 3,
+      "diagnosis_correct": 3,
+      "model_sources": {
+        "llm": 3
+      },
+      "model_fallbacks": 0,
+      "model_failures": 0,
+      "unnecessary_high_privilege_calls": 0,
+      "median_probes": 6,
+      "median_modifications": 1,
+      "median_coordination_and_verification_seconds": 33.344,
+      "median_success_recovery_observed_seconds": 7.125,
+      "median_success_recovery_confirmed_earliest_seconds": 38.593,
+      "median_tokens": 3664,
+      "median_model_calls": 6,
+      "median_approval_wait_seconds": 0.004
+    },
+    {
+      "scenario": "F06",
+      "method": "M2",
+      "n": 3,
+      "completed_and_confirmed": 3,
+      "diagnosis_correct": 3,
+      "model_sources": {
+        "llm": 3
+      },
+      "model_fallbacks": 0,
+      "model_failures": 0,
+      "unnecessary_high_privilege_calls": 0,
+      "median_probes": 6,
+      "median_modifications": 1,
+      "median_coordination_and_verification_seconds": 57.203,
+      "median_success_recovery_observed_seconds": 25.766,
+      "median_success_recovery_confirmed_earliest_seconds": 57.078,
+      "median_tokens": 7522,
+      "median_model_calls": 7,
+      "median_approval_wait_seconds": 0.034
+    }
+  ],
+  "limits": [
+    "Local native-process/AIP-stdio evidence; not formal platform AMQPS/ADP.",
+    "M1 freely selects observations and shares evidence-based repair rules.",
+    "Recovery time is a 1rps observation estimate; total coordination time includes 30s domain verification.",
+    "Raw recovery_confirmed_seconds is the later observer-stop time; analysis-rows derives earliest 30s/10-flow confirmation from original requests and injection timestamps.",
+    "Held-out instances vary workload seeds and resource revisions/PIDs within the same fault families.",
+    "Recovery medians use only completed, continuously confirmed cells; failure counts and every raw row remain visible."
+  ]
+}

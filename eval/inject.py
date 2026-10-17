@@ -187,8 +187,8 @@ class Injector:
             else:
                 run_command(self.compose + ["--profile", "faults", "stop", "fault-locker"])
         elif enabled:
-            env = child_environment(PGHOST="127.0.0.1", PGPORT=str(self.runtime["pgport"]), PGDATABASE="orders", PGUSER="postgres",
-                                    PGPASSWORD=self._environment("PGADMINPASSWORD"))
+            env = child_environment(PGHOST="127.0.0.1", PGPORT=str(self.runtime["pgport"]), PGDATABASE="orders", PGUSER="orders_app",
+                                    PGPASSWORD=self._environment("PGPASSWORD"))
             self._native_start("fault-locker", "fault_lock.py", env=env)
         else:
             self._native_stop("fault-locker", "fault_lock.py")

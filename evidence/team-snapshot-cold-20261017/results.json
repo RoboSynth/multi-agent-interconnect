@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "scope": "same-machine new-project new-volume cold start; existing image/build cache reused; business services only",
+  "new_machine_fifteen_minute_acceptance": false,
+  "project": "incident-pilot-team-cold",
+  "source_root": "<team-snapshot>",
+  "git_head": "800607c50a29b3527ff0713bd476a2efacfafd12",
+  "tracked_or_unignored_changes": [],
+  "generated_ignored_paths": [
+    "deploy/.env",
+    "deploy/nginx/runtime/route.conf"
+  ],
+  "preflight": {
+    "project_unused": true,
+    "volumes_unused": true,
+    "ports_free": true,
+    "ports": [
+      28081,
+      28082,
+      28088
+    ]
+  },
+  "startup": {
+    "exit_code": 0,
+    "used_entrypoint": "deploy/up.ps1",
+    "image_cache_reused": true,
+    "new_volume": "incident-pilot-team-cold_orders-data",
+    "services": [
+      {
+        "name": "incident-pilot-team-cold-nginx-1",
+        "id": "ca881f3e94dd",
+        "status": "Up About a minute",
+        "ports": "127.0.0.1:28088->80/tcp"
+      },
+      {
+        "name": "incident-pilot-team-cold-app-v1-1",
+        "id": "bfa69f5efa9f",
+        "status": "Up About a minute (healthy)",
+        "ports": "127.0.0.1:28081->8000/tcp"
+      },
+      {
+        "name": "incident-pilot-team-cold-app-v2-1",
+        "id": "2a6d01186597",
+        "status": "Up About a minute (healthy)",
+        "ports": "127.0.0.1:28082->8000/tcp"
+      },
+      {
+        "name": "incident-pilot-team-cold-postgres-1",
+        "id": "fd4d3f3652ec",
+        "status": "Up About a minute (healthy)",
+        "ports": "5432/tcp"
+      }
+    ]
+  },
+  "readiness": [
+    {
+      "body": {
+        "ok": true,
+        "api_version": "v1"
+      },
+      "port": 28081
+    },
+    {
+      "body": {
+        "ok": true,
+        "api_version": "v2"
+      },
+      "port": 28082
+    },
+    {
+      "body": {
+        "ok": true,
+        "api_version": "v2"
+      },
+      "port": 28088
+    }
+  ],
+  "h00": {
+    "observer": "snapshot-built app-v2 container /srv/business/load.py",
+    "nginx_url": "http://nginx",
+    "published_business_url": "http://127.0.0.1:28088",
+    "duration_seconds": 30.002,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true
+  },
+  "isolation": {
+    "preexisting_container_count": 10,
+    "preexisting_container_ids_preserved": true,
+    "missing_preexisting_containers": [],
+    "formal_agents_started": 0,
+    "isolated_business_services_left_running": true
+  },
+  "launch_note": "Initial wrapper used unavailable standard PowerShell path and did not invoke Docker. Retried with actual installed PowerShell; first records retained.",
+  "evidence_files": [
+    "preflight.json",
+    "up.log",
+    "startup-status.json",
+    "containers.jsonl",
+    "ready.json",
+    "h00.json",
+    "h00-summary.log",
+    "h00-status.json",
+    "isolation-after.json",
+    "startup-path-attempt1.json",
+    "up-launch-path-attempt1.log"
+  ],
+  "generated_credential_scan": {
+    "known_values_checked": 3,
+    "matching_evidence_files": []
+  }
+}

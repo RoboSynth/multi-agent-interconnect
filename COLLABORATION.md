@@ -32,9 +32,18 @@ pwsh -NoProfile -File deploy/local-up.ps1 -Install
 修复前乱序失败与修复后成功均保留在 `evidence/`，脱敏副本附原件哈希；未复制原始数据库和完整私密日志。
 
 新备/运维身份及新版 ACS 审核、平台高风险恢复/接管、三种交接对比、长期平台数据、新机器冷启动、最终报告/视频和公开 Issue/PR 仍按 [P0 审计](docs/P0完成审计_20261017.md) 推进。
-正在运行的 45 次模型评测整树未纳入本快照，不能从此副本宣称最终矩阵已完成。
 
 [高分方案](docs/高分方案_需求架构创新与任务_20261017.md) · [本地验收](docs/本地开发验收.md) · [开发进度](docs/开发进度_高分方案.md) · [上游贡献草稿](docs/contributions/README.md)
 
 `baselines/` 是过滤后的复现源码视图，原 ZIP 含运行数据库而未分发；查看 `TEAM-SOURCE-MANIFEST.json`。
 官方来源与许可见 [THIRD_PARTY.md](THIRD_PARTY.md)。`SNAPSHOT-MANIFEST.json` 列本副本每个文件的哈希及相对原清单的增补/修改。
+
+## 首快照后的闭合补证
+
+原 v2 为 45 格、36 次恢复确认、F06 九次失败，完整保留在 [historical-v2](evidence/model-evaluation/historical-v2/summary.json)，其图仅展示 v2。修复后的 F06 v3 九项均恢复确认，另存 [F06-v3](evidence/model-evaluation/F06-v3/summary.json)。[逐场景 comparison](evidence/model-evaluation/comparison-by-scenario/report.md) 使用 F01/F02/F07/F10 的 v2 与 F06 的 v3，属于不同源码批次的选择合并，不能称同源码单次 45。以上均为本地 stdio/原生资源证据。
+
+[团队副本冷部署](evidence/team-snapshot-cold-20261017/results.json)通过：同机新项目、新卷、镜像缓存复用，30.002 秒/30 请求/10 完整流程；不是新机器 15 分钟验收。原始消息、账本、私密配置和源码冻结档案留本地，仓库只含脱敏闭合汇总及原件哈希索引。
+
+首快照提交为 800607c50a29b3527ff0713bd476a2efacfafd12；清单保留其 manifest 哈希与本次逐文件旧/新哈希。.gitattributes 使用 * -text 保留克隆字节，便于按清单复核。
+
+本地模型实际响应另附 [v2 的 209 条](evidence/model-evaluation/historical-v2/model-response-evidence.jsonl) 与 [F06 v3 的 39 条](evidence/model-evaluation/F06-v3/model-response-evidence.jsonl)，保留 content/usage/采样参数/HTTP 状态，不含上下文、认证或环境信息。它们是闭合调用的精简派生证据，不替代原始运行记录。

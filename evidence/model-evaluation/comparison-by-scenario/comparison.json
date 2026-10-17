@@ -1,0 +1,30 @@
+{
+  "single_frozen_source_run": false,
+  "selected_cells": 45,
+  "selected_completed_and_confirmed": 45,
+  "selected_diagnosis_correct": 45,
+  "source_changes": {
+    "incident/coordinator/planner.py": {
+      "v2": "0374518a5365e3cdf6de128be67cfe710a28765126b1314e11578246da4906fe",
+      "F06-v3": "594e4d49da9406e3ebe21fd7b72e3d71bfa7959e2ff8451eb2b98cf5779b0dbb"
+    },
+    "eval/inject.py": {
+      "v2": "3cd6640666d9f55d919322bbc5f01704a2fa676e66dcf618fa25f75046ce4367",
+      "F06-v3": "f6db796c6af761951ea7057fb60d117df3096517311009a85a7953bcbef40f1b"
+    }
+  },
+  "root_source_changes_within_declared_repair_scope": true,
+  "source_by_scenario": {
+    "F01": "model-fairness-formal-v2-20261017",
+    "F02": "model-fairness-formal-v2-20261017",
+    "F06": "model-fairness-F06-v3-20261017",
+    "F07": "model-fairness-formal-v2-20261017",
+    "F10": "model-fairness-formal-v2-20261017"
+  },
+  "historical_F06_cells": 9,
+  "historical_F06_completed_and_confirmed": 0,
+  "historical_F06_wrong_blocking_target_calls": 9,
+  "repair": "F06 injector uses orders_app rather than administrator; planner follows blocking_pids to roots, preserving SQL guards.",
+  "sdk_versions": "v2 used serial native transport with pre-AMQPS-ordering-fix SDK; F06-v3 uses current SDK. See each run's SDK snapshot addendum.",
+  "limits": "Per-scenario same-version comparisons; not one frozen 45-cell run. Same fault families with held-out workload/revision instances. Model output and usage are raw; stored context.local_hypotheses may reflect later list additions."
+}
