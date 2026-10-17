@@ -1,0 +1,61 @@
+{
+  "schema_version": "development-archive-verification/1.0",
+  "marker": "DEVELOPMENT_ARCHIVE_69647CF_VERIFIED_20261017",
+  "status": "passed",
+  "collected_at": "2026-10-17T13:55:25.512Z",
+  "source_commit": "69647cf29de96b50091c0a3e51ae2308115ad2fb",
+  "archive": {
+    "filename": "incident-pilot-development-69647cf.zip",
+    "sha256": "d5a50e822002a6cc3ecc2bf8f0c291a378cdbc6b91364be4e9038a0649387ff8",
+    "bytes": 11923563,
+    "root_prefix": "incident-pilot-development-69647cf/",
+    "git_archive_exit_code": 0
+  },
+  "file_verification": {
+    "exit_code": 0,
+    "git_tracked_regular_files": 1069,
+    "zip_payload_files": 1069,
+    "payload_bytes": 22889483,
+    "all_git_blob_bytes_match": true,
+    "all_snapshot_sha256_bytes_match": true,
+    "snapshot_manifest_items": 1068,
+    "snapshot_manifest_self_excluded": true,
+    "snapshot_manifest_sha256": "71e439c210d628b6f37c3e37e768fa5446e63905f52105f76d86493dc638b537",
+    "manifest_paths_exact": true,
+    "required_source_deployment_paths_present": 31,
+    "unsafe_or_duplicate_zip_paths": 0,
+    "symlink_or_gitlink_count": 0,
+    "forbidden_runtime_or_credential_paths": 0
+  },
+  "extraction_exit_code": 0,
+  "extracted_compose": {
+    "sentinel_only": true,
+    "linux_child_environment_cleared": true,
+    "explicit_environment_variable_names": [
+      "PATH"
+    ],
+    "config_quiet_exit_code": 0,
+    "config_services_exit_code": 0,
+    "services": [
+      "postgres",
+      "app-v1",
+      "app-v2",
+      "nginx"
+    ],
+    "exact_four_default_business_services": true,
+    "agents_or_fault_profiles_enabled": false,
+    "host_wrapper_notice_present": true,
+    "notice_scope": "WSL startup notice mixed into Windows executor output; command exit codes and service list were used without inferring its cause."
+  },
+  "team_worktree_clean_after_export": true,
+  "private_configuration_read": false,
+  "claim_boundaries": {
+    "development_reproducibility_archive": true,
+    "final_competition_package": false,
+    "offline_runtime_environment": false,
+    "new_machine_T96": false,
+    "containers_started_built_or_recreated": false,
+    "actual_fault_or_platform_operation": false
+  },
+  "raw_zip_scripts_execution_records_extracted_tree_and_sentinel_env": "Retained locally; excluded from repository evidence upload"
+}

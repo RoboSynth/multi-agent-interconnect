@@ -103,3 +103,7 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [AMP心跳统计修复](docs/stability_report.md)仅对[18个既有AMP文件的闭合快照重算](evidence/eval/stability-report-v2-20261017/closed-snapshot-comparison.json)，不增加持续运行时长。[材料扫描](docs/material_anonymity.md)对[8个指定开发材料完成有界检查](evidence/audit/material-anonymity-review-20261017/results.json)，并不等同于最终匿名性验收。
 
 [12页匿名佐证开发稿](deliverables/supporting-evidence-development-20261017/supporting-evidence-development.pdf)及[来源与使用说明](deliverables/supporting-evidence-development-20261017/README.md)按其原取证截止保存，不将后来H00测试写入旧证据。PPTX当前暂不需要；演示脚本仍不是已录制视频。F19仍显式Unsupported，T12全部场景和新full-M1正式公平矩阵尚未完成。证据中的原项目相对路径与SHA表示开发项目观察快照，团队公开文件以本快照清单及[资料导航](docs/资料导航.md)定位。
+
+## 固定开发源码归档
+
+[开发复现说明](docs/development_archive.md)绑定源码提交`69647cf29de96b50091c0a3e51ae2308115ad2fb`的1069个文件。[归档验证](evidence/deployment/development-archive-69647cf/verification.json)记录真实ZIP逐文件核对及解压目录Compose配置解析；这是开发复现归档，不是新机器T96验收。
