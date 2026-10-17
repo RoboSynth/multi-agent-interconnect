@@ -54,6 +54,40 @@ M2 的模型预测只接受五项观察的枚举：`exited/running`、`v1/v2`、
 故障至少暴露 3 秒后启动协调。资源域验证器另外执行相同的 30 秒、1 rps
 独立复核；两条流分别记录，不能把验证期间总请求量写成恒定 1 rps。
 
+H00 使用独立健康对照判据，不要求先出现故障：实际观察至少30秒、至少10个完整流程，
+窗口内失败、未知和未决请求均为0，且协调任务中没有任何资源修改尝试，才记
+`control_passed=true`。`modification_attempts` 计所有 `kind=act` 的任务，包含
+ok、unknown、拒绝和未派发；仅 `modifications=0` 不足以证明健康对照通过。
+H00 的 `continuous_recovery_confirmed` 为 false，恢复时延为空；报表以
+`healthy_control_groups` 单列，不进入 `fault_recorded_cells`/`recovery_rate` 分母。
+旧H00记录缺少尝试计数或独立窗口证明时，不补记通过，也不重写原始结果。
+local/native 与 Wutong/docker 复用同一判定。
+
+`finish()` 先提出停止请求，由采集协程在完整请求chunk结束后检查资格并停止，
+防止第30次请求刚达标就又开始第31次创建，留下半个流程。尚未调用 `finish()`
+时继续采样；若请求停止时已有未完成意图，会在余量内继续核验到安全边界。
+截止仍未达资格时 `observation_deadline_exhausted=true`，不会记通过；故障场景
+采用相同停止规则。
+
+仅观察公共业务HTTP的H00入口可用下列API；每次使用新 `run_id`，避免旧回执复用。
+它会创建、查询和取消普通测试订单，不读取资源env，也不创建智能体群组或注入故障。
+`healthy_control_confirmed` 仅证明业务观察；完整运行器另外核对资源修改尝试为0。
+
+```python
+from pathlib import Path
+from uuid import uuid4
+from eval.observation import ContinuousObserver
+
+observer = await ContinuousObserver(
+    "http://127.0.0.1:8088", Path("output/YOUR_NEW_H00"), seed=101,
+    run_id="h00-" + uuid4().hex[:12], healthy_control=True,
+).start()
+summary = await observer.finish(grace_seconds=35)
+```
+
+T12尚未覆盖全部§5.2：F15复用独立接续实验器，F19仍在通用注入器中明确为
+Unsupported，运维参与者失联的AMP证据判定未实现。本轮不扩写F19，不重跑已有E1。
+
 时间字段不能混用：
 
 | 字段 | 定义 |

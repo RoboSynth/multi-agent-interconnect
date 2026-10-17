@@ -1,0 +1,123 @@
+{
+  "marker": "H00_CONTROL_OFFLINE_CLOSED_20261017",
+  "revision": "collector-safe-stop",
+  "finished_at": "2026-10-17T13:30:39.640683+00:00",
+  "scope": "Offline fake-clock, fake-model/transport and synthetic-cohort checks only; no actual public HTTP, fault injection, model request or platform group",
+  "all_passed": true,
+  "tests": 36,
+  "checks": [
+    {
+      "pattern": "test_model_eval.py",
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_model_eval.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 16,
+      "seconds": 1.206,
+      "finished_at": "2026-10-17T13:30:00.037569+00:00",
+      "stdout_path": "output/h00-control-offline-20261017/test_model_eval.py.log",
+      "stdout_sha256": "798275b5d559e6a490ce5944fb5ec38bbd20ec761ee93fee39dd83107e6a163c"
+    },
+    {
+      "pattern": "test_eval_platform.py",
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_eval_platform.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 15,
+      "seconds": 2.518,
+      "finished_at": "2026-10-17T13:22:32.914651+00:00",
+      "stdout_path": "output/h00-control-offline-20261017/test_eval_platform.py.log",
+      "stdout_sha256": "b22ff90d55ca7a47d1f9a337e68e743ff74b5d870fc9034414d1cd37a469c2c5",
+      "reused": true,
+      "reuse_reason": "collector safe-stop changes only observation.py and its async regression; these suites replace the observer or test unchanged report logic"
+    },
+    {
+      "pattern": "test_evaluation_reports.py",
+      "command": [
+        "<workspace>\\.venv-report\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_evaluation_reports.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 5,
+      "seconds": 0.287,
+      "finished_at": "2026-10-17T13:22:28.950469+00:00",
+      "stdout_path": "output/h00-control-offline-20261017/test_evaluation_reports.py.log",
+      "stdout_sha256": "946f0302722969a7ed5b2f0838073d5bc57f25f850b1975699cb27c4946ef71a",
+      "reused": true,
+      "reuse_reason": "collector safe-stop changes only observation.py and its async regression; these suites replace the observer or test unchanged report logic"
+    }
+  ],
+  "source_sha256": {
+    "eval/observation.py": "9d13e386dc9588ff79e7642651dcb4504f2208a74f7d7fef009e9f41c9b96dd6",
+    "eval/run.py": "39b0c24746653c8fce6ca60551eb1ad849e3d3d65f57e080e04dded8f8357002",
+    "eval/scheduling_report.py": "2853b77c9ca6591ae082f6e4b37e35f85739b480d05bd440a166728ad45b55f7",
+    "docs/evaluation.md": "64e5143d07d76e979dd79bd48f6379a1db823bccd1aad9e53342307716458643",
+    "tests/test_model_eval.py": "74eaf2af977a8d55dee2bd1ed391331a18cd8312f8627d0452f951ac018f2944",
+    "tests/test_eval_platform.py": "cd1287d201ce795b840c29c83dab851abd13f965da6d3c98ad9c9a711a6c091a",
+    "tests/test_evaluation_reports.py": "2c2fae538d4c7519e91f865869396e7508ec4d51808af876080dcd46566d9fa3"
+  },
+  "behavior": [
+    "H00 starts its own observation timestamp; no bad request required",
+    "H00 needs at least 30 real seconds, 30 scheduled successful samples, 10 complete workflows and no failed/unknown/pending requests",
+    "H00 resource action attempts count every act row including ok, unknown, rejected and not_dispatched; zero ok modifications alone cannot pass",
+    "Both local/native and Wutong/docker use the same methods/budgets/control result; faults still require an observed bad sample",
+    "Healthy controls are separate report groups and excluded from the recovery-rate denominator; no-fault cohorts have null recovery_rate",
+    "Legacy H00 rows without attempted-action proof are not upgraded to passed; existing raw rows/results remain unchanged",
+    "H00 onset-equal successful sample is included; last-bad fault cutoff remains strict"
+  ],
+  "collector_stop": "finish registers a deadline; only the collector stops at a completed-chunk boundary after qualification. Before finish, sampling continues. An in-flight new intent drains within the deadline, otherwise qualification fails. Stop timestamp is frozen.",
+  "validation_scope": "16 model/observer tests rerun after the collector fix, including real async ordering with fake clock: no 31st create after immediate H00 finish, no early stop before finish, drain current intent, common fault stop, and deadline failure. Prior unchanged 15 platform-runner and 5 report/figure checks reused explicitly.",
+  "initial_failure": {
+    "retained_locally": true,
+    "path": "output/h00-control-offline-20261017/test_model_eval.initial.log",
+    "tests": 15,
+    "failures": 2,
+    "exit_code": 1,
+    "cause": "New onset-equality fixtures caught strict > excluding first H00 success, leaving 29 samples; changed no-bad cutoff to >= and reran affected observer/model suite successfully"
+  },
+  "public_http_check": "current revision not_run; optional standalone ContinuousObserver(...,healthy_control=True).start()/finish(grace_seconds=35) needs no resource credentials/group/model and uses unique run_id",
+  "previous_revision": "output/h00-control-offline-20261017/revision-before-safe-stop/source-ready.json; original 35-test revision and all seven source bytes retained",
+  "previous_public_http_failure": {
+    "path": "output/h00-public-health-20261017/results.json",
+    "retained_unchanged": true,
+    "reported_exit_code": 1,
+    "reported_requests": 31,
+    "reported_success": 31,
+    "reported_complete_workflows": 10,
+    "reported_unresolved_intents": 1,
+    "cause": "Caller finish raced collector next chunk after qualification; half-open 31st create"
+  },
+  "task_gaps": {
+    "T12": "not complete for every section5.2 scenario; F15 uses the independent closed resumable experiment, F19 remains explicitly Unsupported and AMP participant-failure diagnosis is not implemented",
+    "full_M1_matrix": "free-tools-v1 code exists with shared budgets; five-scenario three-repeat new matrix not run by this change"
+  },
+  "actual_model_calls": 0,
+  "actual_platform_groups": 0,
+  "actual_injections": 0,
+  "old_results_or_T93_cutoff_changed": false,
+  "team_copy_or_git_actions": false
+}

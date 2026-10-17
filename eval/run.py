@@ -141,6 +141,7 @@ async def run(args):
             "healthy_baseline_seconds": 3, "minimum_fault_exposure_seconds": 3,
             "contract": "successful public responses must contain order_api_version=v2",
             "domain_verification": "independent additional 1rps for 30 seconds, identical for all methods"},
+        "healthy_control": "H00 requires 30 real seconds, at least 10 completed workflows, no failed/unknown/pending requests and no attempted resource action; excluded from recovery rates",
         "time_metrics": {"seconds": "coordinator diagnosis plus domain verification; not pure repair latency",
             "recovery_observed_seconds": "injection start to first successful request after the final bad sample; 1rps estimate",
             "recovery_confirmed_seconds": "injection start to 30-second healthy window with at least 10 completed workflows"},
@@ -208,7 +209,7 @@ async def run(args):
                     await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
                     cell = output / "workloads" / f"{scenario}-{method}-{repeat + 1}"
                     observer = await ContinuousObserver(order_url, cell, seed=instance_seeds[repeat],
-                        run_id="eval-" + uuid.uuid4().hex[:16]).start()
+                        run_id="eval-" + uuid.uuid4().hex[:16], healthy_control=scenario == "H00").start()
                     try:
                         await asyncio.sleep(3)
                         injection = await inject(scenario, "apply", args.runtime, output / "private/injections.jsonl",
@@ -248,6 +249,9 @@ async def run(args):
                             engine.save(state)
                         workload = await observer.finish(grace_seconds=35 if state["status"] == "completed" else 0)
                         actions = [t["tool"] for t in state["tasks"] if t["kind"] == "act" and t["status"] == "ok"]
+                        modification_attempts = sum(t["kind"] == "act" for t in state["tasks"])
+                        control_passed = (state["status"] == "completed"
+                            and workload["healthy_control_confirmed"] and modification_attempts == 0) if scenario == "H00" else None
                         expected_actions = {"F01": {"ops.restart"}, "F02": {"ops.route_rollback"},
                             "F06": {"db.terminate_blocker"}, "F07": {"db.restore_writes", "application.pool_rebuild"},
                             "F10": {"ops.route_rollback", "db.restore_writes", "application.pool_rebuild"}}
@@ -263,6 +267,9 @@ async def run(args):
                             "model_source": state["model_source"], "status": state["status"],
                             "probes": sum(t["kind"] == "observe" for t in state["tasks"]),
                             "modifications": sum(t["kind"] == "act" and t["status"] == "ok" for t in state["tasks"]),
+                            "modification_attempts": modification_attempts,
+                            "control_passed": control_passed,
+                            "control_observation_seconds": workload.get("control_observation_seconds"),
                             "seconds": state["elapsed_seconds"], "tokens": state["tokens"],
                             "recovery_observed_seconds": workload["recovery_observed_seconds"],
                             "recovery_confirmed_seconds": workload["recovery_confirmed_seconds"],
@@ -297,7 +304,8 @@ async def run(args):
                 writer = csv.DictWriter(stream, fieldnames=results[0].keys())
                 writer.writeheader()
                 writer.writerows(results)
-    return 0 if results and all(r["status"] == "completed" and r["continuous_recovery_confirmed"] for r in results) else 1
+    return 0 if results and all(r["control_passed"] if r["scenario"] == "H00" else
+        r["status"] == "completed" and r["continuous_recovery_confirmed"] for r in results) else 1
 
 
 def build_parser():

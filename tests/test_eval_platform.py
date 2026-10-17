@@ -282,8 +282,11 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
         real_sleep = asyncio.sleep
         async def fast_sleep(_):
             await real_sleep(0)
-        for mode in ("local-aip-stdio", "wutong-amqps"):
-            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as directory:
+        cases = [(mode, scenario, act_status) for mode in ("local-aip-stdio", "wutong-amqps")
+                 for scenario, act_status in (("F01", None), ("H00", None), ("H00", "ok"),
+                    ("H00", "unknown"), ("H00", "rejected"), ("H00", "not_dispatched"))]
+        for mode, scenario, act_status in cases:
+            with self.subTest(mode=mode, scenario=scenario, act_status=act_status), tempfile.TemporaryDirectory() as directory:
                 root = Path(directory)
                 target_path, _, target = profile(directory)
                 domains = domain_proof()
@@ -300,6 +303,8 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
                             "elapsed_seconds": .1, "tokens": 0, "diagnosed_causes": ["application_unavailable"], "token_usage_complete": True,
                             "model_calls": 0, "model_source_counts": {}, "model_requests": [], "error": ""}
                     async def run(self, state):
+                        if act_status is not None:
+                            state["tasks"].append({"tool": "ops.restart", "kind": "act", "status": act_status})
                         state["status"] = "completed"; return state
                     def save(self, state): pass
                 class Observer:
@@ -308,7 +313,8 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
                     async def start(self): return self
                     async def finish(self, **options):
                         return {"recovery_observed_seconds": 1, "recovery_confirmed_seconds": 31,
-                                "recovery_confirmed": True, "fault_observed": True}
+                            "recovery_confirmed": scenario != "H00", "fault_observed": scenario != "H00",
+                            "healthy_control_confirmed": scenario == "H00", "control_observation_seconds": 30}
                 transport = SimpleNamespace(mode=mode, tools=[probe.tool for probe in runner.PROBES]+list(runner.ACTIONS)+["incident.verification"],
                     start=AsyncMock(), close=AsyncMock(), issue_approval=Mock(), term=7,
                     selected={role: "unit-"+service for role, service in (("application", "application-agent"), ("verification", "verification-agent"), ("database", "database-agent"), ("ops", "ops-agent"))},
@@ -316,14 +322,14 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
                                                               "container_name": target.project+"-app-v2-1"}}})
                 target_args = ["--backend", "docker", "--target-config", str(target_path)] if mode == "wutong-amqps" else []
                 args = runner.build_parser().parse_args(["--config", str(config), "--output", str(root / "results"),
-                    "--transport", mode, "--scenarios", "F01", "--methods", "M0,M1,M2", "--repeats", "1", "--enable-llm",
+                    "--transport", mode, "--scenarios", scenario, "--methods", "M0,M1,M2", "--repeats", "1", "--enable-llm",
                     "--model-base-url", "http://model.invalid/v1", "--model", "offline-fixture", *target_args])
                 with patch("eval.run.ROOT", root), patch("eval.run.freeze_sources", return_value=domains["application-agent"]["source_sha256"]), patch("eval.run.check_sources"), \
                      patch("eval.run.DockerTarget.from_file", return_value=target), \
                      patch("eval.run.create_transport", return_value=transport), patch("eval.run.inject", AsyncMock(return_value={"started_monotonic": 1, "target_proof": {"compose_sha256": {}, "domains": domains}})), \
                      patch("eval.run.HypothesisEngine", Hypothesis), patch("eval.run.IncidentCoordinator", Engine), \
                      patch("eval.run.ContinuousObserver", Observer), patch("eval.run.asyncio.sleep", fast_sleep), patch("builtins.print"):
-                    self.assertEqual(await runner.run(args), 0)
+                    self.assertEqual(await runner.run(args), int(scenario == "H00" and act_status is not None))
                 models = [options for kind, options in captures if kind == "model"]
                 engines = [options for kind, options in captures if kind == "engine"]
                 self.assertEqual([row["enabled"] for row in models], [False, True, True])
@@ -332,6 +338,12 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
                 self.assertIn("step_selector", engines[1]); self.assertNotIn("step_selector", engines[2])
                 self.assertEqual([row[0] for row in observed], [target.order_url if target_args else "http://127.0.0.1:8088"]*3)
                 self.assertTrue(all(row[1]["seed"] == 101 for row in observed))
+                self.assertTrue(all(row[1]["healthy_control"] == (scenario == "H00") for row in observed))
+                if scenario == "H00":
+                    rows = json.loads((root / "results/results.json").read_text(encoding="utf-8"))
+                    self.assertTrue(all(row["control_passed"] == (act_status is None) for row in rows))
+                    self.assertTrue(all(row["modification_attempts"] == int(act_status is not None) for row in rows))
+                    self.assertTrue(all(row["continuous_recovery_confirmed"] is False for row in rows))
                 self.assertEqual(json.loads((root / "results/experiment.json").read_text(encoding="utf-8"))["continuous_workload"]["requests_per_second"], 1)
                 transport.close.assert_awaited_once()
 

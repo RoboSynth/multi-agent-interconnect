@@ -1,0 +1,620 @@
+{
+  "schema_version": "t93-supporting-data/1.0",
+  "cutoff_utc": "2026-10-17T12:50:41.317Z",
+  "closed": {
+    "historical_comparison": {
+      "recorded_primary_cells": 45,
+      "combined_versions": true,
+      "historical_M1_observation_only": true,
+      "preserved_F06_v2_failures": 9,
+      "actual_model_calls": [
+        0,
+        99,
+        114
+      ],
+      "model_tokens": [
+        0,
+        57335,
+        122372
+      ],
+      "probe_counts": [
+        108,
+        99,
+        99
+      ]
+    },
+    "full_tool_M1_pilot": {
+      "scenario": "F01",
+      "transport": "local-aip-stdio",
+      "cases_per_method_per_revision": 1,
+      "initial_completed": [
+        true,
+        false,
+        true
+      ],
+      "initial_route_mcp_modify_invocations_M1": 1,
+      "initial_M1_effect": "unknown",
+      "shared_guard_revision_completed": [
+        true,
+        true,
+        true
+      ],
+      "M1_unnecessary_high_action": "db.restore_writes",
+      "formal_45_matrix": false
+    },
+    "E1": {
+      "cases": 18,
+      "final_checks_passed": 18,
+      "independent_checks_passed": 18,
+      "uninterrupted_cases": 17,
+      "controller_continuation_cases": 1,
+      "db_modify_invocations": 18,
+      "duplicate_db_calls": 0,
+      "old_fence_rejected": 18,
+      "actual_model_calls": 0,
+      "actual_model_tokens": 0,
+      "formal_ADP_takeover_verified": false
+    },
+    "platform": {
+      "participant_domain_roles": [
+        "application",
+        "database",
+        "verification"
+      ],
+      "identity_generation": "old-compatible",
+      "healthy_inspection_cycles": 2,
+      "cycle1": {
+        "duration_seconds": 30.003,
+        "requests": 30,
+        "complete_flows": 10
+      },
+      "cycle2": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "complete_flows": 10,
+        "natural_trigger": true,
+        "resource_recovery_actions": 0,
+        "approval_count": 0
+      },
+      "resource_credential_count_in_checked_startup": 0,
+      "accepted_as_24h": false
+    },
+    "new7": {
+      "registry_approved": 7,
+      "detail_public_identifiers_verified": 5,
+      "certificates_issued": 0,
+      "user_deferred_certificates": true,
+      "new_identity_consumers_started": false,
+      "image_offline_build_exit": 0,
+      "image_offline_probe_exit": 0,
+      "fixed_source_hash_count": 12,
+      "formal_target_preflight_run": false,
+      "formal_45_matrix_run": false
+    },
+    "F12": {
+      "real_UI": true,
+      "transport": "local-aip-stdio",
+      "same_machine_cold_containers": true,
+      "missing_key": {
+        "service_recovered": true,
+        "original_request_resolved": false,
+        "status": "needs_attention",
+        "resolution": "manual",
+        "duration_seconds": 30.016,
+        "complete_flows": 10
+      },
+      "receipt_404": {
+        "service_recovered": true,
+        "original_request_resolved": false,
+        "receipt_remains_404": true,
+        "replacement_original_key_created": false,
+        "duration_seconds": 30,
+        "complete_flows": 10
+      }
+    },
+    "contributions": {
+      "issue_drafts": 4,
+      "public_issue_or_PR_published": false
+    }
+  },
+  "historical_model": {
+    "method_definition_id": "historical-observation-only-v1",
+    "single_source_freeze": false,
+    "transport": "local-aip-stdio",
+    "recorded_cells": 45,
+    "confirmed_cells": 45,
+    "historical_F06_v2_failures_preserved": 9,
+    "by_scenario": [
+      {
+        "scenario": "F01",
+        "methods": {
+          "M0": {
+            "observed_seconds": [
+              7.844,
+              7.359,
+              8.11
+            ],
+            "median_observed_seconds": 7.844
+          },
+          "M1": {
+            "observed_seconds": [
+              5.687,
+              7.031,
+              6.109
+            ],
+            "median_observed_seconds": 6.109
+          },
+          "M2": {
+            "observed_seconds": [
+              10.656,
+              10.469,
+              10.172
+            ],
+            "median_observed_seconds": 10.469
+          }
+        }
+      },
+      {
+        "scenario": "F02",
+        "methods": {
+          "M0": {
+            "observed_seconds": [
+              5.672,
+              5.156,
+              5.156
+            ],
+            "median_observed_seconds": 5.156
+          },
+          "M1": {
+            "observed_seconds": [
+              6.547,
+              6.25,
+              6.25
+            ],
+            "median_observed_seconds": 6.25
+          },
+          "M2": {
+            "observed_seconds": [
+              16.828,
+              15.265,
+              15.156
+            ],
+            "median_observed_seconds": 15.265
+          }
+        }
+      },
+      {
+        "scenario": "F06",
+        "methods": {
+          "M0": {
+            "observed_seconds": [
+              5.703,
+              5.328,
+              5.188
+            ],
+            "median_observed_seconds": 5.328
+          },
+          "M1": {
+            "observed_seconds": [
+              6.672,
+              7.25,
+              7.125
+            ],
+            "median_observed_seconds": 7.125
+          },
+          "M2": {
+            "observed_seconds": [
+              25.766,
+              23.641,
+              29.172
+            ],
+            "median_observed_seconds": 25.766
+          }
+        }
+      },
+      {
+        "scenario": "F07",
+        "methods": {
+          "M0": {
+            "observed_seconds": [
+              5.547,
+              5.406,
+              5.312
+            ],
+            "median_observed_seconds": 5.406
+          },
+          "M1": {
+            "observed_seconds": [
+              7.547,
+              7.234,
+              9.188
+            ],
+            "median_observed_seconds": 7.547
+          },
+          "M2": {
+            "observed_seconds": [
+              23.796,
+              25.485,
+              25.218
+            ],
+            "median_observed_seconds": 25.218
+          }
+        }
+      },
+      {
+        "scenario": "F10",
+        "methods": {
+          "M0": {
+            "observed_seconds": [
+              9.782,
+              7.359,
+              8.985
+            ],
+            "median_observed_seconds": 8.985
+          },
+          "M1": {
+            "observed_seconds": [
+              9.562,
+              9.359,
+              11.235
+            ],
+            "median_observed_seconds": 9.562
+          },
+          "M2": {
+            "observed_seconds": [
+              30.047,
+              41.609,
+              33.515
+            ],
+            "median_observed_seconds": 33.515
+          }
+        }
+      }
+    ],
+    "totals": {
+      "M0": {
+        "probes": 108,
+        "tokens": 0,
+        "model_calls": 0
+      },
+      "M1": {
+        "probes": 99,
+        "tokens": 57335,
+        "model_calls": 99
+      },
+      "M2": {
+        "probes": 99,
+        "tokens": 122372,
+        "model_calls": 114
+      }
+    }
+  },
+  "E1b": {
+    "from_scratch": {
+      "cases": 3,
+      "passed": 3,
+      "ifc_payload_utf8_bytes_median": 1084,
+      "handover_information_utf8_bytes_median": 325,
+      "additional_post_handover_observations_median": 1,
+      "standby_selection_fence_resume_seconds_median": 0.406,
+      "remaining_workflow_including_verification_seconds_median": 30.531000000002678
+    },
+    "full_history": {
+      "cases": 3,
+      "passed": 3,
+      "ifc_payload_utf8_bytes_median": 4594,
+      "handover_information_utf8_bytes_median": 3835,
+      "additional_post_handover_observations_median": 0,
+      "standby_selection_fence_resume_seconds_median": 0.219,
+      "remaining_workflow_including_verification_seconds_median": 30.389999999999418
+    },
+    "resume_package": {
+      "cases": 3,
+      "passed": 3,
+      "ifc_payload_utf8_bytes_median": 5223,
+      "handover_information_utf8_bytes_median": 2388,
+      "additional_post_handover_observations_median": 0,
+      "standby_selection_fence_resume_seconds_median": 0.219,
+      "remaining_workflow_including_verification_seconds_median": 30.375
+    }
+  },
+  "access": {
+    "native_start_tasks": 33,
+    "expected_access_records": 66,
+    "actual_access_records": 66,
+    "missing_records": 0,
+    "extra_records": 0,
+    "passed": true
+  },
+  "amp": {
+    "unique_records": 1051,
+    "log_types": {
+      "access": 84,
+      "audit": 15,
+      "heartbeat": 356,
+      "message": 378,
+      "metrics": 181,
+      "system": 37
+    },
+    "invalid_records": 0,
+    "platform_ingestion_verified": false
+  },
+  "fluent_bit": {
+    "routes_observed": {
+      "audit": 1,
+      "heartbeat": 1,
+      "metrics": 1,
+      "access": 1,
+      "message": 1,
+      "system": 1
+    },
+    "log_ids_preserved": {
+      "audit": true,
+      "heartbeat": true,
+      "metrics": true,
+      "access": true,
+      "message": true,
+      "system": true
+    },
+    "synthetic_local_fixture": true,
+    "kafka_connected": false,
+    "platform_ingestion_tested": false,
+    "passed": true
+  },
+  "blocker": {
+    "passed": true,
+    "without_approval": "rejected",
+    "non_blocking_target": "rejected",
+    "controlled_termination": "applied",
+    "waiter_released": true,
+    "duplicate": "skipped_already_applied"
+  },
+  "source_policy": "Only selected fields and anonymous aggregates. No original messages, identity values, credentials, personal/provider data or raw logs copied.",
+  "source_locator_notice": "Relative paths and SHA identify original development-project evidence at the stated capture, not guaranteed same-path files in a team copy.",
+  "sources": [
+    {
+      "id": "E01",
+      "label": "正式三旧域兼容复验",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/platform/container-postgres-mcp-20261017-order-fix-v2/results.json",
+      "sha256": "4c2c49633c673b5e147e28da88b9de7372cd16e3e13ab83e09521561a1a7709b",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "真实三旧域ADP、生命周期与PG MCP观察。"
+    },
+    {
+      "id": "E02",
+      "label": "T07自然周期2",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/platform/T07-scheduled-partial3-cycle2-20261017/summary.json",
+      "sha256": "f875fb6338e7928e1c4390fc8757f872a969b50e9a18e1dd0d6bcde0332c061c",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "周期2自然触发，三旧域健康巡检，非故障恢复。"
+    },
+    {
+      "id": "E03",
+      "label": "F12真实工作台两分支",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/playwright/f12-cold-ui-20261017/results.json",
+      "sha256": "c50a56e1289e5ec0d6f19ec17d8c1aa72ffd425a19571a70b2b63cb4ec129c6c",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "真实UI、隔离冷容器、缺键与receipt404两分支。"
+    },
+    {
+      "id": "E04",
+      "label": "历史45主格原始摘要",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/model-fairness-comparison-20261017/primary-rows.json",
+      "sha256": "f804f3fb73db98d7d77b19aada3ea75ebacfbfa8b56ac2f3c0152599948ab998",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "历史观察版M1，45主格的声明组合，不是单次统一冻结。"
+    },
+    {
+      "id": "E05",
+      "label": "完整工具M1首次F01验收",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/M1-full-tools-pilot-20261017/report.md",
+      "sha256": "6d91715d4352416a48b1f82c15bf00c7f992854e2e891fe8e64e66b306c59b4c",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "首次完整工具M1，F01三方法各一次，M1失败保留。"
+    },
+    {
+      "id": "E06",
+      "label": "共享guard修复后的F01复验",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/M1-full-tools-pilot-v2-20261017/report.md",
+      "sha256": "ffe436a5d872e9b5901c349183f38f7938b66e3b5a5de59f3b4e5183616044fd",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "共享route guard修复后，F01三方法各一次复验。"
+    },
+    {
+      "id": "E07",
+      "label": "本地E1最终与独立核验",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/E1-native-20261017/analysis/summary.json",
+      "sha256": "2db84da8fc20dc205fe3b069c55b6498f983951b71280e9a9baa602ecf25a030",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "18例最终及独立核验，模型0，不能宣称正式ADP接管。"
+    },
+    {
+      "id": "E08",
+      "label": "E1控制器中断与续验边界",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/E1-native-20261017/analysis/segmentation.json",
+      "sha256": "2fa1e1eee67d444ccdc916a95c78e2aa4205e5f2be26d0b4ba37d364735f8b4a",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "A8连续加1控制器续验、B9连续，原中断保留。"
+    },
+    {
+      "id": "E09",
+      "label": "真实Postgres MCP",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/database-bridge-20261017T085554Z/results.json",
+      "sha256": "162367a8ee340805030da32981ea0133815ae487313ed84fe7415adefc1eecd8",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "真实Postgres MCP stdio及受控动作，非平台群组。"
+    },
+    {
+      "id": "E10",
+      "label": "真实阻塞会话守卫",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/database-blocker-bridge-20261017T091119Z/results.json",
+      "sha256": "383361a146bc10e9038de9ec0baf1e33c4dddd31f8ae504227103bd484401e96",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "只提取拒绝/终止/重放的状态，不复制会话或身份内容。"
+    },
+    {
+      "id": "E11",
+      "label": "真实Docker MCP",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/docker-mcp-bridge-20261017T094625Z/results.json",
+      "sha256": "3fb3fe71026078e4f2ab869fea26cd6e9c1f8b43eb8e4dcae237cff254fcfedb",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "真实第三方Docker MCP，早于当前scope补丁。"
+    },
+    {
+      "id": "E12",
+      "label": "Docker精确scope离线验证",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/docker-scope-offline-20261017/results.json",
+      "sha256": "a1e0a104554c9bafaa1923e72fc9f1e239c29b7846885fd3b003be7b359e5e59",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "精确project/service/name守卫与稳定状态适配，仅离线。"
+    },
+    {
+      "id": "E13",
+      "label": "新版镜像断网临时验证",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "artifacts/new7-image-build-20261017/image-proof.json",
+      "sha256": "b281ec888968faef6d12a9e251b01f7f55a62e0ccc5d5ab5f4e0d81b32208fab",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "断网/只读/无env无挂载临时probe。未启动新版身份。"
+    },
+    {
+      "id": "E14",
+      "label": "33任务66双端access对账",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/scheduling-native-20261017/access-reconciliation.json",
+      "sha256": "e8ae28ddd26e16be5faaccb60f0b96c4582672833e5b3457a7539840eb55728e",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "逐任务对账计数，非平台后台访问量。"
+    },
+    {
+      "id": "E15",
+      "label": "本地六类AMP聚合",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "eval/results/local/local-amp-report.json",
+      "sha256": "2d52a4e44be7a1b892872c32d4f33e85c3535bbaa37287a831564de5cb658f6d",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "六类聚合计数，非平台入库或任务RTT。"
+    },
+    {
+      "id": "E16",
+      "label": "Fluent Bit六类路由",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "output/fluent-bit-local-20261017T093249Z/results.json",
+      "sha256": "08b5e1687d1c9b99aea0d6a0348a9605a6b510a111ad520c61d53f482a8ff05b",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地synthetic fixture，Kafka连接/平台入库未验收。"
+    },
+    {
+      "id": "E17",
+      "label": "任务回执乱序Bug草稿",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/contributions/01-task-result-order.md",
+      "sha256": "ce90a61f22adfceb69d3a58b3d26dc8859e6165aecfaa048b16da34309e4a10d",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地未发布草稿，不代表已提交、合并或社区采纳。"
+    },
+    {
+      "id": "E18",
+      "label": "MQ端点文档改进草稿",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/contributions/02-mq-endpoint-docs.md",
+      "sha256": "ac4f3660f3575fc6d0aaca4d6cea8a96d541f8315b21fd9c4db3c31c961f2a3f",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地未发布草稿，不代表已提交、合并或社区采纳。"
+    },
+    {
+      "id": "E19",
+      "label": "群组统计功能建议草稿",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/contributions/03-group-access.md",
+      "sha256": "34f6ef788b1673dd00a13773195bebfd29763adc6c90608347a3fbbadbb4f413",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地未发布草稿，不代表已提交、合并或社区采纳。"
+    },
+    {
+      "id": "E20",
+      "label": "ADP筛选文档改进草稿",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/contributions/04-discovery-alive.md",
+      "sha256": "546e11b739905b4dd284e2a1d63a632fcb11ff03a5b63c453ead00182a3cbca8",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地未发布草稿，不代表已提交、合并或社区采纳。"
+    },
+    {
+      "id": "E21",
+      "label": "SDK PR审阅说明",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/contributions/PR-sdk-resumable.md",
+      "sha256": "11703e640916d791646347dad7352adaa86d112d30ebc2e1af90536f7e1cfa7c",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "本地未发布草稿，不代表已提交、合并或社区采纳。"
+    },
+    {
+      "id": "E22",
+      "label": "T93材料要求及数据口径",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "docs/高分方案_需求架构创新与任务_20261017.md",
+      "sha256": "12168f9a7cdb13d6bd4fd37de907229b94ad3beb1e6cc2bc5b0da5d117af5c2a",
+      "capture_basis": "frozen anonymized source index; current file is not assumed unchanged",
+      "scope": "方案第3、4、7、10.2节。设计要求，不当作实测结果。"
+    },
+    {
+      "id": "E23",
+      "label": "28组历史素材盘点",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "artifacts/report-preparation-20261017/inventory.json",
+      "sha256": "3c6e64bdf3a6aed6a55b258d8721033b3f26942a50f34d34b32fab0ed9806adf",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "盘点时点早于本稿截止，旧pending不作为最新结论；只引用索引。"
+    },
+    {
+      "id": "E24",
+      "label": "冻结匿名聚合输入",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "artifacts/defense-development-20261017/evidence.json",
+      "sha256": "2180f3cbafc73c71077a9859364923b0ed3df2f57cb427681ceedadcb4d77eb4",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "只读复用截止12:50:41.317Z已闭合数据，不复制整份原始记录。"
+    },
+    {
+      "id": "E25",
+      "label": "历史逐次数据的匿名聚合输入",
+      "locator_basis": "original-development-project-root-relative",
+      "relative_path": "artifacts/technical-report-draft-20261017/evidence.json",
+      "sha256": "a3a6438381498aeccd9df2933e6502c18fb176a5e126feb2446bfc657cad7aef",
+      "capture_basis": "closed original read in this preparation",
+      "scope": "历史M1仅自由观察，组合版本；这里只提取数值和版本标识。"
+    }
+  ],
+  "unavailable": {
+    "platform_backend_screenshot": true,
+    "platform_backend_visit_curve": true,
+    "public_issue_PR_links": true,
+    "human_interviews": true,
+    "independent_user_feedback": true,
+    "new_machine_T96": true,
+    "new7_formal_45_matrix": true,
+    "formal_platform_takeover": true,
+    "continuous_24h": true
+  },
+  "assets": [
+    {
+      "relative_path": "assets/f12-unknown-missing-key.png",
+      "source_relative_path": "output/playwright/f12-cold-ui-20261017/unknown-missing-key.png",
+      "sha256": "43b6274ec4a9e13d350adfdee2671ebb00ce7708267c22b1297c593fe64e4839",
+      "review_basis": "Actual image inspected this session; final embedded page also requires visual QA."
+    }
+  ]
+}

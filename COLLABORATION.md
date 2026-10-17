@@ -95,3 +95,11 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [答辩内容开发稿](deliverables/defense-content-development-20261017/README.md)提供内容、讲者备注、数据和JS生成源。官方技能运行时缺失，PPTX/PDF生成未执行；内容稿不能作为已交付演示文件。[4分30秒演示开发稿](deliverables/demo-script-development-20261017/README.md)提供旁白、分镜、逐秒索引与录制清单，尚未录制视频或音频。两份材料保留平台高风险恢复、接管、新七身份与后台统计的待验收项，没有新增实验。
 
 稿内原件locator和SHA指向原开发项目根目录，不保证团队仓库同路径存在；已上传公开派生请从[资料导航](docs/资料导航.md)进入。历史M1负例、修后额外high、E1本地stdio/零模型用量、17连续加1续验，以及旧身份巡检与新身份准备的区别均保留。13页技术PDF与先前实验快照维持原版本。
+
+## 健康对照、统计修复与匿名佐证开发稿
+
+[H00 健康对照说明与失败/修复实测](evidence/eval/H00-public-health-20261017/README.md)保留第一次31次请求后遗留一个未闭环流程的真实失败，以及安全停止修复后30次成功请求、10个完整流程、30.235秒健康窗口的通过结果。这是公共HTTP业务观察；完整评测还要求所有资源act尝试为零。健康对照单列，不进入故障恢复率分母。[相关离线证据](evidence/eval/H00-control-offline-20261017/results.json)明确16项受影响检查重新运行、20项未受影响检查复用，没有重跑历史矩阵。
+
+[AMP心跳统计修复](docs/stability_report.md)仅对[18个既有AMP文件的闭合快照重算](evidence/eval/stability-report-v2-20261017/closed-snapshot-comparison.json)，不增加持续运行时长。[材料扫描](docs/material_anonymity.md)对[8个指定开发材料完成有界检查](evidence/audit/material-anonymity-review-20261017/results.json)，并不等同于最终匿名性验收。
+
+[12页匿名佐证开发稿](deliverables/supporting-evidence-development-20261017/supporting-evidence-development.pdf)及[来源与使用说明](deliverables/supporting-evidence-development-20261017/README.md)按其原取证截止保存，不将后来H00测试写入旧证据。PPTX当前暂不需要；演示脚本仍不是已录制视频。F19仍显式Unsupported，T12全部场景和新full-M1正式公平矩阵尚未完成。证据中的原项目相对路径与SHA表示开发项目观察快照，团队公开文件以本快照清单及[资料导航](docs/资料导航.md)定位。
