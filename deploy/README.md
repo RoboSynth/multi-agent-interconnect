@@ -135,3 +135,7 @@ F12 独立验收使用真实回复代理，仅在后端提交后丢回复：
 
 技术依据：[asyncpg Pool API](https://magicstack.github.io/asyncpg/current/api/index.html#connection-pools)、
 [PostgreSQL16 显式锁](https://www.postgresql.org/docs/16/explicit-locking.html)。
+
+### 新七角色独立 profile（待证书）
+
+[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证，证书办理由用户推迟，尚未启动新身份。默认业务和旧五域 `agents` profile 保持原选择范围。

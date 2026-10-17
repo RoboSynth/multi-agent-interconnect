@@ -1,0 +1,28 @@
+{
+  "marker": "NEW7_PACKAGING_SOURCE_READY_20261017",
+  "at": "2026-10-17T12:50:41.320Z",
+  "source_files": [
+    {
+      "path": "deploy/Dockerfile.agent",
+      "bytes": 1445,
+      "sha256": "46422de7ea5ce7d4753cfb53fdc7eb65290423eba90755fa1fbbcdb738d20e16"
+    },
+    {
+      "path": ".dockerignore",
+      "bytes": 366,
+      "sha256": "5352916c46f2202c5063afecca0d4ef71ae6dfd57620551b0ef9aee3aae82ed9"
+    }
+  ],
+  "changes": [
+    "Integration context and COPY limited to top-level Python source",
+    "Explicit official registry ACS schema and component LICENSE included",
+    "Nested .git, database and key-store files excluded from context"
+  ],
+  "proof": "artifacts/new7-image-build-20261017/image-proof.json",
+  "original_eight_source_files_changed": false,
+  "original_preparation_suite_proof_reused": "14 passed; no preparation or Compose changes in packaging patch",
+  "actual_image_id": "sha256:154ea78cf5a0389b38edaad40181899916d6820bb4fa42c8065d1345775add2d",
+  "actual_build_exit_code": 0,
+  "actual_probe_exit_code": 0,
+  "platform_identity_started": false
+}

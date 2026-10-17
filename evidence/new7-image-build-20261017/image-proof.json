@@ -1,0 +1,128 @@
+{
+  "marker": "NEW7_IMAGE_OFFLINE_PROOF_CLOSED_20261017",
+  "captured_at": "2026-10-17T12:50:41.317Z",
+  "scope": "Local image build and isolated offline dependency/source validation; no new7 platform identity or business run",
+  "image_tag": "incident-pilot-agent:new7",
+  "image": {
+    "image_id": "sha256:154ea78cf5a0389b38edaad40181899916d6820bb4fa42c8065d1345775add2d",
+    "created": "2026-10-17T05:48:53.957902112-07:00",
+    "architecture": "amd64",
+    "os": "linux",
+    "size": 153239742,
+    "user": "65534:65534",
+    "workdir": "/srv"
+  },
+  "build_exit_code": 0,
+  "temporary_probe_exit_code": 0,
+  "agent_main_or_network_consumer_started": false,
+  "existing_services_recreated": false,
+  "probe_options": [
+    "--rm",
+    "-i",
+    "--network none",
+    "--read-only",
+    "--entrypoint python",
+    "-B -",
+    "no --env",
+    "no host/resource/certificate mounts"
+  ],
+  "network_interfaces": [
+    "lo"
+  ],
+  "root_read_only": true,
+  "imports": {
+    "Bridge": "/srv/acps_mcp_bridge/bridge.py",
+    "OnboardingPartner": "/srv/domains/onboarding/check.py",
+    "PlatformWorker": "/srv/incident/platform_worker.py"
+  },
+  "fixed_source_count": 12,
+  "source_sha256": {
+    "acps_mcp_bridge/bridge.py": "ec6cde69f961483f7995f6ea716de79b85d06b6fcde53a1bba58b519013cafe5",
+    "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+    "domains/ops/guard.py": "f4c8675e99052a5ff32f32852b0daac4d87999ce805efdd5f2228612cb99dfb5",
+    "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+    "incident/partners.py": "9690c121f41c10b2598ea319e613aa268a8c5ab14c71291ae112e563546d23ba",
+    "incident/platform_worker.py": "c84ba0ac36a55d9526890c810ffc6b6a6a715bec01c5487a869ca1da3288b0e0",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py": "4b1302a1dbe9867a2fe16b9f8c33143774e678af5240ec6721a34f17ed98729f",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "040d0f6e28d55bd7a42e700241698dc11e13a8b069c12cf19d43160764b26ee3"
+  },
+  "loaded_module_paths": {
+    "acps_mcp_bridge.bridge": "/srv/acps_mcp_bridge/bridge.py",
+    "acps_mcp_bridge.policy": "/srv/acps_mcp_bridge/policy.py",
+    "acps_sdk.aip._task_order": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py",
+    "acps_sdk.aip.aip_group_leader": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+    "acps_sdk.aip.aip_group_partner": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+    "acps_sdk.aip.resumable.journal": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py",
+    "acps_sdk.aip.resumable.ledger": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py",
+    "acps_sdk.amp.group_access": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+    "domains.ops.guard": "/srv/domains/ops/guard.py",
+    "incident.contracts": "/srv/incident/contracts.py",
+    "incident.partners": "/srv/incident/partners.py",
+    "incident.platform_worker": "/srv/incident/platform_worker.py"
+  },
+  "dependency_source_sha256": {
+    "domains/onboarding/check.py": "a9702c954ef6a7bcda97823b2cf3af52b237572465e09efa69d91f9eab7eb4e7",
+    "integration/validate_acs.py": "54e0ce2beb31290cf4fad09414e6446c8d2ef9633746234aa77b9a5d691a6e62",
+    "integration/wutong_smoke.py": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+    "vendor/ACPs-community/registry-server/LICENSE": "a8de816f0554ffa4950d83266ac99189bafbe1adb99a68dc6f096a3e554888a9",
+    "vendor/ACPs-community/registry-server/app/agent/acsSchema.json": "2451b556aa764c6e9fa8fead87005292c46f2f9cf1b4e6877188a9e739fb1397"
+  },
+  "dependency_versions": {
+    "PyYAML": "6.0.3",
+    "asyncpg": "0.32.0",
+    "jsonschema": "4.26.0",
+    "mcp": "1.30.0"
+  },
+  "official_schema": {
+    "official_registry_schema_valid": true,
+    "path": "/srv/vendor/ACPs-community/registry-server/app/agent/acsSchema.json",
+    "sdk_schema_valid": true,
+    "sha256": "2451b556aa764c6e9fa8fead87005292c46f2f9cf1b4e6877188a9e739fb1397"
+  },
+  "integration_source_files": [
+    "build_registration.py",
+    "check_build.py",
+    "check_wutong_dual_inbox.py",
+    "check_wutong_incident.py",
+    "check_wutong_smoke.py",
+    "platform_probe.py",
+    "validate_acs.py",
+    "wutong_discovery.py",
+    "wutong_incident.py",
+    "wutong_smoke.py"
+  ],
+  "forbidden_image_source_files": [],
+  "host_source_changes_after_build": [],
+  "probe_started_at": "2026-10-17T12:49:50.162844+00:00",
+  "finished_at": "2026-10-17T12:49:51.599945+00:00",
+  "build_context_display": "23.74MB",
+  "original_build_log": {
+    "retained_locally": true,
+    "publicly_included": false,
+    "sha256": "4c03412329ce70ec85a849c5a5652e65310eec5cf48110c28ea976c834c64c87"
+  },
+  "prior_attempts": [
+    {
+      "stage": "build CLI",
+      "exit_code": 125,
+      "outcome": "Legacy Docker CLI did not recognize --progress; no image layers built by this attempt"
+    },
+    {
+      "stage": "first temporary probe collection",
+      "container_exit_code": 0,
+      "validation_script_executed": false,
+      "outcome": "Missing stdin attachment (-i); empty output caused collector JSONDecodeError; not counted as validation success"
+    },
+    {
+      "stage": "final temporary probe",
+      "exit_code": 0,
+      "validation_script_executed": true,
+      "outcome": "Added -i; same built image verified, build not repeated"
+    }
+  ],
+  "passed": true
+}

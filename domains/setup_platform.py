@@ -64,7 +64,9 @@ def native_skills(role):
         "application": ("incident.application", "PostgreSQL 订单应用诊断与受控恢复",
             "以 ifc/1.0 返回订单应用版本、错误和连接池证据；执行登记配置回退及连接池重建；资源凭据只在应用域，修改经操作账本与隔离令牌。"),
         "verification": ("incident.verification", "订单请求解析与业务恢复验证",
-            "以 ifc/1.0 核验订单创建、查询、取消与同键回执；解析事故原请求并运行恢复观察窗口，报告成功、失败和未知请求，不持资源管理凭据。")}
+            "以 ifc/1.0 核验订单创建、查询、取消与同键回执；解析事故原请求并运行恢复观察窗口，报告成功、失败和未知请求，不持资源管理凭据。"),
+        "onboarding": ("aip.onboarding.check", "公开互联元数据检查",
+            "以 ifc/1.0 检查官方 ADP/ACS 的身份、协议、技能与收件箱元数据；不探测目标运行端点，不持资源管理凭据。")}
     skill_id, name, description = descriptions[role]
     return [{"id": skill_id, "name": name, "version": "1.0.0", "description": description,
         "tags": ["incident-pilot", "ifc/1.0", role], "inputModes": ["application/json"], "outputModes": ["application/json"],
@@ -73,6 +75,10 @@ def native_skills(role):
 
 
 def prepare(source: dict, output: Path):
+    onboarding = source["agents"].get("onboarding")
+    if onboarding and onboarding.get("aic") and any(
+            agent.get("aic") == onboarding["aic"] for role, agent in source["agents"].items() if role != "onboarding"):
+        raise ValueError("The onboarding identity must use an AIC distinct from every other role")
     if output.exists() and any(output.iterdir()):
         raise ValueError("Choose an empty output directory to preserve previous preparation evidence")
     output.mkdir(parents=True, exist_ok=True)
@@ -86,7 +92,9 @@ def prepare(source: dict, output: Path):
                 raise ValueError("Identity config must reference absolute certificate/key paths, not key contents")
     coordinator = {"mode": "wutong-amqps", "leader": identity(source["agents"]["leader"]),
         "discovery_url": discovery, "mq_auth_url": mq_auth, "trust_bundle": source["trust_bundle"],
-        "skills": SKILLS, "approval_env_file": str(ROOT / "runtime/private/approval.env")}
+        "skills": dict(SKILLS), "approval_env_file": str(ROOT / "runtime/private/approval.env")}
+    if source["agents"].get("onboarding"):
+        coordinator["skills"]["onboarding"] = "aip.onboarding.check"
     save = lambda name, value: (output / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     save("coordinator.json", coordinator)
     readiness = {"external_registration_performed": False, "existing_identity_modified": False,
@@ -102,8 +110,11 @@ def prepare(source: dict, output: Path):
     save("acs/coordinator.acs.json", leader_draft)
     readiness["acs_validation"]["coordinator"] = {"official_registry_schema_valid": True, "sdk_schema_valid": True,
         "skill_ids": ["incident.coordinate"], "platform_review_required": True, "platform_approved": False}
-    for role, source_role in (("application", "application"), ("database", "database"), ("verification", "verification"),
-                              ("database-backup", "database_backup"), ("ops", "ops")):
+    roles = [("application", "application"), ("database", "database"), ("verification", "verification"),
+             ("database-backup", "database_backup"), ("ops", "ops")]
+    if source["agents"].get("onboarding"):
+        roles.append(("onboarding", "onboarding"))
+    for role, source_role in roles:
         known = source["agents"].get(source_role) or source["agents"].get(role)
         if known and role in {"database-backup", "ops"} and known["aic"] in {
                 value["aic"] for name, value in source["agents"].items() if name not in {role, source_role}}:
@@ -121,6 +132,8 @@ def prepare(source: dict, output: Path):
                           ledger_path=str(ROOT / "runtime/application-operations.sqlite"))
         elif domain == "verification":
             config.update(base_url="http://127.0.0.1:8088", verification_duration=30)
+        elif domain == "onboarding":
+            config.update(discovery_url=discovery)
         else:
             local_config = ROOT / "runtime" / ("database-bridge.json" if domain == "database" else "ops-bridge.json")
             if not local_config.exists():
@@ -149,8 +162,9 @@ def prepare(source: dict, output: Path):
             readiness["acs_validation"][role] = {"official_registry_schema_valid": validation["official_registry_schema_valid"],
                 "sdk_schema_valid": validation["sdk_schema_valid"], "skill_ids": [skill["id"] for skill in draft["skills"]],
                 "platform_review_required": True, "platform_approved": False}
-        if domain in {"application", "verification"}:
-            draft = acs_base("跨域订单应用智能体" if domain == "application" else "跨域业务验证智能体", config["aic"], config["endpoint"])
+        if domain in {"application", "verification", "onboarding"}:
+            names = {"application": "跨域订单应用智能体", "verification": "跨域业务验证智能体", "onboarding": "互联接入检查智能体"}
+            draft = acs_base(names[domain], config["aic"], config["endpoint"])
             draft["skills"] = native_skills(domain)
             validation = validate_acs(draft)
             if validation["official_registry_schema_valid"] is not True or not validation["sdk_schema_valid"]:

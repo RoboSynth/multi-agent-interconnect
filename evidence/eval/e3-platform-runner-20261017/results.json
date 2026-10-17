@@ -1,0 +1,86 @@
+{
+  "finished_at": "2026-10-17T12:37:34.898923+00:00",
+  "scope": "offline mocks/fixtures only; no matrix, provider call, resource mutation or platform group",
+  "checks": [
+    {
+      "pattern": "test_eval_platform.py",
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_eval_platform.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 15,
+      "seconds": 2.656
+    },
+    {
+      "pattern": "test_model_eval.py",
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "<workspace>\\tests",
+        "-p",
+        "test_model_eval.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "tests": 13,
+      "seconds": 2.703,
+      "reused": true,
+      "reused_from_finished_at": "2026-10-17T12:32:56.243430+00:00",
+      "reuse_reason": "subsequent changes only explicit container target attestation/binding and unsupported-combination rejection; model/observer/default-native behavior unchanged"
+    }
+  ],
+  "tests": 28,
+  "all_passed": true,
+  "source_sha256": {
+    "eval/run.py": "0e4f75d6c3d22c4530027cee3155c933dc1b7280b5ac45ba5ebc001dd0141d10",
+    "eval/inject.py": "5bd3a67ec63cbfb57a886c06cfef0575e3313159544f7bb5e7e2e4f13e786be1",
+    "eval/targets.py": "c6e01b0904e426c2457ee1a8adbd3e436ef2bbbb99a97054b17d54678357c315",
+    "tests/test_eval_platform.py": "7ea686b8feb7e792dfcf47c0a86098aad948c43e0cc89f9c1dbf5ad6bb5d843e",
+    "docs/e3_evaluation.md": "c8a656821e27bcf8f2cd2232fbed8919107281c1042a30776716be5b64c6f958"
+  },
+  "initial_fixture_failure_retained": "first new-test run had two UnicodeDecodeError in test-only read_text default GBK; corrected to explicit UTF-8, no production runtime failure",
+  "resource_preflight_evidence": "offline Docker fixture records only: six domains, labels/ports/mounts/volume, physical AIC/role/base_url binding, 12 fixed source hashes, stale-image rejection, container/image/StartedAt lock, fresh public configuration checks with source-digest-only reuse; no real target check",
+  "real_platform_E3_completed": false,
+  "model_calls": 0,
+  "resource_calls": 0,
+  "cli_help": [
+    {
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "<workspace>\\eval\\run.py",
+        "--help"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<workspace>\\.venv\\Scripts\\python.exe",
+        "<workspace>\\eval\\inject.py",
+        "--help"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "preflight_assertions": [
+    "invalid target/source before platform transport construction",
+    "old trusted AIC cannot bind new target",
+    "selected AIC and operations project/service/container must match inspected target",
+    "no private env/config content leaves injector",
+    "ops/backup/onboarding presence mandatory",
+    "read-only roots/config mounts and isolated domain network",
+    "frozen fixed runtime sources must match; container/image/StartedAt change rejected",
+    "public AIC/role/base_url freshly read even when source digest is reused",
+    "only local/native and Wutong/docker combinations accepted"
+  ]
+}

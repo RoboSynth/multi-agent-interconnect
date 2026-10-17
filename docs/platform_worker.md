@@ -91,3 +91,39 @@ ACS 应准确描述实际资源后端；本地 Windows 进程后端不可写成�
 正式接入还需核对审核后的 ACS、公开端点 Inbox 与 AIC 一致、证书路径及权限、Leader
 白名单、真实 describe 往返、消息/访问量与平台 AMP 入库。新旧程序不可同时消费同一 AIC
 的 Inbox。平台 Kafka 地址/认证及持续运行数据仍由部署验收确认。
+
+## 明确首次参与者与备用接管
+
+正式协调配置可分别指定可信候选和首次参与者：
+
+```json
+{
+  "trusted_participant_aics": {"database": ["<数据库主AIC>", "<数据库备AIC>"]},
+  "initial_participant_aics": {"database": "<数据库主AIC>"}
+}
+```
+
+首次连接仍须经官方ADP发现并完成describe，且该身份必须属于可信集合。
+指定的主身份未出现、未确认或不可信时，本次连接失败；不会因备用AIC字典序更小而
+静默改选备用。发生接管时继续从完整可信候选中确认替代者，首次参与者配置不限制备用。
+未设置此可选字段的配置继续沿用按AIC排序的原选择语义；可信列表的顺序不表示优先级。
+主备共享资源域账本，身份、私钥与Inbox各自独立。
+
+体检角色可在协调配置的`skills`中显式加入`onboarding: aip.onboarding.check`；
+能力确认使用`public-acs`资源范围，`aip.onboarding.check`观察任务路由至已确认的
+体检身份。默认四个业务角色不变，体检仍只读取公开元数据，不启用主动深探测。
+
+体检的独立只读验收使用现有平台入口，明确提供一个已核实的公开目标AIC：
+
+```powershell
+& .venv/Scripts/python.exe eval/platform_smoke.py `
+  --config-dir <新身份准备目录> --roles onboarding --external-workers `
+  --observe-tool aip.onboarding.check --observe-target-aic <目标正式AIC> `
+  --output eval/results/platform/NEW_ONBOARDING_RUN
+```
+
+目标缺失或格式错误时，入口在创建输出目录、连接或创建群组前拒绝。
+运行前应确认同一协调AIC没有其他工作台或评测Leader，参与者没有另一个活跃群组。
+该检查仅验证公开ACS元数据；不会向目标智能体发邀请或调用其资源工具。
+
+新版身份审核和正式运行状态见`开发进度_高分方案.md`，离线测试不代替新版平台运行。

@@ -36,7 +36,7 @@ async def run(config):
         return {"schema_version": "ifc/1.0", "incident_id": "inc-real-docker", "logical_task_id": "lt-" + alias,
                 "kind": kind, "tool": alias, "args": {}, "budget": {"deadline_ms": 30000}, **extra}
     try:
-        immutable_id = await guard(config["target_container"])
+        immutable_id = await guard(config["target_container"], **policy.container_scope)
         async with McpStdioClient(ServerConfig(**config["server"])) as client:
             bridge = await Bridge(policy, {"docker": client}, OperationLedger(output / "operations.sqlite", "ops-docker"),
                 "local-docker-acceptance", audit=lambda e: events.append(e), resource_guard=guard).initialize()
@@ -47,7 +47,7 @@ async def run(config):
                 if observed["status"] != "ok":
                     raise RuntimeError("Container MCP observation failed: " + alias)
                 result["checks"][alias] = observed
-            action = command("ops.restart", "act", args={"container_id": immutable_id}, operation_id="op-real-docker-restart",
+            action = command("ops.restart", "act", operation_id="op-real-docker-restart",
                              fence={"coordinator_term": 1, "takeover_version": 0})
             denied = await bridge.execute(action, caller)
             if denied["status"] != "rejected":
@@ -67,7 +67,7 @@ async def run(config):
             result["checks"].update(restart=applied, duplicate=replay)
             observed = await bridge.execute(command("ops.containers"), caller)
             result["checks"]["after_containers"] = observed
-            current = mcp_value(await client.call("list_containers", {"all": True, "filters": {"label": ["incident-pilot"]}}))
+            current = mcp_value(await client.call("list_containers", policy.tools["ops.containers"]["fixed_arguments"]))
             if not any((container.get("id", container.get("Id")) == immutable_id) and
                        container.get("status", container.get("State", {}).get("Status")) == "running" for container in current):
                 raise AssertionError("Registered container was not running after MCP restart")

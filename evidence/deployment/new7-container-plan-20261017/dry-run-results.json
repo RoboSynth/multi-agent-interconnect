@@ -1,0 +1,59 @@
+{
+  "at": "2026-10-17T12:27:53.732617+00:00",
+  "passed": true,
+  "mode": "compose config only; synthetic environment placeholders; no engine/resource mutation",
+  "real_certificates_read": false,
+  "identities_started": false,
+  "compose_project": "incident-pilot-new7",
+  "default_business_services": [
+    "app-v1",
+    "app-v2",
+    "nginx",
+    "postgres"
+  ],
+  "legacy_agents_profile": [
+    "application-agent",
+    "database-agent",
+    "database-backup-agent",
+    "ops-agent",
+    "verification-agent"
+  ],
+  "legacy_ports_unchanged": true,
+  "onboarding_requires_opt_in": true,
+  "ports": {
+    "app-v1": [
+      38081
+    ],
+    "app-v2": [
+      38082
+    ],
+    "nginx": [
+      38088
+    ]
+  },
+  "domain_mounts": {
+    "application-agent": "<workspace>/runtime/private/new7-container-20261017/domains/application",
+    "verification-agent": "<workspace>/runtime/private/new7-container-20261017/domains/verification",
+    "database-agent": "<workspace>/runtime/private/new7-container-20261017/domains/database",
+    "database-backup-agent": "<workspace>/runtime/private/new7-container-20261017/domains/database-backup",
+    "ops-agent": "<workspace>/runtime/private/new7-container-20261017/domains/ops",
+    "onboarding-agent": "<workspace>/runtime/private/new7-container-20261017/domains/onboarding"
+  },
+  "route_mount": "<workspace>/runtime/private/new7-container-20261017/nginx-runtime",
+  "old_route_binds_removed": true,
+  "business_volume": "incident-pilot-new7_orders-data",
+  "state_volumes": {
+    "application-agent": "incident-pilot-new7_application-agent-state",
+    "verification-agent": "incident-pilot-new7_verification-agent-state",
+    "database-agent": "incident-pilot-new7_database-agent-state",
+    "database-backup-agent": "incident-pilot-new7_database-agent-state",
+    "ops-agent": "incident-pilot-new7_ops-agent-state",
+    "onboarding-agent": "incident-pilot-new7_onboarding-agent-state"
+  },
+  "coordinator": "Windows host 8877, not a container",
+  "source_hashes": {
+    "deploy/compose.yml": "b9c417ff3b1d69a88d0940603f6f4d0b942047fec10318d6ed72bc639110f2af",
+    "deploy/agents.yml": "0b0f8b61c8e4c174977b4e75a0cd570b6553cbcef299d0d92c1be6812eb86842",
+    "deploy/new7.yml": "1bb409da2417dce3796250646e11723b08ad1c376be6054a556c7bdd32ff0399"
+  }
+}

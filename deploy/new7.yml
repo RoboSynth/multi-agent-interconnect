@@ -1,0 +1,43 @@
+# Optional isolated resources for six domain containers and one Windows leader.
+# Requires Compose >=2.24.4 for !override. This file never starts a leader.
+name: incident-pilot-new7
+
+x-new-profile: &new-profile
+  image: incident-pilot-agent:new7
+  profiles: [new7]
+
+services:
+  app-v1:
+    ports: !override ["127.0.0.1:38081:8000"]
+  app-v2:
+    ports: !override ["127.0.0.1:38082:8000"]
+  nginx:
+    ports: !override ["127.0.0.1:38088:80"]
+    volumes:
+      - ${NEW7_ROUTE_DIR:?Set the isolated new-profile route directory}:/etc/nginx/runtime:ro
+
+  application-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/application:/domain:ro
+  verification-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/verification:/domain:ro
+  database-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/database:/domain:ro
+  database-backup-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/database-backup:/domain:ro
+  ops-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/ops:/domain:ro
+      - ${NEW7_ROUTE_DIR:?Set the isolated new-profile route directory}:/route
+  onboarding-agent:
+    <<: *new-profile
+    volumes:
+      - ${NEW7_DOMAIN_ROOT:?Set the isolated new-profile domain directory}/onboarding:/domain:ro

@@ -33,9 +33,12 @@ class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
                 "kind": "act", "tool": "db.restore_writes", "args": {}, "operation_id": "operation",
                 "fence": {"coordinator_term": transport.term, "takeover_version": 0}}
 
-    async def exercise(self, state, status="ok"):
+    async def exercise(self, state, status="ok", *, initial_primary=False):
         with tempfile.TemporaryDirectory() as directory:
             transport = self.transport(directory)
+            if initial_primary:
+                transport.config["initial_participant_aics"] = {"database": "primary"}
+                transport.config["trusted_participant_aics"] = {"database": ["primary", "backup"]}
             control = {"status": status, "logical_task_id": "logical", "operation": {"state": state,
                 "active_fence": {"coordinator_term": transport.term, "takeover_version": 1}}, "facts": []}
             transport._send = AsyncMock(side_effect=[TimeoutError(), control,
@@ -66,12 +69,13 @@ class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(calls), 2)
 
     async def test_received_operation_reuses_identity_with_confirmed_fence(self):
-        result, calls, _ = await self.exercise("received")
+        result, calls, transport = await self.exercise("received", initial_primary=True)
         self.assertEqual(result["status"], "ok")
         retry = calls[2].args[0]
         self.assertEqual(retry["logical_task_id"], "logical")
         self.assertEqual(retry["operation_id"], "operation")
         self.assertEqual(retry["fence"]["takeover_version"], 1)
+        self.assertEqual(transport.selected["database"], "backup")
 
     async def test_same_skill_on_different_resource_cannot_take_over(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -133,6 +137,63 @@ class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(failed["error_class"], "CancelledError")
             self.assertTrue(any(row["event"] == "participant_not_confirmed"
                 and row["error_class"] == "TimeoutError" for row in events))
+
+    async def test_initial_primary_does_not_depend_on_aic_sort_order(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.config["initial_participant_aics"] = {"database": "z-primary"}
+            transport.config["trusted_participant_aics"] = {"database": ["a-backup", "z-primary"]}
+            transport.runtime.invite_partner = AsyncMock()
+            transport._describe = WutongTransport._describe.__get__(transport, WutongTransport)
+            transport._send = AsyncMock(return_value={"status": "ok", "executor_aic": "z-primary",
+                "description": {"resources": ["orders"], "tools": ["db.read_only_status"]}})
+            chosen, _ = await transport._select_participant("database",
+                [{"aic": "a-backup"}, {"aic": "z-primary"}], "db.read_only_status", initial=True)
+            self.assertEqual(chosen["aic"], "z-primary")
+            transport.runtime.invite_partner.assert_awaited_once()
+            self.assertEqual(transport.runtime.invite_partner.call_args.args[1].aic, "z-primary")
+
+    async def test_missing_or_untrusted_initial_primary_never_invites_backup(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.config["initial_participant_aics"] = {"database": "z-primary"}
+            transport.config["trusted_participant_aics"] = {"database": ["a-backup"]}
+            for candidates in ([{"aic": "a-backup"}], [{"aic": "a-backup"}, {"aic": "z-primary"}]):
+                with self.assertRaises(RuntimeError):
+                    await transport._select_participant("database", candidates, "db.read_only_status", initial=True)
+            transport._describe.assert_not_awaited()
+            for value in ("", " z-primary", None, ["z-primary"]):
+                transport.config["initial_participant_aics"]["database"] = value
+                with self.subTest(value=value), self.assertRaises(ValueError):
+                    await transport._select_participant("database", [{"aic": "z-primary"}],
+                        "db.read_only_status", initial=True)
+            transport._describe.assert_not_awaited()
+
+    async def test_onboarding_is_selected_for_public_metadata_resource_only(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.config["trusted_participant_aics"] = {"onboarding": ["onboarding"]}
+            transport._describe = AsyncMock(return_value={"executor_aic": "onboarding",
+                "resources": ["public-acs"], "tools": ["aip.onboarding.check"]})
+            chosen, _ = await transport._select_participant("onboarding",
+                [{"aic": "onboarding"}], "aip.onboarding.check", initial=True)
+            self.assertEqual(chosen["aic"], "onboarding")
+            transport._describe.return_value["resources"] = ["orders"]
+            with self.assertRaises(RuntimeError):
+                await transport._select_participant("onboarding",
+                    [{"aic": "onboarding"}], "aip.onboarding.check", initial=True)
+
+    async def test_onboarding_observation_routes_to_confirmed_onboarding_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.selected["onboarding"] = "onboarding"
+            transport._send = AsyncMock(return_value={"status": "ok", "facts": []})
+            payload = {"schema_version": "ifc/1.0", "incident_id": "onboarding-check",
+                "logical_task_id": "metadata-check", "kind": "observe", "tool": "aip.onboarding.check",
+                "args": {"target_aic": "target"}}
+            result = await transport.call(payload)
+            self.assertEqual(result["status"], "ok")
+            transport._send.assert_awaited_once_with(payload, "onboarding")
 
 
 if __name__ == "__main__":

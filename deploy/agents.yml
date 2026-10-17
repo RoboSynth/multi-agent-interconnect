@@ -28,6 +28,14 @@ services:
     labels: {incident-pilot: "true", incident-pilot.domain: verification}
     depends_on: {nginx: {condition: service_started}}
 
+  onboarding-agent:
+    <<: *agent
+    profiles: [onboarding]
+    volumes:
+      - ${AGENT_ONBOARDING_DIR:-../runtime/container-domains/onboarding}:/domain:ro
+      - onboarding-agent-state:/state
+    labels: {incident-pilot: "true", incident-pilot.domain: onboarding}
+
   database-agent:
     <<: *agent
     command: [python, -m, acps_mcp_bridge, --config, /domain/bridge.json]
@@ -63,5 +71,6 @@ services:
 volumes:
   application-agent-state:
   verification-agent-state:
+  onboarding-agent-state:
   database-agent-state:
   ops-agent-state:

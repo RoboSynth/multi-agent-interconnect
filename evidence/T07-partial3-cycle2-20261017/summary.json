@@ -1,0 +1,117 @@
+{
+  "schema_version": "t07-natural-cycle/1.0",
+  "marker": "T07_NATURAL_CYCLE2_CLOSED_20261017",
+  "captured_at": "2026-10-17T12:37:09.948Z",
+  "scope": "Same-machine old-three-identity AMQPS compatibility inspection; isolated 180xx business",
+  "cycle": 2,
+  "run_id": "schedule-21931117642442d6b8aff956e9f38815",
+  "incident_id": "inc-ad36f31d0ffc4e6b",
+  "previous_incident_id": "inc-288551bbd09b423c",
+  "natural_scheduler_trigger": true,
+  "manual_trigger_performed": false,
+  "job_started_at": "2026-10-17T12:34:55.699317+00:00",
+  "job_finished_at": "2026-10-17T12:35:28.806809+00:00",
+  "incident_started_at": "2026-10-17T12:34:55.644481+00:00",
+  "incident_finished_at": "2026-10-17T12:35:28.138912+00:00",
+  "status": "completed",
+  "elapsed_seconds": 32.485,
+  "group_id": "group-incident-ce7ebe68f17f4e2c98a9ec89b6a70b0d",
+  "same_group_as_first_cycle": true,
+  "formal_aip_tasks": [
+    {
+      "task_id": "aip-38026541b6bf45f2ae1dd7bce0f72edf",
+      "logical_task_id": "lt-460cbf83f6b5",
+      "tool": "db.read_only_status",
+      "kind": "observe",
+      "result_states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "complete_command_observed": true
+    },
+    {
+      "task_id": "aip-a1582d2042914b8b9c02d011924408ee",
+      "logical_task_id": "lt-8c1969369dce",
+      "tool": "application.status",
+      "kind": "observe",
+      "result_states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "complete_command_observed": true
+    },
+    {
+      "task_id": "aip-cc851650bc18442f88cba4558efdc770",
+      "logical_task_id": "lt-cb90a3f710b5",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "result_states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "complete_command_observed": true
+    },
+    {
+      "task_id": "aip-b173f69a1de847b0bfd63282bc666275",
+      "logical_task_id": "lt-718b899934a9",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "result_states": [
+        "accepted",
+        "working",
+        "awaiting-completion",
+        "completed"
+      ],
+      "complete_command_observed": true
+    }
+  ],
+  "resource_credential_count": 0,
+  "domain_participants": [
+    {
+      "role": "application",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.7H5SK8.93B7PX.0S53",
+      "resources": [
+        "orders"
+      ]
+    },
+    {
+      "role": "database",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.GDM330.5PWUNU.0MVE",
+      "resources": [
+        "orders"
+      ]
+    },
+    {
+      "role": "verification",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.8L5I9C.6YGAAA.0S8S",
+      "resources": [
+        "orders"
+      ]
+    }
+  ],
+  "healthy_business": {
+    "duration_seconds": 30.002,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "pending_count": 0,
+    "passed": true
+  },
+  "resource_recovery_action_count": 0,
+  "approval_count": 0,
+  "high_automatically_approved": false,
+  "fault_drills_enabled": false,
+  "scheduler_active_after": null,
+  "next_due_inspect_at": "2026-10-17T13:05:28.813Z",
+  "coverage": "One initial healthy inspection and one naturally scheduled healthy inspection; not a 24-hour acceptance result",
+  "first_snapshot_modified": false
+}

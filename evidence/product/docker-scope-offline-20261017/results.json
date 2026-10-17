@@ -1,0 +1,35 @@
+{
+  "observed_at_utc": "2026-10-17T12:25:07.752207+00:00",
+  "command": [
+    "<workspace>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "<workspace>\\tests",
+    "-p",
+    "test_bridge*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "tests_run": 50,
+  "source_stable_during_tests": true,
+  "source_sha256": {
+    "acps_mcp_bridge/bridge.py": "ec6cde69f961483f7995f6ea716de79b85d06b6fcde53a1bba58b519013cafe5",
+    "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+    "domains/ops/guard.py": "f4c8675e99052a5ff32f32852b0daac4d87999ce805efdd5f2228612cb99dfb5",
+    "domains/ops/policy.yaml": "d4cb001b8a228f5f426ceb4d84389eab2011def6488e2deaa7546456ccabc6e6",
+    "domains/ops/verify_docker.py": "ffdd06c45d78a0897414449d8afdb02ce0c10d415b08c3ae4c9ec8406c0952ca",
+    "tests/test_bridge_gateway.py": "99ff70d143841e0944c24fc0b3fa5e1aee7688a0513a5e473761b5fa462dd747",
+    "tests/test_bridge_docker_scope.py": "c0286a7be84133d02f888ce93dc67a2a28b624cd5700d9ea2218385816a5c571"
+  },
+  "resource_calls": "Offline mocks only; no live Docker, model, registry or fault calls",
+  "log": "unittest-final.log",
+  "policy_fields": [
+    "resources.compose_project",
+    "resources.compose_service",
+    "resources.container_name"
+  ],
+  "preserved": "Native policy and shared route expected_before v1 guard unchanged",
+  "live_container_acceptance": false
+}

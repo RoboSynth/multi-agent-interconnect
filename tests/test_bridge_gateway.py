@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -352,8 +353,9 @@ class BridgePolicyTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_container_guard_denies_without_docker(self):
         from domains.ops.guard import labeled_container
-        with self.assertRaises(PolicyRejected):
-            await labeled_container("a-container-that-does-not-exist")
+        with patch("domains.ops.guard.asyncio.create_subprocess_exec", side_effect=FileNotFoundError):
+            with self.assertRaises(PolicyRejected):
+                await labeled_container("a-container-that-does-not-exist")
 
     def test_postgres_text_errors_and_python_rows(self):
         self.assertEqual(mcp_value({"content": [{"type": "text", "text": "[{'read_only': True}]"}]}), [{"read_only": True}])

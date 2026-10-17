@@ -5,6 +5,7 @@ from collections import defaultdict, deque
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import re
 import time
 
 from jsonschema import Draft202012Validator
@@ -31,6 +32,16 @@ class Policy:
         self.allowed_callers = frozenset(document.get("allowed_callers", []))
         self.tools = document["tools"]
         self.resources = document.get("resources", {})
+        scope_keys = ("compose_project", "compose_service", "container_name")
+        present = [key in self.resources for key in scope_keys]
+        self.container_scope = {}
+        if any(present):
+            if not all(present) or any(
+                    not isinstance(self.resources[key], str)
+                    or not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}", self.resources[key])
+                    for key in scope_keys if key in self.resources):
+                raise ValueError("container scope requires compose_project, compose_service and container_name")
+            self.container_scope = {key: self.resources[key] for key in scope_keys}
         self.approval_verifier = approval_verifier
         self.clock = clock
         self._calls = defaultdict(deque)

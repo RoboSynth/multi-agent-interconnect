@@ -1,0 +1,65 @@
+# 新七角色隔离容器 profile
+
+当前交付是离线准备能力：六个资源域容器和一个 Windows 协调者。2026-10-17 的公开复核记录为七身份通过、五个详情 AIC 已核对；用户已推迟证书处理，本 profile 尚未签证、启动或进行真实平台验收。占位文件只验证配置与文件隔离，不能作为证书或互联成功证据。
+
+## 资源和身份归属
+
+| 项目 | 新 profile | 现有资源 |
+| --- | --- | --- |
+| Compose project | `incident-pilot-new7` | 旧 T07 为 `incident-pilot-container` |
+| 业务入口 | `127.0.0.1:38088` | 旧 18088、团队冷部署 28088、原生 8088 分离 |
+| 应用 v1 / v2 | 回环 38081 / 38082 | 旧 18081 / 18082、原生 8081 / 8082 分离 |
+| 协调工作台 | Windows 回环 8877 | 旧 8767 / T07 保持原身份与原资源 |
+| 业务数据库 | `incident-pilot-new7_orders-data`，无主机端口 | 不挂旧业务或原生数据库目录 |
+| 路由目录 | `runtime/private/new7-container-20261017/nginx-runtime` | 不写 `deploy/nginx/runtime` 或旧路由 |
+| 配置与证书 | 同目录下 `domains/<role>`，每容器一个只读 `/domain` | 不复用旧身份的私钥、挂载目录或 Inbox |
+| 域状态 | `incident-pilot-new7_<role>-agent-state` | 与旧 project 卷分离 |
+
+六域为 application、verification、database、database-backup、ops、onboarding。应用只收到本域 APP_ADMIN_TOKEN；数据库主备只收到 bridge_operator 的 DATABASE_URI 和审批校验密钥；运维只收到本域审批校验密钥，并独占 Docker socket 挂载。验证和 onboarding 无资源管理环境文件。onboarding 仅检查公开 ADP/ACS 元数据，不主动探测目标端点。协调者只持自己的证书、审批签发能力和公开发现配置，不持上述资源凭据。
+
+数据库主备在新项目内共享同一个 `database-agent-state:/state`，因而共享 `/state/operations.sqlite`；各自 AMP 子目录分离。协调者的权威任期库放在新 profile 的 `domains/coordinator/coordinator-terms.sqlite`，namespace 为 `incident-pilot-new7/orders`。它仅授权新业务卷，不能拿来操作旧 180xx 资源。
+
+新主数据库 AIC 的实体段为 `OJQHYH`，备用为 `FZXFJS`；备用字典序在前。准备器生成 `trusted_participant_aics.database=[主,备]`，并显式生成 `initial_participant_aics.database=主 AIC`。初选按这个精确身份与 trusted 集合求交；接管仍可发现完整可信集合。列表顺序不表示优先级。verification / onboarding 的完整正式 AIC 和所有角色证书应在后续人工办理完成后补入源配置，不能把 ADP 候选当成证书就绪。
+
+## 证书就绪后的准备步骤
+
+以下是待执行计划；本轮没有生成真实私密 profile。准备器会在读取资源环境和复制证书前拒绝跨域或协调者 AIC 重复。另需核对证书各自绑定对应 AIC、信任链及有效期，并确认同 AIC 没有第二个 Inbox 消费者。源配置格式沿用 `domains/setup_platform.py`：`agents.leader/application/verification/database/database_backup/ops/onboarding` 各指自己的绝对 cert/key 路径及精确 AMQPS Inbox endpoint。
+
+1. 在 `runtime/private/new7-container-20261017` 新建独立的 compose.env 和 approval.env，生成新的随机凭据；不得复制旧 container.env。compose.env 包含 `POSTGRES_PASSWORD`、`ORDERS_DB_PASSWORD`、`APP_ADMIN_TOKEN`、`BRIDGE_DB_PASSWORD`，approval.env 只保存新的 `INCIDENT_APPROVAL_SECRET`。
+2. compose.env 另加 `NEW7_DOMAIN_ROOT` 和 `NEW7_ROUTE_DIR`，值使用 WSL 可见的绝对路径，例如 `/mnt/d/AI + 开源/incident-pilot/runtime/private/new7-container-20261017/domains` 和同级 `nginx-runtime`。本 overlay 固定回环 380xx，不使用基础 APP_V1_PORT / APP_V2_PORT / ORDER_PORT。
+3. 用准备器生成本域文件。输出目录须为空；准备器不会联网、启动或注册身份，也不验证证书密码学有效性。若缺 BRIDGE_DB_PASSWORD，它会把新随机值追加到本次指定的 compose.env。
+
+```powershell
+.\.venv\Scripts\python.exe domains/setup_platform.py --source integration/private/new7/source.json --output runtime/private/new7-container-20261017/platform
+.\.venv\Scripts\python.exe deploy/prepare_agents.py --source runtime/private/new7-container-20261017/platform --output runtime/private/new7-container-20261017/domains --business-env runtime/private/new7-container-20261017/compose.env --approval-env runtime/private/new7-container-20261017/approval.env --project incident-pilot-new7 --include-onboarding --include-coordinator --ops-service app-v2
+if (-not (Test-Path runtime/private/new7-container-20261017/nginx-runtime/route.conf)) {
+    New-Item -ItemType Directory -Force runtime/private/new7-container-20261017/nginx-runtime | Out-Null
+    Copy-Item deploy/nginx/route.default.conf runtime/private/new7-container-20261017/nginx-runtime/route.conf
+}
+```
+
+路由复制只在本次新目录不存在 route.conf 时执行，后续运行保留实际路由。协调者配置在 `domains/coordinator/config.json`，是 Windows 绝对证书路径；六域配置使用 `/domain`、`/state` 和固定容器 DNS。即使文件存在，readiness 仍标记 `ready_for_live_start=false`，真实握手和业务验收另行记录。
+
+4. 在 WSL 的项目目录依次运行同一组 Compose 参数。真实 env 仅用 `config --quiet` 验证，不向终端打印展开配置。若需要核对 scope，完整 JSON 只捕获到本机私有文件，再仅输出 project、端口、mount、volume 元数据；本次 sentinel dry-run 的 JSON 可直接渲染。
+
+```sh
+docker compose -p incident-pilot-new7 --env-file runtime/private/new7-container-20261017/compose.env -f deploy/compose.yml -f deploy/agents.yml -f deploy/new7.yml --profile new7 config --quiet
+# 确认 38081/38082/38088、8877 和 project 尚未被占用，再构建与启动。
+docker compose -p incident-pilot-new7 --env-file runtime/private/new7-container-20261017/compose.env -f deploy/compose.yml -f deploy/agents.yml -f deploy/new7.yml --profile new7 up -d --build
+```
+
+`deploy/new7.yml` 需要 Compose 2.24.4+ 的 `!override`，清除旧 808x 端口；本机离线验证使用现有 Compose 2.40.3。新 agent 镜像使用 `incident-pilot-agent:new7`，首次必须从当时的冻结源码重建；不能把旧镜像缓存当成当前版本。记录实际 image ID，并只读采集容器内固定源码 SHA 与冻结源码对应；后续 cell 可复用相同 image ID 的稳定性证据。同 tag 重建不会改变已经运行的旧容器，本批不对旧 T07 执行 up/recreate。六个域目录和独立路由目录必须先存在，避免 Docker 把缺失文件路径创建成目录。初次空业务卷通过现有 init.sh 创建 bridge_operator 最小权限；若人为复用已有卷，必须明确执行本项目 provisioning，不能删除卷冒充迁移成功。
+
+运维私有 policy 固定三项 scope：`compose_project=incident-pilot-new7`、`compose_service=app-v2`、`container_name=incident-pilot-new7-app-v2-1`；观察使用 incident-pilot、project、service 三标签，restart/logs 不接受任务传入目标容器。桥接层重新核验实时标签和名字，再使用 immutable container ID。新配置不会放宽原有 high 审批或幂等策略。
+
+## leader 独占和验收顺序
+
+`platform_smoke`、E3 `eval/run.py`、8877 工作台都会创建 Wutong leader，不能同时复用新版 coordinator AIC。域参与者也只接受一个 active inbound group。计划顺序为：平台 smoke → 确认正常 close 并无在途动作 → E3 独占评测并正常 close → 最后启动持久 8877 和巡检。异常/超时组先保留证据，不通过杀域进程或删除未知远端组绕过。旧 8767/T07 使用旧 AIC，继续只操作旧 180xx，不加入新组。
+
+E3 的非秘密 target 描述见本次本地证据 `artifacts/new7-container-plan-20261017/evaluator-target.draft.json`：schema 为 `incident-evaluator-target/1.0`，三个 compose_files 为 `deploy/compose.yml`、`deploy/agents.yml`、`deploy/new7.yml`，project/ports/route 与上表一致。评测器独立子进程读取业务 env；协调者只读 target 描述及文件 hash。正式注入前评测器还会核验 live project 标签、loopback 端口、数据库卷名前缀及 nginx/ops 的精确路由 bind。
+
+最后启动工作台时，使用系统环境白名单加显式项目网络变量（本机平台直连可设仅此进程的 `NO_PROXY=wt.ioa.pub,127.0.0.1,localhost`），并以实际子进程的环境名称探针证明资源凭据为 0。不要将 resource compose.env 加载进协调者 shell。保留 Windows 回环 8877 的现有本机访问规则。健康基线须完成 30 秒 / 10 个创建、查询、取消流程，再声明业务可用；running 不能代替 describe 或业务 ready。
+
+## 本次离线证据
+
+`artifacts/new7-container-plan-20261017/dry-run-results.json` 记录实际 Compose CLI 渲染断言：基础不带 profile 仍仅四个业务服务；旧 agents profile 仍仅五域，onboarding 必须显式选择；新 profile 为六域、固定 380xx、独立路由及新项目卷。`compose.dry-run.env` 全部使用明显 sentinel，不读取真实私有 env；仅运行 config，没有 Docker up、远端群组或新身份启动。准备器测试使用临时文本证书路径 fixture，证明每域只复制本身份材料、协调者无资源凭据、主备账本及初选主配置一致；这些不是证书签发或真实平台运行证据。

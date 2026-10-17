@@ -20,9 +20,22 @@ import uuid
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "vendor/ACPs-community/acps-sdk")]
 from incident.wutong_transport import WutongTransport
+from acps_sdk.aic import validate_aic_format
+
+
+def observation_arguments(tool, target_aic=None):
+    if tool == "aip.onboarding.check":
+        if not isinstance(target_aic, str) or not validate_aic_format(target_aic)[0]:
+            raise ValueError("onboarding observation requires a valid --observe-target-aic")
+        return {"target_aic": target_aic}
+    if target_aic is not None:
+        raise ValueError("--observe-target-aic is only valid for aip.onboarding.check")
+    return {}
 
 
 async def run(args):
+    tool = args.observe_tool or ("application.status" if args.observe_application else None)
+    tool_args = observation_arguments(tool, getattr(args, "observe_target_aic", None))
     output = args.output
     output.mkdir(parents=True, exist_ok=False)
     roles = args.roles.split(",")
@@ -66,11 +79,11 @@ async def run(args):
         await asyncio.wait_for(transport.start(), 180)
         result["participants"] = transport.participants
         result["tools"] = sorted(set(transport.tools))
-        tool = args.observe_tool or ("application.status" if args.observe_application else None)
         if tool:
             payload = {"schema_version": "ifc/1.0", "incident_id": "platform-smoke-"+uuid.uuid4().hex,
                        "logical_task_id": "lt-"+uuid.uuid4().hex, "kind": "observe",
-                       "tool": tool, "args": {}, "budget": {"deadline_ms": 15000}}
+                       "tool": tool, "args": tool_args,
+                       "budget": {"deadline_ms": 30000 if tool == "aip.onboarding.check" else 15000}}
             result["observation"] = await transport.call(payload)
         result["status"] = "completed"
         return 0
@@ -111,5 +124,12 @@ if __name__ == "__main__":
     parser.add_argument("--external-workers", action="store_true")
     parser.add_argument("--observe-application", action="store_true")
     parser.add_argument("--observe-tool", choices=["application.status", "db.read_only_status",
-                        "db.blocking_sessions", "ops.containers", "ops.route_status"])
-    raise SystemExit(asyncio.run(run(parser.parse_args())))
+                        "db.blocking_sessions", "ops.containers", "ops.route_status", "aip.onboarding.check"])
+    parser.add_argument("--observe-target-aic", help="Explicit public metadata target for aip.onboarding.check")
+    args = parser.parse_args()
+    try:
+        observation_arguments(args.observe_tool or ("application.status" if args.observe_application else None),
+                              args.observe_target_aic)
+    except ValueError as exc:
+        parser.error(str(exc))
+    raise SystemExit(asyncio.run(run(args)))

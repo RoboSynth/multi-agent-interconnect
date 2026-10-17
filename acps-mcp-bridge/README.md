@@ -87,6 +87,32 @@ stderr. Result output is bounded and known secrets/credential URIs are scrubbed.
   the file on failure. `INCIDENT_ROUTE_FILE`, `INCIDENT_NGINX_BINARY` and
   `INCIDENT_NGINX_CONTAINER` are local process configuration.
 
+## Docker 固定项目与目标
+
+独立 profile 将 `domains/ops/policy.yaml` 复制到本域私有配置目录，并覆盖以下三项：
+
+```yaml
+resources:
+  compose_project: incident-pilot-new7
+  compose_service: app-v2
+  container_name: incident-pilot-new7-app-v2-1
+```
+
+三项必须全配或全无，部分配置、空值和非法名称在加载策略时拒绝；全无仅保留旧标签验证兼容模式。
+同时更新 `ops.containers.fixed_arguments.filters.label` 中的项目和服务标签，保留
+`incident-pilot` 标签及 `all: true`。上游 `list_containers` 默认只列运行中的容器，
+`all: true` 才能观察已退出的目标。将 `ops.restart.fixed_arguments.container_id` 固定为同一
+`container_name`，其输入 schema 保持空对象；若日志工具也采用固定目标，同步更新它的固定参数。
+
+观察仅输出项目、服务和名称均匹配的唯一目标，提供规划器使用的 `container_state` 及精简
+`containers` 列表。缺失目标或未知状态返回 `unknown`，重复目标视为工具错误，不推断为退出。
+重启须经独立审批，再由实时 `docker inspect` 核对标签、项目、服务和名称，以不可变 ID 停止、
+启动该目标，最后只读重查状态。资源范围进入操作账本参数摘要，操作号不能跨项目复用。
+
+本次补丁通过 50 项离线 Bridge 相关测试，记录在
+`output/docker-scope-offline-20261017/results.json`。此前真实 Docker 验收使用的是旧版策略，
+不能作为本补丁的真实容器验收；新 profile 的实际运行需另留证据。
+
 Local native verification commands (coordinate write tests with other lab users):
 
 ```powershell

@@ -18,3 +18,13 @@ eval/results
 .cache
 .codex
 .agents
+
+# Agent runtime needs integration source only, never local runs or browser state.
+integration/**
+!integration/*.py
+**/.git
+**/*.sqlite*
+**/*.db
+**/*.p12
+**/*.pfx
+**/*.jks

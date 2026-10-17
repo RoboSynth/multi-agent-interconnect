@@ -77,3 +77,15 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [两批M1对照](evidence/model-evaluation/M1-free-tools-analysis-20261017/comparison.md)分别保留首批2/3与共享路由守卫修复后3/3，每批只有F01三方法各一次，不是新版45项矩阵。首批M1为真实MCP调用1次/error1次但ok修改0次，并有必要窗口中2条Nginx reload信号和7条health499；不把信号当重载完成证明，health收敛失败归因为日志与源码支持的推断，未补造MCP错误正文。v2 M1最终恢复但仍多1次不必要high和1次ok修改。模型证据只公开真实响应、usage和参数，历史M1-observe保持原统计边界。
 
 [T07筛选后公开证据](evidence/T07-partial3-20261017/README.md)记录三旧域正式AMQPS健康once与30分钟inspect循环启动。once同一事故30.003秒、30请求、10完整流程全成功，unknown/pending/审批均0；原失败、包装器exit120和同事故续接保留。可信AIC筛选及候选describe截止时间有针对测试。循环keep-awake请求成功、drills/high自动审批关闭，当前不代表24小时或7天在线。详见[最新进度](docs/开发进度_高分方案.md)和[审计](docs/P0完成审计_20261017.md)。13页PDF仍保持11:41:43Z旧证据截止，不因本批重生成。
+
+## 新七身份准备、E3入口与第二次正式巡检
+
+[新七角色隔离部署](deploy/NEW7.md)使用独立incident-pilot-new7项目、380xx端口、路由与卷；[公开审核状态](evidence/platform/new7-registry-20261017/approved-public-aics.json)为七身份通过/五个详情AIC核实，证书办理按用户要求暂缓，尚未启动新版身份。
+
+[E3正式平台入口](docs/e3_evaluation.md)复用原方法、预算和订单流，仅接受local/native或Wutong/明确Docker目标。组前核验六域、目标端口/挂载/卷、公开身份与固定源码摘要；组后selected与ops三scope再次绑定。源码digest仅在container/image/StartedAt稳定时复用，公开配置每次重读。旧配置、旧镜像、域重启或错资源会拒绝。代码验证为15项本轮离线测试及复用此前13项原生评测兼容结果，[证据](evidence/eval/e3-platform-runner-20261017/results.json)明确实际执行与复用范围。真实E3矩阵未运行，fixture不替代平台结果。
+
+[域隔离与事实映射](evidence/product/docker-scope-offline-20261017/results.json)、[身份/平台入口契约](evidence/platform/wutong-new-profile-contract-20261017/final-results.json)和[部署准备](evidence/deployment/new7-container-plan-20261017/unit-results.json)分别保留各suite与版本，未相加宣称唯一测试总数。
+
+[T07第二周期](evidence/T07-partial3-cycle2-20261017/README.md)是旧三身份/旧180xx目标的真实自然调度：业务30.002秒、30请求、10完整流程成功，4任务/24生命周期关联投影，无unknown/pending/act/审批；首段快照保留。它不证明新版身份已上线或24小时/七天稳定。13页PDF仍保持11:41:43Z证据截止。
+
+[新镜像隔离验证](evidence/new7-image-build-20261017/image-proof.json)实际build/probe均exit0；仅构建incident-pilot-agent:new7，并在network-none、只读根目录、无资源/证书挂载的临时容器中验证导入、官方ACS schema及12个固定源码SHA和实际模块路径。旧服务未重建，新身份/消费者未启动。integration仅10个顶层Python源；构建参数不兼容exit125及首probe漏stdin未执行的早期失败保留，不计为验证成功。该镜像证明不替代正式平台启动或E3矩阵。

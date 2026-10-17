@@ -249,7 +249,7 @@ class Bridge:
                 if call.specification.get("container_guard"):
                     if not self.resource_guard:
                         raise PolicyRejected("container label guard is not configured")
-                    checked = self.resource_guard(arguments["container_id"])
+                    checked = self.resource_guard(arguments["container_id"], **self.policy.container_scope)
                     arguments["container_id"] = await checked if inspect.isawaitable(checked) else checked
                 if call.specification.get("blocker_guard"):
                     recorded = self.ledger.get(payload["operation_id"])
@@ -267,6 +267,15 @@ class Bridge:
                     if call.specification.get("restart_sequence"):
                         mcp_value(await client.call("stop_container", arguments))
                     output = mcp_value(await client.call(call.tool, arguments))
+                    if call.specification.get("restart_sequence") and self.policy.container_scope:
+                        # The upstream start response can contain its pre-start cached state.
+                        reference = self.policy.tools["ops.containers"]
+                        observed = mcp_value(await self.clients[reference["server"]].call(
+                            reference["mcp_tool"], reference.get("fixed_arguments", {})))
+                        facts = self._facts("ops.containers", observed)
+                        for fact in facts:
+                            fact["source"] = call.alias
+                        return facts
                     return self._facts(call.alias, output)
 
                 deadline = payload.get("budget", {}).get("deadline_ms", 15000)
@@ -330,20 +339,41 @@ class Bridge:
                 output = json.loads(output)
             except ValueError:
                 pass
+        extra_facts = []
         key = {"db.health": "db_health", "db.read_only_status": "read_only",
                "db.blocking_sessions": "blocking_sessions", "db.restore_writes": "read_only",
                "db.terminate_blocker": "blocking_session_terminated", "ops.route_status": "route_version",
                "ops.route_rollback": "route_version", "ops.containers": "containers",
                "ops.logs": "container_logs", "ops.restart": "container_state"}.get(alias, alias)
-        if alias == "ops.containers" and isinstance(output, dict) and output.get("backend") == "native":
+        if (alias == "ops.containers" and not self.policy.container_scope
+                and isinstance(output, dict) and output.get("backend") == "native"):
             key = "container_state"
         if isinstance(output, list) and len(output) == 1 and isinstance(output[0], dict) and key in output[0]:
             output = output[0][key]
         elif isinstance(output, dict) and key in output:
             output = output[key]
+        if key == "containers" and self.policy.container_scope and not isinstance(output, list):
+            raise ToolExecutionError("container observation did not return a list")
         if key == "containers" and isinstance(output, list):
-            output = [{k: v for k, v in c.items() if k.lower() in {"id", "name", "status", "state", "labels"}}
-                      for c in output if isinstance(c, dict)]
+            if self.policy.container_scope:
+                from domains.ops.guard import container_matches_scope
+                selected = [c for c in output if isinstance(c, dict)
+                            and container_matches_scope(c, self.policy.container_scope)]
+                if len(selected) > 1:
+                    raise ToolExecutionError("configured container target is ambiguous")
+                rows = []
+                for container in selected:
+                    state = container.get("status", container.get("state", {}))
+                    if isinstance(state, dict):
+                        state = state.get("Status")
+                    state = state if state in {"running", "exited"} else "unknown"
+                    rows.append({"id": container.get("id", container.get("Id")),
+                                 "name": self.policy.container_scope["container_name"], "status": state})
+                key, output = "container_state", rows[0]["status"] if rows else "unknown"
+                extra_facts.append(("containers", rows))
+            else:
+                output = [{k: v for k, v in c.items() if k.lower() in {"id", "name", "status", "state", "labels"}}
+                          for c in output if isinstance(c, dict)]
         if key == "read_only" and not isinstance(output, (bool, str)):
             raise ToolExecutionError("read_only template did not return a boolean fact")
         if key == "container_state" and isinstance(output, dict):
@@ -352,12 +382,15 @@ class Bridge:
             if output.lower() not in {"on", "off", "true", "false", "1", "0"}:
                 raise ToolExecutionError("read_only template returned an unknown boolean string")
             output = output.lower() in {"on", "true", "1"}
-        encoded = json.dumps(output, ensure_ascii=False, default=str)
-        if len(encoded.encode()) > self.max_output_bytes:
-            output = {"truncated": True, "preview": encoded[:self.max_output_bytes // 4],
-                      "original_bytes": len(encoded.encode())}
-        return [{"key": key, "value": output, "source": alias,
-                 "observed_at": datetime.now(timezone.utc).isoformat()}]
+        facts = []
+        for fact_key, value in [(key, output), *extra_facts]:
+            encoded = json.dumps(value, ensure_ascii=False, default=str)
+            if len(encoded.encode()) > self.max_output_bytes:
+                value = {"truncated": True, "preview": encoded[:self.max_output_bytes // 4],
+                         "original_bytes": len(encoded.encode())}
+            facts.append({"key": fact_key, "value": value, "source": alias,
+                          "observed_at": datetime.now(timezone.utc).isoformat()})
+        return facts
 
     def bind_partner(self, client):
         """Bind an official GroupPartner after its AMQP identity assertion boundary.

@@ -1,4 +1,4 @@
-"""Run native fault scenarios through independent local AIP domain processes.
+"""Run the same fault/method matrix over local AIP or formal Wutong transport.
 
 Ground truth stays in the evaluator's injection log. Formal Wutong experiments
 must use a separate transport/run directory and are not implied by these results.
@@ -21,14 +21,26 @@ sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine
 from eval.methods import FixedPlanner
-from eval.methods.free_tools import FreeToolSelector
+from eval.methods.free_tools import FreeToolSelector, ACTIONS
 from eval.observation import ContinuousObserver
+from eval.targets import DockerTarget, DOMAIN_SOURCE_FILES, validate_platform_bindings
+from incident.coordinator.planner import PROBES
 
 
-async def inject(scenario, action, runtime, record, *, pool_rebuilds=0):
-    process = await asyncio.create_subprocess_exec(sys.executable, str(ROOT / "eval/inject.py"), scenario, action,
-        "--backend", "native", "--runtime", str(runtime), "--record", str(record),
-        "--pool-rebuilds", str(pool_rebuilds),
+async def inject(scenario, action, runtime, record, *, pool_rebuilds=0, backend="native", target_config=None,
+                 expected_compose_hashes=None, expected_sources=None, expected_domains=None):
+    command = [sys.executable, str(ROOT / "eval/inject.py"), scenario, action,
+        "--backend", backend, "--runtime", str(runtime), "--record", str(record),
+        "--pool-rebuilds", str(pool_rebuilds)]
+    if target_config is not None:
+        command += ["--target-config", str(target_config)]
+    if expected_compose_hashes is not None:
+        command += ["--expected-compose-hashes", json.dumps(expected_compose_hashes, separators=(",", ":"))]
+    if expected_sources is not None:
+        command += ["--expected-sources", json.dumps(expected_sources, separators=(",", ":"))]
+    if expected_domains is not None:
+        command += ["--expected-domains", json.dumps(expected_domains, separators=(",", ":"))]
+    process = await asyncio.create_subprocess_exec(*command,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await process.communicate()
     record.parent.mkdir(parents=True, exist_ok=True)
@@ -36,14 +48,66 @@ async def inject(scenario, action, runtime, record, *, pool_rebuilds=0):
         stream.write(json.dumps({"scenario": scenario, "action": action, "returncode": process.returncode,
             "stdout": stdout.decode("utf-8", "replace"), "stderr": stderr.decode("utf-8", "replace")}) + "\n")
     if process.returncode:
-        raise RuntimeError(f"native {action} failed for {scenario}; " + stderr.decode("utf-8", "replace")[-1000:])
+        raise RuntimeError(f"{backend} {action} failed for {scenario}; " + stderr.decode("utf-8", "replace")[-1000:])
     return json.loads(stdout.decode("utf-8-sig"))
 
 
-async def run(args):
+def create_transport(mode, config, config_path, output):
+    if mode not in {"local-aip-stdio", "wutong-amqps"}:
+        raise ValueError("Unknown evaluation transport")
+    if mode == "wutong-amqps":
+        from incident.wutong_transport import WutongTransport
+        return WutongTransport(config, output / "transport")
     from incident.local_transport import LocalAipStdioTransport
+    return LocalAipStdioTransport(config_path)
+
+
+def freeze_sources(output):
+    paths = set((ROOT / "eval").glob("*.py")) | set((ROOT / "eval/methods").glob("*.py"))
+    for directory in ("incident", "acps_mcp_bridge", "business", "domains", "vendor/ACPs-community/acps-sdk/acps_sdk"):
+        paths.update(path for path in (ROOT / directory).rglob("*")
+                     if path.is_file() and path.suffix in {".py", ".yaml", ".sql"}
+                     and not {"__pycache__", "private", "runtime", ".git"}.intersection(path.relative_to(ROOT).parts))
+    paths.update(ROOT / name for name in ("requirements-lock.txt", "requirements-high-score.txt", "deploy/compose.yml",
+        "deploy/agents.yml", "deploy/Dockerfile.agent", "business/order_app/Dockerfile"))
+    paths.update((ROOT / "deploy").glob("*.yml"))
+    paths.update((ROOT / "deploy").glob("*.yaml"))
+    paths.update(path for path in (ROOT / "domains").rglob("requirements.txt") if not {"private", "runtime"}.intersection(path.relative_to(ROOT).parts))
+    paths.update(path for path in (ROOT / "vendor/ACPs-community/acps-sdk/pyproject.toml", ROOT / "deploy/Dockerfile.docker-mcp") if path.is_file())
+    hashes = {}
+    for path in sorted(paths):
+        content = path.read_bytes()
+        relative = path.relative_to(ROOT).as_posix()
+        hashes[relative] = hashlib.sha256(content).hexdigest()
+        snapshot = output / "source" / relative
+        snapshot.parent.mkdir(parents=True, exist_ok=True)
+        snapshot.write_bytes(content)
+    return hashes
+
+
+def check_sources(hashes):
+    if any(not (ROOT / name).is_file() or hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != expected for name, expected in hashes.items()):
+        raise RuntimeError("Frozen evaluator/domain/SDK source changed; stop before another fault injection")
+
+
+async def run(args):
+    if (args.transport, args.backend) not in {("local-aip-stdio", "native"), ("wutong-amqps", "docker")}:
+        raise ValueError("Evaluation supports only local AIP/native or Wutong/explicit Docker targets")
+    if args.target_config is not None:
+        args.target_config = (ROOT / args.target_config).resolve()
+    target = DockerTarget.from_file(args.target_config) if args.target_config is not None else None
+    if (args.backend == "docker") != (target is not None):
+        raise ValueError("Docker evaluation requires an explicit target config; native evaluation must not supply one")
+    order_url = args.order_url or (target.order_url if target else "http://127.0.0.1:8088")
+    if target and order_url != target.order_url:
+        raise ValueError("Observer URL must match the explicit container target")
+    injection_options = {"backend": args.backend, "target_config": args.target_config}
     methods = args.methods.split(",")
     scenarios = args.scenarios.split(",")
+    if any(scenario not in {"H00", "F01", "F02", "F06", "F07", "F10", "F12"} for scenario in scenarios):
+        raise ValueError("Unknown or unsupported matrix scenario")
+    if target and "F12" in scenarios:
+        raise ValueError("E3 container target does not declare a reply-drop port")
     instance_seeds = [int(seed) for seed in args.instance_seeds.split(",")]
     if len(instance_seeds) < args.repeats:
         raise ValueError("provide at least one held-out instance seed per repeat")
@@ -61,7 +125,9 @@ async def run(args):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:6]
     output = args.output or ROOT / "eval/results" / ("native-" + stamp)
     output.mkdir(parents=True, exist_ok=False)
-    manifest = {"transport": "local-aip-stdio", "scenarios": scenarios, "methods": methods,
+    manifest = {"transport": args.transport, "resource_backend": args.backend,
+        "resource_target": target.public_description() if target else {"runtime": str(args.runtime), "order_url": order_url},
+        "scenarios": scenarios, "methods": methods,
         "repeats": args.repeats, "model": args.model if args.enable_llm else None,
         "model_base_url": args.model_base_url if args.enable_llm else None,
         "sampling": {"seed": args.seed, "temperature": 0, "top_p": 1, "max_tokens": args.max_output_tokens},
@@ -90,42 +156,63 @@ async def run(args):
     model_server = ROOT / "tools/runtime/local-model/server.json"
     if model_server.exists() and args.model_base_url == "http://127.0.0.1:8089/v1":
         manifest["local_model_server"] = json.loads(model_server.read_text(encoding="utf-8-sig"))
-    manifest["source_sha256"] = {}
-    for relative in ("eval/run.py", "eval/methods/__init__.py", "eval/methods/free_tools.py", "incident/coordinator/hypothesis.py",
-                     "incident/coordinator/planner.py", "incident/coordinator/engine.py",
-                     "eval/observation.py", "eval/inject.py", "business/load.py",
-                     "incident/contracts.py", "incident/local_transport.py", "incident/local_worker.py",
-                     "incident/partners.py", "business/order_app/main.py", "business/order_app/store.py",
-                     "acps_mcp_bridge/bridge.py", "acps_mcp_bridge/policy.py"):
-        content = (ROOT / relative).read_bytes()
-        manifest["source_sha256"][relative] = hashlib.sha256(content).hexdigest()
-        snapshot = output / "source" / relative
-        snapshot.parent.mkdir(parents=True, exist_ok=True)
-        snapshot.write_bytes(content)
+    manifest["source_sha256"] = freeze_sources(output)
+    if target:
+        manifest["target_config_sha256"] = hashlib.sha256(args.target_config.read_bytes()).hexdigest()
     (output / "experiment.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     config = json.loads(args.config.read_text(encoding="utf-8-sig"))
+    if args.transport == "wutong-amqps" and "skills" in config:
+        roles = {"application", "database", "ops", "verification"}
+        if not roles <= config["skills"].keys():
+            raise ValueError("Platform evaluation requires all four business-domain skills")
+        config["skills"] = {role: skill for role, skill in config["skills"].items() if role in roles}
     # Each experiment gets a fresh AIP journal/log location; resource ledgers remain domain-local.
     config["journal_path"] = str(output / "journal.sqlite")
     config["amp_directory"] = str(output / "amp")
     config["directory"] = str(output / "transport")
     config_path = output / "coordinator.json"
     config_path.write_text(json.dumps(config, indent=2), encoding="utf-8")
-    transport = LocalAipStdioTransport(config_path)
+    check_sources(manifest["source_sha256"])
+    if target:
+        if hashlib.sha256(args.target_config.read_bytes()).hexdigest() != manifest["target_config_sha256"]:
+            raise RuntimeError("Explicit target changed before platform group creation")
+        injection_options["expected_sources"] = {name: manifest["source_sha256"][name] for name in DOMAIN_SOURCE_FILES}
+        checked = await inject("H00", "check", args.runtime, output / "private/injections.jsonl", **injection_options)
+        hashes = checked["target_proof"]["compose_sha256"]
+        domains = checked["target_proof"]["domains"]
+        injection_options["expected_compose_hashes"] = hashes
+        injection_options["expected_domains"] = domains
+        manifest["target_compose_sha256"] = hashes
+        manifest["runtime_domain_attestation"] = domains
+        if args.transport == "wutong-amqps":
+            validate_platform_bindings(config, domains)
+        (output / "experiment.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    check_sources(manifest["source_sha256"])
+    transport = create_transport(args.transport, config, config_path, output)
     results = []
     try:
         await transport.start()
+        required_tools = {probe.tool for probe in PROBES} | set(ACTIONS) | {"incident.verification"}
+        if required_tools - set(transport.tools):
+            raise ValueError("Confirmed participants do not expose the common evaluation tool inventory")
+        if args.transport == "wutong-amqps":
+            validate_platform_bindings(config, domains, selected=transport.selected,
+                                       descriptions=transport.descriptions, project=target.project)
         for scenario in scenarios:
             for repeat in range(args.repeats):
                 ordered_methods = methods[repeat % len(methods):] + methods[:repeat % len(methods)]
                 for method in ordered_methods:
-                    await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl")
+                    check_sources(manifest["source_sha256"])
+                    if target and hashlib.sha256(args.target_config.read_bytes()).hexdigest() != manifest["target_config_sha256"]:
+                        raise RuntimeError("Explicit target changed before another fault injection")
+                    await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
                     cell = output / "workloads" / f"{scenario}-{method}-{repeat + 1}"
-                    observer = await ContinuousObserver(args.order_url, cell, seed=instance_seeds[repeat],
+                    observer = await ContinuousObserver(order_url, cell, seed=instance_seeds[repeat],
                         run_id="eval-" + uuid.uuid4().hex[:16]).start()
                     try:
                         await asyncio.sleep(3)
                         injection = await inject(scenario, "apply", args.runtime, output / "private/injections.jsonl",
-                                                 pool_rebuilds=repeat % 3)
+                                                 pool_rebuilds=repeat % 3, **injection_options)
                         observer.fault_at = injection["started_monotonic"]
                         await asyncio.sleep(3)
                         hypothesis = HypothesisEngine(enabled=args.enable_llm and method != "M0",
@@ -201,7 +288,7 @@ async def run(args):
                     finally:
                         if observer.task and not observer.task.done():
                             await observer.finish(grace_seconds=0)
-                        await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl")
+                        await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
     finally:
         await transport.close()
         (output / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -213,10 +300,13 @@ async def run(args):
     return 0 if results and all(r["status"] == "completed" and r["continuous_recovery_confirmed"] for r in results) else 1
 
 
-if __name__ == "__main__":
+def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, default=ROOT / "runtime/local-coordinator.json")
     parser.add_argument("--runtime", type=Path, default=ROOT / "deploy/native-runtime.json")
+    parser.add_argument("--transport", choices=["local-aip-stdio", "wutong-amqps"], default="local-aip-stdio")
+    parser.add_argument("--backend", choices=["native", "docker"], default="native")
+    parser.add_argument("--target-config", type=Path, help="Explicit nonsecret container target; required for --backend docker")
     parser.add_argument("--scenarios", default="F01,F02,F06,F07,F10")
     parser.add_argument("--methods", default="M0,M2")
     parser.add_argument("--repeats", type=int, default=3)
@@ -231,8 +321,13 @@ if __name__ == "__main__":
     parser.add_argument("--task-budget", type=int, default=40)
     parser.add_argument("--deadline-seconds", type=int, default=600)
     parser.add_argument("--instance-seeds", default="101,202,303", help="Same held-out workload seed per repeat for every method")
-    parser.add_argument("--order-url", default="http://127.0.0.1:8088")
+    parser.add_argument("--order-url", help="Defaults to the explicit target order port, or native 8088")
     parser.add_argument("--output", type=Path)
+    return parser
+
+
+if __name__ == "__main__":
+    parser = build_parser()
     args = parser.parse_args()
     if args.repeats < 1:
         parser.error("repeats must be positive")

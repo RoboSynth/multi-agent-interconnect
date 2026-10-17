@@ -76,9 +76,19 @@ class WutongTransport:
             self.record("capability_confirmation_failed", aic=acs["aic"], phase=phase, error_class=type(exc).__name__)
             raise
 
-    async def _select_participant(self, role, candidates, tool):
+    async def _select_participant(self, role, candidates, tool, *, initial=False):
+        if initial:
+            configured = self.config.get("initial_participant_aics", {})
+            if not isinstance(configured, dict):
+                raise ValueError("initial_participant_aics must map roles to AIC strings")
+            if role in configured:
+                aic = configured[role]
+                if not isinstance(aic, str) or not aic.strip() or aic != aic.strip():
+                    raise ValueError("initial participant AIC must be a nonempty exact string")
+                candidates = [candidate for candidate in candidates if candidate["aic"] == aic]
         trusted = self.config.get("trusted_participant_aics", {}).get(role)
-        return await select_participant(candidates, resource="orders", tool=tool,
+        resource = "public-acs" if role == "onboarding" else "orders"
+        return await select_participant(candidates, resource=resource, tool=tool,
             describe=self._describe, trusted_aics=trusted,
             describe_timeout_seconds=self.config.get("participant_describe_timeout_seconds", 30),
             record=lambda event, **data: self.record(event, role=role, **data))
@@ -131,10 +141,11 @@ class WutongTransport:
         queries = self.config.get("skills", {"application": "incident.application", "database": "db.observe",
                                              "ops": "ops.observe", "verification": "incident.verification"})
         required = {"application": "application.status", "database": "db.read_only_status",
-                    "ops": "ops.route_status", "verification": "incident.verification"}
+                    "ops": "ops.route_status", "verification": "incident.verification",
+                    "onboarding": "aip.onboarding.check"}
         for role, skill in queries.items():
             candidates = await self._discover_candidates(role, skill)
-            acs, description = await self._select_participant(role, candidates, required[role])
+            acs, description = await self._select_participant(role, candidates, required[role], initial=True)
             self.selected[role] = acs["aic"]
             self.descriptions[role] = description
             self.participants.append({"role": role, "aic": acs["aic"],
@@ -189,7 +200,8 @@ class WutongTransport:
 
     async def call(self, payload):
         prefix = payload["tool"].split(".")[0]
-        role = {"db": "database", "ops": "ops", "application": "application", "incident": "verification"}.get(prefix)
+        role = {"db": "database", "ops": "ops", "application": "application", "incident": "verification",
+                "aip": "onboarding"}.get(prefix)
         if role not in self.selected:
             raise RuntimeError("no confirmed participant for this tool")
         value = dict(payload)
@@ -214,7 +226,8 @@ class WutongTransport:
                         failed_aic=failed, reason=reason, discovery="official-adp")
             self.journal.record_takeover(incident, failed, reason)
             skill = self.config.get("skills", {}).get(role, {"database": "db.observe", "ops": "ops.observe",
-                "application": "incident.application", "verification": "incident.verification"}[role])
+                "application": "incident.application", "verification": "incident.verification",
+                "onboarding": "aip.onboarding.check"}[role])
             candidates = await self._discover_candidates(role, skill)
             # Match the complete resource scope of the failed participant, not only a skill label.
             previous_scope = self.descriptions[role].get("resource_scope", self.descriptions[role].get("resources"))
