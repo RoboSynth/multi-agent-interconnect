@@ -1,0 +1,94 @@
+{
+  "status": "THIRD_NATURAL_INSPECT_CYCLE_AND_POINT_IN_TIME_LIVENESS_OBSERVED",
+  "observed_at_utc": "2026-10-18T08:03:43.669123+00:00",
+  "actual_observer_exit_code": 0,
+  "actual_tool_completion_chunk": "866759",
+  "source_receipt_sha256": "d5497798fab1fdc1ec70454903023a302b23a80211f04a25f64c105eb1921043",
+  "current_process_handles": {
+    "runtime": {
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true
+    },
+    "parent": {
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true
+    }
+  },
+  "HTTP": {
+    "connected": true,
+    "mode": "wutong-amqps",
+    "config_sha256": "8d940b048e2fd286837681524ac8ab9e4c8613be855cddc0bf32adfbf8c8e726",
+    "participant_count": 5,
+    "resource_credential_count": 0,
+    "model_enabled": false,
+    "incident_status": "completed"
+  },
+  "schedule": {
+    "started_cycles": 3,
+    "completed_cycles": 3,
+    "active_is_none": true,
+    "next_inspect_due_utc": "2026-10-18T08:27:44.342128+00:00"
+  },
+  "third_cycle": {
+    "started_at_utc": "2026-10-18T07:57:05.215616+00:00",
+    "finished_at_utc": "2026-10-18T07:57:44.334957+00:00",
+    "elapsed_seconds": 38.375,
+    "business_observation": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "passed": true,
+      "pending_intents": 0
+    },
+    "task_kind_counts": {
+      "observe": 5,
+      "verify": 1
+    },
+    "act_tasks": 0,
+    "model_calls": 0,
+    "reported_tokens": 0,
+    "approvals": 0,
+    "checks": {
+      "terminal_completed": true,
+      "business_recovered": true,
+      "observation_30s_10flows": true,
+      "observation_passed_no_bad": true,
+      "observe_verify_only": true,
+      "all_task_products_ok": true,
+      "no_act_resume_approval": true,
+      "no_model": true,
+      "terminal_bytes_stable": true
+    },
+    "all_new_cycle_checks_passed": true,
+    "terminal_incident_sha256": "20e70bdcae486a411b0158cdc0ffcd8742a8fe5775d2426910bf7aa57696e5b8"
+  },
+  "journal": {
+    "state_counts": {
+      "awaiting-completion": 23,
+      "completed": 23
+    },
+    "raw_nonterminal_historical_rows": 23,
+    "effective_in_flight_attempts": 0,
+    "takeover_events": 0,
+    "interpretation": "Raw history retained; existing in_flight_only SQL excludes superseded logical-task/partner attempts. No rows rewritten."
+  },
+  "limits": [
+    "Point-in-time live process handles/HTTP and third-cycle local evidence only; not24h or future-exit proof.",
+    "Observer sent one localhost GET and read local files/read-only SQLite; no new AMQPS/MCP/model/business or lifecycle calls.",
+    "Scheduled verification itself uses synthetic order flows; zero act is not zero business writes.",
+    "Original E3 gaps and prior launch/checker failures remain unchanged."
+  ],
+  "source_sha256": {
+    "schedule_events": "dccec7f96e0d4d6e0b540457445ede4d92d45655435f8ed26555298ab5ee9d5e",
+    "schedule_state": "88b10bc30b8951e917480ceea36758c4735a42ed0f3af20d958d047f3dde7c9f"
+  },
+  "old_cycle_one_and_two_proofs_reread_or_copied": false
+}

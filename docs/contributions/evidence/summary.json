@@ -204,5 +204,37 @@
     "ordering_tests_passed": 3,
     "sdk_resumable_tests_passed": 25,
     "basis": "Executed successfully in this development session; terminal tool results retained by the session, no new test run performed for the prose."
+  },
+  "updates_20261018": {
+    "official_review_target": "94077d10b336bfdb9a7d68e4859390bf44a67a27",
+    "current_compatibility_source_ready_sha256": "83fc180b38d0987ec17f46df2c4bb8ce130d266a0356797524503659e1987836",
+    "focused_packages": {
+      "resumable_files": 13,
+      "message_emitter_files": 2,
+      "fresh_ordering_passed": 3,
+      "amp_unmodified_negative_cases": 2,
+      "amp_patched_focused_passed": 5,
+      "unchanged_resumable25_historical_evidence_reused": true
+    },
+    "separate_formal_healthy_access": {
+      "captured_start_tasks": 12,
+      "transport": "wutong-amqps",
+      "expected_access_records": 24,
+      "actual_access_records": 24,
+      "missing_records": 0,
+      "extra_records": 0,
+      "incomplete_task_lifecycles": 0,
+      "unrelated_access_records_excluded": 481,
+      "passed": true,
+      "scope": "Exact captured starts versus both endpoints' AMP access records. Shared long-running domain logs are filtered by captured taskId only for wutong-amqps; no Monitor statistics inferred."
+    },
+    "formal_healthy_access_source_sha256": "a4e2e20147a1d783f3a0bdb26a90a0b6aefce5cec3c7118032fc3ac19d33d6ef",
+    "middleware_dedup_scope": "per client/middleware instance and its LRU lifetime",
+    "formal_NEW7_E1_executions": 0,
+    "new_single_fault_authorization_received": false,
+    "external_fork_created": false,
+    "pull_requests_submitted": 0,
+    "issues_submitted": 0,
+    "whole_upstream_test_suite_or_fork_CI_verified": false
   }
 }

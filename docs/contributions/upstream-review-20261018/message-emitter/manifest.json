@@ -1,0 +1,45 @@
+{
+  "format": "upstream-current-lf-review/1",
+  "kind": "message-emitter",
+  "target_commit": "94077d10b336bfdb9a7d68e4859390bf44a67a27",
+  "original_base_commit": "3985c1330209f075c124669cc9d31f0e75448140",
+  "patch": {
+    "file": "acps-sdk-message-emitter.patch",
+    "sha256": "f0a90b1c107c19a8a431e566c886253f290ef6e38c9bbb0e393c4d98125ab8e3",
+    "bytes": 8621,
+    "changed_files": 2
+  },
+  "derivation": {
+    "original_patch_source": "artifacts/upstream-amp-review-20261018/attempt-2/package/acps-sdk-message-emitter.patch",
+    "original_patch_sha256": "1cb3458fcc10e222fc013ecf755e3c0acab8f92a822d4122fee70ca3fe4294ae",
+    "only_operation": "CRLF (0D 0A) to LF (0A), all other bytes unchanged",
+    "crlf_pairs_replaced": 44,
+    "all_non_line_ending_bytes_and_paths_unchanged": true,
+    "non_newline_test_AST_or_product_code_changes": 0
+  },
+  "upstream_comparison": {
+    "source_files": 129,
+    "exact_byte_matches": 2,
+    "newline_only_differences": 127,
+    "normalized_lf_matches": 129,
+    "semantic_receipt_sha256": "6ecb8a18c773e1e18a2222ccddc73886a3485718c5d4759c0378f5cf36ba52de"
+  },
+  "changes": [
+    {
+      "path": "acps-sdk/acps_sdk/amp/message_emitter.py",
+      "change": "modified",
+      "baseline_sha256": "f80008addf325d27d526819797bbb3e7418ba1f161a7897509ff56f5d8dd2704",
+      "source_sha256": "1824468b7470f933c05412c40741fc3edfff038145185493bfeeac33d8e06e42"
+    },
+    {
+      "path": "acps-sdk/tests/amp/test_message_emitter_concurrency.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "12c4eb6a6879da7932cc29eb1b3b4a32d4dffe6f030549f83d87348f92806136"
+    }
+  ],
+  "formal_NEW7_E1_executions": 0,
+  "concurrency_cross_process_guarantee": false,
+  "published": false,
+  "scope": "Current-HEAD focused compatibility, not a full upstream suite or platform fault acceptance"
+}

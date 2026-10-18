@@ -21,7 +21,7 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 正式NEW7 E3已闭合：[45格结果与限制](docs/new7_e3_20261018.md)记录37格持续恢复确认、8格未确认（均M1），M0/M2各15/15、M1为7/15，实际exit1保留失败。M2耗时和模型成本单列，7个旧未决阶段与独立新H00分开；T62日志解析限制及路由换行复原均如实保留。
 
-后续独立版本已将AMP日志追加修复部署至六域，新健康窗口12任务完成、30.003秒/30成功请求/10流程；该窗口[T05双端访问对账](evidence/new7-runtime-followup-20261018/access-reconciliation.json)为12任务/24条access，缺失、多余和未完成生命周期均0。8877巡检已自然完成[两轮](evidence/new7-runtime-followup-20261018/inspect-cycle2.json)，各30.002秒/10流程，[实时UI26项检查与六张截图](evidence/new7-runtime-followup-20261018/ui-results.json)通过。七身份固定30分钟[心跳采样](evidence/new7-runtime-followup-20261018/heartbeat-window.json)为840/840；采样完整不等于连续在线、24小时/7天或Monitor入库。新证据不重跑或解除原45格失败、旧未决和坏行；正式[E1源码与计划](docs/new7_e1_implementation_20261018.md)仍未执行，具体故障实验待对应授权。
+后续独立版本已将AMP日志追加修复部署至六域，新健康窗口12任务完成、30.003秒/30成功请求/10流程；该窗口[T05双端访问对账](evidence/new7-runtime-followup-20261018/access-reconciliation.json)为12任务/24条access，缺失、多余和未完成生命周期均0。8877巡检已自然完成[三轮](evidence/new7-inspect-session-20261018/cycle3.json)，各30.002秒/10流程，[实时UI26项检查与六张截图](evidence/new7-runtime-followup-20261018/ui-results.json)通过。七身份固定30分钟[心跳采样](evidence/new7-runtime-followup-20261018/heartbeat-window.json)为840/840；采样完整不等于连续在线、24小时/7天或Monitor入库。新证据不重跑或解除原45格失败、旧未决和坏行；正式[E1源码与计划](docs/new7_e1_implementation_20261018.md)仍未执行，具体故障实验待对应授权。[当前上游审阅包](docs/contributions/upstream-review-20261018/README.md)已整理为两个独立PR与四条Issue草稿；针对已核实的官方94077d1完成补丁适配与相关验证，尚未外发。
 
 完整工具M1的[本地分段结果](docs/free_tools_matrix_20261018.md)：原批40终态、第41格中断，独立后续四格4/4恢复；两阶段为44终态、37确认、7未确认、1中断覆盖原45计划，独立HTTP H00为30.328秒/30次全成功/10流程。原进程退出码未知，不能称完整45格单批；旧M1/旧18例、新版梧桐及长期验收分别保留，下文继续为v0.2.0基线记录。
 

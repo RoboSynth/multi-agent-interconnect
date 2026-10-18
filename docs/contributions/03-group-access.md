@@ -10,7 +10,7 @@
 
 ## 建议的统计语义
 
-对每个 `(sessionId, taskId, direction)`，只记录该进程收到或发送的第一次 Start。
+对每个 `(sessionId, taskId, direction)`，在每个 client / middleware 实例及其 LRU 缓存生命周期内，只记录收到或发送的第一次 Start。
 Complete、Get、Continue 及同 TaskId 的 Start 重投不新增 access，但仍照常执行协议处理。
 重试若是新的任务尝试，使用新的 TaskId，新增一条记录。
 
@@ -46,9 +46,15 @@ python -m unittest discover -s acps-sdk/tests/resumable -p test_resumable.py -k 
 另一次本地真实 AIP stdio 调度验收捕获 33 次原生 Start，对照双方 AMP 文件为 66 条
 access，缺失 0、多计 0。这是本地对账结果，未据此声称平台 Monitor 已入库。
 
+2026-10-18 又对一个已经正常关闭的正式 Wutong AMQPS 健康窗口做了独立对账：
+12 个不同 Start，协调端 12 条、六个参与资源域合计 12 条 access，共 24 条；缺失、
+多余及不完整生命周期均为 0。长运行日志中另有 481 条无关 access，按该窗口捕获的
+taskId 排除。该窗口与上面的本地 33/66 分开记录，仍不证明 Monitor 入库、访问排行
+或正式故障接管；access 也不等于物理消息数、MCP 调用数或资源修改次数。
+
 ## 范围与接口讨论
 
-去重缓存默认使用进程内 8192 项 LRU，可配置上限。进程重启或条目被淘汰后可能重新计数，
+去重缓存默认是每个 middleware 实例内的 8192 项 LRU，可配置上限。实例重建或条目被淘汰后可能重新计数，
 因此它不是跨进程永久去重保证。需要跨进程统计时，可在汇总端按相同键做 distinct。
 也希望维护者确认此“首次尝试结果”口径是否适合作为可选默认，或应提供策略参数。
 

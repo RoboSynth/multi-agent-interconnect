@@ -201,3 +201,10 @@ fixed-SDK健康窗口按12个captured Start逐taskId核对两端AMP access：coo
 8877自然第二周期独立15项检查通过，业务30.002秒/30成功请求/10流程；raw17条awaiting为历史，effective in-flight0。观察器首次KeyError exit1与更早首周期检查器错误各自保留，均不是产品故障；[第二周期](evidence/new7-runtime-followup-20261018/inspect-cycle2.json)不将两轮称长期验收。真实浏览器只读GET验收26distinct=24复用+2纠正schema后delta，六PNG已逐张目视通过、浏览器正常关闭，没有停止持续巡检；首false保留，不把执行轮次相加。见[UI结果](evidence/new7-runtime-followup-20261018/ui-results.json)与[范围和截图清单](evidence/new7-runtime-followup-20261018/ui-inventory.json)。
 
 本次不改生产代码、E1授权模板/计划/输出或原16件E3证据。正式E1未执行且未有新故障授权，旧7未决/11坏行/T62 false不解除。README和进度仅更新当前段；赛方确认表仅把七身份实际完成状态补正，数量上限仍待赛方答复。
+
+
+### 2026-10-18 当前上游审阅包与第三周期
+
+[当前贡献入口](docs/contributions/upstream-review-20261018/README.md)提供两个独立PR草稿、四条Issue草稿及精确补丁。目标是已核实的官方94077d10b336bfdb9a7d68e4859390bf44a67a27；所选129个SDK源文件与3985基线换行归一后相同，非整个仓库兼容承诺。仅派生LF补丁后，在各自隔离树实际apply-check/apply并逐件核对；接续包3项迁移排序检查通过，未变25项组件检查复用历史记录；并发包在当前未修复SDK上2个负例失败，修复后5项通过，不与项目3项集成检查相加。原CRLF应用失败、EOF警告及历史辅助工具失败保留；旧3985包、原16件E3与8件E1证据不变。当前只在团队内审阅，外部fork、PR及Issue尚未创建或提交，正式NEW7 E1仍待授权执行。
+
+[8877自然第三周期](evidence/new7-inspect-session-20261018/cycle3.json)业务30.002秒、30成功请求、10流程，observe5/verify1且act/审批/模型均0。原23条awaiting快照是历史，当前effective in-flight为0；本次是第三周期和进程句柄/HTTP的时点观察，不等于24小时、7天或未来退出保证。原E3未决、坏行和此前启动/检查器失败不由该证据消解。

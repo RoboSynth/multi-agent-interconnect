@@ -1,0 +1,111 @@
+{
+  "format": "upstream-current-lf-review/1",
+  "kind": "resumable",
+  "target_commit": "94077d10b336bfdb9a7d68e4859390bf44a67a27",
+  "original_base_commit": "3985c1330209f075c124669cc9d31f0e75448140",
+  "patch": {
+    "file": "acps-sdk-resumable-upstream.patch",
+    "sha256": "a9ca962b717e27d8fb776cd2396bb883305c4cdfb72bec55bde0accf8f05ff61",
+    "bytes": 93439,
+    "changed_files": 13
+  },
+  "derivation": {
+    "original_patch_source": "artifacts/sdk-resumable-upstream-review-20261018/review-package/acps-sdk-resumable-upstream.patch",
+    "original_patch_sha256": "5fa9d638d4100bae7a33e412c8d4bb1921f186ba1b411a752c7750c3017490c0",
+    "only_operation": "CRLF (0D 0A) to LF (0A), all other bytes unchanged",
+    "crlf_pairs_replaced": 146,
+    "all_non_line_ending_bytes_and_paths_unchanged": true,
+    "non_newline_test_AST_or_product_code_changes": 0
+  },
+  "upstream_comparison": {
+    "source_files": 129,
+    "exact_byte_matches": 2,
+    "newline_only_differences": 127,
+    "normalized_lf_matches": 129,
+    "semantic_receipt_sha256": "6ecb8a18c773e1e18a2222ccddc73886a3485718c5d4759c0378f5cf36ba52de"
+  },
+  "changes": [
+    {
+      "path": "acps-sdk/acps_sdk/aip/_task_order.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/aip_group_leader.py",
+      "change": "modified",
+      "baseline_sha256": "dc0397fe85b27a4d65e348bde1a7788d2471d547f2b78915c21feab284ba2bc6",
+      "source_sha256": "0715e9fb9ebf529e72f08f222e6604c5a91f8db4a42b86bf0a4bf553c670a427"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/aip_group_partner.py",
+      "change": "modified",
+      "baseline_sha256": "19da0dd27858faa986dd9fa7944af98b910095604b124ff4056e7c0d74cd9ef2",
+      "source_sha256": "31d93aece123bf92387e9220f74dc077125822e8db3ac8817099aaf699a800b0"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/README.md",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "d3334a25f6fbf5ab97491a031bdd78ebf74c32e005d19268a58c210bfe8e69ba"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/__init__.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "448f1225e8dacd7c3112ee1da8106a4bf6ac15402d51cef056689b41aff3d85b"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/journal.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/ledger.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/partner.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "8f9d13c8fef94288edcafca59ed59d5db41e5fdee8a725146e0593128409a6cd"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/aip/resumable/takeover.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "6827d843e286f95b246d85d619cf9254f91cf6ae07a9037a24de8586a50a2580"
+    },
+    {
+      "path": "acps-sdk/acps_sdk/amp/group_access.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "040d0f6e28d55bd7a42e700241698dc11e13a8b069c12cf19d43160764b26ee3"
+    },
+    {
+      "path": "acps-sdk/examples/resumable_group_demo.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "4a7889ffd47ed85b058cbb1f71f50f2a864ed47da676d171dd935e1169c813e9"
+    },
+    {
+      "path": "acps-sdk/tests/aip/test_task_ordering.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "cd8573acaac6a0b754039dc63b619aaf1496997f4332cd331f0725012c674411"
+    },
+    {
+      "path": "acps-sdk/tests/resumable/test_resumable.py",
+      "change": "added",
+      "baseline_sha256": null,
+      "source_sha256": "ff130e7305657659cff51f9a68eaf4d9fcb4e7ac54f0980b0215a69002f6506e"
+    }
+  ],
+  "formal_NEW7_E1_executions": 0,
+  "concurrency_cross_process_guarantee": false,
+  "published": false,
+  "scope": "Current-HEAD focused compatibility, not a full upstream suite or platform fault acceptance"
+}
