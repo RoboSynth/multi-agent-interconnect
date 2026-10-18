@@ -2,6 +2,7 @@
 from contextlib import contextmanager, redirect_stdout
 import io
 import json
+import ntpath
 from pathlib import Path
 import shutil
 import types
@@ -140,6 +141,116 @@ class DatabasePreparationTests(unittest.TestCase):
             self.assertEqual(runtime["nginx_prefix"], "retain-prefix")
             self.assertEqual(runtime["custom_setting"], 7)
             self.assertFalse((root / "runtime/private/initdb-password.txt").exists())
+
+
+class NativeRootTests(unittest.TestCase):
+    @contextmanager
+    def aliases(self, module, temporary, targets):
+        original_resolve = Path.resolve
+        original_lexists = module.os.path.lexists
+        commands = []
+
+        def resolve(path, *args, **kwargs):
+            if path in targets:
+                return targets[path]
+            return original_resolve(path, *args, **kwargs)
+
+        def create(command, **kwargs):
+            self.assertEqual(command[:3], ["powershell.exe", "-NoProfile", "-Command"])
+            self.assertTrue(kwargs["check"])
+            text = command[3]
+            start = "New-Item -ItemType Junction -Path '"
+            self.assertTrue(text.startswith(start) and text.endswith("' | Out-Null"))
+            alias, target = text[len(start):-len("' | Out-Null")].split("' -Target '")
+            alias, target = Path(alias.replace("''", "'")), Path(target.replace("''", "'"))
+            self.assertNotIn(alias, targets)
+            targets[alias] = target
+            commands.append(command)
+            return types.SimpleNamespace(returncode=0)
+
+        windows = types.SimpleNamespace(name="nt", path=types.SimpleNamespace(
+            normcase=ntpath.normcase, lexists=lambda path: Path(path) in targets or original_lexists(path)))
+        with mock.patch.object(module, "os", windows), \
+             mock.patch.object(module.tempfile, "gettempdir", return_value=str(temporary)), \
+             mock.patch.object(Path, "resolve", resolve), \
+             mock.patch.object(module.subprocess, "run", side_effect=create), \
+             mock.patch.object(module.subprocess, "Popen", side_effect=AssertionError("No resources")):
+            yield commands
+
+    def test_two_checkouts_get_separate_stable_ascii_aliases(self):
+        with fixture_directory() as base:
+            first, second, temporary = base / "检出甲", base / "检出乙", base / "aliases"
+            for path in (first, second, temporary):
+                path.mkdir()
+            module = load_tool("prepare_native_database")
+            targets = {}
+            with self.aliases(module, temporary, targets) as commands:
+                with mock.patch.object(module, "ROOT", first):
+                    one = module.native_root()
+                with mock.patch.object(module, "ROOT", second):
+                    two = module.native_root()
+                with mock.patch.object(module, "ROOT", first / ".." / first.name):
+                    self.assertEqual(module.native_root(), one)
+                self.assertNotEqual(one, two)
+                self.assertTrue(one.name.isascii() and two.name.isascii())
+                self.assertEqual(len(commands), 2)
+                self.assertEqual(targets[one], first)
+                self.assertEqual(targets[two], second)
+
+    def test_matching_legacy_alias_is_reused_without_writes(self):
+        with fixture_directory() as base:
+            root, temporary = base / "检出甲", base / "aliases"
+            root.mkdir()
+            temporary.mkdir()
+            saved = root / "saved-runtime.json"
+            identity = root / "identity.env"
+            saved.write_bytes(b'{"pgdata":"keep-selected-data"}')
+            identity.write_bytes(b"synthetic=preserve\n")
+            before = saved.read_bytes(), identity.read_bytes()
+            legacy = temporary / "incident-pilot-runtime-01a148fe"
+            module = load_tool("prepare_native_database")
+            with self.aliases(module, temporary, {legacy: root}) as commands, \
+                 mock.patch.object(module, "ROOT", root):
+                self.assertEqual(module.native_root(), legacy)
+                self.assertFalse(commands)
+            self.assertEqual((saved.read_bytes(), identity.read_bytes()), before)
+
+    def test_other_checkout_legacy_alias_is_not_changed(self):
+        with fixture_directory() as base:
+            root, other, temporary = base / "检出甲", base / "检出乙", base / "aliases"
+            for path in (root, other, temporary):
+                path.mkdir()
+            legacy = temporary / "incident-pilot-runtime-01a148fe"
+            legacy.mkdir()
+            marker = legacy / "owner.txt"
+            marker.write_bytes(b"other checkout unchanged")
+            module = load_tool("prepare_native_database")
+            targets = {legacy: other}
+            with self.aliases(module, temporary, targets) as commands, \
+                 mock.patch.object(module, "ROOT", root):
+                alias = module.native_root()
+                self.assertNotEqual(alias, legacy)
+                self.assertEqual(targets[legacy], other)
+                self.assertEqual(targets[alias], root)
+                self.assertEqual(len(commands), 1)
+            self.assertEqual(marker.read_bytes(), b"other checkout unchanged")
+
+    def test_wrong_project_hash_alias_is_rejected_without_overwrite(self):
+        with fixture_directory() as base:
+            root, other, temporary = base / "检出甲", base / "检出乙", base / "aliases"
+            for path in (root, other, temporary):
+                path.mkdir()
+            module = load_tool("prepare_native_database")
+            targets = {}
+            with self.aliases(module, temporary, targets) as commands, \
+                 mock.patch.object(module, "ROOT", root):
+                alias = module.native_root()
+                targets[alias] = other
+                commands.clear()
+                with self.assertRaisesRegex(RuntimeError, "alias does not target this project"):
+                    module.native_root()
+                self.assertFalse(commands)
+                self.assertEqual(targets[alias], other)
 
 
 def archive_bytes(entries):

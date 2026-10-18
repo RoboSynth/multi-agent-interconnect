@@ -1,0 +1,112 @@
+{
+  "kind": "SHARED_REFERENCE_NOT_A_DROP_IN_RUNTIME_CONFIG",
+  "captured_at_utc": "2026-10-18T09:57:36.939375+00:00",
+  "actual_local_coordinator_source_sha256": "68f0123589400c8c28df11ef81b3bb45cd42e91bd4780e223e667dd5ea8fb5cf",
+  "local_coordinator": {
+    "mode": "local-aip-stdio",
+    "coordinator_aic": "local-coordinator",
+    "python": ".venv/Scripts/python.exe",
+    "journal_path": "runtime/coordinator-journal.sqlite",
+    "amp_directory": "artifacts/local-aip/amp",
+    "term_journal_path": "runtime/coordinator-terms.sqlite",
+    "approval_env_file": "runtime/private/approval.env",
+    "llm_enabled": true,
+    "workers": [
+      {
+        "name": "应用团队",
+        "role": "application",
+        "aic": "local-application",
+        "env_file": "runtime/private/application.env",
+        "base_url": "http://127.0.0.1:8082"
+      },
+      {
+        "name": "数据库主",
+        "role": "database",
+        "aic": "local-database-primary",
+        "env_file": "runtime/private/database-bridge.env",
+        "bridge_config": "runtime/database-bridge.json"
+      },
+      {
+        "name": "数据库备",
+        "role": "database",
+        "aic": "local-database-backup",
+        "standby": true,
+        "env_file": "runtime/private/database-bridge.env",
+        "bridge_config": "runtime/database-backup-bridge.json"
+      },
+      {
+        "name": "运维团队",
+        "role": "ops",
+        "aic": "local-ops",
+        "env_file": "runtime/private/ops-bridge.env",
+        "bridge_config": "runtime/ops-bridge.json"
+      },
+      {
+        "name": "业务验证",
+        "role": "verification",
+        "aic": "local-verification",
+        "base_url": "http://127.0.0.1:8088",
+        "verification_duration": 30
+      }
+    ],
+    "llm_base_url": "http://127.0.0.1:8089/v1",
+    "llm_model": "Qwen3-1.7B-Q8_0",
+    "llm_max_output_tokens": 768,
+    "llm_max_calls": 40,
+    "llm_token_budget": 65536,
+    "llm_timeout_seconds": 60
+  },
+  "native_runtime_reference": {
+    "backend": "native",
+    "pgport": 55432,
+    "app_v1_port": 8081,
+    "app_v2_port": 8082,
+    "order_port": 8088,
+    "project_root": "<PROJECT_ROOT>",
+    "app_python": "<PROJECT_ROOT>/.venv/Scripts/python.exe",
+    "postgres_bin": "<PROJECT_ROOT>/tools/runtime/pgsql/bin",
+    "pgdata": "<PROJECT_ROOT>/runtime/pgdata",
+    "nginx_bin": "<PROJECT_ROOT>/tools/runtime/nginx-1.30.6/nginx.exe",
+    "nginx_prefix": "<PROJECT_ROOT>/runtime/nginx",
+    "managed": {}
+  },
+  "domain_environment_templates": {
+    "runtime/private/application.env": {
+      "PGHOST": "127.0.0.1",
+      "PGPORT": "55432",
+      "PGDATABASE": "orders",
+      "PGUSER": "orders_app",
+      "PGPASSWORD": "<SET_PER_DEVELOPER>",
+      "APP_ADMIN_TOKEN": "<SET_PER_DEVELOPER>"
+    },
+    "runtime/private/database.env": {
+      "PGHOST": "127.0.0.1",
+      "PGPORT": "55432",
+      "PGDATABASE": "orders",
+      "PGUSER": "orders_agent",
+      "PGPASSWORD": "<SET_PER_DEVELOPER>"
+    },
+    "runtime/private/approval.env": {
+      "INCIDENT_APPROVAL_SECRET": "<SET_PER_DEVELOPER>"
+    },
+    "runtime/private/database-bridge.env": {
+      "PGHOST": "127.0.0.1",
+      "PGPORT": "55432",
+      "PGDATABASE": "orders",
+      "PGUSER": "bridge_operator",
+      "PGPASSWORD": "<SET_PER_DEVELOPER>",
+      "DATABASE_URI": "<SET_PER_DEVELOPER>"
+    },
+    "runtime/private/ops-bridge.env": {
+      "INCIDENT_OPS_BACKEND": "<SET_PER_DEVELOPER>",
+      "OPS_SUPERVISOR_TOKEN": "<SET_PER_DEVELOPER>"
+    }
+  },
+  "transforms": [
+    "Python executable rewritten to checkout-relative reference",
+    "Machine-specific native aliases and process IDs replaced by project paths and empty managed state",
+    "Only PGHOST/PGPORT/PGDATABASE/PGUSER values retained in environment references; all other values are per-developer placeholders"
+  ],
+  "live_services_changed": false,
+  "formal_identities_reused": false
+}

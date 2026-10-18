@@ -185,18 +185,23 @@ exit $fixtureExit
 
 @unittest.skipUnless(os.name == "nt" and PWSH, "Windows PowerShell 7 local entry")
 class LocalStartupEntryTests(unittest.TestCase):
-    def run_fixture(self, *, enable=False, reject_config=False):
+    def run_fixture(self, *, enable=False, reject_config=False, nginx="default"):
         with fixture_directory() as directory:
             root = Path(directory)
             for folder in ("tools", "domains", "deploy", ".venv/Scripts",
-                           ".venv-mcp-postgres/Scripts", "tools/runtime/pgsql/bin", "tools/runtime/nginx-fixture"):
+                           ".venv-mcp-postgres/Scripts", "tools/runtime/pgsql/bin"):
                 (root / folder).mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / "deploy/local-up.ps1", root / "deploy/local-up.ps1")
             shutil.copyfile(sys.executable, root / ".venv/Scripts/python.exe")
             shutil.copyfile(Path(sys.prefix) / "pyvenv.cfg", root / ".venv/pyvenv.cfg")
-            for name in (".venv-mcp-postgres/Scripts/postgres-mcp.exe", "tools/runtime/pgsql/bin/postgres.exe",
-                         "tools/runtime/nginx-fixture/nginx.exe"):
+            for name in (".venv-mcp-postgres/Scripts/postgres-mcp.exe", "tools/runtime/pgsql/bin/postgres.exe"):
                 (root / name).write_bytes(b"fixture only")
+            nginx_path = root / "tools/runtime" / ("nginx-1.30.6" if nginx == "default" else "nginx-fixture") / "nginx.exe"
+            nginx_path.parent.mkdir(parents=True)
+            if nginx != "configured-missing":
+                nginx_path.write_bytes(b"fixture only")
+            if nginx.startswith("configured"):
+                (root / "deploy/native-runtime.json").write_text(json.dumps({"nginx_bin": str(nginx_path)}), encoding="utf-8")
             if reject_config:
                 (root / "reject-config").touch()
             stub = """import json,sys
@@ -206,8 +211,13 @@ with (root/'events.jsonl').open('a',encoding='utf-8') as stream:
     stream.write(json.dumps({'stage':Path(__file__).stem,'args':sys.argv[1:]})+'\\n')
 if Path(__file__).stem=='configure_local_coordinator' and '--check' in sys.argv and (root/'reject-config').exists():
     raise SystemExit(9)
+if Path(__file__).stem=='download_native_runtime':
+    nginx=root/'tools/runtime/nginx-1.30.6/nginx.exe'
+    nginx.parent.mkdir(parents=True,exist_ok=True)
+    nginx.write_bytes(b'fixture only')
 """
-            for name in ("tools/configure_local_coordinator.py", "tools/prepare_native_database.py", "domains/setup_local.py"):
+            for name in ("tools/configure_local_coordinator.py", "tools/prepare_native_database.py",
+                         "tools/download_native_runtime.py", "domains/setup_local.py"):
                 (root / name).write_text(stub, encoding="utf-8")
             events = root / "events.jsonl"
             for name, stage in (("deploy/native.ps1", "native"), ("tools/start_workbench.ps1", "workbench")):
@@ -247,6 +257,25 @@ if Path(__file__).stem=='configure_local_coordinator' and '--check' in sys.argv 
             self.assertIn("--enable-llm", arguments)
             self.assertEqual(arguments[arguments.index("--model-base-url")+1], "http://127.0.0.1:8089/v1")
             self.assertEqual(arguments[arguments.index("--model")+1], "Qwen3-1.7B-Q8_0")
+
+    def test_unconfigured_other_nginx_requires_the_preparation_default(self):
+        result, rows = self.run_fixture(nginx="other")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        stages = [row["stage"] for row in rows]
+        self.assertEqual(stages[1:3], ["download_native_runtime", "prepare_native_database"])
+        self.assertEqual(stages.count("download_native_runtime"), 1)
+
+    def test_explicit_existing_nginx_path_is_preserved(self):
+        result, rows = self.run_fixture(nginx="configured")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("download_native_runtime", [row["stage"] for row in rows])
+        self.assertIn("native", [row["stage"] for row in rows])
+
+    def test_missing_explicit_nginx_stops_before_database_or_download(self):
+        result, rows = self.run_fixture(nginx="configured-missing")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Configured nginx executable is missing", result.stderr)
+        self.assertEqual([row["stage"] for row in rows], ["configure_local_coordinator"])
 
 
 if __name__ == "__main__":

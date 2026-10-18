@@ -4,6 +4,7 @@ Secrets are generated into domain-local env files, never printed or placed in
 coordinator configuration. Re-running reuses the existing identities/passwords.
 """
 from pathlib import Path
+import hashlib
 import json
 import os
 import secrets
@@ -27,13 +28,23 @@ def read_env(path):
 
 def native_root():
     result = ROOT
-    if os.name == "nt" and not str(ROOT).isascii():
+    root = ROOT.resolve()
+    if os.name == "nt" and not str(root).isascii():
         # Defer this filesystem change until existing-cluster identities pass.
-        result = Path(tempfile.gettempdir()) / "incident-pilot-runtime-01a148fe"
-        if not result.exists():
-            command = "New-Item -ItemType Junction -Path '" + str(result).replace("'", "''") + "' -Target '" + str(ROOT).replace("'", "''") + "' | Out-Null"
+        temporary = Path(tempfile.gettempdir())
+        legacy = temporary / "incident-pilot-runtime-01a148fe"
+        try:
+            if os.path.lexists(legacy) and legacy.resolve() == root:
+                return legacy
+        except (OSError, RuntimeError):
+            pass  # An unrelated or unresolvable legacy alias is never changed.
+        identity = os.path.normcase(str(root))
+        suffix = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+        result = temporary / ("incident-pilot-runtime-" + suffix)
+        if not os.path.lexists(result):
+            command = "New-Item -ItemType Junction -Path '" + str(result).replace("'", "''") + "' -Target '" + str(root).replace("'", "''") + "' | Out-Null"
             subprocess.run(["powershell.exe", "-NoProfile", "-Command", command], check=True)
-        if result.resolve() != ROOT:
+        if result.resolve() != root:
             raise RuntimeError("runtime alias does not target this project")
     return result
 

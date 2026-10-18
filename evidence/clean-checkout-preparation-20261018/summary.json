@@ -1,0 +1,500 @@
+{
+  "schema_version": "fresh-checkout-safe-evidence/1",
+  "status": "passed",
+  "scope": "Fresh clone on existing Windows machine; guide setup and three explicit offline tests only",
+  "checkout_commit": "659b4b500751ca2419c14803eaa3443529716f57",
+  "started_utc": "2026-10-18T09:43:31.488085+00:00",
+  "completed_utc": "2026-10-18T09:47:25.140634+00:00",
+  "guide_and_source_sha256": {
+    "docs/开发者接手指南_20261018.md": "8667dd7f14405bc2efcac797151b2eb5e3f75806c52648369d3c9e55c4445d3d",
+    "requirements-high-score.txt": "7f06d2aa868c947370b1a8042fcb50adacc4adc9de9ac63543a5449d9cdc5cf0",
+    "requirements-lock.txt": "9e3e604705c32c346b15dea7f057fce980edafc0a1fdb2f33fa072cc667a19b3",
+    "vendor/ACPs-community/acps-sdk/pyproject.toml": "d71a0e245bb084beb204896ff2bdd9b7fd12a5e68e9cdd8c4247ef2efc7203c8",
+    "tests/test_native_preparation.py": "c9b816abad492f3c20bb0e4abce3e90277187e43a6286c8c684d999b3f7e7006",
+    "tests/test_workbench_model_config.py": "71d71140e4511ceacf496c19d52013c40b6b4c02c6228b33768b37809b5a967e",
+    "tests/test_platform_smoke.py": "0fea20a91f9a5dfe58fe84c9897a5af07920376c4eddb4bba7ca869d4776b4b7"
+  },
+  "frozen_before": {
+    "plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+    "input_count": 204,
+    "mismatches": []
+  },
+  "frozen_after": {
+    "plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+    "input_count": 204,
+    "mismatches": []
+  },
+  "main_venv_pyvenv_cfg_unchanged": true,
+  "stages": [
+    {
+      "stage": "clone",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:43:32.673482+00:00",
+      "completed_utc": "2026-10-18T09:43:53.843581+00:00",
+      "elapsed_seconds": 21.172,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "eedbe90da13babc3cf7205451c8d4bc1f4e0147f0c4bb38b6b8fcc7e300cf01f"
+    },
+    {
+      "stage": "checkout",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:43:53.854636+00:00",
+      "completed_utc": "2026-10-18T09:43:59.461757+00:00",
+      "elapsed_seconds": 5.61,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "05b9389cbee6a09870fd5957f62783144b172889e36c1355bbe1e1856886a282"
+    },
+    {
+      "stage": "checkout-commit",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:43:59.481790+00:00",
+      "completed_utc": "2026-10-18T09:43:59.547821+00:00",
+      "elapsed_seconds": 0.063,
+      "stdout_sha256": "180c1bc26bf7076955d6763335d6ee8d4cc1948be02d8f8af39eafaebee58218",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "venv",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:43:59.610020+00:00",
+      "completed_utc": "2026-10-18T09:44:08.979160+00:00",
+      "elapsed_seconds": 9.375,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "install-project-requirements",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:44:08.982312+00:00",
+      "completed_utc": "2026-10-18T09:46:43.972628+00:00",
+      "elapsed_seconds": 154.985,
+      "stdout_sha256": "b6debd0370370d7a534fe4364f53fc8891dd772ec2c7aceeab8d3e8dec48bf42",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "install-sdk-amp-sign",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:46:43.990721+00:00",
+      "completed_utc": "2026-10-18T09:47:17.699586+00:00",
+      "elapsed_seconds": 33.719,
+      "stdout_sha256": "1981def7997c6cac6dfc601f9fe7d0cb7f54d206a4330670dc413b3ba0eae46c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "pip-check",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:47:17.716840+00:00",
+      "completed_utc": "2026-10-18T09:47:18.975866+00:00",
+      "elapsed_seconds": 1.265,
+      "stdout_sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "environment-origins",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:47:18.988033+00:00",
+      "completed_utc": "2026-10-18T09:47:19.360325+00:00",
+      "elapsed_seconds": 0.375,
+      "stdout_sha256": "14c0b83b52f9a67bfd13b38512b7a0ffd353d4479907664684895bbc8a0538cd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "test-native_preparation",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:47:19.375889+00:00",
+      "completed_utc": "2026-10-18T09:47:20.209143+00:00",
+      "elapsed_seconds": 0.828,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5fad1535fac64b50b778c23177665b6344f361a1c72b5bc78ecaa994f3757f10",
+      "test_count": 9,
+      "unittest_terminal": true,
+      "warning_classes": []
+    },
+    {
+      "stage": "test-workbench_model_config",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:47:20.221374+00:00",
+      "completed_utc": "2026-10-18T09:47:22.814677+00:00",
+      "elapsed_seconds": 2.594,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a3c0b3bae6104c564503439cfd81279e35729ce2c810a5ea6619e030b1819457",
+      "test_count": 9,
+      "unittest_terminal": true,
+      "warning_classes": [
+        "StarletteDeprecationWarning"
+      ]
+    },
+    {
+      "stage": "test-platform_smoke",
+      "actual_exit_code": 0,
+      "started_utc": "2026-10-18T09:47:22.829142+00:00",
+      "completed_utc": "2026-10-18T09:47:24.815847+00:00",
+      "elapsed_seconds": 1.985,
+      "stdout_sha256": "91d972479fc6e8605ed8a6470673efd93b84659711c7cf72dde602e86e933c75",
+      "stderr_sha256": "1356d808220c527f7c45a35271fe2862d9e6ab2a740b373e765135efd1ad7b03",
+      "test_count": 5,
+      "unittest_terminal": true,
+      "warning_classes": []
+    }
+  ],
+  "review": {
+    "scope": "Three guide-selected test files only",
+    "reviewed_before_execution": true,
+    "tests": [
+      {
+        "path": "tests/test_native_preparation.py",
+        "sha256": "c9b816abad492f3c20bb0e4abce3e90277187e43a6286c8c684d999b3f7e7006",
+        "test_methods": 9,
+        "review": "Synthetic files under owned checkout artifact directory; process and download calls patched to fixture implementations; no live database or runtime download."
+      },
+      {
+        "path": "tests/test_workbench_model_config.py",
+        "sha256": "71d71140e4511ceacf496c19d52013c40b6b4c02c6228b33768b37809b5a967e",
+        "test_methods": 9,
+        "review": "Temporary configuration files and injected fake transports; FastAPI TestClient operates in process; sole subprocess invokes the pure configuration checker with -S; HTTP client forbidden or never invoked."
+      },
+      {
+        "path": "tests/test_platform_smoke.py",
+        "sha256": "0fea20a91f9a5dfe58fe84c9897a5af07920376c4eddb4bba7ca869d4776b4b7",
+        "test_methods": 5,
+        "review": "WutongTransport factory patched; AsyncMock start/call/close; temporary result files only; no SDK network connection."
+      }
+    ],
+    "total_test_methods": 23
+  },
+  "test_count": 23,
+  "raw_logs": "Retained locally; excluded from shared evidence",
+  "boundaries": {
+    "same_existing_windows_machine": true,
+    "new_machine_acceptance": false,
+    "resource_deployment_executed": false,
+    "live_platform_connection_executed": false,
+    "monitor_kafka_executed": false,
+    "model_call_executed": false,
+    "formal_e1_executed": false,
+    "platform_smoke_import_scope": "Test file deliberately prepends the fresh checkout vendored SDK to sys.path; it tests mocked application contracts, not live SDK wheel transport"
+  },
+  "local_receipt_sha256": {
+    "results.json": "cbc31ad37937cbfcfcef201b2d0c74fbf66ba47234a40665983ee13213e6a070",
+    "offline-source-review.json": "7a8cb4b5e11b2e5c4af9daa82f05e2976eff46ecd499aca1d76ddffeb4ef2963",
+    "environment-package-origins.json": "ea88c10da5f5604a303e9a8c097e7af268816acd17826c72b474bf955ab6f1ff",
+    "final-source-verification.json": "f527ebee98c732a65e86e7aee563c8804d486c94474d7e6baab72de2bb221185",
+    "safe-summary-first-attempt.json": "4ede26bb3f2f3d387a6f9a06c1abbdb3c80bcd70c34bfdb2953445f45f748cb0"
+  },
+  "environment": {
+    "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "venv_uses_global_site_packages": false,
+    "interpreter_inside_checkout_venv": true,
+    "packages": [
+      {
+        "name": "acps-sdk",
+        "version": "2.2.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": true
+      },
+      {
+        "name": "aio-pika",
+        "version": "10.1.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "aiormq",
+        "version": "7.2.2",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "annotated-doc",
+        "version": "0.0.5",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "annotated-types",
+        "version": "0.8.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "anyio",
+        "version": "4.15.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "asyncpg",
+        "version": "0.32.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "attrs",
+        "version": "26.1.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "certifi",
+        "version": "2026.7.22",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "cffi",
+        "version": "2.1.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "click",
+        "version": "8.5.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "cryptography",
+        "version": "50.0.2",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "fastapi",
+        "version": "0.143.3",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "h11",
+        "version": "0.16.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "httpcore",
+        "version": "1.0.9",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "httpx",
+        "version": "0.28.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "httpx-sse",
+        "version": "0.4.3",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "idna",
+        "version": "3.20",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "jcs",
+        "version": "0.2.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "jsonschema",
+        "version": "4.26.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "jsonschema-specifications",
+        "version": "2025.9.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "mcp",
+        "version": "1.30.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "multidict",
+        "version": "7.1.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "opentelemetry-api",
+        "version": "1.45.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pamqp",
+        "version": "4.0.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pip",
+        "version": "25.0.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "propcache",
+        "version": "0.5.4",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pycparser",
+        "version": "3.11",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pydantic",
+        "version": "2.14.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pydantic-settings",
+        "version": "2.16.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pydantic_core",
+        "version": "2.50.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "PyJWT",
+        "version": "2.15.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "python-dotenv",
+        "version": "1.2.4",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "python-multipart",
+        "version": "0.0.32",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "pywin32",
+        "version": "312",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "PyYAML",
+        "version": "6.0.3",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "referencing",
+        "version": "0.37.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "rpds-py",
+        "version": "2026.9.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "sse-starlette",
+        "version": "3.5.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "starlette",
+        "version": "1.8.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "typing-inspection",
+        "version": "0.4.4",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "typing_extensions",
+        "version": "4.16.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "uvicorn",
+        "version": "0.54.0",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      },
+      {
+        "name": "yarl",
+        "version": "1.25.1",
+        "installed_in_checkout_venv": true,
+        "direct_local_sdk": false
+      }
+    ],
+    "modules_inside_checkout_venv": {
+      "pip": true,
+      "fastapi": true,
+      "httpx": true,
+      "pydantic": true,
+      "mcp": true,
+      "yaml": true,
+      "asyncpg": true,
+      "jsonschema": true,
+      "acps_sdk": true,
+      "jcs": true,
+      "cryptography": true
+    }
+  },
+  "evidence_generation_note": {
+    "initial_summary_actual_exit_code": 1,
+    "initial_summary_error_class": "KeyError",
+    "cause": "The environment metadata output filename collided with its stage receipt; the stage receipt was preserved and metadata was collected again read-only under a distinct filename",
+    "setup_and_tests_rerun": false
+  },
+  "final_source_verification": {
+    "verified_utc": "2026-10-18T09:48:06.574905+00:00",
+    "stages": [
+      {
+        "stage": "environment-package-origins",
+        "actual_exit_code": 0,
+        "stdout_sha256": "14c0b83b52f9a67bfd13b38512b7a0ffd353d4479907664684895bbc8a0538cd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "stage": "tracked-source-status",
+        "actual_exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tracked_worktree_clean": true
+      },
+      {
+        "stage": "final-checkout-head",
+        "actual_exit_code": 0,
+        "stdout_sha256": "180c1bc26bf7076955d6763335d6ee8d4cc1948be02d8f8af39eafaebee58218",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "commit_matches": true
+      }
+    ],
+    "source_hashes_still_match": true
+  }
+}

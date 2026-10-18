@@ -1,0 +1,86 @@
+{
+  "status": "CLEAN_CHECKOUT_PREPARATION_AND_TWO_SCOPED_STARTUP_FIXES_READY",
+  "released_at_utc": "2026-10-18T09:50:48.684567+00:00",
+  "checkout_evidence": "evidence/clean-checkout-preparation-20261018/summary.json",
+  "checkout_evidence_sha256": "d2efb4b5a03185937267f147d8a0a7b87d0f0b164e7bf2ea28d2e6ee2236d84e",
+  "checkout_commit": "659b4b500751ca2419c14803eaa3443529716f57",
+  "checkout_tests": 23,
+  "checkout_is_separate_from_post_fix_checks": true,
+  "fixes": [
+    "Isolate ASCII runtime aliases by normalized checkout path while retaining valid legacy aliases",
+    "Check the selected nginx executable; reject missing explicit paths before database preparation"
+  ],
+  "source_sha256": {
+    "tools/prepare_native_database.py": "fee363603e8f4816c3db01b95fc1fc531fdfc9d53f8f8e1b4de5a7053edb5934",
+    "tests/test_native_preparation.py": "fde7cb769bf4bf134368869c0b887e6d9b770ee3ed0e50e7b4b5c3b8383d615f",
+    "deploy/local-up.ps1": "23f9d6be4358572b20bc573054edfdf956f2560defcb1bb34b04abe3cf82e990",
+    "tests/test_local_launcher.py": "a197b9c36d01d2c1217917430046548eb3dedbda7859c3f3e85d56eb2494990a"
+  },
+  "alias_checks": {
+    "status": "NATIVE_ALIAS_FOCUSED_OFFLINE_CHECKS_COMPLETED",
+    "tests_run": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true,
+    "elapsed_seconds": 0.062,
+    "scope": "Four NativeRootTests only; all junction creation is stubbed, real temporary files are fixture-only.",
+    "source_sha256": {
+      "tools/prepare_native_database.py": "fee363603e8f4816c3db01b95fc1fc531fdfc9d53f8f8e1b4de5a7053edb5934",
+      "tests/test_native_preparation.py": "fde7cb769bf4bf134368869c0b887e6d9b770ee3ed0e50e7b4b5c3b8383d615f"
+    },
+    "prepare_called": false,
+    "real_junctions_created": 0,
+    "real_process_calls": 0,
+    "DB_or_model_or_AMQP_calls": 0
+  },
+  "launcher_checks": {
+    "status": "FIFTEEN_FIXTURE_LAUNCHER_CHECKS_PASSED",
+    "recorded_at_utc": "2026-10-18T09:48:00.885083+00:00",
+    "source_sha256": {
+      "deploy/local-up.ps1": "23f9d6be4358572b20bc573054edfdf956f2560defcb1bb34b04abe3cf82e990",
+      "tests/test_local_launcher.py": "a197b9c36d01d2c1217917430046548eb3dedbda7859c3f3e85d56eb2494990a"
+    },
+    "check": {
+      "module": "test_local_launcher.py",
+      "tests_run": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_exit_code": 0,
+      "elapsed_seconds": 32.104,
+      "process_session": 96453,
+      "tool_chunks": [
+        "66c5ff",
+        "c603f6",
+        "d735ae"
+      ]
+    },
+    "coverage": [
+      "unconfigured alternate nginx triggers default-version download stub before database preparation",
+      "existing explicit nginx_bin stays selected and skips download",
+      "missing explicit nginx_bin stops before download or database preparation",
+      "existing launcher configuration and process identity cases remain covered"
+    ],
+    "execution_scope": "Real PowerShell entry points in owned temporary directories; process, HTTP and resource stages use fixtures/stubs",
+    "E1_frozen_path_overlap": [],
+    "real_business_or_platform_services_started": false,
+    "real_download_or_database_preparation_executed": false,
+    "new_machine_or_complete_local_up_verified": false
+  },
+  "local_original_receipts_sha256": {
+    "alias_focused_checks": "ede4170e7669bdc266869ec08c33df7fa380d308bffaa886d227f932b2e82c7f",
+    "launcher_checks": "c8b70b83aa549d2d2abd813c42bf6a52d0bcd06efcd98b1f0f63b0828cd3471a"
+  },
+  "alias_actual_exit_code": 0,
+  "alias_completion_tool_chunk": "2bd452",
+  "frozen_E1_plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+  "frozen_path_overlap": [],
+  "complete_local_up_executed": false,
+  "new_machine_acceptance": false,
+  "actual_fault_injection": false,
+  "formal_NEW7_E1_executed": false,
+  "real_database_or_native_services_started": false,
+  "new_real_aliases_created": false,
+  "Kafka_Monitor_ingestion_verified": false
+}

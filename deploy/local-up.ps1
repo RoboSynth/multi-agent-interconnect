@@ -19,8 +19,19 @@ Run-Python ($CoordinatorArguments+@('--check'))
 if($Install){
     Run-Python @('-m','pip','install','-r',(Join-Path $ProjectRoot 'requirements-high-score.txt'),'--cache-dir',(Join-Path $ProjectRoot '.cache/pip'))
 }
+$NginxExecutable=Join-Path $ProjectRoot 'tools/runtime/nginx-1.30.6/nginx.exe'
+$RuntimeFile=Join-Path $PSScriptRoot 'native-runtime.json'
+if(Test-Path -LiteralPath $RuntimeFile){
+    $Runtime=Get-Content -LiteralPath $RuntimeFile -Raw | ConvertFrom-Json -AsHashtable
+    if($Runtime.nginx_bin){
+        $NginxExecutable=$Runtime.nginx_bin
+        if(-not(Test-Path -LiteralPath $NginxExecutable -PathType Leaf)){
+            throw 'Configured nginx executable is missing; restore it or correct deploy/native-runtime.json before starting.'
+        }
+    }
+}
 if(-not(Test-Path -LiteralPath (Join-Path $ProjectRoot 'tools/runtime/pgsql/bin/postgres.exe')) -or
-   -not(Get-ChildItem -LiteralPath (Join-Path $ProjectRoot 'tools/runtime') -Filter nginx.exe -Recurse -ErrorAction SilentlyContinue)){
+   -not(Test-Path -LiteralPath $NginxExecutable -PathType Leaf)){
     Run-Python @((Join-Path $ProjectRoot 'tools/download_native_runtime.py'))
 }
 Run-Python @((Join-Path $ProjectRoot 'tools/prepare_native_database.py'))
