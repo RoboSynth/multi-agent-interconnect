@@ -18,7 +18,7 @@ class VerificationFreshWorkflows(unittest.IsolatedAsyncioTestCase):
             calls.append((request.method, request.url.path))
             if receipt_error:
                 raise httpx.ConnectError("mock unavailable", request=request)
-            return httpx.Response(receipt_status, json={"order_id": "existing-order"})
+            return httpx.Response(receipt_status, json={"order_id": "existing-order", "order_api_version": "v2"})
         client = httpx.AsyncClient(transport=httpx.MockTransport(receipt)) if receipt_status is not None else None
         with patch("business.load.OrderObserver") as observer:
             observer.return_value.observe = AsyncMock(return_value={"passed": True, "completed_workflows": 10})
@@ -28,7 +28,7 @@ class VerificationFreshWorkflows(unittest.IsolatedAsyncioTestCase):
                     "incident_id": "inc-original", "logical_task_id": "verify-original", "kind": "verify",
                     "tool": "incident.verification", "args": args}, "coordinator")
             if result["status"] == "ok":
-                observer.assert_called_once_with("http://127.0.0.1:8088", run_id="inc-original-verify-original")
+                observer.assert_called_once_with("http://127.0.0.1:8088", run_id="inc-original-verify-original", expected_api_version="v2")
                 observer.return_value.observe.assert_awaited_once_with(duration=30, min_complete=10)
             else:
                 observer.assert_not_called()

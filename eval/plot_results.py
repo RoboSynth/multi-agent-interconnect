@@ -6,6 +6,10 @@ import hashlib
 import json
 from pathlib import Path
 from statistics import median
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from eval.scheduling_report import matrix_integrity, passed_control
 
 import matplotlib
 matplotlib.use("Agg")
@@ -27,13 +31,19 @@ def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
         raise ValueError("M1 method definitions differ; report these cohorts separately")
     m1_scope = "selects observations, actions and verification" if m1_definitions == {"free-tools-v1"} else "selects observations"
     output.mkdir(parents=True, exist_ok=True)
-    scenarios, methods = experiment["scenarios"], experiment["methods"]
-    expected = len(scenarios)*len(methods)*experiment["repeats"]
+    scenarios, methods = [scenario for scenario in experiment["scenarios"] if scenario != "H00"], experiment["methods"]
+    expected = len(experiment["scenarios"])*len(methods)*experiment["repeats"]
+    controls = [row for row in rows if row["scenario"] == "H00"]
+    control_groups = [{"scenario": "H00", "method": method,
+        "recorded": sum(row["method"] == method for row in controls),
+        "passed": sum(row["method"] == method and passed_control(row) for row in controls)}
+        for method in methods] if "H00" in experiment["scenarios"] else []
     groups = [(scenario, method, [r for r in rows if r["scenario"] == scenario and r["method"] == method])
               for scenario in scenarios for method in methods]
-    complete = len(rows) == expected and all(len(selected) == experiment["repeats"] for _, _, selected in groups)
+    integrity = matrix_integrity(rows, experiment)
+    complete = integrity["complete"]
     source_versions = {scenario: sorted({r["source_version"] for r in rows
-        if r["scenario"] == scenario and r.get("source_version")}) for scenario in scenarios}
+        if r["scenario"] == scenario and r.get("source_version")}) for scenario in experiment["scenarios"]}
     composite = len({version for versions in source_versions.values() for version in versions}) > 1
     plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10, "pdf.fonttype": 42,
         "svg.fonttype": "none", "axes.spines.top": False, "axes.spines.right": False})
@@ -75,24 +85,34 @@ def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):
     label = "COMPOSITE" if composite and complete else "COMPLETE" if complete else "PARTIAL"
     subtitle = f"{label}: {len(rows)}/{expected} recorded runs; "
     subtitle += "each point is one run, dark ticks are medians, lines show observed ranges"
-    fig.text(.02, .938, subtitle, fontsize=10, color="#48515c")
+    if controls:
+        subtitle += "\nH00 controls excluded from fault panels"
+    fig.text(.02, .938, subtitle, fontsize=10, color="#48515c", va="top")
     legend = [Line2D([0], [0], marker=MARKERS[m], color="none", markerfacecolor=COLORS[m],
                       markeredgecolor="white", markersize=7, label=m) for m in methods]
     fig.legend(handles=legend, loc="lower right", bbox_to_anchor=(.985, .012), ncol=3, frameon=False)
     footnote = ("Recovery uses confirmed successes and 1 rps sampling; failed/unconfirmed counts remain in row labels.\n"
                 "Probe/token panels retain failures. Model fallbacks and diagnosis counts are in plot-data.json.\n"
                 f"M0 is scripted; M1 {m1_scope}; M2 ranks model hypotheses. These are local development results.")
+    if control_groups:
+        footnote += "\nH00 healthy controls (separate): " + "; ".join(
+            f"{group['method']} {group['passed']}/{group['recorded']} passed" for group in control_groups)
     if composite:
         footnote += "\nDifferent source freezes: " + "; ".join(
             scenario + "=" + "/".join(versions) for scenario, versions in source_versions.items())
-        footnote += ". Original failed F06 v2 runs remain in the historical report."
+        footnote += ". Source freezes are reported separately."
     fig.text(.02, .025, footnote, fontsize=8.5, color="#48515c", linespacing=1.5)
-    fig.subplots_adjust(left=.225, right=.98, top=.88, bottom=.14, wspace=.25)
+    fig.subplots_adjust(left=.225, right=.98, top=.84 if controls else .88, bottom=.14, wspace=.25)
     for suffix in formats:
         fig.savefig(output / ("scheduling-comparison."+suffix), dpi=180, facecolor="white")
     plt.close(fig)
     metadata = {"source": str(raw_path.resolve()), "source_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
                 "recorded_cells": len(rows), "expected_cells": expected, "matrix_complete": complete,
+                "matrix_integrity": integrity, "fault_recorded_cells": len(rows)-len(controls),
+                "fault_expected_cells": len(scenarios)*len(methods)*experiment["repeats"],
+                "healthy_control_recorded_cells": len(controls),
+                "healthy_control_passed": sum(passed_control(row) for row in controls),
+                "healthy_control_groups": control_groups,
                 "formats": list(formats), "composite_source_versions": composite,
                 "M1_method_definition_ids": sorted(m1_definitions),
                 "source_versions_by_scenario": source_versions, "groups": counters}

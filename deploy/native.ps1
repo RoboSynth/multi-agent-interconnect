@@ -170,10 +170,15 @@ Save-Runtime
 foreach ($ProbePort in $Config.app_v1_port,$Config.app_v2_port,$Config.order_port) {
     $Ready = $false
     for ($Attempt = 0; $Attempt -lt 30; $Attempt++) {
-        try { $Response = Invoke-RestMethod -Uri "http://127.0.0.1:$ProbePort/ready" -TimeoutSec 2; if ($Response.ok) { $Ready = $true; break } } catch { }
+        try { $Response = Invoke-RestMethod -Uri "http://127.0.0.1:$ProbePort/ready" -TimeoutSec 2; if (($Response.ok -eq $true) -and ($ProbePort -ne $Config.order_port -or $Response.api_version -eq 'v2')) { $Ready = $true; break } } catch { }
         Start-Sleep -Milliseconds 500
     }
-    if (-not $Ready) { throw "Service on local port $ProbePort did not become ready. Inspect runtime/*.stderr.log." }
+    if (-not $Ready) {
+        if ($ProbePort -eq $Config.order_port) {
+            throw "Public entry on local port $ProbePort must be ready with api_version=v2. Check the existing Nginx route.conf and use the normal scenario restore when appropriate; start preserves existing routes."
+        }
+        throw "Service on local port $ProbePort did not become ready. Inspect runtime/*.stderr.log."
+    }
 }
 Write-Output "Local order target ready at http://127.0.0.1:$($Config.order_port); runtime configuration: $RuntimeFile"
 } finally {

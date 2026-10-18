@@ -1,0 +1,11 @@
+--- original-frozen/eval/run.py
++++ continuation-four/executed-run.py
+@@ -203,6 +203,8 @@
+             for repeat in range(args.repeats):
+                 ordered_methods = methods[repeat % len(methods):] + methods[:repeat % len(methods)]
+                 for method in ordered_methods:
++                    if (scenario, method, repeat + 1) not in {("F10", "M0", 2), ("F10", "M2", 3), ("F10", "M0", 3), ("F10", "M1", 3)}:
++                        continue
+                     check_sources(manifest["source_sha256"])
+                     if target and hashlib.sha256(args.target_config.read_bytes()).hexdigest() != manifest["target_config_sha256"]:
+                         raise RuntimeError("Explicit target changed before another fault injection")

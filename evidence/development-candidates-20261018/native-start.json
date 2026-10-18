@@ -1,0 +1,45 @@
+{
+  "schema": "safe-native-entry-readiness-proof/1.0",
+  "status": "NATIVE_READINESS_RUNTIME_VERIFIED",
+  "target": "deploy/native.ps1",
+  "baseline_sha256": "cb2f793f81541926bc144e83d0bf0bf86c3f6639b6d6c1a35e82db1e3478b381",
+  "new_sha256": "e75e2ed81bac44e56e53eaefd4b7e53d4e9a39a37eb11d2f67922004b4a6b71b",
+  "source_sha256": "e75e2ed81bac44e56e53eaefd4b7e53d4e9a39a37eb11d2f67922004b4a6b71b",
+  "public_entry_required_version": "v2",
+  "route_initialization_changed": false,
+  "existing_route_preserved": true,
+  "static_parser": "System.Management.Automation.Language.Parser.ParseFile",
+  "powershell_version": "7.6.5",
+  "static_parse_files": [
+    {
+      "role": "baseline",
+      "sha256": "cb2f793f81541926bc144e83d0bf0bf86c3f6639b6d6c1a35e82db1e3478b381",
+      "parse_errors": 0
+    },
+    {
+      "role": "candidate",
+      "sha256": "e75e2ed81bac44e56e53eaefd4b7e53d4e9a39a37eb11d2f67922004b4a6b71b",
+      "parse_errors": 0
+    }
+  ],
+  "actual_start_exit_code": 0,
+  "post_change_public_observation": {
+    "duration_seconds": 30.031,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  },
+  "public_http_evidence_sha256": "4e1aab71f1f023b422700f32cbe63f90eb377b9b6c9e7c4fac49e493d493a69e",
+  "boundary": "Native readiness now requires the actual public v2 entry; it retains configured routes and reports wrong-route failure rather than silently repairing it. Start and the later public workflow proof are separate observations.",
+  "original_receipt_sha256": {
+    "artifacts/native-start-route-development-20261018/candidate-ready.json": "2eb3c517fd28ea515f40a3f8f1688199702d185afd0b68004d96233a5c3a47cb",
+    "artifacts/native-start-route-development-20261018/powershell-ast-results.json": "b78adeb7978fa4fb3ad9c82c9567e16de716073096ade6e7a372acb989ef7f8d",
+    "artifacts/native-start-route-development-20261018/application-receipt.json": "c8937bb9e5971f42071cb5deae04b4d8ecb4717abd650ef93da49ca23a075b34",
+    "artifacts/native-start-route-development-20261018/runtime-verification.json": "5262938eafd34c6697dbc602839c655087b12ba5f2125aac58de8794c9db854c"
+  }
+}

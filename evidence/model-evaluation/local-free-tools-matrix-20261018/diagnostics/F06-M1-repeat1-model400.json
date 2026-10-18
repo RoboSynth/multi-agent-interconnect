@@ -1,0 +1,149 @@
+{
+  "schema_version": "single-cell-model400-diagnosis/1.0",
+  "recorded_at_utc": "2026-10-18T01:34:09.6147423Z",
+  "cell": {
+    "scenario": "F06",
+    "method": "M1",
+    "repeat": 1,
+    "incident_id": "inc-a72618d1e0814386"
+  },
+  "finding": "The eighth model call was rejected because the server measured a 10422-token request against an 8192-token context slot.",
+  "incident": {
+    "status": "needs_attention",
+    "started_at": "2026-10-17T18:26:37.338638-07:00",
+    "finished_at": "2026-10-17T18:28:21.788165-07:00",
+    "model_calls": 8,
+    "known_usage_tokens": 15559,
+    "token_usage_complete": false,
+    "model_error": "HTTPStatusError",
+    "failed_http_status": 400
+  },
+  "server": {
+    "pid": 4064,
+    "started_at": "2026-10-17T18:01:35.753625-07:00",
+    "model": "Qwen3-1.7B-Q8_0",
+    "context_slot_tokens": 8192,
+    "rejected_request_tokens": 10422,
+    "over_context_by_tokens": 2230,
+    "task_id": 14640,
+    "error_line_number": 3526,
+    "error_line": "26.50.835.894 E srv    send_error: task id = 14640, error: request (10422 tokens) exceeds the available context size (8192 tokens), try increasing it"
+  },
+  "request_projection": [
+    {
+      "call": 1,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7224,
+      "prompt_tokens": 900,
+      "completion_tokens": 17,
+      "total_tokens": 917,
+      "seconds": 0.672
+    },
+    {
+      "call": 2,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7890,
+      "prompt_tokens": 1173,
+      "completion_tokens": 28,
+      "total_tokens": 1201,
+      "seconds": 0.516
+    },
+    {
+      "call": 3,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 8381,
+      "prompt_tokens": 1344,
+      "completion_tokens": 18,
+      "total_tokens": 1362,
+      "seconds": 0.453
+    },
+    {
+      "call": 4,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 8904,
+      "prompt_tokens": 1544,
+      "completion_tokens": 16,
+      "total_tokens": 1560,
+      "seconds": 0.344
+    },
+    {
+      "call": 5,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 9452,
+      "prompt_tokens": 1760,
+      "completion_tokens": 16,
+      "total_tokens": 1776,
+      "seconds": 0.672
+    },
+    {
+      "call": 6,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 10948,
+      "prompt_tokens": 2340,
+      "completion_tokens": 17,
+      "total_tokens": 2357,
+      "seconds": 1.797
+    },
+    {
+      "call": 7,
+      "status": "validated",
+      "http_status": 200,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 20180,
+      "prompt_tokens": 6359,
+      "completion_tokens": 27,
+      "total_tokens": 6386,
+      "seconds": 1.828
+    },
+    {
+      "call": 8,
+      "status": "invalid",
+      "http_status": 400,
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 29406,
+      "prompt_tokens": null,
+      "completion_tokens": null,
+      "total_tokens": null,
+      "seconds": 0.172
+    }
+  ],
+  "correlation": {
+    "basis": "Incident call 7 reports prompt_tokens=6359 and completion_tokens=27; immediately preceding server task 14611 ends with n_tokens=6385, then task 14640 rejects the oversized request. Incident call 8 records HTTP400 and missing usage.",
+    "server_previous_release_line_number": 3523,
+    "server_previous_release_line": "26.03.288.553 I slot      release: id  0 | task 14611 | stop processing: n_tokens = 6385, truncated = 0",
+    "association_level": "Correlation uses adjacent task sequence and matching prior token usage; the incident does not store the server task ID."
+  },
+  "interpretation": [
+    "This is a context-size rejection.",
+    "prompt_token_upper_bound is the client estimate; 10422 is the server-measured request token count.",
+    "15559 counts seven successful calls; rejected-call usage is unavailable and token_usage_complete remains false.",
+    "Projection excludes raw prompts, contexts, completions, messages and credentials."
+  ],
+  "source_locators": {
+    "incident": "eval/results/local/M1-full-tools-matrix-20261017/incidents/inc-a72618d1e0814386.json",
+    "incident_sha256": "9366d33ca6826755ba4de4ee904fc6db5c1dd728cccbdce9e42ea22c7d3aaf07",
+    "server_log": "tools/runtime/local-model/server.log",
+    "server_metadata": "tools/runtime/local-model/server.json"
+  },
+  "boundary": {
+    "tests_run": 0,
+    "resource_network_model_calls": 0,
+    "runtime_or_source_changes": 0,
+    "parameters_changed": false,
+    "failed_cell_preserved": true,
+    "cohort_conclusion": false
+  },
+  "preparation_note": "Initial ReadAllLines attempt failed on live-log sharing before writing any artifact; Get-Content shared reader then succeeded."
+}

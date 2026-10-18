@@ -14,13 +14,28 @@ from pathlib import Path
 import httpx
 
 
+class VersionedClient:
+    """Require the public response contract before advancing an order intent."""
+    def __init__(self, client, expected_api_version="v2"):
+        self.client, self.expected_api_version = client, expected_api_version
+
+    async def request(self, *args, **kwargs):
+        response = await self.client.request(*args, **kwargs)
+        if response.status_code < 400:
+            body = response.json()
+            if not isinstance(body, dict) or body.get("order_api_version") != self.expected_api_version:
+                raise ValueError("public_order_contract_version_missing_or_mismatched")
+        return response
+
+
 class OrderObserver:
-    def __init__(self, base_url, *, seed=17, run_id=None, state=None, client=None):
+    def __init__(self, base_url, *, seed=17, run_id=None, state=None, client=None, expected_api_version=None):
         self.base_url = base_url.rstrip("/")
         self.random = random.Random(seed)
         self.run_id = run_id or uuid.uuid4().hex[:12]
         self.state = state or {"pending": [], "completed": [], "next_index": 0}
         self.client = client
+        self.expected_api_version = expected_api_version
 
     def _intent(self):
         index = self.state["next_index"]
@@ -37,6 +52,7 @@ class OrderObserver:
         before = len(self.state["completed"])
         owned = self.client is None
         client = self.client or httpx.AsyncClient(timeout=4, trust_env=False)
+        request_client = VersionedClient(client, self.expected_api_version) if self.expected_api_version is not None else client
         try:
             for tick in range(int(duration * requests_per_second)):
                 await asyncio.sleep(max(0, started + tick / requests_per_second - time.monotonic()))
@@ -57,7 +73,7 @@ class OrderObserver:
                 sample = {"request_key": intent["request_key"], "phase": phase, "method": method, "path": path,
                           "elapsed_seconds": round(time.monotonic() - started, 3)}
                 try:
-                    response = await client.request(method, self.base_url + path, **({"json": payload} if payload is not None else {}))
+                    response = await request_client.request(method, self.base_url + path, **({"json": payload} if payload is not None else {}))
                     sample["http_status"] = response.status_code
                     if response.status_code >= 500 or (phase == "resolve" and response.status_code == 404):
                         sample["outcome"] = "unknown"

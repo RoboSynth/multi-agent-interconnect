@@ -1,0 +1,101 @@
+{
+  "schema": "safe-local-application-and-imports/1.0",
+  "status": "LOCAL_CODE_UPDATE_VALIDATED",
+  "new_source_sha256": {
+    "eval/stability_report.py": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f",
+    "tests/test_stability_report_window.py": "8bff54ad047f5e057fb0d6c56269dac28f05439e349ad5ce9452876f872692db",
+    "business/load.py": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+    "eval/observation.py": "7dfa0de206281bf8209c70dfda59723c901eb2d574ef395e1591ba0c8d4939ee",
+    "incident/partners.py": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+    "tests/business_verification_test.py": "0456629193c0ea783f3bd9ade5163cb2d9e21b4decb1af8e99bb437e32059559",
+    "tests/test_public_order_version.py": "fae5454b7843ff20b8c32e27a68cb3fd9d30aade7d4578b9c4ea2a8e3d7fcdc5",
+    "eval/scheduling_report.py": "e2fb1a5474d0f1ebf9f1699713a9e77d33a765d28f60267e36ba03017a207861",
+    "eval/plot_results.py": "a743acc71de6eaa3c56c8e7caf23ef614902c2ead9f07c81de7f926c57a8b7e4",
+    "tests/test_evaluation_report_integrity.py": "16ee7502dd38772801fb2c7b6cedd7522ba6d5544c6142e7692d27ada63df118",
+    "deploy/native.ps1": "e75e2ed81bac44e56e53eaefd4b7e53d4e9a39a37eb11d2f67922004b4a6b71b"
+  },
+  "applied_files": 11,
+  "syntax_compiled_python_files": 10,
+  "application_gate": "sealed-interruption-plus-independent-four",
+  "original_source_receipt_sha256": "e9816eb44b50a8b1c4c5ead2f72c713165f004b114ec7e8e753765d048b01a24",
+  "root_review_sha256": "5fc3d816995a3dea1f3cbd5fd7e3c654a65491f29e0add728b35bb629fdccfea",
+  "fresh_import_and_cli_checks": [
+    {
+      "name": "product-imports-shared-client",
+      "actual_exit_code": 0,
+      "stdout_sha256": "cee148db72fe482d592d3ee232084ce19722c383c266f432ab111e32a5b34b29",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "name": "report-imports",
+      "actual_exit_code": 0,
+      "stdout_sha256": "81a6bf30a950a9c10404720abb4108863c9958205f37035feb4d03f3a8686389",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "name": "public-verification-test-cli",
+      "actual_exit_code": 0,
+      "stdout_sha256": "31cd4acd3cbdde4159cdf31f40b8bcb7d9b5bb90d912efc6323a64fa15f7e6ea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "name": "stability-report-cli",
+      "actual_exit_code": 0,
+      "stdout_sha256": "914367145c285fb16b0f7a464445efc2597c5c799ee99b4bfc06b932a66683b0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "name": "scheduling-report-cli",
+      "actual_exit_code": 0,
+      "stdout_sha256": "c912b30b291d577d0922615f0db6ddeabf475b4c8844ef591f1d8abc7833a82e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    },
+    {
+      "name": "plot-results-cli",
+      "actual_exit_code": 0,
+      "stdout_sha256": "0dfa5301489596372352cb51f9089ca76131712fe970ae72530d1bb42f8fdd18",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "passed": true
+    }
+  ],
+  "fresh_import_and_cli_passed": true,
+  "behavior_tests_rerun_for_application": 0,
+  "offline_checks_reused_by_group": {
+    "stability": {
+      "distinct_within_this_candidate": 21,
+      "reuse": true
+    },
+    "version_contract": {
+      "distinct_within_this_candidate": 15,
+      "reuse": true
+    },
+    "evaluation_report": {
+      "distinct_within_this_candidate": 14,
+      "reuse": true
+    }
+  },
+  "check_count_boundary": "15, 21 and 14 are per-candidate records; overlapping checks are not summed into a unique global total.",
+  "preserved_preflight_failure": {
+    "status": "BLOCKED_BEFORE_FIRST_SOURCE_WRITE",
+    "actual_exit_code": 1,
+    "source_changes": 0,
+    "application_start_marker_written": false,
+    "resolution": "Preserve public revision1; correct hash-only projection and re-review exact public bytes, retaining the source-map gate"
+  },
+  "original_full_45_complete": false,
+  "original_cell_41_replayed": false,
+  "original_cohorts_recomputed": false,
+  "formal_new_platform_acceptance": false,
+  "boundary": "Original40 seal, independent continuation4 and independent health remain distinct. Final validation supersedes historical pending receipts; application does not rewrite experiment source provenance.",
+  "original_receipt_sha256": {
+    "artifacts/free-tools-matrix-results-20261018/post-closure-application/final-validation.json": "8153267ad97c25021b700fbab6abab414059cbd5d70c7cd7c72d0373ce2a6c00",
+    "artifacts/free-tools-matrix-results-20261018/post-closure-application/application-receipt.json": "a2febbc69ecbe5cb2ef084f382ea9f235ac07b843245a0cda1b6951c39fbb216",
+    "artifacts/free-tools-matrix-results-20261018/post-closure-application/import-cli-integration.json": "25d558f66bff9d6d207c0eaf9e4148ae746c00358a341cdd7aea47851a41d025",
+    "artifacts/free-tools-matrix-results-20261018/post-closure-application/application-preflight-failure-1.json": "5b9052b7bbaf51ff71074c8589e03ac87aceecdc423d88f69db5bbf9244ac77f"
+  }
+}

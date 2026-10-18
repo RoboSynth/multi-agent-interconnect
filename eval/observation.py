@@ -7,18 +7,7 @@ from pathlib import Path
 import time
 
 import httpx
-from business.load import OrderObserver
-
-
-class VersionedClient:
-    def __init__(self, client):
-        self.client = client
-
-    async def request(self, *args, **kwargs):
-        response = await self.client.request(*args, **kwargs)
-        if response.status_code < 400 and response.json().get("order_api_version") != "v2":
-            raise ValueError("public_order_contract_version_missing")
-        return response
+from business.load import OrderObserver, VersionedClient
 
 
 class ContinuousObserver:

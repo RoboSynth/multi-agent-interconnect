@@ -1,0 +1,52 @@
+{
+  "schema": "safe-post-change-product-http/1.0",
+  "status": "passed",
+  "started_at": "2026-10-18T02:16:28.782582+00:00",
+  "finished_at": "2026-10-18T02:16:58.825678+00:00",
+  "target": "http://127.0.0.1:8088",
+  "expected_api_version": "v2",
+  "scope": "Post-change product verification only; separate from the original 45 cells and final H00",
+  "transport": "direct-local-product-call",
+  "formal_platform": false,
+  "fault_injections": 0,
+  "resource_setting_changes": 0,
+  "model_calls": 0,
+  "resource_credentials_loaded": false,
+  "source_sha256": {
+    "eval/stability_report.py": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f",
+    "tests/test_stability_report_window.py": "8bff54ad047f5e057fb0d6c56269dac28f05439e349ad5ce9452876f872692db",
+    "business/load.py": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+    "eval/observation.py": "7dfa0de206281bf8209c70dfda59723c901eb2d574ef395e1591ba0c8d4939ee",
+    "incident/partners.py": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+    "tests/business_verification_test.py": "0456629193c0ea783f3bd9ade5163cb2d9e21b4decb1af8e99bb437e32059559",
+    "tests/test_public_order_version.py": "fae5454b7843ff20b8c32e27a68cb3fd9d30aade7d4578b9c4ea2a8e3d7fcdc5",
+    "eval/scheduling_report.py": "e2fb1a5474d0f1ebf9f1699713a9e77d33a765d28f60267e36ba03017a207861",
+    "eval/plot_results.py": "a743acc71de6eaa3c56c8e7caf23ef614902c2ead9f07c81de7f926c57a8b7e4",
+    "tests/test_evaluation_report_integrity.py": "16ee7502dd38772801fb2c7b6cedd7522ba6d5544c6142e7692d27ada63df118"
+  },
+  "original_cohort_recomputed": false,
+  "product_status": "ok",
+  "facts": {
+    "business_recovered": true,
+    "service_recovered": true,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false
+  },
+  "observation": {
+    "duration_seconds": 30.031,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  },
+  "passed": true,
+  "boundary": "30.031-second direct product verification after code changes; distinct from continuation H00 and all original experiment rows. Normal order traffic is exercised.",
+  "original_receipt_sha256": {
+    "artifacts/free-tools-matrix-results-20261018/post-closure-application/verification-public-http.json": "4e1aab71f1f023b422700f32cbe63f90eb377b9b6c9e7c4fac49e493d493a69e"
+  }
+}

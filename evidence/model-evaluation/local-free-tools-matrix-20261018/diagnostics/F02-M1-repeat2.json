@@ -1,0 +1,96 @@
+{
+  "schema_version": "single-cell-readonly-diagnosis/1.0",
+  "recorded_at": "2026-10-18T01:24:36.374434+00:00",
+  "cell": {
+    "scenario": "F02",
+    "method": "M1",
+    "repeat": 2,
+    "incident_id": "inc-7b76483606da409b",
+    "method_definition_id": "free-tools-v1"
+  },
+  "finding": "M1 selected an unrelated pool rebuild and skipped route repair; product verifier also omitted the v2 response contract, allowing a false completed incident.",
+  "actual_tool_sequence": [
+    {
+      "tool": "ops.containers",
+      "kind": "observe",
+      "status": "ok"
+    },
+    {
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "ok"
+    },
+    {
+      "tool": "incident.verification",
+      "kind": "verify",
+      "status": "ok"
+    }
+  ],
+  "coordinator": {
+    "status": "completed",
+    "diagnosed_causes": [],
+    "model_calls": 3,
+    "tokens": 3533,
+    "business_recovered": true,
+    "original_request_resolution": "not_required"
+  },
+  "domain_verification": {
+    "duration_seconds": 30.0,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true
+  },
+  "independent_observer": {
+    "requests": 72,
+    "success": 0,
+    "failed": 71,
+    "unknown": 1,
+    "fault_observed": true,
+    "recovery_confirmed": false,
+    "healthy_window_seconds": 0,
+    "healthy_completed_workflows": 0,
+    "unresolved_intents": 1,
+    "observation_deadline_exhausted": true
+  },
+  "independent_error_type_counts": {
+    "ReadError": 1,
+    "ValueError": 71
+  },
+  "causal_explanation": [
+    "F02 routes to v1, whose order responses omit order_api_version=v2.",
+    "Independent ContinuousObserver wraps HTTP in VersionedClient; its successful responses must declare v2 before advancing the intent.",
+    "VerificationPartner uses a plain OrderObserver, so ordinary create/query/cancel success is sufficient; it reported 30 successful requests and 10 complete workflows.",
+    "Coordinator._free_step marks completed when verifier business_recovered is true; it did not mark completed after a negative verifier result.",
+    "Evaluator retains the independent negative confirmation and counts this cell as unrecovered despite the completed coordinator status."
+  ],
+  "originals": {
+    "eval/results/local/M1-full-tools-matrix-20261017/incidents/inc-7b76483606da409b.json": {
+      "bytes": 93931,
+      "sha256": "eaf49e2f36b1307bb2092870697e85685d4dc1f53d58ac608b64c7c8291fa619"
+    },
+    "eval/results/local/M1-full-tools-matrix-20261017/workloads/F02-M1-2/summary.json": {
+      "bytes": 1302,
+      "sha256": "70aa0ab77d5718709a1e70d5b95133e08224095a4fa64e195525c5b788bbe86e"
+    },
+    "eval/results/local/M1-full-tools-matrix-20261017/workloads/F02-M1-2/requests.jsonl": {
+      "bytes": 20045,
+      "sha256": "7e2d44004edfb4003af6b5f988153fe5c66f79f37b2505e40524aee49b90861e"
+    }
+  },
+  "reviewed_frozen_source_sha256": {
+    "incident/partners.py": "9690c121f41c10b2598ea319e613aa268a8c5ab14c71291ae112e563546d23ba",
+    "business/load.py": "685d14deb1787c79201f498771c4b0b9de77eddbe7cbf4133061c7b86b551b6d",
+    "eval/observation.py": "9d13e386dc9588ff79e7642651dcb4504f2208a74f7d7fef009e9f41c9b96dd6",
+    "incident/coordinator/engine.py": "c6e5bbd0a39473a2693936f3b12325b078397ff77a7a23043da1f209ae66ef52",
+    "eval/methods/free_tools.py": "422768e8f867bbf1d5ddcfb2f0486db5c9b757b1571c85a2171af0f09843a429",
+    "eval/run.py": "fd42746a56c421a4d63f9c410559a549250771722a574514ba1c99125876e27a",
+    "business/order_app/main.py": "ea5341f629079f3b04a3bbb9f6bf312a2e7d0cfde91a123aca887d85f3fdf01d"
+  },
+  "scope": "This already finished cell only; no aggregate conclusion from the running cohort; no changes or reruns.",
+  "runtime_or_model_calls": 0,
+  "live_sources_modified": false
+}

@@ -13,6 +13,51 @@ def med(rows, key):
     return round(median(values), 3) if values else None
 
 
+def matrix_integrity(rows, manifest):
+    scenarios, methods, repeats = manifest["scenarios"], manifest["methods"], manifest["repeats"]
+    expected = {(scenario, method, repeat) for scenario in scenarios for method in methods
+                for repeat in range(1, repeats+1)}
+    keys = [(row["scenario"], row["method"], row["repeat"]) for row in rows]
+    counts = Counter(keys)
+    valid_repeats = all(type(row["repeat"]) is int for row in rows)
+    metadata_mismatches = []
+    metadata_checks = {field: 0 for field in ("method_definition_id", "workload_seed", "precondition_pool_rebuilds")}
+    definitions = manifest.get("method_definition_ids", {})
+    instances = {item["repeat"]: item for item in manifest.get("held_out_instances", [])}
+    for index, row in enumerate(rows):
+        fields = {}
+        if row["method"] in definitions:
+            fields["method_definition_id"] = definitions[row["method"]]
+        instance = instances.get(row["repeat"], {})
+        fields.update({key: instance[key] for key in ("workload_seed", "precondition_pool_rebuilds") if key in instance})
+        for field, expected_value in fields.items():
+            metadata_checks[field] += 1
+            if row.get(field) != expected_value:
+                metadata_mismatches.append({"row": index+1, "key": list(keys[index]), "field": field,
+                    "expected": expected_value, "actual": row.get(field)})
+    order_matches = None
+    if manifest.get("method_order") == "rotate starting method by repeat within each scenario":
+        planned_order = [(scenario, method, repeat+1) for scenario in scenarios for repeat in range(repeats)
+            for method in methods[repeat % len(methods):]+methods[:repeat % len(methods)]] if methods else []
+        order_matches = keys == planned_order
+    complete = (bool(expected) and valid_repeats and set(counts) == expected
+        and all(count == 1 for count in counts.values()) and len(rows) == len(expected)
+        and not metadata_mismatches and order_matches is not False)
+    return {"complete": complete, "unique_keys": len(counts),
+        "missing_keys": [list(key) for key in sorted(expected-set(counts))],
+        "unexpected_keys": [list(key) for key in sorted(set(counts)-expected, key=repr)],
+        "duplicate_keys": [list(key) for key in sorted((key for key, count in counts.items() if count > 1), key=repr)],
+        "repeat_types_valid": valid_repeats, "metadata_mismatches": metadata_mismatches,
+        "metadata_checks_per_field": metadata_checks,
+        "planned_order_checked": order_matches is not None, "planned_order_matches": order_matches}
+
+
+def passed_control(row):
+    # Legacy rows without attempted-action accounting cannot prove zero actions.
+    return (row["status"] == "completed" and row.get("control_passed") is True
+            and row.get("modification_attempts") == 0)
+
+
 def confirmation_time(events, onset):
     relevant = [event for event in events if event["at_monotonic"] >= onset]
     bad = [event for event in relevant if event["outcome"] != "success"]
@@ -47,23 +92,23 @@ def summarize(directory):
     if process_log.exists():
         for line in process_log.read_text(encoding="utf-8").splitlines():
             process = json.loads(line)
-            if process["action"] == "apply" and process["returncode"] == 0:
+            if process["action"] == "apply" and process["returncode"] == 0 and process["scenario"] != "H00":
                 injections.append((process["scenario"], json.loads(process["stdout"])))
-    for index, row in enumerate(rows):
+    fault_index = 0
+    for row in rows:
         row["recovery_confirmed_earliest_seconds"] = None
+        if row["scenario"] == "H00":
+            continue
         requests = directory / "workloads" / f"{row['scenario']}-{row['method']}-{row['repeat']}" / "requests.jsonl"
-        if row["scenario"] != "H00" and index < len(injections) and injections[index][0] == row["scenario"] and requests.exists():
+        if fault_index < len(injections) and injections[fault_index][0] == row["scenario"] and requests.exists():
             events = [json.loads(line) for line in requests.read_text(encoding="utf-8").splitlines()]
-            row["recovery_confirmed_earliest_seconds"] = confirmation_time(events, injections[index][1]["started_monotonic"])
+            row["recovery_confirmed_earliest_seconds"] = confirmation_time(events, injections[fault_index][1]["started_monotonic"])
+        fault_index += 1
     (directory / "analysis-rows.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
     expected = len(manifest["scenarios"]) * len(manifest["methods"]) * manifest["repeats"]
     groups, controls = [], []
     fault_rows = [row for row in rows if row["scenario"] != "H00"]
     control_rows = [row for row in rows if row["scenario"] == "H00"]
-    def passed_control(row):
-        # Legacy rows without attempted-action accounting cannot prove zero actions.
-        return (row["status"] == "completed" and row.get("control_passed") is True
-                and row.get("modification_attempts") == 0)
     for scenario in manifest["scenarios"]:
         for method in manifest["methods"]:
             selected = [row for row in rows if row["scenario"] == scenario and row["method"] == method]
@@ -89,10 +134,12 @@ def summarize(directory):
                 "median_success_recovery_confirmed_earliest_seconds": med(successful, "recovery_confirmed_earliest_seconds"),
                 "median_tokens": med(selected, "tokens"), "median_model_calls": med(selected, "model_calls"),
                 "median_approval_wait_seconds": med(selected, "approval_wait_seconds")})
-    complete = len(rows) == expected and all(group["n"] == manifest["repeats"] for group in groups + controls)
+    integrity = matrix_integrity(rows, manifest)
+    complete = integrity["complete"]
     recovered = sum(row["status"] == "completed" and row["continuous_recovery_confirmed"] for row in fault_rows)
     platform = manifest.get("transport") == "wutong-amqps"
     result = {"expected_cells": expected, "recorded_cells": len(rows), "matrix_complete": complete,
+        "matrix_integrity": integrity,
         "completed_and_confirmed": recovered,
         "fault_recorded_cells": len(fault_rows),
         "fault_expected_cells": sum(scenario != "H00" for scenario in manifest["scenarios"]) * len(manifest["methods"]) * manifest["repeats"],

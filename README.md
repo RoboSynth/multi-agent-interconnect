@@ -13,6 +13,8 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 新工作台：[http://127.0.0.1:8766](http://127.0.0.1:8766)。[开发进度](docs/开发进度_高分方案.md)与[本地验收记录](docs/本地开发验收.md)区分实际本地结果和后续平台验收；下文保留 v0.2.0 基线说明。
 
+完整工具M1的[本地分段结果](docs/free_tools_matrix_20261018.md)：原批40终态、第41格中断，独立后续四格4/4恢复；两阶段为44终态、37确认、7未确认、1中断覆盖原45计划，独立HTTP H00为30.328秒/30次全成功/10流程。原进程退出码未知，不能称完整45格单批；旧M1/旧18例、新版梧桐及长期验收分别保留，下文继续为v0.2.0基线记录。
+
 订单网站发生故障后，协调智能体收集应用和数据库的信息，安排恢复操作，再由恢复分析智能体访问网站、读取订单并汇总结果。当前诊断逻辑采用规则。
 
 梧桐运行结构：Leader → 官方 ADP → 应用、数据库、恢复分析 Partner。四个正式身份分别运行，通过官方 ACPs SDK 的 AMQPS 群组交换任务和结果；应用通过 HTTP 访问 SQLite 数据服务。
@@ -22,7 +24,7 @@ pwsh -NoProfile -File deploy/local-up.ps1
 四个业务智能体全部审核通过并取得客户端证书，官方目录已按技能发现三个参与者。组合故障经八个正式平台任务恢复，订单接口由 503 变为 200，完成两次恢复操作，用时 6.190 秒；正常状态经两个任务返回结果，执行零次恢复操作。所有参与者正常退出。
 
 ```powershell
-& 'D:\AI + 开源\incident-pilot\.venv\Scripts\python.exe' 'D:\AI + 开源\incident-pilot\integration\wutong_incident.py' --run --config 'D:\AI + 开源\incident-pilot\integration\private\incident\config.json' --scenarios combined,healthy
+& '.\.venv\Scripts\python.exe' '.\integration\wutong_incident.py' --run --config '.\integration\private\incident\config.json' --scenarios combined,healthy
 ```
 
 程序自动启动实验服务和三个独立 Partner，生成新的运行目录。[业务过程与运行记录](integration/incident/README.md)包括官方发现响应、平台任务消息、业务产物和登记截图。诊断沿用现有规则，业务服务运行在本机。

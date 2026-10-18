@@ -98,7 +98,7 @@ class VerificationPartner:
         self.duration = duration
 
     async def execute(self, payload, caller_aic):
-        from business.load import OrderObserver
+        from business.load import OrderObserver, VersionedClient
         task = TaskPayload.model_validate(payload)
         result = {"schema_version": "ifc/1.0", "incident_id": task.incident_id,
                   "logical_task_id": task.logical_task_id, "executor_aic": self.aic,
@@ -120,16 +120,16 @@ class VerificationPartner:
         if original_key is not None:
             try:
                 async with httpx.AsyncClient(timeout=5, trust_env=False) as client:
-                    response = await client.get(self.base_url + "/receipts/" + quote(original_key, safe=""))
+                    response = await VersionedClient(client).request("GET", self.base_url + "/receipts/" + quote(original_key, safe=""))
                 original_resolved = response.status_code == 200
                 resolution = ("resolved_receipt" if original_resolved else
                               "unknown_receipt_missing" if response.status_code == 404 else "unknown_receipt_unavailable")
-            except httpx.TransportError:
+            except (httpx.TransportError, ValueError):
                 resolution = "unknown_receipt_unavailable"
         # A repeated verification must exercise fresh writes, not replay receipts
         # from a previous healthy window under the same incident identifier.
         observation_id = f"{task.incident_id}-{task.logical_task_id}"
-        summary = await OrderObserver(self.base_url, run_id=observation_id).observe(
+        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2").observe(
             duration=self.duration, min_complete=max(1, int(self.duration // 3)))
         service_recovered = summary["passed"] is True
         result["facts"] = [{"key": key, "value": value, "source": "order-workflows", "observed_at": utc_now()}

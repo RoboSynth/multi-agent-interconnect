@@ -34,6 +34,8 @@ Nginx 重载需等待公共 `/health` 返回预期版本，信号命令成功不
 脚本仅管理其记录且命令行匹配本项目的应用进程，以及指定数据目录的 PostgreSQL / Nginx。
 停止命令会停止本项目数据库与网关，请在需要保留在线演示时保持运行。
 
+原生start只在route.conf缺失时初始化v2，保留已有故障路由，不替代F02/F10复原。公共order_port现要求ok=true且api_version=v2，v1/v2直连探针仍保留自身版本；不符时提示检查既有route及适用的正常restore。该修订已实际native start退出0、公共入口v2，并由VerificationPartner完成30.031秒/30次全成功/10流程、失败未知未决0的本地公共产品验证；证明与原实验边界见[本批说明](../docs/free_tools_matrix_20261018.md)，不代表正式平台或新机器冷部署验收。
+
 ## 真实故障注入
 
 ```powershell
