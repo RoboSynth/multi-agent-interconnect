@@ -1,0 +1,319 @@
+{
+  "unique_records": 840,
+  "log_types": {
+    "heartbeat": 840
+  },
+  "invalid_records": 0,
+  "duplicate_records_ignored": 0,
+  "heartbeat_interval_seconds": 15,
+  "heartbeat_estimator": "nearest cadence, half-interval tolerance; unique timestamps between first and last heartbeat only",
+  "coverage_limit": "Fixed-window sampling completeness, not uptime or TTL liveness. Cadence jitter across slot boundaries can create adjacent-slot misses. Internal first/last coverage is secondary. No platform ingestion, signature verification, 24-hour operation or Monitor evidence is inferred.",
+  "evidence_level": "local AMP files; platform ingestion and continuous operation require separate evidence",
+  "acceptance_window": {
+    "start": "2026-10-18T06:55:21Z",
+    "end": "2026-10-18T07:25:21Z",
+    "duration_seconds": 1800.0,
+    "expected_slots_per_agent": 120
+  },
+  "outside_window_records_ignored": 4815,
+  "primary_heartbeat_metric": "agents[].heartbeat_sampling_window.coverage_percent",
+  "heartbeat_sampling_estimator": "[start,end); slots anchored at window start; floor((timestamp-start)/interval); one hit per slot; final partial slot counts once",
+  "expected_aic_sampling_window": {
+    "expected_agent_count": 7,
+    "expected_slot_count": 840,
+    "observed_slot_count": 840,
+    "missing_slot_count": 0,
+    "coverage_percent": 100.0,
+    "unexpected_agents_excluded": true
+  },
+  "status": "FIXED_30_MINUTE_HEARTBEAT_SAMPLING_SUMMARY",
+  "actual_tool_exit_code": 0,
+  "agents": [
+    {
+      "role": "verification",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.98,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 11.587,
+        "last_heartbeat_to_end_seconds": 2.433
+      }
+    },
+    {
+      "role": "onboarding",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.994,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 11.649,
+        "last_heartbeat_to_end_seconds": 2.357
+      }
+    },
+    {
+      "role": "ops",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.48,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 13.759,
+        "last_heartbeat_to_end_seconds": 0.761
+      }
+    },
+    {
+      "role": "coordinator",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.869,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 0.86,
+        "last_heartbeat_to_end_seconds": 13.271
+      }
+    },
+    {
+      "role": "database-backup",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.955,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 13.756,
+        "last_heartbeat_to_end_seconds": 0.289
+      }
+    },
+    {
+      "role": "application",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.671,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 11.584,
+        "last_heartbeat_to_end_seconds": 2.746
+      }
+    },
+    {
+      "role": "database",
+      "heartbeat_count": 120,
+      "unique_heartbeat_count": 120,
+      "duplicate_timestamp_count": 0,
+      "observed_seconds": 1785.747,
+      "estimated_missing_heartbeats": 0,
+      "coverage_percent_in_observed_window": 100.0,
+      "expected": true,
+      "valid_record_count": 120,
+      "heartbeat_sampling_window": {
+        "expected_slot_count": 120,
+        "observed_slot_count": 120,
+        "missing_slot_count": 0,
+        "coverage_percent": 100.0,
+        "start_to_first_heartbeat_seconds": 13.759,
+        "last_heartbeat_to_end_seconds": 0.494
+      }
+    }
+  ],
+  "expected_agents_without_records": 0,
+  "expected_agents_without_heartbeat": 0,
+  "unexpected_observed_agents": 0,
+  "expected_aic_set_sha256": "519ac691244f9b6bab950892ceef40163d7723da363087d7dd66703319bb9f83",
+  "source_tool_sha256": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f",
+  "raw_report_sha256": "fd77fb300faa25dcf9e59cbaaab9b8f76fb38381120c4465c44a78468df0688d",
+  "heartbeat_snapshot_sha256": [
+    {
+      "role": "coordinator",
+      "sha256": "9cf7e47fbffc5b3fe0ac7055c0e6b9497a75715758d9ff13fa79595a2ee5adb4",
+      "bytes": 31875,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "application",
+      "sha256": "5e65f483718b9626d189e9bf99199c170ab6ad2344ea3ff9df2c8e3a2adb1224",
+      "bytes": 223345,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "database",
+      "sha256": "20decb10a62653a6391d667d124767b064a9267ac7fce13d4d5b31bf595266b0",
+      "bytes": 223375,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "database-backup",
+      "sha256": "b812787ed49fad16a76f015d449f045d53f1e9df01ee8ab831a31a717b481eee",
+      "bytes": 223372,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "onboarding",
+      "sha256": "d812ad9d191e92421afb3b964352ab68fa87f514d86dbe732dd75bf9ec78ffcb",
+      "bytes": 223860,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "ops",
+      "sha256": "98026d2f61b465508a03099e21e77702e676fe8c933e1b402695920e3c436a68",
+      "bytes": 223612,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "verification",
+      "sha256": "c1bb66f68ea22bcb4660bda6920abd665d81f76779d14b5a066ae0591f4c8c9e",
+      "bytes": 223614,
+      "captured_prefix_verified": true
+    }
+  ],
+  "limitations": [
+    "Heartbeat files only, with the unchanged stability_report fixed-window slot estimator; no access-latency statistics were computed.",
+    "Sampling completeness is not continuous uptime, TTL liveness, signature verification, Monitor/platform ingestion or24-hour/7-day evidence.",
+    "The window is fixed in UTC and capture started only after its end. Later log appends are outside this frozen snapshot."
+  ],
+  "retained_collector_attempt": {
+    "actual_outer_exit_code": 1,
+    "actual_completion_chunk": "f7c366",
+    "readonly_Docker_commands": 2,
+    "readonly_Docker_command_exit_codes": [
+      0,
+      0
+    ],
+    "reconcile_tool_invoked": false,
+    "stability_tool_invoked": false,
+    "scientific_verdict": null,
+    "cause": "Collector filename guard still required amp_access after heartbeat files were added; assertion occurred before either existing reporting tool was invoked.",
+    "AMQPS_MCP_model_business_POST_container_mutations": 0,
+    "receipt_sha256": "7bcf0482d869616471db6251a68cb8f404a17642ea18c0d1d097f2f361c20eb5"
+  },
+  "raw_input_parse_scope": "All captured heartbeat bytes were supplied directly to the unchanged tool. invalid_records counts all input envelopes before the tool's time-window filter, including any outside-window invalid records.",
+  "input_line_prefiltering_performed": false,
+  "trailing_bytes_excluded": 0,
+  "capture_boundaries": [
+    {
+      "role": "application",
+      "log_kind": "heartbeat",
+      "sha256": "5e65f483718b9626d189e9bf99199c170ab6ad2344ea3ff9df2c8e3a2adb1224",
+      "captured_bytes": 223345,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223345,
+      "reported_source_size_after": 223345
+    },
+    {
+      "role": "coordinator",
+      "log_kind": "heartbeat",
+      "sha256": "9cf7e47fbffc5b3fe0ac7055c0e6b9497a75715758d9ff13fa79595a2ee5adb4",
+      "captured_bytes": 31875,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": null,
+      "reported_source_size_after": null
+    },
+    {
+      "role": "database",
+      "log_kind": "heartbeat",
+      "sha256": "20decb10a62653a6391d667d124767b064a9267ac7fce13d4d5b31bf595266b0",
+      "captured_bytes": 223375,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223375,
+      "reported_source_size_after": 223375
+    },
+    {
+      "role": "database-backup",
+      "log_kind": "heartbeat",
+      "sha256": "b812787ed49fad16a76f015d449f045d53f1e9df01ee8ab831a31a717b481eee",
+      "captured_bytes": 223372,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223372,
+      "reported_source_size_after": 223372
+    },
+    {
+      "role": "onboarding",
+      "log_kind": "heartbeat",
+      "sha256": "d812ad9d191e92421afb3b964352ab68fa87f514d86dbe732dd75bf9ec78ffcb",
+      "captured_bytes": 223860,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223860,
+      "reported_source_size_after": 223860
+    },
+    {
+      "role": "ops",
+      "log_kind": "heartbeat",
+      "sha256": "98026d2f61b465508a03099e21e77702e676fe8c933e1b402695920e3c436a68",
+      "captured_bytes": 223612,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223612,
+      "reported_source_size_after": 223612
+    },
+    {
+      "role": "verification",
+      "log_kind": "heartbeat",
+      "sha256": "c1bb66f68ea22bcb4660bda6920abd665d81f76779d14b5a066ae0591f4c8c9e",
+      "captured_bytes": 223614,
+      "ends_with_complete_newline": true,
+      "trailing_bytes_excluded": 0,
+      "captured_prefix_verified": true,
+      "reported_source_size_before": 223614,
+      "reported_source_size_after": 223614
+    }
+  ],
+  "capture_boundary_receipt_sha256": "194b16cece0c1abd76931cb178eedd44e5af14bdbb522c1a817ef6d88d7dd83e"
+}

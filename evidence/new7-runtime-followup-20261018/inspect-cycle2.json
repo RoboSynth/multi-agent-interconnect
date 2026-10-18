@@ -1,0 +1,163 @@
+{
+  "status": "INDEPENDENT_SECOND_INSPECT_LOCAL_REVIEW_COMPLETE",
+  "observed_at_utc": "2026-10-18T07:28:20.323531+00:00",
+  "checks": {
+    "second_job_event_completed": true,
+    "incident_completed": true,
+    "result_business_recovered": true,
+    "observation_30seconds": true,
+    "observation_10_complete_workflows": true,
+    "observation_no_failed_unknown_unresolved_pending": true,
+    "observation_passed": true,
+    "tasks_only_observe_verify": true,
+    "all_executed_task_and_product_statuses_ok": true,
+    "no_approvals_or_modifying_tasks": true,
+    "no_model_calls_requests_or_tokens": true,
+    "current_schedule_active_none": true,
+    "TaskJournal_in_flight_only_zero": true,
+    "no_journal_takeover_events": true,
+    "inspected_completed_local_file_bytes_stable": true
+  },
+  "second_job": {
+    "started_at_utc": "2026-10-18T07:26:20.175765+00:00",
+    "finished_at_utc": "2026-10-18T07:27:02.880847+00:00",
+    "event_status": "completed",
+    "incident_status": "completed",
+    "incident_elapsed_seconds": 40.718
+  },
+  "business_observation": {
+    "duration_seconds": 30.002,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true,
+    "pending_intents": 0
+  },
+  "task_kind_counts": {
+    "observe": 5,
+    "verify": 1
+  },
+  "tasks": [
+    {
+      "kind": "observe",
+      "tool": "ops.containers",
+      "status": "ok",
+      "product_status": "ok"
+    },
+    {
+      "kind": "observe",
+      "tool": "ops.route_status",
+      "status": "ok",
+      "product_status": "ok"
+    },
+    {
+      "kind": "observe",
+      "tool": "db.read_only_status",
+      "status": "ok",
+      "product_status": "ok"
+    },
+    {
+      "kind": "observe",
+      "tool": "db.blocking_sessions",
+      "status": "ok",
+      "product_status": "ok"
+    },
+    {
+      "kind": "observe",
+      "tool": "application.status",
+      "status": "ok",
+      "product_status": "ok"
+    },
+    {
+      "kind": "verify",
+      "tool": "incident.verification",
+      "status": "ok",
+      "product_status": "ok"
+    }
+  ],
+  "approvals": 0,
+  "model_calls": 0,
+  "reported_tokens": 0,
+  "model_request_records": 0,
+  "journal": {
+    "state_counts": {
+      "awaiting-completion": 17,
+      "completed": 17
+    },
+    "raw_nonterminal_attempts": 17,
+    "effective_in_flight_attempts": 0,
+    "takeover_events": 0,
+    "read_mode": "SQLite mode=ro/query_only committed read transaction; no TaskJournal construction",
+    "interpretation": "Raw table retains awaiting-completion history followed by completed rows; the in_flight_only contract excludes superseded attempts. No raw rows are rewritten or labeled all-completed."
+  },
+  "source_sha256": {
+    "schedule_events": "cfa2b4bd266db418b0f1671c7842789e646164a5fa1399807a165bf6f2398ae3",
+    "schedule_state": "ccbc0995d79144a483dc19a87af011bed6f604aa1484e7b3a589c9e96d6a714c",
+    "terminal_incident": "8841044d28d31c23a6d196d3a8589ba724b24bf9ac685cd0163a06e841716799",
+    "review_script": "489aeeb382e0957ed6e1e98e0176c0bad4a731122ecbfe4a9eb17ece9a2812fd"
+  },
+  "runtime_calls": {
+    "HTTP": 1,
+    "AMQPS": 0,
+    "model": 0,
+    "business_mutations": 0,
+    "subprocess": 0
+  },
+  "runtime_source_or_result_mutations": 0,
+  "limits": [
+    "This is the naturally scheduled second completed inspect cycle with one current committed journal snapshot, not 24-hour/7-day acceptance.",
+    "Current query/synchronize handles verify both expected processes and exact nonce; a proxy-free GET verifies the same owned runtime. No broker/task calls were made.",
+    "Observed actions in this cycle are only observe/verify; the inspect product supports medium actions in other circumstances.",
+    "The verification task itself created/queried/cancelled fresh synthetic orders; observe/verify classification is not proof of zero business writes.",
+    "Historical E3 seven pending intents and eleven malformed AMP rows remain unchanged; this new cycle does not reconcile them.",
+    "The original launcher exit1 and separate healthy running-host observation are preserved; this review does not reclassify launcher exit or prove future graceful stop."
+  ],
+  "reused_first_cycle_frozen_review_sha256": "a857261a40cc48c44aa5dcb29a08dcfe5f526552245695341a2a824459bd0d37",
+  "completed_inspect_cycles": 2,
+  "next_inspect_due_utc": "2026-10-18T07:57:02.885170+00:00",
+  "actual_review_tool_exit_code": 0,
+  "actual_review_tool_chunk": "3e6ed7",
+  "original_review_sha256": "623c480d0ceaaf341a9359b0cdbd3b32692a6c314f1da95e3b47dfb1cb999d08",
+  "current_process_handles": {
+    "runtime": {
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true,
+      "command_line_sha256": "6e1c523e8629c059dcac568418110bf32228542ee92cbf807d6fed8ef72d6bff"
+    },
+    "parent": {
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true,
+      "command_line_sha256": "69c2310c54177edd973672dfcd069dd3b83942ad86277cb66451a81b259ac3e6"
+    }
+  },
+  "HTTP_observation": {
+    "connected": true,
+    "mode": "wutong-amqps",
+    "participants": 5,
+    "model_enabled": false,
+    "resource_credential_count": 0,
+    "incident_status": "completed",
+    "config_sha256": "8d940b048e2fd286837681524ac8ab9e4c8613be855cddc0bf32adfbf8c8e726"
+  },
+  "retained_first_cycle_checker_failure": {
+    "actual_exit_code": 1,
+    "tool_chunk": "38996d",
+    "receipt_sha256": "1e38d36c5e987e4d8735dd0afbfd0712ee0e43c1bdb5b91df78cc88ffc787572",
+    "reason": "Initial checker wrongly expected task.status=completed instead of ok and zero nonterminal historical rows rather than the existing in_flight_only contract; original runtime evidence was never modified."
+  },
+  "retained_current_cycle_checker_failure": {
+    "actual_os_exit_code": 1,
+    "actual_tool_chunk": "c5daa6",
+    "error_class": "KeyError",
+    "reason": "Checker reused its HTTP state variable for the business observation state before writing the projection",
+    "scope": "Observer bookkeeping only; original runtime/results/config unchanged; not an inspect failure",
+    "original_receipt_sha256": "383701ec279f7cc2e03b9cc306d31d712732aaef99d442c22057e1b0d2bc4dea"
+  }
+}

@@ -192,3 +192,12 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 AMP修复后六域已独立部署；首次部署辅助exit1保留、stop/up各0，v3契约21项通过。新正式健康窗口12任务/六域、30.003秒/30成功请求/10流程，Popen.wait0、close六门真、stderr0。新窗口8文件/63值凭据检查命中0、解析/解码错误0；捕获表示重叠不合计独特流量。[部署](evidence/amp-fixed-runtime-20261018/deployment.json)、[健康](evidence/amp-fixed-runtime-20261018/healthy-amqps.json)、[日志审计](evidence/amp-fixed-runtime-20261018/credential-integrity.json)独立于旧45格证据。
 
 8877inspect已观察首轮完成；原launcher启动后编码读取失败exit1与仍运行服务分开记录，只读observer实际0且无重复启动，见[首轮记录](evidence/new7-inspect-session-20261018/first-cycle.json)。尚未24小时/7天验收。旧45格16件证据逐字保留；旧7未决/11坏行/T62 false不因此解除。
+
+
+### 2026-10-18 只读运行补证：T05、固定窗心跳与巡检UI
+
+fixed-SDK健康窗口按12个captured Start逐taskId核对两端AMP access：coordinator12、六域合计12，共24条，缺失/多余/未完成生命周期0；长运行域日志481条无关access排除，不将access视作物理消息或MCP调用数。固定UTC[06:55:21,07:25:21)七身份心跳采样为840/840，完整raw输入解析错误0；捕获字节和尾部不裁剪，有限前缀复读一致。它不证明连续在线、24小时/7天或Monitor入库。见[访问对账](evidence/new7-runtime-followup-20261018/access-reconciliation.json)和[心跳窗口](evidence/new7-runtime-followup-20261018/heartbeat-window.json)。
+
+8877自然第二周期独立15项检查通过，业务30.002秒/30成功请求/10流程；raw17条awaiting为历史，effective in-flight0。观察器首次KeyError exit1与更早首周期检查器错误各自保留，均不是产品故障；[第二周期](evidence/new7-runtime-followup-20261018/inspect-cycle2.json)不将两轮称长期验收。真实浏览器只读GET验收26distinct=24复用+2纠正schema后delta，六PNG已逐张目视通过、浏览器正常关闭，没有停止持续巡检；首false保留，不把执行轮次相加。见[UI结果](evidence/new7-runtime-followup-20261018/ui-results.json)与[范围和截图清单](evidence/new7-runtime-followup-20261018/ui-inventory.json)。
+
+本次不改生产代码、E1授权模板/计划/输出或原16件E3证据。正式E1未执行且未有新故障授权，旧7未决/11坏行/T62 false不解除。README和进度仅更新当前段；赛方确认表仅把七身份实际完成状态补正，数量上限仍待赛方答复。

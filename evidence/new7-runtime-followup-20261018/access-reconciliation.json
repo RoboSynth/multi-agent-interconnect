@@ -1,0 +1,165 @@
+{
+  "captured_start_tasks": 12,
+  "transport": "wutong-amqps",
+  "expected_access_records": 24,
+  "actual_access_records": 24,
+  "missing_records": 0,
+  "extra_records": 0,
+  "unrelated_access_records_excluded": 481,
+  "passed": true,
+  "scope": "Exact captured starts versus both endpoints' AMP access records. Shared long-running domain logs are filtered by captured taskId only for wutong-amqps; no Monitor statistics inferred.",
+  "status": "EXACT_CLOSED_FIXED_SDK_ACCESS_RECONCILIATION",
+  "actual_tool_exit_code": 0,
+  "incomplete_task_lifecycles": 0,
+  "tasks": [
+    {
+      "task_id_sha256": "7c06a56f909527fbadda5b830094f5327f20fee827cc1409714b7cbcd2670acf",
+      "sender_access_records": 1,
+      "receiver_role": "database-backup",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "67c11191dcd6b551c550cf78b98b333a411b3a6a66b0a46e88c2b6537d85350f",
+      "sender_access_records": 1,
+      "receiver_role": "database",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "9b7b0fd46ee01bdf6040771bdb63449edee7bf162b72bab06b6d2897cfb4ffe4",
+      "sender_access_records": 1,
+      "receiver_role": "application",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "683e1a223a1ec0541ddfa8777c7aeaa9185413b504cfc92e58c622b03922b5c1",
+      "sender_access_records": 1,
+      "receiver_role": "verification",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "afad1a8497010f0c687ebcb8bd0898334bcfda477e70c2a0697a58bdabb26c3b",
+      "sender_access_records": 1,
+      "receiver_role": "onboarding",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "5d713b068e0c41fdcf99ec2464e22acb04dda91d58bad173c99521024d170ee3",
+      "sender_access_records": 1,
+      "receiver_role": "ops",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "834f65c2d777a89f99a9b298c6470900fd2eab2b1d41d1fdde66c583e57ee3b7",
+      "sender_access_records": 1,
+      "receiver_role": "application",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "94b426f9e7019894d6c3fe89129c7586f7a9d26765cc1423e5107ac486d1668c",
+      "sender_access_records": 1,
+      "receiver_role": "database-backup",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "f347b3f941e6c96619e8bd8fcb22630331202888d8a5ea711a8ec154d2cd449c",
+      "sender_access_records": 1,
+      "receiver_role": "database",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "ff051196eae85986d031e43bac5ca8cc802441b9ea70fbbbfd53fb3d850b0cf0",
+      "sender_access_records": 1,
+      "receiver_role": "ops",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "8af6aef46a3787b8edeedd99b8d598bc777ce192192ea81c62dad2996b54a4cd",
+      "sender_access_records": 1,
+      "receiver_role": "onboarding",
+      "receiver_access_records": 1
+    },
+    {
+      "task_id_sha256": "05873ad9286c1274739e75e2317f583bf66d13ab74098877583d077db876867c",
+      "sender_access_records": 1,
+      "receiver_role": "verification",
+      "receiver_access_records": 1
+    }
+  ],
+  "sending_coordinator_access_records": 12,
+  "receiving_domain_access_records": 12,
+  "input_sha256": {
+    "messages": "23ee9fede57a6e5bf3a775bbd3f185f37dd098fe0c2e68f46630133e31e1be51",
+    "coordinator_access": "c0477069408092afb55a9cc3fdf23162f25ebcd1bdab1fbd467f1ddfac84c646",
+    "result": "53bd1c5d1fdfdd85a2905bd1bb0e36a751a7a463ed871cd7e5d7923033bbc5bd",
+    "finished": "3062392fb9b94e7b1bf72fc2797cf836c048f142a736f6a7e538d2336653bb15",
+    "reconcile_tool": "327b4d9dca9748a770e5f320a5c5816e026da5909ff13fc49cb3426d50bdf389",
+    "stability_tool": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f"
+  },
+  "access_snapshot_sha256": [
+    {
+      "role": "coordinator",
+      "sha256": "c0477069408092afb55a9cc3fdf23162f25ebcd1bdab1fbd467f1ddfac84c646",
+      "bytes": 7015,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "application",
+      "sha256": "92506f174e783c9e59ad38be8c56872c12e9fcc160b2096b1bda7a3fcf9d17b9",
+      "bytes": 51321,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "database",
+      "sha256": "adc351b2515e17da0e62715eeb6bbb656ca6f9f6cb4820402688e4fba5a14311",
+      "bytes": 100047,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "database-backup",
+      "sha256": "f89a35daccfd74ea1856b09a665a3bb26a355b115543ea870764fcfca164c750",
+      "bytes": 2334,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "onboarding",
+      "sha256": "c4cb330183ac2bbcefde4d50aa4203ea1c08887740b59a7a9e4c61fe8e82761b",
+      "bytes": 2917,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "ops",
+      "sha256": "e220aeefebf011effb78ab5c7fd967e995d9818846f4e91c41003ded04d2fd5c",
+      "bytes": 105013,
+      "captured_prefix_verified": true
+    },
+    {
+      "role": "verification",
+      "sha256": "9ee093d024e93980b26462529722f4c02337a3cd58dea4446d4539087748157b",
+      "bytes": 28930,
+      "captured_prefix_verified": true
+    }
+  ],
+  "generated_at_utc": "2026-10-18T07:28:11.424879+00:00",
+  "AMQPS_MCP_model_business_POST_container_mutations": 0,
+  "limitations": [
+    "Only these12 captured Start tasks and both endpoints' persisted AMP access logs are reconciled; no Monitor ingestion or broker-wide completeness claim.",
+    "Existing long-running domain log snapshots are filtered only by the captured taskIds. Unrelated records and later appends do not enter the24 expected endpoint accesses.",
+    "Access logging is not a count of unique physical network messages, business mutations or MCP calls. No raw communication, credentials or resource env was exposed in this projection.",
+    "This new closed healthy window does not rewrite original E3 failures, seven pending stages or eleven malformed AMP message lines."
+  ],
+  "retained_collector_attempt": {
+    "actual_outer_exit_code": 1,
+    "actual_completion_chunk": "f7c366",
+    "readonly_Docker_commands": 2,
+    "readonly_Docker_command_exit_codes": [
+      0,
+      0
+    ],
+    "reconcile_tool_invoked": false,
+    "stability_tool_invoked": false,
+    "scientific_verdict": null,
+    "cause": "Collector filename guard still required amp_access after heartbeat files were added; assertion occurred before either existing reporting tool was invoked.",
+    "AMQPS_MCP_model_business_POST_container_mutations": 0,
+    "receipt_sha256": "7bcf0482d869616471db6251a68cb8f404a17642ea18c0d1d097f2f361c20eb5"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "requirements": {
+    "scope": "Read-only browser verification of the existing live NEW7 workbench on 127.0.0.1:8877; no new incident, approval, fault, MCP or model request.",
+    "requirements": [
+      {
+        "claim": "The live workbench identifies the formal Wutong connection and current participants",
+        "check": "Rendered connection and mode labels, participant cards, matching current GET state PID/config"
+      },
+      {
+        "claim": "Evidence and plan view renders a real completed inspect incident",
+        "check": "Incident identity/status, facts and timeline visible; saved viewport screenshot"
+      },
+      {
+        "claim": "Operations and handover view accurately represents this healthy incident",
+        "check": "Tab interaction, no proposed modification and no takeover; no pending approval dialog"
+      },
+      {
+        "claim": "Business and records view renders independent business verification and AIP tasks",
+        "check": "30-second window, at least ten workflows, six completed observe/verify tasks and request-result chart; saved screenshot"
+      },
+      {
+        "claim": "View switches are reversible",
+        "check": "Evidence to operations to results to evidence using real buttons, selected tab and panel visibility consistent"
+      }
+    ],
+    "exploratory_checks": [
+      "Narrow viewport: inspect overflow and whether the three views remain usable.",
+      "Reload: completed real incident and business result remain visible without creating a new incident."
+    ],
+    "excluded": [
+      "Submitting incidents or approvals",
+      "Fault and handover interaction signoff",
+      "Platform Monitor/Kafka ingestion and visit counts",
+      "Continuous 24-hour or seven-day acceptance"
+    ],
+    "evidence": "Current API identity projection, rendered DOM checks, three desktop viewport screenshots plus narrow viewport, browser request methods, actual CLI exit results and visual review."
+  },
+  "screen_inventory": [
+    {
+      "path": "screens/evidence-viewport.png",
+      "sha256": "a9ab4d2c216fb7b0559a8a949fd856b329de50543d04e9383284dc87a83dbe62",
+      "bytes": 85049,
+      "width": 1440,
+      "height": 1000,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/evidence-full.png",
+      "sha256": "8f4b5e51a6867cd007a957f1e99d6ccdcb69557aa1ae2d3be6a4d48b2e0e825c",
+      "bytes": 157021,
+      "width": 1440,
+      "height": 2220,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/operations-full.png",
+      "sha256": "54122b961c1efb29ebbe1f6935f69c4034d38816d51d2ed864d8b072c0bf0b61",
+      "bytes": 82287,
+      "width": 1440,
+      "height": 1239,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/results-full.png",
+      "sha256": "e09e29d08d05699d5891987407fe87462204d05004aa616f08611ee80cf17786",
+      "bytes": 114764,
+      "width": 1440,
+      "height": 1385,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/narrow-results-full.png",
+      "sha256": "898abbae2884698075d28e6862ed4a41426197a365903b047649d5286400b0ba",
+      "bytes": 102707,
+      "width": 390,
+      "height": 2420,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/narrow-evidence-full.png",
+      "sha256": "7b2bdea2b3e25ae64967d3ae341e26555ed8001bba3de178abac880cb7b0be75",
+      "bytes": 141395,
+      "width": 390,
+      "height": 3439,
+      "visually_reviewed": true
+    }
+  ],
+  "original_inventory_sha256": "57a6c53779524d3c838bcaee6e324e168e54afcb35f0fc2dcad211c04ff9c808",
+  "original_results_sha256": "5602b676293106b478f2b746fb2765e4925c5da3b0d7c6d48a4c753c2f4f6df1"
+}

@@ -1,0 +1,167 @@
+{
+  "status": "LIVE_NEW7_READ_ONLY_THREE_VIEW_BROWSER_VERIFICATION_PASSED",
+  "scope": "Actual live NEW7 8877 UI, read-only existing completed inspect; no new incident or approval",
+  "config_sha256": "8d940b048e2fd286837681524ac8ab9e4c8613be855cddc0bf32adfbf8c8e726",
+  "mode": "wutong-amqps",
+  "checks": {
+    "connected": true,
+    "formal_mode": true,
+    "same_incident": true,
+    "five_participant_cards": true,
+    "zero_model": true,
+    "evidence_initially_selected": true,
+    "rendered_facts_match": true,
+    "rendered_events_match": true,
+    "no_initial_horizontal_overflow": true,
+    "operations_selected": true,
+    "no_modification": true,
+    "no_takeover": true,
+    "no_approval_dialog": true,
+    "results_selected": true,
+    "ten_workflows": true,
+    "thirty_second_window": true,
+    "six_terminal_tasks": true,
+    "order_curve_matches": true,
+    "business_passed": true,
+    "narrow_no_horizontal_overflow": true,
+    "narrow_tabs_reachable": true,
+    "evidence_returned": true,
+    "reload_preserves_incident": true,
+    "no_new_incident": true,
+    "only_read_requests": true,
+    "no_page_errors": true
+  },
+  "actual_checks": {
+    "distinct": 26,
+    "first_passed_reused": 24,
+    "corrected_delta_passed": 2,
+    "total_not_summed_across_executions": true
+  },
+  "original_checker": {
+    "passed": false,
+    "failures": [
+      "business_passed",
+      "six_terminal_tasks"
+    ],
+    "sha256": "a41040469805436015cb4acf2c65610f1624d93c8bfccd5d2b8ea39dc5b25de3",
+    "actual_cli_exit_code": 0,
+    "actual_cli_chunk": "285ba4",
+    "explanation": "Application task status is ok; journal status completed belongs to a different schema. Business pending is state.pending, and unresolved count is unresolved_intents. The first checker used incorrect field names; its false result is retained."
+  },
+  "corrected_delta": {
+    "sha256": "dd24147205ef4d58ce7df73249bf83fa2df0edca28ceaa8690087c166dd73253",
+    "actual_cli_exit_code": 0,
+    "actual_cli_chunk": "05492e"
+  },
+  "business": {
+    "passed": true,
+    "duration_seconds": 30.002,
+    "completed_workflows": 10,
+    "failed": 0,
+    "unknown": 0,
+    "unresolved_intents": 0,
+    "pending": 0
+  },
+  "served_source_sha256": {
+    "demo-ui/workbench.html": "d0f5a5f6c2b661384f944c558cc87b12a7c3580afc13b9f42a7604f0ba930654",
+    "demo-ui/workbench.js": "f6a34b791a97c4cc7789c1db4eb07779ed0e51018c0189c4b97d8815bb89ebf2",
+    "demo-ui/workbench.css": "1192acac049782a5b6e79c489bf99193aeda9870a228c1802a90eb40eec8df67"
+  },
+  "cleanup": {
+    "owned_named_browser_normal_close": true,
+    "actual_cli_exit_code": 0,
+    "actual_cli_chunk": "56827e",
+    "workbench_or_inspect_stopped": false
+  },
+  "finalized_at_utc": "2026-10-18T07:27:24.490004+00:00",
+  "incident_id_sha256": "589cfc37ff5498fc5cc972323b6c31a66e3a2fd46af072f94c573ff9572ffa06",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/state"
+    },
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/api/state"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/workbench.css"
+    },
+    {
+      "method": "GET",
+      "path": "/assets/workbench.js"
+    },
+    {
+      "method": "GET",
+      "path": "/api/state"
+    },
+    {
+      "method": "GET",
+      "path": "/api/state"
+    }
+  ],
+  "request_query_parameters_omitted": true,
+  "page_errors": 0,
+  "screenshots": [
+    {
+      "path": "screens/evidence-viewport.png",
+      "sha256": "a9ab4d2c216fb7b0559a8a949fd856b329de50543d04e9383284dc87a83dbe62",
+      "bytes": 85049,
+      "width": 1440,
+      "height": 1000,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/evidence-full.png",
+      "sha256": "8f4b5e51a6867cd007a957f1e99d6ccdcb69557aa1ae2d3be6a4d48b2e0e825c",
+      "bytes": 157021,
+      "width": 1440,
+      "height": 2220,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/operations-full.png",
+      "sha256": "54122b961c1efb29ebbe1f6935f69c4034d38816d51d2ed864d8b072c0bf0b61",
+      "bytes": 82287,
+      "width": 1440,
+      "height": 1239,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/results-full.png",
+      "sha256": "e09e29d08d05699d5891987407fe87462204d05004aa616f08611ee80cf17786",
+      "bytes": 114764,
+      "width": 1440,
+      "height": 1385,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/narrow-results-full.png",
+      "sha256": "898abbae2884698075d28e6862ed4a41426197a365903b047649d5286400b0ba",
+      "bytes": 102707,
+      "width": 390,
+      "height": 2420,
+      "visually_reviewed": true
+    },
+    {
+      "path": "screens/narrow-evidence-full.png",
+      "sha256": "7b2bdea2b3e25ae64967d3ae341e26555ed8001bba3de178abac880cb7b0be75",
+      "bytes": 141395,
+      "width": 390,
+      "height": 3439,
+      "visually_reviewed": true
+    }
+  ],
+  "visual_review": "Root viewed the exact six captured PNGs at desktop1440 and narrow390 viewports; no horizontal cropping or covering was found.",
+  "original_results_sha256": "5602b676293106b478f2b746fb2765e4925c5da3b0d7c6d48a4c753c2f4f6df1",
+  "limitations": [
+    "Read-only GET/browser rendering of the existing incident; no new incident, approval, fault, MCP or model request was made by this UI check.",
+    "The first checker false result and two corrected schema checks are retained. Distinct checks are26, not the sum of executions.",
+    "This UI window is not formal E1, Monitor ingestion,24-hour or7-day acceptance. The owned browser closed normally; the workbench/inspect was not stopped."
+  ]
+}
