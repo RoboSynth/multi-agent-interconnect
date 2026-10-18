@@ -1,0 +1,49 @@
+{
+  "discovery_url": "https://wt.ioa.pub/discovery",
+  "mq_auth_url": "https://wt.ioa.pub:9007",
+  "trust_bundle": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/trust-bundle.pem",
+  "agents": {
+    "leader": {
+      "aic": "REPLACE_WITH_YOUR_LEADER_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_LEADER_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/leader-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/leader.key"
+    },
+    "application": {
+      "aic": "REPLACE_WITH_YOUR_APPLICATION_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_APPLICATION_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/application-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/application.key"
+    },
+    "verification": {
+      "aic": "REPLACE_WITH_YOUR_VERIFICATION_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_VERIFICATION_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/verification-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/verification.key"
+    },
+    "database": {
+      "aic": "REPLACE_WITH_YOUR_DATABASE_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_DATABASE_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/database-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/database.key"
+    },
+    "database_backup": {
+      "aic": "REPLACE_WITH_YOUR_DATABASE_BACKUP_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_DATABASE_BACKUP_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/database_backup-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/database_backup.key"
+    },
+    "ops": {
+      "aic": "REPLACE_WITH_YOUR_OPS_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_OPS_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/ops-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/ops.key"
+    },
+    "onboarding": {
+      "aic": "REPLACE_WITH_YOUR_ONBOARDING_AIC",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_REPLACE_WITH_YOUR_ONBOARDING_AIC",
+      "cert": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/onboarding-chain.pem",
+      "key": "X:/REPLACE_WITH_YOUR_PRIVATE_DIRECTORY/onboarding.key"
+    }
+  }
+}
