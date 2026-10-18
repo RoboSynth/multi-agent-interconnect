@@ -1,0 +1,9 @@
+# F19：专用运维参与者故障的闭合证据
+
+这是已关闭本地实验的字段投影。实际结果、AIC、管理probe/session与任务关联、SDK事实值和原件SHA见verification.json；失败如有单列保留。
+
+正常Get的真实reply、故障Get发布阶段无reply、任务channel_lost分别记录，不把EOF或发布失败称为任务deadline。HB45/access60及因果过滤按原始事实保留，不改时钟、不删除早先成功记录。独立业务是否达30秒/10流程按实际数值报告，与参与者人工处理状态分列。
+
+新专用worker的Get/describe/新心跳如通过，仅说明局部复原，原incident是否manual按原结果记录。只按实测记录直接子进程returncode；未独立核实的MCP孙进程不宣称已清理。本地stdio/AMP不代表正式平台接管。
+
+原件定位为根代理提供的闭合实验目录下的相对路径。公开只含本README与verification.json，不复制private配置、SQLite、PID、本机绝对路径、stderr或全树。

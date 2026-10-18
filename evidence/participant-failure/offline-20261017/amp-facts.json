@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "revision": "causal-liveness-ordering",
+  "scope": "Targeted offline inference and real official emitter serialization in temporary files; no transport/group/platform/fault/model/PID or resource setting operations",
+  "command": [
+    "<workspace>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "<workspace>\\tests",
+    "-p",
+    "test_amp_facts.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "tests": 15,
+  "reported_seconds": 0.619,
+  "elapsed_seconds": 1.063,
+  "finished_at": "2026-10-17T14:12:28.044513+00:00",
+  "sources": [
+    {
+      "path": "incident/coordinator/amp_facts.py",
+      "bytes": 12370,
+      "sha256": "b9cb4fd7d6111312e2a68883b16e6fca07a9325df8ff35576c6a6abbb5773eb3"
+    },
+    {
+      "path": "tests/test_amp_facts.py",
+      "bytes": 12087,
+      "sha256": "6825d9bfa62b7962cd73729348c254156611c0b6da2d7c2b4221e7e96c465576"
+    }
+  ],
+  "log_sha256": "59db2425115ba4c66eb7d10fe597f5856d63f842a4e8c16bb142ac9ad980a745",
+  "previous_revision_preserved": "artifacts/amp-facts-offline-20261017/initial-revision-13tests/",
+  "causal_rule": "After a real task failure, only target heartbeat/access timestamp >= task.observed_at proves subsequent liveness; pre-failure access remains reported but cannot refute a later channel loss. A pre-failure fresh heartbeat still prevents confirmation until its real TTL expires. Default TTLs remain45/60/60.",
+  "limitations": [
+    "Explicit local AMP files only; no proof of Monitor ingestion",
+    "Unreachable verdict does not identify process death or business failure",
+    "No real participant termination or F19 integrated experiment in this check"
+  ]
+}

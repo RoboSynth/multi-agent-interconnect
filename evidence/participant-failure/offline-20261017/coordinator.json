@@ -1,0 +1,61 @@
+{
+  "schema_version": "coordinator-participant-failure-offline/1.0",
+  "closed_at": "2026-10-17T14:51:29.484675+00:00",
+  "passed": true,
+  "sources": [
+    {
+      "path": "incident/coordinator/engine.py",
+      "sha256": "c6e5bbd0a39473a2693936f3b12325b078397ff77a7a23043da1f209ae66ef52",
+      "bytes": 21987
+    },
+    {
+      "path": "demo-ui/workbench.js",
+      "sha256": "6d044d54e55806801f34f3e13ced042a3f6d588aceb372e2de4abeb40dae97ec",
+      "bytes": 11335
+    },
+    {
+      "path": "tests/test_coordinator_participant_failure.py",
+      "sha256": "c5de0a471e53d786d57f8b6054e080ef32233e0e349e7a13af9beda73feec967",
+      "bytes": 9416
+    }
+  ],
+  "checks": [
+    {
+      "suite": "test_coordinator_participant_failure.py",
+      "tests": 9,
+      "exit_code": 0,
+      "duration_seconds": 0.732,
+      "mode": "offline fixtures with real asyncio cancellation",
+      "covers": [
+        "healthy business cannot close participant failure",
+        "unknown and conflicting evidence",
+        "failed evidence read",
+        "failed independent verifier",
+        "absent verifier",
+        "unknown action not replayed",
+        "cancel during diagnosis",
+        "cancel during independent verification"
+      ]
+    },
+    {
+      "suite": "test_coordinator.py",
+      "tests": 22,
+      "exit_code": 0,
+      "duration_seconds": 8.052,
+      "reuse_scope": "Earlier normal coordinator/model/planner paths reused. The later health-adapter/worker additions reran the affected normal stdio fixture in the separate transport proof; the later cancellation branch is covered by the nine new checks. Not a fresh full-suite rerun.",
+      "mode": "existing suite including isolated local stdio roundtrip; no formal platform or resource fault"
+    }
+  ],
+  "review": {
+    "independent_readonly_review": true,
+    "found": "Cancellation during independent verification bypassed the sibling exception handler.",
+    "resolution": "Persist unresolved flags before awaiting; mark interrupted and rethrow cancellation.",
+    "reviewer_execution_claim": "Reviewer read sources and the cancellation delta; did not rerun tests."
+  },
+  "claim_boundaries": {
+    "live_F19_process_experiment": false,
+    "real_browser_render": false,
+    "platform_amqps": false,
+    "model_or_resource_fault_calls": false
+  }
+}

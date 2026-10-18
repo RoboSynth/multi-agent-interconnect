@@ -20,7 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 
-from acps_sdk.aip import Product, StructuredDataItem, TaskCommand, TaskCommandType, TaskState, TextDataItem
+from acps_sdk.aip import (GroupMgmtCommand, GroupMgmtCommandType, Product, StructuredDataItem,
+                          TaskCommand, TaskCommandType, TaskState, TextDataItem)
 from acps_sdk.aip.aip_group_partner import GroupPartnerMqClient, PartnerGroupState
 from acps_sdk.aip.resumable import Fence, OperationLedger
 from incident.amp_setup import AmpRuntime
@@ -60,7 +61,44 @@ class CountedMcpClient:
         return result
 
 
+def validate_experiment_crash(args):
+    """Only explicitly launched database experiments or the F19 read probe exit."""
+    if not args.crash_point:
+        return
+    if not args.experiment_id:
+        raise ValueError("crash hooks require an explicit isolated experiment id")
+    if args.role == "database":
+        return
+    if (args.role == "ops" and args.crash_point == "after_observation"
+            and args.crash_tool == "ops.route_status"):
+        return
+    raise ValueError("unsupported role/tool/point for an experiment crash")
+
+
+def parse_bound_command(line, args):
+    raw = json.loads(line)
+    if not isinstance(raw, dict):
+        raise ValueError("local command must be an object")
+    management = raw.get("type") == "group-mgmt-command"
+    command = (GroupMgmtCommand if management else TaskCommand).model_validate(raw)
+    if (command.senderId != args.coordinator_aic or command.senderRole != "leader"
+            or command.groupId != args.group_id or not command.sessionId
+            or command.mentions != [args.aic]
+            or (not management and not command.taskId)
+            or (management and command.command != GroupMgmtCommandType.GET_STATUS)):
+        raise ValueError("Command differs from its bound local coordinator channel")
+    return command
+
+
+def bind_stdio_publisher(client, publish):
+    client._publish_message = publish
+    # Official send_status_result also checks a channel exists. This marker
+    # represents the already-bound stdio publisher, never an AMQP connection.
+    client._exchange = object()
+
+
 async def serve(args):
+    validate_experiment_crash(args)
     if args.env_file:
         os.environ.update(environment_file(args.env_file))
     amp = AmpRuntime(args.amp_directory, args.name, args.aic)
@@ -82,7 +120,7 @@ async def serve(args):
     async def publish(message):
         await output(message.model_dump(mode="json", exclude_none=True))
         await emit_message(amp.message, message, "send", channel)
-    client._publish_message = publish
+    bind_stdio_publisher(client, publish)
 
     async with AsyncExitStack() as stack:
         current_payload = ContextVar("local_worker_payload", default=None)
@@ -133,8 +171,7 @@ async def serve(args):
         async def crash(point, payload):
             if args.crash_point != point or args.crash_tool != payload["tool"]:
                 return
-            if not args.experiment_id or args.role != "database":
-                raise ValueError("crash hooks are restricted to explicit database experiment workers")
+            validate_experiment_crash(args)
             await amp.system.emit({"event": "experiment_worker_crash", "experiment_id": args.experiment_id,
                 "crash_point": point, "incident_id": payload["incident_id"],
                 "logical_task_id": payload["logical_task_id"], "operation_id": payload.get("operation_id")})
@@ -221,13 +258,12 @@ async def serve(args):
                     break
                 if len(line) > 2**20:
                     raise ValueError("task envelope exceeds local IPC size limit")
-                command = TaskCommand.model_validate_json(line)
-                if (command.senderId != args.coordinator_aic or command.senderRole != "leader"
-                        or command.groupId != args.group_id or not command.sessionId or not command.taskId
-                        or command.mentions != [args.aic]):
-                    raise ValueError("TaskCommand differs from its bound local coordinator channel")
+                command = parse_bound_command(line, args)
                 await emit_message(amp.message, command, "receive", args.name + ".stdin")
-                await client._handle_task_command(command)
+                if isinstance(command, GroupMgmtCommand):
+                    await client._handle_mgmt_command(command)
+                else:
+                    await client._handle_task_command(command)
                 await emit_message(amp.message, command, "ack", args.name + ".stdin")
         finally:
             await amp.close()

@@ -83,8 +83,9 @@ class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
             transport._describe.return_value["resource_scope"] = {"database": "other"}
             transport._send = AsyncMock(side_effect=TimeoutError())
             with patch("incident.wutong_transport.discover_candidates", AsyncMock(return_value=[{"aic": "backup"}])):
-                with self.assertRaises(RuntimeError):
+                with self.assertRaises(TimeoutError) as failed:
                     await transport.call(self.payload(transport))
+            self.assertIsInstance(failed.exception.__cause__, RuntimeError)
             self.assertEqual(transport._send.await_count, 1)
             transport.runtime.force_remove_partner.assert_not_awaited()
 

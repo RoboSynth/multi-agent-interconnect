@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "scope": "Real browser with exact saved completed real F19 state; transport disconnected, no new resource calls",
+  "url": "http://127.0.0.1:8770/",
+  "checks": {
+    "confirmed_participant_failure_visible": true,
+    "expired_heartbeat_visible": true,
+    "original_observation_times_visible": true,
+    "participant_values_readable": true,
+    "incident_still_needs_attention": true,
+    "manual_participant_alert_visible": true,
+    "exact_failed_aic_visible": true,
+    "zero_modification_visible": true,
+    "business_health_visible": true,
+    "business_health_does_not_close_incident": true,
+    "no_false_missing_original_order": true,
+    "failed_observe_and_successful_verification_visible": true,
+    "no_page_errors": true
+  },
+  "page_errors": [],
+  "incident_id": "inc-3d113c65847a4169",
+  "visible_business_text": "通过\n业务验证\n当前健康\n服务状态\n10\n完整订单流程\n0\n本轮验证中未确认的请求\n30.015s\n观察窗口\n\n没有待核对的原请求\n\n业务健康与参与者状态分别判断，当前事件仍需人工处理。",
+  "screenshots": [
+    {
+      "path": "evidence.png",
+      "bytes": 89575,
+      "sha256": "022fe72e1c3e0c793d82af4d4e9e9efcb6597aabc54f37de9df3f1f545bd1d1d"
+    },
+    {
+      "path": "manual-review.png",
+      "bytes": 62895,
+      "sha256": "c2d9d136683e06777ab7b8d5b052ba62319456cef890109e4bb0fac5d1b12ff8"
+    },
+    {
+      "path": "business-health.png",
+      "bytes": 86516,
+      "sha256": "6e9205a412ac7d6ad6fa4ff6f8d1897d870067a6c6e1d61f0755ab8c85c9a130"
+    }
+  ],
+  "closed_at": "2026-10-17T14:45:27.809519+00:00",
+  "actual_experiment": "eval/results/local/F19-owned-20261017-initial",
+  "exact_original_incident_sha256": "825611c24ea59b1726072d0d244b93481c2244fa12c80608cf9f1e3d8c66c1a8",
+  "assets_sha256": {
+    "demo-ui/workbench.js": "6d044d54e55806801f34f3e13ced042a3f6d588aceb372e2de4abeb40dae97ec",
+    "demo-ui/workbench.html": "67bdbb9bd68c7aa5e240fc000a8cd2c10b6f74f6956cceb2b1cd84ddb3c54069",
+    "demo-ui/workbench.css": "1dbf1f7e6bf65865b8e87ce1066117a31144522209ddb20bd20b06df96687c83",
+    "workbench_server.py": "3c6fc01723ae23a2c4fd7b34ea9236dc962f6c1962ebccaacbb5078170ea6b13"
+  },
+  "playwright_action_exit_code": 0,
+  "automated_checks": 13,
+  "visual_review": {
+    "reviewer": "root",
+    "actual_images_viewed": 3,
+    "result": "pass; facts, manual alert and independent business health readable, no overlap or clipping"
+  },
+  "cleanup": {
+    "owned_browser_closed": true,
+    "owned_preview_closed_and_absence_verified": true,
+    "initial_stop_cmdlet_error_resolved": true
+  },
+  "claim_boundaries": {
+    "exact_saved_real_incident_rendered": true,
+    "live_incident_started_via_UI": false,
+    "new_resource_or_model_calls": false,
+    "existing_workbenches_modified": false
+  }
+}

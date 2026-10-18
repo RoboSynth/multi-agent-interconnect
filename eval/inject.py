@@ -30,7 +30,7 @@ SCENARIOS = {
 }
 UNSUPPORTED = {
     "F15": "Requires the database participant's three precise interrupt hooks; use the resumable-task experiment runner. F07 alone is not an F15 result.",
-    "F19": "Requires a registered operations-participant process and heartbeat experiment runner; no participant PID is inferred or killed.",
+    "F19": "Use eval/participant_failure_experiment.py for the owned local operations worker and heartbeat experiment. This generic resource injector never infers or kills an external participant PID.",
 }
 
 

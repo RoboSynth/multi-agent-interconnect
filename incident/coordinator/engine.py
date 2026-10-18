@@ -8,7 +8,7 @@ from pathlib import Path
 import time
 import uuid
 
-from incident.contracts import TaskPayload, TaskProduct, utc_now
+from incident.contracts import Fact, TaskPayload, TaskProduct, utc_now
 from .hypothesis import HypothesisEngine
 from .planner import EvidencePlanner, PROBES
 
@@ -100,8 +100,60 @@ class IncidentCoordinator:
                 row["status"] = "not_dispatched" if row["status"] == "awaiting_approval" else (
                                 "unknown" if kind == "act" else "failed")
             row["error"] = type(exc).__name__
+            row["elapsed_ms"] = round((time.monotonic()-started)*1000, 3)
+            if kind == "observe" and isinstance(exc, (TimeoutError, ConnectionError, OSError)):
+                await self._participant_health(state, payload, row, exc)
             self.save(state)
             raise
+
+    async def _participant_health(self, state, payload, row, error):
+        diagnose = getattr(self.transport, "participant_health", None)
+        if diagnose is None:
+            return
+        try:
+            assessment = await diagnose(payload, error=error)
+            if (not isinstance(assessment, dict) or type(assessment.get("confirmed")) is not bool
+                    or assessment.get("participant_state") not in {"reachable", "unreachable", "unknown"}
+                    or not isinstance(assessment.get("aic"), str) or not assessment["aic"]):
+                raise ValueError("invalid participant health assessment")
+            facts = [Fact.model_validate(fact).model_dump() for fact in assessment.get("facts", [])]
+        except Exception as exc:
+            self.event(state, "participant_health_check_failed", tool=payload["tool"],
+                       error_class=type(exc).__name__, reason="参与者状态证据暂不可用，请人工核对。")
+            return
+        assessment = {**assessment, "facts": facts}
+        row["participant_health"] = assessment
+        state.setdefault("participant_health", []).append(assessment)
+        state["facts"].extend(facts)
+        confirmed = assessment["confirmed"] and assessment["participant_state"] == "unreachable"
+        if confirmed:
+            state["diagnosed_causes"] = sorted(set(state.get("diagnosed_causes", [])) | {"participant_unavailable"})
+        self.event(state, "participant_unreachable" if confirmed else "participant_health_unconfirmed",
+                   tool=payload["tool"], aic=assessment["aic"], reason=(
+                       "参与者任务中断，管理请求无回复且心跳已过期，需要人工处理。" if confirmed
+                       else "参与者任务中断，当前证据不足以确认失联，需要人工核对。"))
+
+    async def _verify_after_participant_failure(self, state):
+        # Business traffic is checked independently; healthy orders cannot close
+        # an incident whose participant still needs an operator.
+        assessment = state["participant_health"][-1]
+        confirmed = assessment["confirmed"] and assessment["participant_state"] == "unreachable"
+        unresolved = {"participant_failure_confirmed": confirmed, "participant_recovered": False,
+                      "participant_manual_required": True, "manual_required": True, "incident_resolved": False}
+        state["result"] = {**(state["result"] or {}), **unresolved}
+        if "incident.verification" in getattr(self.transport, "tools", []):
+            try:
+                await self._verify(state)
+            except asyncio.CancelledError:
+                state.update(status="interrupted", error="独立业务验证中断；参与者仍需人工处理。")
+                raise
+            except Exception as exc:
+                self.event(state, "independent_verification_failed", tool="incident.verification",
+                           error_class=type(exc).__name__, reason="独立业务验证未完成，请人工核对。")
+        state["result"] = {**(state["result"] or {}), **unresolved}
+        state.update(status="needs_attention", error=(
+            "参与者已失联，请人工恢复或安排可信接管；业务验证结果单独列示。" if confirmed
+            else "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"))
 
     async def _approval(self, state, payload, row, reason):
         approval_id = "approval-" + uuid.uuid4().hex[:12]
@@ -282,6 +334,8 @@ class IncidentCoordinator:
             raise
         except Exception as exc:
             state.update(status="needs_attention", error=f"{type(exc).__name__}: {exc}")
+            if state.get("participant_health"):
+                await self._verify_after_participant_failure(state)
         finally:
             counts = {key: count - source_counts_before.get(key, 0)
                       for key, count in self.hypothesis.source_counts.items()}

@@ -107,3 +107,9 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 ## 固定开发源码归档
 
 [开发复现说明](docs/development_archive.md)绑定源码提交`69647cf29de96b50091c0a3e51ae2308115ad2fb`的1069个文件。[归档验证](evidence/deployment/development-archive-69647cf/verification.json)记录真实ZIP逐文件核对及解压目录Compose配置解析；这是开发复现归档，不是新机器T96验收。
+
+## F19 参与者故障补证
+
+[参与者失联诊断与专用F19入口](docs/participant_failure.md)补齐此前未支持的F19本地验收：本次新建运维worker自退出，按真实任务通道、管理Get和45秒心跳联合判定；订单健康与参与者人工处理分开记录。通用注入器在缺少进程所有权上下文时仍拒绝F19。
+
+[真实实验精简证明](evidence/participant-failure/F19-owned-20261017/verification.json)、[复原后H00](evidence/participant-failure/F19-owned-20261017/post-restore-h00.json)及[工作台只读回放](evidence/participant-failure/F19-owned-ui-20261017/results.json)保留各自范围；这是本地stdio证据，不代表正式平台AMQPS失联或自动接管。既有PDF、研究材料和失败历史不变。开发ZIP仍固定69647cf、1069文件，不含本批新增内容。

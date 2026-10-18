@@ -7,6 +7,7 @@ tools with database/application credentials.
 from __future__ import annotations
 import asyncio
 import json
+import math
 from pathlib import Path
 import ssl
 import time
@@ -14,10 +15,12 @@ import uuid
 
 from integration import wutong_smoke as native
 from acps_sdk.aip import StructuredDataItem, TextDataItem, TaskCommand
+from acps_sdk.aip.aip_group_model import GroupMgmtResult
 from acps_sdk.aip.resumable import TaskJournal, CoordinatorTerm, ResumableGroupLeader, Fence, ResumePackage
 from incident.amp_setup import AmpRuntime
 from incident.contracts import TaskProduct, handover_evidence
 from incident.selection import discover_candidates, select_participant
+from incident.coordinator.amp_facts import AmpFactStore, TaskEvidence, ManagementStatusEvidence
 
 
 class WutongTransport:
@@ -40,6 +43,7 @@ class WutongTransport:
         self.descriptions, self.active_fences, self.evidence, self.takeover_locks = {}, {}, {}, {}
         self.on_event = None
         self.closing = False
+        self._participant_failures = {}
         self.amp = AmpRuntime(self.output / "amp", "coordinator", self.aic,
                               cert=identity["cert"], key=identity["key"])
         self.approval_authority = None
@@ -175,27 +179,40 @@ class WutongTransport:
         task_id = "aip-" + uuid.uuid4().hex
         session_id = self.session.session_id
         timeout = payload.get("budget", {}).get("deadline_ms", 15000)/1000 + 5
-        await asyncio.wait_for(self.runtime.start_task(session_id,
-            task_content=json.dumps(payload, ensure_ascii=False), task_id=task_id,
-            logical_task_id=payload["logical_task_id"], target_partners=[target]), timeout)
-        await native.wait_for_state(self.session, task_id, target, native.TaskState.AwaitingCompletion, timeout)
-        messages = [m for m in self.session.message_history if isinstance(m, native.TaskResult)
-                    and m.taskId == task_id and m.senderId == target and m.status.state == native.TaskState.AwaitingCompletion]
-        if not messages:
-            raise RuntimeError("missing actual AIP product")
-        items = [item for product in messages[-1].products or [] for item in product.dataItems or []]
-        if len(items) != 1:
-            raise RuntimeError("one ifc/1.0 result item is required")
-        value = items[0].data if isinstance(items[0], StructuredDataItem) else json.loads(items[0].text)
-        product = TaskProduct.model_validate(value)
-        if (product.executor_aic, product.incident_id, product.logical_task_id) != (
-                target, payload["incident_id"], payload["logical_task_id"]):
-            raise RuntimeError("AIP product identity/correlation mismatch")
-        await self.runtime.complete_task(session_id, task_id, target_partner=target,
-                                         logical_task_id=payload["logical_task_id"])
-        await native.wait_for_state(self.session, task_id, target, native.TaskState.Completed, timeout)
+        deadline = time.time() + timeout
+        try:
+            await asyncio.wait_for(self.runtime.start_task(session_id,
+                task_content=json.dumps(payload, ensure_ascii=False), task_id=task_id,
+                logical_task_id=payload["logical_task_id"], target_partners=[target]), timeout)
+            deadline = time.time() + timeout
+            await native.wait_for_state(self.session, task_id, target, native.TaskState.AwaitingCompletion, timeout)
+            messages = [m for m in self.session.message_history if isinstance(m, native.TaskResult)
+                        and m.taskId == task_id and m.senderId == target and m.status.state == native.TaskState.AwaitingCompletion]
+            if not messages:
+                raise RuntimeError("missing actual AIP product")
+            items = [item for product in messages[-1].products or [] for item in product.dataItems or []]
+            if len(items) != 1:
+                raise RuntimeError("one ifc/1.0 result item is required")
+            value = items[0].data if isinstance(items[0], StructuredDataItem) else json.loads(items[0].text)
+            product = TaskProduct.model_validate(value)
+            if (product.executor_aic, product.incident_id, product.logical_task_id) != (
+                    target, payload["incident_id"], payload["logical_task_id"]):
+                raise RuntimeError("AIP product identity/correlation mismatch")
+            deadline = None
+            await self.runtime.complete_task(session_id, task_id, target_partner=target,
+                                             logical_task_id=payload["logical_task_id"])
+            deadline = time.time() + timeout
+            await native.wait_for_state(self.session, task_id, target, native.TaskState.Completed, timeout)
+        except (TimeoutError, ConnectionError, OSError) as error:
+            self._remember_participant_failure(payload, target, error, deadline=deadline)
+            raise
+        # Completed is already confirmed. Local evidence storage cannot turn
+        # that successful communication into a participant/channel failure.
         self.messages = [m.model_dump(mode="json") for m in self.session.message_history]
-        (self.output / "messages.json").write_text(json.dumps(self.messages, ensure_ascii=False, indent=2), encoding="utf-8")
+        try:
+            (self.output / "messages.json").write_text(json.dumps(self.messages, ensure_ascii=False, indent=2), encoding="utf-8")
+        except OSError as error:
+            raise RuntimeError("local AIP evidence persistence failed") from error
         return product.model_dump()
 
     async def call(self, payload):
@@ -213,9 +230,96 @@ class WutongTransport:
         except (TimeoutError, ConnectionError, OSError) as exc:
             if self.closing or not self.config.get("automatic_takeover", True):
                 raise
-            result = await self._takeover(role, target, value, type(exc).__name__)
+            try:
+                result = await self._takeover(role, target, value, type(exc).__name__)
+            except Exception as takeover_error:
+                self.record("takeover_unavailable", failed_aic=target, error_class=type(takeover_error).__name__)
+                raise exc from takeover_error
         self.evidence.setdefault(value["incident_id"], []).extend(result.get("facts", []))
         return result
+
+    def _remember_participant_failure(self, payload, aic, error, *, deadline=None):
+        observed = time.time()
+        status = ("deadline_expired" if isinstance(error, TimeoutError) and deadline is not None
+                  and observed >= deadline else "unknown" if isinstance(error, TimeoutError) else "channel_lost")
+        key = (payload["incident_id"], payload["logical_task_id"])
+        self._participant_failures[key] = {"aic": aic, "error": error,
+            "task": TaskEvidence(aic, status, observed, deadline)}
+        if len(self._participant_failures) > 128:
+            self._participant_failures.pop(next(iter(self._participant_failures)))
+
+    def _participant_reply_since(self, aic, start):
+        return any(isinstance(message, GroupMgmtResult) and message.senderId == aic
+            and message.senderRole == "partner" and message.sessionId == self.session.session_id
+            and message.groupId == self.session.group_id for message in self.session.message_history[start:])
+
+    async def _participant_management(self, aic, *, timeout):
+        requested = time.time()
+        start = len(self.session.message_history)
+        phase, outcome = "publish", "unknown"
+        try:
+            await asyncio.wait_for(self.runtime.check_partner_status(aic, session_id=self.session.session_id), timeout)
+            phase = "reply"
+            until = time.monotonic() + timeout
+            while not self._participant_reply_since(aic, start):
+                if time.monotonic() >= until:
+                    raise TimeoutError("management reply deadline expired")
+                await asyncio.sleep(min(.02, max(0, until - time.monotonic())))
+            outcome = "reply"
+        except TimeoutError:
+            outcome = "timeout" if phase == "reply" else "no_reply"
+        except (ConnectionError, OSError):
+            outcome = "no_reply"
+        except Exception:
+            outcome = "unknown"
+        return ManagementStatusEvidence(aic, outcome, requested, time.time()), phase, start
+
+    async def participant_health(self, payload, *, error):
+        """Assess selected-participant evidence; configured AMP paths only."""
+        aic = None
+        try:
+            saved = self._participant_failures.get((payload["incident_id"], payload["logical_task_id"]))
+            if saved is None or saved["error"] is not error:
+                raise ValueError("no bound task failure")
+            aic, task = saved["aic"], saved["task"]
+            timeout = self.config.get("participant_health_timeout_seconds", 2)
+            wait = self.config.get("participant_health_wait_seconds", 0)
+            if (type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 30
+                    or type(wait) not in (int, float) or not math.isfinite(wait) or not 0 <= wait <= 60):
+                raise ValueError("participant health bounds are invalid")
+            configured = self.config.get("participant_amp_paths", {})
+            if not isinstance(configured, dict) or not isinstance(configured.get(aic, []), list):
+                raise ValueError("participant AMP sources must be an explicit per-AIC list")
+            paths = [Path(value).resolve() for value in configured.get(aic, [])]
+            if any(path.suffix != ".jsonl" or not path.name.startswith(("amp_heartbeat_", "amp_access_")) for path in paths):
+                raise ValueError("participant AMP source is not a heartbeat/access log")
+            management, phase, start = await self._participant_management(aic, timeout=timeout)
+            store = AmpFactStore(heartbeat_ttl_seconds=self.config.get("participant_heartbeat_ttl_seconds", 45),
+                access_ttl_seconds=self.config.get("participant_access_ttl_seconds", 60),
+                evidence_ttl_seconds=self.config.get("participant_evidence_ttl_seconds", 60))
+            store.load_jsonl(paths)
+            result = store.assess(aic, task=task, management=management)
+            proof = result["evidence"]
+            expiry = proof.get("heartbeat_expires_at")
+            if (wait and proof["task_valid"] and proof["management_outcome"] in {"no_reply", "timeout"}
+                    and proof["heartbeat_state"] == "fresh" and result["participant_state"] == "unknown"
+                    and type(expiry) in (int, float)):
+                await asyncio.sleep(min(wait, max(.01, expiry - time.time() + .01)))
+                store.load_jsonl(paths)
+                if self._participant_reply_since(aic, start):
+                    management = ManagementStatusEvidence(aic, "reply", management.requested_at, time.time())
+                result = store.assess(aic, task=task, management=management)
+            result.update(transport=self.mode, manual_required=True)
+            result["evidence"].update(management_probe_phase=phase,
+                management_requested_at=management.requested_at,
+                management_observed_at=management.observed_at,
+                management_probe_session=self.session.session_id, management_history_start=start)
+            return result
+        except Exception as exc:
+            return {"schema_version": "participant-health/1.0", "aic": aic, "confirmed": False,
+                "participant_state": "unknown", "task_status": "unknown", "manual_required": True,
+                "reason": "participant_health_evidence_unavailable", "facts": [], "business_state": "unknown",
+                "diagnostics": {"adapter_error": type(exc).__name__}}
 
     async def _takeover(self, role, failed, original, reason):
         """Confirm a fresh ADP candidate and its shared-resource fence before replay."""

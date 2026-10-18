@@ -1,0 +1,864 @@
+{
+  "schema_version": "f19-owned-worker-public-proof/1.0",
+  "marker": "ACTUAL_F19_CLOSED",
+  "main": {
+    "source_directory_name": "F19-owned-20261017-initial",
+    "runner_status": "passed",
+    "scenario": "F19",
+    "experiment_id": "owned-30e8ab0daa12",
+    "started_at": "2026-10-17T14:33:47.817087+00:00",
+    "finished_at": "2026-10-17T14:35:13.904738+00:00",
+    "error_class": null,
+    "incident_id": "inc-3d113c65847a4169",
+    "transport": "local-aip-stdio",
+    "platform_adp_verified": false,
+    "normal_get_before_failure": {
+      "aic": "local-owned-30e8ab0daa12-ops",
+      "outcome": "reply",
+      "requested_at": 1792247633.5757856,
+      "observed_at": 1792247633.584447,
+      "phase": "reply",
+      "probe_session": "health-74536bac483a40d08933b88ccca305f7"
+    },
+    "describe_before_failure": {
+      "status": "ok",
+      "incident_id": "owned-30e8ab0daa12-before",
+      "logical_task_id": "lt-ef1b54dbde114d98b27ef9f3d78868ed",
+      "executor_aic": "local-owned-30e8ab0daa12-ops",
+      "described_executor_aic": "local-owned-30e8ab0daa12-ops"
+    },
+    "participant_diagnosis": {
+      "schema_version": "participant-health/1.0",
+      "aic": "local-owned-30e8ab0daa12-ops",
+      "confirmed": true,
+      "participant_state": "unreachable",
+      "task_status": "channel_lost",
+      "reason": "task_and_management_failure_with_expired_heartbeat",
+      "facts": [
+        {
+          "key": "participant_reachable",
+          "value": {
+            "aic": "local-owned-30e8ab0daa12-ops",
+            "state": "unreachable"
+          },
+          "source": "coordinator.amp_facts",
+          "observed_at": "2026-10-17T14:34:36.329807+00:00"
+        },
+        {
+          "key": "participant_heartbeat_status",
+          "value": {
+            "aic": "local-owned-30e8ab0daa12-ops",
+            "state": "expired"
+          },
+          "source": "amp.heartbeat",
+          "observed_at": "2026-10-17T14:33:51.319937+00:00"
+        },
+        {
+          "key": "participant_heartbeat_age_seconds",
+          "value": {
+            "aic": "local-owned-30e8ab0daa12-ops",
+            "seconds": 45.00986981391907
+          },
+          "source": "amp.heartbeat",
+          "observed_at": "2026-10-17T14:33:51.319937+00:00"
+        },
+        {
+          "key": "participant_access_status",
+          "value": {
+            "aic": "local-owned-30e8ab0daa12-ops",
+            "state": "success"
+          },
+          "source": "amp.access",
+          "observed_at": "2026-10-17T14:33:53.471755+00:00"
+        }
+      ],
+      "evidence": {
+        "task_valid": true,
+        "management_outcome": "no_reply",
+        "management_valid": true,
+        "heartbeat_state": "expired",
+        "heartbeat_age_seconds": 45.00986981391907,
+        "heartbeat_log_id": "8411283c-296f-4b13-8530-9a9beb000615",
+        "heartbeat_expires_at": 1792247676.319937,
+        "heartbeat_after_task_failure": false,
+        "access_state": "success",
+        "access_log_id": "f9f21562-6aa2-4e97-85c5-899a2890d692",
+        "access_age_seconds": 42.858051776885986,
+        "access_after_task_failure": false,
+        "management_probe_phase": "publish",
+        "management_requested_at": 1792247633.9160693,
+        "management_observed_at": 1792247633.9160693,
+        "management_probe_session": "health-73eb63f3c5ad480580b1c114d6af51b3"
+      },
+      "manual_required": true,
+      "business_state": "unknown",
+      "transport": "local-aip-stdio"
+    },
+    "failed_management_query": {
+      "aic": "local-owned-30e8ab0daa12-ops",
+      "management_outcome": "no_reply",
+      "management_probe_phase": "publish",
+      "management_requested_at": 1792247633.9160693,
+      "management_observed_at": 1792247633.9160693,
+      "management_probe_session": "health-73eb63f3c5ad480580b1c114d6af51b3",
+      "wire_delivery": "not_sent"
+    },
+    "incident_outcome": {
+      "incident_status": "needs_attention",
+      "business_observation": {
+        "duration_seconds": 30.015,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "participant_failure_confirmed": true,
+      "participant_recovered": false,
+      "incident_resolved": false,
+      "manual_required": true,
+      "act_tasks": 0,
+      "approval_count": 0,
+      "model_calls": 0,
+      "model_tokens": 0
+    },
+    "evaluation_only_exit_code": 81,
+    "clock_and_evidence_parameters": {
+      "heartbeat_interval_seconds": 15,
+      "heartbeat_ttl_seconds": 45,
+      "access_ttl_seconds": 60,
+      "participant_health_wait_seconds": 50,
+      "task_deadline_expiration_claimed": false
+    },
+    "new_owned_worker_control": {
+      "describe": {
+        "status": "ok",
+        "incident_id": "owned-30e8ab0daa12-restored",
+        "logical_task_id": "lt-7f2709f2e1fc4370ac83f574975610e1",
+        "executor_aic": "local-owned-30e8ab0daa12-ops",
+        "described_executor_aic": "local-owned-30e8ab0daa12-ops"
+      },
+      "get": {
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "outcome": "reply",
+        "requested_at": 1792247713.5204506,
+        "observed_at": 1792247713.5289822,
+        "phase": "reply",
+        "probe_session": "health-7f115f8a8ebd4711b2ab427848c350db"
+      },
+      "heartbeat": {
+        "timestamp": "2026-10-17T14:35:10.883232+00:00",
+        "record_seen_at": 1792247713.5373473
+      },
+      "scope": "new dedicated worker only; original incident remains for manual review"
+    },
+    "direct_child_cleanup": [
+      {
+        "scope": "initial",
+        "role": "ops",
+        "returncode": 81
+      },
+      {
+        "scope": "initial",
+        "role": "verification",
+        "returncode": 0
+      },
+      {
+        "scope": "restarted",
+        "role": "ops",
+        "returncode": 0
+      },
+      {
+        "scope": "restarted",
+        "role": "verification",
+        "returncode": 0
+      }
+    ],
+    "all_owned_direct_workers_exited": true,
+    "mcp_grandchild_cleanup_independently_measured": false,
+    "source_unchanged": true,
+    "source_code_sha256": {
+      "eval/participant_failure_experiment.py": "92e052366c6b4837798e121bb43c0b3532045cbeedca861fc49906fbe3d8b180",
+      "incident/local_worker.py": "03f00130b11f282f6c10cf2a3536b7e6f649923af954bd612273dfdd424ed8a3",
+      "incident/local_transport.py": "49eb55e68fc5cd4cf8ab5cbb58afb0e42c3c98d283a7bfda7f28800c0a360286",
+      "incident/amp_setup.py": "05d9345c85eba80d74c0a178b5c8c194158db0e6d78fe10c00e64762e74393a7",
+      "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+      "incident/coordinator/engine.py": "c6e5bbd0a39473a2693936f3b12325b078397ff77a7a23043da1f209ae66ef52",
+      "incident/coordinator/amp_facts.py": "b9cb4fd7d6111312e2a68883b16e6fca07a9325df8ff35576c6a6abbb5773eb3",
+      "incident/partners.py": "9690c121f41c10b2598ea319e613aa268a8c5ab14c71291ae112e563546d23ba",
+      "business/load.py": "685d14deb1787c79201f498771c4b0b9de77eddbe7cbf4133061c7b86b551b6d"
+    },
+    "aip_header_and_correlation_projection": [
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 1,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:33:53.453725+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-be33a920-ab0b-4539-b4c4-baf1a5552a43",
+          "sentAt": "2026-10-17T14:33:53.451726+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "command": "start"
+        },
+        "task_correlation": {
+          "incident_id": "owned-30e8ab0daa12-before",
+          "logical_task_id": "lt-ef1b54dbde114d98b27ef9f3d78868ed",
+          "kind": "describe",
+          "tool": "aip.describe"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 2,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.457725+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-ea209f35-7814-4bb6-83e0-629a9ae25fad",
+          "sentAt": "2026-10-17T14:33:53.457725+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "status": {
+            "state": "accepted"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 3,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.488937+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-7b4e06ae-2e91-4932-b978-27c3d46b7cf1",
+          "sentAt": "2026-10-17T14:33:53.460737+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "status": {
+            "state": "working"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 4,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.517486+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-c28ef391-0c2f-4415-8fda-d250cea4ab23",
+          "sentAt": "2026-10-17T14:33:53.467744+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "status": {
+            "state": "awaiting-completion"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 5,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:33:53.543102+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-8787867b-1268-4998-80ac-82e8ac987282",
+          "sentAt": "2026-10-17T14:33:53.543102+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "command": "complete"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 6,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.551317+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-d9e0c06e-66ac-43d1-a62f-fb042b0b48ee",
+          "sentAt": "2026-10-17T14:33:53.546781+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-before",
+          "taskId": "aip-925141c9839a4b13b8a173e66b35781f",
+          "status": {
+            "state": "completed"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 7,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:33:53.575785+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "group-mgmt-command",
+          "id": "mgmt-cmd-25f7d9bb-3ca8-47d8-8519-b0bd24f74f64",
+          "sentAt": "2026-10-17T14:33:53.575785+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "health-74536bac483a40d08933b88ccca305f7",
+          "command": "get-status"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 8,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.580292+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "group-mgmt-result",
+          "id": "mgmt-result-92140354-bb61-4b5e-acd7-2b3d83c8df46",
+          "sentAt": "2026-10-17T14:33:53.580292+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "health-74536bac483a40d08933b88ccca305f7",
+          "status": {
+            "connected": true,
+            "muted": false
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 9,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:33:53.627108+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-beb1a03a-e046-4e3d-8a92-62d9145616f3",
+          "sentAt": "2026-10-17T14:33:53.627108+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-26acd4d39b264e5cb29db35520df0024",
+          "command": "start"
+        },
+        "task_correlation": {
+          "incident_id": "inc-3d113c65847a4169",
+          "logical_task_id": "lt-6c1daf6467aa",
+          "kind": "observe",
+          "tool": "ops.route_status"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 10,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.634626+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-57967db8-5fd1-4df4-8921-ff0c92d490f1",
+          "sentAt": "2026-10-17T14:33:53.630621+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-26acd4d39b264e5cb29db35520df0024",
+          "status": {
+            "state": "accepted"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 11,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:33:53.663075+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-00c55fa9-e2bb-4d32-a32e-f9f6eb8ce248",
+          "sentAt": "2026-10-17T14:33:53.634626+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-26acd4d39b264e5cb29db35520df0024",
+          "status": {
+            "state": "working"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 12,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:34:36.386741+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-47aeba20-3f03-499d-9fbf-c6e5a72579bb",
+          "sentAt": "2026-10-17T14:34:36.382392+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "command": "start"
+        },
+        "task_correlation": {
+          "incident_id": "inc-3d113c65847a4169",
+          "logical_task_id": "lt-6f0b34d70551",
+          "kind": "verify",
+          "tool": "incident.verification"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 13,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:34:36.401761+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-result",
+          "id": "result-e3f1e5a5-e9fe-4774-98cc-ae4bcaeb1221",
+          "sentAt": "2026-10-17T14:34:36.399413+00:00",
+          "senderId": "local-owned-30e8ab0daa12-verification",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "status": {
+            "state": "accepted"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 14,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:34:36.437212+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-result",
+          "id": "result-952f9783-e9e0-4238-8058-f33ad3e28878",
+          "sentAt": "2026-10-17T14:34:36.404273+00:00",
+          "senderId": "local-owned-30e8ab0daa12-verification",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "status": {
+            "state": "working"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 15,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:06.474371+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-result",
+          "id": "result-8a22002e-d0a9-4867-83a9-f4c7b4182b3d",
+          "sentAt": "2026-10-17T14:35:06.465045+00:00",
+          "senderId": "local-owned-30e8ab0daa12-verification",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "status": {
+            "state": "awaiting-completion"
+          }
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 16,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:35:06.525617+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-44d6c127-d2f8-4630-b0be-d47f91ef4e92",
+          "sentAt": "2026-10-17T14:35:06.523617+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "command": "complete"
+        }
+      },
+      {
+        "source_file": "transport/messages.jsonl",
+        "source_line": 17,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:06.536641+00:00",
+        "worker": "owned-verification",
+        "worker_aic": "local-owned-30e8ab0daa12-verification",
+        "message": {
+          "type": "task-result",
+          "id": "result-2c0169ea-b7be-4fcf-885b-564dae9bdd73",
+          "sentAt": "2026-10-17T14:35:06.529634+00:00",
+          "senderId": "local-owned-30e8ab0daa12-verification",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "inc-3d113c65847a4169",
+          "taskId": "aip-82b22cd1b8d24ed38d5baf8daa988e12",
+          "status": {
+            "state": "completed"
+          }
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 1,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:35:13.395156+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-f2ecb212-e97f-4aa6-b1bd-8d2f818145fd",
+          "sentAt": "2026-10-17T14:35:13.395156+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "command": "start"
+        },
+        "task_correlation": {
+          "incident_id": "owned-30e8ab0daa12-restored",
+          "logical_task_id": "lt-7f2709f2e1fc4370ac83f574975610e1",
+          "kind": "describe",
+          "tool": "aip.describe"
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 2,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:13.399185+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-6e697777-cb59-4f4f-8187-bdc841b53128",
+          "sentAt": "2026-10-17T14:35:13.399185+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "status": {
+            "state": "accepted"
+          }
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 3,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:13.445375+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-521b29ad-8c7a-43ea-bdb1-c1a151ebae60",
+          "sentAt": "2026-10-17T14:35:13.402189+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "status": {
+            "state": "working"
+          }
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 4,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:13.469475+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-e91554ae-842f-424d-9ef4-95191971f4ff",
+          "sentAt": "2026-10-17T14:35:13.408715+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "status": {
+            "state": "awaiting-completion"
+          }
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 5,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:35:13.490159+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-command",
+          "id": "cmd-8bdfee68-688a-4376-b41b-c3125f6ca00a",
+          "sentAt": "2026-10-17T14:35:13.490159+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "command": "complete"
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 6,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:13.497184+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "task-result",
+          "id": "result-e7b906b4-8723-4ba1-8461-d6b4a37e3795",
+          "sentAt": "2026-10-17T14:35:13.494161+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "owned-30e8ab0daa12-restored",
+          "taskId": "aip-6124f433836a46aaa138cb27d13545b6",
+          "status": {
+            "state": "completed"
+          }
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 7,
+        "direction": "send",
+        "timestamp": "2026-10-17T14:35:13.521450+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "group-mgmt-command",
+          "id": "mgmt-cmd-98fa9e50-4c7f-46b9-8f56-10b9140e1baa",
+          "sentAt": "2026-10-17T14:35:13.520450+00:00",
+          "senderId": "local-owned-30e8ab0daa12-leader",
+          "senderRole": "leader",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "health-7f115f8a8ebd4711b2ab427848c350db",
+          "command": "get-status"
+        }
+      },
+      {
+        "source_file": "restarted-transport/messages.jsonl",
+        "source_line": 8,
+        "direction": "receive",
+        "timestamp": "2026-10-17T14:35:13.524452+00:00",
+        "worker": "owned-ops",
+        "worker_aic": "local-owned-30e8ab0daa12-ops",
+        "message": {
+          "type": "group-mgmt-result",
+          "id": "mgmt-result-dd002af7-7edc-4101-bf25-06ca01e71060",
+          "sentAt": "2026-10-17T14:35:13.524452+00:00",
+          "senderId": "local-owned-30e8ab0daa12-ops",
+          "senderRole": "partner",
+          "groupId": "local-owned-30e8ab0daa12",
+          "sessionId": "health-7f115f8a8ebd4711b2ab427848c350db",
+          "status": {
+            "connected": true,
+            "muted": false
+          }
+        }
+      }
+    ],
+    "amp_record_projection": [
+      {
+        "source_file": "amp/amp_heartbeat_owned-ops.jsonl",
+        "source_line": 1,
+        "record_text_sha256_without_line_ending": "4e681dd7c7e59278693a1c6f41f67aa0ddb46919b59551eb568e9461a5fa9d6f",
+        "log_id": "8411283c-296f-4b13-8530-9a9beb000615",
+        "log_type": "heartbeat",
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "timestamp": "2026-10-17T14:33:51.319937+00:00",
+        "body_fields": {}
+      },
+      {
+        "source_file": "amp/amp_heartbeat_owned-ops.jsonl",
+        "source_line": 2,
+        "record_text_sha256_without_line_ending": "9d2daf83b50f8950771388e1350249450f26e3733a94018c9703b27534532811",
+        "log_id": "cc1204ff-6374-455c-8301-167475236b34",
+        "log_type": "heartbeat",
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "timestamp": "2026-10-17T14:35:10.883232+00:00",
+        "body_fields": {}
+      },
+      {
+        "source_file": "amp/amp_access_owned-ops.jsonl",
+        "source_line": 1,
+        "record_text_sha256_without_line_ending": "faee6ff37bf7056c256a4393333154c2bbacde0dd122532a7530c7be8b0cc0fa",
+        "log_id": "f9f21562-6aa2-4e97-85c5-899a2890d692",
+        "log_type": "access",
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "timestamp": "2026-10-17T14:33:53.471755Z",
+        "trace_id": "owned-30e8ab0daa12-before",
+        "correlation_id": "aip-925141c9839a4b13b8a173e66b35781f",
+        "body_fields": {
+          "durationMs": 16.00000000325963,
+          "caller": {
+            "aic": "local-owned-30e8ab0daa12-leader"
+          },
+          "callee": {
+            "aic": "local-owned-30e8ab0daa12-ops"
+          }
+        }
+      },
+      {
+        "source_file": "amp/amp_access_owned-ops.jsonl",
+        "source_line": 2,
+        "record_text_sha256_without_line_ending": "7cee04fada6b12551629d4fc6825d3ad9652ee1e0643440bd8bdf47b51fc47be",
+        "log_id": "0abc3075-3778-4c8a-b894-0f1780bbb769",
+        "log_type": "access",
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "timestamp": "2026-10-17T14:35:13.411723Z",
+        "trace_id": "owned-30e8ab0daa12-restored",
+        "correlation_id": "aip-6124f433836a46aaa138cb27d13545b6",
+        "body_fields": {
+          "durationMs": 0.0,
+          "caller": {
+            "aic": "local-owned-30e8ab0daa12-leader"
+          },
+          "callee": {
+            "aic": "local-owned-30e8ab0daa12-ops"
+          }
+        }
+      },
+      {
+        "source_file": "amp/amp_system_owned-ops.jsonl",
+        "source_line": 2,
+        "record_text_sha256_without_line_ending": "8edb09f620179c37a3dded4f730567e5cc44e3f3be9d5bd35cfe5a42543cda63",
+        "log_id": "bbd68b4a-7908-4f3c-aaa2-1e4d5fb404b8",
+        "log_type": "system",
+        "aic": "local-owned-30e8ab0daa12-ops",
+        "timestamp": "2026-10-17T14:33:53.877022Z",
+        "body_fields": {
+          "event": "experiment_worker_crash",
+          "experiment_id": "owned-30e8ab0daa12",
+          "crash_point": "after_observation",
+          "incident_id": "inc-3d113c65847a4169",
+          "logical_task_id": "lt-6c1daf6467aa",
+          "operation_id": null
+        }
+      }
+    ],
+    "source_files": [
+      {
+        "path": "results.json",
+        "present": true,
+        "bytes": 8784,
+        "sha256": "b799ecab627a171340b6582f09d6e49f37b423b0c3b77abbac94e036178bc744"
+      },
+      {
+        "path": "incidents/inc-3d113c65847a4169.json",
+        "present": true,
+        "bytes": 42278,
+        "sha256": "825611c24ea59b1726072d0d244b93481c2244fa12c80608cf9f1e3d8c66c1a8"
+      },
+      {
+        "path": "source-hashes.json",
+        "present": true,
+        "bytes": 910,
+        "sha256": "df983e94d028e3bc536724a5323b5d38c01d3061526b3b23a1167acf659551e5"
+      },
+      {
+        "path": "transport/messages.jsonl",
+        "present": true,
+        "bytes": 22762,
+        "sha256": "97d466c51d6881f1e3695aa2f36929ddd83609ad6984661995ef7985649ff73d"
+      },
+      {
+        "path": "restarted-transport/messages.jsonl",
+        "present": true,
+        "bytes": 5998,
+        "sha256": "453a36580f1e2d13977dd1f3f70112c2592106f7df2f0b16f58157bb495a42a6"
+      },
+      {
+        "path": "amp/amp_heartbeat_owned-ops.jsonl",
+        "present": true,
+        "bytes": 448,
+        "sha256": "4051b511f16e2cf9a919920acb37673c5fe3e32406a21957b5a73bd99a5aee1d"
+      },
+      {
+        "path": "amp/amp_access_owned-ops.jsonl",
+        "present": true,
+        "bytes": 1026,
+        "sha256": "75cf63a8723d9050772f1a9749b8ba04ae31e6032da97ae6093866582125ff9a"
+      },
+      {
+        "path": "amp/amp_system_owned-ops.jsonl",
+        "present": true,
+        "bytes": 1171,
+        "sha256": "8bd56faa3a20d0b33d1269f05e64b6fa1e6e55cde9a2ff671e4cc1ff3d3f57a3"
+      }
+    ],
+    "limits": [
+      "Local stdio and local AMP files; no formal AMQPS/ADP or platform ingestion claim.",
+      "A task channel loss is not a task deadline expiry. Management publish-stage no_reply is not a delivered query timeout.",
+      "Normal Get/describe successes before a failure do not prove post-failure liveness; retained causal facts decide.",
+      "Healthy order workflows do not resolve the participant incident. The persisted incident remains manual.",
+      "Exit code is injection evidence only, not a coordinator diagnosis source.",
+      "Missing source fields or probe IDs remain absent; no wire send/reply or correlation is invented.",
+      "Only direct-child cleanup is recorded; no unmeasured grandchild cleanup claim."
+    ]
+  },
+  "prior_failures": []
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": "participant-health-transport-offline/1.0",
+  "generated_at": "2026-10-17T14:33:08.171695+00:00",
+  "status": "passed_with_retained_history",
+  "scope": "Offline mocks plus isolated temporary file/stdio worker fixtures; no existing resource, HTTP, model, or platform call.",
+  "distinct_tests_with_passing_latest_outcomes": 31,
+  "suites": [
+    {
+      "log": "output/participant-health-transport-offline-20261017/targeted-final.log",
+      "executed_tests": 13,
+      "exit_code": 0,
+      "selection": "test_participant_health_transport.py"
+    },
+    {
+      "log": "output/participant-health-transport-offline-20261017/wutong-regression.log",
+      "executed_tests": 12,
+      "exit_code": 1,
+      "selection": "test_wutong_transport.py",
+      "passed": 11,
+      "errors": 1,
+      "note": "One obsolete RuntimeError assertion; the required behavior preserves the original TimeoutError with takeover RuntimeError as its cause."
+    },
+    {
+      "log": "output/participant-health-transport-offline-20261017/wutong-affected-final.log",
+      "executed_tests": 1,
+      "exit_code": 0,
+      "selection": "test_wutong_transport.py -k test_same_skill_on_different_resource_cannot_take_over",
+      "note": "Updated only the affected old assertion; its previous 11 passing peers are reused without rerun."
+    },
+    {
+      "log": "output/participant-health-transport-offline-20261017/native-aip-regression.log",
+      "executed_tests": 1,
+      "exit_code": 0,
+      "selection": "test_coordinator.py -k test_native_aip_stdio_roundtrip_uses_independent_workers_and_full_states"
+    },
+    {
+      "log": "output/participant-health-transport-offline-20261017/resume-regression.log",
+      "executed_tests": 5,
+      "exit_code": 1,
+      "selection": "test_resume_transport.py",
+      "passed": 4,
+      "errors": 1,
+      "note": "after_applied encountered a worker startup RuntimeError before sending a task; the other four passed. Original failing run is retained."
+    },
+    {
+      "log": "output/participant-health-transport-offline-20261017/resume-affected-final.log",
+      "executed_tests": 1,
+      "exit_code": 0,
+      "selection": "test_resume_transport.py -k test_after_applied_process_exit_skips_modification_on_backup",
+      "note": "Isolated rerun passed unchanged; the four already passing cases are reused."
+    }
+  ],
+  "preserved_history": {
+    "initial_targeted": "targeted-initial.log",
+    "initial_targeted_test_failures": 2,
+    "initial_targeted_note": "Initial 5ms management budget included asynchronous evidence I/O; a heartbeat fixture was already expired before the late-reply wait. Tests now use a realistic response budget and create the real heartbeat after task failure; the clock is never replaced.",
+    "initial_driver_note": "The driver failed while printing its already saved UTF-8 log through GBK; later drivers explicitly use UTF-8.",
+    "approval_wait_timeout": "First resume fixture launch did not execute because the approval review timed out. Default execution subsequently ran it; this is not counted as a test run."
+  },
+  "final_metadata_only_delta": {
+    "fields": [
+      "management_requested_at",
+      "management_observed_at",
+      "management_probe_session",
+      "management_history_start (wutong only)"
+    ],
+    "validation": "Inspected direct projections of actual ManagementStatusEvidence/session/history values; parent requested no repeat of unchanged behavioral suites. Real F19 is not performed by this subtask."
+  },
+  "config": {
+    "participant_health_timeout_seconds": {
+      "default": 2,
+      "bounds": "0 < value <= 30"
+    },
+    "participant_health_wait_seconds": {
+      "default": 0,
+      "bounds": "0 <= value <= 60"
+    },
+    "participant_heartbeat_ttl_seconds": 45,
+    "participant_access_ttl_seconds": 60,
+    "participant_evidence_ttl_seconds": 60,
+    "participant_amp_paths": "Wutong only: explicit per-exact-AIC list of accessible amp_heartbeat_*.jsonl / amp_access_*.jsonl paths. No directory fallback."
+  },
+  "source": [
+    {
+      "path": "incident/local_transport.py",
+      "bytes": 39522,
+      "sha256": "49eb55e68fc5cd4cf8ab5cbb58afb0e42c3c98d283a7bfda7f28800c0a360286"
+    },
+    {
+      "path": "incident/wutong_transport.py",
+      "bytes": 25478,
+      "sha256": "062f92a58c08d3004aebc6e23e59e14dd31369eb42758fa689cd392474a64691"
+    },
+    {
+      "path": "tests/test_participant_health_transport.py",
+      "bytes": 16276,
+      "sha256": "d82d52657a91f7e9378a51122167cec78b5f613ac36e1c235e8def8a89de94f2"
+    },
+    {
+      "path": "tests/test_wutong_transport.py",
+      "bytes": 12388,
+      "sha256": "ce42f901ca8344d67418ea04a31aa8cd5338fa7564ebc1cd782a954576b007cc"
+    }
+  ]
+}

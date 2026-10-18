@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import inspect
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -26,12 +27,14 @@ sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 
 from acps_sdk.aip import StructuredDataItem, TaskResult, TaskState
 from acps_sdk.aip.aip_group_leader import GroupLeaderMqClient
+from acps_sdk.aip.aip_group_model import GroupMgmtResult
 from acps_sdk.aip.resumable import CoordinatorTerm, Fence, ResumePackage, TaskJournal
 from acps_sdk.amp import MessageBody, MessageDestination
 from acps_mcp_bridge import ApprovalAuthority
 from incident.amp_setup import AmpRuntime
 from incident.contracts import TaskPayload, TaskProduct, handover_evidence
 from incident.coordinator.planner import PROBES
+from incident.coordinator.amp_facts import AmpFactStore, TaskEvidence, ManagementStatusEvidence
 
 
 def local_path(value: str | Path) -> Path:
@@ -114,6 +117,8 @@ class LocalAipStdioTransport:
         self.takeover_locks: dict[str, asyncio.Lock] = {}
         self.evidence: dict[str, list[dict[str, Any]]] = {}
         self.events: list[dict[str, Any]] = []
+        self._participant_failures = {}
+        self._management_pending = {}
         self.messages_path = self.directory / "messages.jsonl"
         self._capture_lock = asyncio.Lock()
         if self.config.get("approval_env_file"):
@@ -235,6 +240,18 @@ class LocalAipStdioTransport:
                     continue
                 if raw.get("event") == "startup_error":
                     raise RuntimeError("domain worker startup failed: " + str(raw.get("error_class", "unknown")))
+                if raw.get("type") == "group-mgmt-result":
+                    message = GroupMgmtResult.model_validate(raw)
+                    if (message.senderId != worker.spec["aic"] or message.senderRole != "partner"
+                            or message.groupId != self.group_id):
+                        raise ValueError("management result differs from its bound local process channel")
+                    pending = self._management_pending.get(message.sessionId)
+                    if pending is not None and pending["worker"] is worker:
+                        await self._capture("receive", worker, message)
+                        await emit_message(self.amp.message, message, "receive", name + ".stdout")
+                        if not pending["future"].done():
+                            pending["future"].set_result(time.time())
+                    continue
                 message = TaskResult.model_validate(raw)
                 if (message.senderId != worker.spec["aic"] or message.senderRole != "partner"
                         or message.groupId != self.group_id):
@@ -292,6 +309,9 @@ class LocalAipStdioTransport:
             for pending in self.pending.values():
                 if pending["worker"] is worker and not pending["future"].done():
                     pending["future"].set_exception(ConnectionError("domain worker exited with task in flight"))
+            for pending in self._management_pending.values():
+                if pending["worker"] is worker and not pending["future"].done():
+                    pending["future"].set_exception(ConnectionError("domain worker exited during management query"))
 
     async def _publish(self, command):
         mentions = command.mentions
@@ -316,6 +336,13 @@ class LocalAipStdioTransport:
         candidates = [w for w in self.workers.values() if w.spec["role"] == role and task.tool in w.tools and w.state == "ready"
                       and (w.spec["aic"] == self.active_workers.get(role) or (role not in self.active_workers and not w.spec.get("standby")))]
         if not candidates:
+            failed = next((w for w in self.workers.values() if w.spec["role"] == role
+                           and w.spec["aic"] == self.active_workers.get(role)), None)
+            if (failed is not None and task.tool in failed.tools
+                    and (failed.state != "ready" or failed.process.returncode is not None)):
+                error = ConnectionError("selected local domain worker is unavailable")
+                self._remember_participant_failure(value, failed.spec["aic"], error)
+                raise error
             raise RuntimeError("no ready domain worker advertises this tool")
         worker = candidates[0]
         if role in self.active_fences and task.kind in ("act", "resume"):
@@ -326,7 +353,14 @@ class LocalAipStdioTransport:
             if self.closing or not self.config.get("automatic_takeover", True):
                 raise
             reason = worker.failure_reason or ("task_deadline_expired" if isinstance(exc, asyncio.TimeoutError) else "local_channel_disconnected")
-            result = await self._takeover(worker, value, reason)
+            try:
+                result = await self._takeover(worker, value, reason)
+            except Exception as takeover_error:
+                # Preserve the actual task/channel failure; a failed replacement
+                # is separate evidence, never an invented task timeout.
+                await self._event("takeover_unavailable", failed_aic=worker.spec["aic"],
+                                  error_class=type(takeover_error).__name__)
+                raise exc from takeover_error
         if result.get("facts"):
             self.evidence.setdefault(task.incident_id, []).extend(result["facts"])
         return result
@@ -352,13 +386,17 @@ class LocalAipStdioTransport:
         self.amp.sampler.active += 1
         started = asyncio.get_running_loop().time()
         success = False
+        deadline = None
         try:
             await self.leader.start_task(task.incident_id, json.dumps(value, ensure_ascii=False), task_id,
                                          mentions=[worker.spec["aic"]])
+            deadline = time.time() + task.budget["deadline_ms"] / 1000
             result = await asyncio.wait_for(asyncio.shield(future), task.budget["deadline_ms"] / 1000)
             success = result["status"] == "ok"
             return result
-        except BaseException:
+        except BaseException as error:
+            if isinstance(error, (TimeoutError, ConnectionError, OSError)):
+                self._remember_participant_failure(value, worker.spec["aic"], error, deadline=deadline)
             self.journal.transition(attempt, "delivery_unknown" if task.kind in ("act", "resume") else "failed")
             # Keep pending identity until the worker closes; late results still
             # need reconciliation and must not be treated as unsolicited data.
@@ -368,6 +406,90 @@ class LocalAipStdioTransport:
         finally:
             self.amp.sampler.active -= 1
             self.amp.sampler.record((asyncio.get_running_loop().time() - started) * 1000, success)
+
+    def _remember_participant_failure(self, payload, aic, error, *, deadline=None):
+        observed = time.time()
+        status = ("deadline_expired" if isinstance(error, TimeoutError) and deadline is not None
+                  and observed >= deadline else "unknown" if isinstance(error, TimeoutError) else "channel_lost")
+        key = (payload["incident_id"], payload["logical_task_id"])
+        self._participant_failures[key] = {"aic": aic, "error": error,
+            "task": TaskEvidence(aic, status, observed, deadline)}
+        if len(self._participant_failures) > 128:
+            self._participant_failures.pop(next(iter(self._participant_failures)))
+
+    async def _participant_management(self, worker, *, timeout):
+        requested = time.time()
+        session = "health-" + uuid.uuid4().hex
+        future = asyncio.get_running_loop().create_future()
+        self._management_pending[session] = {"worker": worker, "future": future}
+        phase, outcome = "publish", "unknown"
+        try:
+            # This lower-level official client calls the GroupLeader API's
+            # check_partner_status operation get_partner_status.
+            await asyncio.wait_for(self.leader.get_partner_status(worker.spec["aic"], session_id=session), timeout)
+            phase = "reply"
+            await asyncio.wait_for(asyncio.shield(future), timeout)
+            outcome = "reply"
+        except TimeoutError:
+            outcome = "timeout" if phase == "reply" else "no_reply"
+        except (ConnectionError, OSError):
+            outcome = "no_reply"
+        except Exception:
+            outcome = "unknown"
+        return ManagementStatusEvidence(worker.spec["aic"], outcome, requested, time.time()), phase, session
+
+    async def participant_health(self, payload, *, error):
+        """Joint, exact-target evidence only; no resource action or process control."""
+        aic = None
+        management_session = None
+        try:
+            saved = self._participant_failures.get((payload["incident_id"], payload["logical_task_id"]))
+            if saved is None or saved["error"] is not error:
+                raise ValueError("no bound task failure")
+            aic, task = saved["aic"], saved["task"]
+            worker = next(w for w in self.workers.values() if w.spec["aic"] == aic)
+            timeout = self.config.get("participant_health_timeout_seconds", 2)
+            wait = self.config.get("participant_health_wait_seconds", 0)
+            if (type(timeout) not in (int, float) or not math.isfinite(timeout) or not 0 < timeout <= 30
+                    or type(wait) not in (int, float) or not math.isfinite(wait) or not 0 <= wait <= 60):
+                raise ValueError("participant health bounds are invalid")
+            management, phase, management_session = await self._participant_management(worker, timeout=timeout)
+            paths = [self.amp_directory / f"amp_{kind}_{worker.spec['name']}.jsonl" for kind in ("heartbeat", "access")]
+            store = AmpFactStore(heartbeat_ttl_seconds=self.config.get("participant_heartbeat_ttl_seconds", 45),
+                access_ttl_seconds=self.config.get("participant_access_ttl_seconds", 60),
+                evidence_ttl_seconds=self.config.get("participant_evidence_ttl_seconds", 60))
+            store.load_jsonl(paths)
+            result = store.assess(aic, task=task, management=management)
+            proof = result["evidence"]
+            expiry = proof.get("heartbeat_expires_at")
+            if (wait and proof["task_valid"] and proof["management_outcome"] in {"no_reply", "timeout"}
+                    and proof["heartbeat_state"] == "fresh" and result["participant_state"] == "unknown"
+                    and type(expiry) in (int, float)):
+                await asyncio.sleep(min(wait, max(.01, expiry - time.time() + .01)))
+                store.load_jsonl(paths)
+                pending = self._management_pending[management_session]["future"]
+                if pending.done() and not pending.cancelled() and pending.exception() is None:
+                    management = ManagementStatusEvidence(aic, "reply", management.requested_at, pending.result())
+                result = store.assess(aic, task=task, management=management)
+            result.update(transport=self.mode, manual_required=True)
+            result["evidence"].update(management_probe_phase=phase,
+                management_requested_at=management.requested_at,
+                management_observed_at=management.observed_at,
+                management_probe_session=management_session)
+            return result
+        except Exception as exc:
+            return {"schema_version": "participant-health/1.0", "aic": aic, "confirmed": False,
+                "participant_state": "unknown", "task_status": "unknown", "manual_required": True,
+                "reason": "participant_health_evidence_unavailable", "facts": [], "business_state": "unknown",
+                "diagnostics": {"adapter_error": type(exc).__name__}}
+        finally:
+            pending = self._management_pending.pop(management_session, None)
+            if pending is not None:
+                future = pending["future"]
+                if not future.done():
+                    future.cancel()
+                elif not future.cancelled():
+                    future.exception()
 
     async def _takeover(self, failed: LocalWorker, original: dict, reason: str):
         role = failed.spec["role"]
