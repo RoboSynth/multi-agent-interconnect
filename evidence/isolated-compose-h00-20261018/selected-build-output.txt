@@ -1,0 +1,65 @@
+[stdout]
+#0 building with "default" instance using docker driver
+#1 [app-v2 internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 343B 0.0s done
+#1 DONE 0.2s
+#2 [app-v1 internal] load build definition from Dockerfile
+#2 transferring dockerfile: 343B 0.0s done
+#2 DONE 0.2s
+#3 [app-v2 internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 0.0s
+#4 [app-v2 internal] load .dockerignore
+#4 transferring context: 33B 0.0s
+#4 transferring context: 408B 0.2s done
+#4 DONE 0.3s
+#5 [app-v1 internal] load .dockerignore
+#5 transferring context: 408B 0.2s done
+#5 DONE 0.3s
+#6 [app-v1 1/5] FROM docker.io/library/python:3.12-slim@sha256:65cbf12d253553a7b305a6c9a909878c66d08c2a89154becdbd10a342d02f4d1
+#6 resolve docker.io/library/python:3.12-slim@sha256:65cbf12d253553a7b305a6c9a909878c66d08c2a89154becdbd10a342d02f4d1 0.1s done
+#6 resolve docker.io/library/python:3.12-slim@sha256:65cbf12d253553a7b305a6c9a909878c66d08c2a89154becdbd10a342d02f4d1 0.1s done
+#6 DONE 0.1s
+#7 [app-v1 internal] load build context
+#7 transferring context: 34.62kB 0.2s done
+#7 DONE 0.3s
+#8 [app-v2 internal] load build context
+#8 transferring context: 34.62kB 0.2s done
+#8 DONE 0.3s
+#9 [app-v1 4/5] RUN pip install --no-cache-dir -r /srv/requirements.txt
+#9 CACHED
+#10 [app-v1 3/5] COPY business/order_app/requirements.txt /srv/requirements.txt
+#10 CACHED
+#11 [app-v1 2/5] WORKDIR /srv
+#11 CACHED
+#12 [app-v2 5/5] COPY business /srv/business
+#12 CACHED
+#13 [app-v1] exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:4c7917984e8d525ab9c214a3936e600c1b64719582271364c636789011aafd7b 0.1s done
+#13 exporting config sha256:04d8156dbfc7d3f2c5d5eab0660dd81963f6564a4e557362cad8c85c3679f72e
+#13 exporting config sha256:04d8156dbfc7d3f2c5d5eab0660dd81963f6564a4e557362cad8c85c3679f72e 0.1s done
+#13 exporting attestation manifest sha256:ef548d75cb2fc5a19d34d3c2786bdd8abda099c257ec3fc99b50703381816132
+#13 exporting attestation manifest sha256:ef548d75cb2fc5a19d34d3c2786bdd8abda099c257ec3fc99b50703381816132 0.1s done
+#13 exporting manifest list sha256:571e3fb085fcc4280fe6ccf8351d445191a6af49ac4777aa32fc73607c0e39ba 0.1s done
+#13 naming to docker.io/library/incident-pilot-h00-20261018-app-v1:latest done
+#13 unpacking to docker.io/library/incident-pilot-h00-20261018-app-v1:latest 0.0s done
+#13 DONE 0.4s
+#14 [app-v2] exporting to image
+#14 exporting layers done
+#14 exporting manifest sha256:ce0c274539f90fe6ba9175a0c818b827d761969d7deed006ed10ab350b604649 0.1s done
+#14 exporting config sha256:eb73e24dbe1785f4052361c8f399377c947666c27d07002d6ef8655fbd0bb3b6 0.1s done
+#14 exporting attestation manifest sha256:926444c7e824bd42b2e3f385a0b26e5fcbf83140f3121167fefc507a2aabda20 0.1s done
+#14 exporting manifest list sha256:5f772493bb542a521ddc809276e8a16d6ae2b12d2479541a804cc970b6417029 0.1s done
+#14 naming to docker.io/library/incident-pilot-h00-20261018-app-v2:latest 0.0s done
+#14 unpacking to docker.io/library/incident-pilot-h00-20261018-app-v2:latest 0.0s done
+#14 DONE 0.4s
+#15 [app-v1] resolving provenance for metadata file
+#15 DONE 0.0s
+#16 [app-v2] resolving provenance for metadata file
+#16 DONE 0.0s
+Compose project incident-pilot-h00-20261018 started.
+
+[stderr]
+ app-v1  Built
+ app-v2  Built

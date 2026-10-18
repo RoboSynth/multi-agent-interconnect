@@ -4,6 +4,8 @@
 
 # 跨系统故障诊断与协同恢复
 
+2026-10-18同机隔离[Compose H00实测](evidence/isolated-compose-h00-20261018/README.md)已闭合：固定5b7745新检出使用原Windows→WSL入口，四个业务容器、新数据库卷和独立v2路由实际启动，公共ready前后v2，30.016秒/30成功请求/10流程，失败、未知和未决0。仅正常停止本轮四容器，原25容器及原三端口PID保持，卷与网络保留；这是已有镜像/缓存的同机验收，不是新机器冷部署。[部署说明](deploy/README.md)补Linux宿主机依赖；原入口未改，新增[3项fake-WSL检查](evidence/isolated-compose-h00-20261018/offline-entry-checks.json)通过。10:10Z[第七次自然巡检快照](evidence/new7-runtime-followup-20261018/inspect-seventh-cycle.json)仅核最新周期，30.003秒/10流程、act/模型0，不代表七轮逐件审阅或24小时；正式E1仍未执行。
+
 高分方案的本地开发版本已新增 PostgreSQL 订单业务、MCP→AIP 网关、可接续 SDK、证据调度与审批工作台。使用 PowerShell7 在项目根运行：
 
 ```powershell

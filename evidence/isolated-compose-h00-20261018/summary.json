@@ -1,0 +1,143 @@
+{
+  "schema_version": "isolated-compose-h00/1",
+  "status": "passed_and_normally_stopped",
+  "generated_utc": "2026-10-18T10:22:57.108047+00:00",
+  "base_commit": "5b774525bea037bd8f4bf87959c29f4f3b8b8765",
+  "project": "incident-pilot-h00-20261018",
+  "actual_outer_processes": {
+    "initial_start": {
+      "actual_exit_code": 1,
+      "tool_chunk_id": "7df4b1"
+    },
+    "readonly_format_validation": {
+      "actual_exit_code": 0,
+      "tool_chunk_id": "56e9c5"
+    },
+    "start": {
+      "actual_exit_code": 0,
+      "tool_chunk_id": "962e04"
+    },
+    "observe": {
+      "actual_exit_code": 0,
+      "tool_chunk_id": "a5fba7"
+    },
+    "stop": {
+      "actual_exit_code": 0,
+      "tool_chunk_id": "086174"
+    },
+    "windows_after": {
+      "actual_exit_code": 0,
+      "tool_chunk_id": "0b4a24"
+    }
+  },
+  "initial_failure": {
+    "source": "execution/start/result.json",
+    "status": "failed",
+    "up_invoked": false,
+    "cause": "Metadata formatter assumed State.Health existed on containers without a healthcheck; no resource start occurred",
+    "correction": "Use map index for optional Health and null-safe port values; independent readonly metadata validation passed before the next start"
+  },
+  "deployment": {
+    "entry": "Unmodified deploy/up.ps1 from fixed 5b7745 clone, actual Windows-to-WSL fallback",
+    "clone_source_modified": false,
+    "services": [
+      "postgres",
+      "app-v1",
+      "app-v2",
+      "nginx"
+    ],
+    "active_optional_profiles": [],
+    "host_bind": "127.0.0.1",
+    "host_ports": [
+      48081,
+      48082,
+      48088
+    ],
+    "new_database_volume": true,
+    "independent_route_to_app_v2": true,
+    "started_utc": "2026-10-18T10:16:20.564262+00:00",
+    "completed_utc": "2026-10-18T10:17:00.802280+00:00",
+    "observed_service_image_ids": {
+      "nginx": "sha256:1c7709d5f4d86d38773f8f908825dbc968da1fe2ee9d1d2542eeeb504a6a4fa8",
+      "app-v1": "sha256:571e3fb085fcc4280fe6ccf8351d445191a6af49ac4777aa32fc73607c0e39ba",
+      "app-v2": "sha256:5f772493bb542a521ddc809276e8a16d6ae2b12d2479541a804cc970b6417029",
+      "postgres": "sha256:530a5243e576c08debb4860c981029bd9896b96686a65140da9e3b11c92f698e"
+    },
+    "cached_build_lines": 4,
+    "machine": "Existing Windows/WSL machine with already available images/cache"
+  },
+  "h00": {
+    "run_id": "h00-isolated-20261018-first",
+    "duration_seconds": 30.016,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true,
+    "seed": 17,
+    "requests_per_second": 1,
+    "expected_api_version": "v2",
+    "pending": 0
+  },
+  "public_contract": {
+    "expected_api_version": "v2",
+    "ready_before_after": "v2",
+    "observer_source": "business/load.py"
+  },
+  "preservation": {
+    "original_container_ids_started_at_restart_status_preserved": 25,
+    "new_owned_containers_normally_stopped": 4,
+    "new_ports_closed": true,
+    "project_network_retained": true,
+    "database_volume_retained": true,
+    "original_listener_pid_mapping": {
+      "8766": 25496,
+      "8877": 42712,
+      "8089": 4272
+    },
+    "original_listener_pids_unchanged": true,
+    "wsl_keeper_pid_32952_present": true,
+    "windows_postcheck_observed_utc": "2026-10-18T10:18:47.3672419Z"
+  },
+  "selected_build_output": {
+    "sources": {
+      "stdout": {
+        "source": "execution/start-revision2/up-original-entry.stdout.log",
+        "raw_sha256": "30cd1797faf508012619a705af7433826b7fc956d2be5cf999486b6addf610c5",
+        "selected_line_count": 60,
+        "prefix_replacements": {
+          "windows_checkout": 0,
+          "linux_checkout": 0
+        },
+        "text_selection": "strict UTF-8"
+      },
+      "stderr": {
+        "source": "execution/start-revision2/up-original-entry.stderr.log",
+        "raw_sha256": "039ca21cc7224098ce3c03ffa339399f29fa507dc564dbf4b4e47438dd54438d",
+        "selected_line_count": 2,
+        "prefix_replacements": {
+          "windows_checkout": 0,
+          "linux_checkout": 0
+        },
+        "text_selection": "strict ASCII lines without NUL only; undecodable/UTF-16 lines stay in local original"
+      }
+    },
+    "prefix_replacements_total": {
+      "windows_checkout": 0,
+      "linux_checkout": 0
+    },
+    "transformation": "Select strictly decodable BuildKit/cache/Built/launcher-success lines; WSL UTF-16 stderr warning lines stay in local originals. Only exact Windows checkout prefix and its exact WSL path are replaced with <isolated_checkout>; selected text is otherwise unchanged"
+  },
+  "boundaries": {
+    "same_machine_new_project": true,
+    "new_machine_cold_deployment": false,
+    "fifteen_minute_new_machine_acceptance": false,
+    "fault_injection": false,
+    "formal_e1": false,
+    "model_or_platform_calls": false,
+    "business_data": "10 synthetic orders created, queried and cancelled in the new isolated database",
+    "all_original_records_retained_locally": true
+  }
+}

@@ -91,15 +91,28 @@ pwsh -NoProfile -File deploy/up.ps1 -EnvFile runtime/private/container.env -Proj
 独立演练另外设置 `APP_V1_PORT=18081`、`APP_V2_PORT=18082`、`ORDER_PORT=18088`、`REPLY_DROP_PORT=18090`。
 启动器把文件路径交给 Compose，不把其凭据加载到协调者环境。保留历史结果时使用新的输出文件名。
 
+Linux 宿主机需先安装 Python 3.12 及其 venv 组件、Docker Engine 和 Compose v2。
+从项目根目录建立自己的虚拟环境；容器镜像中的 Python 依赖不能替代宿主机运行验收工具所需的依赖。
+以下安装方式与 Windows 接手指南使用同一份项目依赖和仓库内 SDK：
+
 ```sh
-cp deploy/.env.example deploy/.env
+python3.12 -m venv .venv
+mkdir -p artifacts
+.venv/bin/python -m pip install -r requirements-high-score.txt
+.venv/bin/python -m pip install "./vendor/ACPs-community/acps-sdk[amp-sign]"
+.venv/bin/python -m pip check
+test -f deploy/.env || cp deploy/.env.example deploy/.env
 # 在资源主机填入三个独立随机凭据，并限制文件权限。
 chmod 600 deploy/.env
 sh deploy/up.sh
-python business/load.py --duration 30 --output eval/results/h00.json
-python eval/inject.py F10 apply --backend docker
-python eval/inject.py F10 restore --backend docker
+.venv/bin/python business/load.py --url http://127.0.0.1:8088 --duration 30 --output eval/results/h00-new.json
 ```
+
+已有环境文件应保留，凭据只在本机资源侧填写，不提交仓库。自定义 project、env 和端口时，
+H00 的 `--url` 必须与该入口一致；这些自定义范围尚未贯通到默认 `eval/inject.py` 的资源定位，
+不能直接用默认 F10 命令操作隔离项目或其他服务。本节只执行 H00，不包含故障注入。
+验收应同时核实公共 `/ready` 为 v2，并检查完整订单流程及 failed/unknown/未决计数；
+启动命令返回或普通 load CLI 的 passed 字段不能单独证明逐响应版本正确。
 
 Compose 包含 PostgreSQL16、两个版本应用、Nginx 与按需启用的真实故障辅助容器，
 统一使用 `incident-pilot=true` 标签。数据库不向主机公开端口，应用管理端仅绑定回环，
@@ -156,4 +169,4 @@ F12 独立验收使用真实回复代理，仅在后端提交后丢回复：
 
 ### 新七角色独立 profile
 
-[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证。2026-10-17 证书办理曾按用户安排暂缓；2026-10-18 获新授权后七角色均已实际签发，CN/AIC、有效期、clientAuth 和密钥匹配检查通过，证书分别在 2026-12-06 对应时刻到期。七个新版 AIC 的官方 ADP 只读元数据与端点核对已通过；新版 AMQPS describe/任务往返与完整恢复尚未运行；默认业务与旧五域 `agents` profile 分开验收。
+[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证。2026-10-17 证书办理曾按用户安排暂缓；2026-10-18 获新授权后七角色均已实际签发，CN/AIC、有效期、clientAuth 和密钥匹配检查通过，证书分别在 2026-12-06 对应时刻到期。七个新版 AIC 的官方 ADP 只读元数据与端点核对已通过；新版 AMQPS 健康往返已完成：六域共 12 项任务、30 秒/10 个完整订单流程，自有群组正常关闭，见[健康验收](../evidence/new7-platform-runtime-20261018/healthy-amqps.json)；新版 E3 45 次实验中 37 格确认持续恢复，8 格 M1 未确认，见[完整结果与失败记录](../evidence/new7-e3-45-20261018-first/README.md)。正式 E1 接管实验尚未执行，24 小时持续运行验收尚未完成；默认业务与旧五域 `agents` profile 分开验收。
