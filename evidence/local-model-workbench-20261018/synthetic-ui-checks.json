@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "evidence_kind": "synthetic browser route fixtures only; no real model calls, incidents, faults or resource modifications",
+  "checks": {
+    "configured_model_does_not_override_actual_fallback": true,
+    "actual_calls_visible": true,
+    "incomplete_usage_disclosed": true,
+    "validation_fallback_reason_visible": true,
+    "model_text_rendered_literally": true,
+    "model_text_did_not_create_markup": true,
+    "legacy_missing_calls_pending": true,
+    "missing_usage_not_reported_as_zero": true,
+    "missing_actual_source_not_inferred_from_config": true,
+    "no_page_errors": true
+  },
+  "page_errors": [],
+  "fixture_cases": [
+    "rules fallback after two calls + ValueError + partial usage",
+    "legacy completed state missing model counters/source/usage"
+  ]
+}

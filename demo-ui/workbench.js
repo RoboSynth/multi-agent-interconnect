@@ -18,7 +18,19 @@ $('original-unknown').addEventListener('change',updateOriginalHint);$('original-
 $('incident-form').addEventListener('submit',async event=>{event.preventDefault();error('');$('start').disabled=true;try{const data=await api('/api/incidents',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({symptom:$('symptom').value,original_request_key:$('original-key').value.trim()||null,original_request_unknown:$('original-unknown').checked})});selectedId=data.id;await refresh();}catch(e){error(e.message);$('start').disabled=false;}});
 document.addEventListener('click',async event=>{const button=event.target.closest('button[data-approval]');if(!button)return;button.disabled=true;try{await api('/api/approvals/'+encodeURIComponent(button.dataset.approval),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({approved:button.dataset.decision==='approve'})});$('approval-dialog').close();await refresh();}catch(e){error(e.message);button.disabled=false;}});
 $('approval-later').addEventListener('click',()=>$('approval-dialog').close());
+function renderModel(run){
+ $('model-usage').hidden=!run;if(!run)return;
+ const pending=['running','awaiting_approval'].includes(run.status)&&run.model_calls==null;
+ const calls=run.model_calls;
+ const sourceNames={llm:'模型诊断',mixed:'模型与规则共同诊断',rules:calls>0?'规则回退':'规则诊断',llm_failed:'模型调用失败'};
+ $('model-source').textContent=pending?'正在诊断，结束后统计':sourceNames[run.model_source]||'来源未记录';
+ $('model-calls').textContent=calls==null?'待统计':calls+' 次';
+ $('model-tokens').textContent=pending?'待统计':run.tokens==null?'未记录':String(run.tokens)+(run.token_usage_complete===false?'（仅已知部分）':run.token_usage_complete===true?'':'（完整性未记录）');
+ const fallback=run.model_error?({HTTPStatusError:'模型服务返回错误，本次使用情况请结合实际来源查看。',ReadTimeout:'模型响应超时，本次使用情况请结合实际来源查看。',ValueError:'模型输出未通过校验，已保留规则回退记录。',ModelBudgetExceeded:'模型调用达到本次预算，已保留回退记录。'}[run.model_error]||'模型调用出现异常，原因类型：'+run.model_error):run.model_source==='mixed'?'部分步骤使用了规则回退。':run.model_source==='rules'&&calls>0?'模型输出未能用于诊断，本次采用规则回退。':'';
+ $('model-fallback').textContent=fallback;$('model-fallback').hidden=!fallback;
+}
 function renderRun(run){
+ renderModel(run);
  if(!run)return;
  $('incident-title').textContent=run.symptom;$('incident-id').textContent=run.id;$('incident-status').textContent=statusNames[run.status]||run.status;
  $('start').disabled=['running','awaiting_approval'].includes(run.status);if(run.error)error(run.error);
@@ -44,6 +56,7 @@ function renderRun(run){
  $('raw').textContent=JSON.stringify(run,null,2);
 }
 async function refresh(){try{const state=await api('/api/state');$('connection').textContent=state.connected?'参与者已连接':'参与者未连接';$('mode-note').textContent=state.mode==='local-aip-stdio'?'本地独立进程联调，使用 AIP 任务数据；平台发现与 AMQPS 另行验收。':state.mode==='unconfigured'?'先按部署文档启动本地业务和智能体，再发起排障。':'通过梧桐 AIP 群组协作。';$('artifacts').textContent=state.artifacts;
+ $('model-config').textContent=state.model_config?.enabled?'已启用模型：'+state.model_config.model+'。实际参与情况见本次诊断记录。':state.model&&state.model!=='rules'?'已配置模型：'+state.model+'。实际参与情况见本次诊断记录。':'规则诊断。可按部署说明启用本地模型。';
  $('participants').innerHTML=(state.participants||[]).map(p=>`<div class="participant">${text(p.name||p.role||'参与者')}<small>${text(p.aic||p.executor_aic||'')}</small></div>`).join('')||'<p class="empty">等待连接各资源域。</p>';
  const run=selectedId&&state.incident?.id!==selectedId?await api('/api/incidents/'+encodeURIComponent(selectedId)):state.incident;
  $('start').disabled=!state.connected||(run&&['running','awaiting_approval'].includes(run.status));if(state.connection_error)error(state.connection_error);else if(!run?.error)error('');renderRun(run);

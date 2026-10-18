@@ -84,7 +84,7 @@ class HypothesisEngine:
         self.enabled = enabled
         self.base_url = base_url or os.environ.get("INCIDENT_LLM_BASE_URL", "")
         self.model = model or os.environ.get("INCIDENT_LLM_MODEL", "")
-        self.api_key = api_key or os.environ.get("INCIDENT_LLM_API_KEY", "")
+        self.api_key = os.environ.get("INCIDENT_LLM_API_KEY", "") if api_key is None else api_key
         self.client = client
         self.calls = 0
         self.tokens = 0

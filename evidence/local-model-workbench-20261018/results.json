@@ -1,0 +1,201 @@
+{
+  "status": "ACTUAL_HEALTHY_WORKBENCH_AND_SYNTHETIC_UI_CHECKS_PASSED",
+  "evidence_scope": "One real healthy UI-started incident. Separate synthetic page fixtures. No fault injection and no change to prior interrupted 45-cell evidence.",
+  "actual_healthy_incident": {
+    "incident_id": "inc-9cae7c3861bf408b",
+    "status": "completed",
+    "incident_sha256": "4114369c61cabd6f7621c543bf313d23e329bac97f670fb9e3e475baa455b188",
+    "elapsed_seconds": 60.297,
+    "model_calls": 6,
+    "model_source": "llm",
+    "model_source_counts": {
+      "llm": 6,
+      "rules": 0
+    },
+    "tokens": 7098,
+    "token_usage_complete": true,
+    "act_task_count": 0,
+    "workload": {
+      "duration_seconds": 30.015,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "passed": true
+    }
+  },
+  "persistent_model": {
+    "config_sha256": "68f0123589400c8c28df11ef81b3bb45cd42e91bd4780e223e667dd5ea8fb5cf",
+    "mode": "local-aip-stdio",
+    "connected": true,
+    "participants": 5,
+    "resource_credential_count": 0,
+    "model_config": {
+      "enabled": true,
+      "base_url": "http://127.0.0.1:8089/v1",
+      "model": "Qwen3-1.7B-Q8_0",
+      "max_output_tokens": 768,
+      "max_calls": 40,
+      "token_budget": 65536,
+      "timeout_seconds": 60
+    }
+  },
+  "actual_launcher_exit": {
+    "terminal": true,
+    "actual_os_exit_code": 0
+  },
+  "gates": {
+    "config_sha256_exact": true,
+    "metadata_config_sha256_exact": true,
+    "runtime_pid_matches_metadata": true,
+    "launcher_runtime_pair": true,
+    "connected": true,
+    "mode": true,
+    "five_participants": true,
+    "resource_credential_count_zero": true,
+    "connection_error_empty": true,
+    "persisted_model_enabled": true,
+    "persisted_loopback_endpoint": true,
+    "persisted_qwen_model": true,
+    "idle": true,
+    "enabled_config_bytes_preserved": true,
+    "previous_incident_history_retained": true
+  },
+  "browser_checks": {
+    "actual_healthy_distinct": 14,
+    "synthetic_distinct": 10,
+    "actual_synthetic_separated": true,
+    "all_passed": true,
+    "visual_review": "Agent viewed all four PNGs; desktop/mobile readable without overlap or page horizontal overflow."
+  },
+  "retained_process_limitations": [
+    {
+      "tool_chunk": "fa5cab",
+      "actual_exit": 0,
+      "issue": "Initial isolated-config subprocess stdout decoded with wrong Windows codec; reader threads errored. Changed only harness to capture bytes; affected check reverified actual0 268ecc."
+    },
+    {
+      "tool_chunk": "6c416a",
+      "actual_exit": 1,
+      "issue": "Initial stale-check harness assumed nonexistent PowerShell install path. Corrected to discovered executable; actual stale launcher refusal exit1 and harness exit0 d6d01c."
+    },
+    {
+      "tool_chunk": "ee3087",
+      "actual_exit": 1,
+      "issue": "Authorized old server stop succeeded; own harness then used null numeric hashtable key in WaitForExit. Read-only b07688 showed all original tree identities absent; no additional kills; original process exit codes unavailable."
+    },
+    {
+      "tool_chunk": "e9025a",
+      "actual_exit": 1,
+      "issue": "New launcher itself actually exited0 (Windows retained handle 4a3c66). Outer PIPE helper waited on inherited pipe and was identity-checked then terminated (0e5353), leaving live server healthy."
+    }
+  ],
+  "offline_checks": {
+    "native_preparation": {
+      "status": "OFFLINE_PREPARATION_BOUNDARIES_PASSED",
+      "distinct_current_applicable": 9,
+      "execution_groups": {
+        "check_groups": [
+          {
+            "log": "tests.log",
+            "count": 8,
+            "seconds": 0.339,
+            "retained_after_append_only_postgresql_fixture": true,
+            "actual_os_exit_code": 0,
+            "skipped": 0,
+            "errors": 0,
+            "failures": 0
+          },
+          {
+            "errors": 0,
+            "log": "tests-postgres-archive.log",
+            "failures": 0,
+            "count": 1,
+            "actual_os_exit_code": 0,
+            "seconds": 0.09,
+            "skipped": 0
+          }
+        ],
+        "execution_boundary": {
+          "real_server_processes_started": 0,
+          "synthetic_workspace_fixtures_only": true,
+          "live_runtime_or_private_env_files_read": 0,
+          "network_calls": 0,
+          "live_configuration_changed": 0,
+          "real_database_calls": 0
+        },
+        "verified_behaviors": [
+          "Existing selected cluster missing any identity fails before password generation, alias or filesystem writes",
+          "Runtime path and unrelated values survive; actual mocked database commands use selected paths",
+          "Import has no alias/process side effects",
+          "New cluster only adds missing path defaults",
+          "Valid cached archive reuses bytes without network",
+          "Invalid cached archive is preserved byte-for-byte and fails explicitly",
+          "New runtime is promoted only after ZIP CRC, required executable entries and selected extraction path checks",
+          "Invalid downloaded archive remains unique .download evidence, no canonical cache or extracted files",
+          "PostgreSQL required commands extracted without pgAdmin"
+        ]
+      },
+      "source_sha256": {
+        "tools/prepare_native_database.py": "ac4d6edb31e35aa8e7cb67abad3366b5cbeb38139464a9eee5b314278969c4b3",
+        "tools/download_native_runtime.py": "66d627dbc4528a5bab6159130f0f7905c54ef138ddffee7b9ff704625cbaf5a8",
+        "tests/test_native_preparation.py": "c9b816abad492f3c20bb0e4abce3e90277187e43a6286c8c684d999b3f7e7006"
+      },
+      "receipt_sha256": "00fbc4c04d9dc2787f30493a7ed4d1dacd4e69a635d122f39addb3a9654ef5bd"
+    },
+    "launcher_and_entry": {
+      "status": "OFFLINE_VENV_RUNTIME_PID_CHECKS_PASSED_REAL_STARTUP_NOT_RUN",
+      "distinct_current_applicable": 12,
+      "current_launcher_checks": 9,
+      "reused_entry_checks": 3,
+      "actual_launcher_test_exit": 0,
+      "source_sha256": {
+        "tools/start_workbench.ps1": "690ec73d432f3f3166b3b01f2945a40bdc97699286eedd89090b9e93446d2d69",
+        "deploy/local-up.ps1": "b9010beff1266f7b36e5a217b7057bdca1b722b8989ebedbdb1c18eddb9cebc4",
+        "tests/test_local_launcher.py": "ae75c5e9b66bba62e6daa6308e02f9e95d116e6928f3c6ed08fa7a8424decf5b"
+      },
+      "receipt_sha256": "10193d35f3691c793442480490c9cd7dba6840759a5f21fe529d33597e130cd5"
+    },
+    "model_config_and_existing_workbench": {
+      "distinct_current_applicable": 12,
+      "new_test_methods": 9,
+      "existing_workbench_checks": 3,
+      "execution_groups": [
+        11,
+        3,
+        2
+      ],
+      "execution_groups_overlap": true,
+      "all_passed": true,
+      "real_model_and_resource_calls": 0,
+      "receipts_sha256": {
+        "offline-results.json": "656e543e0fe41984892dad5abdedad96edb20a8adc3401edd7a4cf4c4d29abe7",
+        "offline-model-endpoint-results.json": "cce871b63a4442fa5447c11731edf88d99ffae326c450da8a40a61d24991a286",
+        "offline-affected-results.json": "6a9b05aa707f04e476523147e4e1c6ac80be135a723b3514701a1f3603bbdc5e"
+      }
+    }
+  },
+  "source_sha256": {
+    "tools/configure_local_coordinator.py": "0ac9c50b6aaa53f34c6cd587ed75a8afb2759e959dec928bee2dbb614c100113",
+    "workbench_server.py": "44bff87e15df8bd851619d93b3bc06899bc61b1d4c4650d4b329ddc8f056439b",
+    "incident/coordinator/hypothesis.py": "35abece7c3150edf98d07a3699905d84f7dfd22377cd6e3c453cad347e4ea18a",
+    "tests/test_workbench_model_config.py": "71d71140e4511ceacf496c19d52013c40b6b4c02c6228b33768b37809b5a967e",
+    "tools/start_workbench.ps1": "690ec73d432f3f3166b3b01f2945a40bdc97699286eedd89090b9e93446d2d69",
+    "deploy/local-up.ps1": "b9010beff1266f7b36e5a217b7057bdca1b722b8989ebedbdb1c18eddb9cebc4",
+    "tests/test_local_launcher.py": "ae75c5e9b66bba62e6daa6308e02f9e95d116e6928f3c6ed08fa7a8424decf5b",
+    "demo-ui/workbench.html": "d0f5a5f6c2b661384f944c558cc87b12a7c3580afc13b9f42a7604f0ba930654",
+    "demo-ui/workbench.js": "f6a34b791a97c4cc7789c1db4eb07779ed0e51018c0189c4b97d8815bb89ebf2",
+    "demo-ui/workbench.css": "1192acac049782a5b6e79c489bf99193aeda9870a228c1802a90eb40eec8df67",
+    "incident/coordinator/engine.py": "c6e5bbd0a39473a2693936f3b12325b078397ff77a7a23043da1f209ae66ef52",
+    "incident/coordinator/planner.py": "594e4d49da9406e3ebe21fd7b72e3d71bfa7959e2ff8451eb2b98cf5779b0dbb",
+    "incident/local_transport.py": "49eb55e68fc5cd4cf8ab5cbb58afb0e42c3c98d283a7bfda7f28800c0a360286"
+  },
+  "projection_source_sha256": {
+    "integration-results.json": "dabcb28234734008fb01f852cf1f8b6172d054d80451c7ff1b74257e28345be0",
+    "capture-real-result.json": "df346f48a677bce948eb2764efd7b0c81909e80ff7efcf414f653107633fc757",
+    "check-synthetic-result.json": "c1e948485770c7790fd95cfe5baf4fe00391cf75e9faea55bc6a89c3e28bc5b9"
+  }
+}

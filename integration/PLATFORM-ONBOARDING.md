@@ -13,7 +13,7 @@
 
 任务输入为 `{"operation":"read-only-probe","nonce":"随机值"}`；返回 JSON 包含同一 `nonce`、`partner_aic`、`observed_utc`、`result:"probe-received"` 和 `business_mutations:0`。
 
-“任务协调智能体”和“消息回声智能体”均已通过审核，取得正式 AIC 和客户端证书。程序通过梧桐完成双方互发任务，返回原消息及四阶段任务状态，并正常关闭连接。[运行结果](two-agent/RESULT.json)记录双方身份、任务和返回内容。首轮驳回意见见[协调者记录](two-agent/leader.rejection-observation.json)、[回声记录](two-agent/partner.rejection-observation.json)。
+“任务协调智能体”和“消息回声智能体”均已通过审核，取得正式 AIC 和客户端证书。程序通过梧桐完成双方互发任务，返回原消息及四阶段任务状态，并正常关闭连接。[历史摘要](../docs/historical-baseline-evidence.md#two-agent)记录双向任务状态、退出和证据范围。首轮驳回意见见[协调者记录](two-agent/leader.rejection-observation.json)、[回声记录](two-agent/partner.rejection-observation.json)。
 
 ## 地址与交流流程
 

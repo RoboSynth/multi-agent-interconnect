@@ -1,0 +1,131 @@
+{
+  "passed": true,
+  "evidence_kind": "actual healthy incident started with real browser click; no fault injection",
+  "checks": {
+    "exact_ui_started_incident": true,
+    "completed": true,
+    "actual_model_calls": true,
+    "validated_model_response": true,
+    "zero_act_tasks": true,
+    "business_passed": true,
+    "at_least_thirty_seconds": true,
+    "at_least_ten_complete_flows": true,
+    "model_config_distinct_from_actual_usage": true,
+    "actual_call_count_visible": true,
+    "actual_tokens_visible": true,
+    "desktop_no_page_horizontal_overflow": true,
+    "mobile_no_page_horizontal_overflow": true,
+    "no_page_errors": true
+  },
+  "incident_id": "inc-9cae7c3861bf408b",
+  "model_calls": 6,
+  "model_source": "llm",
+  "model_source_counts": {
+    "llm": 6,
+    "rules": 0
+  },
+  "tokens": 7098,
+  "token_usage_complete": true,
+  "model_requests": [
+    {
+      "call": 1,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 4.688,
+      "usage": {
+        "completion_tokens": 280,
+        "prompt_tokens": 534,
+        "total_tokens": 814,
+        "prompt_tokens_details": {
+          "cached_tokens": 3
+        }
+      }
+    },
+    {
+      "call": 2,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 4.204,
+      "usage": {
+        "completion_tokens": 301,
+        "prompt_tokens": 594,
+        "total_tokens": 895,
+        "prompt_tokens_details": {
+          "cached_tokens": 124
+        }
+      }
+    },
+    {
+      "call": 3,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 4.953,
+      "usage": {
+        "completion_tokens": 360,
+        "prompt_tokens": 655,
+        "total_tokens": 1015,
+        "prompt_tokens_details": {
+          "cached_tokens": 183
+        }
+      }
+    },
+    {
+      "call": 4,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 5.75,
+      "usage": {
+        "completion_tokens": 399,
+        "prompt_tokens": 1052,
+        "total_tokens": 1451,
+        "prompt_tokens_details": {
+          "cached_tokens": 244
+        }
+      }
+    },
+    {
+      "call": 5,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 5.703,
+      "usage": {
+        "completion_tokens": 388,
+        "prompt_tokens": 1111,
+        "total_tokens": 1499,
+        "prompt_tokens_details": {
+          "cached_tokens": 641
+        }
+      }
+    },
+    {
+      "call": 6,
+      "status": "validated",
+      "http_status": 200,
+      "seconds": 4.062,
+      "usage": {
+        "completion_tokens": 253,
+        "prompt_tokens": 1171,
+        "total_tokens": 1424,
+        "prompt_tokens_details": {
+          "cached_tokens": 700
+        }
+      }
+    }
+  ],
+  "act_task_count": 0,
+  "business": {
+    "duration_seconds": 30.015,
+    "completed_workflows": 10,
+    "failed": 0,
+    "unknown": 0,
+    "pending_intents": 0
+  },
+  "visible": {
+    "model_config": "已启用模型：Qwen3-1.7B-Q8_0。实际参与情况见本次诊断记录。",
+    "model_source": "模型诊断",
+    "model_calls": "6 次",
+    "tokens": "7098",
+    "business": "通过\n业务验证\n已恢复\n服务状态\n10\n完整订单流程\n0\n本轮验证中未确认的请求\n30.015s\n观察窗口\n\n没有待核对的原请求"
+  },
+  "page_errors": []
+}

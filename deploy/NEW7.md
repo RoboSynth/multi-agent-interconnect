@@ -1,6 +1,8 @@
 # 新七角色隔离容器 profile
 
-当前交付是离线准备能力：六个资源域容器和一个 Windows 协调者。2026-10-17 的公开复核记录为七身份通过、五个详情 AIC 已核对；用户已推迟证书处理，本 profile 尚未签证、启动或进行真实平台验收。占位文件只验证配置与文件隔离，不能作为证书或互联成功证据。
+2026-10-18 已逐角色核实七个新版身份的名称、正式 AIC 和审核通过状态；用户授权后，七个身份分别领取 EAB，官方 CLI 各签发一次客户端证书且退出码均为 0。各证书的 AIC、clientAuth、当前有效期和私钥匹配检查通过，均有效至 2026-12-06 的对应 UTC 时刻。源材料保存在独立私密目录；公开摘要见[证书办理记录](../evidence/platform-certificates-20261018/summary.json)。此前 2026-10-17 的证书暂缓安排已被本次授权与实际结果更新。
+
+七个新版 AIC 的官方 ADP 精确只读查询均已通过，公开 Inbox 端点与已提交 ACS 的身份绑定一致，见[元数据观察](../evidence/platform-certificates-20261018/adp-identity-observation.json)。六个资源域容器和一个 Windows 协调者的隔离部署仍待执行；按技能组队、AMQPS describe/任务互通、业务恢复与接管尚未运行。
 
 ## 资源和身份归属
 
@@ -19,11 +21,11 @@
 
 数据库主备在新项目内共享同一个 `database-agent-state:/state`，因而共享 `/state/operations.sqlite`；各自 AMP 子目录分离。协调者的权威任期库放在新 profile 的 `domains/coordinator/coordinator-terms.sqlite`，namespace 为 `incident-pilot-new7/orders`。它仅授权新业务卷，不能拿来操作旧 180xx 资源。
 
-新主数据库 AIC 的实体段为 `OJQHYH`，备用为 `FZXFJS`；备用字典序在前。准备器生成 `trusted_participant_aics.database=[主,备]`，并显式生成 `initial_participant_aics.database=主 AIC`。初选按这个精确身份与 trusted 集合求交；接管仍可发现完整可信集合。列表顺序不表示优先级。verification / onboarding 的完整正式 AIC 和所有角色证书应在后续人工办理完成后补入源配置，不能把 ADP 候选当成证书就绪。
+新主数据库 AIC 的实体段为 `OJQHYH`，备用为 `FZXFJS`；备用字典序在前。准备器生成 `trusted_participant_aics.database=[主,备]`，并显式生成 `initial_participant_aics.database=主 AIC`。初选按这个精确身份与 trusted 集合求交；接管仍可发现完整可信集合。列表顺序不表示优先级。verification / onboarding 的正式 AIC 已从各自详情页核实，实体段分别为 `3NST76` / `46ZKB8`；全七角色证书现已实际签发。源配置须引用此次逐角色匹配的材料，不能复用旧四身份或仅靠 ADP 候选填写。
 
 ## 证书就绪后的准备步骤
 
-以下是待执行计划；本轮没有生成真实私密 profile。准备器会在读取资源环境和复制证书前拒绝跨域或协调者 AIC 重复。另需核对证书各自绑定对应 AIC、信任链及有效期，并确认同 AIC 没有第二个 Inbox 消费者。源配置格式沿用 `domains/setup_platform.py`：`agents.leader/application/verification/database/database_backup/ops/onboarding` 各指自己的绝对 cert/key 路径及精确 AMQPS Inbox endpoint。
+以下容器资源部署仍是待执行计划。准备器会在读取资源环境和复制证书前拒绝跨域或协调者 AIC 重复。签证后仍需核对部署副本中的 AIC、信任链及有效期，并确认同 AIC 没有第二个 Inbox 消费者。源配置格式沿用 `domains/setup_platform.py`：`agents.leader/application/verification/database/database_backup/ops/onboarding` 各指自己的绝对 cert/key 路径及精确 AMQPS Inbox endpoint。
 
 1. 在 `runtime/private/new7-container-20261017` 新建独立的 compose.env 和 approval.env，生成新的随机凭据；不得复制旧 container.env。compose.env 包含 `POSTGRES_PASSWORD`、`ORDERS_DB_PASSWORD`、`APP_ADMIN_TOKEN`、`BRIDGE_DB_PASSWORD`，approval.env 只保存新的 `INCIDENT_APPROVAL_SECRET`。
 2. compose.env 另加 `NEW7_DOMAIN_ROOT` 和 `NEW7_ROUTE_DIR`，值使用 WSL 可见的绝对路径，例如 `/mnt/d/AI + 开源/incident-pilot/runtime/private/new7-container-20261017/domains` 和同级 `nginx-runtime`。本 overlay 固定回环 380xx，不使用基础 APP_V1_PORT / APP_V2_PORT / ORDER_PORT。

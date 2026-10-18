@@ -1,5 +1,21 @@
 # 业务底座部署
 
+## 一键准备与本地模型
+
+先准备 Python 3.12 项目 `.venv`，再使用 PowerShell 7.4+：
+
+```powershell
+pwsh -NoProfile -File deploy/local-up.ps1 -Install
+# 已有依赖后普通重跑；保留当前模型选择。
+pwsh -NoProfile -File deploy/local-up.ps1
+# 已有本机 8089 Qwen 服务时，显式启用本地模型。
+pwsh -NoProfile -File deploy/local-up.ps1 -EnableLocalModel
+```
+
+`-EnableLocalModel` 将本机 `http://127.0.0.1:8089/v1`、`Qwen3-1.7B-Q8_0` 与预算持久写入协调配置；该开关不启动或下载模型。默认首次配置关闭模型，普通重跑保留用户已选配置。启动器核对完整配置原始字节 SHA、运行模式、连接状态及 Python 实际进程；发现旧实例未加载所选配置时明确拒绝，需保存记录、确认空闲并显式重启旧工作台。具体配置命令与范围见[本地模型工作台](../docs/local_model_workbench_20261018.md)。
+
+本轮实际运行的是既有环境中的受控工作台重启与一次健康验收（6 次有效模型输出、7098 tokens、零修改任务、30.015 秒/10 流程）。数据库初始化/ZIP 缓存边界为 9 项离线检查；启动入口与进程核验为 12 项当前适用检查。尚未重跑完整 `local-up` 链路，也不据此宣称新机器或 15 分钟冷部署通过。
+
 ## Windows 本地开发
 
 官方 PostgreSQL 16 Windows binaries 解压到项目 `tools/runtime/pgsql/`；官方 Nginx Windows ZIP 解压到 `tools/runtime/nginx-<版本>/`。
@@ -138,6 +154,6 @@ F12 独立验收使用真实回复代理，仅在后端提交后丢回复：
 技术依据：[asyncpg Pool API](https://magicstack.github.io/asyncpg/current/api/index.html#connection-pools)、
 [PostgreSQL16 显式锁](https://www.postgresql.org/docs/16/explicit-locking.html)。
 
-### 新七角色独立 profile（待证书）
+### 新七角色独立 profile
 
-[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证，证书办理由用户推迟，尚未启动新身份。默认业务和旧五域 `agents` profile 保持原选择范围。
+[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证。2026-10-17 证书办理曾按用户安排暂缓；2026-10-18 获新授权后七角色均已实际签发，CN/AIC、有效期、clientAuth 和密钥匹配检查通过，证书分别在 2026-12-06 对应时刻到期。七个新版 AIC 的官方 ADP 只读元数据与端点核对已通过；新版 AMQPS describe/任务往返与完整恢复尚未运行；默认业务与旧五域 `agents` profile 分开验收。

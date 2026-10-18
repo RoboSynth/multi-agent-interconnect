@@ -12,18 +12,6 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-NATIVE_ROOT = ROOT
-if os.name == "nt" and not str(ROOT).isascii():
-    # PostgreSQL/Nginx Windows command internals use ANSI paths in some steps.
-    # This alias points to project files; it is not another data-directory copy.
-    NATIVE_ROOT = Path(tempfile.gettempdir()) / "incident-pilot-runtime-01a148fe"
-    if not NATIVE_ROOT.exists():
-        command = "New-Item -ItemType Junction -Path '" + str(NATIVE_ROOT).replace("'", "''") + "' -Target '" + str(ROOT).replace("'", "''") + "' | Out-Null"
-        subprocess.run(["powershell.exe", "-NoProfile", "-Command", command], check=True)
-    if NATIVE_ROOT.resolve() != ROOT:
-        raise RuntimeError("runtime alias does not target this project")
-BIN = NATIVE_ROOT / "tools/runtime/pgsql/bin"
-DATA = NATIVE_ROOT / "runtime/pgdata"
 PRIVATE = ROOT / "runtime/private"
 ENVIRONMENT = {
     "postgres-superuser": {"PGUSER": "postgres"},
@@ -37,7 +25,37 @@ def read_env(path):
                 if line and not line.startswith("#"))
 
 
+def native_root():
+    result = ROOT
+    if os.name == "nt" and not str(ROOT).isascii():
+        # Defer this filesystem change until existing-cluster identities pass.
+        result = Path(tempfile.gettempdir()) / "incident-pilot-runtime-01a148fe"
+        if not result.exists():
+            command = "New-Item -ItemType Junction -Path '" + str(result).replace("'", "''") + "' -Target '" + str(ROOT).replace("'", "''") + "' | Out-Null"
+            subprocess.run(["powershell.exe", "-NoProfile", "-Command", command], check=True)
+        if result.resolve() != ROOT:
+            raise RuntimeError("runtime alias does not target this project")
+    return result
+
+
 def prepare():
+    runtime_file = ROOT / "deploy/native-runtime.json"
+    runtime = json.loads(runtime_file.read_text(encoding="utf-8-sig")) if runtime_file.exists() else {}
+    selected_data = Path(runtime.get("pgdata", ROOT / "runtime/pgdata"))
+    if not selected_data.is_absolute():
+        selected_data = ROOT / selected_data
+    missing = [name for name in ENVIRONMENT if not (PRIVATE / (name + ".env")).is_file()]
+    if (selected_data / "PG_VERSION").exists() and missing:
+        raise RuntimeError("Existing PostgreSQL cluster is missing identity env files: " + ", ".join(missing)
+                           + ". Restore the matching files before preparation; no passwords were generated.")
+    native = native_root()
+    runtime.setdefault("postgres_bin", str(native / "tools/runtime/pgsql/bin"))
+    runtime.setdefault("pgdata", str(native / "runtime/pgdata"))
+    bin_path, data = (Path(runtime[name]) for name in ("postgres_bin", "pgdata"))
+    if not bin_path.is_absolute():
+        bin_path = ROOT / bin_path
+    if not data.is_absolute():
+        data = ROOT / data
     PRIVATE.mkdir(parents=True, exist_ok=True)
     domains = {}
     for domain, values in ENVIRONMENT.items():
@@ -52,26 +70,26 @@ def prepare():
         path.write_text("".join(f"{k}={v}\n" for k, v in env.items()), encoding="utf-8")
         domains[domain] = env
     admin = domains["postgres-superuser"]
-    if not (DATA / "PG_VERSION").exists():
+    if not (data / "PG_VERSION").exists():
         password_file = PRIVATE / "initdb-password.txt"
         password_file.write_text(admin["PGPASSWORD"], encoding="utf-8")
         try:
-            subprocess.run([str(BIN / "initdb.exe"), "-D", str(DATA), "-U", "postgres",
+            subprocess.run([str(bin_path / "initdb.exe"), "-D", str(data), "-U", "postgres",
                 "--auth=scram-sha-256", "--encoding=UTF8", "--locale=C",
-                "--pwfile=" + str(NATIVE_ROOT / "runtime/private/initdb-password.txt")], check=True)
+                "--pwfile=" + str(native / "runtime/private/initdb-password.txt")], check=True)
         finally:
             password_file.unlink(missing_ok=True)
-    status = subprocess.run([str(BIN / "pg_ctl.exe"), "status", "-D", str(DATA)], capture_output=True)
+    status = subprocess.run([str(bin_path / "pg_ctl.exe"), "status", "-D", str(data)], capture_output=True)
     if status.returncode:
         # pg_ctl cannot create another restricted token when already inside the
         # Codex sandbox. Run the same server directly under the current token.
-        log_path = NATIVE_ROOT / "runtime/postgres.log"
+        log_path = native / "runtime/postgres.log"
         with log_path.open("ab") as log:
-            process = subprocess.Popen([str(BIN / "postgres.exe"), "-D", str(DATA),
+            process = subprocess.Popen([str(bin_path / "postgres.exe"), "-D", str(data),
                 "-p", "55432", "-h", "127.0.0.1"], stdout=log, stderr=log,
                 creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
         for _ in range(60):
-            ready = subprocess.run([str(BIN / "pg_isready.exe"), "-h", "127.0.0.1", "-p", "55432"], capture_output=True)
+            ready = subprocess.run([str(bin_path / "pg_isready.exe"), "-h", "127.0.0.1", "-p", "55432"], capture_output=True)
             if ready.returncode == 0:
                 break
             if process.poll() is not None:
@@ -82,7 +100,7 @@ def prepare():
     env = {**os.environ, **admin, "PGDATABASE": "postgres"}
 
     def sql(statement, database="postgres"):
-        result = subprocess.run([str(BIN / "psql.exe"), "-X", "-v", "ON_ERROR_STOP=1", "-At",
+        result = subprocess.run([str(bin_path / "psql.exe"), "-X", "-v", "ON_ERROR_STOP=1", "-At",
             "-d", database], input=statement, env=env, text=True, encoding="utf-8", capture_output=True)
         if result.returncode:
             # Do not include SQL/passwords in errors.
@@ -106,14 +124,11 @@ GRANT SELECT ON orders, operation_receipts TO orders_agent;
 GRANT pg_read_all_stats, pg_signal_backend TO orders_agent;
 """, "orders")
     summary = {"host": "127.0.0.1", "port": 55432, "database": "orders",
-               "data_directory": str(DATA), "secrets_directory": str(PRIVATE),
+               "data_directory": str(data), "secrets_directory": str(PRIVATE),
                "roles": {k: v["PGUSER"] for k, v in domains.items()}}
     (ROOT / "runtime/database-setup.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    runtime_file = ROOT / "deploy/native-runtime.json"
-    runtime = json.loads(runtime_file.read_text(encoding="utf-8-sig")) if runtime_file.exists() else {}
-    runtime.update(postgres_bin=str(BIN), pgdata=str(DATA))
-    runtime.setdefault("nginx_bin", str(NATIVE_ROOT / "tools/runtime/nginx-1.30.6/nginx.exe"))
-    runtime.setdefault("nginx_prefix", str(NATIVE_ROOT / "runtime/nginx"))
+    runtime.setdefault("nginx_bin", str(native / "tools/runtime/nginx-1.30.6/nginx.exe"))
+    runtime.setdefault("nginx_prefix", str(native / "runtime/nginx"))
     runtime_file.write_text(json.dumps(runtime, indent=2), encoding="utf-8")
     print(json.dumps(summary))
 

@@ -1,0 +1,54 @@
+{
+  "status": "OFFLINE_PREPARATION_BOUNDARIES_PASSED",
+  "distinct_current_applicable_checks": 9,
+  "check_groups": [
+    {
+      "log": "tests.log",
+      "count": 8,
+      "seconds": 0.339,
+      "retained_after_append_only_postgresql_fixture": true,
+      "actual_os_exit_code": 0,
+      "skipped": 0,
+      "errors": 0,
+      "failures": 0
+    },
+    {
+      "errors": 0,
+      "log": "tests-postgres-archive.log",
+      "failures": 0,
+      "count": 1,
+      "actual_os_exit_code": 0,
+      "seconds": 0.09,
+      "skipped": 0
+    }
+  ],
+  "subcases": {
+    "invalid_download_types": [
+      "truncated",
+      "missing-entry",
+      "crc",
+      "escape"
+    ],
+    "missing_identity_files": 3
+  },
+  "verified_behaviors": [
+    "Existing selected cluster missing any identity fails before password generation, alias or filesystem writes",
+    "Runtime path and unrelated values survive; actual mocked database commands use selected paths",
+    "Import has no alias/process side effects",
+    "New cluster only adds missing path defaults",
+    "Valid cached archive reuses bytes without network",
+    "Invalid cached archive is preserved byte-for-byte and fails explicitly",
+    "New runtime is promoted only after ZIP CRC, required executable entries and selected extraction path checks",
+    "Invalid downloaded archive remains unique .download evidence, no canonical cache or extracted files",
+    "PostgreSQL required commands extracted without pgAdmin"
+  ],
+  "execution_boundary": {
+    "real_server_processes_started": 0,
+    "synthetic_workspace_fixtures_only": true,
+    "live_runtime_or_private_env_files_read": 0,
+    "network_calls": 0,
+    "live_configuration_changed": 0,
+    "real_database_calls": 0
+  },
+  "input_sha256": "00fbc4c04d9dc2787f30493a7ed4d1dacd4e69a635d122f39addb3a9654ef5bd"
+}

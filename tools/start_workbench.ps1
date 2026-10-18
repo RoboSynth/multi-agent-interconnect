@@ -1,6 +1,8 @@
 param([int]$Port=8766,[string]$ConfigPath='',[string]$OutputDirectory='',
-      [switch]$CheckEnvironmentOnly,[string]$EnvironmentCheckOutput='')
+      [switch]$CheckEnvironmentOnly,[string]$EnvironmentCheckOutput='',
+      [ValidateRange(1,300)][int]$StartupTimeoutSeconds=45)
 $ErrorActionPreference='Stop'
+if($PSVersionTable.PSVersion -lt [Version]'7.4'){throw 'Use PowerShell 7.4 or later to start the local workbench.'}
 $ProjectRoot=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $Python=Join-Path $ProjectRoot '.venv/Scripts/python.exe'
 $Config=if($ConfigPath){if([IO.Path]::IsPathRooted($ConfigPath)){$ConfigPath}else{Join-Path $ProjectRoot $ConfigPath}}else{Join-Path $ProjectRoot 'runtime/local-coordinator.json'}
@@ -31,17 +33,92 @@ if($CheckEnvironmentOnly) {
     exit 0
 }
 if(-not(Test-Path -LiteralPath $Config)){throw 'Run tools/configure_local_coordinator.py after preparing the local domains.'}
+$Config=[IO.Path]::GetFullPath($Config)
+$OutputDir=[IO.Path]::GetFullPath($OutputDir)
+$ExpectedConfig=Get-Content -LiteralPath $Config -Raw | ConvertFrom-Json
+$ExpectedMode=$ExpectedConfig.mode
+$ExpectedConfigSha=(Get-FileHash -LiteralPath $Config -Algorithm SHA256).Hash.ToLowerInvariant()
+function Assert-WorkbenchConfiguration($State) {
+    if($State.mode -ne $ExpectedMode -or $State.config_sha256 -ne $ExpectedConfigSha){
+        throw 'The running workbench has a different or unverified configuration. Explicitly restart it with the selected config; no process was stopped.'
+    }
+}
+function Get-WorkbenchRuntimePid($State,$Launcher) {
+    $RuntimePid=0
+    if(-not [int]::TryParse([string]$State.pid,[ref]$RuntimePid) -or $RuntimePid -le 0){throw 'Workbench returned an invalid runtime PID.'}
+    if($RuntimePid -eq $Launcher.Id){return $RuntimePid}
+    $Process=Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $RuntimePid" -ErrorAction Stop
+    if(-not $Process -or $Process.ParentProcessId -ne $Launcher.Id){throw "Port $Port is responding from another process; the runtime is not the launched process or its direct Python child."}
+    $PythonPaths=@($Python)
+    $VenvConfig=Join-Path $ProjectRoot '.venv/pyvenv.cfg'
+    if(Test-Path -LiteralPath $VenvConfig){
+        foreach($Line in Get-Content -LiteralPath $VenvConfig){
+            if($Line -match '^executable\s*=\s*(.+)$'){$PythonPaths += $Matches[1].Trim()}
+            elseif($Line -match '^home\s*=\s*(.+)$'){$PythonPaths += Join-Path $Matches[1].Trim() 'python.exe'}
+        }
+    }
+    $PythonPaths=@($PythonPaths | ForEach-Object {[IO.Path]::GetFullPath($_)})
+    if(-not $Process.ExecutablePath -or [IO.Path]::GetFullPath($Process.ExecutablePath) -notin $PythonPaths){throw 'Workbench direct child has an unexpected Python executable.'}
+    if(-not ('IncidentWorkbenchCommandLine' -as [type])){
+        Add-Type @'
+using System;
+using System.Runtime.InteropServices;
+public static class IncidentWorkbenchCommandLine {
+    [DllImport("shell32.dll", SetLastError=true)]
+    static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string command, out int count);
+    [DllImport("kernel32.dll")] static extern IntPtr LocalFree(IntPtr memory);
+    public static string[] Parse(string command) {
+        int count; IntPtr memory=CommandLineToArgvW(command,out count);
+        if(memory==IntPtr.Zero) throw new System.ComponentModel.Win32Exception();
+        try { var args=new string[count]; for(int i=0;i<count;i++) args[i]=Marshal.PtrToStringUni(Marshal.ReadIntPtr(memory,i*IntPtr.Size)); return args; }
+        finally { LocalFree(memory); }
+    }
+}
+'@
+    }
+    if(-not $Process.CommandLine){throw 'Workbench direct child command line could not be verified.'}
+    $Command=[IncidentWorkbenchCommandLine]::Parse($Process.CommandLine)
+    if($Command.Count -ne 8 -or [IO.Path]::GetFullPath($Command[0]) -notin $PythonPaths -or
+       [IO.Path]::GetFullPath($Command[1]) -ne (Join-Path $ProjectRoot 'workbench_server.py') -or
+       $Command[2] -ne '--port' -or $Command[3] -ne [string]$Port -or
+       $Command[4] -ne '--config' -or [IO.Path]::GetFullPath($Command[5]) -ne $Config -or
+       $Command[6] -ne '--output' -or [IO.Path]::GetFullPath($Command[7]) -ne $OutputDir){throw 'Workbench direct child command line does not match this script, config, output and port.'}
+    return $RuntimePid
+}
 $Existing=$null
-try { $Existing=Invoke-RestMethod -Uri "http://127.0.0.1:$Port/api/state" -TimeoutSec 2 } catch { }
+try { $Existing=Invoke-RestMethod -Uri "http://127.0.0.1:$Port/api/state" -TimeoutSec 2 -NoProxy } catch { }
 if($Existing){
-    $ExpectedMode=(Get-Content -LiteralPath $Config -Raw | ConvertFrom-Json).mode
-    if($Existing.mode -ne $ExpectedMode){throw 'Selected port is occupied by another service.'}
+    Assert-WorkbenchConfiguration $Existing
+    if($Existing.connected -ne $true -or $Existing.connection_error){throw 'The existing workbench has no healthy participant connection. Resolve the connection error and explicitly restart it; inspect its logs.'}
     Write-Output "Workbench is already running at http://127.0.0.1:$Port"
     exit 0
 }
 New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
 $Arguments=@('"'+(Join-Path $ProjectRoot 'workbench_server.py')+'"','--port',[string]$Port,'--config','"'+$Config+'"','--output','"'+$OutputDir+'"')
-$Started=Start-IsolatedWorkbenchProcess $Arguments (Join-Path $OutputDir 'server.stdout.log') (Join-Path $OutputDir 'server.stderr.log')
+$LaunchId=(Get-Date -Format 'yyyyMMddTHHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,8)
+$Stdout=Join-Path $OutputDir ("server-$LaunchId.stdout.log")
+$Stderr=Join-Path $OutputDir ("server-$LaunchId.stderr.log")
+$Started=Start-IsolatedWorkbenchProcess $Arguments $Stdout $Stderr
+$Timer=[Diagnostics.Stopwatch]::StartNew()
+$Ready=$false
+while($Timer.Elapsed.TotalSeconds -lt $StartupTimeoutSeconds){
+    $Started.Refresh()
+    if($Started.HasExited){
+        $Started.WaitForExit()
+        throw "Workbench process $($Started.Id) exited with code $($Started.ExitCode) before becoming ready. Inspect $Stderr"
+    }
+    $State=$null
+    try { $State=Invoke-RestMethod -Uri "http://127.0.0.1:$Port/api/state" -TimeoutSec 2 -NoProxy } catch { }
+    if($State){
+        $RuntimePid=Get-WorkbenchRuntimePid $State $Started
+        Assert-WorkbenchConfiguration $State
+        if($State.connection_error){throw "Workbench participant connection failed. Inspect $Stderr"}
+        if($State.connected -eq $true){$Ready=$true;break}
+    }
+    Start-Sleep -Milliseconds 250
+}
+if(-not $Ready){throw "Workbench process $($Started.Id) did not become connected within $StartupTimeoutSeconds seconds. Inspect $Stderr"}
 $MetadataName=if($Port -eq 8766){'runtime/workbench-server.json'}else{"runtime/workbench-server-$Port.json"}
-@{launcher_pid=$Started.Id;port=$Port;config=$Config;launch_environment='system-and-model-allowlist'} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $ProjectRoot $MetadataName) -Encoding utf8
-Write-Output "Workbench starting at http://127.0.0.1:$Port; log: $OutputDir"
+@{launcher_pid=$Started.Id;runtime_pid=$RuntimePid;port=$Port;config=$Config;config_sha256=$ExpectedConfigSha;launch_environment='system-and-model-allowlist';stdout=$Stdout;stderr=$Stderr} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $ProjectRoot $MetadataName) -Encoding utf8
+Write-Output "Workbench ready at http://127.0.0.1:$Port; log: $OutputDir"
+exit 0

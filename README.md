@@ -13,6 +13,12 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 新工作台：[http://127.0.0.1:8766](http://127.0.0.1:8766)。[开发进度](docs/开发进度_高分方案.md)与[本地验收记录](docs/本地开发验收.md)区分实际本地结果和后续平台验收；下文保留 v0.2.0 基线说明。
 
+## 本地模型工作台（2026-10-18）
+
+本地 Qwen 采用显式启用，普通重跑保留已选配置。已在既有开发机通过真实工作台健康验收：模型调用 6 次、输出校验通过 6 次、7098 tokens，零修改任务；独立业务观察 30.015 秒、10 个完整流程通过。桌面、手机和两组合成异常展示分别核验，见[启用方法与证据边界](docs/local_model_workbench_20261018.md)。
+
+本轮七个新版角色证书均已签发，身份、有效期、clientAuth 和密钥匹配检查通过；七个新版 AIC 的官方 ADP 只读元数据与端点核对已通过；新版 AMQPS describe/任务往返与完整恢复尚未运行。此项与下方旧平台基线、本次本地健康验收分别记录。
+
 完整工具M1的[本地分段结果](docs/free_tools_matrix_20261018.md)：原批40终态、第41格中断，独立后续四格4/4恢复；两阶段为44终态、37确认、7未确认、1中断覆盖原45计划，独立HTTP H00为30.328秒/30次全成功/10流程。原进程退出码未知，不能称完整45格单批；旧M1/旧18例、新版梧桐及长期验收分别保留，下文继续为v0.2.0基线记录。
 
 订单网站发生故障后，协调智能体收集应用和数据库的信息，安排恢复操作，再由恢复分析智能体访问网站、读取订单并汇总结果。当前诊断逻辑采用规则。
@@ -45,7 +51,7 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 任务协调智能体和消息回声智能体分别接收 Inbox 邀请、加入群组、执行消息任务。运行程序先由协调者向回声者发任务，再由回声者向协调者发任务，双方返回原消息和任务状态。
 
-双方已通过梧桐审核并取得正式 AIC 和客户端证书。两轮平台消息任务均已完成，程序正常退出；结果见 [运行记录](integration/two-agent/RESULT.json)。收件箱采用每个身份一个消费者，接收邀请和任务反馈。
+双方已通过梧桐审核并取得正式 AIC 和客户端证书。两轮平台消息任务均已完成，程序正常退出；结果见 [历史摘要](docs/historical-baseline-evidence.md#two-agent)。收件箱采用每个身份一个消费者，接收邀请和任务反馈。
 
 [接入流程](integration/PLATFORM-ONBOARDING.md)包含平台地址、登记步骤、证书命令和任务输入输出。
 
@@ -57,12 +63,12 @@ pwsh -NoProfile -File deploy/local-up.ps1
 & '.\.venv\Scripts\python.exe' '.\resilience_stress.py' --repeats 12 --seed 20261017
 ```
 
-本地测试覆盖消息与终态、并发恢复、重复执行、配置版本、组合故障和智能体替换。[最终测试报告](artifacts/campaign-20261017-final-v2/REPORT.md)记录最终一轮的 425 项场景与断言。
+本地测试覆盖消息与终态、并发恢复、重复执行、配置版本、组合故障和智能体替换。[历史摘要](docs/historical-baseline-evidence.md#campaign-425)记录最终一轮的 425 项场景与断言。
 
 官方源码位于 `vendor/ACPs-community`，版本 **v2.2.0**，提交 `3985c1330209f075c124669cc9d31f0e75448140`；Python 环境位于 `.venv`。
 
 - [官方代码](https://github.com/AIP-PUB/ACPs-community) · [梧桐文档](https://wt.ioa.pub/docs.html)
-- [构建记录](integration/BUILD-VERIFICATION.md) · [平台审核结果](integration/two-agent/rejection-analysis-v1.json)
+- [构建记录](integration/BUILD-VERIFICATION.md) · [驳回原因说明](docs/historical-baseline-evidence.md#first-rejection)
 
 
 ---

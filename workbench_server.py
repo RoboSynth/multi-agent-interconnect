@@ -4,6 +4,7 @@ import argparse
 import asyncio
 from contextlib import asynccontextmanager, suppress
 import ipaddress
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -20,6 +21,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine
+from tools.configure_local_coordinator import local_model_settings
 from acps_sdk.aip.resumable import TaskJournal, CoordinatorTerm
 
 
@@ -43,9 +45,17 @@ def create_app(config_path=None, output=None, transport=None):
         active_transport = transport
         config = {}
         app.state.connection_error = None
+        config_bytes = config_path.read_bytes() if config_path.exists() else None
+        if config_bytes is not None:
+            config = json.loads(config_bytes.decode("utf-8-sig"))
+        app.state.config_sha256 = hashlib.sha256(config_bytes).hexdigest() if config_bytes is not None else None
+        if config.get("mode", "local-aip-stdio") == "local-aip-stdio":
+            hypothesis = HypothesisEngine(**local_model_settings(config), api_key="")
+        else:
+            # Remote deployments retain their existing enabled/environment behavior.
+            hypothesis = HypothesisEngine(enabled=config.get("llm_enabled", False))
         if active_transport is None and config_path.exists():
             try:
-                config = json.loads(config_path.read_text(encoding="utf-8-sig"))
                 if config.get("mode", "local-aip-stdio") == "local-aip-stdio":
                     from incident.local_transport import LocalAipStdioTransport
                     active_transport = LocalAipStdioTransport(config_path)
@@ -63,8 +73,7 @@ def create_app(config_path=None, output=None, transport=None):
         term = getattr(active_transport, "term", None) or int(CoordinatorTerm(journal))
         issuer = getattr(active_transport, "issue_approval", None)
         engine = IncidentCoordinator(active_transport, output / "incidents", term=int(term),
-                                    approval_issuer=issuer, hypothesis=HypothesisEngine(
-                                        enabled=config.get("llm_enabled", False)))
+                                    approval_issuer=issuer, hypothesis=hypothesis)
         if active_transport is not None and hasattr(active_transport, "on_event"):
             def on_transport_event(event):
                 incident_id = event.get("incident_id")
@@ -121,6 +130,14 @@ def create_app(config_path=None, output=None, transport=None):
         current = runs[-1] if runs else None
         credential_names = {"PGPASSWORD", "PGADMINPASSWORD", "DATABASE_URL", "DATABASE_URI",
                             "APP_ADMIN_TOKEN", "ORDERS_DB_PASSWORD", "POSTGRES_PASSWORD", "OPS_SUPERVISOR_TOKEN"}
+        model_endpoint = engine.hypothesis.base_url
+        try:
+            parsed_endpoint = urlsplit(model_endpoint)
+            if (parsed_endpoint.username is not None or parsed_endpoint.password is not None
+                    or parsed_endpoint.query or parsed_endpoint.fragment):
+                model_endpoint = "[REDACTED]"
+        except ValueError:
+            model_endpoint = "[REDACTED]"
         return {"connected": active_transport is not None, "mode": getattr(active_transport, "mode", "unconfigured"),
                 "pid": os.getpid(),
                 "resource_credential_count": sum(bool(os.environ.get(name)) for name in credential_names),
@@ -128,6 +145,11 @@ def create_app(config_path=None, output=None, transport=None):
                 "participants": getattr(active_transport, "participants", []), "incident": current,
                 "incidents": [{"id": r["id"], "symptom": r["symptom"], "status": r["status"]} for r in runs],
                 "model": "rules" if not engine.hypothesis.enabled else engine.hypothesis.model,
+                "config_sha256": app.state.config_sha256,
+                "model_config": {"enabled": engine.hypothesis.enabled, "base_url": model_endpoint,
+                    "model": engine.hypothesis.model, "max_output_tokens": engine.hypothesis.sampling["max_tokens"],
+                    "max_calls": engine.hypothesis.max_calls, "token_budget": engine.hypothesis.token_budget,
+                    "timeout_seconds": engine.hypothesis.timeout_seconds},
                 "artifacts": str(output)}
 
     @app.post("/api/incidents", status_code=202)

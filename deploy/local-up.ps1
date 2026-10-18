@@ -1,5 +1,6 @@
-param([switch]$Install)
+param([switch]$Install,[switch]$EnableLocalModel)
 $ErrorActionPreference='Stop'
+if($PSVersionTable.PSVersion -lt [Version]'7.4'){throw 'Use PowerShell 7.4 or later for local startup.'}
 $ProjectRoot=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $Python=Join-Path $ProjectRoot '.venv/Scripts/python.exe'
 if(-not(Test-Path -LiteralPath $Python)){
@@ -9,6 +10,12 @@ function Run-Python([string[]]$Arguments){
     & $Python @Arguments
     if($LASTEXITCODE -ne 0){throw "Local setup failed at $($Arguments[0]); inspect the preceding output."}
 }
+$CoordinatorArguments=@((Join-Path $ProjectRoot 'tools/configure_local_coordinator.py'),'--config',(Join-Path $ProjectRoot 'runtime/local-coordinator.json'))
+if($EnableLocalModel){
+    $CoordinatorArguments+=@('--enable-llm','--model-base-url','http://127.0.0.1:8089/v1','--model','Qwen3-1.7B-Q8_0')
+}
+# Validate existing or proposed config before installing or touching resources.
+Run-Python ($CoordinatorArguments+@('--check'))
 if($Install){
     Run-Python @('-m','pip','install','-r',(Join-Path $ProjectRoot 'requirements-high-score.txt'),'--cache-dir',(Join-Path $ProjectRoot '.cache/pip'))
 }
@@ -22,7 +29,7 @@ if($LASTEXITCODE -ne 0){throw 'Local business startup failed.'}
 $DomainArguments=@((Join-Path $ProjectRoot 'domains/setup_local.py'),'--provision-db','--start-supervisor')
 if($Install -or -not(Test-Path -LiteralPath (Join-Path $ProjectRoot '.venv-mcp-postgres/Scripts/postgres-mcp.exe'))){$DomainArguments+='--install'}
 Run-Python $DomainArguments
-Run-Python @((Join-Path $ProjectRoot 'tools/configure_local_coordinator.py'))
+Run-Python $CoordinatorArguments
 & (Join-Path $ProjectRoot 'tools/start_workbench.ps1')
 if($LASTEXITCODE -ne 0){throw 'Workbench startup failed.'}
 Write-Output 'Local workbench: http://127.0.0.1:8766'

@@ -43,7 +43,7 @@
 
 每轮任务经历 accepted、working、awaiting-completion、completed 四个状态。双方使用独立证书，运行于本机同一 Python 进程，消息经梧桐 Broker 往返。
 
-[结果摘要](two-agent/RESULT.json) · [完整任务消息](two-agent/live-bidirectional-fixed-20261017T035844Z.json) · [正式登记资料](two-agent/approved-registry-agents.json) · [群组服务响应](two-agent/group-service-authenticated-health.json)
+[历史摘要](../docs/historical-baseline-evidence.md#two-agent) · [完整任务消息](two-agent/live-bidirectional-fixed-20261017T035844Z.json) · [正式登记资料](two-agent/approved-registry-agents.json) · [群组服务响应](two-agent/group-service-authenticated-health.json)
 
 ## 运行
 
@@ -63,7 +63,7 @@
 
 ## 历史资料
 
-- [首次审核意见与原因](two-agent/rejection-analysis-v1.json)
+- [驳回原因说明](../docs/historical-baseline-evidence.md#first-rejection)
 - [获批状态](two-agent/resubmission-current-status.json)
 - [ADP 技能查询](two-agent/approved-agent-discovery.json) · [ADP 身份查询](two-agent/approved-agent-discovery-by-aic.json)
-- [此前本地故障协作测试](../artifacts/campaign-20261017-final-v2/REPORT.md)
+- [历史摘要](../docs/historical-baseline-evidence.md#campaign-425)
