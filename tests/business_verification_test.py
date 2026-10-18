@@ -1,6 +1,7 @@
 """Verification boundary regression; does not connect to or modify the target."""
 import sys
 import unittest
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
 import httpx
@@ -10,18 +11,24 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.partners import VerificationPartner
 
+ORDER_ID = "10e39e67-5fad-4d3b-a028-f3115b8c5a30"
+COMMITTED = {"operation_key": "request-one", "operation_kind": "create", "outcome": "committed",
+             "order_id": ORDER_ID, "order": {"id": ORDER_ID, "request_key": "request-one", "status": "CREATED"},
+             "changed": True, "order_api_version": "v2"}
+
 
 class VerificationFreshWorkflows(unittest.IsolatedAsyncioTestCase):
-    async def verify_original(self, args, *, receipt_status=None, receipt_error=False):
+    async def verify_original(self, args, *, receipt_status=None, receipt_error=False,
+                              receipt_body=COMMITTED, service_passed=True):
         calls = []
         def receipt(request):
             calls.append((request.method, request.url.path))
             if receipt_error:
                 raise httpx.ConnectError("mock unavailable", request=request)
-            return httpx.Response(receipt_status, json={"order_id": "existing-order", "order_api_version": "v2"})
+            return httpx.Response(receipt_status, json=receipt_body)
         client = httpx.AsyncClient(transport=httpx.MockTransport(receipt)) if receipt_status is not None else None
         with patch("business.load.OrderObserver") as observer:
-            observer.return_value.observe = AsyncMock(return_value={"passed": True, "completed_workflows": 10})
+            observer.return_value.observe = AsyncMock(return_value={"passed": service_passed, "completed_workflows": 10})
             with patch("incident.partners.httpx.AsyncClient", **(
                     {"return_value": client} if client else {"side_effect": AssertionError("unexpected receipt request")})):
                 result = await VerificationPartner("verifier", allowed_callers=["coordinator"]).execute({
@@ -77,6 +84,55 @@ class VerificationFreshWorkflows(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(facts["service_recovered"])
         self.assertEqual(facts["original_request_resolution"], "unknown_receipt_unavailable")
         self.assertEqual(calls, [("GET", "/receipts/request-one")])
+
+    async def test_invalid_success_receipts_keep_the_original_unknown(self):
+        malformed = [None, [], {"order_api_version": "v2"}]
+        for field in ("operation_key", "operation_kind", "outcome", "order_id", "order"):
+            body = deepcopy(COMMITTED)
+            del body[field]
+            malformed.append(body)
+        for field, value in (("operation_key", "different-key"), ("outcome", "unknown"),
+                             ("outcome", "rejected"), ("operation_kind", []),
+                             ("order_id", ""), ("order_id", 123), ("order_id", "not-a-uuid"),
+                             ("order", None), ("order", [])):
+            malformed.append({**deepcopy(COMMITTED), field: value})
+        for field, value in (("id", "different-order"), ("request_key", "different-key"),
+                             ("request_key", None), ("status", "CANCELLED")):
+            body = deepcopy(COMMITTED)
+            body["order"][field] = value
+            malformed.append(body)
+        for body in malformed:
+            with self.subTest(body=body):
+                result, calls = await self.verify_original({"original_request_key": "request-one"},
+                    receipt_status=200, receipt_body=body)
+                facts = {f["key"]: f["value"] for f in result["facts"]}
+                self.assertEqual(result["status"], "ok")
+                self.assertTrue(facts["service_recovered"])
+                self.assertFalse(facts["original_request_resolved"])
+                self.assertFalse(facts["business_recovered"])
+                self.assertTrue(facts["manual_required"])
+                self.assertEqual(facts["original_request_resolution"], "unknown_receipt_unavailable")
+                self.assertEqual(calls, [("GET", "/receipts/request-one")])
+
+    async def test_cancel_receipt_keeps_its_distinct_creation_key_and_allows_unchanged(self):
+        body = deepcopy(COMMITTED)
+        body.update(operation_key="request-cancel", operation_kind="cancel", changed=False)
+        body["order"]["status"] = "CANCELLED"
+        result, calls = await self.verify_original({"original_request_key": "request-cancel"},
+            receipt_status=200, receipt_body=body)
+        facts = {f["key"]: f["value"] for f in result["facts"]}
+        self.assertTrue(facts["original_request_resolved"])
+        self.assertTrue(facts["business_recovered"])
+        self.assertFalse(facts["manual_required"])
+        self.assertEqual(calls, [("GET", "/receipts/request-cancel")])
+
+    async def test_original_receipt_does_not_replace_failed_fresh_workflows(self):
+        result, _ = await self.verify_original({"original_request_key": "request-one"},
+            receipt_status=200, service_passed=False)
+        facts = {f["key"]: f["value"] for f in result["facts"]}
+        self.assertTrue(facts["original_request_resolved"])
+        self.assertFalse(facts["service_recovered"])
+        self.assertFalse(facts["business_recovered"])
 
     async def test_unknown_flag_is_strict_boolean_at_the_verifier_boundary(self):
         for value in ("false", 0, 1, None):

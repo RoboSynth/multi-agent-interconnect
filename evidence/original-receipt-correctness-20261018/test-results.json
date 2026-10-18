@@ -1,0 +1,67 @@
+{
+  "business_verification": {
+    "methods": 9,
+    "actual_exit_code": 0,
+    "chunk": "f28a7c",
+    "seconds": 0.486
+  },
+  "public_v2_contract": {
+    "methods": 8,
+    "actual_exit_code": 0,
+    "chunk": "0f3d2d",
+    "seconds": 0.505
+  },
+  "observer_and_coordinator": {
+    "evidence_type": "actual-tool-completion-receipt",
+    "source": "tests/test_receipt_resolution.py",
+    "sha256": "27c946df820e9b22dee9f9de8fb935eb651bc7a6e689ae40d62e78c595302168",
+    "bytes": 10746,
+    "tests": 4,
+    "create_parameter_cases": 5,
+    "actual_exit_code": 0,
+    "completion_chunk": "3bda4d",
+    "unittest_duration_seconds": 0.296,
+    "transport": "httpx.MockTransport",
+    "virtual_clock": true,
+    "first_attempt": {
+      "started_chunk": "187a0b",
+      "session": 48286,
+      "reason": "Restricted Windows async execution hung at first method",
+      "stopped_child_pid": 44064,
+      "parent_pid": 30072,
+      "stop_chunk": "b99805",
+      "completion_chunk": "7e607f",
+      "actual_exit_code": 1
+    },
+    "remaining_owned_test_processes": [],
+    "real_resources_started": false,
+    "network_calls": false
+  },
+  "distinct_methods": 21,
+  "baseline_reproduction": {
+    "cases": 2,
+    "actual_exit_code": 0,
+    "chunk": "8518d1",
+    "meaning": "Old defect confirmed with mock HTTP and stubbed healthy service; not a successful recovery"
+  },
+  "standalone_load_help": {
+    "actual_exit_code": 0,
+    "chunk": "902083",
+    "outside_project_working_directory": true,
+    "restricted_attempt": {
+      "actual_exit_code": 1,
+      "chunk": "055561",
+      "reason": "Restricted Python process stalled; exact owned child was identified and stopped before normal-environment retry",
+      "identification_chunk": "26c3d5",
+      "stop_chunk": "206c29"
+    }
+  },
+  "real_HTTP_resources": false,
+  "mock_transport": true,
+  "observer_time_virtual": true,
+  "production_sources_sha256": {
+    "business/receipts.py": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255",
+    "business/load.py": "f09c4a98182b2fd4b7e83863e47cd3c9528a15330da0c931c05a7ab745f7fa90",
+    "incident/partners.py": "92d812b0ac6eeedf9f2c4c1389571b537101294476a942db8bf47f43a49d743a"
+  }
+}

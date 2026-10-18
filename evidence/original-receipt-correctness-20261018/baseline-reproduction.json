@@ -1,0 +1,58 @@
+{
+  "status": "BASELINE_INVALID_RECEIPT_ACCEPTANCE_REPRODUCED",
+  "baseline_source_sha256": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+  "mock_HTTP_only": true,
+  "fresh_service_observation_stubbed": true,
+  "cases": [
+    {
+      "case": "version_only",
+      "mock_receipt": {
+        "order_api_version": "v2"
+      },
+      "facts": {
+        "business_recovered": true,
+        "service_recovered": true,
+        "original_request_resolved": true,
+        "original_request_resolution": "resolved_receipt",
+        "manual_required": false,
+        "order_observation": {
+          "passed": true,
+          "completed_workflows": 10
+        }
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/receipts/original-key"
+        }
+      ]
+    },
+    {
+      "case": "wrong_key_unknown",
+      "mock_receipt": {
+        "order_api_version": "v2",
+        "operation_key": "another-key",
+        "outcome": "unknown"
+      },
+      "facts": {
+        "business_recovered": true,
+        "service_recovered": true,
+        "original_request_resolved": true,
+        "original_request_resolution": "resolved_receipt",
+        "manual_required": false,
+        "order_observation": {
+          "passed": true,
+          "completed_workflows": 10
+        }
+      },
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/receipts/original-key"
+        }
+      ]
+    }
+  ],
+  "real_resource_or_platform_calls": 0,
+  "model_calls": 0
+}

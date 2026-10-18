@@ -21,6 +21,7 @@ import incident.partners as partners
 
 REAL_SLEEP = asyncio.sleep
 REAL_CLIENT = httpx.AsyncClient
+ORDER_ID = "10e39e67-5fad-4d3b-a028-f3115b8c5a30"
 
 
 class Clock:
@@ -37,8 +38,8 @@ class Clock:
 
 def body_for(phase):
     if phase in {"create", "resolve"}:
-        return {"order_id": "order-a"}
-    return {"order": {"id": "order-a", "status": "CANCELLED" if phase == "cancel" else "CREATED"}}
+        return {"order_id": ORDER_ID}
+    return {"order": {"id": ORDER_ID, "status": "CANCELLED" if phase == "cancel" else "CREATED"}}
 
 
 class PublicOrderVersionTests(unittest.IsolatedAsyncioTestCase):
@@ -57,7 +58,7 @@ class PublicOrderVersionTests(unittest.IsolatedAsyncioTestCase):
                     intent = {"request_key": "original-key", "operation_key": "original-key-cancel", "item": "pen",
                         "quantity": 1, "phase": phase, "was_unknown": phase == "resolve"}
                     if phase in {"query", "cancel"}:
-                        intent["order_id"] = "order-a"
+                        intent["order_id"] = ORDER_ID
                     if phase == "resolve":
                         intent.update(unknown_key="original-key", resume_phase="create")
                     state = {"pending": [intent], "completed": [], "next_index": 1}
@@ -90,7 +91,11 @@ class PublicOrderVersionTests(unittest.IsolatedAsyncioTestCase):
                 raise httpx.ReadTimeout("mock lost response", request=request)
             if request.url.path.startswith("/receipts/"):
                 receipts += 1
-                return httpx.Response(200, json={**body_for("resolve"), "order_api_version": "v1" if receipts == 1 else "v2"})
+                key = request.url.path.removeprefix("/receipts/")
+                return httpx.Response(200, json={"operation_key": key, "operation_kind": "create",
+                    "outcome": "committed", "order_id": ORDER_ID,
+                    "order": {"id": ORDER_ID, "request_key": key, "status": "CREATED"},
+                    "order_api_version": "v1" if receipts == 1 else "v2"})
             phase = "cancel" if request.url.path.endswith("/cancel") else "query"
             return httpx.Response(200, json={**body_for(phase), "order_api_version": "v2"})
         summary = await self.observe(handler, duration=5)

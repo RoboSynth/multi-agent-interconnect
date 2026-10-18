@@ -1,0 +1,45 @@
+{
+  "status": "RECEIPT_CORRECTNESS_IMPLEMENTED_OFFLINE_VERIFIED_NOT_DEPLOYED",
+  "base_commit": "f7c2b16a6c5df60f413098d106b6b66c27f9a464",
+  "recorded_at_utc": "2026-10-18T12:30:00.614122+00:00",
+  "source_sha256": {
+    "business/receipts.py": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255",
+    "business/load.py": "f09c4a98182b2fd4b7e83863e47cd3c9528a15330da0c931c05a7ab745f7fa90",
+    "incident/partners.py": "92d812b0ac6eeedf9f2c4c1389571b537101294476a942db8bf47f43a49d743a",
+    "tests/business_verification_test.py": "8fdd14af011e103428282c71560b6707de88c6391ed9fb8392b3e81a65e7feec",
+    "tests/test_public_order_version.py": "7d8e93d4aec0d1920e0b96ae3ae934a3e92dc3e41cd4727030269123bb4167ba",
+    "tests/test_receipt_resolution.py": "27c946df820e9b22dee9f9de8fb935eb651bc7a6e689ae40d62e78c595302168"
+  },
+  "changes": [
+    "Shared committed receipt validation requires the original operation key, committed outcome and valid matching UUID order identity",
+    "Known observer operation kind/order identity is preserved during unknown-result reconciliation",
+    "Create and cancel receipt snapshots remain distinct; cancellation may use a separate creation key and changed=false",
+    "Malformed receipts cannot advance the original intent or replace fresh-workflow verification; no replacement operation is created"
+  ],
+  "offline_distinct_test_methods": 21,
+  "baseline_invalid_acceptance_reproduced_cases": 2,
+  "normal_environment_test_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "canonical_frozen_inputs_unchanged": 204,
+  "canonical_old_plan_unchanged": true,
+  "canonical_running_code_updated": false,
+  "independent_revision": true,
+  "old_E1_plan_current_source_set_complete": false,
+  "old_E1_plan_missing_current_public_source": "incident/workbench_access.py",
+  "new_formal_E1_plan_required": true,
+  "formal_E1_executed": false,
+  "actual_new_F12_or_E5_executed": false,
+  "fault_calls": 0,
+  "platform_calls": 0,
+  "model_calls": 0,
+  "intent_payload_equality_proven": false,
+  "historical_pending_or_failed_evidence_reclassified": false,
+  "next_steps": [
+    "Create a new source/config/target-bound revision before deploying or preparing formal experiments",
+    "Explicit-target F12/E5 remains pending",
+    "User requested a pause after this increment is uploaded"
+  ]
+}

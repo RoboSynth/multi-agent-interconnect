@@ -1,0 +1,80 @@
+{
+  "status": "FROZEN_E1_BOUNDARY_REVIEWED_NO_SOURCE_OR_PLAN_CHANGES",
+  "recorded_at_utc": "2026-10-18T12:25:07.109816+00:00",
+  "old_plan": {
+    "path": "artifacts/new7-e1-a-preparation-20261018-revision3/private-plan.json",
+    "sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+    "frozen_inputs": 204,
+    "matching_original_bytes": 204,
+    "modified": 0,
+    "missing": 0,
+    "public_sources_in_team": 157,
+    "matching_public_sources": 157,
+    "private_or_local_only_inputs": 47
+  },
+  "current_dynamic_source_contract": {
+    "runner": "eval/platform_resume_experiment.py",
+    "required_source_count": 158,
+    "old_public_source_count": 157,
+    "required_not_in_old_plan": [
+      "incident/workbench_access.py"
+    ],
+    "source_completeness_gate_lines": [
+      154,
+      156
+    ],
+    "old_plan_executable_against_current_tree": false,
+    "reason": "Old 204 fingerprints are preserved, but current source_paths additionally requires incident/workbench_access.py; do not amend or reuse the old plan SHA for a new source revision."
+  },
+  "baseline": {
+    "team_head": "f7c2b16a6c5df60f413098d106b6b66c27f9a464",
+    "independent_checkout": "artifacts/receipt-correctness-development-20261018/checkout",
+    "checkout_head": "f7c2b16a6c5df60f413098d106b6b66c27f9a464",
+    "critical_sources": [
+      {
+        "path": "incident/partners.py",
+        "canonical_sha256": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+        "team_sha256": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+        "bytes_equal": true,
+        "in_old_frozen_plan": true
+      },
+      {
+        "path": "business/load.py",
+        "canonical_sha256": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+        "team_sha256": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+        "bytes_equal": true,
+        "in_old_frozen_plan": true
+      },
+      {
+        "path": "business/order_app/store.py",
+        "canonical_sha256": "f5d19f9935473981168a341ee8d6c42669cb7c880644da973a0f87f5f7daca3a",
+        "team_sha256": "f5d19f9935473981168a341ee8d6c42669cb7c880644da973a0f87f5f7daca3a",
+        "bytes_equal": true,
+        "in_old_frozen_plan": true
+      },
+      {
+        "path": "tests/business_verification_test.py",
+        "canonical_sha256": "0456629193c0ea783f3bd9ade5163cb2d9e21b4decb1af8e99bb437e32059559",
+        "team_sha256": "0456629193c0ea783f3bd9ade5163cb2d9e21b4decb1af8e99bb437e32059559",
+        "bytes_equal": true,
+        "in_old_frozen_plan": false
+      }
+    ]
+  },
+  "revision_boundary": {
+    "develop_and_test_in_independent_checkout": true,
+    "canonical_204_and_old_plan_remain_unchanged": true,
+    "old_pinned_private_config_uses_absolute_local_references": true,
+    "copying_old_plan_to_new_root_is_not_a_valid_relocation": true,
+    "future_formal_E1_requires_new_plan_source_config_target_hashes": true,
+    "future_formal_E1_requires_exact_authorization_and_single_consumer_window": true,
+    "working_copy_changes_not_covered_by_this_baseline_receipt": true
+  },
+  "operations": {
+    "network_or_resource_calls": 0,
+    "tests_run": 0,
+    "canonical_or_plan_edits": 0,
+    "private_values_disclosed": 0
+  },
+  "limits": "Private inputs are reported only as counts; this is a file-byte and source-contract audit, not execution of the old or new E1 plan."
+}

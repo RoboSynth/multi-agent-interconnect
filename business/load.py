@@ -13,6 +13,11 @@ from pathlib import Path
 
 import httpx
 
+if __package__:
+    from .receipts import validate_committed_receipt
+else:
+    from receipts import validate_committed_receipt
+
 
 class VersionedClient:
     """Require the public response contract before advancing an order intent."""
@@ -81,6 +86,10 @@ class OrderObserver:
                         sample["outcome"] = "failed"
                     else:
                         body = response.json()
+                        if phase == "resolve":
+                            validate_committed_receipt(body, intent["unknown_key"],
+                                operation_kind=intent["resume_phase"],
+                                order_id=intent.get("order_id") if intent["resume_phase"] == "cancel" else None)
                         if phase == "query" and body.get("order", {}).get("id") != intent["order_id"]:
                             raise ValueError("query_order_id_mismatch")
                         sample["outcome"] = "success"

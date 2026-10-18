@@ -99,6 +99,7 @@ class VerificationPartner:
 
     async def execute(self, payload, caller_aic):
         from business.load import OrderObserver, VersionedClient
+        from business.receipts import validate_committed_receipt
         task = TaskPayload.model_validate(payload)
         result = {"schema_version": "ifc/1.0", "incident_id": task.incident_id,
                   "logical_task_id": task.logical_task_id, "executor_aic": self.aic,
@@ -121,7 +122,9 @@ class VerificationPartner:
             try:
                 async with httpx.AsyncClient(timeout=5, trust_env=False) as client:
                     response = await VersionedClient(client).request("GET", self.base_url + "/receipts/" + quote(original_key, safe=""))
-                original_resolved = response.status_code == 200
+                if response.status_code == 200:
+                    validate_committed_receipt(response.json(), original_key)
+                    original_resolved = True
                 resolution = ("resolved_receipt" if original_resolved else
                               "unknown_receipt_missing" if response.status_code == 404 else "unknown_receipt_unavailable")
             except (httpx.TransportError, ValueError):
