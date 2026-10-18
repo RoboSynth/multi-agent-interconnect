@@ -1,0 +1,102 @@
+{
+  "transport": "wutong-amqps",
+  "resource_backend": "docker",
+  "scenarios": [
+    "F01",
+    "F02",
+    "F06",
+    "F07",
+    "F10"
+  ],
+  "methods": [
+    "M0",
+    "M1",
+    "M2"
+  ],
+  "repeats": 3,
+  "model": "Qwen3-1.7B-Q8_0",
+  "model_base_url": "http://127.0.0.1:8089/v1",
+  "sampling": {
+    "seed": 42,
+    "temperature": 0,
+    "top_p": 1,
+    "max_tokens": 768
+  },
+  "budgets": {
+    "tasks": 40,
+    "model_calls": 40,
+    "model_total_tokens": 65536,
+    "deadline_seconds": 600
+  },
+  "method_order": "rotate starting method by repeat within each scenario",
+  "held_out_instances": [
+    {
+      "repeat": 1,
+      "workload_seed": 101,
+      "precondition_pool_rebuilds": 0
+    },
+    {
+      "repeat": 2,
+      "workload_seed": 202,
+      "precondition_pool_rebuilds": 1
+    },
+    {
+      "repeat": 3,
+      "workload_seed": 303,
+      "precondition_pool_rebuilds": 2
+    }
+  ],
+  "held_out_scope": "unseen workload seeds and varying pool revisions/process/backend PIDs within the same fault families",
+  "continuous_workload": {
+    "requests_per_second": 1,
+    "http_timeout_seconds": 0.8,
+    "healthy_baseline_seconds": 3,
+    "minimum_fault_exposure_seconds": 3,
+    "contract": "successful public responses must contain order_api_version=v2",
+    "domain_verification": "independent additional 1rps for 30 seconds, identical for all methods"
+  },
+  "healthy_control": "H00 requires 30 real seconds, at least 10 completed workflows, no failed/unknown/pending requests and no attempted resource action; excluded from recovery rates",
+  "time_metrics": {
+    "seconds": "coordinator diagnosis plus domain verification; not pure repair latency",
+    "recovery_observed_seconds": "injection start to first successful request after the final bad sample; 1rps estimate",
+    "recovery_confirmed_seconds": "injection start to 30-second healthy window with at least 10 completed workflows"
+  },
+  "M0": "frozen observation order, then confirmed repairs; no model calls",
+  "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
+  "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
+  "method_definition_ids": {
+    "M0": "fixed-observations-v1",
+    "M1": "free-tools-v1",
+    "M2": "evidence-ranked-v1"
+  },
+  "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification",
+  "target_config_sha256": "dd860b64b95deff68f15b03fb87adc347a42c3811a1bede7a726de85c5d2cd5a",
+  "observed_start_model": {
+    "status": "FRESH_READ_ONLY_MODEL_PREFLIGHT_PASSED",
+    "checked_at": "2026-10-18T04:36:40.325255+00:00",
+    "model_alias": "Qwen3-1.7B-Q8_0",
+    "observed_context_per_slot": 32768,
+    "slot_count": 1,
+    "slot_idle": true,
+    "http_GETs": 3,
+    "completion_POSTs": 0,
+    "response_sha256": {
+      "props_sha256": "626fffde26a8b62cc9040c0c297f32a35396b536a1e8993aa66e98c4f74ba0da",
+      "slots_sha256": "52bbcfad215daaca7e83abbc4614a55bee8f30d04f081c35c68cf2b323b66979",
+      "models_sha256": "f9f3d9814abc15c754599fd770738f4c66b614ea1665586e5c6261d00f74c995"
+    }
+  },
+  "comparison_boundary": {
+    "old_context_per_slot": 8192,
+    "new_context_per_slot": 32768,
+    "other_changes": [
+      "wutong-amqps transport and NEW7 Docker target",
+      "new frozen verifier/recovery-window/report source revisions"
+    ],
+    "direct_same_protocol_equivalence": false,
+    "causal_context_only_improvement_claim": false,
+    "capacity_single_call_is_E3_recovery_evidence": false,
+    "merge_with_old40_plus4_or_failed45": false,
+    "new_cohort_recovery_denominator": 45
+  }
+}

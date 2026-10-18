@@ -167,3 +167,12 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [正式E1源码缺口与最小适配](docs/new7_e1_adaptation_20261018.md)、[NEW7持续巡检启动边界](docs/new7_inspect_preparation_20261018.md)和[E3后续三项优先工作](docs/post_e3_priorities_20261018.md)提供具体源码入口、依赖、实施顺序和必要验收，供开发者接手。这三份是待实施或待验收方案，不是新的运行结果。
 
 本批NEW7正式45格E3实验已获授权并在进行中，结果将在真实结束后独立整理；本资料增量不发布实时结果或预写成功。E1参与者退出、暂停/复活、接管与持续巡检须按各自运行范围和窗口推进，不能沿用E3故障范围。现有[协作任务清单](docs/协作任务清单_20261018.md)保留原正文并新增上述具体接手入口。
+
+
+### 2026-10-18 NEW7正式E3闭合结果
+
+上段进行中的正式45格现已真实结束：37格持续恢复确认、8格needs_attention全部属于M1，M0/M2各15/15、M1为7/15；矩阵与外层监督实际exit1，失败完整保留。M2在五场景的总协调耗时中位数均高于M0，且有模型成本，不宣称全面性能领先。已发送模型调用277次、648020 tokens且usage完整，8次POST前预算拒绝另列。
+
+原7个未完成意图阶段为5create/2cancel，1个cancel尚未发送；独立7次原键回执GET均404，不能消解旧流程。独立新H00为30.016秒、30成功请求/10流程且失败未知未决待决0。运行期T62原文/可解析字段命中0，但AMP有11/4509行解析失败，overall=false。首次路由字节检查失败仅CRLF/LF差异，随后1次文件写恢复精确初始LF；stderr有1行broker cancel，四类cleanup事件0不表示全部warning0。
+
+[当前摘要](docs/new7_e3_20261018.md)、[完整公开说明](evidence/new7-e3-45-20261018-first/README.md)、[独立审阅](evidence/new7-e3-45-20261018-first/independent-review.json)、[旧未决观察](evidence/new7-e3-45-20261018-first/pending-intents.json)、[运行期扫描限制](evidence/new7-e3-45-20261018-first/credential-scan.json)和[收尾澄清](evidence/new7-e3-45-20261018-first/postcheck.json)分别保留来源。本批绑定旧冻结源码；结束后的SDK修复另计，不冒称本45格重验。正式E1接管、持续巡检和最终ZIP仍待各自验收。

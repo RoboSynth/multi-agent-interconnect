@@ -1,0 +1,270 @@
+{
+  "status": "ORIGINAL_PENDING_INTENT_RECEIPTS_OBSERVED",
+  "observed_at_utc": "2026-10-18T06:05:22.542494+00:00",
+  "scope": {
+    "base_url": "http://127.0.0.1:38088",
+    "original_pending_intents": 7,
+    "maximum_GETs": 7,
+    "actual_GET_attempts": 7,
+    "POSTs": 0,
+    "cancellations_or_resubmissions": 0,
+    "resource_repairs": 0,
+    "old_summary_or_trace_writes": 0,
+    "raw_keys_order_IDs_response_bodies_published": false
+  },
+  "interpretation": [
+    "Receipt GET follows the existing VersionedClient v2 and OrderStore receipt semantics.",
+    "A create receipt confirms that original create commit, not an entire create/query/cancel workflow.",
+    "A missing receipt cannot prove non-execution; unresolved original outcomes remain unresolved.",
+    "Receipt order fields are a transaction-time snapshot, not a fresh current-order query.",
+    "This later observation neither changes old summaries nor retrospectively upgrades recovery results.",
+    "Final H00 used separate fresh intents; its success does not settle these older intent keys."
+  ],
+  "summary": {
+    "original_pending_operations": {
+      "cancel": 2,
+      "create": 5
+    },
+    "HTTP_status_counts": {
+      "404": 7
+    },
+    "matching_committed_receipts_confirmed_now": 0,
+    "workflow_terminal_cancel_receipts_confirmed_now": 0,
+    "original_workflows_not_completed_by_this_GET_only_observation": 7,
+    "original_pending_intents_in_unchanged_summaries": 7,
+    "input_files_unchanged": true
+  },
+  "script_sha256": "5c3cd64409fb81287f06a3a8aafb73f013132403c3ba13fc89def2e8da7bb0d8",
+  "prior_pre_query_failures": [
+    {
+      "receipt": "artifacts/new7-e3-pending-intents-20261018/revision-1-preflight-failure/failure.json",
+      "actual_OS_exit": 1,
+      "actual_GETs": 0,
+      "actual_POSTs": 0
+    },
+    {
+      "receipt": "artifacts/new7-e3-pending-intents-20261018/revision-2-preflight-failure/failure.json",
+      "actual_OS_exit": 1,
+      "actual_GETs": 0,
+      "actual_POSTs": 0
+    }
+  ],
+  "intents": [
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 3,
+      "original_pending_phase": "cancel",
+      "original_resume_phase": null,
+      "original_was_unknown": false,
+      "queried_operation_kind": "cancel",
+      "original_trace_phase_counts": {
+        "create": 1,
+        "query": 1
+      },
+      "original_operation_POST_attempts": 0,
+      "original_operation_POST_outcomes": {},
+      "original_last_phase": "query",
+      "original_last_outcome": "success",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.378629+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "original_cancel_not_submitted_in_trace_and_receipt_not_found"
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 1,
+      "original_pending_phase": "resolve",
+      "original_resume_phase": "create",
+      "original_was_unknown": true,
+      "queried_operation_kind": "create",
+      "original_trace_phase_counts": {
+        "create": 24,
+        "resolve": 23
+      },
+      "original_operation_POST_attempts": 24,
+      "original_operation_POST_outcomes": {
+        "unknown": 24
+      },
+      "original_last_phase": "create",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.481379+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 2,
+      "original_pending_phase": "resolve",
+      "original_resume_phase": "create",
+      "original_was_unknown": true,
+      "queried_operation_kind": "create",
+      "original_trace_phase_counts": {
+        "create": 86,
+        "resolve": 85
+      },
+      "original_operation_POST_attempts": 86,
+      "original_operation_POST_outcomes": {
+        "unknown": 86
+      },
+      "original_last_phase": "create",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.491388+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 3,
+      "original_pending_phase": "cancel",
+      "original_resume_phase": "cancel",
+      "original_was_unknown": true,
+      "queried_operation_kind": "cancel",
+      "original_trace_phase_counts": {
+        "create": 1,
+        "query": 1,
+        "cancel": 49,
+        "resolve": 49
+      },
+      "original_operation_POST_attempts": 49,
+      "original_operation_POST_outcomes": {
+        "unknown": 49
+      },
+      "original_last_phase": "resolve",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.501392+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 1,
+      "original_pending_phase": "create",
+      "original_resume_phase": "create",
+      "original_was_unknown": true,
+      "queried_operation_kind": "create",
+      "original_trace_phase_counts": {
+        "create": 16,
+        "resolve": 16
+      },
+      "original_operation_POST_attempts": 16,
+      "original_operation_POST_outcomes": {
+        "unknown": 16
+      },
+      "original_last_phase": "resolve",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.510481+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 2,
+      "original_pending_phase": "create",
+      "original_resume_phase": "create",
+      "original_was_unknown": true,
+      "queried_operation_kind": "create",
+      "original_trace_phase_counts": {
+        "create": 16,
+        "resolve": 16
+      },
+      "original_operation_POST_attempts": 16,
+      "original_operation_POST_outcomes": {
+        "unknown": 16
+      },
+      "original_last_phase": "resolve",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.519042+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 3,
+      "original_pending_phase": "resolve",
+      "original_resume_phase": "create",
+      "original_was_unknown": true,
+      "queried_operation_kind": "create",
+      "original_trace_phase_counts": {
+        "create": 20,
+        "resolve": 19
+      },
+      "original_operation_POST_attempts": 20,
+      "original_operation_POST_outcomes": {
+        "unknown": 20
+      },
+      "original_last_phase": "create",
+      "original_last_outcome": "unknown",
+      "original_pending_intents": 1,
+      "original_unresolved_intents": 1,
+      "observed_at_utc": "2026-10-18T06:05:22.526625+00:00",
+      "http_method": "GET",
+      "path_template": "/receipts/{original_key}",
+      "attempted_receipt_GETs": 1,
+      "accepted_committed_receipt_confirmed": false,
+      "workflow_completion_confirmed_by_current_receipt": false,
+      "http_status": 404,
+      "successful_response_v2_contract_validated": false,
+      "observation": "receipt_not_found_execution_not_disproved"
+    }
+  ],
+  "original_receipt_sha256": "8006c270f41dc694d5385cc958a53ae7414cc010bea12eee004d8b155bf1e7b4",
+  "original_operation_keys_or_order_IDs_included": false,
+  "original_pending_stage_count": 7,
+  "unsent_cancel_stage_count": 1,
+  "stages_with_original_POST_attempt_unknown_history": 6,
+  "independent_new_H00_resolves_original_stages": false
+}

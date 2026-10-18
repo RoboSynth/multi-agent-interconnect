@@ -1,0 +1,2853 @@
+{
+  "status": "INDEPENDENT_CLOSED_FILE_REVIEW_COMPLETE",
+  "limits": [
+    "Operation labels are resource-domain RETURNED STATES, not physical side-effect counts or actual MCP invocation counts. Successful act tasks include skip/replay products.",
+    "Eight or more method failures may coexist with a complete, consistent, normally closed cohort. No failure row is replaced or relabeled success.",
+    "Reported token totals include known usage only; missing usage and pre-request budget rejection are separate from recorded provider failures.",
+    "Outer OS exit is checked against a root-observed tool receipt, independently from supervisor.finished claims.",
+    "No raw model context/content, approval tokens, task args/products, customer intents, HTTP bodies or transport messages are copied.",
+    "No network, Docker, SQLite, broker, model, task, repair or original-output write is performed. Final H00 is separate from45 recovery denominator.",
+    "Source/proof/config files are hashed; large model binaries are not rehashed here. No global broker/ACL or live resource claim."
+  ],
+  "resource_calls": 0,
+  "original_run_or_source_mutations": 0,
+  "review_consistency_passed": true,
+  "checks": {
+    "exact45_keys_order_seed_pool_method_definitions": true,
+    "unique45_keys": true,
+    "JSON_equals_JSONL": true,
+    "experiment_source_map_equals_frozen153": true,
+    "source_snapshots_and_live153_unchanged": true,
+    "extra4_source_files_unchanged": true,
+    "immutable_configuration_and_proofs_unchanged": true,
+    "frozen_preparation_artifacts_unchanged": true,
+    "model_files_size_mtime_unchanged": true,
+    "target_binding": true,
+    "shared_model_endpoint_and_alias": true,
+    "shared_sampling": true,
+    "shared_budgets": true,
+    "formal_transport_backend": true,
+    "experiment_matrix_metadata": true,
+    "recorded_model_requested_context": true,
+    "recorded32768_single_idle_slot_guard": true,
+    "exact45_successful_fault_applications": true,
+    "normal_pre_and_final_restore90": true,
+    "injector_records_align": true,
+    "injection_seed_pool_preconditions": true,
+    "all_closed_cell_cross_checks_pass": true,
+    "normal_owned_group_close": true,
+    "independent_H00_counts_and_strict_window": true,
+    "actual_matrix_exit_agrees_with_recovery_result": true,
+    "supervisor_integrity_and_immutable_claims_agree": true,
+    "supervisor_classification_agrees": true,
+    "outer_OS_exit_agrees_with_supervisor_logic": true,
+    "supervisor_counts_agree": true,
+    "supervisor_close_claim_agrees": true,
+    "supervisor_H00_claim_agrees": true
+  },
+  "script_sha256": "099ce390bf0c88c619cf713725b555dc16a995ea51f8bd5ac1640e2a2c5bc751",
+  "summary": {
+    "terminal_rows": 45,
+    "confirmed_recovery_rows": 37,
+    "not_confirmed_rows": 8,
+    "status_counts": {
+      "completed": 37,
+      "needs_attention": 8
+    },
+    "operation_counter_label": "资源域返回状态",
+    "resource_domain_returned_operation_states": {
+      "applied": 78,
+      "skipped_already_applied": 84,
+      "rejected_precondition": 18
+    },
+    "successful_act_tasks_including_skip_products": 162,
+    "model_recorded_request_attempts": 277,
+    "model_reported_tokens": 648020,
+    "usage_incomplete_cells": 0,
+    "actual_matrix_OS_exit": 1,
+    "actual_supervisor_OS_exit": 1,
+    "cleanup_warning_events": {},
+    "captured_stderr_bytes": 110,
+    "captured_stderr_nonempty_lines": 1,
+    "stderr_scope": "Only the four specified cleanup event classes are counted above; other stderr remains in its original hashed file. This is not a zero-all-warnings claim.",
+    "route_initial_sha256": "ed3d02bf786e24996044f5dbce53d7776d838dd2f0020fab645f24b224bd1ff1",
+    "route_after_recorded_sha256": "33760e0df6983dfabd62628a154ebd79ef848c7c9c59bd40e19c974b1c069db8",
+    "route_recorded_bytes_match_initial": false,
+    "route_scope": "Route is an allowed mutable runtime file; any byte difference needs the separate resource postcheck and root review, not a rewrite by this file reviewer.",
+    "final_H00": {
+      "duration_seconds": 30.016,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0
+    }
+  },
+  "cells": [
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 8
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.085,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 48,
+        "success": 38,
+        "failed": 0,
+        "unknown": 10,
+        "healthy_window_seconds": 37.265,
+        "healthy_completed_workflows": 13,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 1,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 13,
+      "recorded_HTTP_responses": 13,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 13
+      },
+      "reported_tokens": 45853,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 13,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 11
+      },
+      "approval_wait_seconds": 0.601,
+      "act_task_attempts": 12,
+      "successful_act_tasks_including_skip_products": 11,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1,
+        "skipped_already_applied": 10,
+        "rejected_precondition": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "skipped_already_applied",
+          "count": 10
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 31,
+        "success": 24,
+        "failed": 0,
+        "unknown": 7,
+        "healthy_window_seconds": 23.11,
+        "healthy_completed_workflows": 8,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M2",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 7708,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.004,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 92,
+        "success": 79,
+        "failed": 0,
+        "unknown": 13,
+        "healthy_window_seconds": 77.86,
+        "healthy_completed_workflows": 26,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 18781,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 4
+      },
+      "approval_wait_seconds": 0.33,
+      "act_task_attempts": 6,
+      "successful_act_tasks_including_skip_products": 4,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1,
+        "skipped_already_applied": 3,
+        "rejected_precondition": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "skipped_already_applied",
+          "count": 3
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 53,
+        "success": 46,
+        "failed": 0,
+        "unknown": 7,
+        "healthy_window_seconds": 44.594,
+        "healthy_completed_workflows": 15,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M2",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 7805,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.008,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 93,
+        "success": 81,
+        "failed": 0,
+        "unknown": 12,
+        "healthy_window_seconds": 80.672,
+        "healthy_completed_workflows": 27,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 8
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.073,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 49,
+        "success": 37,
+        "failed": 0,
+        "unknown": 12,
+        "healthy_window_seconds": 36.375,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M2",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 8224,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.003,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 94,
+        "success": 82,
+        "failed": 0,
+        "unknown": 12,
+        "healthy_window_seconds": 79.64,
+        "healthy_completed_workflows": 27,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 8
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.066,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 49,
+        "success": 39,
+        "failed": 0,
+        "unknown": 10,
+        "healthy_window_seconds": 36.391,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 3,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 14,
+      "recorded_HTTP_responses": 14,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 14
+      },
+      "reported_tokens": 50193,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 14,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 12
+      },
+      "approval_wait_seconds": 0.56,
+      "act_task_attempts": 13,
+      "successful_act_tasks_including_skip_products": 12,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2,
+        "skipped_already_applied": 10,
+        "rejected_precondition": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "skipped_already_applied",
+          "count": 9
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 34,
+        "success": 27,
+        "failed": 0,
+        "unknown": 7,
+        "healthy_window_seconds": 25.157,
+        "healthy_completed_workflows": 8,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M0",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 54,
+        "success": 41,
+        "failed": 13,
+        "unknown": 0,
+        "healthy_window_seconds": 35.421,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 4,
+      "recorded_HTTP_responses": 4,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 4
+      },
+      "reported_tokens": 6416,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 4,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.041,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 47,
+        "success": 38,
+        "failed": 8,
+        "unknown": 1,
+        "healthy_window_seconds": 35.406,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M2",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 7936,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 96,
+        "success": 77,
+        "failed": 19,
+        "unknown": 0,
+        "healthy_window_seconds": 71.766,
+        "healthy_completed_workflows": 24,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 5,
+      "recorded_HTTP_responses": 5,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 5
+      },
+      "reported_tokens": 8858,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 5,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.093,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2,
+        "rejected_precondition": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 51,
+        "success": 42,
+        "failed": 7,
+        "unknown": 2,
+        "healthy_window_seconds": 37.359,
+        "healthy_completed_workflows": 13,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M2",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 7859,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 92,
+        "success": 73,
+        "failed": 19,
+        "unknown": 0,
+        "healthy_window_seconds": 70.672,
+        "healthy_completed_workflows": 24,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M0",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 52,
+        "success": 40,
+        "failed": 12,
+        "unknown": 0,
+        "healthy_window_seconds": 38.296,
+        "healthy_completed_workflows": 13,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M2",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 8210,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 98,
+        "success": 79,
+        "failed": 19,
+        "unknown": 0,
+        "healthy_window_seconds": 74.453,
+        "healthy_completed_workflows": 25,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M0",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {},
+      "approval_wait_seconds": 0,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 48,
+        "success": 37,
+        "failed": 11,
+        "unknown": 0,
+        "healthy_window_seconds": 34.375,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 17513,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 3
+      },
+      "approval_wait_seconds": 0.214,
+      "act_task_attempts": 6,
+      "successful_act_tasks_including_skip_products": 5,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "rejected_precondition": 1,
+        "applied": 3,
+        "skipped_already_applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 58,
+        "success": 42,
+        "failed": 14,
+        "unknown": 2,
+        "healthy_window_seconds": 34.359,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M0",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.035,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 51,
+        "success": 39,
+        "failed": 0,
+        "unknown": 12,
+        "healthy_window_seconds": 36.266,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 1,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 14,
+      "recorded_HTTP_responses": 14,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 14
+      },
+      "reported_tokens": 47409,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 14,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 10
+      },
+      "approval_wait_seconds": 0.505,
+      "act_task_attempts": 13,
+      "successful_act_tasks_including_skip_products": 10,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2,
+        "rejected_precondition": 3,
+        "skipped_already_applied": 8
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 2
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "skipped_already_applied",
+          "count": 7
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 49,
+        "success": 2,
+        "failed": 0,
+        "unknown": 47,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M2",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 8262,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.019,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 91,
+        "success": 57,
+        "failed": 0,
+        "unknown": 34,
+        "healthy_window_seconds": 54.485,
+        "healthy_completed_workflows": 18,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 2,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 35496,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 3,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.027,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2,
+        "skipped_already_applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 172,
+        "success": 1,
+        "failed": 0,
+        "unknown": 171,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M2",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 8833,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.004,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 98,
+        "success": 62,
+        "failed": 0,
+        "unknown": 36,
+        "healthy_window_seconds": 58.485,
+        "healthy_completed_workflows": 20,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M0",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.005,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 44,
+        "success": 36,
+        "failed": 0,
+        "unknown": 8,
+        "healthy_window_seconds": 33.187,
+        "healthy_completed_workflows": 11,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M2",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 7,
+      "recorded_HTTP_responses": 7,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 7
+      },
+      "reported_tokens": 8923,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 7,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.079,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 94,
+        "success": 58,
+        "failed": 0,
+        "unknown": 36,
+        "healthy_window_seconds": 55.218,
+        "healthy_completed_workflows": 19,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M0",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 7
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.01,
+      "act_task_attempts": 1,
+      "successful_act_tasks_including_skip_products": 1,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.terminate_blocker",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 49,
+        "success": 37,
+        "failed": 0,
+        "unknown": 12,
+        "healthy_window_seconds": 36.094,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F06",
+      "method": "M1",
+      "repeat": 3,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 15,
+      "recorded_HTTP_responses": 15,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 15
+      },
+      "reported_tokens": 48386,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 15,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 11
+      },
+      "approval_wait_seconds": 0.881,
+      "act_task_attempts": 13,
+      "successful_act_tasks_including_skip_products": 11,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "rejected_precondition": 2,
+        "applied": 2,
+        "skipped_already_applied": 9
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 9
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 102,
+        "success": 4,
+        "failed": 0,
+        "unknown": 98,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M0",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 9
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.003,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 45,
+        "success": 35,
+        "failed": 0,
+        "unknown": 10,
+        "healthy_window_seconds": 34.266,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 1,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 13,
+      "recorded_HTTP_responses": 13,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 13
+      },
+      "reported_tokens": 46939,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 13,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 11
+      },
+      "approval_wait_seconds": 0.707,
+      "act_task_attempts": 11,
+      "successful_act_tasks_including_skip_products": 11,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1,
+        "skipped_already_applied": 10
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 10
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 34,
+        "success": 2,
+        "failed": 0,
+        "unknown": 32,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M2",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 10210,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.033,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 93,
+        "success": 49,
+        "failed": 0,
+        "unknown": 44,
+        "healthy_window_seconds": 46.235,
+        "healthy_completed_workflows": 16,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 2,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 13,
+      "recorded_HTTP_responses": 13,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 13
+      },
+      "reported_tokens": 47957,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 13,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 11
+      },
+      "approval_wait_seconds": 0.598,
+      "act_task_attempts": 11,
+      "successful_act_tasks_including_skip_products": 11,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 1,
+        "skipped_already_applied": 10
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 10
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 33,
+        "success": 1,
+        "failed": 0,
+        "unknown": 32,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M2",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 10146,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.002,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 87,
+        "success": 49,
+        "failed": 0,
+        "unknown": 38,
+        "healthy_window_seconds": 46.297,
+        "healthy_completed_workflows": 16,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M0",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 9
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.003,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 47,
+        "success": 37,
+        "failed": 0,
+        "unknown": 10,
+        "healthy_window_seconds": 34.156,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M2",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 8,
+      "recorded_HTTP_responses": 8,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 8
+      },
+      "reported_tokens": 10231,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 8,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.003,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 87,
+        "success": 49,
+        "failed": 0,
+        "unknown": 38,
+        "healthy_window_seconds": 48.422,
+        "healthy_completed_workflows": 16,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M0",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 9
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.081,
+      "act_task_attempts": 2,
+      "successful_act_tasks_including_skip_products": 2,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 2
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 49,
+        "success": 35,
+        "failed": 0,
+        "unknown": 14,
+        "healthy_window_seconds": 34.187,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F07",
+      "method": "M1",
+      "repeat": 3,
+      "status": "needs_attention",
+      "continuous_recovery_confirmed": false,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": "local_pre_request_conservative_token_budget_rejection",
+      "original_error_sha256": "a95e3419767d08baedc29abad425ae443dfe7a310044ea3a6cd5cc08e60f21d2",
+      "recorded_model_request_attempts": 15,
+      "recorded_HTTP_responses": 15,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 15
+      },
+      "reported_tokens": 48337,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 15,
+        "rules": 0,
+        "failed": 1
+      },
+      "verification_task_count": 0,
+      "verified_business_recovery_product_present": false,
+      "approval_status_counts": {
+        "approved": 12
+      },
+      "approval_wait_seconds": 0.82,
+      "act_task_attempts": 14,
+      "successful_act_tasks_including_skip_products": 12,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "rejected_precondition": 2,
+        "applied": 1,
+        "skipped_already_applied": 11
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 11
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        }
+      ],
+      "pending_intents": 1,
+      "unresolved_intents": 1,
+      "workload": {
+        "post_injection_requests": 41,
+        "success": 2,
+        "failed": 0,
+        "unknown": 39,
+        "healthy_window_seconds": 0,
+        "healthy_completed_workflows": 0,
+        "confirmed": false
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M0",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 10
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.081,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 62,
+        "success": 38,
+        "failed": 0,
+        "unknown": 24,
+        "healthy_window_seconds": 37.219,
+        "healthy_completed_workflows": 13,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M1",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 12,
+      "recorded_HTTP_responses": 12,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 12
+      },
+      "reported_tokens": 34478,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 12,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 4
+      },
+      "approval_wait_seconds": 0.203,
+      "act_task_attempts": 9,
+      "successful_act_tasks_including_skip_products": 6,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "rejected_precondition": 3,
+        "applied": 3,
+        "skipped_already_applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 3
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 2
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 66,
+        "success": 44,
+        "failed": 0,
+        "unknown": 22,
+        "healthy_window_seconds": 43.187,
+        "healthy_completed_workflows": 15,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M2",
+      "repeat": 1,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 9,
+      "recorded_HTTP_responses": 9,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 9
+      },
+      "reported_tokens": 10405,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 9,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.077,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 97,
+        "success": 47,
+        "failed": 0,
+        "unknown": 50,
+        "healthy_window_seconds": 45.313,
+        "healthy_completed_workflows": 15,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M1",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 10,
+      "recorded_HTTP_responses": 10,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 10
+      },
+      "reported_tokens": 25421,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 10,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 4
+      },
+      "approval_wait_seconds": 0.241,
+      "act_task_attempts": 8,
+      "successful_act_tasks_including_skip_products": 7,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3,
+        "skipped_already_applied": 4,
+        "rejected_precondition": 1
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "skipped_already_applied",
+          "count": 2
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 66,
+        "success": 42,
+        "failed": 0,
+        "unknown": 24,
+        "healthy_window_seconds": 40.172,
+        "healthy_completed_workflows": 14,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M2",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 9,
+      "recorded_HTTP_responses": 9,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 9
+      },
+      "reported_tokens": 10295,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 9,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.053,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 90,
+        "success": 44,
+        "failed": 0,
+        "unknown": 46,
+        "healthy_window_seconds": 43.297,
+        "healthy_completed_workflows": 15,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M0",
+      "repeat": 2,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 10
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.036,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 59,
+        "success": 39,
+        "failed": 0,
+        "unknown": 20,
+        "healthy_window_seconds": 37.437,
+        "healthy_completed_workflows": 13,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M2",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 9,
+      "recorded_HTTP_responses": 9,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 9
+      },
+      "reported_tokens": 10946,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 9,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.047,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 132,
+        "success": 76,
+        "failed": 0,
+        "unknown": 56,
+        "healthy_window_seconds": 75.484,
+        "healthy_completed_workflows": 25,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M0",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 0,
+      "recorded_HTTP_responses": 0,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {},
+      "reported_tokens": 0,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 0,
+        "rules": 10
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 1
+      },
+      "approval_wait_seconds": 0.035,
+      "act_task_attempts": 3,
+      "successful_act_tasks_including_skip_products": 3,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 56,
+        "success": 38,
+        "failed": 0,
+        "unknown": 18,
+        "healthy_window_seconds": 36.25,
+        "healthy_completed_workflows": 12,
+        "confirmed": true
+      }
+    },
+    {
+      "scenario": "F10",
+      "method": "M1",
+      "repeat": 3,
+      "status": "completed",
+      "continuous_recovery_confirmed": true,
+      "checks_passed": true,
+      "check_failures": [],
+      "failure_reason_category": null,
+      "original_error_sha256": null,
+      "recorded_model_request_attempts": 11,
+      "recorded_HTTP_responses": 11,
+      "recorded_HTTP_error_responses": 0,
+      "recorded_request_status_counts": {
+        "validated": 11
+      },
+      "reported_tokens": 29990,
+      "reported_total_usage_complete": true,
+      "prompt_completion_usage_fields_complete": true,
+      "model_source_counts": {
+        "llm": 11,
+        "rules": 0
+      },
+      "verification_task_count": 1,
+      "verified_business_recovery_product_present": true,
+      "approval_status_counts": {
+        "approved": 3
+      },
+      "approval_wait_seconds": 0.207,
+      "act_task_attempts": 8,
+      "successful_act_tasks_including_skip_products": 7,
+      "operation_counter_label": "资源域返回状态",
+      "resource_domain_returned_operation_states": {
+        "rejected_precondition": 1,
+        "applied": 4,
+        "skipped_already_applied": 3
+      },
+      "resource_domain_returned_operation_states_by_tool": [
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "rejected_precondition",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "db.restore_writes",
+          "returned_state": "skipped_already_applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.route_rollback",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "ops.restart",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "applied",
+          "count": 1
+        },
+        {
+          "tool": "application.pool_rebuild",
+          "returned_state": "skipped_already_applied",
+          "count": 2
+        }
+      ],
+      "pending_intents": 0,
+      "unresolved_intents": 0,
+      "workload": {
+        "post_injection_requests": 66,
+        "success": 46,
+        "failed": 0,
+        "unknown": 20,
+        "healthy_window_seconds": 43.265,
+        "healthy_completed_workflows": 15,
+        "confirmed": true
+      }
+    }
+  ],
+  "original_receipt_sha256": "5bf764c9b96ae4cb38111613abfd816c227de9807f19c71fdb27d66357db036e",
+  "pre_POST_budget_refusals": 8,
+  "pre_POST_refusals_in_sent_request_model_failures": false,
+  "operation_count_scope": "Resource-domain returned states, including idempotent skips; not physical side effects or MCP call counts."
+}

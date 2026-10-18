@@ -1,0 +1,90 @@
+{
+  "status": "ORIGINAL_POSTCHECK_FAILURE_AND_SEPARATE_TARGETED_RESTORATION_RETAINED",
+  "original_postcheck": {
+    "status": "READ_ONLY_POSTCHECK_OBSERVATIONS_COMPLETE",
+    "checked_at_utc": "2026-10-18T05:59:35.204543+00:00",
+    "project": "incident-pilot-new7",
+    "checks": {
+      "only_original10_and_optional_one_fault_locker": true,
+      "original10_services_once": true,
+      "all_scoped_to_exact_new7_project": true,
+      "original10_ID_and_image_unchanged": true,
+      "original10_running": true,
+      "three_business_healthchecks_healthy": true,
+      "six_domain_StartedAt_unchanged": true,
+      "other_non_fault_business_StartedAt_unchanged": true,
+      "optional_fault_locker_is_stopped": true,
+      "optional_fault_locker_matches_verified_app_v2_image": true,
+      "other14_original_container_IDs_preserved": true,
+      "all_three_readonly_ledger_queries_available": true,
+      "no_received_executing_unknown_records": true,
+      "main_backup_share_one_new7_ledger_volume": true,
+      "main_backup_aggregates_agree_at_two_read_instants": true,
+      "public_ready_is_v2": true,
+      "route_restored_initial_bytes": false
+    },
+    "matrix_actual_exit_from_supervisor": 1,
+    "limits": [
+      "Docker inspect is projected in memory; no environment/config/body values or raw inspect output persisted.",
+      "No original14-container status/uptime or global broker/group/ACL inventory claim: ID presence only.",
+      "SQLite aggregates only committed states visible through readonly connections; no per-operation reconciliation.",
+      "The six domain and three nonfault business StartedAt values are compared; app-v2 restart is expected.",
+      "Fault-locker had no pre-execution ID baseline; project/service, stopped state and image equality with the preverified app-v2 image are checked, without a full runtime-filesystem inspection.",
+      "Readiness and route bytes are point observations, not a fresh30-second workflow window or all45 recovery proof."
+    ],
+    "resource_repair_or_business_mutations": 0,
+    "POST_or_task_or_repair_calls": 0,
+    "model_GETs": 0,
+    "model_POSTs": 0,
+    "app_v2_restart_expected": {
+      "allowed": true,
+      "StartedAt_changed": true
+    },
+    "failed_records_unique_ledger_total": 0,
+    "failed_record_interpretation": "Failed records are reported separately. Aggregation alone neither makes them unknown nor proves their outcome reconciled. Previously reviewed failures must remain distinguishable.",
+    "route_ready": {
+      "HTTP_status": 200,
+      "ok": true,
+      "api_version": "v2"
+    },
+    "route_sha256": "33760e0df6983dfabd62628a154ebd79ef848c7c9c59bd40e19c974b1c069db8",
+    "all_checked_invariants_passed": false,
+    "finished_at_utc": "2026-10-18T05:59:35.611702+00:00"
+  },
+  "targeted_restoration": {
+    "status": "EXACT_INITIAL_ROUTE_LINE_ENDINGS_RESTORED",
+    "started_at_utc": "2026-10-18T06:00:16.445877+00:00",
+    "prior_observation_sha256": "6b5267fd4a73966edf838bd53b1f226effcd58d4a98cc60604a3100317641443",
+    "route_before_sha256": "33760e0df6983dfabd62628a154ebd79ef848c7c9c59bd40e19c974b1c069db8",
+    "initial_reference_sha256": "ed3d02bf786e24996044f5dbce53d7776d838dd2f0020fab645f24b224bd1ff1",
+    "change": "CRLF to original LF only; exact same single nginx upstream directive",
+    "business_configuration_semantics_changed": false,
+    "nginx_reload_or_resource_actions": 0,
+    "fault_injections": 0,
+    "invariant_recheck_scope": "Route bytes and proxy-free public ready only; unaffected container and ledger observations reused",
+    "route_after_sha256": "ed3d02bf786e24996044f5dbce53d7776d838dd2f0020fab645f24b224bd1ff1",
+    "public_ready": {
+      "ok": true,
+      "api_version": "v2",
+      "HTTP_status": 200
+    },
+    "finished_at_utc": "2026-10-18T06:00:16.509745+00:00",
+    "targeted_recheck_passed": true
+  },
+  "restoration_metadata_clarification": {
+    "status": "ROUTE_RESTORATION_METADATA_CLARIFIED",
+    "original_receipt_sha256": "678cf76f953cd00e19d2d7b77fb6f74a85077716bd1017531474b4324cd7f6fc",
+    "clarification": "The original nginx_reload_or_resource_actions=0 field names the scope too broadly. One runtime route file write occurred. Nginx reload, Docker actions, database actions and extra fault injections were all zero. Original receipt retained.",
+    "runtime_route_file_writes": 1,
+    "nginx_reloads": 0,
+    "Docker_actions": 0,
+    "database_actions": 0,
+    "extra_fault_injections": 0,
+    "recorded_at_utc": "2026-10-18T06:00:41.119758+00:00"
+  },
+  "original_postcheck_sha256": "6b5267fd4a73966edf838bd53b1f226effcd58d4a98cc60604a3100317641443",
+  "targeted_restoration_sha256": "678cf76f953cd00e19d2d7b77fb6f74a85077716bd1017531474b4324cd7f6fc",
+  "clarification_sha256": "b2879517f6285be211448be17574627ba4972b25d104fe666c21c23d9f8bfc96",
+  "original_matrix_or_observations_rewritten": false,
+  "targeted_restoration_is_full_postcheck_rerun": false
+}
