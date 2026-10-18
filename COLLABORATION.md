@@ -160,3 +160,10 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 证据：[健康与关闭](evidence/new7-platform-runtime-20261018/healthy-amqps.json)、[任务对账](evidence/new7-platform-runtime-20261018/task-reconciliation.json)、[运行期凭据扫描](evidence/new7-platform-runtime-20261018/credential-scan.json)。
 
 开发协作入口：[接手指南](docs/开发者接手指南_20261018.md)、[协作任务清单](docs/协作任务清单_20261018.md)。实验准备包用于审阅和分工，实际故障实验需另行授权。
+
+
+### 2026-10-18 后续协作实施资料
+
+[正式E1源码缺口与最小适配](docs/new7_e1_adaptation_20261018.md)、[NEW7持续巡检启动边界](docs/new7_inspect_preparation_20261018.md)和[E3后续三项优先工作](docs/post_e3_priorities_20261018.md)提供具体源码入口、依赖、实施顺序和必要验收，供开发者接手。这三份是待实施或待验收方案，不是新的运行结果。
+
+本批NEW7正式45格E3实验已获授权并在进行中，结果将在真实结束后独立整理；本资料增量不发布实时结果或预写成功。E1参与者退出、暂停/复活、接管与持续巡检须按各自运行范围和窗口推进，不能沿用E3故障范围。现有[协作任务清单](docs/协作任务清单_20261018.md)保留原正文并新增上述具体接手入口。
