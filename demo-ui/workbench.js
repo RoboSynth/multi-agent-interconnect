@@ -9,7 +9,7 @@ const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<
 const text=value=>escapeHtml(typeof value==='object'?JSON.stringify(value):value);
 function factValue(f){if(!f.key.startsWith('participant_')||!f.value||typeof f.value!=='object')return f.value;if(f.key==='participant_heartbeat_age_seconds')return Number.isFinite(f.value.seconds)?f.value.seconds.toFixed(1)+' 秒':'未知';return {reachable:'可达',unreachable:'失联',unknown:'待核实',fresh:'有效',expired:'已过期',success:'记录到成功响应',error:'记录到错误响应'}[f.value.state]||f.value.state;}
 function factSource(f){return f.source+(f.key.startsWith('participant_')&&f.observed_at?' · '+new Date(f.observed_at).toLocaleTimeString():'');}
-let selectedId=null,lastApproval=null;
+let selectedId=null,lastApproval=null,renderedId=null;
 async function api(path,options={}){const response=await fetch(path,options);const data=await response.json();if(!response.ok)throw new Error(data.detail||'请求失败');return data;}
 function error(message){$('error').textContent=message;$('error').hidden=!message;}
 document.querySelectorAll('[role=tab]').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('[role=tab]').forEach(t=>{const active=t===tab;t.setAttribute('aria-selected',String(active));$(t.getAttribute('aria-controls')).hidden=!active;});}));
@@ -19,7 +19,7 @@ $('incident-form').addEventListener('submit',async event=>{event.preventDefault(
 document.addEventListener('click',async event=>{const button=event.target.closest('button[data-approval]');if(!button)return;button.disabled=true;try{await api('/api/approvals/'+encodeURIComponent(button.dataset.approval),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({approved:button.dataset.decision==='approve'})});$('approval-dialog').close();await refresh();}catch(e){error(e.message);button.disabled=false;}});
 $('approval-later').addEventListener('click',()=>$('approval-dialog').close());
 function renderModel(run){
- $('model-usage').hidden=!run;if(!run)return;
+ $('model-usage').hidden=!run;if(!run){['model-source','model-calls','model-tokens','model-fallback'].forEach(id=>$(id).textContent='');$('model-fallback').hidden=true;return;}
  const pending=['running','awaiting_approval'].includes(run.status)&&run.model_calls==null;
  const calls=run.model_calls;
  const sourceNames={llm:'模型诊断',mixed:'模型与规则共同诊断',rules:calls>0?'规则回退':'规则诊断',llm_failed:'模型调用失败'};
@@ -29,18 +29,59 @@ function renderModel(run){
  const fallback=run.model_error?({HTTPStatusError:'模型服务返回错误，本次使用情况请结合实际来源查看。',ReadTimeout:'模型响应超时，本次使用情况请结合实际来源查看。',ValueError:'模型输出未通过校验，已保留规则回退记录。',ModelBudgetExceeded:'模型调用达到本次预算，已保留回退记录。'}[run.model_error]||'模型调用出现异常，原因类型：'+run.model_error):run.model_source==='mixed'?'部分步骤使用了规则回退。':run.model_source==='rules'&&calls>0?'模型输出未能用于诊断，本次采用规则回退。':'';
  $('model-fallback').textContent=fallback;$('model-fallback').hidden=!fallback;
 }
+const list=value=>Array.isArray(value)?value:[];
+const riskNames={read:'只读',write:'修改',medium:'中风险',high:'高风险',low:'低风险'};
+const approvalNames={pending:'等待审批',approved:'已批准',declined:'已拒绝',expired:'已过期'};
+const outcomeNames={exited:'未运行',running:'运行中',v1:'旧版本 v1',v2:'当前版本 v2',reachable:'可达',unreachable:'不可达',ro:'只读',rw:'可读写',blocked:'存在阻塞',clear:'无阻塞'};
+function recordedTime(value){if(!value)return '未记录';const date=new Date(value);return Number.isNaN(date.getTime())?String(value):date.toLocaleString('zh-CN',{hour12:false});}
+function renderHypotheses(run){
+ const confirmed=list(run.diagnosed_causes).includes('participant_unavailable')?'<p class="hypothesis">已确认：参与者失联</p>':'';
+ $('hypotheses').innerHTML=confirmed+list(run.hypotheses).map(h=>{
+  const predictions=h.predictions??h.expected_probes;
+  const probes=Array.isArray(predictions)?predictions.map(p=>[p.tool,p.outcomes??p.expected]):Object.entries(predictions||{});
+  return `<article class="hypothesis-detail"><h4>${text(causeNames[h.cause]||h.cause)}</h4>${list(h.because).length?`<ul class="hypothesis-reasons">${h.because.map(reason=>`<li>${text(reason)}</li>`).join('')}</ul>`:'<p class="record-note">依据未记录。</p>'}<dl class="probe-predictions">${probes.map(([tool,outcomes])=>`<div><dt>${text(tool)}</dt><dd>${text((Array.isArray(outcomes)?outcomes:[outcomes]).map(outcome=>outcomeNames[outcome]||outcome).join(' / '))}</dd></div>`).join('')}</dl>${probes.length?'':'<p class="record-note">探测预期未记录。</p>'}</article>`;
+ }).join('')||'<p class="empty">尚未保存候选原因。</p>';
+}
+function comparableArgs(value){return JSON.stringify(value,(_,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.entries(item).sort(([a],[b])=>a.localeCompare(b))):item);}
+function planTask(run,node){
+ const matches=list(run.tasks).filter(task=>task.tool===node.tool&&task.kind===(node.kind||'act')&&comparableArgs(task.args||{})===comparableArgs(node.args||{}));
+ const operationId=node.id&&run.id?run.id+':'+node.id:null;
+ const exact=operationId?matches.filter(task=>task.product?.operation?.operation_id===operationId):[];
+ const candidates=exact.length?exact:matches.filter(task=>!operationId||!task.product?.operation?.operation_id);
+ return {task:candidates.length===1?candidates[0]:null,ambiguous:candidates.length>1};
+}
+function renderPlan(run){
+ const nodes=list(run.plan);
+ $('plan').innerHTML=nodes.length?`<ol class="plan-list">${nodes.map(node=>{
+  const {task,ambiguous}=planTask(run,node);
+  const taskState=task?(statusNames[task.status]||task.status||'未记录'):ambiguous?'存在多个同类任务，无法唯一匹配':'尚无对应任务记录';
+  const dependencies=list(node.depends_on).map(id=>{const dependency=nodes.find(other=>other.id===id);return dependency?dependency.tool+'（'+id+'）':id;});
+  return `<li class="plan-step"><div class="record-heading"><strong>${text(node.tool)}</strong><span class="risk-label">${text(riskNames[node.risk]||node.risk||'风险未记录')}</span></div><p>${text(node.reason||'理由未记录。')}</p><dl class="record-details"><div><dt>步骤</dt><dd>${text(node.id||'未记录')}</dd></div><div><dt>资源</dt><dd>${text(node.resource||'未记录')}</dd></div><div><dt>依赖</dt><dd>${text(dependencies.length?dependencies.join('、'):'无已记录依赖')}</dd></div><div><dt>任务状态</dt><dd>${text(taskState)}</dd></div>${task?.product?.operation?.state?`<div><dt>资源域返回</dt><dd>${text(statusNames[task.product.operation.state]||task.product.operation.state)}</dd></div>`:''}</dl>${Object.keys(node.args||{}).length?`<details><summary>步骤参数</summary><pre>${text(node.args)}</pre></details>`:''}</li>`;
+ }).join('')}</ol>`:'<p class="empty">尚未保存恢复计划。</p>';
+ const selected=[...list(run.events)].reverse().find(event=>['probe_selected','tool_selected'].includes(event.event));
+ $('probe-choice').innerHTML=selected?`最近一次${selected.event==='probe_selected'?'探测':'工具'}选择：<strong>${text(selected.tool)}</strong><small>${text(typeof selected.reason==='string'?selected.reason:selected.reason?.reason||'理由未记录')} · ${text(recordedTime(selected.at))}</small>`:'尚未记录探测选择。';
+ $('planning-history').innerHTML=list(run.planning_history).map(entry=>`<li><p>${text(entry.reason||'选择理由未记录。')}</p>${entry.tool?`<strong>${text(entry.tool)}</strong>`:''}${list(entry.facts).length?`<p class="record-note">更新证据：${text(entry.facts.join('、'))}</p>`:''}${entry.status?`<p class="record-note">任务返回：${text(statusNames[entry.status]||entry.status)}</p>`:''}${list(entry.ranking).length?`<details><summary>候选探测排序</summary><div class="table-wrap"><table><thead><tr><th>探测</th><th>得分</th><th>区分度</th><th>预计秒数</th></tr></thead><tbody>${entry.ranking.map(row=>`<tr><td>${text(row.tool)}</td><td>${text(row.score??'未记录')}</td><td>${text(row.discrimination??'未记录')}</td><td>${text(row.median_seconds??'未记录')}</td></tr>`).join('')}</tbody></table></div></details>`:''}</li>`).join('');
+}
+function approvalButtons(approval){return approval.status==='pending'?`<button class="approve" data-approval="${text(approval.id)}" data-decision="approve">批准此操作</button><button class="decline" data-approval="${text(approval.id)}" data-decision="decline">拒绝</button>`:'';}
+function renderApprovals(run){
+ const approvals=list(run.approvals);
+ $('approvals').innerHTML=approvals.map(approval=>`<section class="approval ${approval.status==='pending'?'approval-pending':'approval-history'}"><div class="record-heading"><h4>${text(approval.tool)}</h4><span class="approval-state">${text(approvalNames[approval.status]||approval.status||'状态未记录')}</span></div><p>${text(approval.reason||'申请理由未记录。')}</p><dl class="record-details"><div><dt>申请时间</dt><dd>${text(recordedTime(approval.requested_at))}</dd></div><div><dt>决定时间</dt><dd>${text(approval.decided_at?recordedTime(approval.decided_at):approval.status==='pending'?'尚未决定':'未记录')}</dd></div></dl><details><summary>操作参数</summary><pre>${text(approval.args??{})}</pre></details>${approvalButtons(approval)}</section>`).join('')||'<p class="empty">尚未申请高风险操作。</p>';
+ const pending=approvals.find(approval=>approval.status==='pending');
+ const key=pending?run.id+':'+pending.id:null;
+ if($('approval-dialog').open&&key!==lastApproval)$('approval-dialog').close();
+ if(pending&&key!==lastApproval){lastApproval=key;$('approval-dialog-content').innerHTML=`<p>${text(pending.reason)}</p><p>操作：${text(pending.tool)}</p><p>参数：${text(pending.args)}</p>${approvalButtons(pending)}`;$('approval-dialog').showModal();}
+ if(!pending){lastApproval=null;$('approval-dialog-content').innerHTML='';}
+}
 function renderRun(run){
  renderModel(run);
- if(!run)return;
+ if(typeof window.renderWorkbenchAccess==='function')window.renderWorkbenchAccess(run?.access_reconciliation);
+ if(renderedId!==(run?.id??null)){renderedId=run?.id??null;lastApproval=null;if($('approval-dialog').open)$('approval-dialog').close();$('approval-dialog-content').innerHTML='';}
+ if(!run){$('incident-title').textContent='尚未发起事故';$('incident-id').textContent='输入业务症状，开始收集证据。';$('incident-status').textContent='等待任务';renderHypotheses({});renderPlan({});renderApprovals({});$('facts').innerHTML='尚未收到证据。';['events','tasks','order-chart','raw'].forEach(id=>$(id).textContent='');$('actions').innerHTML='尚未提出修改。';$('takeovers').innerHTML='尚未发生接管。';$('business').innerHTML='业务验证尚未开始。';return;}
  $('incident-title').textContent=run.symptom;$('incident-id').textContent=run.id;$('incident-status').textContent=statusNames[run.status]||run.status;
  $('start').disabled=['running','awaiting_approval'].includes(run.status);if(run.error)error(run.error);
- $('hypotheses').innerHTML=((run.diagnosed_causes||[]).includes('participant_unavailable')?'<span class="hypothesis">已确认：参与者失联</span>':'')+(run.hypotheses||[]).map(h=>`<span class="hypothesis">${text(causeNames[h.cause]||h.cause)}</span>`).join('');
+ renderHypotheses(run);renderPlan(run);renderApprovals(run);
  $('facts').innerHTML=(run.facts||[]).map(f=>`<div class="fact"><div>${text(factNames[f.key]||f.key)}<small>${text(factSource(f))}</small></div><div class="fact-value">${text(factValue(f))}</div></div>`).join('')||'尚未收到证据。';
  $('events').innerHTML=(run.events||[]).slice(-24).map(e=>`<li>${text(eventNames[e.event]||e.event)} ${text(e.tool||'')}<small>${text(typeof e.reason==='string'?e.reason:(e.reason?.reason||''))} ${text(new Date(e.at).toLocaleTimeString())}</small></li>`).join('');
- $('approvals').innerHTML=(run.approvals||[]).filter(a=>a.status==='pending').map(a=>`<section class="approval"><h3>需要你批准：${text(a.tool)}</h3><p>${text(a.reason)}</p><p>操作参数：${text(a.args)}</p><button class="approve" data-approval="${text(a.id)}" data-decision="approve">批准此操作</button><button class="decline" data-approval="${text(a.id)}" data-decision="decline">拒绝</button></section>`).join('');
- const pendingApproval=(run.approvals||[]).find(a=>a.status==='pending');
- if(pendingApproval&&pendingApproval.id!==lastApproval){lastApproval=pendingApproval.id;$('approval-dialog-content').innerHTML=`<p>${text(pendingApproval.reason)}</p><p>操作：${text(pendingApproval.tool)}</p><p>参数：${text(pendingApproval.args)}</p><button class="approve" data-approval="${text(pendingApproval.id)}" data-decision="approve">批准此操作</button><button class="decline" data-approval="${text(pendingApproval.id)}" data-decision="decline">拒绝</button>`;$('approval-dialog').showModal();}
- if(!pendingApproval&&$('approval-dialog').open)$('approval-dialog').close();
  $('actions').innerHTML=(run.tasks||[]).filter(t=>t.kind==='act').map(t=>`<article class="action"><strong>${text(t.tool)}</strong>${text(statusNames[t.status]||t.status)}<small> ${text(statusNames[t.product?.operation?.state]||t.product?.operation?.state||'')}</small></article>`).join('')||'尚未提出修改。';
  const participantAlerts=(run.participant_health||[]).map(p=>`<article class="action"><strong>${text(p.confirmed&&p.participant_state==='unreachable'?'参与者失联，需要人工处理':'参与者状态待核实，需要人工核对')}</strong><small>${text(p.aic)}</small></article>`).join('');
  $('takeovers').innerHTML=participantAlerts+(run.events||[]).filter(e=>e.event.includes('takeover')||e.event.includes('resume')).map(e=>`<article class="action">${text(e.event)} ${text(e.reason)}</article>`).join('')||'尚未发生接管。';

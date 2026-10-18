@@ -1,0 +1,74 @@
+{
+  "started_utc": "2026-10-18T11:04:29.750080+00:00",
+  "completed_utc": "2026-10-18T11:04:48.081253+00:00",
+  "passed": true,
+  "unique_records": 252,
+  "duplicates": 0,
+  "missing": 0,
+  "role_counts": {
+    "coordinator": 36,
+    "application": 36,
+    "database": 36,
+    "database-backup": 36,
+    "ops": 36,
+    "verification": 36,
+    "onboarding": 36
+  },
+  "kind_counts": {
+    "audit": 42,
+    "heartbeat": 42,
+    "metrics": 42,
+    "access": 42,
+    "message": 42,
+    "system": 42
+  },
+  "offset_databases": 42,
+  "normal_collector_exits": [
+    0,
+    0,
+    0
+  ],
+  "synthetic_only": true,
+  "kafka_connected": false,
+  "platform_ingestion_tested": false,
+  "copytruncate_tested": false,
+  "no_rename_tested": true,
+  "append_only_stable_files": true,
+  "schema_version": "t06-seven-source-publication/1",
+  "actual_outer_exit_code": 0,
+  "actual_run_tool_chunk_id": "ee6210",
+  "root_readonly_confirmation_tool_chunk_id": "bb42ea",
+  "machine_scope": "Existing Windows machine; seven isolated synthetic fixture directories, not real seven-domain container volumes",
+  "phase_raw_records": {
+    "phase1": 126,
+    "phase2": 42,
+    "phase3": 84
+  },
+  "normal_host_exits": [
+    0,
+    0,
+    0
+  ],
+  "forced_cleanup": false,
+  "field_comparison": "All 252 observed JSON objects equal expected.record field for field",
+  "raw_observed_lines_preserved": true,
+  "expected_mapping_copied_byte_exact": true,
+  "offline_tests": [
+    {
+      "pattern": "test_fluent_bit_preparation.py",
+      "count": 16,
+      "actual_exit_code": 0,
+      "tool_chunk_id": "a0be60"
+    },
+    {
+      "pattern": "test_fluent_bit_collection.py",
+      "count": 6,
+      "actual_exit_code": 0,
+      "tool_chunk_id": "ae4f50"
+    }
+  ],
+  "offline_test_count": 22,
+  "kafka_monitor_acceptance": "Pending official broker/topics/auth and actual platform ingestion verification",
+  "archived_paths_excluded": true,
+  "e1_frozen_inputs_unchanged": 204
+}

@@ -1,0 +1,33 @@
+{
+  "original_artifacts_retained_locally": true,
+  "revision2": {
+    "actual_outer_exit_code": 1,
+    "tool_chunk_id": "5fb8b6",
+    "passed": false,
+    "error": "Collector console membership is not exclusive",
+    "collector_actual_exit_code": 1,
+    "forced_cleanup": true,
+    "stop_requested": false,
+    "result_sha256": "392ed5ea02f3e596905aa0e0927a9d19301a5fa1f82e4ea51c3dcb6812bcd131",
+    "host_result_sha256": "3ad5bc7123d08268a8e1f26178022fe01f8635a0feb702e40ba6699e624c742e",
+    "diagnosis": "Popen can return before the child attaches to its new console; revision3 observed host-only then exclusive pair after 0.046 seconds. The bounded readiness wait was retained."
+  },
+  "revision3": {
+    "artifact": "artifacts/t06-seven-source-local-20261018-revision3",
+    "tool_chunk_id": "37b7ad",
+    "actual_outer_exit_code": 1,
+    "result_sha256": "e814236424c662c61f19a09ff20084458ddbd4bbfb87d7855e3a0c912dcaadcb",
+    "phase2_stdout_sha256": "9f710b0638a06d8c387f2f51ce58fdb970212e1f6ac7cfffc18ce92a479c574f",
+    "phase2_raw_records": 126,
+    "phase2_unique_ids": 126,
+    "cross_phase_replayed_records": 84,
+    "phase2_batches": {
+      "offline_append": 42,
+      "seed": 42,
+      "live_append": 42
+    },
+    "rename_fixed_claim": false,
+    "original_bytes_retained": true
+  },
+  "resolution_scope": "Revision4 excludes archive paths and validates stable append-only/new-file semantics. It does not fix or validate arbitrary rename/copytruncate/offline archive handling."
+}

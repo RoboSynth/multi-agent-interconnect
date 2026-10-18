@@ -28,3 +28,23 @@ pwsh -NoProfile -File deploy/fluent-bit/run.ps1 -Mode kafka -LogDirectory <本�
 旧共享配置和 offset DB 保留，不自动迁移或重播。新 DB 默认 `Read_From_Head False`；需要历史补发时，应先明确时间窗/去重策略，再用 renderer 已有 `--read-from-head` 显式准备。直接调用 renderer 的 `--state-directory ... --output ...` 继续可用，它只写配置；同源运行互斥由 `run.ps1` 使用的 `--executable` 前台监督路径提供。
 
 七源收集设计见 `collection-plan.example.json` 与 `collector-stdout.example.conf`：Windows 协调者日志需显式只读 bind；六域日志位于五个 Docker named volume（主备共享一卷），仅用 `volume.subpath` 挂入日志子目录，不把操作账本或整个 `/state` 暴露给 collector。配置例只展示一个独立 Linux collector 的 42 个 Tail 输入、隔离 offset 和六类 stdout 路由。镜像、挂载、collector owner、Kafka profile/认证与生命周期尚需单独准备及审阅；没有改现有 Compose、启动 collector 或据此宣称已读到容器卷。`run.ps1` 的 Windows portable 无法直接读取容器内的 `/state` 路径。
+
+## 七个本地目录的 stdout 集合入口
+
+`render.py --collection-sources <sources.json> --state-root <独立状态目录>` 接受七个固定角色到本机日志目录的 JSON 映射：`coordinator`、`application`、`database`、`database-backup`、`ops`、`verification`、`onboarding`。规范路径必须互不相同；不接受缺角色、同目录别名、逗号或换行路径。`--check` 仍只读；添加 `--executable <fluent-bit.exe>` 才实际运行，期间按稳定顺序持有七个源锁，获取失败会释放已经取得的锁。此入口仅支持 stdout，保留单源和 Kafka 默认行为。
+
+集合配置有 42 个 Tail、42 个按源哈希隔离的 offset DB，以及六个 stdout 输出。单源和集合都只匹配正文 `amp_<kind>_*.jsonl`，不把 `.jsonl.1` 等归档或临时文件加入 Path；[官方 Tail 轮转说明](https://docs.fluentbit.io/manual/data-pipeline/inputs/tail#file-rotation) 提醒，Path 匹配轮转归档会造成重复采集。当前 SDK 六类 Emitter 向固定文件追加；支持这些稳定文件的追加，以及保留原文件并创建新的稳定 `*.jsonl` 文件。集合入口显式 `Read_From_Head True`，复用原状态目录以持久 offset 续读，新正文文件从头读取。外部 rename、copytruncate 和停机归档尚未获得无漏读、无重放保证。
+
+独立合成验收入口：
+
+```powershell
+.venv/Scripts/python.exe deploy/fluent-bit/verify_collection.py --prepare --output artifacts/t06-seven-source-local-<独立名称>
+# 审阅 plan.json 和源码后才运行：
+.venv/Scripts/python.exe deploy/fluent-bit/verify_collection.py --run --output artifacts/t06-seven-source-local-<独立名称>
+```
+
+准备阶段只生成 SDK 合成记录和计划，不启动 Fluent Bit。实际阶段使用既有 Windows portable 二进制，三个采集器串行验证实时追加、运行中新稳定文件发现、正常关闭后的原文件追加续读，以及停机时向已发现的稳定文件追加并新建另一正文文件；总计六批、252 个唯一 ID，保留原输入与 stdout 并逐条核对内容和重复/遗漏。此次范围明确为 `no_rename_tested`。每个采集器的 stdlib host 拥有隐藏独立 console，验证只含自身和其采集器后仅向该 console 发送 CTRL_C；必须记录真实正常退出 0，强制清理或超时均失败。首个进程同时验证该二进制是否支持此正常停止方式，失败则停止后续阶段。
+
+历史 revision3 的 rename 场景第二阶段输出 126 条，其中 84 条为跨阶段重放；该失败及原 offset DB、stdout 保留在独立证据目录。新的追加语义验收不会把该失败改写为 rename 已修复，也不代表 Kafka/Monitor 已验收。
+
+验收不读取真实角色日志/配置、AIC 卷或凭据，不使用 Kafka、HTTP、模型或 Docker。`verify_local.py` 的六条旧演示也现要求进程退出 0，不能仅凭输出齐全把 timeout/terminate 算作成功。新集合的实际运行结果以独立运行证据为准。

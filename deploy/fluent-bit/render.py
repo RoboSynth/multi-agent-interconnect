@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import argparse
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 import hashlib
 import json
 import os
@@ -11,6 +11,7 @@ import re
 import subprocess
 
 KINDS = ("audit", "heartbeat", "metrics", "access", "message", "system")
+COLLECTION_ROLES = ("coordinator", "application", "database", "database-backup", "ops", "verification", "onboarding")
 ROOT = Path(__file__).resolve().parents[2]
 TLS_FILES = ("ssl.ca.location", "ssl.certificate.location", "ssl.key.location")
 ENV_REFERENCE = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
@@ -116,6 +117,44 @@ def source_owner(directory):
         stream.close()
 
 
+def collection_sources(sources):
+    """Validate the seven explicit local paths without reading log contents."""
+    if not isinstance(sources, dict) or set(sources) != set(COLLECTION_ROLES):
+        raise ValueError("collection.seven_roles_required")
+    result = {}
+    for role in COLLECTION_ROLES:
+        if not isinstance(sources[role], (str, Path)) or not str(sources[role]):
+            raise ValueError("collection.invalid_source:" + role)
+        directory = Path(sources[role]).resolve()
+        if not directory.is_dir() or any(char in str(directory) for char in (",", "\r", "\n")):
+            raise ValueError("collection.invalid_source:" + role)
+        result[role] = directory
+    if len({source_id(directory) for directory in result.values()}) != len(COLLECTION_ROLES):
+        raise ValueError("collection.duplicate_canonical_source")
+    return result
+
+
+@contextmanager
+def collection_owner(sources):
+    """Acquire a stable lock order and release prior locks if acquisition fails."""
+    directories = collection_sources(sources).values()
+    with ExitStack() as owners:
+        for directory in sorted(directories, key=source_id):
+            owners.enter_context(source_owner(directory))
+        yield
+
+
+def check_collection(sources, parser_file):
+    try:
+        checked = collection_sources(sources)
+    except ValueError as error:
+        return {"status": "FLUENT_BIT_COLLECTION_PREFLIGHT", "passed": False, "errors": [str(error)],
+                "kafka_connection_tested": False, "platform_ingestion_tested": False}
+    reports = {role: check(directory, parser_file) for role, directory in checked.items()}
+    return {"status": "FLUENT_BIT_COLLECTION_PREFLIGHT", "passed": all(item["passed"] for item in reports.values()),
+            "sources": reports, "errors": [], "kafka_connection_tested": False, "platform_ingestion_tested": False}
+
+
 def native_path(value):
     resolved = Path(value).resolve()
     if os.name != "nt" or resolved.as_posix().isascii():
@@ -134,7 +173,7 @@ def native_path(value):
     return (alias / resolved.relative_to(ROOT)).as_posix()
 
 
-def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=None, read_from_head=False):
+def _render(sources, parser_file, *, mode, kafka, read_from_head):
     if mode not in {"stdout", "kafka"}:
         raise ValueError("mode.invalid")
     if mode == "kafka":
@@ -142,17 +181,17 @@ def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=
     path = native_path
     lines = ["[SERVICE]", "    Flush 1", "    Daemon Off", "    Grace 1", "    Log_Level info",
              "    Parsers_File " + path(parser_file), ""]
-    for kind in KINDS:
-        tail_path = path(Path(log_directory) / f"amp_{kind}_*.jsonl")
-        if os.name == "nt":
-            # Windows Tail's file globbing needs backslashes, even though the
-            # parser/config file loader accepts forward slashes.
-            tail_path = tail_path.replace("/", "\\")
-        lines.extend(["[INPUT]", "    Name tail", f"    Tag amp.{kind}",
-            "    Path " + tail_path, "    Parser amp_json",
-            "    DB " + path(Path(state_directory) / f"amp-{kind}.db"),
-            "    Read_From_Head " + ("True" if read_from_head else "False"),
-            "    Refresh_Interval 1", "    Buffer_Max_Size 1M", "    Skip_Long_Lines Off", ""])
+    for log_directory, state_directory in sources:
+        for kind in KINDS:
+            filename = path(Path(log_directory) / f"amp_{kind}_*.jsonl")
+            if os.name == "nt":
+                # Windows Tail globbing needs backslashes; config loading does not.
+                filename = filename.replace("/", "\\")
+            lines.extend(["[INPUT]", "    Name tail", f"    Tag amp.{kind}",
+                "    Path " + filename, "    Parser amp_json",
+                "    DB " + path(Path(state_directory) / f"amp-{kind}.db"),
+                "    Read_From_Head " + ("True" if read_from_head else "False"),
+                "    Refresh_Interval 1", "    Buffer_Max_Size 1M", "    Skip_Long_Lines Off", ""])
     for kind in KINDS:
         lines.extend(["[OUTPUT]", "    Name " + ("kafka" if mode == "kafka" else "stdout"), f"    Match amp.{kind}"])
         if mode == "kafka":
@@ -170,9 +209,23 @@ def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=
     return "\n".join(lines)
 
 
+def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=None, read_from_head=False):
+    return _render([(log_directory, state_directory)], parser_file,
+                   mode=mode, kafka=kafka, read_from_head=read_from_head)
+
+
+def render_collection(sources, state_root, parser_file):
+    checked = collection_sources(sources)
+    inputs = [(directory, Path(state_root) / source_id(directory) / "stdout")
+              for directory in checked.values()]
+    return _render(inputs, parser_file, mode="stdout", kafka=None, read_from_head=True)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--log-directory", type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--log-directory", type=Path)
+    inputs.add_argument("--collection-sources", type=Path, help="JSON object mapping the seven roles to local log directories; stdout only")
     locations = parser.add_mutually_exclusive_group()
     locations.add_argument("--state-directory", type=Path)
     locations.add_argument("--state-root", type=Path)
@@ -185,6 +238,33 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.check and args.executable:
         parser.error("--check cannot run --executable")
+    if args.collection_sources:
+        if args.mode != "stdout" or args.kafka_settings:
+            raise ValueError("collection.stdout_only")
+        sources = json.loads(args.collection_sources.read_text(encoding="utf-8-sig"))
+        report = check_collection(sources, Path(__file__).with_name("parsers.conf"))
+        if args.check or not report["passed"]:
+            print(json.dumps(report))
+            return 0 if report["passed"] else 1
+        if not args.state_root:
+            parser.error("Collection rendering requires --state-root")
+        state = args.state_root.resolve()
+        output = args.output or state / "collection-stdout.conf"
+        if args.executable and not args.executable.is_file():
+            raise ValueError("executable.file_missing")
+        def prepare_collection():
+            config = render_collection(sources, state, Path(__file__).with_name("parsers.conf"))
+            for directory in collection_sources(sources).values():
+                (state / source_id(directory) / "stdout").mkdir(parents=True, exist_ok=True)
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(config, encoding="utf-8")
+            print(json.dumps(dict(report, status="FLUENT_BIT_COLLECTION_PREPARED", inputs=42, offset_databases=42)))
+        if args.executable:
+            with collection_owner(sources):
+                prepare_collection()
+                return subprocess.run([str(args.executable.resolve()), "-c", str(output.resolve())]).returncode
+        prepare_collection()
+        return 0
     settings = json.loads(args.kafka_settings.read_text(encoding="utf-8-sig")) if args.kafka_settings else None
     report = check(args.log_directory, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings)
     if args.check or not report["passed"]:

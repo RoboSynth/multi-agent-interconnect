@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>跨域故障协同工作台</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23126d9c'/%3E%3Cpath d='M8 10h16v12H8z' fill='white'/%3E%3C/svg%3E"><link rel="stylesheet" href="/assets/workbench.css"><script src="/assets/workbench.js" defer></script></head>
+<title>跨域故障协同工作台</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23126d9c'/%3E%3Cpath d='M8 10h16v12H8z' fill='white'/%3E%3C/svg%3E"><link rel="stylesheet" href="/assets/workbench.css"><script src="/assets/workbench-access.js" defer></script><script src="/assets/workbench.js" defer></script></head>
 <body>
 <header><a class="brand" href="/">跨域故障协同</a><span id="connection" role="status">连接参与者</span></header>
 <main>
@@ -18,9 +18,9 @@
 <p class="error" id="error" role="alert" hidden></p>
 <section id="model-usage" class="model-usage" aria-labelledby="model-usage-title" hidden><h3 id="model-usage-title">本次诊断</h3><dl><div><dt>实际来源</dt><dd id="model-source"></dd></div><div><dt>模型调用</dt><dd id="model-calls"></dd></div><div><dt>Token 用量</dt><dd id="model-tokens"></dd></div></dl><p id="model-fallback" hidden></p></section>
 <nav class="tabs" role="tablist" aria-label="事故视图"><button role="tab" aria-controls="evidence" aria-selected="true" id="tab-evidence">证据与计划</button><button role="tab" aria-controls="operations" aria-selected="false" id="tab-operations">操作与接续</button><button role="tab" aria-controls="results" aria-selected="false" id="tab-results">业务与记录</button></nav>
-<section id="evidence" role="tabpanel" aria-labelledby="tab-evidence"><div id="hypotheses" class="hypotheses"></div><h3>已确认的证据</h3><div id="facts" class="empty">参与者观察结果将在这里出现。</div><h3>排查过程</h3><ol id="events" class="timeline"></ol></section>
-<section id="operations" role="tabpanel" aria-labelledby="tab-operations" hidden><div id="approvals"></div><h3>恢复操作</h3><div id="actions" class="empty">尚未提出修改。</div><h3>接续记录</h3><div id="takeovers" class="empty">尚未发生接管。</div></section>
-<section id="results" role="tabpanel" aria-labelledby="tab-results" hidden><div id="business" class="empty">业务验证尚未开始。</div><h3>请求结果曲线</h3><svg id="order-chart" viewBox="0 0 640 120" role="img" aria-label="订单请求结果时间序列"></svg><h3>AIP 任务</h3><div class="table-wrap"><table><thead><tr><th>任务</th><th>类型</th><th>结果</th><th>耗时</th></tr></thead><tbody id="tasks"></tbody></table></div><details><summary>事故记录原文</summary><pre id="raw"></pre></details></section>
+<section id="evidence" role="tabpanel" aria-labelledby="tab-evidence"><h3>候选原因与探测预期</h3><div id="hypotheses" class="hypotheses"><p class="empty">尚未保存候选原因。</p></div><h3>当前恢复计划</h3><div id="plan"><p class="empty">尚未保存恢复计划。</p></div><h3>探测选择与调整</h3><div id="probe-choice" class="empty">尚未记录探测选择。</div><ol id="planning-history" class="planning-history"></ol><h3>已确认的证据</h3><div id="facts" class="empty">参与者观察结果将在这里出现。</div><h3>排查过程</h3><ol id="events" class="timeline"></ol></section>
+<section id="operations" role="tabpanel" aria-labelledby="tab-operations" hidden><h3>高风险审批记录</h3><div id="approvals"><p class="empty">尚未申请高风险操作。</p></div><h3>恢复操作</h3><div id="actions" class="empty">尚未提出修改。</div><h3>接续记录</h3><div id="takeovers" class="empty">尚未发生接管。</div></section>
+<section id="results" role="tabpanel" aria-labelledby="tab-results" hidden><div id="business" class="empty">业务验证尚未开始。</div><h3>请求结果曲线</h3><svg id="order-chart" viewBox="0 0 640 120" role="img" aria-label="订单请求结果时间序列"></svg><h3>AIP 任务</h3><div class="table-wrap"><table><thead><tr><th>任务</th><th>类型</th><th>结果</th><th>耗时</th></tr></thead><tbody id="tasks"></tbody></table></div><div id="access-reconciliation"><p class="empty">访问记录尚未采集。</p></div><details><summary>事故记录原文</summary><pre id="raw"></pre></details></section>
 </section></div></main><footer>资源凭据留在各域进程中。运行模式与实际证据随本次事故记录保存。</footer>
 <dialog id="approval-dialog" aria-labelledby="approval-title"><h2 id="approval-title">确认高风险恢复操作</h2><div id="approval-dialog-content"></div><button type="button" id="approval-later">稍后处理</button></dialog>
 </body></html>

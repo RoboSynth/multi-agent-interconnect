@@ -63,7 +63,7 @@ def main():
     observed = {kind: len(re.findall(r"\] amp\." + kind + r":", stdout)) for kind in KINDS}
     records = {kind: json.loads((logs / f"amp_{kind}_routing.jsonl").read_text(encoding="utf-8").splitlines()[0]) for kind in KINDS}
     preserved = {kind: record["log_id"] in stdout for kind, record in records.items()}
-    result = {"passed": all(value == 1 for value in observed.values()) and all(preserved.values()),
+    result = {"passed": process.returncode == 0 and all(value == 1 for value in observed.values()) and all(preserved.values()),
         "executable": str(executable), "source": "official Windows portable ZIP, Fluent Bit 5.1.3",
         "routes_observed": observed, "log_ids_preserved": preserved, "synthetic_local_fixture": True,
         "returncode": process.returncode,

@@ -170,6 +170,77 @@ class FluentPreparationTests(unittest.TestCase):
         self.assertEqual(text.count("rdkafka.allow.auto.create.topics false"), 6)
         self.assertEqual([line.strip().split(" ")[-1] for line in text.splitlines() if line.strip().startswith("Topics ")], ["amp." + kind for kind in fluent.KINDS])
 
+    def collection(self):
+        sources = {}
+        for role in fluent.COLLECTION_ROLES:
+            directory = self.root / role; directory.mkdir()
+            for kind in fluent.KINDS:
+                (directory / ("amp_" + kind + "_fixture.jsonl")).write_text('{}\n', encoding="utf-8")
+            sources[role] = directory
+        return sources
+
+    def test_collection_has_42_isolated_databases_and_excludes_archived_files(self):
+        sources = self.collection()
+        directory = sources["coordinator"]
+        for suffix in ("1", "20", "001", "tmp", "1.tmp", "db", "-1"):
+            (directory / ("amp_audit_fixture.jsonl." + suffix)).write_text('{}\n', encoding="utf-8")
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()):
+            text = fluent.render_collection(sources, self.root / "state", self.parser)
+            single = fluent.render(directory, self.root / "single", self.parser)
+        text = text.replace("\\", "/")
+        self.assertEqual(text.count("    Name tail\n"), 42)
+        self.assertEqual(text.count("    Name stdout\n"), 6)
+        self.assertNotIn("    Name kafka", text)
+        databases = [line for line in text.splitlines() if line.startswith("    DB ")]
+        self.assertEqual(len(set(databases)), 42)
+        self.assertEqual(text.count("    Read_From_Head True"), 42)
+        audit = next(line for line in text.splitlines() if line.startswith("    Path ") and "/coordinator/amp_audit_" in line)
+        self.assertEqual(audit.strip().split("/coordinator/")[1], "amp_audit_*.jsonl")
+        for suffix in ("1", "20", "001", "tmp", "1.tmp", "db", "-1"):
+            self.assertNotIn("amp_audit_fixture.jsonl." + suffix, text)
+            self.assertNotIn("amp_audit_fixture.jsonl." + suffix, single)
+
+    def test_collection_rejects_missing_invalid_and_canonical_duplicate_sources(self):
+        sources = self.collection()
+        invalid = [dict(sources, invalid_role=self.logs), {key: value for key, value in sources.items() if key != "ops"},
+                   dict(sources, ops=sources["coordinator"] / ".." / "coordinator")]
+        for mapping in invalid:
+            with self.subTest(keys=list(mapping)), self.assertRaises(ValueError):
+                fluent.collection_sources(mapping)
+        if os.name == "nt":
+            with self.assertRaisesRegex(ValueError, "duplicate_canonical_source"):
+                fluent.collection_sources(dict(sources, ops=Path(str(sources["coordinator"]).upper())))
+
+    def test_collection_failed_lock_acquisition_releases_previously_acquired_locks(self):
+        sources = self.collection()
+        ordered = sorted(sources.values(), key=fluent.source_id)
+        with fluent.source_owner(ordered[3]):
+            with self.assertRaisesRegex(ValueError, "already_owned"):
+                with fluent.collection_owner(sources): self.fail("Blocked owner unexpectedly acquired")
+            for directory in ordered[:3]:
+                with fluent.source_owner(directory): pass
+        with fluent.collection_owner(dict(reversed(list(sources.items())))):
+            with self.assertRaisesRegex(ValueError, "already_owned"):
+                with fluent.source_owner(ordered[0]): pass
+
+    def test_collection_cli_check_stays_readonly_and_render_creates_only_its_states(self):
+        sources = self.collection()
+        mapping = self.root / "sources.json"
+        mapping.write_text(json.dumps({key: str(value) for key, value in sources.items()}), encoding="utf-8")
+        stream = io.StringIO()
+        with patch.object(Path, "mkdir", side_effect=AssertionError("mkdir")), \
+             patch.object(Path, "write_text", side_effect=AssertionError("write")), \
+             patch.object(fluent, "native_path", side_effect=AssertionError("alias")), \
+             patch("subprocess.run", side_effect=AssertionError("process")), redirect_stdout(stream):
+            code = fluent.main(["--collection-sources", str(mapping), "--check"])
+        self.assertEqual(code, 0); self.assertTrue(json.loads(stream.getvalue())["passed"])
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()), redirect_stdout(io.StringIO()):
+            self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(self.root / "state")]), 0)
+        self.assertEqual(len(list((self.root / "state").glob("*/stdout"))), 7)
+        self.assertFalse(any(self.root.glob("*.db")))
+        with self.assertRaisesRegex(ValueError, "stdout_only"):
+            fluent.main(["--collection-sources", str(mapping), "--mode", "kafka", "--check"])
+
 
 if __name__ == "__main__":
     unittest.main()

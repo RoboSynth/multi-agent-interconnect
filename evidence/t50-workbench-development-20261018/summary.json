@@ -1,0 +1,287 @@
+{
+  "status": "T50_REVISION2_WORKBENCH_VALIDATED",
+  "revision": 2,
+  "source_sha256": {
+    "workbench_server.py": "0fd7fde97fcec7270c539095bcad7173b92fe6fbee978372808b0d780e7116b5",
+    "incident/workbench_access.py": "2afb5574b4817f3fed3011cabb61417909a97d02e4fe64801cd897c8ea8d6dd3",
+    "demo-ui/workbench-access.js": "d0a147f5d7eada500be97b58f6166ffe6d028fe9221e8c202a9145ba4f227a43",
+    "tests/test_workbench_access.py": "78c8c71405306072b4daff133b7d3d6ddfd5de6791ec570826e3f02d5e0c0eaa",
+    "demo-ui/workbench.html": "ae2b3eb9ec2eb011b26df5f8534f30fb58f477b57981d598fadeb1de0a617591",
+    "demo-ui/workbench.css": "a33f29ddc8378d66fc645ec9b6940f22d1f2ec2370e13fca8cf1f13fe728a3a3",
+    "demo-ui/workbench.js": "f5c918ad29f9e1fb495558b83f81fcfaf0c204b46dfded64a3a08c0ef05480bd"
+  },
+  "UI": {
+    "contracts": {
+      "access_renderer": "window.renderWorkbenchAccess(run?.access_reconciliation)",
+      "access_container": "access-reconciliation",
+      "access_script_before_main": true,
+      "hypothesis_current_field": "predictions",
+      "plan_status": "task row matched by exact operation id first, otherwise unique tool/kind/args without conflicting operation id",
+      "approval_controls": "pending only",
+      "empty_incident_clears_previous_content": true
+    },
+    "Node_checks": {
+      "status": "OFFLINE_RENDERER_CHECKS_PASSED",
+      "checks": [
+        {
+          "name": "saved_plan_dependency_risk_task_and_resource_return_are_distinct",
+          "passed": true
+        },
+        {
+          "name": "hypotheses_predictions_reasons_and_probe_ranking_render",
+          "passed": true
+        },
+        {
+          "name": "all_approval_states_and_times_render_only_pending_has_controls",
+          "passed": true
+        },
+        {
+          "name": "untrusted_text_is_escaped_in_all_new_html_regions",
+          "passed": true
+        },
+        {
+          "name": "pending_dialog_dismissal_is_preserved_and_resolution_closes_it",
+          "passed": true
+        },
+        {
+          "name": "switching_incident_reopens_only_its_own_pending_approval",
+          "passed": true
+        },
+        {
+          "name": "same_tool_ambiguity_or_wrong_operation_does_not_claim_step_success",
+          "passed": true
+        },
+        {
+          "name": "old_incident_fields_are_optional_and_expected_probes_alias_is_supported",
+          "passed": true
+        },
+        {
+          "name": "empty_run_clears_cross_incident_content_and_access_summary",
+          "passed": true
+        },
+        {
+          "name": "access_script_loads_before_main_script_without_changing_three_tabs",
+          "passed": true
+        }
+      ],
+      "checks_count": 10,
+      "source_sha256": "f5c918ad29f9e1fb495558b83f81fcfaf0c204b46dfded64a3a08c0ef05480bd",
+      "real_network_requests": 0,
+      "approval_POSTs": 0,
+      "resource_actions": 0,
+      "model_calls": 0,
+      "validation_scope": "Node VM with in-memory DOM; actual browser layout and API integration require separate validation"
+    },
+    "execution": {
+      "actual_os_exit_code": 0,
+      "actual_tool_completion": {
+        "chunk_id": "f678fa",
+        "tool": "exec_command"
+      },
+      "checks_count": 10,
+      "scope": "Node VM synthetic DOM; no real browser or API integration",
+      "syntax_check": {
+        "actual_os_exit_code": 0,
+        "chunk_id": "21c070"
+      },
+      "prior_attempt": {
+        "path": "artifacts/t50-plan-approval-development-20261018/renderer-checks-attempt1.json",
+        "actual_os_exit_code": 1,
+        "chunk_id": "970588",
+        "fixture_correction_only": true
+      }
+    }
+  },
+  "access_API": {
+    "implementation": "Only list/dict-member validation for Start.dataItems; malformed shapes increment invalid.messages and skip that Start. Missing/None/empty list retain native session fallback.",
+    "current_offline_checks": {
+      "actual_exit_code": 0,
+      "completion_chunk": "8cf63a",
+      "tests_run": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 0.846
+    },
+    "original_three_regressions_reused": {
+      "actual_exit_code": 0,
+      "completion_chunk": "80aaef",
+      "tests_run": 3,
+      "rerun": false,
+      "scope": "Unchanged original approval/input/unconfigured API behavior; prior receipt preserved."
+    },
+    "distinct_current_Python_test_methods": 12,
+    "original_eight_checks_superseded_by_current_nine": true,
+    "prior_v1_source_ready_sha256": "0c66be10bb2e0399af0971d04d526dc70dcedfd2e5c639f0a562a13be3ecbfa4",
+    "retained_negative_reproduction": {
+      "actual_exit_code": 1,
+      "completion_chunk": "0e0500",
+      "tests_run": 1,
+      "failed_subtests": 7,
+      "receipt_sha256": "63623585cee0c72fe574dca49d2f8290a27128705b2c10b79f7f32d056188847"
+    },
+    "retained_initial_fixture_failure": {
+      "actual_exit_code": 1,
+      "completion_chunk": "0f1928",
+      "receipt_sha256": "086b253aab7f1222134f635123a1fde114cdaec00b8377f8f9dcf50b96dcc144",
+      "scope": "New fixture also missed required symptom; retained separately, not all500 attributed solely to malformed dataItems."
+    }
+  },
+  "closed_healthy_comparison": {
+    "actual_exit_code": 0,
+    "completion_chunk": "043bda",
+    "input_sha256": {
+      "messages": "23ee9fede57a6e5bf3a775bbd3f185f37dd098fe0c2e68f46630133e31e1be51",
+      "coordinator_access": "c0477069408092afb55a9cc3fdf23162f25ebcd1bdab1fbd467f1ddfac84c646",
+      "result": "53bd1c5d1fdfdd85a2905bd1bb0e36a751a7a463ed871cd7e5d7923033bbc5bd",
+      "published_reconciliation": "a4e2e20147a1d783f3a0bdb26a90a0b6aefce5cec3c7118032fc3ac19d33d6ef",
+      "helper": "2afb5574b4817f3fed3011cabb61417909a97d02e4fe64801cd897c8ea8d6dd3",
+      "reconcile_tool": "327b4d9dca9748a770e5f320a5c5816e026da5909ff13fc49cb3426d50bdf389",
+      "captured_access_application-agent": "92506f174e783c9e59ad38be8c56872c12e9fcc160b2096b1bda7a3fcf9d17b9",
+      "captured_access_database-agent": "adc351b2515e17da0e62715eeb6bbb656ca6f9f6cb4820402688e4fba5a14311",
+      "captured_access_database-backup-agent": "f89a35daccfd74ea1856b09a665a3bb26a355b115543ea870764fcfca164c750",
+      "captured_access_onboarding-agent": "c4cb330183ac2bbcefde4d50aa4203ea1c08887740b59a7a9e4c61fe8e82761b",
+      "captured_access_ops-agent": "e220aeefebf011effb78ab5c7fd967e995d9818846f4e91c41003ded04d2fd5c",
+      "captured_access_verification-agent": "9ee093d024e93980b26462529722f4c02337a3cd58dea4446d4539087748157b"
+    },
+    "per_incident": [
+      {
+        "status": "complete",
+        "passed": true,
+        "captured_start_tasks": 6,
+        "expected_access_records": 12,
+        "actual_access_records": 12,
+        "matched_access_records": 12,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": 0,
+        "invalid_records": {
+          "messages": 0,
+          "access": 0
+        },
+        "partial_records": {
+          "messages": 0,
+          "access": 0
+        },
+        "read_errors": {
+          "messages": 0,
+          "access": 0
+        },
+        "sources": {
+          "message_files": 1,
+          "access_files": 7
+        },
+        "unrelated_access_records_excluded": 493,
+        "reasons": [],
+        "scope": "仅核对此事故已捕获Start与对应双方AMP access，不代表全部平台流量、业务成功或Monitor入库。",
+        "parse_scope": "解析计数覆盖所读源文件全部行；无法定位事故的坏行不被丢弃或视作完整。"
+      },
+      {
+        "status": "complete",
+        "passed": true,
+        "captured_start_tasks": 6,
+        "expected_access_records": 12,
+        "actual_access_records": 12,
+        "matched_access_records": 12,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": 0,
+        "invalid_records": {
+          "messages": 0,
+          "access": 0
+        },
+        "partial_records": {
+          "messages": 0,
+          "access": 0
+        },
+        "read_errors": {
+          "messages": 0,
+          "access": 0
+        },
+        "sources": {
+          "message_files": 1,
+          "access_files": 7
+        },
+        "unrelated_access_records_excluded": 493,
+        "reasons": [],
+        "scope": "仅核对此事故已捕获Start与对应双方AMP access，不代表全部平台流量、业务成功或Monitor入库。",
+        "parse_scope": "解析计数覆盖所读源文件全部行；无法定位事故的坏行不被丢弃或视作完整。"
+      }
+    ],
+    "combined_captured_window_counts": {
+      "captured_start_tasks": 12,
+      "expected_access_records": 24,
+      "actual_access_records": 24,
+      "missing_records": 0,
+      "extra_records": 0,
+      "incomplete_task_lifecycles": 0
+    },
+    "exclusion_note": "Each incident correctly excludes the other incident12 endpoint access rows plus481 unrelated rows;493 per incident is not summed. The published whole-window exclusion remains481.",
+    "retained_initial_scope_assertion_failure": {
+      "actual_exit_code": 1,
+      "completion_chunk": "936c23",
+      "cause": "Artifact helper incorrectly assumed all12 Starts had one incident binding; actual captured payloads contain two distinct incident IDs with six Starts each.",
+      "production_or_input_changes": 0
+    },
+    "inputs_unchanged": true
+  },
+  "original22_browser": {
+    "checks": 22,
+    "actual_exit_code": 0,
+    "chunk": "ddb35a",
+    "helper_source_sha256": "7d4f0d3727aa603c7a56011c1690dec026d2dbb9de6d4c6e3e003f14a9848742",
+    "unchanged_UI_and_API_entry_source_sha256": {
+      "demo-ui/workbench.html": "ae2b3eb9ec2eb011b26df5f8534f30fb58f477b57981d598fadeb1de0a617591",
+      "demo-ui/workbench.css": "a33f29ddc8378d66fc645ec9b6940f22d1f2ec2370e13fca8cf1f13fe728a3a3",
+      "demo-ui/workbench.js": "f5c918ad29f9e1fb495558b83f81fcfaf0c204b46dfded64a3a08c0ef05480bd",
+      "demo-ui/workbench-access.js": "d0a147f5d7eada500be97b58f6166ffe6d028fe9221e8c202a9145ba4f227a43",
+      "workbench_server.py": "0fd7fde97fcec7270c539095bcad7173b92fe6fbee978372808b0d780e7116b5"
+    },
+    "scope": "Historical original22 rendering checks retained at the v1 helper; five UI/API entry sources remain byte-identical. This is not a claim that v2 reran all22."
+  },
+  "revision2_browser": {
+    "checks": 11,
+    "actual_exit_code": 0,
+    "chunk": "a9cd34",
+    "helper_source_sha256": "2afb5574b4817f3fed3011cabb61417909a97d02e4fe64801cd897c8ea8d6dd3",
+    "normal_browser_close_exit": 0,
+    "normal_preview_exit": 0,
+    "scope": "Narrow revision2 malformed dataItems browser check against actual updated API and copied synthetic fixtures. Normal22 rendering checks retained separately at the original helper version.",
+    "retained_preview_failure": {
+      "goto_actual_exit_code": 1,
+      "goto_chunk": "7335a5",
+      "error": "ERR_CONNECTION_REFUSED",
+      "owned_cleanup_actual_exit_code": 0,
+      "owned_cleanup_chunk": "f901bd",
+      "restricted_preview_outer_exit_code": 1,
+      "restricted_preview_completion_chunk": "2ee215",
+      "cause_not_attributed_to_product": true,
+      "failure_preserved": "sandbox-preview-failure.json"
+    }
+  },
+  "screenshots": {
+    "original_visually_reviewed": 4,
+    "current_invalid_case_visually_reviewed": 1
+  },
+  "proof_sha256": {
+    "artifacts/t50-plan-approval-development-20261018/source-ready.json": "a81e9f0643299aa52844621bec10eacb3fadd96a7ad3c13e5236bbbd60e21454",
+    "artifacts/workbench-access-development-20261018/source-ready-v2.json": "5ab73d7b42386ca6f2585fdb57de84a230cfedfff20563df1a8e67aa40b5d6c4",
+    "artifacts/workbench-access-development-20261018/closed-healthy-comparison-revision2.json": "827aebc6fb9421c9a87681f7304cbfff57283974a0098f9296e4bafbf0d27797",
+    "artifacts/workbench-access-development-20261018/original-workbench-regression.json": "e7234938576f38fcb20d625d11f9794e4438008594d47cbea61078e0e6f63c43",
+    "output/playwright/t50-current-development-20261018/results.json": "06879b2cbfc6974299566594522ef7976e43cffb12ca326514fb5334c9d3895b",
+    "output/playwright/t50-current-development-20261018-revision2/results.json": "7006d7e895defaf57118852058978191b373b442ffaf99b545777658b13c50c0",
+    "artifacts/t06-seven-source-publication-20261018/source-ready.json": "9568a082fd33ac1b6d7c3b904d5d50f842d4535dca625e8349f7187d58591bcb",
+    "artifacts/t50-plan-approval-development-20261018/renderer-checks.json": "f558107338c79316cd5e5004fb7df2ba4f4f4ec5c248aa702e620c01fef29670",
+    "artifacts/t50-plan-approval-development-20261018/test-execution.json": "6f5b1c906f3856d0dd9f1ea13c39750fe90f11a3331c627236d2373fe9852a43",
+    "artifacts/t50-plan-approval-development-20261018/renderer-checks-attempt1.json": "f4d7964599fb9c59f8d418b1b752ff72c85c1d7f1a2f23ca330ebbe9bffb53cd",
+    "artifacts/t50-plan-approval-development-20261018/check-renderer.cjs": "ece13b6e457a123a76119d938663b37cfcc116555beb2c4003230493dcf25916",
+    "artifacts/t50-plan-approval-development-20261018/browser-fixture.json": "cc67fc7fe759bfe6a99516d7ae79c91e502a9820c3879b4ca1b9196db890b78e",
+    "artifacts/t50-plan-approval-development-20261018/ui.patch": "e5dfdd35dd6a8e579a8ce8ab62fb43272453e8a32c3b3653670c3d86f0d1f5c5"
+  },
+  "limits": [
+    "Browsers use synthetic fixtures with actual updated GET APIs, not a new live-AIC or resource run.",
+    "Selected incidents remain separate: the old closed12-task healthy window has two groups of6tasks/12endpoint-access each.",
+    "Captured endpoint access is not unique physical-message/MCP totals or Monitor ingestion; missing captures never become complete.",
+    "Original E3 failures, seven pending stages and eleven malformed old AMP lines remain unchanged. Formal NEW7 E1 and24-hour acceptance remain pending."
+  ]
+}

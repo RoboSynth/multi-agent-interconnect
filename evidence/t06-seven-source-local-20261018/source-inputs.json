@@ -1,0 +1,107 @@
+{
+  "tested_source_files": [
+    {
+      "source": "deploy/fluent-bit/render.py",
+      "target": "deploy/fluent-bit/render.py",
+      "sha256": "1bdf707b738586ab0facc0a2e3cf01791037385cb62a6aa6ec2474c777928647",
+      "bytes": 15512,
+      "kind": "source"
+    },
+    {
+      "source": "deploy/fluent-bit/verify_collection.py",
+      "target": "deploy/fluent-bit/verify_collection.py",
+      "sha256": "3519cd75ee699ca2c5677d7f9e30085570cc7ee832f87aa1bb3a27c736088ea1",
+      "bytes": 21192,
+      "kind": "source"
+    },
+    {
+      "source": "deploy/fluent-bit/verify_local.py",
+      "target": "deploy/fluent-bit/verify_local.py",
+      "sha256": "f394d699f1250d321f5a101abcfb115054fa75ab464c2f7ce756fb8f9c0c6e46",
+      "bytes": 4069,
+      "kind": "source"
+    },
+    {
+      "source": "tests/test_fluent_bit_preparation.py",
+      "target": "tests/test_fluent_bit_preparation.py",
+      "sha256": "863ea7ef83467086fe04c643b4af1633fdf6633585f9fc11bff1ccda3926dfd6",
+      "bytes": 16471,
+      "kind": "source"
+    },
+    {
+      "source": "tests/test_fluent_bit_collection.py",
+      "target": "tests/test_fluent_bit_collection.py",
+      "sha256": "be8d9587a59df97aa05a65ff058a2cd676a4e0910314631efb6df75655a5c95c",
+      "bytes": 5577,
+      "kind": "source"
+    },
+    {
+      "source": "deploy/fluent-bit/README.md",
+      "target": "deploy/fluent-bit/README.md",
+      "sha256": "c4cadf715650178998735a2fe9dd0d5cc4383af8387a475c6d494e6f5bcf583a",
+      "bytes": 6880,
+      "kind": "documentation"
+    }
+  ],
+  "runtime_source_sha256": {
+    "render.py": "1bdf707b738586ab0facc0a2e3cf01791037385cb62a6aa6ec2474c777928647",
+    "verify_collection.py": "3519cd75ee699ca2c5677d7f9e30085570cc7ee832f87aa1bb3a27c736088ea1",
+    "verify_local.py": "f394d699f1250d321f5a101abcfb115054fa75ab464c2f7ce756fb8f9c0c6e46",
+    "parsers.conf": "d618ee69d97865b04779e5739b8131702e155b4e7fc6150cbd1b147eca98fcb1"
+  },
+  "portable_binary": {
+    "relative_path": "tools/runtime/fluent-bit-5.1.3/fluent-bit-5.1.3-win64/bin/fluent-bit.exe",
+    "sha256": "92f510a354376cfc494e8f0c552e6367dbb8ea6ea0e9d0509f71ff9f9f0eda4b",
+    "machine": "existing Windows local runtime"
+  },
+  "sdk_append_only_basis": [
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/emitter.py",
+      "sha256": "c4f87b4325d00d5657e0b6ff83487e789e0974d3493956a4acbe72d657aaf447",
+      "fixed_path_line": 44,
+      "append_open_line": 100
+    },
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/access_emitter.py",
+      "sha256": "79faa279e78c0d3adc00bc3a12a79d5269fabee7bbbd1f6e9b569f5e21c85158",
+      "fixed_path_line": 34,
+      "append_open_line": 77
+    },
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/heartbeat_emitter.py",
+      "sha256": "49ebbcb34a2b26bde46f66c8492481e3f07c2bd52712cda55873ec68989853d9",
+      "fixed_path_line": 32,
+      "append_open_line": 69
+    },
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc",
+      "fixed_path_line": 47,
+      "append_open_line": 92
+    },
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_emitter.py",
+      "sha256": "99cc5c40e362b6a11a5985b776f911481a6b948b5fbff4d33f8d9c3ce0c29e00",
+      "fixed_path_line": 51,
+      "append_open_line": 89
+    },
+    {
+      "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/system_emitter.py",
+      "sha256": "045027eda63130a2e8d2432e291c7241b19b32f940d39d141f4cb9c8a7dc7b04",
+      "fixed_path_line": 44,
+      "append_open_line": 91
+    }
+  ],
+  "official_tail_rotation_guidance": {
+    "url": "https://docs.fluentbit.io/manual/data-pipeline/inputs/tail#file-rotation",
+    "used_for": "Do not match rotated archive files in Path; they can be read again as new files"
+  },
+  "source_ready_revision4_sha256": "daf842b5cec4c8eee7bf61ad9cadc11e33ef02b005a74e3771de5ef1d12f21b4",
+  "run_plan_sha256": "1d608be13733903bed56b4a7cfd78feb81644c4cdf4c8d3305df473f31c823b2",
+  "raw_result_sha256": "8c45ad8e574ee045078e6c1423386455c3da60d222589e92ad6e374919dde9aa",
+  "expected_sha256": "b8b295ee76eb1c5ee49c6484decaad4d8a355e8890a4ba078aabf4ed1003672d",
+  "e1_frozen_plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+  "e1_frozen_inputs_checked_unchanged": 204,
+  "fixture_payloads_reused_byte_exact": 252,
+  "record_generation_repeated_for_revision4": false
+}

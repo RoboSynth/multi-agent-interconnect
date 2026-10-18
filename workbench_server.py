@@ -21,6 +21,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine
+from incident.workbench_access import reconcile_incident_access
 from tools.configure_local_coordinator import local_model_settings
 from acps_sdk.aip.resumable import TaskJournal, CoordinatorTerm
 
@@ -122,12 +123,18 @@ def create_app(config_path=None, output=None, transport=None):
         response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:"
         return response
 
+    async def incident_view(run):
+        if run is None:
+            return None
+        summary = await asyncio.to_thread(reconcile_incident_access, run, app.state.transport, output)
+        return {**run, "access_reconciliation": summary}
+
     @app.get("/api/state")
     async def state():
         active_transport = app.state.transport
         engine = app.state.engine
         runs = list(engine.runs.values())
-        current = runs[-1] if runs else None
+        current = await incident_view(runs[-1] if runs else None)
         credential_names = {"PGPASSWORD", "PGADMINPASSWORD", "DATABASE_URL", "DATABASE_URI",
                             "APP_ADMIN_TOKEN", "ORDERS_DB_PASSWORD", "POSTGRES_PASSWORD", "OPS_SUPERVISOR_TOKEN"}
         model_endpoint = engine.hypothesis.base_url
@@ -168,7 +175,7 @@ def create_app(config_path=None, output=None, transport=None):
     async def read_incident(incident_id: str):
         if incident_id not in app.state.engine.runs:
             raise HTTPException(404, "事故不存在")
-        return app.state.engine.runs[incident_id]
+        return await incident_view(app.state.engine.runs[incident_id])
 
     @app.post("/api/approvals/{approval_id}")
     async def approve(approval_id: str, body: ApprovalRequest):
