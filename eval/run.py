@@ -206,11 +206,13 @@ async def run(args):
                     check_sources(manifest["source_sha256"])
                     if target and hashlib.sha256(args.target_config.read_bytes()).hexdigest() != manifest["target_config_sha256"]:
                         raise RuntimeError("Explicit target changed before another fault injection")
-                    await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
-                    cell = output / "workloads" / f"{scenario}-{method}-{repeat + 1}"
-                    observer = await ContinuousObserver(order_url, cell, seed=instance_seeds[repeat],
-                        run_id="eval-" + uuid.uuid4().hex[:16], healthy_control=scenario == "H00").start()
+                    observer = None
                     try:
+                        await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
+                        cell = output / "workloads" / f"{scenario}-{method}-{repeat + 1}"
+                        observer = ContinuousObserver(order_url, cell, seed=instance_seeds[repeat],
+                            run_id="eval-" + uuid.uuid4().hex[:16], healthy_control=scenario == "H00")
+                        await observer.start()
                         await asyncio.sleep(3)
                         injection = await inject(scenario, "apply", args.runtime, output / "private/injections.jsonl",
                                                  pool_rebuilds=repeat % 3, **injection_options)
@@ -293,9 +295,11 @@ async def run(args):
                         (output / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
                         print(json.dumps(row, ensure_ascii=False), flush=True)
                     finally:
-                        if observer.task and not observer.task.done():
-                            await observer.finish(grace_seconds=0)
-                        await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
+                        try:
+                            if observer is not None and observer.task and not observer.task.done():
+                                await observer.finish(grace_seconds=0)
+                        finally:
+                            await inject(scenario, "restore", args.runtime, output / "private/injections.jsonl", **injection_options)
     finally:
         await transport.close()
         (output / "results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")

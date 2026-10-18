@@ -113,3 +113,9 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [参与者失联诊断与专用F19入口](docs/participant_failure.md)补齐此前未支持的F19本地验收：本次新建运维worker自退出，按真实任务通道、管理Get和45秒心跳联合判定；订单健康与参与者人工处理分开记录。通用注入器在缺少进程所有权上下文时仍拒绝F19。
 
 [真实实验精简证明](evidence/participant-failure/F19-owned-20261017/verification.json)、[复原后H00](evidence/participant-failure/F19-owned-20261017/post-restore-h00.json)及[工作台只读回放](evidence/participant-failure/F19-owned-ui-20261017/results.json)保留各自范围；这是本地stdio证据，不代表正式平台AMQPS失联或自动接管。既有PDF、研究材料和失败历史不变。开发ZIP仍固定69647cf、1069文件，不含本批新增内容。
+
+## 2026-10-18 评测异常收尾与新矩阵
+
+[评测口径](docs/evaluation.md)补充正常异常路径的复原保障：前置restore和观测器部分启动失败也进入清理，finish异常不跳过最终restore，错误上下文保留。[精简离线证明](evidence/evaluation-cleanup-20261018/results.json)记录16项相关测试及8种故障组合；它们使用mock，不代表已执行真实资源复原。
+
+新45格已获用户明确授权，2026-10-18 01:05:53 UTC实际启动矩阵子进程，153份公开源码已冻结；当前尚未闭合，不报告45项通过。历史观察选择M1的v2/v3组合和F01 pilot各自保留，本批为完整free-tools-v1的本地stdio/native实验，不是正式平台E3。私有配置、启动器、授权回执及完整快照保留本机。开发ZIP仍固定69647cf、1069文件，不含随后增量；答辩PPTX与证书继续暂缓。

@@ -1,0 +1,52 @@
+{
+  "schema_version": "matrix-cleanup-offline/1.0",
+  "status": "passed",
+  "recorded_at_utc": "2026-10-18T01:03:57.375897+00:00",
+  "source_sha256": {
+    "eval/run.py": "fd42746a56c421a4d63f9c410559a549250771722a574514ba1c99125876e27a",
+    "tests/test_eval_platform.py": "8262b32d57e62d7c020d2c315793df3343ccea7550fc6913fbf8262f6121eef2"
+  },
+  "tests": {
+    "suite": "test_eval_platform.py",
+    "count": 16,
+    "failure_path_subcases": 8,
+    "test_duration_seconds": 4.112,
+    "actual_os_exit_code": 0,
+    "log": "test_eval_platform-permitted.log",
+    "log_sha256": "0eb9afd21589ed83066fbba15e8cc49786ceaf7ef0242ee76f54300c2102556b"
+  },
+  "cases": [
+    "pre-restore failure; final restore attempted",
+    "pre-restore and final restore both fail; original context retained",
+    "observer partial start failure; observer finish and final restore attempted",
+    "observer start and cleanup finish fail; final restore attempted",
+    "observer start, cleanup finish and final restore fail; all exception contexts retained",
+    "observer normal finish failure; final restore attempted",
+    "observer finish and final restore fail; both exception contexts retained",
+    "fault apply and cleanup finish fail; final restore attempted"
+  ],
+  "observed_in_tests": [
+    "exact cleanup event order",
+    "transport.close awaited once",
+    "no success row produced for any fault-path case",
+    "RuntimeError context chain retained"
+  ],
+  "isolation": "inject, transport, observer, model and coordinator mocked; asyncio sleep replaced by yield-only fixture; no real resources or model called",
+  "initial_attempts": [
+    {
+      "session_id": 26805,
+      "outcome": "interrupted by owner",
+      "actual_os_exit_code": 1,
+      "log": "test_eval_platform.log",
+      "scope": "sandbox event-loop startup did not reach test body"
+    },
+    {
+      "session_id": 1713,
+      "outcome": "interrupted by owner after faulthandler diagnosis",
+      "actual_os_exit_code": 1,
+      "diagnostic": "Windows asyncio internal socketpair fallback blocked in socket.accept while creating ProactorEventLoop before test setUp"
+    }
+  ],
+  "verification_environment": "same suite rerun with sandbox escalation permitting Windows asyncio internal loopback; automatic approval allowed",
+  "boundary": "normal Python finally paths now attempt restore; process termination cannot guarantee finally, and a failed restore remains an exception rather than claimed success"
+}

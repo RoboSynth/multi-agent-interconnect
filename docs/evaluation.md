@@ -3,6 +3,18 @@
 `eval/run.py` 在同一套真实 Windows 进程、Nginx、PostgreSQL 和独立资源域
 worker 上运行场景。传输是 `local-aip-stdio`，不是正式平台 AMQPS/ADP 验收。
 
+## 2026-10-18矩阵收尾修复与运行状态
+
+`eval/run.py` 已将每格前置restore、观测器构造/启动和后续运行置于同一受保护范围。清理观测器的finish即使抛错，内层finally仍尝试最终场景restore；多个错误保留Python异常上下文链，外层仍关闭transport。16项离线测试实际通过，含8种前置复原、部分启动、finish、apply与清理失败组合，核对清理顺序、transport.close一次、失败分支不生成成功行。测试使用mock，不调用真实模型或资源；[精简结果](../evidence/evaluation-cleanup-20261018/results.json)保留最初测试环境失败及后续通过依据。finally是正常Python异常路径的保障，强制结束进程不能保证执行，restore抛错仍保持失败。
+
+新的`M1-full-tools-matrix-20261017`计划为五场景×三方法×三次，共45个唯一格，M1使用`free-tools-v1`。用户已明确授权，监督器于2026-10-18 01:05:53.198245 UTC启动，矩阵子进程于01:05:53.806760 UTC实际运行；当前尚未完成，不将启动记录、已产生行或旧45格组合称为本批全部通过。它使用本地stdio/native、公共订单入口8088、PG55432和既有本地Qwen模型8089，不是正式平台AMQPS/ADP矩阵。
+
+153份公开源码已冻结到`local-free-tools-final-F19-cleanup-20261018`，最终receipt SHA256为`e9816eb44b50a8b1c4c5ead2f72c713165f004b114ec7e8e753765d048b01a24`。协调配置按原始字节锁定；native配置只排除顶层`managed`进程登记，端口、二进制路径及其他字段按canonical JSON锁定，分别记录原始文件与登记变化。最终receipt、配置和完整source快照保留本机，不进入团队公共内容白名单。
+
+监督器保留真实子进程句柄和OS退出码；矩阵实际退出后才核对45个唯一键、方法版本与seed。通过源码及不可变配置检查后，另行执行至少30秒/10完整流程的H00健康窗口，其结果独立于45格。若矩阵异常退出，单独健康窗口不能替代失败清理的实际核验。下文v2/v3主对比与两批F01 pilot均为历史批次，不合并到本批；`seconds`仍包含诊断与域验证，不能称纯修复耗时。
+
+## 方法与历史证据
+
 三种方法共享工具、事实、域内策略、审批签名、操作账本和业务验证。
 图表与相应测试另需 `requirements-report.txt`；本机已在 `.venv-report` 安装，
 核心运行器使用 `.venv`。

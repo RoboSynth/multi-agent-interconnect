@@ -278,6 +278,95 @@ class EvaluationRunnerTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(RuntimeError):
                     runner.check_sources(hashes)
 
+    async def test_cell_failures_always_attempt_final_restore_and_preserve_error_chain(self):
+        real_sleep = asyncio.sleep
+        async def fast_sleep(_):
+            await real_sleep(0)
+        cases = [
+            ("pre_restore", False, False), ("pre_restore", True, False),
+            ("start", False, False), ("start", False, True), ("start", True, True),
+            ("finish", False, False), ("finish", True, False), ("apply", False, True),
+        ]
+        for failure, restore_fails, cleanup_finish_fails in cases:
+            with self.subTest(failure=failure, restore_fails=restore_fails,
+                              cleanup_finish_fails=cleanup_finish_fails), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                config = root / "config.json"; config.write_text("{}")
+                events, restores = [], []
+                async def inject(scenario, action, runtime, record, **options):
+                    if action == "restore":
+                        restores.append(action)
+                        events.append(f"restore.{len(restores)}")
+                        if len(restores) == 1 and failure == "pre_restore":
+                            raise RuntimeError("initial pre_restore failed")
+                        if len(restores) == 2 and restore_fails:
+                            raise RuntimeError("final restore failed")
+                    else:
+                        events.append("apply")
+                        if failure == "apply":
+                            raise RuntimeError("initial apply failed")
+                    return {"started_monotonic": 1}
+                class Observer:
+                    def __init__(self, *args, **options):
+                        events.append("observer.construct")
+                        self.finished = False
+                        self.task = SimpleNamespace(done=lambda: self.finished)
+                    async def start(self):
+                        events.append("observer.start")
+                        if failure == "start":
+                            raise RuntimeError("initial start failed")
+                        return self
+                    async def finish(self, **options):
+                        events.append("observer.finish")
+                        self.finished = True
+                        if cleanup_finish_fails:
+                            raise RuntimeError("cleanup finish failed")
+                        if failure == "finish":
+                            raise RuntimeError("initial finish failed")
+                        return {}
+                class Engine:
+                    def __init__(self, *args, **options): pass
+                    def new(self, symptom): return {"status": "running", "approvals": []}
+                    async def run(self, state):
+                        events.append("engine.run")
+                        state["status"] = "completed"
+                    def save(self, state): pass
+                transport = SimpleNamespace(mode="local-aip-stdio",
+                    tools=[probe.tool for probe in runner.PROBES]+list(runner.ACTIONS)+["incident.verification"],
+                    start=AsyncMock(side_effect=lambda: events.append("transport.start")),
+                    close=AsyncMock(side_effect=lambda: events.append("transport.close")),
+                    issue_approval=Mock(), term=7)
+                args = runner.build_parser().parse_args(["--config", str(config), "--output", str(root / "results"),
+                    "--scenarios", "F01", "--methods", "M0", "--repeats", "1"])
+                with patch("eval.run.ROOT", root), patch("eval.run.freeze_sources", return_value={}), \
+                     patch("eval.run.check_sources"), patch("eval.run.create_transport", return_value=transport), \
+                     patch("eval.run.inject", side_effect=inject), patch("eval.run.ContinuousObserver", Observer), \
+                     patch("eval.run.HypothesisEngine", return_value=SimpleNamespace(enabled=False)), \
+                     patch("eval.run.IncidentCoordinator", Engine), patch("eval.run.asyncio.sleep", fast_sleep):
+                    with self.assertRaises(RuntimeError) as caught:
+                        await runner.run(args)
+                expected_chain = [f"initial {failure} failed"]
+                if cleanup_finish_fails:
+                    expected_chain.insert(0, "cleanup finish failed")
+                if restore_fails:
+                    expected_chain.insert(0, "final restore failed")
+                chain, error = [], caught.exception
+                while error is not None:
+                    chain.append(str(error)); error = error.__context__
+                self.assertEqual(chain, expected_chain)
+                expected_events = ["transport.start", "restore.1"]
+                if failure != "pre_restore":
+                    expected_events.extend(["observer.construct", "observer.start"])
+                    if failure != "start":
+                        expected_events.append("apply")
+                        if failure != "apply":
+                            expected_events.append("engine.run")
+                    expected_events.append("observer.finish")
+                expected_events.extend(["restore.2", "transport.close"])
+                self.assertEqual(events, expected_events)
+                self.assertEqual(json.loads((root / "results/results.json").read_text()), [])
+                transport.close.assert_awaited_once()
+
     async def test_same_methods_budgets_workload_and_approval_protocol_for_both_transports(self):
         real_sleep = asyncio.sleep
         async def fast_sleep(_):
