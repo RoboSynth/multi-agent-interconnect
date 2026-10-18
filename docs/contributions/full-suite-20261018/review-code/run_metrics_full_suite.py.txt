@@ -1,0 +1,161 @@
+"""Run an explicitly selected complete SDK suite in its fresh prepared copy.
+
+Default --mode plan performs local validation only. The root owns actual collect/full execution.
+Use runtime-venv/Scripts/python.exe -I -B -X utf8 for both branches, in separate processes.
+"""
+from __future__ import annotations
+
+import argparse
+from collections import Counter
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import time
+
+HERE = Path(__file__).resolve().parent
+SUITE = HERE.parent
+LOCKED = SUITE / "locked-dependencies"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_json(path, value):
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(value, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+
+
+def source_hashes(tree, expected):
+    actual = {name: sha((tree / name).read_bytes()) for name in expected}
+    assert actual == expected, "Prepared SDK sources/tests changed"
+    return actual
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--branch", required=True, choices=("resumable", "message-emitter"))
+    parser.add_argument("--mode", choices=("plan", "collect", "full"), default="plan")
+    parser.add_argument("--run-id", default="first")
+    args = parser.parse_args()
+    assert re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,40}", args.run_id)
+    raw = (HERE / "source-ready.json").read_bytes()
+    candidate = json.loads(raw)
+    assert candidate["status"] == "METRICS_TEST_PORTABILITY_CANDIDATE_READY_NOT_TESTED"
+    assert sha((HERE / "prepare_candidate.py").read_bytes()) == candidate["helper_sha256"]
+    original_prepared = (SUITE / "prepared-trees.json").read_bytes()
+    assert sha(original_prepared) == candidate["source_preparation_sha256"]
+    prepared = json.loads(original_prepared)
+    assert prepared["status"] == "FRESH_LOCAL_OFFICIAL_BRANCH_COPIES_AND_SYNTHETIC_TLS_FIXTURES_PREPARED"
+    assert sha((SUITE / "prepare_suite_trees.py").read_bytes()) == prepared["helper_sha256"]
+    assert sha((SUITE / "locked-dependency-audit.json").read_bytes()) == prepared["locked_dependency_audit_sha256"]
+    row = dict(prepared["branches"][args.branch])
+    row.update(candidate["branches"][args.branch])
+    tree = Path(row["candidate_tree"]).resolve()
+    assert tree.is_relative_to((HERE / "trees").resolve())
+    sdk = tree / "acps-sdk"
+    source_hashes(tree, row["sdk_source_sha256"])
+    venv = (SUITE / "runtime-venv").resolve()
+    assert Path(sys.prefix).resolve() == venv, "Use the fresh runtime-venv interpreter"
+    assert sys.flags.isolated == 1 and sys.flags.utf8_mode == 1, "Use -I -X utf8"
+    assert Path(sys.executable).resolve() == Path(prepared["interpreter"]["executable"]).resolve()
+    assert sha((venv / "Lib/site-packages/sdk-suite-locked-dependencies.pth").read_bytes()) == prepared["interpreter"]["pth_sha256"]
+    if args.mode == "plan":
+        print(json.dumps(dict(status="PREPARED_COMPLETE_SDK_SUITE_VALIDATED_NOT_EXECUTED", branch=args.branch,
+            commit=row["commit"], all_tests_included=True, SDK_files=len(row["sdk_source_sha256"]), real_pytest_execution=False)))
+        return
+    output = HERE / "runs" / (args.branch + "-" + args.mode + "-" + args.run_id)
+    output.mkdir(parents=True, exist_ok=False)
+    started = time.monotonic()
+    # Process-local settings only. Child receives the same fresh venv and locked .pth.
+    os.environ.update(PYTEST_DISABLE_PLUGIN_AUTOLOAD="1", PYTHONUTF8="1", PYTHONDONTWRITEBYTECODE="1",
+        NO_PROXY="127.0.0.1,localhost,::1", no_proxy="127.0.0.1,localhost,::1",
+        TEMP=str(output / "temporary"), TMP=str(output / "temporary"))
+    (output / "temporary").mkdir()
+    os.environ.pop("PYTEST_ADDOPTS", None)
+    os.environ.pop("PYTEST_PLUGINS", None)
+    os.environ.pop("PYTHONHOME", None)
+    os.environ.pop("PYTHONUSERBASE", None)
+    os.environ["PYTHONNOUSERSITE"] = "1"
+    sys.dont_write_bytecode = True
+    base = Path(sys.base_prefix)
+    # No original checkout, main .venv or global site-packages can shadow this SDK.
+    sys.path[:] = [str(sdk), str(LOCKED), str(base / "Lib"), str(base / "DLLs"),
+                  str(base / ("python" + str(sys.version_info.major) + str(sys.version_info.minor) + ".zip"))]
+    os.chdir(sdk)
+    import acps_sdk
+    import anyio
+    import pytest
+    import pytest_asyncio
+    assert Path(acps_sdk.__file__).resolve().is_relative_to(sdk)
+    for module in (anyio, pytest, pytest_asyncio):
+        assert Path(module.__file__).resolve().is_relative_to(LOCKED.resolve())
+    backends = anyio.get_available_backends()
+    assert backends == ("asyncio",), "Record/review a changed backend set; do not silently filter test cases"
+    fixtures = {name: (tree / name).read_bytes() for name in row["public_TLS_metadata"]["expected_fixture_paths"]}
+    collected, calls, phases, warnings = [], Counter(), Counter(), Counter()
+    collection_errors = []
+
+    class Recorder:
+        def pytest_collection_finish(self, session):
+            collected.extend(item.nodeid for item in session.items)
+
+        def pytest_runtest_logreport(self, report):
+            phases[(report.when, report.outcome)] += 1
+            if report.when == "call":
+                calls[report.outcome] += 1
+
+        def pytest_collectreport(self, report):
+            if report.failed:
+                collection_errors.append(report.nodeid)
+
+        def pytest_warning_recorded(self, warning_message, when, nodeid, location):
+            warnings[(warning_message.category.__name__, when)] += 1
+
+    arguments = ["-c", str(sdk / "pyproject.toml"), "--rootdir=" + str(sdk), "--confcutdir=" + str(sdk),
+        "-p", "pytest_asyncio.plugin", "-p", "anyio.pytest_plugin", "-ra",
+        "--basetemp=" + str(output / "pytest-temporary"), "-o", "cache_dir=" + str(output / "pytest-cache"),
+        "--junitxml=" + str(output / "junit.xml"), str(sdk / "tests")]
+    if args.mode == "collect":
+        arguments.insert(0, "--collect-only")
+    write_json(output / "start.json", dict(branch=args.branch, commit=row["commit"], mode=args.mode,
+        started_at_utc=datetime.now(timezone.utc).isoformat(), prepared_receipt_sha256=sha(raw),
+        test_portability_override_sha256=candidate["candidate_test_sha256"], published_parent_commit=row["parent_commit"],
+        runner_sha256=sha(Path(__file__).read_bytes()), actual_interpreter=sys.executable,
+        actual_base_interpreter=str(Path(getattr(sys, "_base_executable", sys.executable))),
+        dependency_target=str(LOCKED.resolve()), pytest_arguments=arguments, backend=list(backends),
+        autoload_disabled=True, process_local_NO_PROXY="127.0.0.1,localhost,::1", all_tests_included=True))
+    exit_code = int(pytest.main(arguments, plugins=[Recorder()]))
+    source_hashes(tree, row["sdk_source_sha256"])
+    assert all((tree / name).read_bytes() == data for name, data in fixtures.items()), "Synthetic fixture bytes changed"
+    imports = {name: str(Path(module.__file__).resolve()) for name, module in tuple(sys.modules.items())
+        if name.startswith("acps_sdk") and getattr(module, "__file__", None)}
+    assert all(Path(path).is_relative_to(sdk) for path in imports.values())
+    result = dict(status="FULL_SDK_SUITE_TERMINAL" if args.mode == "full" else "SDK_COLLECTION_TERMINAL",
+        branch=args.branch, commit=row["commit"], pytest_exit_code=exit_code, mode=args.mode,
+        test_portability_override_sha256=candidate["candidate_test_sha256"], published_parent_commit=row["parent_commit"],
+        collected=len(collected), collected_nodeids=collected, call_outcomes=dict(calls),
+        phase_outcomes=[dict(phase=phase, outcome=outcome, count=count) for (phase, outcome), count in sorted(phases.items())],
+        collection_errors=collection_errors, warning_counts=[dict(category=category, when=when, count=count) for (category, when), count in sorted(warnings.items())],
+        elapsed_seconds=round(time.monotonic() - started, 3), SDK_import_paths=imports,
+        source_SHA_before_after_exact=True, synthetic_fixture_bytes_unchanged=True,
+        no_source_or_test_filters=True, backend=list(backends), plugin_autoload_disabled=True,
+        actual_interpreter=sys.executable, actual_base_interpreter=str(Path(getattr(sys, "_base_executable", sys.executable))),
+        dependency_target=str(LOCKED.resolve()), original_branches_modified=False,
+        standalone_historical_3_or_5_invocations_repeated=False,
+        counting="Both complete branch suites overlap on shared upstream tests; do not sum them as unique checks or add historical3/5 results.",
+        limits="Official tests use mocks plus local ephemeral TLS listeners and the resumable test's own disposable child; this is not formal platform E1, live-resource fault testing or upstream CI.",
+        completed_at_utc=datetime.now(timezone.utc).isoformat())
+    write_json(output / "results.json", result)
+    print(json.dumps({key: result[key] for key in ("status", "branch", "pytest_exit_code", "collected", "call_outcomes", "elapsed_seconds")}))
+    raise SystemExit(exit_code)
+
+
+if __name__ == "__main__":
+    main()

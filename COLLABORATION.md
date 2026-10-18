@@ -215,3 +215,12 @@ fixed-SDK健康窗口按12个captured Start逐taskId核对两端AMP access：coo
 用户明确授权后，公开[fork](https://github.com/RoboSynth/ACPs-community)已创建，两个独立分支已push并远端核对。[接续PR #13](https://github.com/AIP-PUB/ACPs-community/pull/13)对应incident-ext/30f8840785a1b02a661e0fbb335a8dcd9bb038d0、13文件，[MessageEmitter PR #14](https://github.com/AIP-PUB/ACPs-community/pull/14)对应fix/message-emitter-append/ddf2094ef2ea7b687a8966e43302ab07d23b9950、2文件；两者为draft、未合并。四条Issue已发布：[乱序 #15](https://github.com/AIP-PUB/ACPs-community/issues/15)、[MQ文档 #16](https://github.com/AIP-PUB/ACPs-community/issues/16)、[access #17](https://github.com/AIP-PUB/ACPs-community/issues/17)、[发现语义 #18](https://github.com/AIP-PUB/ACPs-community/issues/18)。六项均创建HTTP201、立即GET200，标题/正文逐件一致，实际提交进程exit0。
 
 [安全提交快照](evidence/upstream-public-submission-20261018/submission.json)保留实际公开URL、正文、body SHA与分支提交，仅反映提交当时状态；原始md/payload和补丁包保持原字节，贡献入口加日期前缀完整保留此前未提交阶段文字。本次没有重跑行为测试；排序3/并发5与历史25组件证据保持原范围。已核实的官方94077树中未找到CI配置，未执行上游CI，未声明合并或CI成功。AtomGit未做，正式NEW7 E1待授权执行、24小时验收未完成；原E3失败/旧未决/坏行、E1准备与3985历史包均不变。
+
+
+### 2026-10-18 完整SDK本地suite与T06准备
+
+现有draft PR #13/#14追加同一测试可移植性修正，当前head09fe13b/72a994b、14/3文件；完整官方SDK本地suite581/581与558/558通过，真实退出均0。首次各1失败因原测试假定根路径不可写，提升权限Windows可写；新测试以临时普通文件阻塞父路径，保留原告警断言，无mock产品/跳过用例。收集节点前后相同，setup/call/teardown全部通过，两套共享上游用例不相加，历史3/5检查不再加总。每套1条PytestAssertRewriteWarning保留；权限/TLS探测只终止持句柄的自有两进程，保留未闭合诊断，未停止项目服务；初次clone包装失败和ambient依赖警告分别保留。
+
+两PR正文PATCH200及随后GET200一致，仍draft、未合并，没有新PR/Issue/评论；[后续公开状态](evidence/upstream-public-submission-20261018/followup.json)与[完整测试及审阅代码](docs/contributions/full-suite-20261018/README.md)新增，原[六项提交快照](evidence/upstream-public-submission-20261018/submission.json)、旧3985/94077包、16件E3及8件E1证据逐字保留。测试在两个父提交加精确一测试修正的隔离树运行，公开新提交源字节一致，提交后未重复跑相同输入。
+
+T06[本机采集准备](deploy/fluent-bit/README.md)补只读预检、固定源归属和隔离state，13个不同Python离线检查（12新增+1既有）与PS解析0错；最终1项局部重验和12项复用不另加总，早期GBK测试夹具错误保留。未启动真实采集器，Kafka/Monitor未配置或验收。09:24Z[第五周期快照](evidence/new7-runtime-followup-20261018/inspect-fifth-cycle.json)核实原host与第五次自然巡检完成，最新30.002秒/30成功/10流程、act/模型0；35条历史awaiting与effective in-flight0分别记录，时点观察不当连续在线。计划中的verify会写合成订单，零act不等于零业务写入。本批不重跑既有测试、不改变E1授权模板/冻结输入或原科学结论；正式NEW7 E1待独立授权，AtomGit/上游CI/24小时验收仍未完成。

@@ -23,6 +23,9 @@ pwsh -NoProfile -File deploy/local-up.ps1
 
 后续独立版本已将AMP日志追加修复部署至六域，新健康窗口12任务完成、30.003秒/30成功请求/10流程；该窗口[T05双端访问对账](evidence/new7-runtime-followup-20261018/access-reconciliation.json)为12任务/24条access，缺失、多余和未完成生命周期均0。8877巡检已自然完成[三轮](evidence/new7-inspect-session-20261018/cycle3.json)，各30.002秒/10流程，[实时UI26项检查与六张截图](evidence/new7-runtime-followup-20261018/ui-results.json)通过。七身份固定30分钟[心跳采样](evidence/new7-runtime-followup-20261018/heartbeat-window.json)为840/840；采样完整不等于连续在线、24小时/7天或Monitor入库。新证据不重跑或解除原45格失败、旧未决和坏行；正式[E1源码与计划](docs/new7_e1_implementation_20261018.md)仍未执行，具体故障实验待对应授权。[当前上游审阅包](docs/contributions/upstream-review-20261018/README.md)已通过公开GitHub fork提交[接续PR #13](https://github.com/AIP-PUB/ACPs-community/pull/13)与[日志PR #14](https://github.com/AIP-PUB/ACPs-community/pull/14)，两者均为draft、尚未合并，四条Issue #15–18已发布且六项GET核验一致；见[真实提交记录](evidence/upstream-public-submission-20261018/submission.json)。AtomGit和正式E1/24小时验收仍未完成，未执行上游CI。
 
+2026-10-18 UTC09:16补证：现有两draft PR已追加测试可移植性修正，当前14/3文件；完整本地SDK suite分别581/581与558/558通过，共享用例不相加、未执行上游CI，首次失败与警告保留。见[完整测试与复现说明](docs/contributions/full-suite-20261018/README.md)及[PR后续状态](evidence/upstream-public-submission-20261018/followup.json)。[T06本机采集准备](deploy/fluent-bit/README.md)已通过13个不同Python离线检查和PowerShell解析；未启动真实转发器，Kafka/Monitor尚未验收。[第五次自然巡检](evidence/new7-runtime-followup-20261018/inspect-fifth-cycle.json)在09:24Z快照中已完成，最新业务30.002秒/10流程、act/模型0；这是一时点观察，不代表持续在线或24小时。正式NEW7 E1和24小时仍未完成。
+
+
 完整工具M1的[本地分段结果](docs/free_tools_matrix_20261018.md)：原批40终态、第41格中断，独立后续四格4/4恢复；两阶段为44终态、37确认、7未确认、1中断覆盖原45计划，独立HTTP H00为30.328秒/30次全成功/10流程。原进程退出码未知，不能称完整45格单批；旧M1/旧18例、新版梧桐及长期验收分别保留，下文继续为v0.2.0基线记录。
 
 订单网站发生故障后，协调智能体收集应用和数据库的信息，安排恢复操作，再由恢复分析智能体访问网站、读取订单并汇总结果。当前诊断逻辑采用规则。

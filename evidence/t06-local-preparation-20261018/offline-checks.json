@@ -1,0 +1,58 @@
+{
+  "status": "T06_LOCAL_PREPARATION_OFFLINE_CHECKS_PASSED",
+  "distinct_Python_checks": 13,
+  "new_Python_checks": 12,
+  "existing_affected_compatibility_checks": 1,
+  "final_fresh": 1,
+  "reused_unaffected": 12,
+  "executions": [
+    {
+      "actual_tool_chunk": "44e922",
+      "actual_os_exit_code": 1,
+      "tests_run": 13,
+      "passed": 12,
+      "errors": 1,
+      "retained_failure": "Test fixture read its UTF-8 rendered path using Windows default GBK; product checks were not rewritten"
+    },
+    {
+      "actual_tool_chunk": "ac2e93",
+      "actual_os_exit_code": 0,
+      "tests_run": 1,
+      "corrected_test_read_encoding": "utf-8"
+    }
+  ],
+  "PowerShell_parse": {
+    "actual_tool_chunk": "76aa51",
+    "actual_os_exit_code": 0,
+    "errors": 0,
+    "script_sha256": "7ae77d8badba193a4ad41153a806407be6fbadd32a1d2420c81f2bde8c6c048f"
+  },
+  "coverage": [
+    "pure --check refuses writes/subst/subprocess/network",
+    "six input kinds required",
+    "TLS path presence without key/certificate reads",
+    "SASL environment references and no secret values in reports",
+    "invalid Kafka rejected before aliasing",
+    "legacy render/default stdout",
+    "stable source identity with separate source/mode offset paths",
+    "real short Python processes contend for one OS lock then acquire after release",
+    "StateRoot override cannot bypass same-source runtime ownership",
+    "owner held through fake child wait and released after nonzero return",
+    "audit _fb_ts, password references and exact six topic routes"
+  ],
+  "source_sha256": {
+    "deploy/fluent-bit/render.py": "09bde02848d0f99e9641156745406f0492ddbd59486bfaa61351deb2a181fbda",
+    "deploy/fluent-bit/run.ps1": "7ae77d8badba193a4ad41153a806407be6fbadd32a1d2420c81f2bde8c6c048f",
+    "deploy/fluent-bit/README.md": "e707efb0090c46e4452f4875b92d909a3c6215fff2770540e0240ba942c352cc",
+    "deploy/fluent-bit/collection-plan.example.json": "1392a0c0001880a4c306056739c601bf8340dc8ad9597eaf492c650b6e00c866",
+    "deploy/fluent-bit/collector-stdout.example.conf": "5614a4179f9cc923f8c668785dc5de506c03f03426ff3973e3ab3f0d67d4e288",
+    "tests/test_fluent_bit_preparation.py": "18cd4086035439cd8dc900d3fd7b298b2e3a6a4198e8defbcc18f6c207dd39e0"
+  },
+  "actual_Kafka_FluentBit_container_network_business_calls": 0,
+  "limits": [
+    "PowerShell CheckOnly is a thin call to Python preflight; the Python check itself spawns no processes.",
+    "No real Fluent Bit process, Kafka authentication/delivery, container mount, Monitor query or ingestion was tested.",
+    "Source lock is local to this checkout; other checkouts/hosts and independent collectors are outside its scope.",
+    "Counts are 13 distinct Python checks plus a separate PowerShell parse, not 14 Python tests."
+  ]
+}

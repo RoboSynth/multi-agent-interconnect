@@ -1,0 +1,128 @@
+"""Prepare two isolated test-only candidates; never run pytest or update a branch."""
+from __future__ import annotations
+
+import difflib
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+
+HERE = Path(__file__).resolve().parent
+SUITE = HERE.parent
+ARTIFACTS = SUITE.parent
+TARGET = "acps-sdk/tests/amp/test_amp_metrics_emitter.py"
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_json(path, data):
+    with path.open("x", encoding="utf-8") as stream:
+        json.dump(data, stream, ensure_ascii=False, indent=2)
+        stream.write("\n")
+
+
+def main():
+    prepared_raw = (SUITE / "prepared-trees.json").read_bytes()
+    prepared = json.loads(prepared_raw)
+    git = Path(prepared["native_Git_executable"])
+    assert git.is_absolute() and git.is_file()
+    env = dict(os.environ, GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull,
+               GIT_TERMINAL_PROMPT="0")
+
+    def run_git(tree, *args):
+        result = subprocess.run([str(git), "-c", "core.autocrlf=false", "-c",
+            "safe.directory=" + str(tree.resolve()), "-C", str(tree), *args],
+            env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+        assert result.returncode == 0, (args[0], result.returncode)
+        return result.stdout
+
+    originals = ARTIFACTS / "upstream-public-submission-20261018"
+    source = originals / "branch-resumable" / TARGET
+    old = source.read_bytes()
+    assert sha(old) == "91034a3a48bc331d16fd407097fe7fe70628c0b62936962225336b5086ac1db9"
+    assert b"\r" not in old
+    before = b'''    """\xe5\x86\x99\xe5\x85\xa5\xe5\xa4\xb1\xe8\xb4\xa5\xef\xbc\x88\xe7\x9b\xae\xe5\xbd\x95\xe4\xb8\x8d\xe5\x8f\xaf\xe5\x86\x99\xef\xbc\x89\xe6\x97\xb6\xe5\x8f\xaa WARNING \xe4\xb8\x8d raise\xe3\x80\x82"""
+    sampler = _make_sampler()
+    bad_path = Path("/readonly_nonexistent_dir/amp_metrics.jsonl")
+'''
+    after = '''    """写入失败（父路径是普通文件）时只 WARNING 不 raise。"""
+    sampler = _make_sampler()
+    blocked_parent = tmp_log.parent.parent / "blocked-parent"
+    blocked_parent.write_text("not a directory", encoding="utf-8")
+    bad_path = blocked_parent / "amp_metrics.jsonl"
+'''.encode("utf-8")
+    assert old.count(before) == 1
+    new = old.replace(before, after)
+    assertion = '    assert any("写入失败" in m or "MetricsEmitter" in m for m in caplog.messages)\n'.encode("utf-8")
+    assert new.count(assertion) == 1
+    new = new.replace(assertion, assertion + b'    assert blocked_parent.read_text(encoding="utf-8") == "not a directory"\n    assert not bad_path.exists()\n')
+    patch = "".join(difflib.unified_diff(old.decode("utf-8").splitlines(True),
+        new.decode("utf-8").splitlines(True), fromfile="a/" + TARGET,
+        tofile="b/" + TARGET)).encode("utf-8")
+    assert not (HERE / "trees").exists() and not (HERE / "source-ready.json").exists()
+    assert (HERE / "metrics-test-portability.patch").read_bytes() == patch
+    (HERE / "trees").mkdir()
+    branches = {}
+    for name, row in prepared["branches"].items():
+        original = originals / ("branch-" + name)
+        assert run_git(original, "rev-parse", "HEAD").decode().strip() == row["commit"]
+        assert not run_git(original, "status", "--porcelain")
+        assert (original / TARGET).read_bytes() == old
+        destination = HERE / "trees" / name
+        run_git(original, "apply", "--check", str(HERE / "metrics-test-portability.patch"))
+        destination.mkdir()
+        for relative, digest in row["sdk_source_sha256"].items():
+            target = (destination / relative).resolve()
+            assert target.is_relative_to(destination.resolve())
+            raw = (original / relative).read_bytes()
+            assert sha(raw) == digest
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("xb") as stream:
+                stream.write(raw)
+        baseline = {p: sha((destination / p).read_bytes()) for p in row["sdk_source_sha256"]}
+        assert baseline == row["sdk_source_sha256"]
+        (destination / TARGET).write_bytes(new)
+        expected = dict(baseline, **{TARGET: sha(new)})
+        assert {p: sha((destination / p).read_bytes()) for p in expected} == expected
+        assert [p for p in expected if expected[p] != baseline[p]] == [TARGET]
+        fixture_source = SUITE / row["tree"]
+        fixture_count = 0
+        for relative in row["public_TLS_metadata"]["expected_fixture_paths"]:
+            target = (destination / relative).resolve()
+            assert target.is_relative_to(destination.resolve()) and not target.exists()
+            raw = (fixture_source / relative).read_bytes()
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with target.open("xb") as stream:
+                stream.write(raw)
+            if target.suffix == ".key":
+                target.chmod(0o600)
+            assert target.read_bytes() == raw
+            fixture_count += 1
+        assert fixture_count == 8
+        assert not run_git(original, "status", "--porcelain")
+        assert {p: sha((original / p).read_bytes()) for p in baseline} == baseline
+        branches[name] = dict(parent_commit=row["commit"], commit=row["commit"],
+            candidate_tree=str(destination), candidate_commit_created=False,
+            changed_SDK_source_paths=[TARGET], sdk_source_sha256=expected,
+            Git_metadata_copied=False, patch_apply_check_exit=0,
+            synthetic_TLS_fixture_count=8, synthetic_fixture_bytes_reused_exact=True,
+            fixture_private_keys_local_only=True,
+            original_branch_source_bytes_unchanged=True)
+    write_json(HERE / "source-ready.json", dict(
+        status="METRICS_TEST_PORTABILITY_CANDIDATE_READY_NOT_TESTED",
+        source_preparation_sha256=sha(prepared_raw), helper_sha256=sha(Path(__file__).read_bytes()),
+        patch_sha256=sha(patch), original_test_sha256=sha(old), candidate_test_sha256=sha(new),
+        branches=branches, pytest_executed=False, production_source_changed=False,
+        original_test_trees_changed=False, public_branch_refs_updated=False,
+        failure_mechanism="A real ordinary file blocks parent directory creation; OSError subclass is platform-dependent.",
+        retained_first_runs={name: sha((SUITE / "runs" / (name + "-full-first") / "results.json").read_bytes()) for name in branches}))
+    print(json.dumps(dict(status="CANDIDATES_PREPARED_NOT_TESTED", branches=2,
+        changed_source_files_per_branch=1, pytest_executed=False,
+        patch_sha256=sha(patch), source_ready_sha256=sha((HERE / "source-ready.json").read_bytes()))))
+
+
+if __name__ == "__main__":
+    main()

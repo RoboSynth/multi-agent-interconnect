@@ -1,0 +1,114 @@
+{
+  "status": "EXISTING_HOST_CURRENT_FOLLOWUP_POINT_OBSERVATION",
+  "observed_at_utc": "2026-10-18T09:24:01.889790+00:00",
+  "session_nonce": "01d3bfe8bc6145689c33271fbc366d65",
+  "process_handles": {
+    "runtime": {
+      "pid": 42712,
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true,
+      "command_line_sha256": "6e1c523e8629c059dcac568418110bf32228542ee92cbf807d6fed8ef72d6bff"
+    },
+    "parent": {
+      "pid": 37812,
+      "query_and_synchronize_handle_opened": true,
+      "wait_zero_result": 258,
+      "alive_at_observation": true,
+      "exact_script_nonce_run_verified": true,
+      "command_line_sha256": "69c2310c54177edd973672dfcd069dd3b83942ad86277cb66451a81b259ac3e6"
+    }
+  },
+  "CIM": {
+    "actual_subprocess_exit_code": 0,
+    "runtime_pid": 42712,
+    "parent_pid": 37812,
+    "exact_script_nonce_run_and_executable_verified": true,
+    "commandline_sha256": {
+      "37812": "69c2310c54177edd973672dfcd069dd3b83942ad86277cb66451a81b259ac3e6",
+      "42712": "6e1c523e8629c059dcac568418110bf32228542ee92cbf807d6fed8ef72d6bff"
+    }
+  },
+  "HTTP": {
+    "runtime_pid": 42712,
+    "connected": true,
+    "mode": "wutong-amqps",
+    "config_sha256": "8d940b048e2fd286837681524ac8ab9e4c8613be855cddc0bf32adfbf8c8e726",
+    "participant_count": 5,
+    "resource_credential_count": 0,
+    "model_enabled": false,
+    "connection_error_empty": true,
+    "incident_status": "completed"
+  },
+  "schedule": {
+    "started_cycles": 5,
+    "completed_cycles": 5,
+    "active_is_none": true,
+    "next_due_utc": "2026-10-18T09:29:08.272386+00:00"
+  },
+  "previous_cycle_proofs_replaced": false,
+  "latest_completed_cycle": {
+    "cycle_ordinal": 5,
+    "started_at_utc": "2026-10-18T08:58:29.487631+00:00",
+    "finished_at_utc": "2026-10-18T08:59:08.267385+00:00",
+    "elapsed_seconds": 37.64,
+    "business_observation": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "passed": true,
+      "pending_intents": 0
+    },
+    "task_kind_counts": {
+      "observe": 5,
+      "verify": 1
+    },
+    "act_tasks": 0,
+    "model_calls": 0,
+    "reported_tokens": 0,
+    "approvals": 0,
+    "checks": {
+      "completed": true,
+      "business_recovered": true,
+      "duration_and_flows": true,
+      "passed_without_bad": true,
+      "only_observe_verify": true,
+      "tasks_products_ok": true,
+      "no_act_resume_or_approvals": true,
+      "no_model": true,
+      "terminal_bytes_stable": true
+    },
+    "all_new_cycle_checks_passed": true,
+    "terminal_incident_sha256": "6e7a4a737dc8f6d5ff5cdab00ee1845a849f213e450a40ad88be0a48ade56745"
+  },
+  "journal": {
+    "state_counts": {
+      "awaiting-completion": 35,
+      "completed": 35
+    },
+    "raw_nonterminal_historical_rows": 35,
+    "effective_in_flight_attempts": 0,
+    "takeover_events": 0,
+    "interpretation": "Raw history retained; existing latest logical-task/partner SQL excludes superseded attempts. No raw rows rewritten."
+  },
+  "source_sha256": {
+    "observer": "ab78d09d5dce934df12bfe1a38716ed545d3590e94794613afdbc84ad95655cf",
+    "query_handle_helper": "87e75f5135255fd3089896dd568e1f88035bb91d799d76986e47744a6ba60b14",
+    "reused_observer_baseline": "be11af17dc954b25606fd5b8b5f03bc7616b481407ee985dbbbe04ae80ba402f",
+    "frozen_host": "90827b8c47f6f4ae13dd011d35d466bbe727fb6d97080f593a726c4645eda107",
+    "native_process_helper": "cd54bcc0333845051ede63e65ad7db68acee716db0525acec3adb284357033b3",
+    "schedule_events": "c434a8515d6b692cff6e0fc72d4723254ee8eb8922a31e48b9a02d2127eafe33",
+    "schedule_state": "7553e915d26ccaf3bf0408542c5169ec019aa655765721764f64f98e254f031a"
+  },
+  "limits": [
+    "Point-in-time CIM/handles/HTTP plus the newest completed naturally scheduled cycle, not continuous availability or future-exit proof.",
+    "Observer performed one localhost GET, one CIM query and local read-only file/SQLite reads; no lifecycle, AMQPS/MCP/model/business calls.",
+    "Scheduled verify itself creates/queries/cancels synthetic orders; zero act does not mean zero business writes.",
+    "Old E3 gaps and prior failures are unchanged; previous cycle proofs were not replaced."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "status": "SEVEN_SOURCE_COLLECTOR_DESIGN_ONLY_NOT_DEPLOYED",
+  "node_scope": "Current incident-pilot NEW7 local Windows/WSL deployment; regenerate for another session/node",
+  "collector_image": "PINNED_LINUX_FLUENT_BIT_IMAGE_NOT_YET_SELECTED",
+  "collector_mode": "stdout",
+  "source_mounts_read_only": true,
+  "business_resource_credentials_or_Docker_socket": false,
+  "source_identity_mapping": "Read only aic/name/amp_directory metadata from the appropriate per-role private config at future preparation; never copy private config or keys into source mounts",
+  "sources": [
+    {
+      "role": "coordinator",
+      "host_project_relative_directory": "artifacts/new7-inspect-session-20261018/runs/01d3bfe8bc6145689c33271fbc366d65/workbench/transport/amp",
+      "collector_mount": "/sources/coordinator",
+      "collector_log_directory": "/sources/coordinator",
+      "identity_metadata": "runtime/private/new7-amp-fixed-20261018/coordinator.json:leader.aic"
+    },
+    {"role": "application", "named_volume": "incident-pilot-new7_application-agent-state", "volume_subpath": "amp-application", "collector_mount": "/sources/application", "collector_log_directory": "/sources/application", "identity_metadata": "runtime/private/new7-container-20261018/domains/application/config.json:aic"},
+    {"role": "database", "named_volume": "incident-pilot-new7_database-agent-state", "volume_subpath": "amp-database", "collector_mount": "/sources/database", "collector_log_directory": "/sources/database", "identity_metadata": "runtime/private/new7-container-20261018/domains/database/bridge.json:platform.aic"},
+    {"role": "database-backup", "named_volume": "incident-pilot-new7_database-agent-state", "volume_subpath": "amp-database-backup", "collector_mount": "/sources/database-backup", "collector_log_directory": "/sources/database-backup", "identity_metadata": "runtime/private/new7-container-20261018/domains/database-backup/bridge.json:platform.aic"},
+    {"role": "ops", "named_volume": "incident-pilot-new7_ops-agent-state", "volume_subpath": "amp-ops", "collector_mount": "/sources/ops", "collector_log_directory": "/sources/ops", "identity_metadata": "runtime/private/new7-container-20261018/domains/ops/bridge.json:platform.aic"},
+    {"role": "verification", "named_volume": "incident-pilot-new7_verification-agent-state", "volume_subpath": "amp-verification", "collector_mount": "/sources/verification", "collector_log_directory": "/sources/verification", "identity_metadata": "runtime/private/new7-container-20261018/domains/verification/config.json:aic"},
+    {"role": "onboarding", "named_volume": "incident-pilot-new7_onboarding-agent-state", "volume_subpath": "amp-onboarding", "collector_mount": "/sources/onboarding", "collector_log_directory": "/sources/onboarding", "identity_metadata": "runtime/private/new7-container-20261018/domains/onboarding/config.json:aic"}
+  ],
+  "parser_mount": "/collector/parsers.conf (read-only)",
+  "dedicated_state_mount": "/collector-state (new isolated writable volume, not created)",
+  "startup_preconditions": [
+    "Pin collector image and validate its version/config without invoking existing business services",
+    "Resolve and attest actual owned named-volume identities and the Windows bind path",
+    "Prepare only the dedicated collector state directory and its seven per-source subdirectories before starting; do not use business state as offset storage",
+    "Require supported volume.subpath mounts and existing AMP subdirectories, read-only; never fall back to mounting the entire state volume with its operation ledger",
+    "No domain env, private configs, client keys or Docker socket source mounts",
+    "Establish one collector owner and exclude independently running collectors of these sources; cross-platform ownership is not implemented by this example",
+    "For Kafka, prepare an explicit confirmed external profile and separate read-only transport material mounts; do not infer Kafka access from AIC certificates"
+  ],
+  "actual_container_or_forwarder_starts": 0,
+  "actual_Kafka_or_Monitor_operations": 0
+}
