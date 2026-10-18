@@ -4,6 +4,8 @@
 
 # 跨系统故障诊断与协同恢复
 
+新增[独立部署入口](deploy/ISOLATED.md)：manifest绑定项目、端口、环境及路由，准备默认只写新目录，四业务与七身份模式分开。[业务验收工具](evidence/deployment-verifier-20261018/summary.json)支持URL或manifest并检查公共v2和30秒/10完整流程；原8088验收与[新580xx部署实跑](evidence/isolated-deployment-runtime-20261018/summary.json)分别留证，后者30.016秒/30成功/10流程，原30容器元数据保持，自有4容器正常停止并保留。两次监督检查误判退出1保留，最终H00/stop为0，没有第三次up。六份接手文档同步当前NEW7状态；[场景缺口审阅](docs/scenario_gaps_20261018.md)列出待实施的回执判据和F12显式目标缺口。本轮是同机缓存验收，正式E1、新机器T96、Kafka/Monitor及24小时仍待。
+
 本轮新增[七源真实卷stdout采集](evidence/t06-real-volume-stdout-20261018/README.md)：只读挂载七角色日志，75.005秒取得32,069条唯一记录、42类组合及42个offset数据库，采集器正常退出，原29容器保持。Kafka显式集合模式与Linux配置入口已实现；[官方配置说明](docs/kafka_monitor_20261018.md)区分规划端点与可用连接资料，官方Kafka/Monitor尚未验收。[8766受控更新](evidence/workbench-8766-update-20261018/summary.json)保留历史事故，修复乱序加载导致默认事故过旧的问题；[第九次巡检观察](evidence/new7-runtime-followup-20261018/inspect-ninth-cycle.json)核最新周期30秒/10完整流程。正式E1和24小时验收仍待。
 
 本轮新增[T50工作台验收](evidence/t50-workbench-development-20261018/summary.json)：计划依赖、假设预测、审批状态与历史已接入；访问对账随所选事故切换，完整、缺端、坏行和未采集分别显示。浏览器使用合成记录与真实更新后的GET接口，闭合健康记录分两事故各6任务/12访问复核。[T06本地七源采集](evidence/t06-seven-source-local-20261018/README.md)在隔离fixture通过252条逐字段对账、42个offset数据库、三轮host/collector正常退出；只覆盖固定追加、新稳定文件发现与重启续读，原console竞态失败及84条归档重放保留。实际七域卷、rename/copytruncate、Kafka/Monitor、正式E1与24小时仍待验收。

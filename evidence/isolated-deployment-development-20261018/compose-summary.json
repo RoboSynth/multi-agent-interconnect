@@ -1,0 +1,143 @@
+[
+  {
+    "mode": "business",
+    "expected_services": [
+      "app-v1",
+      "app-v2",
+      "nginx",
+      "postgres"
+    ],
+    "ports": {
+      "app-v1": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "59081",
+          "protocol": "tcp"
+        }
+      ],
+      "app-v2": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "59082",
+          "protocol": "tcp"
+        }
+      ],
+      "nginx": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 80,
+          "published": "59088",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "route_mounts": {
+      "nginx": [
+        {
+          "type": "bind",
+          "source": "<checkout>/artifacts/deployment-gap-audit-20261018/revision2/sentinel-business/nginx-runtime",
+          "target": "/etc/nginx/runtime",
+          "read_only": true
+        }
+      ]
+    },
+    "all_expected_only": true,
+    "env_sentinel": true,
+    "resources_started": false
+  },
+  {
+    "mode": "seven",
+    "expected_services": [
+      "app-v1",
+      "app-v2",
+      "application-agent",
+      "database-agent",
+      "database-backup-agent",
+      "nginx",
+      "onboarding-agent",
+      "ops-agent",
+      "postgres",
+      "verification-agent"
+    ],
+    "ports": {
+      "app-v1": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "59181",
+          "protocol": "tcp"
+        }
+      ],
+      "app-v2": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "59182",
+          "protocol": "tcp"
+        }
+      ],
+      "nginx": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 80,
+          "published": "59188",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "route_mounts": {
+      "nginx": [
+        {
+          "type": "bind",
+          "source": "<checkout>/artifacts/deployment-gap-audit-20261018/revision2/sentinel-seven/nginx-runtime",
+          "target": "/etc/nginx/runtime",
+          "read_only": true
+        }
+      ],
+      "ops-agent": [
+        {
+          "type": "bind",
+          "source": "<checkout>/artifacts/deployment-gap-audit-20261018/revision2/sentinel-seven/nginx-runtime",
+          "target": "/route"
+        }
+      ]
+    },
+    "all_expected_only": true,
+    "env_sentinel": true,
+    "resources_started": false,
+    "domain_profiles": {
+      "application": [
+        "agents",
+        "isolated"
+      ],
+      "verification": [
+        "agents",
+        "isolated"
+      ],
+      "database": [
+        "agents",
+        "isolated"
+      ],
+      "database-backup": [
+        "agents",
+        "isolated"
+      ],
+      "ops": [
+        "agents",
+        "isolated"
+      ],
+      "onboarding": [
+        "onboarding",
+        "isolated"
+      ]
+    }
+  }
+]

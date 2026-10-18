@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "started_at": "2026-10-18T12:10:47.488922+00:00",
+  "project": "incident-pilot-entry-check-20261018",
+  "ports": {
+    "app_v1": 58081,
+    "app_v2": 58082,
+    "order": 58088
+  },
+  "source_sha256": {
+    "deploy/prepare_deployment.py": "0def9f558fc88ade3181fe6f15ddf539d8bbdb0cccd410e6d83d34bc730b6c49",
+    "deploy/up.ps1": "8ce7650a9323f1ad4f2288e617274e3e7c061cab4a206e26a29b8f5de5f251ae",
+    "deploy/up.sh": "84eaddc8295bce8cc6dc2da9f450d67d37f20ba1dd0d55cde635a40412daf03f",
+    "deploy/verify.py": "d24784a5f6fb50400a7ef14715cd3fda2b753a73eb6a885ee09f38b34dc5e7b2"
+  },
+  "actual_actions": {
+    "verify": 0,
+    "normal_stop": 0
+  },
+  "scope": "Same prepared manifest; no further up/build. Verify the four containers from the successful second up, then normally stop their exact IDs.",
+  "fault_injections": 0,
+  "platform_calls": 0,
+  "new_machine": false,
+  "original_containers_preserved": 30,
+  "owned_retained_stopped": 4,
+  "completed_at": "2026-10-18T12:11:38.345000+00:00"
+}

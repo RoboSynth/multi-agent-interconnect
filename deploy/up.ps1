@@ -3,9 +3,24 @@ param(
     [string]$ProjectName = 'incident-pilot',
     [string]$WslDistro = 'Ubuntu-22.04',
     [switch]$Agents,
-    [switch]$ValidateOnly
+    [switch]$ValidateOnly,
+    [string]$DeploymentFile
 )
 $ErrorActionPreference = 'Stop'
+if ($DeploymentFile) {
+    if ($PSBoundParameters.ContainsKey('EnvFile') -or $PSBoundParameters.ContainsKey('ProjectName') -or
+        $PSBoundParameters.ContainsKey('WslDistro') -or $Agents) {
+        throw 'DeploymentFile is the sole deployment scope; do not combine individual resource options.'
+    }
+    $Python = $env:INCIDENT_PYTHON
+    if (-not $Python) { $Python = Join-Path $PSScriptRoot '../.venv/Scripts/python.exe' }
+    if (-not (Test-Path -LiteralPath $Python)) { throw 'Set INCIDENT_PYTHON to this checkout Python interpreter.' }
+    $Arguments = @((Join-Path $PSScriptRoot 'prepare_deployment.py'), '--launch', $DeploymentFile)
+    if ($ValidateOnly) { $Arguments += '--validate-only' }
+    & $Python @Arguments
+    if ($LASTEXITCODE) { throw "Isolated deployment failed ($LASTEXITCODE)." }
+    return
+}
 $EnvFile = (Resolve-Path -LiteralPath $EnvFile).Path
 if ($ProjectName -notmatch '^[a-z0-9][a-z0-9_-]*$') { throw 'Invalid Compose project name.' }
 $Docker = Get-Command docker -ErrorAction SilentlyContinue

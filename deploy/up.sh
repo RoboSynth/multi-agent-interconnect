@@ -1,6 +1,17 @@
 #!/bin/sh
 set -eu
 DEPLOY_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -n "${INCIDENT_DEPLOYMENT_FILE:-}" ]; then
+    if [ -n "${INCIDENT_ENV_FILE:-}" ] || [ -n "${INCIDENT_PROJECT_NAME:-}" ] || [ "${INCIDENT_AGENTS:-0}" != 0 ]; then
+        echo 'INCIDENT_DEPLOYMENT_FILE is the sole deployment scope; unset individual resource options.' >&2
+        exit 1
+    fi
+    PYTHON=${INCIDENT_PYTHON:-"$DEPLOY_DIR/../.venv/bin/python"}
+    if [ "${INCIDENT_VALIDATE_ONLY:-0}" = 1 ]; then
+        exec "$PYTHON" "$DEPLOY_DIR/prepare_deployment.py" --launch "$INCIDENT_DEPLOYMENT_FILE" --validate-only
+    fi
+    exec "$PYTHON" "$DEPLOY_DIR/prepare_deployment.py" --launch "$INCIDENT_DEPLOYMENT_FILE"
+fi
 command -v docker >/dev/null 2>&1 || { echo 'Docker is required.' >&2; exit 1; }
 docker compose version >/dev/null
 ENV_FILE=${INCIDENT_ENV_FILE:-"$DEPLOY_DIR/.env"}

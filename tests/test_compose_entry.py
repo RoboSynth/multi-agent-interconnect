@@ -107,6 +107,42 @@ class ComposeEntryTests(unittest.TestCase):
         self.assertEqual(calls, [expected + ["config", "--quiet"]])
         self.assertFalse(route_exists)
 
+    def manifest_fixture(self, *, conflicting_env=False):
+        with fixture_directory() as root:
+            deploy = root / "deploy"
+            deploy.mkdir()
+            shutil.copyfile(ROOT / "deploy/up.ps1", deploy / "up.ps1")
+            log = root / "python-argv.json"
+            python = root / "fixture-python.ps1"
+            python.write_text(
+                "@($args) | ConvertTo-Json -Compress | Set-Content -LiteralPath " + quote(log) + "\n"
+                "$global:LASTEXITCODE=0\n", encoding="utf-8")
+            wrapper = root / "manifest-wrapper.ps1"
+            command = "& " + quote(deploy / "up.ps1") + " -DeploymentFile " + quote(root / "部署/deployment.json") + " -ValidateOnly"
+            if conflicting_env:
+                command += " -EnvFile " + quote(root / "wrong.env")
+            wrapper.write_text(
+                "$ErrorActionPreference='Stop'\n$env:INCIDENT_PYTHON=" + quote(python) + "\n"
+                "try { " + command + " } catch { [Console]::Error.WriteLine($_.Exception.Message); exit 1 }\n",
+                encoding="utf-8")
+            result = subprocess.run([PWSH, "-NoProfile", "-NonInteractive", "-File", str(wrapper)],
+                capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20)
+            arguments = json.loads(log.read_text(encoding="utf-8-sig")) if log.exists() else None
+            return result, arguments, str(deploy / "prepare_deployment.py"), str(root / "部署/deployment.json"), (deploy / "nginx/runtime").exists()
+
+    def test_manifest_delegates_exact_scope_and_validate_only_without_default_route(self):
+        result, arguments, script, manifest, route_exists = self.manifest_fixture()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(arguments, [script, "--launch", manifest, "--validate-only"])
+        self.assertFalse(route_exists)
+
+    def test_manifest_rejects_individual_env_before_python_or_route(self):
+        result, arguments, _, _, route_exists = self.manifest_fixture(conflicting_env=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("sole deployment scope", result.stderr)
+        self.assertIsNone(arguments)
+        self.assertFalse(route_exists)
+
 
 if __name__ == "__main__":
     unittest.main()

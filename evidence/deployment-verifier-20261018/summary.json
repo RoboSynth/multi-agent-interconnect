@@ -1,0 +1,65 @@
+{
+  "schema_version": "deployment-verifier-evidence/1",
+  "status": "passed_on_existing_native_business",
+  "recorded_at_utc": "2026-10-18T11:58:52.206510+00:00",
+  "runtime": {
+    "tool_session": 6547,
+    "start_chunk": "6e9adf",
+    "completion_chunk": "cd100e",
+    "actual_exit_code": 0,
+    "started_at": "2026-10-18T11:56:37.388482+00:00",
+    "completed_at": "2026-10-18T11:57:07.698512+00:00",
+    "order_url": "http://127.0.0.1:8088",
+    "requests": 30,
+    "success": 30,
+    "complete_workflows": 10,
+    "failed": 0,
+    "unknown": 0,
+    "unresolved_intents": 0
+  },
+  "offline_tests": {
+    "distinct_methods": 7,
+    "HTTP_transport_and_real_observer_methods": 6,
+    "HTTP_test_actual_exit_code": 0,
+    "HTTP_test_chunk": "11b25e",
+    "manifest_CLI_method": 1,
+    "manifest_CLI_actual_exit_code": 0,
+    "manifest_CLI_chunk": "b8ebb5",
+    "wall_clock": "HTTP fixture replaces waits and monotonic clock; still executes 30 requests and the original intent state machine",
+    "reuse": "Six HTTP tests preceded the manifest CLI option; verify/order_origin/healthy_window bodies were unchanged. Only the new CLI test was added and run afterward."
+  },
+  "retained_nonpassing_runs": [
+    {
+      "tool_session": 73182,
+      "start_chunk": "593983",
+      "completion_chunk": "155b65",
+      "actual_exit_code": 1,
+      "reason": "Restricted-environment async test stalled before its first result; only its exact identified owned child PID7444 was terminated. No assertion result was emitted."
+    },
+    {
+      "chunk": "c2e33b",
+      "actual_exit_code": 1,
+      "reason": "New CLI test used an auto-created AsyncMock with a synchronous sentinel assertion; fixture corrected to explicit Mock, then the affected method passed. Production code unchanged by this correction."
+    }
+  ],
+  "frozen_E1_inputs_checked": 204,
+  "frozen_E1_inputs_changed": 0,
+  "boundaries": {
+    "existing_machine": true,
+    "existing_native_business": true,
+    "new_machine": false,
+    "new_compose_deployment": false,
+    "fault_injection": false,
+    "model_calls": false,
+    "formal_platform_calls": false,
+    "platform_ingestion": false,
+    "formal_takeover": false,
+    "source_revision": "Live run used the URL CLI before the manifest CLI addition. Runtime verification function was not edited afterward."
+  },
+  "files": {
+    "result.json": "a4ca089d4b58239b0078aa346ea756f95ebe8cbb57ec85fe30c6ee1d63b5ac49",
+    "h00.json": "f42459d67e5b2838422b46e95084c93504816c133d4ece3660e1ddfec8681036",
+    "readiness.json": "948730321e5702ba0d8374bfb630a181b9102d4756d737bc779e82ccca86c411",
+    "state.json": "4049e6b4e9d0096bbdfdc836e4675159d1d11dede0e89f72a7c3e78f80ff8a0e"
+  }
+}

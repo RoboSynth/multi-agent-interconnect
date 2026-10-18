@@ -1,0 +1,97 @@
+{
+  "schema_version": "isolated-deployment-development/1",
+  "status": "offline_passed",
+  "behavior": [
+    "One manifest binds project/env/ports/route/Compose inputs and backend",
+    "Default preparation is offline; nonempty output rejected",
+    "Business mode has no injectable target; seven mode preserves complete existing target schema and live checks",
+    "Direct seven-identity source avoids native setup_local prerequisites",
+    "Compose interpolation scope variables cleared on host and within WSL; normal proxy settings retained",
+    "POSIX private parents plus readable per-domain bind roots; coordinator remains private",
+    "Same-project agent image built once before up --no-build; coordinator not auto-started"
+  ],
+  "tests": {
+    "final_preparation": 12,
+    "powershell_entry": 5,
+    "sentinel_compose_commands": 6,
+    "all_final_exit_codes": 0
+  },
+  "frozen_e1": {
+    "plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+    "files": 204,
+    "changed": []
+  },
+  "limitations": [
+    "Offline fixtures use fake identities/certificate text; no crypto or live identity validation",
+    "POSIX mode fixture is a static permission check, not Linux container runtime acceptance",
+    "Compose config never starts resources; this does not establish H00/F10/new-machine/15-minute T96 acceptance"
+  ],
+  "owned_source": [
+    {
+      "path": "deploy/prepare_deployment.py",
+      "sha256": "0def9f558fc88ade3181fe6f15ddf539d8bbdb0cccd410e6d83d34bc730b6c49",
+      "bytes": 19933
+    },
+    {
+      "path": "deploy/up.ps1",
+      "sha256": "8ce7650a9323f1ad4f2288e617274e3e7c061cab4a206e26a29b8f5de5f251ae",
+      "bytes": 2936
+    },
+    {
+      "path": "deploy/up.sh",
+      "sha256": "84eaddc8295bce8cc6dc2da9f450d67d37f20ba1dd0d55cde635a40412daf03f",
+      "bytes": 1665
+    },
+    {
+      "path": "deploy/ISOLATED.md",
+      "sha256": "8e933cf0d1d0ce72f2d20b5da0231794d1a663b37db07360e6da7aa27e13d047",
+      "bytes": 6847
+    },
+    {
+      "path": "tests/test_deployment_preparation.py",
+      "sha256": "54f5986ca27c6eab2003599ab1016e7e5b0cda0fb58b4fdccd0468835b8d430e",
+      "bytes": 15373
+    },
+    {
+      "path": "tests/test_compose_entry.py",
+      "sha256": "87b7d186f83544850c9adb7230d71c5aa6aae92489fe87c8c993bf3df0a16342",
+      "bytes": 7643
+    }
+  ],
+  "next_actual_commands": {
+    "prepare": [
+      ".venv/Scripts/python.exe",
+      "deploy/prepare_deployment.py",
+      "--output",
+      "runtime/private/deployment-entry-check-20261018",
+      "--project",
+      "incident-pilot-entry-check-20261018",
+      "--app-v1-port",
+      "58081",
+      "--app-v2-port",
+      "58082",
+      "--order-port",
+      "58088",
+      "--reply-drop-port",
+      "58090",
+      "--wsl",
+      "Ubuntu-22.04"
+    ],
+    "launch": [
+      "pwsh",
+      "-NoProfile",
+      "-File",
+      "deploy/up.ps1",
+      "-DeploymentFile",
+      "runtime/private/deployment-entry-check-20261018/deployment.json"
+    ],
+    "verify": [
+      ".venv/Scripts/python.exe",
+      "deploy/verify.py",
+      "--deployment-file",
+      "runtime/private/deployment-entry-check-20261018/deployment.json",
+      "--output",
+      "artifacts/deployment-entry-check-20261018/h00-first"
+    ]
+  }
+}

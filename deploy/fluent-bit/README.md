@@ -27,7 +27,7 @@ pwsh -NoProfile -File deploy/fluent-bit/run.ps1 -Mode kafka -LogDirectory <本�
 
 旧共享配置和 offset DB 保留，不自动迁移或重播。新 DB 默认 `Read_From_Head False`；需要历史补发时，应先明确时间窗/去重策略，再用 renderer 已有 `--read-from-head` 显式准备。直接调用 renderer 的 `--state-directory ... --output ...` 继续可用，它只写配置；同源运行互斥由 `run.ps1` 使用的 `--executable` 前台监督路径提供。
 
-七源收集设计见 `collection-plan.example.json` 与 `collector-stdout.example.conf`：Windows 协调者日志需显式只读 bind；六域日志位于五个 Docker named volume（主备共享一卷），仅用 `volume.subpath` 挂入日志子目录，不把操作账本或整个 `/state` 暴露给 collector。配置例只展示一个独立 Linux collector 的 42 个 Tail 输入、隔离 offset 和六类 stdout 路由。镜像、挂载、collector owner、Kafka profile/认证与生命周期尚需单独准备及审阅；没有改现有 Compose、启动 collector 或据此宣称已读到容器卷。`run.ps1` 的 Windows portable 无法直接读取容器内的 `/state` 路径。
+七源收集设计见 `collection-plan.example.json` 与 `collector-stdout.example.conf`：Windows 协调者日志需显式只读 bind；六域日志位于五个 Docker named volume（主备共享一卷），仅用 `volume.subpath` 挂入日志子目录，不把操作账本或整个 `/state` 暴露给 collector。配置例只展示一个独立 Linux collector 的 42 个 Tail 输入、隔离 offset 和六类 stdout 路由。独立 [Linux collector](linux-collector.md)现已完成[真实七源卷 stdout 实测](../../evidence/t06-real-volume-stdout-20261018/README.md)：七源只读、75.005 秒取得 32,069 条唯一记录、42 类角色/日志组合及 42 个 offset DB，正常停止且原 29 容器保持。它不包含 Kafka 发送或 Monitor 入库。`run.ps1` 的 Windows portable 无法直接读取容器内的 `/state` 路径。
 
 ## 七个本地目录的集合入口
 

@@ -1,0 +1,92 @@
+{
+  "final_preparation_tests": {
+    "tool_chunk": "5b2833",
+    "exit_code": 0,
+    "tests": 12,
+    "source": "actual exec_command completion; test names/results retained in tool transcript"
+  },
+  "powershell_entry_tests": {
+    "outer_tool_chunk": "02aed0",
+    "suite_exit_code": 0,
+    "tests": 5,
+    "stdout_file": "powershell-entry-tests.stdout.bin",
+    "stderr_file": "powershell-entry-tests.stderr.bin",
+    "reused": "up.ps1/test_compose_entry.py unchanged after this passing suite"
+  },
+  "sentinel_compose": {
+    "outer_completion": "a1a6e6",
+    "exit_code": 0,
+    "results": [
+      {
+        "name": "preparation-tests",
+        "exit_code": 0,
+        "stdout": "preparation-tests.stdout.bin",
+        "stderr": "preparation-tests.stderr.bin"
+      },
+      {
+        "name": "business-compose-quiet",
+        "exit_code": 0,
+        "stdout": "business-compose-quiet.stdout.bin",
+        "stderr": "business-compose-quiet.stderr.bin"
+      },
+      {
+        "name": "business-compose-services",
+        "exit_code": 0,
+        "stdout": "business-compose-services.stdout.bin",
+        "stderr": "business-compose-services.stderr.bin"
+      },
+      {
+        "name": "business-compose-json",
+        "exit_code": 0,
+        "stdout": "business-compose-json.stdout.bin",
+        "stderr": "business-compose-json.stderr.bin"
+      },
+      {
+        "name": "seven-compose-quiet",
+        "exit_code": 0,
+        "stdout": "seven-compose-quiet.stdout.bin",
+        "stderr": "seven-compose-quiet.stderr.bin"
+      },
+      {
+        "name": "seven-compose-services",
+        "exit_code": 0,
+        "stdout": "seven-compose-services.stdout.bin",
+        "stderr": "seven-compose-services.stderr.bin"
+      },
+      {
+        "name": "seven-compose-json",
+        "exit_code": 0,
+        "stdout": "seven-compose-json.stdout.bin",
+        "stderr": "seven-compose-json.stderr.bin"
+      }
+    ],
+    "reused_after": "later changes bind env metadata, restrict coordinator paths and fix POSIX file permissions; rendered content/commands unchanged"
+  },
+  "retained_failures": [
+    {
+      "tool_chunk": "663c26",
+      "exit_code": 1,
+      "tests": 10,
+      "errors": 3,
+      "reason": "Test fixture used Windows default GBK to read UTF-8 Chinese paths; explicit UTF-8 fixed"
+    },
+    {
+      "tool_chunk": "7f9873",
+      "exit_code": 1,
+      "reason": "Same fixture encoding failure before correction"
+    },
+    {
+      "tool_chunk": "02aed0",
+      "exit_code": 1,
+      "stage": "wsl-running",
+      "command_exit_code": 4294967295,
+      "reason": "Sandbox Wsl/E_ACCESSDENIED; exact stdout/stderr preserved, approved read-only config completed with escalation"
+    }
+  ],
+  "runtime_actions": {
+    "container_up": false,
+    "container_stop": false,
+    "fault_injection": false,
+    "identity_or_platform_connection": false
+  }
+}

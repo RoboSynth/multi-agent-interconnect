@@ -2,7 +2,7 @@
 
 2026-10-18 已逐角色核实七个新版身份的名称、正式 AIC 和审核通过状态；用户授权后，七个身份分别领取 EAB，官方 CLI 各签发一次客户端证书且退出码均为 0。各证书的 AIC、clientAuth、当前有效期和私钥匹配检查通过，均有效至 2026-12-06 的对应 UTC 时刻。源材料保存在独立私密目录；公开摘要见[证书办理记录](../evidence/platform-certificates-20261018/summary.json)。此前 2026-10-17 的证书暂缓安排已被本次授权与实际结果更新。
 
-七个新版 AIC 的官方 ADP 精确只读查询均已通过，公开 Inbox 端点与已提交 ACS 的身份绑定一致，见[元数据观察](../evidence/platform-certificates-20261018/adp-identity-observation.json)。本轮已实际部署独立 NEW7 容器项目，并由独占的 Windows 协调进程完成六域正式 AMQPS 健康运行：6 项 describe 和 6 项正常任务、30.003 秒/30 次成功请求/10 个完整流程，自有群组正常关闭。业务恢复、接管及新版 E3 45 格尚未运行，持久 8877 工作台仍为预留。见[本轮部署与健康验收](../docs/new7_platform_20261018.md)。
+七个新版 AIC 的官方 ADP 精确只读查询均已通过，公开 Inbox 端点与已提交 ACS 的身份绑定一致，见[元数据观察](../evidence/platform-certificates-20261018/adp-identity-observation.json)。本轮已实际部署独立 NEW7 容器项目，并由独占的 Windows 协调进程完成六域正式 AMQPS 健康运行：6 项 describe 和 6 项正常任务、30.003 秒/30 次成功请求/10 个完整流程，自有群组正常关闭。首次健康运行见[历史截面](../docs/new7_platform_20261018.md)。后续[正式 E3](../docs/new7_e3_20261018.md)已闭合 45 格：37 格确认、8 格 M1 未确认；8877 持续巡检已启动，[第九次点观察](../evidence/new7-runtime-followup-20261018/inspect-ninth-cycle.json)仅核当时身份与最新周期。正式接管与 24 小时验收仍待完成。
 
 ## 资源和身份归属
 
@@ -11,7 +11,7 @@
 | Compose project | `incident-pilot-new7` | 旧 T07 为 `incident-pilot-container` |
 | 业务入口 | `127.0.0.1:38088` | 旧 18088、团队冷部署 28088、原生 8088 分离 |
 | 应用 v1 / v2 | 回环 38081 / 38082 | 旧 18081 / 18082、原生 8081 / 8082 分离 |
-| 协调工作台 | Windows 回环 8877 预留，持久工作台未启动 | 旧 8767 / T07 保持原身份与原资源 |
+| 协调工作台 | Windows 回环 8877，已启动独占身份的持续巡检 | 旧 8767 / T07 保持原身份与原资源 |
 | 业务数据库 | `incident-pilot-new7_orders-data`，无主机端口 | 不挂旧业务或原生数据库目录 |
 | 路由目录 | `runtime/private/new7-container-20261018/nginx-runtime` | 不写 `deploy/nginx/runtime` 或旧路由 |
 | 配置与证书 | 同目录下 `domains/<role>`，每容器一个只读 `/domain` | 不复用旧身份的私钥、挂载目录或 Inbox |
@@ -64,9 +64,9 @@ new7_compose up -d --no-build
 
 ## leader 独占和验收顺序
 
-`platform_smoke`、E3 `eval/run.py`、8877 工作台都会创建 Wutong leader，不能同时复用新版 coordinator AIC。域参与者也只接受一个 active inbound group。本轮平台健康 smoke 与正常 close 已完成、在途为 0；后续顺序仍为 E3 独占评测并正常 close → 最后启动持久 8877 和巡检。E3、故障恢复和接管须另行授权，不能由健康通过自动触发。异常/超时组先保留证据，不通过杀域进程或删除未知远端组绕过。旧 8767/T07 使用旧 AIC，继续只操作旧 180xx，不加入新组。
+`platform_smoke`、E3 `eval/run.py`、8877 工作台都会创建 Wutong leader，不能同时复用新版 coordinator AIC。域参与者也只接受一个 active inbound group。平台健康 smoke 和正式 E3 均已闭合，随后已启动独占身份的 8877 巡检。后续新实验前，须先在空闲边界正常停止同 AIC 的巡检并核对群组关闭；新故障或正式接管须另行明确范围，不能复用已结束 E3 的原批授权。异常/超时组先保留证据，不通过杀域进程或删除未知远端组绕过。旧 8767/T07 使用旧 AIC，继续只操作旧 180xx，不加入新组。
 
-2026-10-17 的非秘密 E3 target 保留为历史草稿：`artifacts/new7-container-plan-20261017/evaluator-target.draft.json`。它仍含 20261017 的旧 env/route 路径，不能作为上表 20261018 部署的当前评测入口；原件不改写。新的 E3 入口须先另行生成 revision 2，将 env、route 和源码摘要绑定本轮部署，再经授权运行。评测器独立子进程读取业务 env；协调者只读 target 描述及文件 hash。正式注入前评测器还会核验 live project 标签、loopback 端口、数据库卷名前缀及 nginx/ops 的精确路由 bind。
+2026-10-17 的非秘密 E3 target 保留为历史草稿：`artifacts/new7-container-plan-20261017/evaluator-target.draft.json`。它仍含 20261017 的旧 env/route 路径，不能作为上表 20261018 部署的当前评测入口；原件不改写。后续已生成独立 revision 2 并完成上述 E3；新实验仍须重新绑定 env、route、源码摘要及授权，不能使用该历史草稿直接运行。评测器独立子进程读取业务 env；协调者只读 target 描述及文件 hash。正式注入前评测器还会核验 live project 标签、loopback 端口、数据库卷名前缀及 nginx/ops 的精确路由 bind。
 
 最后启动工作台时，使用系统环境白名单加显式项目网络变量（本机平台直连可设仅此进程的 `NO_PROXY=wt.ioa.pub,127.0.0.1,localhost`），并以实际子进程的环境名称探针证明资源凭据为 0。不要将 resource compose.env 加载进协调者 shell。保留 Windows 回环 8877 的现有本机访问规则。健康基线须完成 30 秒 / 10 个创建、查询、取消流程，再声明业务可用；running 不能代替 describe 或业务 ready。
 

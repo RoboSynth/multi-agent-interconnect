@@ -1,5 +1,9 @@
 # 业务底座部署
 
+团队成员在新检出目录中部署时，优先使用[独立部署准备](ISOLATED.md)：一次生成独立项目、随机凭据、路由、端口与部署清单，再让 Windows/Linux 启动器读取同一份清单。七角色模式还会生成与部署一致的评测 target；纯业务模式不生成可用于正式智能体实验的 target。准备命令只写新目录，不启动容器或身份。
+
+启动后使用 `deploy/verify.py --deployment-file <deployment.json> --output <新的证据目录>` 验收。它固定运行 30 秒、每秒 1 请求、10 个创建/查询/取消流程，逐响应校验 v2，前后检查公共 `/ready`，要求失败、未知和待决均为 0；失败记录和原请求键保留。该入口已在现有本机 8088 实跑通过，属于新入口的业务验收；新机器 15 分钟冷部署仍须另测。
+
 ## 一键准备与本地模型
 
 先准备 Python 3.12 项目 `.venv`，再使用 PowerShell 7.4+：
@@ -38,7 +42,7 @@ GRANT SELECT, INSERT ON operation_receipts TO orders_app;
 ```powershell
 pwsh -NoProfile -File deploy/native.ps1 start
 pwsh -NoProfile -File deploy/native.ps1 status
-.\.venv\Scripts\python.exe business/load.py --duration 30 --output eval/results/local/h00.json
+.\.venv\Scripts\python.exe deploy/verify.py --url http://127.0.0.1:8088 --output artifacts/h00-native-new
 # 完成本机演示后需要关闭时：
 pwsh -NoProfile -File deploy/native.ps1 stop
 ```
@@ -84,7 +88,7 @@ Windows 从项目目录执行；本机有 Docker CLI 时直接使用，否则启
 
 ```powershell
 pwsh -NoProfile -File deploy/up.ps1 -EnvFile runtime/private/container.env -ProjectName incident-pilot-container
-.\.venv\Scripts\python.exe business/load.py --url http://127.0.0.1:18088 --duration 30 --output eval/results/local/docker-h00-new.json
+.\.venv\Scripts\python.exe deploy/verify.py --url http://127.0.0.1:18088 --output artifacts/h00-docker-new
 ```
 
 环境文件必须设置三个随机凭据 `POSTGRES_PASSWORD`、`ORDERS_DB_PASSWORD`、`APP_ADMIN_TOKEN`；
@@ -105,14 +109,10 @@ test -f deploy/.env || cp deploy/.env.example deploy/.env
 # 在资源主机填入三个独立随机凭据，并限制文件权限。
 chmod 600 deploy/.env
 sh deploy/up.sh
-.venv/bin/python business/load.py --url http://127.0.0.1:8088 --duration 30 --output eval/results/h00-new.json
+.venv/bin/python deploy/verify.py --url http://127.0.0.1:8088 --output artifacts/h00-linux-new
 ```
 
-已有环境文件应保留，凭据只在本机资源侧填写，不提交仓库。自定义 project、env 和端口时，
-H00 的 `--url` 必须与该入口一致；这些自定义范围尚未贯通到默认 `eval/inject.py` 的资源定位，
-不能直接用默认 F10 命令操作隔离项目或其他服务。本节只执行 H00，不包含故障注入。
-验收应同时核实公共 `/ready` 为 v2，并检查完整订单流程及 failed/unknown/未决计数；
-启动命令返回或普通 load CLI 的 passed 字段不能单独证明逐响应版本正确。
+已有环境文件应保留，凭据只在本机资源侧填写。沿用本节旧参数入口时，H00 的 `--url` 必须与实际端口一致，默认 `eval/inject.py` 不会自动读取这些自定义参数。新的[独立部署入口](ISOLATED.md)以同一清单生成启动配置及七角色评测 target；后续受控实验显式使用该 target，仍需六域身份和运行检查全部通过。本节只执行 H00，不包含故障注入。验收工具会保留公共 v2 检查和完整订单窗口；启动命令返回不能替代验收结果。
 
 Compose 包含 PostgreSQL16、两个版本应用、Nginx 与按需启用的真实故障辅助容器，
 统一使用 `incident-pilot=true` 标签。数据库不向主机公开端口，应用管理端仅绑定回环，

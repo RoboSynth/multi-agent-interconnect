@@ -1,0 +1,101 @@
+{
+  "schema_version": "isolated-deployment-runtime/1",
+  "status": "passed_with_retained_supervisor_failures",
+  "recorded_at_utc": "2026-10-18T12:12:10.062255+00:00",
+  "project": "incident-pilot-entry-check-20261018",
+  "ports": {
+    "app_v1": 58081,
+    "app_v2": 58082,
+    "order": 58088
+  },
+  "sources": {
+    "deploy/prepare_deployment.py": "0def9f558fc88ade3181fe6f15ddf539d8bbdb0cccd410e6d83d34bc730b6c49",
+    "deploy/up.ps1": "8ce7650a9323f1ad4f2288e617274e3e7c061cab4a206e26a29b8f5de5f251ae",
+    "deploy/up.sh": "84eaddc8295bce8cc6dc2da9f450d67d37f20ba1dd0d55cde635a40412daf03f",
+    "deploy/verify.py": "d24784a5f6fb50400a7ef14715cd3fda2b753a73eb6a885ee09f38b34dc5e7b2"
+  },
+  "stages": [
+    {
+      "outer_actual_exit_code": 1,
+      "outer_chunk": "e94851",
+      "up_actual_exit_code": 0,
+      "stop_actual_exit_code": 0,
+      "H00_executed": false,
+      "failure": "Observer compared unsorted mount arrays; complete saved mount records normalize equal. Original result is preserved."
+    },
+    {
+      "outer_actual_exit_code": 1,
+      "outer_chunk": "8557ab",
+      "up_actual_exit_code": 0,
+      "H00_executed": false,
+      "failure": "Observer wrongly required first-run app IDs after up --build recreated the two owned application containers. Build/recreate logs and original result are retained locally; no further build was run."
+    },
+    {
+      "outer_actual_exit_code": 0,
+      "outer_chunk": "b6c386",
+      "verify_actual_exit_code": 0,
+      "stop_actual_exit_code": 0,
+      "H00_executed": true,
+      "scope": "Use recorded current four owned IDs; no additional up/build; verify before normal stop"
+    }
+  ],
+  "business": {
+    "run_id": "deploy-c0f84d7d339347a7ac86a939b7237ee6",
+    "duration_seconds": 30.016,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  },
+  "original_container_records_preserved": 30,
+  "owned_stopped_and_retained": [
+    {
+      "id": "5cd18b19c2d94e49005390b7382f6bdc14fbbda6981afb11c91285a693788b83",
+      "service": "app-v2",
+      "image": "sha256:6f535089250507017333499bcfa26ca2ae5c3b0453b70736bd004ec4aee55011",
+      "status": "exited"
+    },
+    {
+      "id": "d4a349967f605561d880069fc628e1347f19b48a74c1a71888fa44af1f2ca425",
+      "service": "app-v1",
+      "image": "sha256:f06383181b3e35785f40cf45c672a3fa432462bbc9d6905882956d81a020e61b",
+      "status": "exited"
+    },
+    {
+      "id": "2a62eeb4eee78a6dd8dbb7c8ce6f2f2d0e92885510099e65429804cd0fb4ef78",
+      "service": "nginx",
+      "image": "sha256:1c7709d5f4d86d38773f8f908825dbc968da1fe2ee9d1d2542eeeb504a6a4fa8",
+      "status": "exited"
+    },
+    {
+      "id": "8a6dca5f06940ef13da2d6a922e89187af792d48886ca173bfb321f2b7ead6c4",
+      "service": "postgres",
+      "image": "sha256:530a5243e576c08debb4860c981029bd9896b96686a65140da9e3b11c92f698e",
+      "status": "exited"
+    }
+  ],
+  "preservation_comparison": "Full selected metadata fields and full mount records; only mount-array order normalized",
+  "boundaries": {
+    "same_existing_machine": true,
+    "existing_images_and_build_cache": true,
+    "new_machine": false,
+    "fifteen_minute_cold_acceptance": false,
+    "fault_injections": 0,
+    "model_calls": 0,
+    "platform_calls": 0,
+    "registered_agents_started": 0,
+    "database_and_network_deleted": false
+  },
+  "published_files": {
+    "continuation-result.json": "270c80dae18695a03d4ab791e6daefff76cc748da48a8149be7b56e0c6f2b38c",
+    "final-result.json": "20d644ee60d4a689e4dd549a0df3bfc5eaea0bc9930f677b0ff0ff25fb967a0a",
+    "h00.json": "2d741347b9b571bc6c4cb645ceb57a400faa88fea505d4fbd09ab04de96172d9",
+    "initial-result.json": "5a052ada53a4c1d7aba11c03a2843e06582e44e1197eeda3b906f3f551e3065d",
+    "saved-metadata-proof.json": "8fdb6166491875fae40676f7f5231823b716f708868de4fd1030bf51f9ce465e"
+  },
+  "frozen_E1_inputs_unchanged": 204
+}
