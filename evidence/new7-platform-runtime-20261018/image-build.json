@@ -1,0 +1,120 @@
+{
+  "status": "CURRENT_AGENT_AND_APPLICATION_IMAGES_BUILT",
+  "agent": {
+    "image_id": "sha256:3b4be5b24c4d5b9237ea539517deb83939676c855caa6cb260d3c9102ce0f96e",
+    "build_exit_code": 0,
+    "probe_exit_code": 0,
+    "host_source_drift": [],
+    "frozen_inputs_sha256": "3a4e6a4c6f99f0d67713f0cf406a052027926367cb1268bb89d1ead9fd83c7a0"
+  },
+  "agent_offline_probe": {
+    "uid": 65534,
+    "gid": 65534,
+    "loaded_import_paths": {
+      "PlatformWorker": "/srv/incident/platform_worker.py",
+      "Bridge": "/srv/acps_mcp_bridge/bridge.py",
+      "OnboardingPartner": "/srv/domains/onboarding/check.py",
+      "VersionedClient": "/srv/business/load.py",
+      "VerificationPartner": "/srv/incident/partners.py",
+      "workbench_server": "/srv/workbench_server.py",
+      "tools.configure_local_coordinator": "/srv/tools/configure_local_coordinator.py"
+    },
+    "source_count": 27,
+    "image_source_sha256": {
+      "acps_mcp_bridge/bridge.py": "ec6cde69f961483f7995f6ea716de79b85d06b6fcde53a1bba58b519013cafe5",
+      "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+      "business/load.py": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+      "business/order_app/main.py": "ea5341f629079f3b04a3bbb9f6bf312a2e7d0cfde91a123aca887d85f3fdf01d",
+      "demo-ui/workbench.css": "1192acac049782a5b6e79c489bf99193aeda9870a228c1802a90eb40eec8df67",
+      "demo-ui/workbench.html": "d0f5a5f6c2b661384f944c558cc87b12a7c3580afc13b9f42a7604f0ba930654",
+      "demo-ui/workbench.js": "f6a34b791a97c4cc7789c1db4eb07779ed0e51018c0189c4b97d8815bb89ebf2",
+      "domains/onboarding/check.py": "a9702c954ef6a7bcda97823b2cf3af52b237572465e09efa69d91f9eab7eb4e7",
+      "domains/ops/guard.py": "f4c8675e99052a5ff32f32852b0daac4d87999ce805efdd5f2228612cb99dfb5",
+      "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+      "incident/coordinator/engine.py": "c6e5bbd0a39473a2693936f3b12325b078397ff77a7a23043da1f209ae66ef52",
+      "incident/coordinator/hypothesis.py": "35abece7c3150edf98d07a3699905d84f7dfd22377cd6e3c453cad347e4ea18a",
+      "incident/coordinator/planner.py": "594e4d49da9406e3ebe21fd7b72e3d71bfa7959e2ff8451eb2b98cf5779b0dbb",
+      "incident/partners.py": "ce1ce581ce03cf38f2d3768d4ce361ee8536976ed62e26ba742847c13a60a67e",
+      "incident/platform_worker.py": "c84ba0ac36a55d9526890c810ffc6b6a6a715bec01c5487a869ca1da3288b0e0",
+      "integration/validate_acs.py": "54e0ce2beb31290cf4fad09414e6446c8d2ef9633746234aa77b9a5d691a6e62",
+      "integration/wutong_smoke.py": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+      "tools/configure_local_coordinator.py": "0ac9c50b6aaa53f34c6cd587ed75a8afb2759e959dec928bee2dbb614c100113",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py": "4b1302a1dbe9867a2fe16b9f8c33143774e678af5240ec6721a34f17ed98729f",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "040d0f6e28d55bd7a42e700241698dc11e13a8b069c12cf19d43160764b26ee3",
+      "vendor/ACPs-community/registry-server/LICENSE": "a8de816f0554ffa4950d83266ac99189bafbe1adb99a68dc6f096a3e554888a9",
+      "vendor/ACPs-community/registry-server/app/agent/acsSchema.json": "2451b556aa764c6e9fa8fead87005292c46f2f9cf1b4e6877188a9e739fb1397",
+      "workbench_server.py": "44bff87e15df8bd851619d93b3bc06899bc61b1d4c4650d4b329ddc8f056439b"
+    },
+    "root_read_only": true,
+    "network_interfaces": [
+      "lo"
+    ],
+    "resource_credential_environment_name_count": 0,
+    "in_memory_version_contract_cases": 6,
+    "AIC_or_consumer_or_server_started": false,
+    "model_or_resource_or_platform_network_calls": 0
+  },
+  "applications_successful_attempt": {
+    "attempt": 2,
+    "actual_build_exit_code": 0,
+    "image_inspect_actual_exit_code": 0,
+    "images": [
+      {
+        "service": "app-v1",
+        "image_id": "sha256:2424d1b2ff72bb65a226289a07e40d522f18b99d0d444ff474cf6e1d981cb613",
+        "user": "65534:65534"
+      },
+      {
+        "service": "app-v2",
+        "image_id": "sha256:d2d190489d3a86ee34b62a4a693d1c15ae74338d9e8fe3007b780da57b0b845a",
+        "user": "65534:65534"
+      }
+    ],
+    "host_source_drift": [],
+    "source_sha256": {
+      ".dockerignore": "5352916c46f2202c5063afecca0d4ef71ae6dfd57620551b0ef9aee3aae82ed9",
+      "business/README.md": "4fca07a714018c4d36190d5bc6cf03e07d2da25e4eca94da69694546cd6995c6",
+      "business/__init__.py": "591e06c019c863e3f2adb120edc0ac5d51bd4a56b9586250ee5533eb4f148d0e",
+      "business/fault_lock.py": "4fa12856d2c4c7f1c067806f936bab93050be9e55e1c7d6e8a9183d638b3d05c",
+      "business/fault_reply_proxy.py": "c518cb786746a7f67ba824e4852d1b6eebf974e88301f634f0098dd57bc8ba9c",
+      "business/load.py": "2b769260838b2e7bbf6e9eaa953899f036bf3ed88eb97c4a2e937ea39296f843",
+      "business/native_postgres.py": "bd1d53445b2bb7f0ed6f3703f5351d775c76e788df1932fc5a6473b092310a8f",
+      "business/native_process.py": "cd54bcc0333845051ede63e65ad7db68acee716db0525acec3adb284357033b3",
+      "business/order_app/Dockerfile": "8b7ff001fe148c1b2fddee50e573f7bce690d4171bdd3803bdabadd37b978765",
+      "business/order_app/__init__.py": "a61af4e97a3881f74a6488abf83dbd6136ff2d5080c907d9cd8be44f7d857e71",
+      "business/order_app/main.py": "ea5341f629079f3b04a3bbb9f6bf312a2e7d0cfde91a123aca887d85f3fdf01d",
+      "business/order_app/requirements.txt": "441f0ad1ab9ad7719dc50761d8ceede7c2f5e23a10273f8e4a74c50d78a436f5",
+      "business/order_app/schema.sql": "0eb146a0399a4714317867e0a88eeb249a110239c4cbad8413ce084331eb3c44",
+      "business/order_app/store.py": "f5d19f9935473981168a341ee8d6c42669cb7c880644da973a0f87f5f7daca3a",
+      "business/run_app.py": "dbe016fc62c622513ebbbb97c78b2cc306c4cbca239eb7353d51541c468e37a2",
+      "deploy/agents.yml": "0b0f8b61c8e4c174977b4e75a0cd570b6553cbcef299d0d92c1be6812eb86842",
+      "deploy/compose.yml": "b9c417ff3b1d69a88d0940603f6f4d0b942047fec10318d6ed72bc639110f2af",
+      "deploy/new7.yml": "1bb409da2417dce3796250646e11723b08ad1c376be6054a556c7bdd32ff0399"
+    }
+  },
+  "preserved_application_attempt1": {
+    "status": "FIRST_ATTEMPT_WSL_START_FAILED_BEFORE_DOCKER_BUILD_MARKERS",
+    "actual_outer_helper_exit_code": 1,
+    "actual_WSL_process_returncode": 4294967295,
+    "actual_Docker_build_exit_code": null,
+    "WSL_error_code": "Wsl/Service/0x8007072c",
+    "original_build_log_sha256": "c528e1597ec009a4a81b85968d5a4ebf77a2908776d8082435a44814b20b6a38",
+    "original_failure_preserved": true
+  },
+  "runtime_acceptance_claimed_by_build": false,
+  "input_receipt_sha256": {
+    "artifacts/new7-platform-healthy-plan-20261018/smoke-close-tests.json": "ef9f92e6337007db778c5888ef9aea5e727a34d4a9bf29e76214172c966dd86a",
+    "artifacts/new7-platform-healthy-plan-20261018/runner-ownership-tests.json": "afc1e39d96a1611ce827dcbb1fac284b962de14bf668a475cd23be7f197ef29c",
+    "artifacts/new7-platform-healthy-plan-20261018/source-ready.json": "729db0145233a68d3d4b847386daccb27539f27af52df799e195969cce006788",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-actual/results.json": "95ced7edf7c981a3b9e9ac5450b9e34c166de06833b7d1428001971075a1d571",
+    "artifacts/new7-app-image-build-20261018/build-actual-attempt-2/results.json": "2fa208395cd4484b38fe6e18aa0ed80ccf4c069f90ac410663ac9c9cd08120b2",
+    "artifacts/new7-app-image-build-20261018/first-attempt-diagnosis.json": "50e4c9969fd9efa7e1200a855b00d970261864560714b8af6961da731bb5277a",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-inputs.json": "3a4e6a4c6f99f0d67713f0cf406a052027926367cb1268bb89d1ead9fd83c7a0",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/compose-scope.json": "a7897b4c00a59484f64a7b0ece3ab3248effbf8cfb20c3f3179e86bec9a0d63b",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

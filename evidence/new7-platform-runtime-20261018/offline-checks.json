@@ -1,0 +1,44 @@
+{
+  "status": "OFFLINE_CHECKS_PASSED",
+  "production_smoke_checks": {
+    "scope": "Two existing explicit-target checks plus three new normal/close-error/primary-and-close-error fixtures",
+    "tests_run": 5,
+    "failures": 0,
+    "errors": 0,
+    "passed": true,
+    "real_broker_resource_or_model_calls": 0,
+    "source_sha256": {
+      "eval/platform_smoke.py": "9f536e4d98db811684bf70e4d04818106af7f9f27c5836be0840eff806747fc2",
+      "tests/test_platform_smoke.py": "0fea20a91f9a5dfe58fe84c9897a5af07920376c4eddb4bba7ca869d4776b4b7"
+    }
+  },
+  "separate_artifact_runner_ownership_checks": {
+    "passed": true,
+    "tests_run": 2,
+    "errors": 0,
+    "failures": 0,
+    "real_network_broker_model_resource_actions": 0,
+    "scope": "Fake transport only; partial own group close and unexpected ownership refusal"
+  },
+  "retained_initial_helper_attempt": {
+    "scope": "Only offline test helper",
+    "actual_tool_exit": 1,
+    "actual_completion_chunk": "59d10e",
+    "cause": "Sandbox initialization waited; the exact owned helper was confirmed and stopped. Later elevated fake-transport checks passed.",
+    "behavior_verdict": null,
+    "tests_completed_before_termination": null,
+    "real_broker_model_resource_calls": 0
+  },
+  "counting": "Five production checks and two artifact ownership checks are separate; no combined distinct-test total claimed.",
+  "input_receipt_sha256": {
+    "artifacts/new7-platform-healthy-plan-20261018/smoke-close-tests.json": "ef9f92e6337007db778c5888ef9aea5e727a34d4a9bf29e76214172c966dd86a",
+    "artifacts/new7-platform-healthy-plan-20261018/runner-ownership-tests.json": "afc1e39d96a1611ce827dcbb1fac284b962de14bf668a475cd23be7f197ef29c",
+    "artifacts/new7-platform-healthy-plan-20261018/source-ready.json": "729db0145233a68d3d4b847386daccb27539f27af52df799e195969cce006788",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-actual/results.json": "95ced7edf7c981a3b9e9ac5450b9e34c166de06833b7d1428001971075a1d571",
+    "artifacts/new7-app-image-build-20261018/build-actual-attempt-2/results.json": "2fa208395cd4484b38fe6e18aa0ed80ccf4c069f90ac410663ac9c9cd08120b2",
+    "artifacts/new7-app-image-build-20261018/first-attempt-diagnosis.json": "50e4c9969fd9efa7e1200a855b00d970261864560714b8af6961da731bb5277a",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-inputs.json": "3a4e6a4c6f99f0d67713f0cf406a052027926367cb1268bb89d1ead9fd83c7a0",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/compose-scope.json": "a7897b4c00a59484f64a7b0ece3ab3248effbf8cfb20c3f3179e86bec9a0d63b",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

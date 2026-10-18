@@ -1,0 +1,107 @@
+{
+  "status": "REAL_PRIVATE_COMPOSE_CONFIG_SCOPE_PASSED",
+  "quiet_actual_os_exit_code": 0,
+  "full_json_actual_os_exit_code": 0,
+  "compose_project": "incident-pilot-new7",
+  "exact_services": [
+    "app-v1",
+    "app-v2",
+    "application-agent",
+    "database-agent",
+    "database-backup-agent",
+    "nginx",
+    "onboarding-agent",
+    "ops-agent",
+    "postgres",
+    "verification-agent"
+  ],
+  "service_count": 10,
+  "ports": {
+    "app-v1": {
+      "host_ip": "127.0.0.1",
+      "published": 38081,
+      "target": 8000
+    },
+    "app-v2": {
+      "host_ip": "127.0.0.1",
+      "published": 38082,
+      "target": 8000
+    },
+    "nginx": {
+      "host_ip": "127.0.0.1",
+      "published": 38088,
+      "target": 80
+    }
+  },
+  "postgres_host_ports": [],
+  "domain_host_ports": [],
+  "domain_mounts": {
+    "application": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/application"
+    },
+    "verification": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/verification"
+    },
+    "database": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/database"
+    },
+    "database-backup": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/database-backup"
+    },
+    "ops": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/ops"
+    },
+    "onboarding": {
+      "single_domain_read_only": true,
+      "source_relative": "domains/onboarding"
+    }
+  },
+  "state_volumes": {
+    "application": "incident-pilot-new7_application-agent-state",
+    "verification": "incident-pilot-new7_verification-agent-state",
+    "database": "incident-pilot-new7_database-agent-state",
+    "database-backup": "incident-pilot-new7_database-agent-state",
+    "ops": "incident-pilot-new7_ops-agent-state",
+    "onboarding": "incident-pilot-new7_onboarding-agent-state"
+  },
+  "business_volume": "incident-pilot-new7_orders-data",
+  "all_named_volumes_new_project_and_not_external": true,
+  "docker_socket_holders": [
+    "ops-agent"
+  ],
+  "route_mounts": {
+    "nginx": {
+      "target": "/etc/nginx/runtime",
+      "read_only": true,
+      "isolated_new7_route": true
+    },
+    "ops-agent": {
+      "target": "/route",
+      "read_only": false,
+      "isolated_new7_route": true
+    }
+  },
+  "initial_route_v2_default": true,
+  "public_compose_source_sha256": {
+    "deploy/compose.yml": "b9c417ff3b1d69a88d0940603f6f4d0b942047fec10318d6ed72bc639110f2af",
+    "deploy/agents.yml": "0b0f8b61c8e4c174977b4e75a0cd570b6553cbcef299d0d92c1be6812eb86842",
+    "deploy/new7.yml": "1bb409da2417dce3796250646e11723b08ad1c376be6054a556c7bdd32ff0399"
+  },
+  "full_configuration_or_environment_values_included": false,
+  "input_receipt_sha256": {
+    "artifacts/new7-platform-healthy-plan-20261018/smoke-close-tests.json": "ef9f92e6337007db778c5888ef9aea5e727a34d4a9bf29e76214172c966dd86a",
+    "artifacts/new7-platform-healthy-plan-20261018/runner-ownership-tests.json": "afc1e39d96a1611ce827dcbb1fac284b962de14bf668a475cd23be7f197ef29c",
+    "artifacts/new7-platform-healthy-plan-20261018/source-ready.json": "729db0145233a68d3d4b847386daccb27539f27af52df799e195969cce006788",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-actual/results.json": "95ced7edf7c981a3b9e9ac5450b9e34c166de06833b7d1428001971075a1d571",
+    "artifacts/new7-app-image-build-20261018/build-actual-attempt-2/results.json": "2fa208395cd4484b38fe6e18aa0ed80ccf4c069f90ac410663ac9c9cd08120b2",
+    "artifacts/new7-app-image-build-20261018/first-attempt-diagnosis.json": "50e4c9969fd9efa7e1200a855b00d970261864560714b8af6961da731bb5277a",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/build-inputs.json": "3a4e6a4c6f99f0d67713f0cf406a052027926367cb1268bb89d1ead9fd83c7a0",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/compose-scope.json": "a7897b4c00a59484f64a7b0ece3ab3248effbf8cfb20c3f3179e86bec9a0d63b",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

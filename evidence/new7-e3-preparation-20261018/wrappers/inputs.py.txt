@@ -1,0 +1,63 @@
+"""Pure file checks for a prepared NEW7 E3 batch; no project imports or commands."""
+import hashlib
+import json
+from pathlib import Path
+
+HERE=Path(__file__).resolve().parent
+ROOT=HERE.parents[1]
+PROFILE=ROOT/'runtime/private/new7-container-20261018'
+MODEL_DIRECTORY=ROOT/'tools/runtime/local-model'
+def sha(path):
+    digest=hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for chunk in iter(lambda:stream.read(8*1024*1024),b''):digest.update(chunk)
+    return digest.hexdigest()
+def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
+def write(path,value):Path(path).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+def source_paths():
+    # Same exact scope as the existing eval.run.freeze_sources, without importing eval.
+    paths=set((ROOT/'eval').glob('*.py'))|set((ROOT/'eval/methods').glob('*.py'))
+    for directory in ('incident','acps_mcp_bridge','business','domains','vendor/ACPs-community/acps-sdk/acps_sdk'):
+        paths.update(path for path in (ROOT/directory).rglob('*') if path.is_file() and path.suffix in {'.py','.yaml','.sql'}
+            and not {'__pycache__','private','runtime','.git'}.intersection(path.relative_to(ROOT).parts))
+    paths.update(ROOT/name for name in ('requirements-lock.txt','requirements-high-score.txt','deploy/compose.yml',
+        'deploy/agents.yml','deploy/Dockerfile.agent','business/order_app/Dockerfile'))
+    paths.update((ROOT/'deploy').glob('*.yml'));paths.update((ROOT/'deploy').glob('*.yaml'))
+    paths.update(path for path in (ROOT/'domains').rglob('requirements.txt') if not {'private','runtime'}.intersection(path.relative_to(ROOT).parts))
+    paths.update(path for path in (ROOT/'vendor/ACPs-community/acps-sdk/pyproject.toml',ROOT/'deploy/Dockerfile.docker-mcp') if path.is_file())
+    return {path.relative_to(ROOT).as_posix():path for path in paths}
+def planned_cells():
+    methods=['M0','M1','M2'];definitions={'M0':'fixed-observations-v1','M1':'free-tools-v1','M2':'evidence-ranked-v1'}
+    cells=[]
+    for scenario in ('F01','F02','F06','F07','F10'):
+        for repeat in range(3):
+            for method in methods[repeat:]+methods[:repeat]:
+                cells.append({'sequence':len(cells)+1,'scenario':scenario,'method':method,'repeat':repeat+1,
+                    'workload_seed':(101,202,303)[repeat],'precondition_pool_rebuilds':repeat,'method_definition_id':definitions[method]})
+    return cells
+def command(output):
+    return [str(ROOT/'.venv/Scripts/python.exe'),str(ROOT/'eval/run.py'),'--config',str(HERE/'private/coordinator.json'),
+        '--transport','wutong-amqps','--backend','docker','--target-config',str(HERE/'target.json'),
+        '--scenarios','F01,F02,F06,F07,F10','--methods','M0,M1,M2','--repeats','3','--approve-high','--enable-llm',
+        '--model-base-url','http://127.0.0.1:8089/v1','--model','Qwen3-1.7B-Q8_0','--seed','42',
+        '--instance-seeds','101,202,303','--max-output-tokens','768','--model-call-budget','40',
+        '--model-token-budget','65536','--task-budget','40','--deadline-seconds','600',
+        '--order-url','http://127.0.0.1:38088','--output',str(output)]
+def validate(*,full_model=False,require_initial_route=False):
+    ready=read(HERE/('source-ready.json' if (HERE/'source-ready.json').exists() else 'preparation-checks.json'))
+    for name,expected in ready['artifact_sha256'].items():assert sha(HERE/name)==expected,'Prepared artifact changed: '+name
+    sources=source_paths();assert set(sources)==set(ready['source_sha256']),'Source scope changed'
+    for name,expected in ready['source_sha256'].items():assert sha(sources[name])==expected,'Frozen source changed: '+name
+    for name,expected in ready['extra_source_sha256'].items():assert sha(ROOT/name)==expected,'Extra coordinator source changed: '+name
+    for name,expected in ready['immutable_input_sha256'].items():assert sha(ROOT/name)==expected,'Static configuration/model manifest changed: '+name
+    for name,binding in ready['model_files'].items():
+        path=ROOT/name;stat=path.stat()
+        assert stat.st_size==binding['bytes'] and stat.st_mtime_ns==binding['mtime_ns'],'Frozen model/runtime stat changed: '+name
+        if full_model:assert sha(path)==binding['sha256'],'Frozen model/runtime bytes changed: '+name
+    for name,expected in ready['proof_sha256'].items():assert sha(ROOT/name)==expected,'Prepared proof changed: '+name
+    route=ROOT/ready['mutable_route']['path']
+    if require_initial_route:assert sha(route)==ready['mutable_route']['initial_sha256'],'Initial route changed before launch'
+    plan=read(HERE/'plan.json')
+    assert plan['planned_execution_order']==planned_cells() and len(plan['planned_execution_order'])==45
+    assert len({(row['scenario'],row['method'],row['repeat']) for row in plan['planned_execution_order']})==45
+    return ready,plan

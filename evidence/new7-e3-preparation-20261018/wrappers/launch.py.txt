@@ -1,0 +1,143 @@
+"""Prepared E3 revision2. Default is file validation; held until capacity, final freeze and NEW authorization."""
+import argparse
+from collections import Counter
+from datetime import datetime,timezone
+import importlib.util
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+from inputs import HERE,ROOT,sha,read,write,validate,planned_cells,command
+
+SYSTEM_ENV={'SYSTEMROOT','WINDIR','COMSPEC','PATH','PATHEXT','SYSTEMDRIVE','TEMP','TMP','LOCALAPPDATA','APPDATA',
+    'USERPROFILE','PROGRAMDATA','PROGRAMFILES','PROGRAMFILES(X86)','NUMBER_OF_PROCESSORS','PROCESSOR_ARCHITECTURE',
+    'OS','USERNAME','USERDOMAIN','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','NO_PROXY'}
+CLEANUP_FAILURES={'dissolve_notify_failed','group_acl_delete_failed','queue_cleanup_failed','exchange_cleanup_failed'}
+def now():return datetime.now(timezone.utc).isoformat()
+def clean_environment():
+    environment={name:value for name,value in os.environ.items() if name.upper() in SYSTEM_ENV}
+    environment.update(PYTHONIOENCODING='utf-8',PYTHONUTF8='1',NO_PROXY='wt.ioa.pub,127.0.0.1,localhost')
+    return environment
+def run_child(argv,environment,gate,stem):
+    with (gate/(stem+'.stdout.log')).open('wb') as stdout,(gate/(stem+'.stderr.log')).open('wb') as stderr:
+        process=subprocess.Popen(argv,cwd=ROOT,env=environment,stdin=subprocess.DEVNULL,stdout=stdout,stderr=stderr)
+        write(gate/(stem+'-started.json'),{'started_at':now(),'python_launcher_pid':process.pid,'argv':argv})
+        return process.pid,process.wait()
+def check_authorization(path,expected_sha,ready,plan):
+    if path is None or expected_sha is None:raise ValueError('This NEW7 45 batch has no authorization; provide newly approved receipt and SHA')
+    if sha(path)!=expected_sha:raise ValueError('Authorization bytes changed')
+    value=read(path)
+    expected={'schema_version':'incident-e3-execution-authorization/1.0','status':'AUTHORIZED',
+        'scope_id':plan['scope_id'],'plan_sha256':sha(HERE/'plan.json'),'source_ready_sha256':sha(HERE/'source-ready.json'),
+        'approved_cells':45,'allow_lab_high_repairs':True,'allow_separate_final_h00':True}
+    if any(value.get(name)!=target for name,target in expected.items()):raise ValueError('New explicit authorization must bind this exact prepared scope, plan and source-ready bytes')
+    return value
+def matrix_checks(output,ready,plan):
+    rows=read(output/'results.json')
+    jsonl=[json.loads(line) for line in (output/'results.jsonl').read_text(encoding='utf-8').splitlines() if line.strip()]
+    experiment=read(output/'experiment.json')
+    fields=['scenario','method','repeat','workload_seed','precondition_pool_rebuilds','method_definition_id']
+    actual=[{field:row[field] for field in fields} for row in rows]
+    expected=[{field:row[field] for field in fields} for row in planned_cells()]
+    checks={'exact_45_order_keys_and_metadata':actual==expected,
+        'json_jsonl_equal':rows==jsonl,'frozen_source_manifest_exact':experiment.get('source_sha256')==ready['source_sha256'],
+        'target_sha_exact':experiment.get('target_config_sha256')==sha(HERE/'target.json'),
+        'transport_backend_exact':experiment.get('transport')=='wutong-amqps' and experiment.get('resource_backend')=='docker',
+        'shared_model_alias_and_endpoint':experiment.get('model')=='Qwen3-1.7B-Q8_0' and experiment.get('model_base_url')=='http://127.0.0.1:8089/v1',
+        'shared_sampling':experiment.get('sampling')=={'seed':42,'temperature':0,'top_p':1,'max_tokens':768},
+        'shared_budgets':experiment.get('budgets')=={'tasks':40,'model_calls':40,'model_total_tokens':65536,'deadline_seconds':600},
+        'M0_no_model_calls':all(row.get('model_enabled') is False and row.get('model_calls')==0 and row.get('tokens')==0 for row in rows if row['method']=='M0'),
+        'M1_M2_enabled':all(row.get('model_enabled') is True for row in rows if row['method'] in {'M1','M2'})}
+    confirmed=sum(row.get('status')=='completed' and row.get('continuous_recovery_confirmed') is True for row in rows)
+    return {'checks':checks,'integrity_passed':all(checks.values()),'terminal_rows':len(rows),
+        'confirmed_recovery_rows':confirmed,'all_45_recovered':len(rows)==45 and confirmed==45,
+        'status_counts':dict(Counter(row.get('status') for row in rows))}
+def close_checks(output,gate):
+    events=[json.loads(line) for line in (output/'transport/events.jsonl').read_text(encoding='utf-8').splitlines() if line.strip()]
+    created=[row for row in events if row.get('event')=='group_session_created']
+    closed=[row for row in events if row.get('event')=='group_session_close_completed']
+    warning_events=Counter(item for item in re.findall(r'event=([A-Za-z0-9_]+)',(gate/'matrix.stderr.log').read_text(encoding='utf-8',errors='replace')) if item in CLEANUP_FAILURES)
+    matching=len(created)==len(closed)==1 and (created[0].get('session_id'),created[0].get('group_id'))==(closed[0].get('session_id'),closed[0].get('group_id'))
+    return {'owned_close_event_pair':matching,'sdk_cleanup_warning_events':dict(warning_events),
+        'client_closed_phase':any(row.get('event')=='client_close_phase' and row.get('phase')=='closed' for row in events),
+        'passed':matching and not warning_events and any(row.get('event')=='client_close_phase' and row.get('phase')=='closed' for row in events),
+        'limit':'Normal SDK close events and absence of captured cleanup warnings; no independent broker/ACL inventory query'}
+
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--execute',action='store_true')
+    parser.add_argument('--authorization',type=Path)
+    parser.add_argument('--authorization-sha')
+    args=parser.parse_args();ready,plan=validate()
+    holds=[]
+    if not (HERE/'source-ready.json').is_file():
+        holds.extend(['FINAL_SOURCE_READY_MISSING','EXACT_OLD_REQUEST_CAPACITY_PROOF_NOT_BOUND'])
+    if args.authorization is None or args.authorization_sha is None:
+        holds.append('NEW_EXPLICIT_45_AUTHORIZATION_RECEIPT_MISSING')
+    elif (HERE/'source-ready.json').is_file():
+        check_authorization(args.authorization,args.authorization_sha,ready,plan)
+    if not args.execute:
+        print(json.dumps({'status':'OFFLINE_PREPARATION_VALIDATED_EXECUTION_HELD' if holds else 'OFFLINE_PREPARATION_VALIDATED_NOT_EXECUTED',
+            'source_ready_sha256':sha(HERE/'source-ready.json') if (HERE/'source-ready.json').is_file() else None,
+            'sources':len(ready['source_sha256']),'cells':45,'execution_holds':holds,
+            'observed_context_per_slot':plan['shared_model']['context_per_slot'],
+            'model_identity':'Actual prior props proof bound; current size/mtime checked, no fresh API/runtime probe',
+            'network_model_injection_or_resource_actions':0}))
+        raise SystemExit(0)
+    if holds:raise RuntimeError('Execution held: '+', '.join(holds))
+    check_authorization(args.authorization,args.authorization_sha,ready,plan)
+    ready,plan=validate(full_model=True,require_initial_route=True)
+    output=Path(plan['review_argv'][-1]);gate=output.with_name(output.name+'-supervisor')
+    if output.exists() or gate.exists():raise RuntimeError('Refuse repeated cohort/output; preserve existing evidence')
+    if command(output)!=plan['review_argv']:raise ValueError('Fixed review command changed')
+    from model_guard import fresh_model_preflight
+    try:
+        model_preflight=fresh_model_preflight(ROOT)
+    except Exception as error:
+        write(HERE/('model-preflight-failed-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')+'.json'),
+            {'status':'PRE_INJECTION_READ_ONLY_MODEL_PREFLIGHT_FAILED','error_class':type(error).__name__,
+             'checked_at':now(),'source_ready_sha256':sha(HERE/'source-ready.json'),
+             'authorization_sha256':sha(args.authorization),'cohort_output_created':False,
+             'completion_POSTs':0,'eval_or_resource_actions':0})
+        raise
+    dependency=ROOT/'artifacts/new7-platform-healthy-plan-20261018/run_healthy.py'
+    spec=importlib.util.spec_from_file_location('owned_coordinator_lock',dependency)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    with module.coordinator_lock(plan['coordinator_aic']):
+        gate.mkdir(parents=True,exist_ok=False)
+        write(gate/'model-preflight.json',model_preflight)
+        environment=clean_environment()
+        write(gate/'started.json',{'started_at':now(),'foreground_supervisor_pid':os.getpid(),
+            'source_ready_sha256':sha(HERE/'source-ready.json'),'authorization_sha256':sha(args.authorization),
+            'environment_names':sorted(environment),'scope_id':plan['scope_id'],'planned_cells':45})
+        pid,actual_exit=run_child(command(output),environment,gate,'matrix')
+        finished={'matrix_python_launcher_pid':pid,'matrix_actual_popen_wait_exit':actual_exit,'finished_at':None}
+        try:finished['matrix']=matrix_checks(output,ready,plan)
+        except Exception as error:finished['matrix_inspection_error_class']=type(error).__name__
+        try:finished['close']=close_checks(output,gate)
+        except Exception as error:finished['close_inspection_error_class']=type(error).__name__
+        stable=False
+        try:validate();stable=True
+        except Exception as error:finished['input_check_error_class']=type(error).__name__
+        finished['immutable_input_bytes_unchanged']=stable
+        finished['route_before_sha256']=ready['mutable_route']['initial_sha256']
+        finished['route_after_sha256']=sha(ROOT/ready['mutable_route']['path'])
+        if stable:
+            h00=gate/'final-h00.json'
+            h00_pid,h00_exit=run_child([str(ROOT/'.venv/Scripts/python.exe'),str(ROOT/'business/load.py'),
+                '--url','http://127.0.0.1:38088','--duration','30','--output',str(h00)],environment,gate,'final-h00')
+            finished.update(final_h00_python_launcher_pid=h00_pid,final_h00_actual_popen_wait_exit=h00_exit)
+            try:
+                summary=read(h00)
+                finished['final_h00']={key:summary[key] for key in ['duration_seconds','requests','success','failed','unknown','completed_workflows','unresolved_intents','passed']}
+                finished['final_h00']['pending_intents']=len(summary['state']['pending'])
+                finished['final_h00']['strict_passed']=h00_exit==0 and summary['passed'] is True and summary['duration_seconds']>=30 and summary['completed_workflows']>=10 and summary['failed']==summary['unknown']==summary['unresolved_intents']==len(summary['state']['pending'])==0
+            except Exception as error:finished['final_h00_inspection_error_class']=type(error).__name__
+        finished['cohort_integrity_passed']=finished.get('matrix',{}).get('integrity_passed',False)
+        passed=actual_exit==0 and finished['cohort_integrity_passed'] and finished.get('matrix',{}).get('all_45_recovered',False) and finished.get('close',{}).get('passed',False) and stable and finished.get('final_h00',{}).get('strict_passed',False)
+        finished['status']='ALL_45_RECOVERED_AND_CLOSED' if passed else 'CLOSED_WITH_FAILURES' if finished['cohort_integrity_passed'] and finished.get('close',{}).get('passed') and stable and finished.get('final_h00',{}).get('strict_passed') else 'INCOMPLETE_OR_CLOSURE_FAILED'
+        finished['passed']=passed;finished['finished_at']=now()
+        write(gate/'finished.json',finished)
+        print(json.dumps({'status':finished['status'],'actual_matrix_exit':actual_exit,'passed':passed,'supervisor_evidence':str(gate)}))
+        raise SystemExit(0 if passed else actual_exit or 1)

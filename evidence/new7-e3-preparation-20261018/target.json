@@ -1,0 +1,18 @@
+{
+  "schema_version": "incident-evaluator-target/1.0",
+  "backend": "docker",
+  "project": "incident-pilot-new7",
+  "wsl_distro": "Ubuntu-22.04",
+  "compose_files": [
+    "deploy/compose.yml",
+    "deploy/agents.yml",
+    "deploy/new7.yml"
+  ],
+  "env_file": "runtime/private/new7-container-20261018/compose.env",
+  "route_file": "runtime/private/new7-container-20261018/nginx-runtime/route.conf",
+  "ports": {
+    "app_v1": 38081,
+    "app_v2": 38082,
+    "order": 38088
+  }
+}

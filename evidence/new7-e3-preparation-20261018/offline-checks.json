@@ -1,0 +1,55 @@
+{
+  "status": "OFFLINE_PREPARATION_AND_FINAL_ENTRY_CHECKS_PASSED",
+  "preparation_checks": {
+    "syntax": true,
+    "source_snapshots_exact": true,
+    "existing_eval_argparse_accepts_exact_command": true,
+    "exact_unique_45_order_and_shared_32768_context": true,
+    "default_no_effect_reports_three_holds": true,
+    "execute_without_receipts_refused_before_output_creation": true,
+    "default_and_missing_authorization_zero_network_opener_calls": true,
+    "fresh_model_guard_valid_fixture": true,
+    "fresh_model_guard_rejected_fixtures": [
+      "wrong_context",
+      "busy_slot",
+      "wrong_alias",
+      "wrong_model_path",
+      "wrong_metadata_pid"
+    ]
+  },
+  "default_actual_exit": 0,
+  "missing_receipts_actual_exit": 1,
+  "final_entry_checks": {
+    "status": "FINAL_FROZEN_READONLY_ENTRY_CHECKS_PASSED",
+    "source_ready_sha256": "64eccc5853a5adf556741094ee9ac8165db03958d4ece4e8b23628b12c330d24",
+    "observations": [
+      {
+        "entry": "default",
+        "actual_exit": 0,
+        "opener_calls": 0,
+        "execution_holds": [
+          "NEW_EXPLICIT_45_AUTHORIZATION_RECEIPT_MISSING"
+        ]
+      },
+      {
+        "entry": "execute_without_authorization",
+        "exception_class": "RuntimeError",
+        "opener_calls": 0
+      }
+    ],
+    "cohort_output_created": false,
+    "actual_network_model_fault_or_resource_actions": 0
+  },
+  "preparation_receipt_sha256": "5bb3c9fb84752b09e61d87a52d076337d4526e34e120ebf763bb9ba0ea69a0f0",
+  "first_offline_harness_failure": {
+    "status": "OFFLINE_HARNESS_DECODING_FAILED",
+    "actual_exit": 1,
+    "completion_chunk": "0c5564",
+    "reason": "The expected rejection traceback used the inherited Windows encoding; the UTF-8-only harness reader raised UnicodeDecodeError before evaluating the negative-case assertion.",
+    "behavior_verdict": "The full preparation check did not complete. This is not a model or experiment run.",
+    "correction": "The harness decodes child text with replacement for path characters; the ASCII held-rejection assertion and exit checks are unchanged.",
+    "actual_network_model_injection_or_resource_actions": 0
+  },
+  "actual_new_E3_cells": 0,
+  "actual_network_model_fault_or_resource_actions": 0
+}

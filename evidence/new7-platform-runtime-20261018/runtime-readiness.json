@@ -1,0 +1,317 @@
+{
+  "status": "ACTUAL_NEW7_RUNNING_SNAPSHOTS_WITH_BOUNDED_READY_EVIDENCE",
+  "compose_project": "incident-pilot-new7",
+  "actual_up_exit_code": 0,
+  "up_finished_at_utc": "2026-10-18T03:37:09.214324+00:00",
+  "first_observation": {
+    "captured_at_utc": "2026-10-18T03:41:46.313868+00:00",
+    "container_count": 10,
+    "containers": [
+      {
+        "service": "verification-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.926774406Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "ops-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.906194052Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "0:0"
+      },
+      {
+        "service": "nginx",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.766851918Z",
+        "health": null,
+        "read_only_rootfs": false,
+        "user": ""
+      },
+      {
+        "service": "application-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.662455271Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "app-v1",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.901577476Z",
+        "health": "starting",
+        "read_only_rootfs": false,
+        "user": "65534:65534"
+      },
+      {
+        "service": "app-v2",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.869390031Z",
+        "health": "starting",
+        "read_only_rootfs": false,
+        "user": "65534:65534"
+      },
+      {
+        "service": "database-backup-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.863951119Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "database-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.920109028Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "postgres",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.832326154Z",
+        "health": "healthy",
+        "read_only_rootfs": false,
+        "user": ""
+      },
+      {
+        "service": "onboarding-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.649000611Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      }
+    ],
+    "immutable_expected_image_matches": {
+      "app-v1": true,
+      "app-v2": true,
+      "application-agent": true,
+      "verification-agent": true,
+      "database-agent": true,
+      "database-backup-agent": true,
+      "ops-agent": true,
+      "onboarding-agent": true
+    },
+    "three_declared_healthchecks_healthy": false,
+    "nginx_running_without_declared_healthcheck": true,
+    "six_domains_running": true,
+    "explicit_ready_stdout_records": 3,
+    "bounded_domain_log_observations": {
+      "application": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "verification": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "database": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "database-backup": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "ops": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "onboarding": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      }
+    },
+    "previous_container_count": 14,
+    "all_previous_container_ids_preserved": true,
+    "global_active_group_or_unknown_operation_state_verified": false
+  },
+  "after_root_host_hold_observation": {
+    "captured_at_utc": "2026-10-18T03:43:03.814494+00:00",
+    "container_count": 10,
+    "containers": [
+      {
+        "service": "verification-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.926774406Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "ops-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.906194052Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "0:0"
+      },
+      {
+        "service": "nginx",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.766851918Z",
+        "health": null,
+        "read_only_rootfs": false,
+        "user": ""
+      },
+      {
+        "service": "application-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.662455271Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "app-v1",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.901577476Z",
+        "health": "healthy",
+        "read_only_rootfs": false,
+        "user": "65534:65534"
+      },
+      {
+        "service": "app-v2",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.869390031Z",
+        "health": "healthy",
+        "read_only_rootfs": false,
+        "user": "65534:65534"
+      },
+      {
+        "service": "database-backup-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.863951119Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "database-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.920109028Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      },
+      {
+        "service": "postgres",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.832326154Z",
+        "health": "healthy",
+        "read_only_rootfs": false,
+        "user": ""
+      },
+      {
+        "service": "onboarding-agent",
+        "status": "running",
+        "started_at": "2026-10-18T03:41:27.649000611Z",
+        "health": null,
+        "read_only_rootfs": true,
+        "user": "65534:65534"
+      }
+    ],
+    "immutable_expected_image_matches": {
+      "app-v1": true,
+      "app-v2": true,
+      "application-agent": true,
+      "verification-agent": true,
+      "database-agent": true,
+      "database-backup-agent": true,
+      "ops-agent": true,
+      "onboarding-agent": true
+    },
+    "three_declared_healthchecks_healthy": true,
+    "nginx_running_without_declared_healthcheck": true,
+    "six_domains_running": true,
+    "explicit_ready_stdout_records": 3,
+    "bounded_domain_log_observations": {
+      "application": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "verification": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "database": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "database-backup": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "ops": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": false,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      },
+      "onboarding": {
+        "actual_log_exit_code": 0,
+        "maximum_lines_requested": 200,
+        "explicit_wutong_ready_record": true,
+        "fatal_marker_count": 0,
+        "unknown_operation_marker_count": 0
+      }
+    },
+    "previous_container_count": 14,
+    "all_previous_container_ids_preserved": true,
+    "global_active_group_or_unknown_operation_state_verified": false
+  },
+  "after_root_owned_foreground_hold": true,
+  "container_started_at_later_than_initial_up_return": true,
+  "all_started_at_unchanged_between_two_observations": true,
+  "restart_cause": "unknown",
+  "WSL_idle_explanation": "hypothesis, not established cause",
+  "bridge_missing_explicit_ready_stdout_is_not_a_failure_verdict": true,
+  "six_domain_describe_and_tasks_proven_separately_by_healthy_amqps_evidence": true,
+  "container_process_boot_or_group_ids_private_paths_and_raw_logs_included": false,
+  "long_duration_or_7x24_stability_acceptance_claimed": false,
+  "input_receipt_sha256": {
+    "eval/results/platform/new7-healthy-20261018-first/results.json": "de5bab1b12be18cc9cfb95e610e71b8bacee13a9cbbe36e0bb7e954149be27fa",
+    "eval/results/platform/new7-healthy-20261018-first-supervisor/finished.json": "c10c522fcc9618eafd7d2f471130b53f3f9c444088ca043c94c51322ed2e2722",
+    "artifacts/new7-platform-healthy-analysis-20261018/review-first/independent-review.json": "ef09b8bd98de396eada76b4623ae0dc134840e9987125a1190644680781eb4f5",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-first-pass.json": "09fff39620c8c9f17c726b3e2c764ed6a11c793100907ff2fed58413246ae154",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-after-hold.json": "18fedec37ae16e732a4f693c8c24025f846382e939731161eec55e68583cfe92",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

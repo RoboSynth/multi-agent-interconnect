@@ -1,0 +1,59 @@
+{
+  "status": "NEW7_NORMAL_HEALTHY_AMQPS_AND_BUSINESS_WINDOW_PASSED",
+  "scope": "NEW7 healthy normal AMQPS flow only; not recovery or takeover",
+  "started_at": "2026-10-18T03:43:00.782016+00:00",
+  "finished_at": "2026-10-18T03:44:04.602359+00:00",
+  "confirmed_domain_roles": [
+    "application",
+    "database",
+    "database-backup",
+    "onboarding",
+    "ops",
+    "verification"
+  ],
+  "completed_product_count": 12,
+  "healthy_business": {
+    "duration_seconds": 30.003,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true,
+    "pending_intents": 0
+  },
+  "model_calls": 0,
+  "act_tasks": 0,
+  "fault_injections": 0,
+  "coordinator_resource_credential_count": 0,
+  "task_phase_status": "completed",
+  "journal_in_flight_before_close": 0,
+  "close_status": "completed",
+  "owned_group_close_checks": {
+    "no_group_sessions": true,
+    "no_inbound_groups": true,
+    "inbox_consumer_cancelled": true,
+    "connection_closed": true,
+    "owned_group_disconnected": true,
+    "no_sdk_cleanup_warning_events": true
+  },
+  "captured_cleanup_warning_count": 0,
+  "close_evidence_limit": "SDK returned plus local final state and absence of captured cleanup warnings; no separate broker/ACL inventory query.",
+  "supervision": {
+    "actual_popen_wait_exit": 0,
+    "input_bytes_unchanged": true,
+    "passed": true,
+    "root_reported_outer_actual_exit_code": 0,
+    "root_actual_completion_chunk": "d75afb"
+  },
+  "recovery_takeover_fault_cohort_or_long_duration_acceptance_claimed": false,
+  "input_receipt_sha256": {
+    "eval/results/platform/new7-healthy-20261018-first/results.json": "de5bab1b12be18cc9cfb95e610e71b8bacee13a9cbbe36e0bb7e954149be27fa",
+    "eval/results/platform/new7-healthy-20261018-first-supervisor/finished.json": "c10c522fcc9618eafd7d2f471130b53f3f9c444088ca043c94c51322ed2e2722",
+    "artifacts/new7-platform-healthy-analysis-20261018/review-first/independent-review.json": "ef09b8bd98de396eada76b4623ae0dc134840e9987125a1190644680781eb4f5",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-first-pass.json": "09fff39620c8c9f17c726b3e2c764ed6a11c793100907ff2fed58413246ae154",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-after-hold.json": "18fedec37ae16e732a4f693c8c24025f846382e939731161eec55e68583cfe92",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

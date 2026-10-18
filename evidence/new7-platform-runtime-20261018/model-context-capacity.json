@@ -1,0 +1,116 @@
+{
+  "schema_version": "local-model-context-capacity/1.0",
+  "status": "ACTUAL_LOCAL_MODEL_CONTEXT_CAPACITY_VALIDATED",
+  "production": {
+    "path": "tools/local_model.py",
+    "sha256": "41ba0682e9ff7a4bec6354e375309ca4c2e9f7f7b19498c9c691b218c1a7d475",
+    "default_context_size_unchanged": 8192,
+    "start_accepts_positive_integer_context_size": true,
+    "metadata_context_size_requested_is_not_observed_capacity": true
+  },
+  "invalid_context_cli": {
+    "context_size": 0,
+    "actual_os_exit_code": 1,
+    "expected_os_exit_code": 1,
+    "error_type": "ValueError",
+    "rejected_before_file_socket_or_process_actions": true,
+    "source_receipt_sha256": "a483b2f3b2a34ee821957af1e3aaadc31af588c8d2eaef783606963dbe711adb"
+  },
+  "controlled_restart": {
+    "actual_start_exit_code": 0,
+    "same_model_alias_and_weights": true,
+    "model_alias": "Qwen3-1.7B-Q8_0",
+    "previous_context_size": 8192,
+    "requested_context_size": 32768,
+    "observed_context_per_slot": 32768,
+    "observed_slots": 1,
+    "observed_idle": true,
+    "observed_receipt_sha256": "e6f385cb148a50eac5a2049202d53fe716c9d2ec980544fb0c078a788d89dfde",
+    "current_pre_call_guard": {
+      "served_alias_matches": true,
+      "context_per_slot": 32768,
+      "slot_count": 1,
+      "idle_before_call": true,
+      "props_sha256": "626fffde26a8b62cc9040c0c297f32a35396b536a1e8993aa66e98c4f74ba0da",
+      "slots_sha256": "39cf5a5b0639296f3a75ebe7c2e162bc51b6e239886c5f41430c1869b68d4e6d",
+      "models_sha256": "206dc2c6c961c49de1db13891602c6ba97e08c832eeb1d5421eba9992f50f069"
+    }
+  },
+  "frozen_capacity_fixture": {
+    "source_incident_sha256": "9366d33ca6826755ba4de4ee904fc6db5c1dd728cccbdce9e42ea22c7d3aaf07",
+    "original_request_record_sha256": "57da1e659235c1327c34fdc1ff2a96bfb10e17a0e59327f7001842da9b7f35d3",
+    "fixture_payload_sha256": "fd10bc4aec7faf066a228d2c72586cd888cad0c6a1b523b45261d76a9b4b45ae",
+    "system_sha256": "41965802ce568cbf9e2f78542994f9c9623e86217d6a5486a50e5e3965e625a1",
+    "context_json_sha256": "f6e2f5931d5969506895be9d3fa86c284705aab7b7e299a072bd1fa8fcc41b12",
+    "schema_sha256": "e3aafd6ce0089e63aab728ff6c05e046d7f5bb37a1564b64f688a60f54c655e7",
+    "max_tokens": 768,
+    "sampling": {
+      "seed": 42,
+      "temperature": 0,
+      "top_p": 1,
+      "max_tokens": 768
+    },
+    "client_prompt_upper_bound": 29406,
+    "old_provider_error": {
+      "code": 400,
+      "type": "exceed_context_size_error",
+      "n_prompt_tokens": 10422,
+      "n_ctx": 8192
+    },
+    "old_rejected_call_usage": null,
+    "request_reconstruction_limit": "Exact sealed record8 context/schema/model/sampling/max_tokens plus AST-extracted sealed selector system literal; original engine message and response_format construction. Original raw HTTP bytes were not recorded.",
+    "exact_request_schema_bound_before_HTTP_and_reused_for_response_validation": true
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "CAPACITY_PRECALL_GUARD_FAILED_NO_INFERENCE",
+      "actual_os_exit_code": 1,
+      "actual_completion_POSTs": 0,
+      "HTTP_status": null,
+      "error_type": "URLError",
+      "underlying_error_reason": "not captured; cause remains unknown",
+      "interpretation": "Pre-call guard failure, not a model-capacity verdict.",
+      "results_sha256": "c8c80939810fafbd9fee37a82e11a34d27a57632436af88e9252f284c35ddb4b"
+    },
+    {
+      "attempt": 2,
+      "status": "SINGLE_LOCAL_CAPACITY_REQUEST_SCHEMA_VALIDATED",
+      "actual_os_exit_code": 0,
+      "actual_completion_POSTs": 1,
+      "HTTP_status": 200,
+      "response_schema_valid": true,
+      "usage": {
+        "prompt_tokens": 10422,
+        "completion_tokens": 32,
+        "total_tokens": 10454
+      },
+      "usage_complete": true,
+      "duration_seconds": 5.172,
+      "response_sha256": "4ed634138ed83294a8da6d9129fa16b7d5cb02930c09b6e2ccf587ccdef7dd05",
+      "finish_reason": "stop",
+      "results_sha256": "a0d7b82ad18acf37b44e4473b1c2a483ed7d437f40ce6ffe34cebab0fab86751",
+      "execution_receipt_sha256": "8bec3c6cdd33f032f65bbddc043a6038228f7a2793a59361cded8e2fe4e005c0"
+    }
+  ],
+  "fixture_credential_scan": {
+    "known_values_checked": 63,
+    "known_value_matches": 0,
+    "token_pattern_matches": 0,
+    "SID_matches": 0,
+    "absolute_path_pattern_matches": 0,
+    "blocking_general_findings": 0,
+    "credential_url_matches": 0
+  },
+  "execution_boundary": {
+    "total_actual_completion_POSTs": 1,
+    "tool_dispatches": 0,
+    "model_selected_tool_dispatched": false,
+    "AMQP_or_domain_starts": 0,
+    "resource_or_fault_actions": 0,
+    "old_failed_cell_preserved": true,
+    "raw_request_and_response_published": false,
+    "capacity_only_not_E3_performance_or_recovery": true,
+    "earlier_NEW7_healthy_model_calls_remain_zero": true
+  }
+}

@@ -1,5 +1,7 @@
 # 团队协作快速开始
 
+当前开发入口：[开发者接手指南](docs/开发者接手指南_20261018.md) · [协作任务清单](docs/协作任务清单_20261018.md)。以下保留各批历史记录；当前分工与待验收项以这两个入口为准。
+
 这是私有团队的开发快照，保留当前源码、改造后的完整 ACPs SDK、必要官方 CLI、方案、测试和脱敏完成结果。它不是最终比赛交付包。
 
 ## Windows 本地启动
@@ -145,3 +147,16 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 [七角色签证摘要](evidence/platform-certificates-20261018/summary.json)与七份单件证据记录官方CLI签发真实exit0、身份和有效期、clientAuth及私钥匹配检查。另一次[七个精确AIC的官方ADP只读元数据与端点查询](evidence/platform-certificates-20261018/adp-identity-observation.json)真实exit0；查询成功不等于端点可达或任务通道通过。[新版接入准备](docs/新版平台接入准备.md)仍把新版AMQPS群组任务和恢复验收留为后续项。EAB、账户及身份私钥、原始CLI日志与本地配置均不进入团队快照。
 
 [历史基线材料摘要](docs/historical-baseline-evidence.md)修复旧导航，保留旧双智能体、425项本地场景/断言与驳回过程的来源边界。原40终态、第41格中断及独立四格证据保持各自来源；开发ZIP仍绑定旧69647cf/1069文件，未自动重打包。登录任务、24小时/7天和正式新版平台结果不作补报，答辩PPTX继续暂缓。
+
+
+### 2026-10-18 NEW7 正常健康互联与模型容量
+
+独立NEW7项目已实际构建并启动。六域完成12项正常任务（6 describe、5 observe、1 verify），30.003秒内30请求、10个完整订单流程全部成功，failed/unknown/pending/unresolved为0。本次健康运行model/act/fault均为0；自己的群组正常关闭，六项本地关闭检查通过。
+
+24条账本快照含12条旧awaiting-completion和12条后续completed；12个有效最新任务均completed。运行期配置及捕获流量的63值凭据扫描独立通过。应用镜像构建的首次WSL调用失败和离线辅助进程终止均保留。容器StartedAt晚于初次up的原因未确定；两个后续快照相同，不据此声称7×24稳定。
+
+生产新增显式模型上下文参数，默认8192保持；独立容量验证见[上下文证据](evidence/new7-platform-runtime-20261018/model-context-capacity.json)。它与健康运行的model=0分别计量。本批证明正常健康互联，不证明新故障恢复、备用接管或完整冷部署。
+
+证据：[健康与关闭](evidence/new7-platform-runtime-20261018/healthy-amqps.json)、[任务对账](evidence/new7-platform-runtime-20261018/task-reconciliation.json)、[运行期凭据扫描](evidence/new7-platform-runtime-20261018/credential-scan.json)。
+
+开发协作入口：[接手指南](docs/开发者接手指南_20261018.md)、[协作任务清单](docs/协作任务清单_20261018.md)。实验准备包用于审阅和分工，实际故障实验需另行授权。

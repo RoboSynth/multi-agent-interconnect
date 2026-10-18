@@ -1,0 +1,166 @@
+{
+  "status": "TWELVE_TASKS_RECONCILED_WITH_WIRE_AND_LATEST_JOURNAL",
+  "independent_checks": {
+    "actual_supervisor_wait_exit_zero": true,
+    "supervisor_passed_and_inputs_unchanged": true,
+    "source_ready_matches_started_receipt": true,
+    "runner_result_bound_to_supervisor": true,
+    "overall_and_close_completed": true,
+    "all_local_close_checks_true": true,
+    "exact_twelve_unique_starts": true,
+    "one_sent_start_per_task": true,
+    "every_start_has_complete_command": true,
+    "every_start_has_actual_completed_result": true,
+    "every_start_has_valid_awaiting_product": true,
+    "all_senders_and_owned_group_match": true,
+    "all_six_domains_independently_described": true,
+    "zero_act_resume_messages": true,
+    "reported_model_fault_resource_credentials_zero": true,
+    "onboarding_target_is_exact_application": true,
+    "journal_logical_tasks_match_wire": true,
+    "journal_latest_all_completed": true,
+    "journal_in_flight_zero": true,
+    "no_takeover_journal_or_events": true,
+    "one_owned_close_completed_event": true,
+    "no_sdk_cleanup_warnings": true,
+    "healthy_window_and_flows": true,
+    "healthy_fail_unknown_pending_unresolved_zero": true
+  },
+  "independent_checks_passed": 24,
+  "raw_message_counts": {
+    "total": 72,
+    "starts": 12,
+    "complete_commands": 12,
+    "task_results": 48,
+    "result_states": {
+      "accepted": 12,
+      "working": 12,
+      "awaiting-completion": 12,
+      "completed": 12
+    }
+  },
+  "unique_task_counts": {
+    "starts": 12,
+    "completed": 12,
+    "valid_products": 12,
+    "kinds": {
+      "describe": 6,
+      "observe": 5,
+      "verify": 1
+    }
+  },
+  "completed_products_without_task_or_order_ids": [
+    {
+      "row_index": 1,
+      "role": "application",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 2,
+      "role": "database",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 3,
+      "role": "ops",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 4,
+      "role": "verification",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 5,
+      "role": "onboarding",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 6,
+      "role": "database-backup",
+      "kind": "describe",
+      "tool": "describe",
+      "status": "ok"
+    },
+    {
+      "row_index": 7,
+      "role": "application",
+      "kind": "observe",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "row_index": 8,
+      "role": "database",
+      "kind": "observe",
+      "tool": "db.read_only_status",
+      "status": "ok"
+    },
+    {
+      "row_index": 9,
+      "role": "database-backup",
+      "kind": "observe",
+      "tool": "db.read_only_status",
+      "status": "ok"
+    },
+    {
+      "row_index": 10,
+      "role": "ops",
+      "kind": "observe",
+      "tool": "ops.route_status",
+      "status": "ok"
+    },
+    {
+      "row_index": 11,
+      "role": "onboarding",
+      "kind": "observe",
+      "tool": "aip.onboarding.check",
+      "status": "ok"
+    },
+    {
+      "row_index": 12,
+      "role": "verification",
+      "kind": "verify",
+      "tool": "incident.verification",
+      "status": "ok"
+    }
+  ],
+  "journal": {
+    "attempts": 24,
+    "logical_targets": 12,
+    "in_flight": 0,
+    "takeovers": 0,
+    "states": {
+      "awaiting-completion": 12,
+      "completed": 12
+    }
+  },
+  "journal_interpretation": "24 attempt snapshots include 12 older awaiting-completion rows and 12 later completed rows; all12 effective latest logical/partner tasks completed, effective in-flight0. The24 rows are not all completed.",
+  "act_or_resume_messages": 0,
+  "captured_cleanup_warning_count": 0,
+  "raw_input_sha256": {
+    "results.json": "de5bab1b12be18cc9cfb95e610e71b8bacee13a9cbbe36e0bb7e954149be27fa",
+    "coordinator/messages.jsonl": "c4107dfbe229c399ba07b9f7e3547ec308e036b18b5c74c2c0dd8092300ca192",
+    "coordinator/events.jsonl": "52426f36e48dd77678b60af0270e9900410b5a16f052db9bc5527b3d19a581cf"
+  },
+  "scope": "Read-only inspection of terminated run files; copied SQLite inputs only. No new task/group/model/resource call. Healthy proof is not recovery/takeover proof.",
+  "raw_messages_AMP_order_ids_or_sqlite_files_included": false,
+  "input_receipt_sha256": {
+    "eval/results/platform/new7-healthy-20261018-first/results.json": "de5bab1b12be18cc9cfb95e610e71b8bacee13a9cbbe36e0bb7e954149be27fa",
+    "eval/results/platform/new7-healthy-20261018-first-supervisor/finished.json": "c10c522fcc9618eafd7d2f471130b53f3f9c444088ca043c94c51322ed2e2722",
+    "artifacts/new7-platform-healthy-analysis-20261018/review-first/independent-review.json": "ef09b8bd98de396eada76b4623ae0dc134840e9987125a1190644680781eb4f5",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-first-pass.json": "09fff39620c8c9f17c726b3e2c764ed6a11c793100907ff2fed58413246ae154",
+    "artifacts/new7-runtime-preparation-20261018/scope-review/actual-runtime-after-hold.json": "18fedec37ae16e732a4f693c8c24025f846382e939731161eec55e68583cfe92",
+    "artifacts/new7-runtime-start-20261018/results.json": "0bef2b79a5cbe2caa2f2faab1b7cc370fedc8a9fb9ddf2ab5b02d33fbb3fb4bb"
+  }
+}

@@ -2,6 +2,7 @@
 
 python tools/local_model.py setup
 python tools/local_model.py start
+python tools/local_model.py start --context-size 32768
 INCIDENT_LLM_BASE_URL=http://127.0.0.1:8089/v1
 INCIDENT_LLM_MODEL=Qwen3-1.7B-Q8_0
 """
@@ -71,7 +72,9 @@ def status(port):
         return json.load(response)
 
 
-def start(port):
+def start(port, context_size=8192):
+    if type(context_size) is not int or context_size < 1:
+        raise ValueError("Context size must be a positive integer")
     binary = RUNTIME / RELEASE / "llama-server.exe"
     if not binary.is_file() or not (RUNTIME / MODEL).is_file():
         raise RuntimeError("Run setup first")
@@ -79,7 +82,7 @@ def start(port):
         if probe.connect_ex(("127.0.0.1", port)) == 0:
             raise RuntimeError(f"Port {port} is already occupied")
     args = [str(binary), "--model", str(RUNTIME / MODEL), "--alias", "Qwen3-1.7B-Q8_0",
-            "--host", "127.0.0.1", "--port", str(port), "--ctx-size", "8192",
+            "--host", "127.0.0.1", "--port", str(port), "--ctx-size", str(context_size),
             "--n-gpu-layers", "99", "--parallel", "1", "--jinja", "--reasoning", "off",
             "--no-webui", "--cors-origins", f"http://127.0.0.1:{port}"]
     log = RUNTIME / "server.log"
@@ -95,6 +98,7 @@ def start(port):
             health = status(port)
             info = {"pid": child.pid, "started_at": datetime.now(timezone.utc).isoformat(),
                     "base_url": f"http://127.0.0.1:{port}/v1", "model": "Qwen3-1.7B-Q8_0",
+                    "context_size_requested": context_size,
                     "health": health, "manifest": str(RUNTIME / "manifest.json")}
             (RUNTIME / "server.json").write_text(json.dumps(info, indent=2), encoding="utf-8")
             print(json.dumps(info))
@@ -108,10 +112,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["setup", "start", "status"])
     parser.add_argument("--port", type=int, default=8089)
+    parser.add_argument("--context-size", type=int, default=8192,
+                        help="Context tokens for start; default 8192, shared by all evaluation methods")
     args = parser.parse_args()
     if args.action == "setup":
         setup()
     elif args.action == "start":
-        start(args.port)
+        start(args.port, args.context_size)
     else:
         print(json.dumps(status(args.port)))

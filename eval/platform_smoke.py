@@ -41,6 +41,7 @@ async def run(args):
     roles = args.roles.split(",")
     processes = []
     transport = None
+    exit_code = 1
     result = {"started_at": datetime.now(timezone.utc).isoformat(),
               "mode": "wutong-amqps", "scope": roles, "full_p0_acceptance": False,
               "fault_injection": False, "status": "failed"}
@@ -75,6 +76,8 @@ async def run(args):
                     await asyncio.sleep(.2)
         config = json.loads((args.config_dir / "coordinator.json").read_text(encoding="utf-8"))
         config["skills"] = {role: config["skills"][role] for role in roles}
+        # A read-only smoke failure must not start a takeover experiment.
+        config["automatic_takeover"] = False
         transport = WutongTransport(config, output / "coordinator")
         await asyncio.wait_for(transport.start(), 180)
         result["participants"] = transport.participants
@@ -86,7 +89,7 @@ async def run(args):
                        "budget": {"deadline_ms": 30000 if tool == "aip.onboarding.check" else 15000}}
             result["observation"] = await transport.call(payload)
         result["status"] = "completed"
-        return 0
+        exit_code = 0
     except Exception as exc:
         result["error_class"] = type(exc).__name__
         result["error_stack"] = [{"file": str(Path(frame.filename).relative_to(ROOT))
@@ -96,13 +99,17 @@ async def run(args):
             result["error_attribute"] = exc.name
         # Resource/provider exception text may contain credentials. Logs stay local.
         print(json.dumps({"status": "failed", "error_class": type(exc).__name__}), flush=True)
-        return 1
     finally:
+        result["task_phase_status"] = result["status"]
         if transport:
             try:
                 await transport.close()
+                result["close_status"] = "completed"
             except Exception as exc:
                 result["close_error_class"] = type(exc).__name__
+                result["close_status"] = "failed"
+                result["status"] = "failed"
+                exit_code = 1
         for process in processes:
             if process.poll() is None:
                 process.terminate()
@@ -114,6 +121,7 @@ async def run(args):
         result["finished_at"] = datetime.now(timezone.utc).isoformat()
         (output / "results.json").write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(result, ensure_ascii=False), flush=True)
+    return exit_code
 
 
 if __name__ == "__main__":

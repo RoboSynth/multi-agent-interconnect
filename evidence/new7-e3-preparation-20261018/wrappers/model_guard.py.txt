@@ -1,0 +1,46 @@
+"""Three proxy-free GETs only, called after explicit batch authorization."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import urllib.request
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError('Local model preflight redirects are forbidden')
+
+
+def check_values(props, slots, models, metadata, observed, root):
+    assert metadata['pid'] == observed['model_pid'] == 4272, 'Model metadata PID changed'
+    assert metadata['base_url'] == 'http://127.0.0.1:8089/v1'
+    assert metadata['model'] == observed['model_alias'] == 'Qwen3-1.7B-Q8_0'
+    assert metadata['context_size_requested'] == observed['observed_context_per_slot'] == 32768
+    assert [row['id'] for row in models['data']] == ['Qwen3-1.7B-Q8_0'], 'Served alias changed'
+    assert props['default_generation_settings']['n_ctx'] == 32768, 'Observed context changed'
+    assert props['total_slots'] == len(slots) == 1, 'Single-slot protocol changed'
+    assert slots[0]['n_ctx'] == 32768 and slots[0]['is_processing'] is False, 'Model slot is busy or capacity changed'
+    expected = Path(root)/'tools/runtime/local-model/Qwen3-1.7B-Q8_0.gguf'
+    assert os.path.normcase(os.path.realpath(props['model_path'])) == os.path.normcase(os.path.realpath(expected)), 'Served model path changed'
+    return {'metadata_pid':4272, 'model_alias':'Qwen3-1.7B-Q8_0', 'observed_context_per_slot':32768,
+        'slot_count':1, 'slot_idle':True, 'model_path_matches_frozen_weight':True}
+
+
+def fresh_model_preflight(root):
+    root=Path(root)
+    metadata=json.loads((root/'tools/runtime/local-model/server.json').read_text(encoding='utf-8-sig'))
+    observed=json.loads((root/'artifacts/local-model-context-20261018/after-restart.json').read_text(encoding='utf-8-sig'))
+    assert metadata['pid'] == observed['model_pid'] == 4272, 'Model metadata PID changed before GET'
+    opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect())
+    data={};digests={}
+    for name,path in [('props','/props'),('slots','/slots'),('models','/v1/models')]:
+        with opener.open(urllib.request.Request('http://127.0.0.1:8089'+path,method='GET'),timeout=10) as response:
+            assert response.status == 200
+            raw=response.read(1024*1024+1)
+        assert len(raw)<=1024*1024, 'Unexpected model preflight response size'
+        data[name]=json.loads(raw);digests[name+'_sha256']=hashlib.sha256(raw).hexdigest()
+    result=check_values(data['props'],data['slots'],data['models'],metadata,observed,root)
+    result.update(status='FRESH_READ_ONLY_MODEL_PREFLIGHT_PASSED',checked_at=datetime.now(timezone.utc).isoformat(),
+        http_GETs=3,completion_POSTs=0,proxy_inheritance=False,response_sha256=digests)
+    return result
