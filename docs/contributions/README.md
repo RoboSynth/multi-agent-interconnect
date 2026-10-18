@@ -1,3 +1,5 @@
+> **2026-10-18 公开提交更新（UTC 08:29:35）**：已创建公开 [GitHub fork](https://github.com/RoboSynth/ACPs-community)，[接续PR #13](https://github.com/AIP-PUB/ACPs-community/pull/13)与[日志并发PR #14](https://github.com/AIP-PUB/ACPs-community/pull/14)均为 draft、尚未合并。四条 Issue 已发布：[乱序 #15](https://github.com/AIP-PUB/ACPs-community/issues/15)、[MQ文档 #16](https://github.com/AIP-PUB/ACPs-community/issues/16)、[access #17](https://github.com/AIP-PUB/ACPs-community/issues/17)、[发现语义 #18](https://github.com/AIP-PUB/ACPs-community/issues/18)。六项创建均 HTTP201、随后 GET200 且标题/正文一致；[提交事实与正文快照](../../evidence/upstream-public-submission-20261018/submission.json)保留分支提交和验证边界。尚无合并或CI通过声明，AtomGit未做，正式NEW7 E1及24小时验收仍未完成。以下原文完整保留，作为此前审阅/提交前状态记录。
+
 # 上游贡献审阅包
 
 2026-10-18 更新：新增[两个独立上游审阅包](upstream-review-20261018/README.md)，已对当前官方 `94077d1` 实际应用并验证；排序 3 项通过、日志修复前 2 负例失败 / 修复后 5 项通过，未变的 25 项接续检查复用历史证据。MessageEmitter 单独成 PR；四条 Issue 与两个 PR 的本地 payload 仍为草稿，外部 fork / Issue / PR 均未提交。下方保留原 2026-10-17 观察及旧 12 文件快照说明。

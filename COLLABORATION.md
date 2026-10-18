@@ -208,3 +208,10 @@ fixed-SDK健康窗口按12个captured Start逐taskId核对两端AMP access：coo
 [当前贡献入口](docs/contributions/upstream-review-20261018/README.md)提供两个独立PR草稿、四条Issue草稿及精确补丁。目标是已核实的官方94077d10b336bfdb9a7d68e4859390bf44a67a27；所选129个SDK源文件与3985基线换行归一后相同，非整个仓库兼容承诺。仅派生LF补丁后，在各自隔离树实际apply-check/apply并逐件核对；接续包3项迁移排序检查通过，未变25项组件检查复用历史记录；并发包在当前未修复SDK上2个负例失败，修复后5项通过，不与项目3项集成检查相加。原CRLF应用失败、EOF警告及历史辅助工具失败保留；旧3985包、原16件E3与8件E1证据不变。当前只在团队内审阅，外部fork、PR及Issue尚未创建或提交，正式NEW7 E1仍待授权执行。
 
 [8877自然第三周期](evidence/new7-inspect-session-20261018/cycle3.json)业务30.002秒、30成功请求、10流程，observe5/verify1且act/审批/模型均0。原23条awaiting快照是历史，当前effective in-flight为0；本次是第三周期和进程句柄/HTTP的时点观察，不等于24小时、7天或未来退出保证。原E3未决、坏行和此前启动/检查器失败不由该证据消解。
+
+
+### 2026-10-18 GitHub公开贡献已提交
+
+用户明确授权后，公开[fork](https://github.com/RoboSynth/ACPs-community)已创建，两个独立分支已push并远端核对。[接续PR #13](https://github.com/AIP-PUB/ACPs-community/pull/13)对应incident-ext/30f8840785a1b02a661e0fbb335a8dcd9bb038d0、13文件，[MessageEmitter PR #14](https://github.com/AIP-PUB/ACPs-community/pull/14)对应fix/message-emitter-append/ddf2094ef2ea7b687a8966e43302ab07d23b9950、2文件；两者为draft、未合并。四条Issue已发布：[乱序 #15](https://github.com/AIP-PUB/ACPs-community/issues/15)、[MQ文档 #16](https://github.com/AIP-PUB/ACPs-community/issues/16)、[access #17](https://github.com/AIP-PUB/ACPs-community/issues/17)、[发现语义 #18](https://github.com/AIP-PUB/ACPs-community/issues/18)。六项均创建HTTP201、立即GET200，标题/正文逐件一致，实际提交进程exit0。
+
+[安全提交快照](evidence/upstream-public-submission-20261018/submission.json)保留实际公开URL、正文、body SHA与分支提交，仅反映提交当时状态；原始md/payload和补丁包保持原字节，贡献入口加日期前缀完整保留此前未提交阶段文字。本次没有重跑行为测试；排序3/并发5与历史25组件证据保持原范围。已核实的官方94077树中未找到CI配置，未执行上游CI，未声明合并或CI成功。AtomGit未做，正式NEW7 E1待授权执行、24小时验收未完成；原E3失败/旧未决/坏行、E1准备与3985历史包均不变。
