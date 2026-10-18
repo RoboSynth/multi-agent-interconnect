@@ -176,3 +176,10 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 原7个未完成意图阶段为5create/2cancel，1个cancel尚未发送；独立7次原键回执GET均404，不能消解旧流程。独立新H00为30.016秒、30成功请求/10流程且失败未知未决待决0。运行期T62原文/可解析字段命中0，但AMP有11/4509行解析失败，overall=false。首次路由字节检查失败仅CRLF/LF差异，随后1次文件写恢复精确初始LF；stderr有1行broker cancel，四类cleanup事件0不表示全部warning0。
 
 [当前摘要](docs/new7_e3_20261018.md)、[完整公开说明](evidence/new7-e3-45-20261018-first/README.md)、[独立审阅](evidence/new7-e3-45-20261018-first/independent-review.json)、[旧未决观察](evidence/new7-e3-45-20261018-first/pending-intents.json)、[运行期扫描限制](evidence/new7-e3-45-20261018-first/credential-scan.json)和[收尾澄清](evidence/new7-e3-45-20261018-first/postcheck.json)分别保留来源。本批绑定旧冻结源码；结束后的SDK修复另计，不冒称本45格重验。正式E1接管、持续巡检和最终ZIP仍待各自验收。
+
+
+### 2026-10-18 E3后SDK日志并发追加窄修
+
+独立源码修订固定MessageEmitter构造时的实际sink，并按规范化路径共享进程内RLock，持锁直至追加句柄关闭。原SDK合成复现三轮400条分别坏4/8/11、丢9/13/18；单实例锁400条完整而双实例各自锁200条仍丢1，因此覆盖同进程多实例同路径写入。5项新增检查与3项既有检查共8项离线通过、actual exit0，真实网络/模型/资源调用0。
+
+[版本边界](docs/new7_e3_20261018.md#e3结束后的sdk日志追加修复独立版本)、[SDK修复说明](evidence/amp-jsonl-concurrency-20261018/README.md)、[负面复现](evidence/amp-jsonl-concurrency-20261018/negative-reproduction.json)与[离线证据](evidence/amp-jsonl-concurrency-20261018/offline-checks.json)独立发布。当前域镜像和运行实例仍为实验冻结版本，修复未部署、45格未重跑；原16件E3证据逐字保留，原7未决/11坏行/T62 false不因此解除。跨进程写入安全不在本修复承诺内。
