@@ -1,0 +1,103 @@
+{
+  "status": "ONE_FORMAL_E1_A_CASE_FILE_PREPARED_NOT_EXECUTED",
+  "schema_version": "platform-e1-plan/1",
+  "case": "E1-a",
+  "crash_point": "after_applied",
+  "experiment_id": "new7-e1a-after-applied-20261018-first",
+  "incident_id": "inc-new7-e1a-after-applied-20261018-first",
+  "operation_id": "inc-new7-e1a-after-applied-20261018-first:db-restore-writes",
+  "project": "incident-pilot-new7",
+  "identities": {
+    "coordinator": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "database": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+    "database-backup": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+    "application": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+    "ops": "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+    "verification": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+    "onboarding": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF"
+  },
+  "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+  "planned_output": "eval/results/platform/new7-e1a-after-applied-20261018-first",
+  "private_plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+  "input_files": 204,
+  "canonical_source_files": 157,
+  "worker_manifest_sha256": "7470a7059808c3e9cf1692583320051ef337e4407cd2b7a8a98d6f373c5e6b71",
+  "target_sha256": "006bcf033c3c3132aa340ca44d95ab067a1a9daae69e2549d4a93fd7cfcc7096",
+  "authorization_template_sha256": "7b862d6919a02b5241d8333cfd884c7cf0f5b282c7f00ab9aa8d3cc7356bb1b4",
+  "authorization": false,
+  "e1_runtime_executions": 0,
+  "fault_injections": 0,
+  "model_calls": 0,
+  "planned_F07_injections": 1,
+  "planned_primary_after_applied_exit83": 1,
+  "planned_backup_crashes": 0,
+  "effects": [
+    "F07 apply and restore on the bound orders target",
+    "replace only owned primary/backup database workers",
+    "one primary after_applied exit83",
+    "formal AMQPS ADP/describe/act/resume and owned group close",
+    "approved db.restore_writes and application.pool_rebuild",
+    "restore normal database workers and independent H00"
+  ],
+  "ordered_phases": [
+    "Verify exact inputs and explicit new authorization before lock/output/runtime",
+    "Acquire shared coordinator-AIC lock; attest current and future Compose graph, image IDs, owned workers, source and ledgers",
+    "Replace only the two owned database workers using the RO experiment bundle; no build or pull",
+    "Formal baseline H00 at least 30 seconds and 10 complete order flows",
+    "Evaluator applies F07 once; primary approved db.restore_writes returns and ledger is applied, then exits83 before product",
+    "Fresh formal ADP/backup describe/resume; require already-applied deduplication and zero backup MCP invocations",
+    "Approved application pool rebuild bound to observed revision; formal verification at least 30 seconds and 10 flows",
+    "Check durable markers, matched primary MCP return, operation identity and read-only journal reconciliation",
+    "Normally close the exact owned group, preserving close and cleanup errors",
+    "Restore only owned database workers, restore F07 and run separate final H00 only if ownership was confirmed"
+  ],
+  "ownership": {
+    "current_consumer": "8877 scheduled host currently owns this AIC",
+    "execute_prerequisite": "After new user authorization, owned idle-stop and normal close of the scheduled host, then fresh owner review",
+    "no_other_consumers_confirmed": false,
+    "ledger_clear_confirmed": false,
+    "lock_scope": "Same local identity lock as healthy/E3/scheduled host; cannot exclude a different host"
+  },
+  "target_contract": {
+    "backend": "docker",
+    "explicit_target": true,
+    "fixed_image_overlay_appended": true,
+    "normal_and_experimental_image_preflight": "Actual readonly check passed; execution still repeats fresh checks before any stop",
+    "up_flags": [
+      "--no-deps",
+      "--force-recreate",
+      "--no-build",
+      "--pull",
+      "never"
+    ]
+  },
+  "actual_file_only_checks": [
+    {
+      "actual_tool_chunk": "ae765c",
+      "actual_os_exit_code": 0,
+      "kind": "prepare files"
+    },
+    {
+      "actual_tool_chunk": "5f3447",
+      "actual_os_exit_code": 0,
+      "kind": "default plan validation"
+    },
+    {
+      "actual_tool_chunk": "936475",
+      "actual_os_exit_code": 1,
+      "expected_failure": true,
+      "kind": "false authorization rejected before runtime",
+      "error_class": "ValueError"
+    }
+  ],
+  "evidence_limits": [
+    "MCP invocations are not physical side effects",
+    "process-local ownership lock cannot exclude another host",
+    "normal close evidence is SDK return/local state/warnings, not a broker ACL inventory",
+    "only E1-a after_applied; no E1-b comparison or old-primary resurrection claim",
+    "A pre-call invocation with no matching return is unknown intent, not proof that MCP was sent or a physical effect occurred.",
+    "The required matched primary return proves the wrapper call returned; physical side effects are not counted.",
+    "Raw original primary task may remain Processing; accepted backup resume is separately associated without editing raw journal rows.",
+    "No E1-b/E1-c, repeated comparison, old-primary resurrection, recovery result or real runtime validation is claimed."
+  ]
+}

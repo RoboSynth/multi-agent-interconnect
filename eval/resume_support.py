@@ -156,3 +156,84 @@ def semantic_history(messages_path, incident_id):
                         seen.add(key)
                         records.append({"direction": "product", "aip_task_id": message["taskId"], "product": data})
     return records
+
+
+def formal_semantic_history(messages_path, incident_id, *, before_bytes):
+    """Read an exact pre-takeover capture prefix, matching IFC IDs to AIP tasks.
+
+    Formal AIP session IDs identify the group and need not equal an incident.
+    Only products matching an actual Start's session/task and IFC incident/logical
+    IDs are included. Duplicate lifecycle products do not duplicate evidence.
+    The caller must use the byte boundary recorded before ADP/takeover begins.
+    """
+    if type(before_bytes) is not int or before_bytes < 0:
+        raise ValueError("history cutoff must be a nonnegative byte count")
+    if before_bytes == 0:
+        return []
+    with Path(messages_path).open("rb") as stream:
+        prefix = stream.read(before_bytes)
+    if len(prefix) != before_bytes or not prefix.endswith(b"\n"):
+        raise ValueError("history cutoff must end at a captured record boundary")
+    entries = [json.loads(line) for line in prefix.decode("utf-8").splitlines() if line.strip()]
+
+    def key(message):
+        session, task = message.get("sessionId"), message.get("taskId")
+        return (session, task) if isinstance(session, str) and session and isinstance(task, str) and task else None
+
+    def item_value(item):
+        if "text" in item:
+            try:
+                return json.loads(item["text"])
+            except (TypeError, ValueError):
+                return None
+        return item.get("data")
+
+    # A fast reply can be captured before publisher confirmation records Start.
+    # Bind all captured Starts first, then retain their original capture order.
+    starts, all_starts = {}, {}
+    for entry in entries:
+        message = entry.get("message", {})
+        identity = key(message)
+        if entry.get("direction") != "send" or message.get("command") != "start" or identity is None:
+            continue
+        for item in message.get("dataItems", []):
+            payload = item_value(item)
+            if (not isinstance(payload, dict) or not isinstance(payload.get("incident_id"), str)
+                    or payload.get("kind") not in {"observe", "act", "verify", "resume"}
+                    or not isinstance(payload.get("logical_task_id"), str) or not payload["logical_task_id"]):
+                continue
+            previous = all_starts.get(identity)
+            if (previous is not None and previous != payload and
+                    incident_id in {previous["incident_id"], payload["incident_id"]}):
+                raise ValueError("one captured AIP task has conflicting IFC requests")
+            all_starts[identity] = payload
+            if payload["incident_id"] == incident_id:
+                starts[identity] = payload
+
+    records, seen = [], set()
+    for entry in entries:
+        message = entry.get("message", {})
+        identity = key(message)
+        request = starts.get(identity)
+        if request is None:
+            continue
+        base = {"aip_session_id": identity[0], "aip_task_id": identity[1]}
+        if entry.get("direction") == "send" and message.get("command") == "start":
+            if not any(item_value(item) == request for item in message.get("dataItems", [])):
+                continue
+            dedupe = ("request", identity)
+            if dedupe not in seen:
+                seen.add(dedupe)
+                records.append({"direction": "request", **base, "payload": request})
+        elif entry.get("direction") == "receive":
+            for product in message.get("products", []):
+                for item in product.get("dataItems", []):
+                    data = item_value(item)
+                    if (not isinstance(data, dict) or data.get("incident_id") != incident_id
+                            or data.get("logical_task_id") != request["logical_task_id"]):
+                        continue
+                    dedupe = ("product", identity, json.dumps(data, sort_keys=True, ensure_ascii=False))
+                    if dedupe not in seen:
+                        seen.add(dedupe)
+                        records.append({"direction": "product", **base, "product": data})
+    return records

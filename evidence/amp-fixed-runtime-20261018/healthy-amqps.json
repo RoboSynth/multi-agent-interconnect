@@ -1,0 +1,86 @@
+{
+  "schema_version": "amp-fixed-formal-healthy/1",
+  "status": "NEW_INDEPENDENT_HEALTHY_WINDOW_PASSED",
+  "started_at": "2026-10-18T06:50:47.619717+00:00",
+  "finished_at": "2026-10-18T06:51:44.787127+00:00",
+  "actual_popen_wait_exit": 0,
+  "passed": true,
+  "input_bytes_unchanged": true,
+  "plan_sha256": "cb6d85089fcfc812b9a8b1f6aa3012657cbfe78ffb14f9f2f53fe4315718f019",
+  "completed_products": 12,
+  "confirmed_domain_roles": [
+    "application",
+    "database",
+    "database-backup",
+    "onboarding",
+    "ops",
+    "verification"
+  ],
+  "task_counts": [
+    {
+      "kind": "describe",
+      "tool": "describe",
+      "completed": 6
+    },
+    {
+      "kind": "observe",
+      "tool": "aip.onboarding.check",
+      "completed": 1
+    },
+    {
+      "kind": "observe",
+      "tool": "application.status",
+      "completed": 1
+    },
+    {
+      "kind": "observe",
+      "tool": "db.read_only_status",
+      "completed": 2
+    },
+    {
+      "kind": "observe",
+      "tool": "ops.route_status",
+      "completed": 1
+    },
+    {
+      "kind": "verify",
+      "tool": "incident.verification",
+      "completed": 1
+    }
+  ],
+  "healthy_business": {
+    "duration_seconds": 30.003,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "passed": true,
+    "pending_intents": 0
+  },
+  "close_checks": {
+    "no_group_sessions": true,
+    "no_inbound_groups": true,
+    "inbox_consumer_cancelled": true,
+    "connection_closed": true,
+    "owned_group_disconnected": true,
+    "no_sdk_cleanup_warning_events": true
+  },
+  "close_status": "completed",
+  "journal_in_flight_before_close": 0,
+  "cleanup_warning_events": 0,
+  "stderr_bytes": 0,
+  "model_calls": 0,
+  "act_tasks": 0,
+  "fault_injections": 0,
+  "resource_credential_count": 0,
+  "source_sha256": {
+    "eval/results/platform/new7-amp-fixed-healthy-20261018-first/results.json": "53bd1c5d1fdfdd85a2905bd1bb0e36a751a7a463ed871cd7e5d7923033bbc5bd",
+    "eval/results/platform/new7-amp-fixed-healthy-20261018-first-supervisor/finished.json": "3062392fb9b94e7b1bf72fc2797cf836c048f142a736f6a7e538d2336653bb15"
+  },
+  "boundaries": [
+    "This healthy formal-AMQPS window uses the independently deployed fixed SDK image. It does not establish formal E1 takeover or fault recovery.",
+    "The independent new business window does not resolve the original E3 seven pending stages or eleven malformed AMP lines."
+  ]
+}

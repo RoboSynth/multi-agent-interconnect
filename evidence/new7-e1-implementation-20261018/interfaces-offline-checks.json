@@ -1,0 +1,49 @@
+{
+  "status": "PASSED_OFFLINE_ONLY",
+  "distinct_checks": 28,
+  "new_checks": 10,
+  "existing_checks": 18,
+  "final_source_delta_checks": 1,
+  "reused_unaffected_checks": 27,
+  "actual_executions": [
+    {
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "618d7c",
+      "checks_run": 28
+    },
+    {
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "056255",
+      "checks_run": 1
+    }
+  ],
+  "source_sha256": {
+    "incident/wutong_transport.py": "a17c7e623dd76ee37e5f4283291422fb0bca972d3861aaaed485170ef47b4b1a",
+    "eval/resume_support.py": "7f82d27a50def328e4aae3ef5fd48de53b3f39da7f43fe7e37a14448affc0282",
+    "eval/handover_experiment.py": "91bf9cab27c945f75677e6d321b8860415ebec1d97f994dfe571da0edbbfed7c",
+    "tests/test_formal_handover.py": "3dac095692e289be59c6010cb90c8ce32772a9c9285ead0d99dee731e1c36098"
+  },
+  "source_ready_sha256": "0b8ce0714d865bef6bf777a41d353f60da3a93121b2bd385dfebff6290c2d366",
+  "test_proofs": [
+    {
+      "path": "artifacts/new7-e1-interface-development-20261018/checks-first/results.json",
+      "sha256": "03a52b8ddb2ead2832dcb1b16f98e5ca2f969ba19756546698d40db5e985172d",
+      "actual_tool_chunk": "618d7c",
+      "actual_os_exit_code": 0,
+      "tests_run": 28
+    },
+    {
+      "path": "artifacts/new7-e1-interface-development-20261018/checks-delta-original-fence/results.json",
+      "sha256": "aa025b470fa5d56dd05589023e8de53848821c6a0c262a3f4d32dac67a389870",
+      "actual_tool_chunk": "056255",
+      "actual_os_exit_code": 0,
+      "tests_run": 1
+    }
+  ],
+  "scope": "Synthetic capture, temporary journal and fake transport; no AMQPS, Docker, model or resource calls",
+  "limitations": [
+    "Only synthetic capture/temporary-journal/fake-transport validation; formal E1 runtime not performed.",
+    "Formal history reader requires the pre-takeover byte boundary and a complete unmodified capture prefix.",
+    "HandoverRecorder remains a deterministic comparison: model calls/tokens zero; bytes/4 remains only an estimate."
+  ]
+}

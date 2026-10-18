@@ -1,0 +1,99 @@
+{
+  "schema_version": "amp-fixed-deployment/1",
+  "status": "DEPLOYED_CONTRACT_ATTESTED",
+  "checked_at": "2026-10-18T06:50:32.382399+00:00",
+  "passed": true,
+  "checks": {
+    "same_exact_project_service_set": true,
+    "six_new_ids_fixed_image_running": true,
+    "postgres_ID_image_state_StartedAt_preserved": true,
+    "app-v1_ID_image_state_StartedAt_preserved": true,
+    "app-v2_ID_image_state_StartedAt_preserved": true,
+    "nginx_ID_image_state_StartedAt_preserved": true,
+    "fault-locker_ID_image_state_StartedAt_preserved": true,
+    "other14_container_IDs_preserved": true,
+    "mounted_private_inputs_and_route_fingerprint_preserved": true,
+    "original_route_exact_bytes_preserved": true,
+    "database_ops_ledger_counts_preserved_no_inflight": true,
+    "base_image_effective_command_environment_user_preserved": true,
+    "configured_mounts_flags_network_preserved": true,
+    "shared_existing_state_volumes_preserved": true,
+    "application-agent_actual_preferred_import_fixed": true,
+    "verification-agent_actual_preferred_import_fixed": true,
+    "database-agent_actual_preferred_import_fixed": true,
+    "database-backup-agent_actual_preferred_import_fixed": true,
+    "ops-agent_actual_preferred_import_fixed": true,
+    "onboarding-agent_actual_preferred_import_fixed": true,
+    "public_readiness_v2": true
+  },
+  "domains": [
+    {
+      "service": "application-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    },
+    {
+      "service": "verification-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    },
+    {
+      "service": "database-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    },
+    {
+      "service": "database-backup-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    },
+    {
+      "service": "ops-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    },
+    {
+      "service": "onboarding-agent",
+      "fixed_image": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+      "effective_configuration_matches": true,
+      "mounts_flags_network_match": true,
+      "preferred_import_path": "/srv/vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "preferred_and_installed_sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc"
+    }
+  ],
+  "actual_stop_exit_code": 0,
+  "actual_up_exit_code": 0,
+  "retained_initial_postcondition_failure": {
+    "actual_helper_exit_code": 1,
+    "status": "FAILED_PRESERVED_NO_AUTOMATIC_RETRY",
+    "error_class": "AssertionError",
+    "original_sha256": "09358dd9116f5d88d4ce9bf351959bf836c4bec2f6eb5de1553d5ee9e3e1adc1",
+    "exact_configuration_diff_fields": "Not established; no ordering-only explanation is asserted."
+  },
+  "final_attestation_runtime_recreate_or_repair_actions": 0,
+  "final_attestation_AMQPS_model_or_business_POST_calls": 0,
+  "source_sha256": {
+    "artifacts/new7-amp-deployment-20261018/deployed-contract-attestation-v3.json": "89b56c828e995aadbb732f07b8f635bef00ec4a86cc8f878b92bfc315a664ed4",
+    "artifacts/new7-amp-deployment-preparation-20261018/deployment-20261018T064641925577Z-58b397f1.json": "09358dd9116f5d88d4ce9bf351959bf836c4bec2f6eb5de1553d5ee9e3e1adc1"
+  },
+  "boundaries": [
+    "The first helper exit1 is retained although the actual stop/up commands each exited0. The independent v3 contract attestation passed21 checks.",
+    "Only the six resource-domain consumers were replaced with the fixed SDK image; this does not rerun or rewrite the original E3 cohort.",
+    "No cross-process append safety, long-term availability, old pending-intent resolution or repair of old malformed lines is claimed."
+  ]
+}

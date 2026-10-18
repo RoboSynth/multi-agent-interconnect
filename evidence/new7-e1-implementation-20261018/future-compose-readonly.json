@@ -1,0 +1,59 @@
+{
+  "status": "ACTUAL_READONLY_COMPOSE_IMAGE_PREFLIGHT_PASSED",
+  "actual_os_exit_code": 0,
+  "actual_tool_chunk": "5cb041",
+  "observation": {
+    "plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+    "runner_sha256": "0ebcc8164f13abd801d607b494b4c70d706f8499abff0cd67d56f827f02302af",
+    "operations": "Docker Compose config and image inspect only",
+    "stop_up_injection_AMQPS_MCP_model_business_calls": 0,
+    "status": "passed",
+    "bindings_sha256": "6c4f757654b5bb0e01779b9cc6c2a9112311cde631210ed8bcea0170402c7fbb",
+    "experiment_output_created": false
+  },
+  "bindings": {
+    "services": {
+      "database-agent": {
+        "normal": {
+          "image_reference": "incident-pilot-agent:new7-ampfix-20261018",
+          "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312"
+        },
+        "experiment": {
+          "image_reference": "incident-pilot-agent:new7-ampfix-20261018",
+          "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312"
+        }
+      },
+      "database-backup-agent": {
+        "normal": {
+          "image_reference": "incident-pilot-agent:new7-ampfix-20261018",
+          "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312"
+        },
+        "experiment": {
+          "image_reference": "incident-pilot-agent:new7-ampfix-20261018",
+          "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312"
+        }
+      }
+    },
+    "normal_render_sha256": "9453aee038d9adf9cdfeba1151196f0fab6721bdc10a119fb8d0910791433190",
+    "experiment_render_sha256": "80ad4fb258b89fc8d828ca22a7e7aa6506ff4e1706c4d06561c6c44dd7c4cc9c",
+    "raw_render_retained": false
+  },
+  "prior_attempts_preserved": [
+    {
+      "actual_tool_chunk": "91752b",
+      "actual_os_exit_code": 1,
+      "cause": "WSL diagnostic stream encoding"
+    },
+    {
+      "actual_tool_chunk": "c56631",
+      "actual_os_exit_code": 0,
+      "scope": "binary diagnostic only"
+    },
+    {
+      "actual_tool_chunk": "a09e4a",
+      "actual_os_exit_code": 1,
+      "cause": "Profile-gated domain definitions omitted from config render"
+    }
+  ],
+  "limitations": "Only Compose config and image inspect; no stop/up/fault/AMQPS/MCP/model/business actions and no E1 runtime result"
+}

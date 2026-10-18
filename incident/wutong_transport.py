@@ -6,6 +6,8 @@ tools with database/application credentials.
 """
 from __future__ import annotations
 import asyncio
+from copy import deepcopy
+import inspect
 import json
 import math
 from pathlib import Path
@@ -18,7 +20,7 @@ from acps_sdk.aip import StructuredDataItem, TextDataItem, TaskCommand
 from acps_sdk.aip.aip_group_model import GroupMgmtResult
 from acps_sdk.aip.resumable import TaskJournal, CoordinatorTerm, ResumableGroupLeader, Fence, ResumePackage
 from incident.amp_setup import AmpRuntime
-from incident.contracts import TaskProduct, handover_evidence
+from incident.contracts import TaskPayload, TaskProduct, handover_evidence
 from incident.selection import discover_candidates, select_participant
 from incident.coordinator.amp_facts import AmpFactStore, TaskEvidence, ManagementStatusEvidence
 
@@ -26,7 +28,7 @@ from incident.coordinator.amp_facts import AmpFactStore, TaskEvidence, Managemen
 class WutongTransport:
     mode = "wutong-amqps"
 
-    def __init__(self, config, output):
+    def __init__(self, config, output, *, resume_payload_factory=None):
         self.config, self.output = config, Path(output)
         self.output.mkdir(parents=True, exist_ok=True)
         self.journal = TaskJournal(self.output / "journal.sqlite")
@@ -43,6 +45,8 @@ class WutongTransport:
         self.descriptions, self.active_fences, self.evidence, self.takeover_locks = {}, {}, {}, {}
         self.on_event = None
         self.closing = False
+        self.resume_payload_factory = resume_payload_factory
+        self.takeover_history_cutoffs = {}
         self._participant_failures = {}
         self.amp = AmpRuntime(self.output / "amp", "coordinator", self.aic,
                               cert=identity["cert"], key=identity["key"])
@@ -326,8 +330,12 @@ class WutongTransport:
         async with self.takeover_locks.setdefault(role, asyncio.Lock()):
             started = time.monotonic()
             incident, logical_id = original["incident_id"], original["logical_task_id"]
+            messages_path = self.output / "messages.jsonl"
+            history_bytes = messages_path.stat().st_size if messages_path.exists() else 0
+            self.takeover_history_cutoffs[(incident, logical_id)] = history_bytes
             self.record("takeover_started", incident_id=incident, logical_task_id=logical_id,
-                        failed_aic=failed, reason=reason, discovery="official-adp")
+                        failed_aic=failed, reason=reason, discovery="official-adp",
+                        history_bytes_before_takeover=history_bytes)
             self.journal.record_takeover(incident, failed, reason)
             skill = self.config.get("skills", {}).get(role, {"database": "db.observe", "ops": "ops.observe",
                 "application": "incident.application", "verification": "incident.verification",
@@ -342,8 +350,8 @@ class WutongTransport:
                     acs, description = await self._select_participant(role, [candidate], original["tool"])
                     if description.get("resource_scope", description.get("resources")) != previous_scope:
                         continue
-                    previous = self.active_fences.get(role, Fence(**original.get("fence", {
-                        "coordinator_term": self.term, "takeover_version": 0})))
+                    original_fence = original.get("fence", {"coordinator_term": self.term, "takeover_version": 0})
+                    previous = self.active_fences.get(role, Fence(**original_fence))
                     proposed = Fence(max(self.term, previous.coordinator_term), previous.takeover_version+1)
                     operation_id = original.get("operation_id") or incident+":observe:"+logical_id
                     package = ResumePackage(logical_id, "Continue the interrupted incident task",
@@ -351,8 +359,10 @@ class WutongTransport:
                         remaining_tasks=[{"tool": original["tool"], "kind": original["kind"], "args": original.get("args", {})}],
                         operations=[{"operation_id": operation_id, "status": "delivery_unknown"}] if original.get("operation_id") else [],
                         fence=proposed)
-                    control = await self._send({**original, "kind": "resume", "operation_id": operation_id,
-                        "fence": proposed.to_dict(), "args": {"advance_fence": True, "resume_package": package.to_dict()}}, acs["aic"])
+                    resume = {**original, "kind": "resume", "operation_id": operation_id,
+                        "fence": proposed.to_dict(), "args": {"advance_fence": True, "resume_package": package.to_dict()}}
+                    resume = await self._resume_payload(resume, package, original_fence=original_fence)
+                    control = await self._send(resume, acs["aic"])
                     confirmed = control.get("active_fence") or control.get("operation", {}).get("active_fence")
                     if not isinstance(confirmed, dict) or Fence(**confirmed) < proposed:
                         raise RuntimeError("replacement did not activate the shared-resource fence")
@@ -381,6 +391,34 @@ class WutongTransport:
                     self.journal.record_takeover(incident, failed, reason, replacement=candidate["aic"],
                                                 state="candidate_failed:"+type(exc).__name__)
             raise RuntimeError("no confirmed ADP replacement completed the takeover")
+
+    async def _resume_payload(self, default: dict, package: ResumePackage, *, original_fence=None) -> dict:
+        """Match the local factory contract: replace information, never authority."""
+        if self.resume_payload_factory is None:
+            return default
+        expected = deepcopy(default)
+        value = self.resume_payload_factory(deepcopy(default), deepcopy(package))
+        if inspect.isawaitable(value):
+            value = await value
+        TaskPayload.model_validate(value)
+        if ({k: v for k, v in value.items() if k != "args"} !=
+                {k: v for k, v in expected.items() if k != "args"}):
+            raise ValueError("handover factory cannot change operation, fence, identity, approval or budget")
+        if value.get("args", {}).get("advance_fence") is not True:
+            raise ValueError("handover factory must retain args.advance_fence=true")
+        handover = value["args"].get("handover")
+        if handover is not None:
+            control = handover.get("control", {}) if isinstance(handover, dict) else {}
+            if (control.get("operation_id") != expected["operation_id"] or
+                    control.get("replacement_fence") != expected["fence"] or
+                    control.get("original_fence") != original_fence):
+                raise ValueError("handover information cannot change the original operation or fences")
+        supplied = value["args"].get("resume_package")
+        if supplied is not None:
+            if not isinstance(supplied, dict) or any(supplied.get(key) != package.to_dict().get(key)
+                    for key in ("logical_task_id", "operations", "fence")):
+                raise ValueError("handover package cannot change operation identity or fence")
+        return value
 
     def _handover_evidence(self, incident):
         return handover_evidence(self.evidence.get(incident, []), self.config.get("evidence_ttl_seconds", 60))

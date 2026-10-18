@@ -183,3 +183,12 @@ M1新增自由选择observe/act/verify的可选控制器路径，仍共用安全
 独立源码修订固定MessageEmitter构造时的实际sink，并按规范化路径共享进程内RLock，持锁直至追加句柄关闭。原SDK合成复现三轮400条分别坏4/8/11、丢9/13/18；单实例锁400条完整而双实例各自锁200条仍丢1，因此覆盖同进程多实例同路径写入。5项新增检查与3项既有检查共8项离线通过、actual exit0，真实网络/模型/资源调用0。
 
 [版本边界](docs/new7_e3_20261018.md#e3结束后的sdk日志追加修复独立版本)、[SDK修复说明](evidence/amp-jsonl-concurrency-20261018/README.md)、[负面复现](evidence/amp-jsonl-concurrency-20261018/negative-reproduction.json)与[离线证据](evidence/amp-jsonl-concurrency-20261018/offline-checks.json)独立发布。当前域镜像和运行实例仍为实验冻结版本，修复未部署、45格未重跑；原16件E3证据逐字保留，原7未决/11坏行/T62 false不因此解除。跨进程写入安全不在本修复承诺内。
+
+
+### 2026-10-18 E1源码接续与AMP修复后独立健康窗口
+
+正式E1新增源码/离线准备：[工作者与接续状态](docs/new7_e1_implementation_20261018.md)。复用原Bridge/Policy/Ledger/AmpRuntime；只有明确实验主身份可在指定点退出，backup永不armed，overlay保留原业务逻辑和共享账本。修改计数区分wrapper预调用事件、匹配返回与未知返回，不能推算物理副作用。正式E1未执行，纯文件计划/armed bundle的准备不提供新故障授权；实际E1前须在空闲边界停止当前同AIC巡检并核对关闭。
+
+AMP修复后六域已独立部署；首次部署辅助exit1保留、stop/up各0，v3契约21项通过。新正式健康窗口12任务/六域、30.003秒/30成功请求/10流程，Popen.wait0、close六门真、stderr0。新窗口8文件/63值凭据检查命中0、解析/解码错误0；捕获表示重叠不合计独特流量。[部署](evidence/amp-fixed-runtime-20261018/deployment.json)、[健康](evidence/amp-fixed-runtime-20261018/healthy-amqps.json)、[日志审计](evidence/amp-fixed-runtime-20261018/credential-integrity.json)独立于旧45格证据。
+
+8877inspect已观察首轮完成；原launcher启动后编码读取失败exit1与仍运行服务分开记录，只读observer实际0且无重复启动，见[首轮记录](evidence/new7-inspect-session-20261018/first-cycle.json)。尚未24小时/7天验收。旧45格16件证据逐字保留；旧7未决/11坏行/T62 false不因此解除。

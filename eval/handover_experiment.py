@@ -55,13 +55,16 @@ def fresh_facts(handover, now=None):
 
 
 class HandoverRecorder:
-    def __init__(self, method, transport, output):
+    def __init__(self, method, transport, output, *, history_reader=None):
         self.method, self.transport, self.output = method, transport, output
+        self.history_reader = history_reader
         self.transfer = None
         self.metrics = None
 
     def __call__(self, default, package):
-        history = semantic_history(self.transport.messages_path, default["incident_id"])
+        history = (semantic_history(self.transport.messages_path, default["incident_id"])
+                   if self.history_reader is None else
+                   self.history_reader(default["incident_id"], default["logical_task_id"]))
         # Native lifecycle messages are kept separately. This includes every
         # genuine business request/product before failure, including a request
         # that has no response because its participant exited.
@@ -69,7 +72,9 @@ class HandoverRecorder:
         common = {"strategy": self.method, "goal": "Restore original order workflow and verify it",
                   "evidence_ttl_seconds": self.transport.config.get("evidence_ttl_seconds", 60)}
         original = next((item["payload"] for item in reversed(history) if item["direction"] == "request"
-                         and item["payload"].get("operation_id") == default["operation_id"]), None)
+                         and item["payload"].get("operation_id") == default["operation_id"]
+                         and item["payload"].get("incident_id") == default["incident_id"]
+                         and item["payload"].get("logical_task_id") == default["logical_task_id"]), None)
         if original is None:
             raise ValueError("actual pre-crash operation request was not captured")
         common["control"] = {"operation_id": default["operation_id"], "original_fence": original["fence"],

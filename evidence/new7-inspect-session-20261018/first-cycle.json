@@ -1,0 +1,162 @@
+{
+  "schema_version": "new7-inspect-first-cycle/1",
+  "status": "EXISTING_OWNED_INSPECT_PROCESS_CONFIRMED",
+  "observed_at_utc": "2026-10-18T06:56:50.177814+00:00",
+  "connected": true,
+  "participants": 5,
+  "mode": "wutong-amqps",
+  "model_enabled": false,
+  "resource_credential_count": 0,
+  "config_sha256": "8d940b048e2fd286837681524ac8ab9e4c8613be855cddc0bf32adfbf8c8e726",
+  "source_plan_sha256": "09d736ca58af3f490ad624f6e19b9efc983d37d9f38603fb43ef45b0bac9af77",
+  "schedule_events": [
+    {
+      "at": "2026-10-18T06:55:37.121992+00:00",
+      "event": "keep_awake_request",
+      "success": true,
+      "requested_flags": "0x80000001"
+    },
+    {
+      "at": "2026-10-18T06:55:37.194110+00:00",
+      "event": "job_started"
+    },
+    {
+      "at": "2026-10-18T06:56:17.922301+00:00",
+      "event": "job_finished",
+      "status": "completed"
+    }
+  ],
+  "initial_launcher": {
+    "actual_exit_code": 1,
+    "error_class": "UnicodeDecodeError",
+    "cause": "The wrapper read a UTF8 pyvenv.cfg with the default GBK codec after starting the server; this is not a server-exit observation.",
+    "duplicate_launch_performed": false
+  },
+  "followup_observer": {
+    "actual_exit_code": 0,
+    "process_executable_nonce_and_API_checked": true,
+    "new_launches_or_stops": 0,
+    "original_receipt_sha256": "985a95f6a9a9b4be618d049b88c06a8a3e4fc51b45945f1b693b29481f95fc75"
+  },
+  "independent_first_cycle_review": {
+    "observed_at_utc": "2026-10-18T07:02:51.070349+00:00",
+    "checks": {
+      "first_job_event_completed": true,
+      "incident_completed": true,
+      "result_business_recovered": true,
+      "observation_30seconds": true,
+      "observation_10_complete_workflows": true,
+      "observation_no_failed_unknown_unresolved_pending": true,
+      "observation_passed": true,
+      "tasks_only_observe_verify": true,
+      "all_executed_task_and_product_statuses_ok": true,
+      "no_approvals_or_modifying_tasks": true,
+      "no_model_calls_requests_or_tokens": true,
+      "current_schedule_active_none": true,
+      "TaskJournal_in_flight_only_zero": true,
+      "no_journal_takeover_events": true,
+      "inspected_completed_local_file_bytes_stable": true
+    },
+    "first_job": {
+      "started_at_utc": "2026-10-18T06:55:37.194110+00:00",
+      "finished_at_utc": "2026-10-18T06:56:17.922301+00:00",
+      "event_status": "completed",
+      "incident_status": "completed",
+      "incident_elapsed_seconds": 39.094
+    },
+    "business_observation": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "passed": true,
+      "pending_intents": 0
+    },
+    "task_kind_counts": {
+      "observe": 5,
+      "verify": 1
+    },
+    "tasks": [
+      {
+        "kind": "observe",
+        "tool": "ops.containers",
+        "status": "ok",
+        "product_status": "ok"
+      },
+      {
+        "kind": "observe",
+        "tool": "ops.route_status",
+        "status": "ok",
+        "product_status": "ok"
+      },
+      {
+        "kind": "observe",
+        "tool": "db.read_only_status",
+        "status": "ok",
+        "product_status": "ok"
+      },
+      {
+        "kind": "observe",
+        "tool": "db.blocking_sessions",
+        "status": "ok",
+        "product_status": "ok"
+      },
+      {
+        "kind": "observe",
+        "tool": "application.status",
+        "status": "ok",
+        "product_status": "ok"
+      },
+      {
+        "kind": "verify",
+        "tool": "incident.verification",
+        "status": "ok",
+        "product_status": "ok"
+      }
+    ],
+    "approvals": 0,
+    "model_calls": 0,
+    "reported_tokens": 0,
+    "model_request_records": 0,
+    "source_sha256": {
+      "schedule_events": "8c10f57dea927404fd19695410e1db89a5c1dee9043ce6b9c3608533b8a8979c",
+      "schedule_state": "1e9d236a00b7c34296a8671ac8050bb5b358f7d00fe5dacf4926340c1132a35a",
+      "terminal_incident": "b8fe01f846e0655d887ef6882a1da6a784bde388699d39d1248eeb8e21540bf4",
+      "review_script": "d28ce86c64f33d990b71da2910005040f7b6b0becf361e1ab6e7542bd86e9fd0"
+    },
+    "limits": [
+      "This is one completed inspect cycle plus one current committed journal snapshot; not24-hour/7-day availability evidence.",
+      "No repeat CIM/API owner check or new broker/group operation was made; host identity is covered by the separate root observation.",
+      "Observed actions in this cycle are only observe/verify; the inspect product supports medium actions in other circumstances.",
+      "The verification task itself created/queried/cancelled fresh synthetic orders; observe/verify classification is not proof of zero business writes.",
+      "Historical E3 seven pending intents and eleven malformed AMP rows remain unchanged; this new cycle does not reconcile them.",
+      "The original launcher exit1 and separate healthy running-host observation are preserved; this review does not reclassify launcher exit or prove future graceful stop."
+    ],
+    "retained_checker_failure": {
+      "actual_exit_code": 1,
+      "tool_chunk": "38996d",
+      "receipt_sha256": "1e38d36c5e987e4d8735dd0afbfd0712ee0e43c1bdb5b91df78cc88ffc787572",
+      "reason": "Initial checker wrongly expected task.status=completed instead of ok and zero nonterminal historical rows rather than the existing in_flight_only contract; original runtime evidence was never modified."
+    },
+    "journal": {
+      "state_counts": {
+        "awaiting-completion": 11,
+        "completed": 11
+      },
+      "raw_nonterminal_attempts": 11,
+      "effective_in_flight_attempts": 0,
+      "takeover_events": 0,
+      "interpretation": "Raw table retains awaiting-completion history followed by completed rows; the in_flight_only contract excludes superseded attempts. No raw rows are rewritten or labeled all-completed."
+    },
+    "actual_exit_code": 0,
+    "original_receipt_sha256": "a857261a40cc48c44aa5dcb29a08dcfe5f526552245695341a2a824459bd0d37"
+  },
+  "limitations": [
+    "One first inspect cycle was observed completed; this is not24-hour or7-day availability validation.",
+    "The server was observed connected at the recorded time. Its later availability is not asserted by this frozen evidence.",
+    "No LLM, fault injection or automatic takeover was enabled. The existing backup database was independently described; this is not formal E1 takeover."
+  ]
+}

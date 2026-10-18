@@ -31,9 +31,10 @@ from incident.local_transport import emit_message, environment_file, local_path
 
 class CountedMcpClient:
     """Count actual modifying MCP calls, excluding ledger inspection queries."""
-    def __init__(self, client, server, policy, amp, current_payload):
+    def __init__(self, client, server, policy, amp, current_payload, *, transport="local-aip-stdio"):
         self.client, self.server, self.policy = client, server, policy
         self.amp, self.current_payload = amp, current_payload
+        self.transport = transport
 
     async def tools(self):
         return await self.client.tools()
@@ -49,7 +50,7 @@ class CountedMcpClient:
                 modifying = False
         elif modifying:
             modifying = name == spec.get("mcp_tool") or bool(spec.get("restart_sequence") and name == "stop_container")
-        event = {"event": "mcp_modify_invocation", "transport": "local-aip-stdio",
+        event = {"event": "mcp_modify_invocation", "transport": self.transport,
                  "invocation_id": uuid.uuid4().hex, "server": self.server, "upstream_tool": name,
                  "tool": payload.get("tool"), "incident_id": payload.get("incident_id"),
                  "logical_task_id": payload.get("logical_task_id"), "operation_id": payload.get("operation_id")}

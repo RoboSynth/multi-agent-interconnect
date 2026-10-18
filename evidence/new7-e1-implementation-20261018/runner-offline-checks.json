@@ -1,0 +1,85 @@
+{
+  "status": "PASSED_OFFLINE_ONLY",
+  "distinct_checks": 27,
+  "final_fresh_checks": 3,
+  "reused_unaffected_checks": 24,
+  "reuse_breakdown": {
+    "previously_validated_unaffected_cases": 24
+  },
+  "executions": [
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-first/results.json",
+      "sha256": "7367108e490a313a49beceb766ffa4784c56f57411f35072a0f839bc5965a6af",
+      "bytes": 523,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "9a92ce",
+      "checks_run": 16,
+      "final_affected_delta": false
+    },
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-revision2/results.json",
+      "sha256": "9db41ade047fdfc35d8252bfc1ba8f134310b5a72d9010868c23c64d6ec299c0",
+      "bytes": 523,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "2ccf96",
+      "checks_run": 18,
+      "final_affected_delta": false
+    },
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-journal-delta/results.json",
+      "sha256": "f41f459bdda67b191b83a9b5746774ba544d83b96add67e551b4b95a91642b81",
+      "bytes": 522,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "592f2f",
+      "checks_run": 4,
+      "final_affected_delta": false
+    },
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-peer-delta/results.json",
+      "sha256": "5476671123a80924e7589a2dc5c564af814d9dffdf4ba2f73134868d29946572",
+      "bytes": 521,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "60976f",
+      "checks_run": 8,
+      "final_affected_delta": false
+    },
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-command-delta/results.json",
+      "sha256": "806851966daef7e06148cb5f46152f53e3d7e313f1acfa467b07e20eed81ae91",
+      "bytes": 733,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "f6f8bb",
+      "checks_run": 3,
+      "final_affected_delta": false
+    },
+    {
+      "path": "artifacts/new7-e1-runner-development-20261018/checks-profile-delta/results.json",
+      "sha256": "fa616f70b1ee024ee90b879e1def14b7a28875d17712c9c390eae633b3f86bf7",
+      "bytes": 747,
+      "actual_os_exit_code": 0,
+      "actual_tool_chunk": "89df43",
+      "checks_run": 3,
+      "final_affected_delta": true
+    }
+  ],
+  "source_sha256": {
+    "eval/platform_resume_experiment.py": "0ebcc8164f13abd801d607b494b4c70d706f8499abff0cd67d56f827f02302af",
+    "tests/test_platform_resume_experiment.py": "c28b9abce11b770a8472312d5958d324819ea316a61d06c6c70393b0023973a2"
+  },
+  "independent_read_only_peer_review": {
+    "status": "no_new_blocker",
+    "reviewer": "matrix_scope_review",
+    "reviewed_shared_lock": true,
+    "reviewed_future_compose_image_bindings": true,
+    "reviewed_unknown_scope_forbids_H00": true,
+    "tests_rerun_by_peer": false,
+    "reviewed_binary_stream_command": true,
+    "reviewed_all_profiles_only_in_readonly_config": true
+  },
+  "scope": "Temporary files and SQLite, fake transport/controller/Docker/HTTP, synthetic cross-process file lock only",
+  "live_network_Docker_AMQPS_model_resource_actions": 0,
+  "notes": [
+    "Execution counts overlap; 16+18+4+8+3+3 must not be added as distinct tests.",
+    "E1 runtime, real worker exit, takeover and fault recovery have not been performed."
+  ]
+}

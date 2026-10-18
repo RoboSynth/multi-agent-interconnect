@@ -1,0 +1,101 @@
+{
+  "schema_version": "e1-worker-offline-evidence/1",
+  "status": "OFFLINE_CHECKS_PASSED_SOURCE_ONLY",
+  "scope": "Fake MCP/AIP, callback exits and temporary SQLite/files; no formal E1 runtime or fault execution.",
+  "checks": {
+    "distinct": 12,
+    "passed": 12,
+    "reused_passes": 9,
+    "fresh_checks": 3,
+    "fresh_failures": 0,
+    "fresh_errors": 0,
+    "fresh_skipped": 0,
+    "fresh_actual_exit_code": 0
+  },
+  "fresh_test_names": [
+    "test_after_observation_is_after_read_and_before_AIP_product",
+    "test_before_modification_has_approval_and_durable_received_no_upstream_write",
+    "test_after_applied_is_durable_before_submit_backup_skips_and_old_fence_rejected"
+  ],
+  "reused_test_names": [
+    "test_counted_client_retains_default_local_transport",
+    "test_exact_incident_tool_unarmed_backup_and_caller_do_not_exit",
+    "test_main_backup_operation_counts_exclude_inspection_and_keep_unknown_return",
+    "test_missing_or_tampered_approval_and_invalid_envelope_never_record_or_exit",
+    "test_stale_before_hook_and_already_applied_replay_do_not_crash_or_modify",
+    "test_backup_and_experiment_identity_guards",
+    "test_default_worker_checks_never_read_env_open_ledger_or_start_clients",
+    "test_invalid_plan_does_not_create_output",
+    "test_overlay_pins_sources_and_roles_one_RO_mount_only_main_restart_disabled"
+  ],
+  "source_sha256": {
+    "incident/local_worker.py": "20194e39d364f7dbd2d8329366d6f84b33766d632c5e774c6e0094b1f27d136b",
+    "acps_mcp_bridge/experiment.py": "ab6b0a1de246493d48801aec93025e04fce6846ca17d9b24efadfe5bc2f88f7b",
+    "eval/platform_database_worker.py": "c32f00a9808d6e71a891e5abfdf43bfa127dda96b1c84c61ba65a48fa65bda43",
+    "eval/prepare_platform_e1_worker.py": "9bad575056b8fcb49f8258e44a9b99b40e95971e28498405e186929613867097",
+    "tests/test_platform_e1_worker.py": "9ce8b956b8e8bdf4c084b01c6cb915270c6e21c813e192e00d39c83271127efc"
+  },
+  "dependency_sha256": {
+    "acps_mcp_bridge/bridge.py": "ec6cde69f961483f7995f6ea716de79b85d06b6fcde53a1bba58b519013cafe5",
+    "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "incident/amp_setup.py": "05d9345c85eba80d74c0a178b5c8c194158db0e6d78fe10c00e64762e74393a7",
+    "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+    "deploy/prepare_agents.py": "adbe91e2efcc6526328410de49c2915291414623e5b4499bc2ad164aa72b0f16",
+    "deploy/agents.yml": "0b0f8b61c8e4c174977b4e75a0cd570b6553cbcef299d0d92c1be6812eb86842",
+    "deploy/Dockerfile.agent": "991aea147d62465c4d7f8fae94df54140a3de9b81ee29db85ae8b024ea327ef5",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+  },
+  "retained_attempts": [
+    {
+      "kind": "restricted-offline-helper",
+      "actual_exit_code": 1,
+      "behavior_verdict": null,
+      "tests_completed": null,
+      "cause": "Initialization wait; exact cause not established. The verified owned helper was stopped.",
+      "resource_network_model_AMQPS_Docker_actions": 0,
+      "receipt_sha256": "a4e6b5f8395fe7fd0e7ff4e875a92ff934ad1377deb40e06dc3dedd0431b7e5b"
+    },
+    {
+      "kind": "first-behavioral-run",
+      "actual_exit_code": 1,
+      "tests_run": 12,
+      "passed": 9,
+      "failures": 0,
+      "errors": 3,
+      "cause": "Three TaskCommand fixtures lacked required id/sentAt fields before handler execution.",
+      "receipt_sha256": "8ecf2e91ef504f2cac187d86abdc76e602b6911e2bed573e7dbae8a8655fcc1e"
+    }
+  ],
+  "recheck_scope": "Only the TaskCommand helper changed. The other test/helper AST and four implementation sources were unchanged; the three affected checks were rerun.",
+  "proof_sha256": {
+    "source_ready": "c0796a9fcf31b3d6ad3337cae7fa04abdd2de9a7e7a9c08a76a0864243ad821e",
+    "first_checks": "8ecf2e91ef504f2cac187d86abdc76e602b6911e2bed573e7dbae8a8655fcc1e",
+    "fresh_checks": "a5c056a9c42dee88989e6b8c6f37585bb2cdce4ff5e67bab73641402c3da1dc7",
+    "restricted_helper": "a4e6b5f8395fe7fd0e7ff4e875a92ff934ad1377deb40e06dc3dedd0431b7e5b"
+  },
+  "runtime_contract": {
+    "transport": "wutong-amqps",
+    "exit_codes": {
+      "after_observation": 81,
+      "before_modification": 82,
+      "after_applied": 83
+    },
+    "before_modification": "Original Policy authorization and approval, then original durable record_received; no MCP write before exit.",
+    "after_applied": "Original Bridge/Ledger applied durably; hook precedes original AIP product construction/submission.",
+    "counted_mcp": "Actual modifying attempts and observed returns per executor/operation; not physical effects.",
+    "backup": "Never armed; retains original Bridge/Ledger resume and higher-fence behavior.",
+    "ledger_path_field": "ledger_path",
+    "shared_container_ledger": "/state/operations.sqlite",
+    "ledger_domain": "database",
+    "shared_volume": "database-agent-state:/state",
+    "image_workdir": "/srv",
+    "trace_paths": "/state/experiments/<experiment_id>/{primary,backup}.jsonl",
+    "image_sources": "Ordinary business/Bridge/SDK imports remain /srv; only the manifest-pinned three experiment imports use /experiment/source.",
+    "startup": "A later authorized runner must attest source/image/imports and stop its two owned prior DB consumers before replacing entrypoints; no same-AIC second Inbox.",
+    "execution_authorized_by_preparation": false
+  },
+  "counting_limit": "Invocation is a durable wrapper pre-call event before AMP emit and the underlying MCP call. A matched return proves that call returned; without_return alone does not prove sending, execution or a physical effect.",
+  "deployment_or_runtime_verification_performed": false,
+  "real_resource_network_model_AMQPS_Docker_fault_actions": 0
+}
