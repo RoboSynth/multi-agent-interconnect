@@ -65,6 +65,19 @@ class ScheduleTests(unittest.IsolatedAsyncioTestCase):
                 await scheduler.run_job("drill")
             scheduler.inject.assert_not_awaited()
 
+    async def test_inspection_does_not_resume_or_restore_a_pending_drill(self):
+        with tempfile.TemporaryDirectory() as directory:
+            scheduler = Scheduler(self.configuration(directory))
+            active = {"id": "pending-drill", "kind": "drill", "symptom": "unknown prior drill"}
+            scheduler.state["active"] = active
+            scheduler.request = AsyncMock(return_value={"connected": True, "mode": "wutong-amqps",
+                "resource_credential_count": 0})
+            scheduler.inject = AsyncMock()
+            await scheduler.run_job("inspect")
+            scheduler.inject.assert_not_awaited()
+            self.assertEqual(scheduler.request.await_count, 1)
+            self.assertEqual(scheduler.state["active"], active)
+
 
 if __name__ == "__main__":
     unittest.main()

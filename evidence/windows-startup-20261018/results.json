@@ -1,0 +1,92 @@
+{
+  "schema_version": "windows-startup-offline/1.0",
+  "status": "passed_configuration_only",
+  "recorded_at_utc": "2026-10-18T01:17:38.479464+00:00",
+  "source_sha256": {
+    "ops/schedule.py": "e9584f4eb9bc24ce249608c6ed7caa4e29d6709c422a88a7910605ae0c5ed2f2",
+    "ops/install_startup.ps1": "d5815008ad892b56ca4de43edc5901962b70c0b4406087845c6b4a9a75dd60f1",
+    "ops/run_startup.ps1": "fc36342c3a6acfbd77a1999cda94ab5cebd8088b3c6c2918df4cfdf09895cbf8",
+    "docs/windows_startup.md": "93953a85661c24a3576c95acaf2f8906fc93d0864f30b0837cc6738ee6a8ef61",
+    "tests/test_schedule.py": "ce01ae67121a7de1fa7fe4ad0816911ae1364d180578f10d94b5ed5325eb7169",
+    "tests/test_windows_startup.py": "76f08fb26762cd68926656dcc733eb45b56a0a2054f23480f37715f8ddeb9427"
+  },
+  "test_accounting": {
+    "distinct_tests_with_current_applicable_passes": 8,
+    "initial": {
+      "count": 7,
+      "seconds": 5.641,
+      "actual_os_exit_code": 0,
+      "log": "tests.log",
+      "sha256": "49e3c7514905ef3ab0a907d4b1ad3550591fc4dd2668ad7be03b6704a299017f"
+    },
+    "pending_drill_revision": {
+      "count": 6,
+      "seconds": 2.316,
+      "actual_os_exit_code": 0,
+      "log": "tests-final.log",
+      "sha256": "e8913c53de8a7040286399cfff9ad56dc1b16ddd6f36722070dba1299bca0968"
+    },
+    "final_task_argument_revision": {
+      "count": 2,
+      "seconds": 2.77,
+      "actual_os_exit_code": 0,
+      "log": "tests-configuration-final.log",
+      "sha256": "c754819bb96ce5299e93d7445e0667de010b94c1848110796790b2314ee77575"
+    },
+    "reused": "Two real OS-lock tests from initial pass; ScheduleLock implementation and its tests unchanged. Four scheduler behavior tests reuse pending_drill_revision; only task arguments/docs changed afterward. Do not sum the three runs."
+  },
+  "real_lock_check": "Independent holder process owns a temporary-directory OS lock; actual scheduler CLI in a second process exits 2/already_running before business calls; after holder exit, a new process acquires the same lock. A separate exception-path test releases the lock.",
+  "task_configuration_checks": [
+    "default and Register-WhatIf do not call guarded task service or Start-Process",
+    "same current-user SID in trigger and InteractiveToken principal",
+    "LeastPrivilege, hidden action/window, IgnoreNew, unlimited scheduler execution time",
+    "fixed project launcher/Python/config without token/password arguments",
+    "drill and high auto-approval disabled",
+    "invalid nonlocal URL or too-short interval rejected"
+  ],
+  "powershell_parse": {
+    "actual_os_exit_code": 0,
+    "files": 2,
+    "parse_errors": 0,
+    "details": [
+      {
+        "powershell_version": "5.1.26100.9711",
+        "file": "ops/install_startup.ps1",
+        "parse_errors": 0
+      },
+      {
+        "powershell_version": "5.1.26100.9711",
+        "file": "ops/run_startup.ps1",
+        "parse_errors": 0
+      }
+    ]
+  },
+  "prepared_artifacts": {
+    "path": "prepared-local",
+    "scope": "local-only XML/summary with user SID and absolute paths; excluded from public upload",
+    "xml_sha256": "7d974aa5b0fbca35a51af052e19221a0fa690238159cfceedee9591964366fde",
+    "summary_sha256": "4f5fe91ab6d2d21411d35dab138f49c8ccb510eb6fc34b4dc8e2829e9b209569",
+    "status": "prepared_only",
+    "actual_os_exit_code": 0,
+    "task_service_guarded": true
+  },
+  "operations": {
+    "real_task_registration": false,
+    "real_task_unregistration": false,
+    "scheduler_business_started": false,
+    "resource_services_started": false,
+    "existing_runtime_state_modified": false,
+    "frozen_evaluation_sources_modified": false
+  },
+  "limitations": [
+    "Only configuration and offline behavior verified; no Windows task registration, login/reboot or 24h/7d acceptance.",
+    "Task depends on already-ready resources and connected workbench; it does not launch resource services.",
+    "Legacy scheduler processes started before this code do not hold the new lock; verify their exit before switching.",
+    "Unregister operation is not proof that any already-running process exited."
+  ],
+  "official_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/taskschd/logontrigger",
+    "https://learn.microsoft.com/en-us/windows/win32/taskschd/taskschedulerschema-multipleinstancespolicy-settingstype-element",
+    "https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-schema"
+  ]
+}

@@ -26,6 +26,51 @@ def project_path(value):
     return path if path.is_absolute() else ROOT / path
 
 
+class SchedulerAlreadyRunning(RuntimeError):
+    pass
+
+
+class ScheduleLock:
+    """Hold one OS lock per persisted scheduler directory, without waiting."""
+    def __init__(self, directory):
+        self.directory = Path(directory)
+        self.stream = None
+
+    def __enter__(self):
+        self.directory.mkdir(parents=True, exist_ok=True)
+        stream = (self.directory / "scheduler.lock").open("a+b")
+        try:
+            stream.seek(0, os.SEEK_END)
+            if stream.tell() == 0:
+                stream.write(b"0")
+                stream.flush()
+            stream.seek(0)
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            stream.close()
+            raise SchedulerAlreadyRunning("Scheduler already running for this state directory") from exc
+        self.stream = stream
+        return self
+
+    def __exit__(self, *exc):
+        try:
+            self.stream.seek(0)
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(self.stream.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(self.stream.fileno(), fcntl.LOCK_UN)
+        finally:
+            self.stream.close()
+            self.stream = None
+
+
 class Scheduler:
     def __init__(self, config, *, client=None, enable_fault_drills=False, allow_local=False):
         self.config = config
@@ -91,6 +136,9 @@ class Scheduler:
         if not self.allow_local and view["mode"] != "wutong-amqps":
             raise ValueError("scheduled platform operation requires wutong-amqps")
         active = self.state.get("active")
+        if kind == "inspect" and active is not None and active.get("kind") != "inspect":
+            self.record("operator_required_pending_drill", run_id=active["id"])
+            return
         fresh = active is None
         if fresh:
             if (view.get("incident") or {}).get("status") in {"running", "awaiting_approval"}:
@@ -187,11 +235,16 @@ if __name__ == "__main__":
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     config = json.loads(args.config.read_text(encoding="utf-8-sig"))
-    scheduler = Scheduler(config, enable_fault_drills=args.enable_fault_drills, allow_local=args.allow_local)
     if args.check:
+        scheduler = Scheduler(config, enable_fault_drills=args.enable_fault_drills, allow_local=args.allow_local)
         print(json.dumps({"valid": True, "network_attempted": False, "fault_drills_enabled": args.enable_fault_drills}))
     else:
         try:
-            asyncio.run(scheduler.run_job(args.once) if args.once else scheduler.run())
+            with ScheduleLock(project_path(config["directory"])):
+                scheduler = Scheduler(config, enable_fault_drills=args.enable_fault_drills, allow_local=args.allow_local)
+                asyncio.run(scheduler.run_job(args.once) if args.once else scheduler.run())
+        except SchedulerAlreadyRunning as exc:
+            print(json.dumps({"status": "already_running", "error": str(exc), "resource_calls_performed": 0}), file=sys.stderr)
+            raise SystemExit(2)
         except KeyboardInterrupt:
             pass
