@@ -133,7 +133,7 @@ def create_app(config_path=None, output=None, transport=None):
     async def state():
         active_transport = app.state.transport
         engine = app.state.engine
-        runs = list(engine.runs.values())
+        runs = sorted(engine.runs.values(), key=lambda run: (run.get("started_at") or "", run["id"]))
         current = await incident_view(runs[-1] if runs else None)
         credential_names = {"PGPASSWORD", "PGADMINPASSWORD", "DATABASE_URL", "DATABASE_URI",
                             "APP_ADMIN_TOKEN", "ORDERS_DB_PASSWORD", "POSTGRES_PASSWORD", "OPS_SUPERVISOR_TOKEN"}

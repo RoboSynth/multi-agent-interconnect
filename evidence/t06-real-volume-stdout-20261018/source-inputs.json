@@ -1,0 +1,75 @@
+{
+  "tested_source_files": [
+    {
+      "source": "deploy/fluent-bit/prepare_linux_collector.py",
+      "target": "deploy/fluent-bit/prepare_linux_collector.py",
+      "sha256": "a552aa68b728e249748b09752ac59d8fe27a121f939f7309e7746c496422e22d",
+      "bytes": 11214,
+      "kind": "source"
+    },
+    {
+      "source": "tests/test_fluent_bit_linux_collector.py",
+      "target": "tests/test_fluent_bit_linux_collector.py",
+      "sha256": "234557b705da996bf5f1b2ef0fcaef2c8c70351c244ef6662a69d8d0324ebdbe",
+      "bytes": 7457,
+      "kind": "source"
+    },
+    {
+      "source": "deploy/fluent-bit/linux-collector.md",
+      "target": "deploy/fluent-bit/linux-collector.md",
+      "sha256": "42dd8b48822b8ee992ce8b1eabb1630659b593730a0778615c0b5b1f00c56a6a",
+      "bytes": 3215,
+      "kind": "documentation"
+    }
+  ],
+  "renderer_sha256": "662974a75ddc23b380ffbb628b99abaa6b551f1061d453992ec08f4e69c8eef1",
+  "collection_kafka_source_ready": "artifacts/t06-collection-kafka-development-20261018/source-ready.json",
+  "collection_kafka_source_ready_sha256": "72a438b44c0b14f55546b7491804654e689a30dd80f959eba7ce2b89a4b56908",
+  "plan_sha256": "318490309e7bae7c50a296db7dbbaa524f7d843c37a74070f33cf8dcb14c3ef1",
+  "compose_sha256": "40212e20671d4e316eb6f1e4ac169474446a106e5f9bf7d9f93d5b01e5cdfd01",
+  "collector_config_sha256": "446b6c6622b3af7bac809e09cd900cae55704f3206fa2fb99cf2c209bf562ccc",
+  "verification_source_sha256": "d4e7b1c4bb9962f12795354a89b9af1e557b2e6f948c1fa03dae6272abaa74a3",
+  "windows_controller_source_sha256": "05908a2fc770e14cebd20523c20ab032e9c755cd100c3d5b98f72ec9734cf26f",
+  "actual_record_validation": {
+    "source": "verification-source.py",
+    "line": 203,
+    "fields": [
+      "JSON object",
+      "log_type in six kinds",
+      "aic string matches one of seven configured AICs",
+      "log_id counts"
+    ],
+    "full_SDK_schema_or_signature_verification_performed": false
+  },
+  "natural_append_algorithm": {
+    "source": "verification-source.py",
+    "line": 124,
+    "method": "Read-only file-size/inode metadata for six stable正文 globs before/after; source content hashes were not frozen"
+  },
+  "SDK_log_record_model": {
+    "source": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/models.py",
+    "line": 29,
+    "sha256": "b32d9766d1df46ee156f3150107f7ede34ce24a9d705c4f3c569b4b3d8651840"
+  },
+  "offline_tests": {
+    "pattern": "test_fluent_bit_linux_collector.py",
+    "count": 7,
+    "actual_exit_code": 0,
+    "tool_chunk_id": "a1b609"
+  },
+  "e1_frozen_plan_sha256": "a9a9b6a9a1b0c073b35c5ddbd76a8627028b53d3531af1c624c3ed77086aba0a",
+  "e1_frozen_inputs_checked_unchanged": 204,
+  "doc_revision": {
+    "source": "deploy/fluent-bit/linux-collector.md",
+    "target": "deploy/fluent-bit/linux-collector.md",
+    "sha256": "42dd8b48822b8ee992ce8b1eabb1630659b593730a0778615c0b5b1f00c56a6a",
+    "bytes": 3215,
+    "kind": "documentation",
+    "revision": 2,
+    "behavior_changed": false,
+    "tests_rerun": false,
+    "change": "Clarify the local tar-load repo@imageID alias cannot be copied to another machine as a remote registry manifest digest",
+    "original_reviewed_doc_sha256": "f1b5178bf9652a49e40f6dd5987c8b5bf596fb54aacad2fb3c7987f5417bb9e2"
+  },
+  "dependency_archives_uploaded": false
+}

@@ -4,6 +4,8 @@
 
 # 跨系统故障诊断与协同恢复
 
+本轮新增[七源真实卷stdout采集](evidence/t06-real-volume-stdout-20261018/README.md)：只读挂载七角色日志，75.005秒取得32,069条唯一记录、42类组合及42个offset数据库，采集器正常退出，原29容器保持。Kafka显式集合模式与Linux配置入口已实现；[官方配置说明](docs/kafka_monitor_20261018.md)区分规划端点与可用连接资料，官方Kafka/Monitor尚未验收。[8766受控更新](evidence/workbench-8766-update-20261018/summary.json)保留历史事故，修复乱序加载导致默认事故过旧的问题；[第九次巡检观察](evidence/new7-runtime-followup-20261018/inspect-ninth-cycle.json)核最新周期30秒/10完整流程。正式E1和24小时验收仍待。
+
 本轮新增[T50工作台验收](evidence/t50-workbench-development-20261018/summary.json)：计划依赖、假设预测、审批状态与历史已接入；访问对账随所选事故切换，完整、缺端、坏行和未采集分别显示。浏览器使用合成记录与真实更新后的GET接口，闭合健康记录分两事故各6任务/12访问复核。[T06本地七源采集](evidence/t06-seven-source-local-20261018/README.md)在隔离fixture通过252条逐字段对账、42个offset数据库、三轮host/collector正常退出；只覆盖固定追加、新稳定文件发现与重启续读，原console竞态失败及84条归档重放保留。实际七域卷、rename/copytruncate、Kafka/Monitor、正式E1与24小时仍待验收。
 
 2026-10-18同机隔离[Compose H00实测](evidence/isolated-compose-h00-20261018/README.md)已闭合：固定5b7745新检出使用原Windows→WSL入口，四个业务容器、新数据库卷和独立v2路由实际启动，公共ready前后v2，30.016秒/30成功请求/10流程，失败、未知和未决0。仅正常停止本轮四容器，原25容器及原三端口PID保持，卷与网络保留；这是已有镜像/缓存的同机验收，不是新机器冷部署。[部署说明](deploy/README.md)补Linux宿主机依赖；原入口未改，新增[3项fake-WSL检查](evidence/isolated-compose-h00-20261018/offline-entry-checks.json)通过。10:10Z[第七次自然巡检快照](evidence/new7-runtime-followup-20261018/inspect-seventh-cycle.json)仅核最新周期，30.003秒/10流程、act/模型0，不代表七轮逐件审阅或24小时；正式E1仍未执行。

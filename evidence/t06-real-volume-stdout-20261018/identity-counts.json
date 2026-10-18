@@ -1,0 +1,404 @@
+{
+  "roles": [
+    {
+      "role": "coordinator",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "records": 2499,
+      "by_kind": {
+        "audit": 65,
+        "heartbeat": 1135,
+        "metrics": 568,
+        "access": 65,
+        "message": 650,
+        "system": 16
+      },
+      "natural_growth_bytes": 2439
+    },
+    {
+      "role": "application",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "records": 5635,
+      "by_kind": {
+        "audit": 98,
+        "heartbeat": 1924,
+        "metrics": 963,
+        "access": 94,
+        "message": 2540,
+        "system": 16
+      },
+      "natural_growth_bytes": 2189
+    },
+    {
+      "role": "database",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "records": 6156,
+      "by_kind": {
+        "audit": 186,
+        "heartbeat": 1924,
+        "metrics": 964,
+        "access": 186,
+        "message": 2892,
+        "system": 4
+      },
+      "natural_growth_bytes": 2190
+    },
+    {
+      "role": "database-backup",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "records": 2972,
+      "by_kind": {
+        "audit": 4,
+        "heartbeat": 1924,
+        "metrics": 964,
+        "access": 4,
+        "message": 72,
+        "system": 4
+      },
+      "natural_growth_bytes": 2186
+    },
+    {
+      "role": "ops",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+      "records": 6194,
+      "by_kind": {
+        "audit": 195,
+        "heartbeat": 1925,
+        "metrics": 963,
+        "access": 195,
+        "message": 2912,
+        "system": 4
+      },
+      "natural_growth_bytes": 2188
+    },
+    {
+      "role": "verification",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "records": 5366,
+      "by_kind": {
+        "audit": 61,
+        "heartbeat": 1925,
+        "metrics": 963,
+        "access": 57,
+        "message": 2344,
+        "system": 16
+      },
+      "natural_growth_bytes": 2194
+    },
+    {
+      "role": "onboarding",
+      "configured_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "records": 3247,
+      "by_kind": {
+        "audit": 9,
+        "heartbeat": 1926,
+        "metrics": 964,
+        "access": 5,
+        "message": 328,
+        "system": 15
+      },
+      "natural_growth_bytes": 2189
+    }
+  ],
+  "sample_rule": "For each configured role and kind, choose the lexicographically smallest log_id from the captured stdout; keep the entire original line bytes/newline and fields",
+  "sample_order": "Collection-plan role order, then audit/heartbeat/metrics/access/message/system",
+  "sample_index": [
+    {
+      "role": "coordinator",
+      "kind": "audit",
+      "log_id": "017f1fb6-884f-49f5-a939-9c7e382f1399",
+      "full_stdout_line": 13,
+      "raw_line_sha256": "99c4676a40b7c2f0c4451876202a767b3b1e897b88df987f3c7d7bf75d6eb013"
+    },
+    {
+      "role": "coordinator",
+      "kind": "heartbeat",
+      "log_id": "0040af58-624c-4492-be33-9a0b8572abb2",
+      "full_stdout_line": 183,
+      "raw_line_sha256": "c11f880ab20e55e1a2aac387db44817f84770cf8e432c98fd793f0e994ce257a"
+    },
+    {
+      "role": "coordinator",
+      "kind": "metrics",
+      "log_id": "0014c61c-8cd7-4f75-ab9d-9885f0a64c4b",
+      "full_stdout_line": 1040,
+      "raw_line_sha256": "e7923c8cd833942679241677682b5d54c0a34382da05cb3167b8f93011fb5a2c"
+    },
+    {
+      "role": "coordinator",
+      "kind": "access",
+      "log_id": "01450d74-608e-4ea7-8346-43921fc365bb",
+      "full_stdout_line": 1249,
+      "raw_line_sha256": "619257fe5e4112383608bc4d754a6181b768e5bc2341cf18b80497f4baef4432"
+    },
+    {
+      "role": "coordinator",
+      "kind": "message",
+      "log_id": "0034aaf4-94fc-40bd-aef3-9bde491330bc",
+      "full_stdout_line": 1324,
+      "raw_line_sha256": "3622ad596b43be85ebf4a8ac3576b28e996a4dd644ae51a6f5dc1aeb7ccb568c"
+    },
+    {
+      "role": "coordinator",
+      "kind": "system",
+      "log_id": "170d0eb6-d73b-4c81-8dc1-9db54743fece",
+      "full_stdout_line": 1435,
+      "raw_line_sha256": "3b9ca07c940842adee4876eea179f7d3eefd8c3ec4d0d7eba92b0e973483aab7"
+    },
+    {
+      "role": "application",
+      "kind": "audit",
+      "log_id": "03106472-f7a4-443b-b14c-84f2c06d83f5",
+      "full_stdout_line": 1530,
+      "raw_line_sha256": "060560dc6ba9449783a9302c32159bb9a8e20ba78fd431ba639cf9d8955cb82a"
+    },
+    {
+      "role": "application",
+      "kind": "heartbeat",
+      "log_id": "00217ad4-7f6d-4c73-9de8-128410c1b41a",
+      "full_stdout_line": 10821,
+      "raw_line_sha256": "214a2bc535bfbc8a2bf04bbf2ede493d74e96f47fda284a6e1db8f5be653215b"
+    },
+    {
+      "role": "application",
+      "kind": "metrics",
+      "log_id": "00071f2d-e518-4324-855d-fccdd1889eb4",
+      "full_stdout_line": 2614,
+      "raw_line_sha256": "f64bee084c188b9bd5b4d1a58b789f2f468f7f28354795a0d80376de479d7fef"
+    },
+    {
+      "role": "application",
+      "kind": "access",
+      "log_id": "0147a1bd-f70c-4f66-b4be-de844744c39b",
+      "full_stdout_line": 2684,
+      "raw_line_sha256": "c25b115f7b3f777c03377f7c3fbd4ccfa03824c7318dcd37f6e555653a180257"
+    },
+    {
+      "role": "application",
+      "kind": "message",
+      "log_id": "003eaea1-b7d0-4703-a877-33ff98334e72",
+      "full_stdout_line": 12556,
+      "raw_line_sha256": "596525fb9b222b7079c9deb23fd214f09bee19e3ea67bdae3a37269a10f0d48d"
+    },
+    {
+      "role": "application",
+      "kind": "system",
+      "log_id": "10d95d93-4bbf-4dc6-acc7-199fe74d7a76",
+      "full_stdout_line": 2882,
+      "raw_line_sha256": "9336208b4871a7cef7fa677b58edb187113474700e548543fa8fa1892603cc36"
+    },
+    {
+      "role": "database",
+      "kind": "audit",
+      "log_id": "04497497-f305-4ddd-9b55-acd3ba603dde",
+      "full_stdout_line": 3007,
+      "raw_line_sha256": "a34e0bf565e96af372b65bfef447ee7c61dedee366970de7b15ced53a96afd8c"
+    },
+    {
+      "role": "database",
+      "kind": "heartbeat",
+      "log_id": "00097fba-0d20-43fa-9521-7974aa705dcd",
+      "full_stdout_line": 15154,
+      "raw_line_sha256": "fed172bacba5b56f2502926929eed23146a256a8543a224dd59a0dce1e47442b"
+    },
+    {
+      "role": "database",
+      "kind": "metrics",
+      "log_id": "000e55d1-4ff6-4390-87c2-ef347bc3212d",
+      "full_stdout_line": 16540,
+      "raw_line_sha256": "d628a599fb25781bd8b7efa2e70d17a6cd2c8db9d5bbcc013c159399d167fa57"
+    },
+    {
+      "role": "database",
+      "kind": "access",
+      "log_id": "04797274-fbe6-4e4b-a349-4518eab3291d",
+      "full_stdout_line": 4178,
+      "raw_line_sha256": "cbd59ed18c4c1670a7073fe8cdf4fa706b92f7cff60473e8c6675bce07635c7c"
+    },
+    {
+      "role": "database",
+      "kind": "message",
+      "log_id": "002ae3a6-91bb-44a1-a790-ceb50b27b114",
+      "full_stdout_line": 16796,
+      "raw_line_sha256": "5478e54424fe92b3f9f5eaa58fcc3f90477f0ee25e87fb93c50214e02eaea1a9"
+    },
+    {
+      "role": "database",
+      "kind": "system",
+      "log_id": "1b6622f1-9a1c-43ef-8535-c4f6e317c379",
+      "full_stdout_line": 4406,
+      "raw_line_sha256": "90590599d0211846c3a98188d5754675c86c27198b5513066e4c3a00bf7f0c0f"
+    },
+    {
+      "role": "database-backup",
+      "kind": "audit",
+      "log_id": "2911b83c-4622-4d62-9dcd-9b061c60da9a",
+      "full_stdout_line": 4412,
+      "raw_line_sha256": "d131f77a95a7088088082968614131e3e3887ba592bbf5c9d11c86ad62cda8c8"
+    },
+    {
+      "role": "database-backup",
+      "kind": "heartbeat",
+      "log_id": "0018a399-dfa8-41cf-9b53-8c473349c25d",
+      "full_stdout_line": 20856,
+      "raw_line_sha256": "80f0270abcae2eb2d0912ec8e164c0a018e0e42e67eff6d2a5f59daf0f963c48"
+    },
+    {
+      "role": "database-backup",
+      "kind": "metrics",
+      "log_id": "001d5850-505a-45e7-8551-8762ff5d98b0",
+      "full_stdout_line": 20976,
+      "raw_line_sha256": "b08889f36868294fb8e47413f12e18bb9001568f3f7a0829a3fa2498bd74fade"
+    },
+    {
+      "role": "database-backup",
+      "kind": "access",
+      "log_id": "015be93e-9028-4a5c-8c31-0f212b5d012c",
+      "full_stdout_line": 5348,
+      "raw_line_sha256": "e369082d53afd40815170d90415898a5aed8129d2040c41c57607708e2d13f80"
+    },
+    {
+      "role": "database-backup",
+      "kind": "message",
+      "log_id": "054b8e21-325e-4a79-96e1-3a63b13568aa",
+      "full_stdout_line": 5383,
+      "raw_line_sha256": "13a6c55c16ee910a100139266de061d877bb29e2bed19bffbfad6f6573a7d246"
+    },
+    {
+      "role": "database-backup",
+      "kind": "system",
+      "log_id": "121e69dd-9506-489e-a4f3-510efc01c7e2",
+      "full_stdout_line": 5424,
+      "raw_line_sha256": "e2a7adad7e3a90ddda8cd3a4014819e9e8a65ef2d2e16488910544f79c8b1678"
+    },
+    {
+      "role": "ops",
+      "kind": "audit",
+      "log_id": "0172b75f-0963-4253-88dd-e90ecde4fa01",
+      "full_stdout_line": 5492,
+      "raw_line_sha256": "a8831d6c214812b94a28563c95f08c935eef0a65dbc373089c4688f92d28283b"
+    },
+    {
+      "role": "ops",
+      "kind": "heartbeat",
+      "log_id": "0002f9ac-7ac6-4e8a-8cd0-04922ddcdd0c",
+      "full_stdout_line": 5795,
+      "raw_line_sha256": "3291cdea4fed9b7b4846b6867a51e6ce730a08f270f8efc79ec9d914d98a860b"
+    },
+    {
+      "role": "ops",
+      "kind": "metrics",
+      "log_id": "003a1d2d-4d7c-4f7f-82ad-080c5a534c1b",
+      "full_stdout_line": 22773,
+      "raw_line_sha256": "76e96831c55eba542edb0ed0f6ff103d40ad54ac2bff53c82d1e8988649cb518"
+    },
+    {
+      "role": "ops",
+      "kind": "access",
+      "log_id": "01cded6b-9c5f-41e8-b690-c9fbc5c0b274",
+      "full_stdout_line": 6866,
+      "raw_line_sha256": "ad25d1249c0319b6333491b8bdd2165bcd105d60dcd05d92e50dc3f5d290f17f"
+    },
+    {
+      "role": "ops",
+      "kind": "message",
+      "log_id": "0010b046-3f9c-4766-b31d-dd704f789e14",
+      "full_stdout_line": 25947,
+      "raw_line_sha256": "d757928a2c01057f26ba14396e9ab539b35ca8547eeccf0f2ae0c9154de2a4aa"
+    },
+    {
+      "role": "ops",
+      "kind": "system",
+      "log_id": "1c73c41c-2bfe-4a0f-b310-94f9068e6d16",
+      "full_stdout_line": 7054,
+      "raw_line_sha256": "2acd70c259a47f9e428649f795cd64463f63a0033ccd235d0643f7458bb5d1e3"
+    },
+    {
+      "role": "verification",
+      "kind": "audit",
+      "log_id": "003d9c98-81fd-44a7-98bd-2fbe31cd75cd",
+      "full_stdout_line": 7108,
+      "raw_line_sha256": "51ca557769d36c8bc913279aef4de4bb6db4aec773cff60343e3cfb6949d0543"
+    },
+    {
+      "role": "verification",
+      "kind": "heartbeat",
+      "log_id": "000d8cb2-d1c2-40bb-b01e-5d28562ecdf6",
+      "full_stdout_line": 7484,
+      "raw_line_sha256": "5255f38a6213275ba3aa91fb947b727d04f8d09303028d9f161290b564509ab9"
+    },
+    {
+      "role": "verification",
+      "kind": "metrics",
+      "log_id": "0059e5b5-f092-446b-81e7-3252f8107100",
+      "full_stdout_line": 27438,
+      "raw_line_sha256": "e8fb594708446133bc14b413821803a249529845ca6302f651e5fb31e8d2e7c9"
+    },
+    {
+      "role": "verification",
+      "kind": "access",
+      "log_id": "070a3016-96fd-460d-b20a-645970c12689",
+      "full_stdout_line": 8096,
+      "raw_line_sha256": "b23f972601bbc9a4ec6c343f291842f297a60d701a32d3cf67a37f19c37bf029"
+    },
+    {
+      "role": "verification",
+      "kind": "message",
+      "log_id": "00716f6b-43f8-4b6e-b23a-82cbc2f4b82a",
+      "full_stdout_line": 29914,
+      "raw_line_sha256": "597123f8824bada91d755638553aac1271f96c75a84c3e553a312bda04b93391"
+    },
+    {
+      "role": "verification",
+      "kind": "system",
+      "log_id": "093e26a1-9363-4a5e-8789-b99152eee0e2",
+      "full_stdout_line": 8291,
+      "raw_line_sha256": "250cb2b9ab1ca1e45f602f3192a55162ef678e771109aa21429e3894b51f6450"
+    },
+    {
+      "role": "onboarding",
+      "kind": "audit",
+      "log_id": "099af193-b42e-4927-9592-bc706719215f",
+      "full_stdout_line": 8299,
+      "raw_line_sha256": "6cb50d177f2e0d34139cae0e7928af241d6eebbf4142522ba5632c68c3298bd5"
+    },
+    {
+      "role": "onboarding",
+      "kind": "heartbeat",
+      "log_id": "0022909a-0061-4bcf-b1aa-9894881807fe",
+      "full_stdout_line": 30988,
+      "raw_line_sha256": "90146e043fffd1bbe7a4349f8ea74c0eb8f381c96ab562a0a1961d8b03aa0221"
+    },
+    {
+      "role": "onboarding",
+      "kind": "metrics",
+      "log_id": "0068953f-d3b0-462f-afe2-40da5caa17e5",
+      "full_stdout_line": 31847,
+      "raw_line_sha256": "cb9ce6e2d80e8f9c4ff73d7b3e300b0c2a912ffe764cdca3409b29814cbe5472"
+    },
+    {
+      "role": "onboarding",
+      "kind": "access",
+      "log_id": "730bb7ea-c554-4a72-882b-adfee9d483fa",
+      "full_stdout_line": 9461,
+      "raw_line_sha256": "5a99b203e3713b436507f8c5cee610e315a86566d7aac8a598a3db84605bb2f7"
+    },
+    {
+      "role": "onboarding",
+      "kind": "message",
+      "log_id": "0160b81e-4e74-4d73-8a51-79657388f5ba",
+      "full_stdout_line": 9582,
+      "raw_line_sha256": "c112625f291e76475c13c4d99763a8d74a98b7d5a0cd0dd3e41a456903520a5a"
+    },
+    {
+      "role": "onboarding",
+      "kind": "system",
+      "log_id": "0099d361-722d-441c-a297-34c8a7cc6639",
+      "full_stdout_line": 9637,
+      "raw_line_sha256": "8df1d9404d7de47f6e82937835738929c528c2f006f5d87567c18fc90cd2ccf4"
+    }
+  ],
+  "full_stdout_sha256": "bd9dac55c9ec662449161f99706765e912f3f75ac0c5287b3a2dba3889c2e039",
+  "full_stdout_bytes": 16958917,
+  "full_stdout_lines": 32069,
+  "full_stdout_retained_locally": true
+}

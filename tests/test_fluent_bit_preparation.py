@@ -238,8 +238,93 @@ class FluentPreparationTests(unittest.TestCase):
             self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(self.root / "state")]), 0)
         self.assertEqual(len(list((self.root / "state").glob("*/stdout"))), 7)
         self.assertFalse(any(self.root.glob("*.db")))
-        with self.assertRaisesRegex(ValueError, "stdout_only"):
-            fluent.main(["--collection-sources", str(mapping), "--mode", "kafka", "--check"])
+        stream = io.StringIO()
+        with redirect_stdout(stream):
+            self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--mode", "kafka", "--check"]), 1)
+        self.assertFalse(json.loads(stream.getvalue())["passed"])
+
+    def test_collection_kafka_preflight_is_readonly_and_missing_profile_rejects(self):
+        sources = self.collection()
+        profile = self.tls_profile()
+        with patch.object(Path, "mkdir", side_effect=AssertionError("mkdir")), \
+             patch.object(Path, "write_text", side_effect=AssertionError("write")), \
+             patch.object(Path, "open", side_effect=AssertionError("material read")), \
+             patch.object(fluent, "native_path", side_effect=AssertionError("alias")), \
+             patch("subprocess.run", side_effect=AssertionError("process")), \
+             patch("socket.socket", side_effect=AssertionError("network")):
+            report = fluent.check_collection(sources, self.parser, mode="kafka", kafka=profile)
+            rejected = fluent.check_collection(sources, self.parser, mode="kafka")
+        self.assertTrue(report["passed"]); self.assertFalse(rejected["passed"])
+        for role in fluent.COLLECTION_ROLES:
+            self.assertEqual(rejected["sources"][role]["errors"], ["kafka.brokers_required"])
+        self.assertNotIn(profile["brokers"], json.dumps(report))
+        self.assertNotIn(str(self.root / "key"), json.dumps(report))
+
+    def test_collection_kafka_cli_preserves_default_and_separates_42_databases(self):
+        sources = self.collection()
+        mapping, profile = self.root / "sources.json", self.root / "kafka.json"
+        mapping.write_text(json.dumps({key: str(value) for key, value in sources.items()}), encoding="utf-8")
+        profile.write_text(json.dumps(dict(brokers="fixture.invalid:19092", rdkafka={"security.protocol": "plaintext"})), encoding="utf-8")
+        state = self.root / "state"
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()), \
+             patch("subprocess.run", side_effect=AssertionError("must not run")), redirect_stdout(io.StringIO()):
+            self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(state)]), 0)
+            self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(state),
+                                         "--mode", "kafka", "--kafka-settings", str(profile)]), 0)
+            with self.assertRaisesRegex(ValueError, "require_kafka_mode"):
+                fluent.main(["--collection-sources", str(mapping), "--kafka-settings", str(profile), "--check"])
+        stdout = (state / "collection-stdout.conf").read_text(encoding="utf-8")
+        kafka = (state / "collection-kafka.conf").read_text(encoding="utf-8")
+        self.assertEqual(stdout.count("    Name stdout\n"), 6)
+        self.assertEqual(kafka.count("    Name tail\n"), 42)
+        self.assertEqual(kafka.count("    Name kafka\n"), 6)
+        self.assertEqual(kafka.count("    timestamp_key _fb_ts"), 1)
+        self.assertEqual(kafka.count("rdkafka.allow.auto.create.topics false"), 6)
+        databases = [line.replace("\\", "/") for text in (stdout, kafka) for line in text.splitlines() if line.startswith("    DB ")]
+        self.assertEqual(len(set(databases)), 84)
+        self.assertEqual(len(list(state.glob("*/kafka"))), 7)
+
+    def linux_paths(self):
+        return ({role: "/sources/" + role for role in fluent.COLLECTION_ROLES},
+                {role: "/collector-state/amp-" + role + "-{kind}.db" for role in fluent.COLLECTION_ROLES})
+
+    def test_linux_paths_share_routes_keep_flat_databases_and_never_use_host_io(self):
+        sources, databases = self.linux_paths()
+        profile = dict(brokers="fixture.invalid:19092", rdkafka={"security.protocol": "sasl_ssl",
+            "ssl.ca.location": "/collector-transport/ca", "sasl.mechanism": "PLAIN",
+            "sasl.username": "${T06_FIXTURE_USER}", "sasl.password": "${T06_FIXTURE_PASSWORD}"})
+        with patch.object(Path, "open", side_effect=AssertionError("file read")), \
+             patch.object(Path, "is_file", side_effect=AssertionError("host stat")), \
+             patch.object(Path, "mkdir", side_effect=AssertionError("mkdir")), \
+             patch.object(fluent, "native_path", side_effect=AssertionError("native path")), \
+             patch("socket.socket", side_effect=AssertionError("network")), \
+             patch("subprocess.run", side_effect=AssertionError("process")):
+            text = fluent.render_collection_paths(sources, databases, "/collector/parsers.conf", mode="kafka", kafka=profile)
+            stdout = fluent.render_collection_paths(sources, databases, "/collector/parsers.conf")
+        self.assertEqual(text.count("    Name tail\n"), 42)
+        self.assertEqual(text.count("    Name kafka\n"), 6)
+        self.assertEqual(stdout.count("    Name stdout\n"), 6)
+        db_lines = [line for line in text.splitlines() if line.startswith("    DB ")]
+        self.assertEqual(len(set(db_lines)), 42)
+        self.assertIn("    DB /collector-state/amp-database-backup-audit.db", db_lines)
+        self.assertIn("    Path /sources/database-backup/amp_audit_*.jsonl", text)
+        self.assertIn("    rdkafka.sasl.password ${T06_FIXTURE_PASSWORD}", text)
+        self.assertIn("    rdkafka.ssl.ca.location /collector-transport/ca", text)
+        self.assertNotIn("\\", text)
+
+    def test_linux_paths_reject_missing_roles_path_injection_and_duplicate_databases(self):
+        sources, databases = self.linux_paths()
+        cases = [(dict(sources, ops="/sources/../private"), databases),
+                 (dict(sources, ops="/sources/ops\nInjected true"), databases),
+                 (dict(sources, ops=sources["coordinator"]), databases),
+                 ({role: value for role, value in sources.items() if role != "ops"}, databases),
+                 (sources, dict(databases, ops=databases["coordinator"])),
+                 (sources, dict(databases, ops="/collector-state/fixed.db"))]
+        for source, state in cases:
+            with self.subTest(index=cases.index((source, state))), self.assertRaises(ValueError):
+                fluent.render_collection_paths(source, state, "/collector/parsers.conf")
+        with self.assertRaisesRegex(ValueError, "brokers_required"):
+            fluent.render_collection_paths(sources, databases, "/collector/parsers.conf", mode="kafka")
 
 
 if __name__ == "__main__":

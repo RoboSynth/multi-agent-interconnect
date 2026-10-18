@@ -6,7 +6,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -158,7 +158,8 @@ class WorkbenchAccessTests(unittest.TestCase):
             transport,_,_ = self.fixture(directory,messages+other_messages,access+other_access)
             app = create_app(Path(directory)/"absent.json",Path(directory)/"workbench",transport)
             with TestClient(app) as client:
-                app.state.engine.runs = {key:dict(id=key,symptom=key,status="completed") for key in ["inc-old","inc-latest"]}
+                app.state.engine.runs = {key:dict(id=key,symptom=key,status="completed",started_at=f"2026-10-18T0{index}:00:00Z")
+                                         for index,key in enumerate(["inc-old","inc-latest"])}
                 before = deepcopy(app.state.engine.runs)
                 latest = client.get("/api/state").json()["incident"]
                 history = client.get("/api/incidents/inc-old").json()
@@ -166,6 +167,39 @@ class WorkbenchAccessTests(unittest.TestCase):
                 self.assertEqual(history["id"],"inc-old")
                 self.assertEqual(app.state.engine.runs,before)
                 self.assertEqual(client.get("/api/incidents/unknown").status_code,404)
+
+    def test_reloaded_history_uses_started_at_and_id_without_rewriting_files(self):
+        rows = [dict(id="inc-a-latest", started_at="2026-10-18T02:00:00Z"),
+                dict(id="inc-z-older", started_at="2026-10-17T02:00:00Z"),
+                dict(id="inc-b-older", started_at="2026-10-17T02:00:00Z"),
+                dict(id="inc-legacy")]
+        with tempfile.TemporaryDirectory() as directory:
+            transport,_,_ = self.fixture(directory,[],[])
+            output = Path(directory)/"workbench"
+            saved = output/"incidents"
+            saved.mkdir(parents=True)
+            paths = []
+            for row in rows:
+                path = saved/(row["id"]+".json")
+                path.write_text(json.dumps(dict(symptom="fixture",status="completed",**row))+"\n",encoding="utf-8")
+                paths.append(path)
+            before = {path.name:path.read_bytes() for path in paths}
+            original_glob = Path.glob
+
+            def unordered_glob(path, pattern):
+                if path == saved and pattern == "inc-*.json":
+                    return iter(paths)
+                return original_glob(path,pattern)
+
+            app = create_app(Path(directory)/"absent.json",output,transport)
+            with patch.object(Path,"glob",unordered_glob), TestClient(app) as client:
+                state = client.get("/api/state").json()
+                self.assertEqual(state["incident"]["id"],"inc-a-latest")
+                self.assertEqual([run["id"] for run in state["incidents"]],
+                                 ["inc-legacy","inc-b-older","inc-z-older","inc-a-latest"])
+                self.assertEqual(list(app.state.engine.runs),[row["id"] for row in rows])
+                self.assertEqual(client.get("/api/incidents/inc-z-older").json()["id"],"inc-z-older")
+                self.assertEqual({path.name:path.read_bytes() for path in paths},before)
 
 
 if __name__ == "__main__":
