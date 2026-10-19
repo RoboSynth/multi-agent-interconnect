@@ -1,4 +1,16 @@
-> **2026-10-19 新版完整源码包：** 固定提交 `7fb2b2c3cb7f4ad41dc40dba5b7ab0f12feb116b`，1613个文件，ZIP 16,553,937字节；全部文件与Git blob及快照清单逐字一致，80项必要入口齐全。包含本轮E2-c源码/测试/证据、18条缺端诊断和8页报告。下文69647cf包为历史截面。
+> **2026-10-19 新版完整源码包：** 固定提交 `3760b21c8a1ed62e8119925da6f24ebd8b851d14`，2018个文件，ZIP 19,249,930字节；逐文件与Git blob及当前外部清单核对通过，96项必要入口齐全。含原journal恢复、正常停机、一键SDK完整检查、四例复验准备及15页报告修订3。[检查与下载说明](../evidence/deployment/development-archive-3760b21/README.md)分别列出包截止、报告截止和仍未运行的复验。下文7fb2b2c、69647cf均为历史包。
+
+## 3760b21 固定包复现
+
+```text
+git archive --format=zip --prefix=incident-pilot-development-3760b21/ --output=../incident-pilot-development-3760b21.zip 3760b21c8a1ed62e8119925da6f24ebd8b851d14
+```
+
+实际 ZIP SHA256：`e80b8bc73c42200ce562c2f553f36377ac956f142dae1b4c054df76aa3ecb43a`。也可使用自己的团队账号从[GitHub固定提交](https://github.com/RoboSynth/multi-agent-interconnect/archive/3760b21c8a1ed62e8119925da6f24ebd8b851d14.zip)下载，自动包的前缀和容器哈希另计。当前2018文件清单见[export-manifest.json](../evidence/deployment/development-archive-3760b21/export-manifest.json)；包内根目录原有SNAPSHOT-MANIFEST仅保留历史含义。本次实际只读校验未启动业务，不替代新机器或F10验收。
+
+---
+
+> **历史 7fb2b2c 完整源码包：** 固定提交 `7fb2b2c3cb7f4ad41dc40dba5b7ab0f12feb116b`，1613个文件，ZIP 16,553,937字节；全部文件与Git blob及快照清单逐字一致，80项必要入口齐全。包含当时E2-c源码/测试/证据、18条缺端诊断和8页报告。
 
 ## 当前包复现
 
