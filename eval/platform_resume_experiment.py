@@ -1,4 +1,4 @@
-"""Formal E1-a/after_applied preparation and explicitly authorized execution.
+"""Formal E1 preparation and explicitly authorized execution.
 
 Default: validate an existing private plan using files only. Preparation never
 connects to Docker/platform/resources; execution is a separate, bound opt-in.
@@ -28,6 +28,28 @@ RESOURCE_NAMES = {"DATABASE_URL", "DATABASE_URI", "POSTGRES_PASSWORD", "ORDERS_D
 EFFECTS = ["F07 apply and restore on the bound orders target", "replace only owned primary/backup database workers",
            "one primary after_applied exit83", "formal AMQPS ADP/describe/act/resume and owned group close",
            "approved db.restore_writes and application.pool_rebuild", "restore normal database workers and independent H00"]
+POINTS = {
+    "after_observation": {"exit_code": 81, "tool": "db.read_only_status", "ledger_state": None, "writer": "database-backup"},
+    "before_modification": {"exit_code": 82, "tool": "db.restore_writes", "ledger_state": "received", "writer": "database-backup"},
+    "after_applied": {"exit_code": 83, "tool": "db.restore_writes", "ledger_state": "applied", "writer": "database"},
+}
+
+
+METHODS = ("from_scratch", "full_history", "resume_package")
+
+
+def effects(point, case="E1-a", method=None):
+    result = list(EFFECTS)
+    result[2] = f"one primary {point} exit{POINTS[point]['exit_code']}"
+    if case == "E1-b":
+        result.append("one formal handover using " + method + "; same authority, remaining repairs and verification")
+    return result
+
+
+def validate_case(case, point, method):
+    if not (case == "E1-a" and method is None or
+            case == "E1-b" and point == "after_applied" and method in METHODS):
+        raise ValueError("E1-a has no comparison method; E1-b requires after_applied and one exact information method")
 
 
 def digest(path):
@@ -103,9 +125,12 @@ def prepare(args):
     config = load(config_path)
     primary, backup = load(bundle / "primary.json"), load(bundle / "backup.json")
     experiment, incident = primary["experiment_id"], primary["incident_id"]
-    if (primary["crash_point"], primary["crash_tool"], primary["armed"], backup["armed"], backup["crash_point"]) != (
-            "after_applied", "db.restore_writes", True, False, None):
-        raise ValueError("Only explicitly armed E1-a after_applied is implemented")
+    point = primary["crash_point"]
+    if point not in POINTS or (primary["crash_tool"], primary["armed"], backup["armed"], backup["crash_point"]) != (
+            POINTS[point]["tool"], True, False, None):
+        raise ValueError("An exact armed E1 primary interruption and unarmed backup are required")
+    case, method = getattr(args, "case", "E1-a"), getattr(args, "method", None)
+    validate_case(case, point, method)
     if any(primary[k] != backup[k] for k in ("experiment_id", "incident_id", "primary_aic", "backup_aic")):
         raise ValueError("Worker role documents differ in identity or experiment scope")
     if any(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,95}", value) is None for value in (experiment, incident)):
@@ -121,16 +146,18 @@ def prepare(args):
     output = local(args.output)
     if not output.is_relative_to(ROOT / "eval/results/platform") or output.exists():
         raise ValueError("E1 output must be a new eval/results/platform directory")
-    plan = dict(schema_version="platform-e1-plan/1", case="E1-a", crash_point="after_applied",
+    plan = dict(schema_version="platform-e1-plan/2", case=case, crash_point=point,
         experiment_id=experiment, incident_id=incident, operation_id=incident + ":db-restore-writes",
         target_config=local(args.target_config).relative_to(ROOT).as_posix(),
         config=config_path.relative_to(ROOT).as_posix(), domain_profile=profile.relative_to(ROOT).as_posix(),
         bundle=bundle.relative_to(ROOT).as_posix(), output=output.relative_to(ROOT).as_posix(),
         project=target.project, identities=expected, image_id=args.image_id,
-        file_sha256=files, model_calls=0, approve_high_required=True, effects=EFFECTS,
+        file_sha256=files, model_calls=0, approve_high_required=True, effects=effects(point, case, method),
         evidence_limits=["MCP invocations are not physical side effects", "process-local ownership lock cannot exclude another host",
                          "normal close evidence is SDK return/local state/warnings, not a broker ACL inventory",
-                         "only E1-a after_applied; no E1-b comparison or old-primary resurrection claim"])
+                         "one case only; no cross-method effectiveness or old-primary resurrection claim"])
+    if method is not None:
+        plan["method"] = method
     path = local(args.plan)
     if path.exists() or output == path or path.is_relative_to(output):
         raise ValueError("Plan path must be new and separate from experiment output")
@@ -142,9 +169,13 @@ def prepare(args):
 
 def validate_plan(path=None, *, document=None):
     plan = load(path) if document is None else document
-    if (plan.get("schema_version"), plan.get("case"), plan.get("crash_point")) != ("platform-e1-plan/1", "E1-a", "after_applied"):
+    version, point = plan.get("schema_version"), plan.get("crash_point")
+    case, method = plan.get("case"), plan.get("method")
+    if (version not in {"platform-e1-plan/1", "platform-e1-plan/2"} or point not in POINTS
+            or version == "platform-e1-plan/1" and (point != "after_applied" or case != "E1-a" or "method" in plan)):
         raise ValueError("Unsupported formal E1 plan")
-    if plan.get("effects") != EFFECTS or plan.get("model_calls") != 0 or plan.get("approve_high_required") is not True:
+    validate_case(case, point, method)
+    if plan.get("effects") != effects(point, case, method) or plan.get("model_calls") != 0 or plan.get("approve_high_required") is not True:
         raise ValueError("E1 effect/model/approval contract changed")
     if not plan.get("file_sha256"):
         raise ValueError("Complete frozen E1 inputs are required")
@@ -174,8 +205,8 @@ def validate_plan(path=None, *, document=None):
         raise ValueError("Worker bundle differs from the exact plan scope")
     if (primary.get("armed"), primary.get("crash_point"), primary.get("crash_tool"), primary.get("worker_role"),
         backup.get("armed"), backup.get("crash_point"), backup.get("worker_role")) != (
-            True, "after_applied", "db.restore_writes", "primary", False, None, "backup"):
-        raise ValueError("Only one exact armed primary after_applied case is allowed")
+            True, point, POINTS[point]["tool"], "primary", False, None, "backup"):
+        raise ValueError("Only the plan's exact primary interruption and unarmed backup are allowed")
     if manifest.get("schema_version") != "e1-worker-bundle/1" or manifest.get("experiment_id") != plan["experiment_id"]:
         raise ValueError("Worker bundle manifest scope differs")
     for name, expected in {**manifest["source_sha256"], **manifest["experiment_sha256"]}.items():
@@ -213,10 +244,13 @@ def authorize(plan, plan_path, authorization_path, approve_high):
     if not authorization_path or approve_high is not True:
         raise ValueError("Execution requires bound authorization and --approve-high")
     auth = load(local(authorization_path))
-    expected = dict(schema_version="platform-e1-authorization/1", authorized=True,
+    version = plan["schema_version"].rsplit("/", 1)[1]
+    expected = dict(schema_version="platform-e1-authorization/" + version, authorized=True,
         plan_sha256=digest(plan_path), experiment_id=plan["experiment_id"], incident_id=plan["incident_id"],
-        output=plan["output"], case="E1-a", crash_point="after_applied", effects=EFFECTS,
+        output=plan["output"], case=plan["case"], crash_point=plan["crash_point"], effects=plan["effects"],
         exclusive_coordinator=True, no_other_identity_consumers=True, no_active_or_unknown_operations=True)
+    if plan["case"] == "E1-b":
+        expected["method"] = plan["method"]
     boolean_fields = ("authorized", "exclusive_coordinator", "no_other_identity_consumers", "no_active_or_unknown_operations")
     if auth != expected or any(type(auth.get(key)) is not bool for key in boolean_fields):
         raise ValueError("Authorization must exactly bind this plan, one case and ownership preconditions")
@@ -471,6 +505,8 @@ class Controller:
         self.injector("apply", self.current)
 
     def collect(self, payload):
+        point = self.plan["crash_point"]
+        contract = POINTS[point]
         records = self.inspect(); self.assert_stable_others(records)
         self.owned_database(records, experiment=True, running=False)
         primary = records[DB_SERVICES[0]]
@@ -478,8 +514,9 @@ class Controller:
             raise ValueError("An experimental worker was unexpectedly recreated")
         if any(records[name]["State"]["StartedAt"] != started for name, started in self.experimental_started.items()):
             raise ValueError("An experimental worker unexpectedly restarted")
-        if primary["State"]["Running"] or primary["State"]["ExitCode"] != 83 or not records[DB_SERVICES[1]]["State"]["Running"]:
-            raise ValueError("Expected primary exit83/remaining backup is not observed")
+        if (primary["State"]["Running"] or primary["State"]["ExitCode"] != contract["exit_code"]
+                or not records[DB_SERVICES[1]]["State"]["Running"]):
+            raise ValueError("Expected planned primary exit/remaining backup is not observed")
         paths = []
         for role in ("primary", "backup"):
             remote = "/state/experiments/" + self.plan["experiment_id"] + "/" + role + ".jsonl"
@@ -500,18 +537,19 @@ class Controller:
         crashes = [load_event for line in paths[0].read_text(encoding="utf-8").splitlines()
                    if (load_event := json.loads(line)).get("event") == "experiment_worker_crash"]
         if len(crashes) != 1 or any(crashes[0].get(k) != v for k, v in {
-                "crash_point": "after_applied", "exit_code": 83, "operation_id": self.plan["operation_id"],
+                "crash_point": point, "exit_code": contract["exit_code"],
+                "operation_id": None if point == "after_observation" else self.plan["operation_id"],
                 "experiment_id": self.plan["experiment_id"], "incident_id": self.plan["incident_id"],
                 "executor_aic": self.plan["identities"]["database"], "logical_task_id": payload["logical_task_id"],
-                "tool": "db.restore_writes",
-                "ledger_state": "applied", "AIP_product_submitted": False}.items()):
-            raise ValueError("Durable crash marker differs from this after_applied operation")
-        expected = [{"executor_aic": self.plan["identities"]["database"], "operation_id": self.plan["operation_id"],
+                "tool": contract["tool"],
+                "ledger_state": contract["ledger_state"], "AIP_product_submitted": False}.items()):
+            raise ValueError("Durable crash marker differs from this planned interrupted request")
+        expected = [{"executor_aic": self.plan["identities"][contract["writer"]], "operation_id": self.plan["operation_id"],
                      "invocations": 1, "returned": 1, "returned_errors": 0, "without_return": 0}]
         if counts["operations"] != expected:
-            raise ValueError("Expected exactly one primary MCP invocation and no backup re-modification")
+            raise ValueError("Expected exactly one MCP invocation by the planned writer and none by the other worker")
         save(self.output / "mcp-operation-counts.json", counts)
-        return {"expected_exit_code": 83, "actual_exit_code": primary["State"]["ExitCode"], "counts": counts}
+        return {"expected_exit_code": contract["exit_code"], "actual_exit_code": primary["State"]["ExitCode"], "counts": counts}
 
     def restore(self):
         if not self.switched:
@@ -577,24 +615,35 @@ def healthy(summary):
         and not summary.get("state", {}).get("pending", []))
 
 
-def journal_resolution(journal, plan, original, session_id):
+def journal_resolution(journal, plan, original, session_id, *, coordinator_term=None):
     """Classify the expected lost primary acknowledgement without editing history."""
+    from acps_sdk.aip.resumable import Fence
     rows = journal.list_tasks()
     pending = journal.list_tasks(in_flight_only=True)
     completed_resume = []
+    completed_replay = []
+    point = plan["crash_point"]
+    resume_operation = original.get("operation_id") or plan["incident_id"] + ":observe:" + original["logical_task_id"]
+    old_fence = Fence(**original.get("fence", {"coordinator_term": coordinator_term, "takeover_version": 0}))
+    expected_fence = Fence(max(old_fence.coordinator_term, coordinator_term or 0), old_fence.takeover_version + 1).to_dict()
     for row in rows:
         if row.get("command") != "start" or not row.get("content"):
             continue
         content = json.loads(row["content"])
-        if (row["session_id"] == session_id and row["partner_aic"] == plan["identities"]["database-backup"]
-                and row["logical_task_id"] == original["logical_task_id"] and content.get("kind") == "resume"
-                and content.get("operation_id") == plan["operation_id"] and content.get("incident_id") == plan["incident_id"]
-                and content.get("args", {}).get("advance_fence") is True
-                and any(end["session_id"] == session_id and end["task_id"] == row["task_id"]
-                        and end["partner_aic"] == row["partner_aic"] and end["state"] == "completed" for end in rows)):
+        completed = (row["session_id"] == session_id and row["partner_aic"] == plan["identities"]["database-backup"]
+            and row["logical_task_id"] == original["logical_task_id"] and content.get("incident_id") == plan["incident_id"]
+            and any(end["session_id"] == session_id and end["task_id"] == row["task_id"]
+                    and end["partner_aic"] == row["partner_aic"] and end["state"] == "completed" for end in rows))
+        if (completed and content.get("kind") == "resume" and content.get("operation_id") == resume_operation
+                and content.get("args", {}).get("advance_fence") is True and content.get("fence") == expected_fence):
             completed_resume.append(row["task_id"])
+        replay = original if original["kind"] == "observe" else {**original, "fence": expected_fence}
+        if completed and content == replay:
+            completed_replay.append(row["task_id"])
     if len(set(completed_resume)) != 1:
         raise ValueError("Exactly one actual completed backup resume is required in the journal")
+    if point != "after_applied" and len(set(completed_replay)) != 1:
+        raise ValueError("Interrupted observation/received action requires one completed original request on the backup")
     if len(pending) > 1:
         raise ValueError("Unexpected nonterminal attempts remain in the journal")
     for row in pending:
@@ -604,7 +653,8 @@ def journal_resolution(journal, plan, original, session_id):
             raise ValueError("Nonterminal attempt is not the exact interrupted primary request")
     return dict(raw_in_flight_count=len(pending), expected_unacknowledged_primary_attempts=len(pending),
         unexpected_in_flight_count=0, completed_backup_resume_task_id=completed_resume[0], raw_journal_modified=False,
-        basis="Primary exit83/applied-before-product was independently verified; backup resume completed without re-modification.")
+        completed_backup_replay_task_id=completed_replay[0] if completed_replay else None,
+        basis=f"Primary {point}/exit{POINTS[point]['exit_code']} and exact MCP counts were independently verified; backup continuation completed.")
 
 
 async def run_case(plan, *, controller_factory=Controller, transport_factory=None, final_health=None):
@@ -624,14 +674,20 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
         source_hashes[relative] = plan["file_sha256"][relative]
     controller = controller_factory(plan, output)
     transport = None; warnings = CleanupWarnings(); logging.getLogger().addHandler(warnings)
-    report = dict(schema_version="platform-e1-result/1", case="E1-a", crash_point="after_applied",
+    report = dict(schema_version="platform-e1-result/2", case=plan["case"], crash_point=plan["crash_point"],
         experiment_id=plan["experiment_id"], incident_id=plan["incident_id"], operation_id=plan["operation_id"],
         status="failed", model_calls=0, source_sha256=source_hashes,
         started_at=datetime.now(timezone.utc).isoformat(), products=[])
+    recorder = None
+    if plan["case"] == "E1-b":
+        report.update(method=plan["method"], model_tokens=0)
     try:
         await asyncio.to_thread(controller.begin)
         config = load(local(plan["config"])); config["automatic_takeover"] = True
         transport = transport_factory(config, output / "coordinator")
+        if plan["case"] == "E1-b":
+            from eval.platform_handover import bind_handover
+            recorder = bind_handover(transport, plan["method"], output)
         await asyncio.wait_for(transport.start(), 240)
         validate_platform_bindings(config, controller.current, selected=transport.selected,
                                    descriptions=transport.descriptions, project=plan["project"])
@@ -645,8 +701,10 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
             value = dict(incident_id=plan["incident_id"], logical_task_id=plan["incident_id"] + ":" + str(task_index),
                          kind=kind, tool=tool, args=args or {}, budget={"deadline_ms": 120000 if kind == "verify" else 15000})
             if kind == "act":
+                role = "database" if tool.startswith("db.") else "application"
+                active = getattr(transport, "active_fences", {}).get(role)
                 value.update(operation_id=plan["operation_id"] if tool.startswith("db.") else plan["incident_id"] + ":pool-rebuild",
-                             fence={"coordinator_term": transport.term, "takeover_version": 0})
+                             fence=active.to_dict() if active else {"coordinator_term": transport.term, "takeover_version": 0})
             payload = TaskPayload(**value).model_dump(exclude_none=True)
             if kind == "act":
                 payload["approval"] = transport.issue_approval(payload)
@@ -659,18 +717,39 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
         if not healthy({f["key"]: f["value"] for f in baseline.get("facts", [])}.get("order_observation", {})):
             raise ValueError("Initial target does not pass the clean business baseline")
         await asyncio.to_thread(controller.apply)
+        if recorder is not None:
+            # Same pre-interruption observations for each information method.
+            await call("observe", "application.status")
         observed = await call("observe", "db.read_only_status")
         if {f["key"]: f["value"] for f in observed.get("facts", [])}.get("read_only") is not True:
             raise ValueError("F07 business precondition was not observed")
+        interrupted = report["products"][-1]["payload"] if plan["crash_point"] == "after_observation" else None
+        if interrupted is not None and observed.get("executor_aic") != plan["identities"]["database-backup"]:
+            raise ValueError("Interrupted observation was not completed by the planned backup")
         product = await call("act", "db.restore_writes")
+        expected_state = "skipped_already_applied" if plan["crash_point"] == "after_applied" else "applied"
         if (transport.selected["database"] != plan["identities"]["database-backup"]
                 or product.get("executor_aic") != plan["identities"]["database-backup"]
-                or product.get("operation", {}).get("state") != "skipped_already_applied"):
-            raise ValueError("Expected formal backup resume of applied operation was not confirmed")
-        interrupted = report["products"][-1]["payload"]
+                or product.get("operation", {}).get("state") != expected_state
+                or product.get("operation", {}).get("operation_id") != plan["operation_id"]):
+            raise ValueError("Expected formal backup continuation of the planned interruption was not confirmed")
+        interrupted = interrupted or report["products"][-1]["payload"]
         report["worker_exit_and_mcp"] = await asyncio.to_thread(controller.collect, interrupted)
-        app = await call("observe", "application.status")
-        revision = {f["key"]: f["value"] for f in app.get("facts", [])}.get("application_pool_revision")
+        reusable = {}
+        if recorder is not None:
+            from eval.platform_handover import verify_handover
+            handover = verify_handover(transport, recorder, interrupted, product,
+                                        backup_aic=plan["identities"]["database-backup"])
+            reusable = handover["fresh_facts"]
+            report["handover"] = handover["metrics"]
+        resumed_at = time.monotonic()
+        revision_fact = reusable.get("application_pool_revision")
+        additional_observations = 0
+        if revision_fact is None or type(revision_fact.get("value")) is not int:
+            app = await call("observe", "application.status")
+            revision_fact = next((f for f in app.get("facts", []) if f["key"] == "application_pool_revision"), None)
+            additional_observations += 1
+        revision = revision_fact.get("value") if revision_fact else None
         if type(revision) is not int or revision < 0:
             raise ValueError("Pool rebuild requires a fresh observed revision")
         await call("act", "application.pool_rebuild", {"expected_revision": revision})
@@ -679,7 +758,12 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
         if facts.get("business_recovered") is not True or not healthy(facts.get("order_observation", {})):
             raise ValueError("Formal verification did not confirm a clean 30s/10-workflow window")
         report["business_verification"] = facts["order_observation"]
-        report["journal_resolution"] = journal_resolution(transport.journal, plan, interrupted, transport.session.session_id)
+        if recorder is not None:
+            report.update(additional_post_handover_observations=additional_observations,
+                reused_fact_keys=sorted(reusable), revision_fact=revision_fact,
+                remaining_workflow_including_verification_seconds=time.monotonic()-resumed_at)
+        report["journal_resolution"] = journal_resolution(transport.journal, plan, interrupted, transport.session.session_id,
+                                                          coordinator_term=transport.term)
         if transport.runtime._pending_invitations:
             raise ValueError("Formal invitations are not terminal")
         report["task_phase_status"] = "completed"
@@ -724,6 +808,8 @@ def main(argv=None):
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--prepare", action="store_true")
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--case", choices=("E1-a", "E1-b"), default="E1-a")
+    parser.add_argument("--method", choices=METHODS)
     for name in ("config", "target-config", "domain-profile", "bundle", "output", "image-id"):
         parser.add_argument("--" + name)
     parser.add_argument("--authorization-file", type=Path)

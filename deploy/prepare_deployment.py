@@ -201,7 +201,8 @@ def prepare(output, project, ports, *, reply_port=8090, mode="business", source=
     target_path = None
     if mode == "seven":
         target_path = output / "target.json"
-        save(target_path, {"schema_version": "incident-evaluator-target/1.0", "backend": "docker", **common})
+        save(target_path, {"schema_version": "incident-evaluator-target/1.0", "backend": "docker", **common,
+                           "ports": {**ports, "reply_drop": reply_port}})
     # The route is deliberately mutable: normal reruns preserve a fault route until restored explicitly.
     inputs = [env, overlay, *(root / name for name in compose_files[:-1])]
     if target_path:
@@ -269,7 +270,11 @@ def load_deployment(path, *, root=ROOT):
         target = DockerTarget.from_file(manifest["target_config"], root=root)
         common = {key: manifest[key] for key in ("project", "wsl_distro", "compose_files", "env_file", "route_file", "ports")}
         target_json = json.loads(inside(manifest["target_config"], root).read_text(encoding="utf-8"))
-        if target_json != {"schema_version": "incident-evaluator-target/1.0", "backend": "docker", **common}:
+        legacy_target = {"schema_version": "incident-evaluator-target/1.0", "backend": "docker", **common}
+        expected_target = {**legacy_target, "ports": {**manifest["ports"], "reply_drop": manifest["reply_drop_port"]}}
+        # Earlier preparations remain usable for their three-port experiments;
+        # the F12 injector separately requires an explicitly bound fourth port.
+        if target_json not in (legacy_target, expected_target):
             raise ValueError("Evaluator target differs from the deployment manifest")
         if target.project != manifest["project"]:
             raise ValueError("Evaluator project mismatch")

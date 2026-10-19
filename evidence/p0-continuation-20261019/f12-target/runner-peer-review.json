@@ -1,0 +1,26 @@
+{
+  "status": "PASS_READ_ONLY",
+  "reviewed_target_source_ready_sha256": "6c9aa998ed1d122a927810d664b2ced44c5f92576c9b45e17f9973f2d8615f81",
+  "reviewed_runner_source_ready_sha256": "e16fa6488dfece9d92caed244dd0b9d6a2548a303e565f126617e735697321b6",
+  "runner_payloads_checked": 10,
+  "runner_source_files_checked": 9,
+  "source_and_copy_hash_mismatches": 0,
+  "findings_resolved": [
+    "Unknown-route recovery now passes the real policy and OperationLedger using an exact observed route hash; the no-argument path still requires v1.",
+    "The route tool checks the registered v2 application and excludes a v2 response still coming from the reply relay before reporting convergence.",
+    "Normal group close uses the existing six close gates and cleanup-warning handler; a retained group cannot pass.",
+    "Transport close precedes nested-finally exact-route restoration; close failure still attempts owned-proxy cleanup.",
+    "Initial, cleanup, ExceptionGroup, cause and implicit-context errors remain separately traceable."
+  ],
+  "data_and_authority": {
+    "default_plan_validation_is_offline": true,
+    "execution_requires_exact_plan_authorization_and_identity_lock": true,
+    "fault_label_and_hidden_missing_key_are_excluded_from_product_tasks": true,
+    "recovery_is_performed_by_normal_coordinator_tools_before_evaluator_restoration": true,
+    "missing_original_key_remains_manual_despite_fresh_healthy_workflows": true,
+    "mandatory_ops_runtime_source_hashes_match_target_receipt": true
+  },
+  "scope": "Read-only source, focused test assertions and frozen-receipt review. No tests rerun, deployment, network, model, platform or fault execution in this peer review.",
+  "runtime_f12_executed": false,
+  "remaining_blockers_found": []
+}

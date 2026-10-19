@@ -1,0 +1,53 @@
+{
+  "status": "OFFLINE_F12_TARGET_SOURCE_READY",
+  "base_commit": "5267a3a",
+  "payloads": [
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/eval/targets.py",
+      "target": "eval/targets.py",
+      "sha256": "024446f34b273ea66b5226fbe4fcd61030352505dc4ceeedda506820c04720a4",
+      "bytes": 7639
+    },
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/eval/inject.py",
+      "target": "eval/inject.py",
+      "sha256": "4ece9b9a4f1a95b5176ce64c42d2f4a8492c7775772b7a872617cd8e07c73567",
+      "bytes": 37520
+    },
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/tests/test_f12_target.py",
+      "target": "tests/test_f12_target.py",
+      "sha256": "f720a385d20b4c98d485f91778138cd9e93069c818aeef0e6e546ca988749db4",
+      "bytes": 17094
+    }
+  ],
+  "checks_sha256": "7b1e8dbb265c21d87585f0151f822dae2b9fc6380365e84153756520f441731d",
+  "distinct_checks": 24,
+  "api": {
+    "schema": "incident-evaluator-target/1.0",
+    "ports": "Original three keys or explicit fourth reply_drop key",
+    "url": "DockerTarget.reply_drop_url",
+    "injector": "One instance: apply('F12') then finally restore('F12')",
+    "proof": "Injector.f12_proof contains session/project/input hashes/original route SHA/proxy immutable identity/cleanup booleans",
+    "cli": "Explicit target F12 apply/restore rejected; check requires fourth port; old native/implicit Docker unchanged"
+  },
+  "behavior": [
+    "Pin target/env/Compose bytes and ten baseline container/image/StartedAt identities",
+    "Preflight explicit loopback port, app-v2 image, proxy command/environment, isolated network, no extra mounts",
+    "Reject an existing running proxy; unique compose run name+session label; no dependencies/build/pull",
+    "Restore exact original route bytes and confirm public ready v2; stop only the session's immutable ID",
+    "Nested cleanup preserves original and cleanup errors, including route+stop errors; no rm or volume operations"
+  ],
+  "runtime_validation": "Not run; no new experiment or deployment authorization implied",
+  "revision": 2,
+  "prior_release": {
+    "path": "revision-1/source-ready.json",
+    "sha256": "15a31f824e69b8e862478ad2b8c62a7fdfe14059064382720080e105bb2498a7"
+  },
+  "added_mandatory_runtime_source_sha256": {
+    "domains/ops/route_mcp.py": "424103524cc3b28eeb0c963561ae2c6e3c2da7999818e8e06a26b543719f99f8",
+    "domains/ops/policy.yaml": "b14036c5191436afd1e82bad3496d81f1d70c47d94e0d9960b92e1b6715af52f",
+    "domains/ops/policy.native.yaml": "b43db8e06ff46cf0ffeef82316e62efe1603c87e854452d68b18e35c160d5fb7"
+  },
+  "change": "Reject old images missing the guarded route implementation or either registered policy schema."
+}

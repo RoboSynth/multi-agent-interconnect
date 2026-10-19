@@ -1,0 +1,141 @@
+{
+  "schema_version": "f12-e5-offline-verification/1",
+  "base": "5267a3a",
+  "status": "passed_offline",
+  "distinct_test_methods": 34,
+  "test_names": [
+    "business_container_preparation_test.UnknownReceiptTests.test_missing_key_abstains_without_a_new_request.test_missing_key_abstains_without_a_new_request",
+    "business_container_preparation_test.UnknownReceiptTests.test_missing_receipt_stays_unknown.test_missing_receipt_stays_unknown",
+    "test_bridge_gateway.RoutePreconditionTests.test_already_v2_or_unknown_rejected_without_modifying_mcp_call.test_already_v2_or_unknown_rejected_without_modifying_mcp_call",
+    "test_bridge_gateway.RoutePreconditionTests.test_stale_route_fence_stops_before_inspection_or_modification.test_stale_route_fence_stops_before_inspection_or_modification",
+    "test_bridge_gateway.RoutePreconditionTests.test_unknown_effect_only_reconciles_after_v2_without_another_modification.test_unknown_effect_only_reconciles_after_v2_without_another_modification",
+    "test_bridge_gateway.RoutePreconditionTests.test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries.test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries",
+    "test_bridge_gateway.RoutePreconditionTests.test_v1_changes_once_and_applied_replay_skips_new_precondition.test_v1_changes_once_and_applied_replay_skips_new_precondition",
+    "test_coordinator.CoordinatorTests.test_f10_keeps_diagnosing_after_first_repair_and_rebuilds_pool.test_f10_keeps_diagnosing_after_first_repair_and_rebuilds_pool",
+    "test_coordinator.CoordinatorTests.test_failed_business_verification_does_not_claim_recovery.test_failed_business_verification_does_not_claim_recovery",
+    "test_coordinator.CoordinatorTests.test_healthy_incident_has_zero_modifications.test_healthy_incident_has_zero_modifications",
+    "test_coordinator.CoordinatorTests.test_original_unknown_is_preserved_through_recovery_and_verification.test_original_unknown_is_preserved_through_recovery_and_verification",
+    "test_coordinator.CoordinatorTests.test_same_symptom_f01_f02_branch_by_observation_and_different_actions.test_same_symptom_f01_f02_branch_by_observation_and_different_actions",
+    "test_f12_planner.UnregisteredRoutePlannerTests.test_existing_v1_repair_keeps_its_previous_contract.test_existing_v1_repair_keeps_its_previous_contract",
+    "test_f12_planner.UnregisteredRoutePlannerTests.test_ordinary_unknown_route_and_healthy_application_select_existing_write.test_ordinary_unknown_route_and_healthy_application_select_existing_write",
+    "test_f12_planner.UnregisteredRoutePlannerTests.test_registered_v2_and_missing_route_do_not_select_a_repair.test_registered_v2_and_missing_route_do_not_select_a_repair",
+    "test_f12_planner.UnregisteredRoutePlannerTests.test_unknown_route_without_a_valid_snapshot_hash_is_not_repaired.test_unknown_route_without_a_valid_snapshot_hash_is_not_repaired",
+    "test_f12_planner.UnregisteredRoutePlannerTests.test_unregistered_route_needs_confirmed_application_reachability.test_unregistered_route_needs_confirmed_application_reachability",
+    "test_planner_conflicts.PlannerConflictTests.test_changed_supplementary_evidence_closes_the_conflict.test_changed_supplementary_evidence_closes_the_conflict",
+    "test_planner_conflicts.PlannerConflictTests.test_conflicting_domains_require_an_extra_probe_before_pool_repair.test_conflicting_domains_require_an_extra_probe_before_pool_repair",
+    "test_unknown_receipt_target.FormalPlanTests.test_error_evidence_preserves_initial_and_cleanup_failures.test_error_evidence_preserves_initial_and_cleanup_failures",
+    "test_unknown_receipt_target.FormalPlanTests.test_prepare_validate_authorize_are_offline_and_bind_sources_scope_and_output.test_prepare_validate_authorize_are_offline_and_bind_sources_scope_and_output",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_apply_failure_and_restore_failure_are_both_retained.test_apply_failure_and_restore_failure_are_both_retained",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_existing_output_and_missing_proxy_port_refuse_before_controller.test_existing_output_and_missing_proxy_port_refuse_before_controller",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_foreign_platform_binding_is_rejected_before_connection_or_fault.test_foreign_platform_binding_is_rejected_before_connection_or_fault",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_invalid_receipt_keeps_actual_coordinator_unresolved_and_still_restores.test_invalid_receipt_keeps_actual_coordinator_unresolved_and_still_restores",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_normal_close_return_with_retained_group_cannot_pass.test_normal_close_return_with_retained_group_cannot_pass",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_real_coordinator_repairs_then_verifier_resolves_original_and_abstains_without_key.test_real_coordinator_repairs_then_verifier_resolves_original_and_abstains_without_key",
+    "test_unknown_receipt_target.FormalUnknownReceiptTests.test_receipt_resolver_requires_matching_committed_v2_identity.test_receipt_resolver_requires_matching_committed_v2_identity",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_policy_rejects_unpaired_or_non_unknown_override_before_resource_calls.test_policy_rejects_unpaired_or_non_unknown_override_before_resource_calls",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_route_convergence_waits_past_v2_response_still_served_by_reply_relay.test_route_convergence_waits_past_v2_response_still_served_by_reply_relay",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_stale_fence_and_changed_snapshot_cannot_modify_route.test_stale_fence_and_changed_snapshot_cannot_modify_route",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_unhealthy_v2_or_change_during_health_check_refuses_without_overwriting_new_owner.test_unhealthy_v2_or_change_during_health_check_refuses_without_overwriting_new_owner",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_unknown_with_exact_snapshot_and_healthy_registered_v2_applies_once_through_real_ledger.test_unknown_with_exact_snapshot_and_healthy_registered_v2_applies_once_through_real_ledger",
+    "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_v1_default_remains_guarded_and_unknown_without_pair_stays_rejected.test_v1_default_remains_guarded_and_unknown_without_pair_stays_rejected"
+  ],
+  "runs": [
+    {
+      "name": "target-test-v4",
+      "tool_chunk": "eac63a",
+      "actual_exit_code": 0,
+      "test_methods": 15,
+      "names": [
+        "test_unknown_receipt_target.FormalPlanTests.test_error_evidence_preserves_initial_and_cleanup_failures.test_error_evidence_preserves_initial_and_cleanup_failures",
+        "test_unknown_receipt_target.FormalPlanTests.test_prepare_validate_authorize_are_offline_and_bind_sources_scope_and_output.test_prepare_validate_authorize_are_offline_and_bind_sources_scope_and_output",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_apply_failure_and_restore_failure_are_both_retained.test_apply_failure_and_restore_failure_are_both_retained",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_existing_output_and_missing_proxy_port_refuse_before_controller.test_existing_output_and_missing_proxy_port_refuse_before_controller",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_foreign_platform_binding_is_rejected_before_connection_or_fault.test_foreign_platform_binding_is_rejected_before_connection_or_fault",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_invalid_receipt_keeps_actual_coordinator_unresolved_and_still_restores.test_invalid_receipt_keeps_actual_coordinator_unresolved_and_still_restores",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_normal_close_return_with_retained_group_cannot_pass.test_normal_close_return_with_retained_group_cannot_pass",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_real_coordinator_repairs_then_verifier_resolves_original_and_abstains_without_key.test_real_coordinator_repairs_then_verifier_resolves_original_and_abstains_without_key",
+        "test_unknown_receipt_target.FormalUnknownReceiptTests.test_receipt_resolver_requires_matching_committed_v2_identity.test_receipt_resolver_requires_matching_committed_v2_identity",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_policy_rejects_unpaired_or_non_unknown_override_before_resource_calls.test_policy_rejects_unpaired_or_non_unknown_override_before_resource_calls",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_route_convergence_waits_past_v2_response_still_served_by_reply_relay.test_route_convergence_waits_past_v2_response_still_served_by_reply_relay",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_stale_fence_and_changed_snapshot_cannot_modify_route.test_stale_fence_and_changed_snapshot_cannot_modify_route",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_unhealthy_v2_or_change_during_health_check_refuses_without_overwriting_new_owner.test_unhealthy_v2_or_change_during_health_check_refuses_without_overwriting_new_owner",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_unknown_with_exact_snapshot_and_healthy_registered_v2_applies_once_through_real_ledger.test_unknown_with_exact_snapshot_and_healthy_registered_v2_applies_once_through_real_ledger",
+        "test_unknown_receipt_target.GuardedRouteIntegrationTests.test_v1_default_remains_guarded_and_unknown_without_pair_stays_rejected.test_v1_default_remains_guarded_and_unknown_without_pair_stays_rejected"
+      ],
+      "stderr_sha256": "72e02e4aba2e3b684aec2f76eff55f53288b63fefb1ae0777daf60c036290ee3",
+      "stderr_bytes": 37325,
+      "retained_local_stdout": "target-test-v4.stdout.log",
+      "retained_local_stderr": "target-test-v4.stderr.log"
+    },
+    {
+      "name": "planner-regression-v1",
+      "tool_chunk": "6d6f04",
+      "actual_exit_code": 0,
+      "test_methods": 19,
+      "names": [
+        "test_f12_planner.UnregisteredRoutePlannerTests.test_existing_v1_repair_keeps_its_previous_contract.test_existing_v1_repair_keeps_its_previous_contract",
+        "test_f12_planner.UnregisteredRoutePlannerTests.test_ordinary_unknown_route_and_healthy_application_select_existing_write.test_ordinary_unknown_route_and_healthy_application_select_existing_write",
+        "test_f12_planner.UnregisteredRoutePlannerTests.test_registered_v2_and_missing_route_do_not_select_a_repair.test_registered_v2_and_missing_route_do_not_select_a_repair",
+        "test_f12_planner.UnregisteredRoutePlannerTests.test_unknown_route_without_a_valid_snapshot_hash_is_not_repaired.test_unknown_route_without_a_valid_snapshot_hash_is_not_repaired",
+        "test_f12_planner.UnregisteredRoutePlannerTests.test_unregistered_route_needs_confirmed_application_reachability.test_unregistered_route_needs_confirmed_application_reachability",
+        "test_planner_conflicts.PlannerConflictTests.test_changed_supplementary_evidence_closes_the_conflict.test_changed_supplementary_evidence_closes_the_conflict",
+        "test_planner_conflicts.PlannerConflictTests.test_conflicting_domains_require_an_extra_probe_before_pool_repair.test_conflicting_domains_require_an_extra_probe_before_pool_repair",
+        "test_bridge_gateway.RoutePreconditionTests.test_already_v2_or_unknown_rejected_without_modifying_mcp_call.test_already_v2_or_unknown_rejected_without_modifying_mcp_call",
+        "test_bridge_gateway.RoutePreconditionTests.test_stale_route_fence_stops_before_inspection_or_modification.test_stale_route_fence_stops_before_inspection_or_modification",
+        "test_bridge_gateway.RoutePreconditionTests.test_unknown_effect_only_reconciles_after_v2_without_another_modification.test_unknown_effect_only_reconciles_after_v2_without_another_modification",
+        "test_bridge_gateway.RoutePreconditionTests.test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries.test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries",
+        "test_bridge_gateway.RoutePreconditionTests.test_v1_changes_once_and_applied_replay_skips_new_precondition.test_v1_changes_once_and_applied_replay_skips_new_precondition",
+        "business_container_preparation_test.UnknownReceiptTests.test_missing_key_abstains_without_a_new_request.test_missing_key_abstains_without_a_new_request",
+        "business_container_preparation_test.UnknownReceiptTests.test_missing_receipt_stays_unknown.test_missing_receipt_stays_unknown",
+        "test_coordinator.CoordinatorTests.test_original_unknown_is_preserved_through_recovery_and_verification.test_original_unknown_is_preserved_through_recovery_and_verification",
+        "test_coordinator.CoordinatorTests.test_same_symptom_f01_f02_branch_by_observation_and_different_actions.test_same_symptom_f01_f02_branch_by_observation_and_different_actions",
+        "test_coordinator.CoordinatorTests.test_f10_keeps_diagnosing_after_first_repair_and_rebuilds_pool.test_f10_keeps_diagnosing_after_first_repair_and_rebuilds_pool",
+        "test_coordinator.CoordinatorTests.test_healthy_incident_has_zero_modifications.test_healthy_incident_has_zero_modifications",
+        "test_coordinator.CoordinatorTests.test_failed_business_verification_does_not_claim_recovery.test_failed_business_verification_does_not_claim_recovery"
+      ],
+      "stderr_sha256": "67024d3380adc22f6d33777c52feeac887dbb5aaf3067d223601cef473ea66b8",
+      "stderr_bytes": 3838,
+      "retained_local_stdout": "planner-regression-v1.stdout.log",
+      "retained_local_stderr": "planner-regression-v1.stderr.log"
+    }
+  ],
+  "earlier_runs_retained": [
+    {
+      "name": "target-test-v1",
+      "chunk": "a3ab19",
+      "actual_exit_code": 0,
+      "test_methods": 6,
+      "limitation": "Initial mock route transport; superseded by real Bridge/Ledger/MCP fixtures"
+    },
+    {
+      "name": "target-test-v2",
+      "chunk": "41afb4",
+      "actual_exit_code": 0,
+      "test_methods": 14
+    },
+    {
+      "name": "target-test-v3",
+      "chunk": "4b2c78",
+      "actual_exit_code": 0,
+      "test_methods": 15
+    }
+  ],
+  "implementation": [
+    "One explicit four-port target, same Injector instance and exact-output plan/authorization binding",
+    "Actual coordinator repairs unknown route from normal version/hash/application observations",
+    "Paired snapshot SHA and unknown-version policy; original v1 precondition remains the default",
+    "Real Bridge/OperationLedger/route MCP with direct registered-v2 readiness, byte comparisons and relay exclusion",
+    "Original key resolved by real Verifier; same-key retry preserves identity; missing key remains manual",
+    "Own transport closes through existing six-check gate before finally restoring own route/proxy",
+    "Initial/cleanup/group/context errors retained; strict independent public-v2 H00 criteria"
+  ],
+  "evidence_limits": [
+    "Offline MockTransport and temporary SQLite; external process/HTTP resource IO mocked",
+    "Virtual time is not a real 30-second observation",
+    "No Docker, WSL, live platform, model or real fault was executed by these checks",
+    "Live F12/E5 remains pending a new exact plan, bound authorization and inspected owned ten-service target",
+    "Own-identity lock does not exclude another machine or checkout",
+    "Local SDK cleanup checks do not establish remote broker ACL inventory"
+  ],
+  "created_at": "2026-10-19T00:31:16.347655+00:00"
+}

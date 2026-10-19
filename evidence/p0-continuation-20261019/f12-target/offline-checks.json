@@ -1,0 +1,42 @@
+{
+  "status": "OFFLINE_CHECKS_PASSED",
+  "distinct_tests": 23,
+  "groups": [
+    {
+      "name": "F12 target/session/cleanup",
+      "tests": 14,
+      "actual_os_exit_code": 0,
+      "actual_tool_completion": {
+        "tool": "exec_command",
+        "chunk_id": "ded960"
+      },
+      "test_seconds": 0.431
+    },
+    {
+      "name": "Existing target isolation compatibility",
+      "tests": 9,
+      "actual_os_exit_code": 0,
+      "actual_tool_completion": {
+        "tool": "exec_command",
+        "chunk_id": "d472a7"
+      },
+      "test_seconds": 0.311
+    }
+  ],
+  "prior_attempts": [
+    {
+      "chunk_id": "3972ee",
+      "actual_os_exit_code": 1,
+      "test_verdict": null,
+      "reason": "Sandbox TEMP fixture creation and cleanup PermissionError before test bodies; 11 tests, 22 setup/cleanup errors."
+    },
+    {
+      "chunk_id": "f97d24",
+      "actual_os_exit_code": 0,
+      "tests": 11,
+      "superseded_by": "ded960",
+      "note": "Three failure/environment checks and relay header validation subsequently added."
+    }
+  ],
+  "scope": "Fixture/mock only: no Docker/WSL process, network, platform, model, database or fault execution."
+}

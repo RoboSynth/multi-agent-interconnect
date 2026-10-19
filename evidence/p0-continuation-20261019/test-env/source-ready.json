@@ -1,0 +1,127 @@
+{
+  "status": "TEST_ENVIRONMENT_REPAIR_SOURCE_READY",
+  "created_at": "2026-10-19T00:21:14.278962+00:00",
+  "checkout_base": "5267a3a",
+  "sources": [
+    {
+      "path": "integration/incident/database.submission.acs.json",
+      "bytes": 1388,
+      "sha256": "7ea10718481c23930cf3eeda2359229cc01cb08b21aee4cae7231ebd9d4dabe4"
+    },
+    {
+      "path": "integration/incident/application.approved.acs.json",
+      "bytes": 1441,
+      "sha256": "3d53088e53aad7d3a7252c64cd34d11a10e8b2e1f55231e38a94473de17a9f74"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "bytes": 369,
+      "sha256": "501ddebe71e7de56df78af062d738c91eb00068720e7b3b7c11d6680f9523563"
+    },
+    {
+      "path": "docs/test_environment_20261019.md",
+      "bytes": 2696,
+      "sha256": "ee19e06ca2df4936cee5a10c7f792aabd5d13af4302c07c4a576857593f7947a"
+    },
+    {
+      "path": "tests/test_acs_fixtures.py",
+      "bytes": 2544,
+      "sha256": "123809fd2ecbd49058bea6c9a2315b303fedec803c2f4344ad9c251001a0dd22"
+    }
+  ],
+  "production_code_changes": 0,
+  "test_methods": {
+    "acs_mapper_platform_fixtures": 9,
+    "reports_and_figures": 14,
+    "distinct_total": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "actual_test_exits": {
+    "acs": {
+      "exit_code": 0,
+      "completion_chunk": "2bd806"
+    },
+    "reports": {
+      "exit_code": 0,
+      "completion_chunk": "73b959"
+    }
+  },
+  "retained_baseline": {
+    "missing_fixtures": {
+      "exit_code": 1,
+      "completion_chunk": "44cf84",
+      "tests_run": 5,
+      "errors": 5,
+      "all_error_types": "FileNotFoundError"
+    },
+    "restricted_attempt": {
+      "exit_code": 1,
+      "completion_chunk": "e9d11c",
+      "behavior_verdict": null,
+      "reason": "Restricted Windows asyncio initialization did not complete; exact owned test processes stopped and retained"
+    }
+  },
+  "dependency_scope": {
+    "versions_source": "Existing project requirements and local installed distribution metadata; not an upstream latest-version claim",
+    "acs_environment": ".venv",
+    "report_environment": ".venv-report",
+    "acs_test_versions": {
+      "jsonschema": "4.26.0",
+      "cryptography": "50.0.2",
+      "jcs": "0.2.1",
+      "matplotlib": null,
+      "numpy": null
+    },
+    "report_test_versions": {
+      "jsonschema": null,
+      "cryptography": null,
+      "jcs": null,
+      "matplotlib": "3.11.2",
+      "numpy": "2.5.4"
+    },
+    "new_environment_installed": false,
+    "combined_requirements_clean_install_verified": false,
+    "upstream_pytest_environment_included": false
+  },
+  "fixture_scope": {
+    "synthetic": true,
+    "active": false,
+    "registered": false,
+    "hostname": "fixture.invalid",
+    "credentials_included": false,
+    "sdk_and_official_schema_checked": true,
+    "aic_check": "Format only; no registration or checksum claim"
+  },
+  "constraints": {
+    "runtime_or_platform_started": false,
+    "model_calls": 0,
+    "resource_actions": 0,
+    "dependency_installations": 0,
+    "full_suite_run": false,
+    "production_protocol_or_business_changes": false
+  },
+  "input_sha256": {
+    "requirements-high-score.txt": "7f06d2aa868c947370b1a8042fcb50adacc4adc9de9ac63543a5449d9cdc5cf0",
+    "requirements-lock.txt": "9e3e604705c32c346b15dea7f057fce980edafc0a1fdb2f33fa072cc667a19b3",
+    "requirements-report.txt": "979ba9421f5279fc8caa68e24ac88b1f307590558b38c78c1c299db554d5d43b",
+    "vendor/ACPs-community/acps-sdk/pyproject.toml": "d71a0e245bb084beb204896ff2bdd9b7fd12a5e68e9cdd8c4247ef2efc7203c8",
+    "vendor/ACPs-community/registry-server/app/agent/acsSchema.json": "2451b556aa764c6e9fa8fead87005292c46f2f9cf1b4e6877188a9e739fb1397"
+  },
+  "proof_sha256": {
+    "baseline-missing-fixtures.log": "eefb9e3c8bf6ab1f168fd34fc88c5ce296571b1c9f6bae83dc0cda96547f1570",
+    "baseline-restricted-process-stop.json": "26db7bada1ff3abeaf413910d45c73260027d69a7ffcb61fb8909667475b9431",
+    "baseline-missing-fixtures-elevated.log": "0a9a7f489fd18ae50dc0974d78ef776676bcc536d83a4ddebddb67e5a06d0932",
+    "baseline-missing-fixtures-elevated.json": "4ffa194c426ae17bdb53c67fc6e57e90137ca877c37c43b4c7bbb6176bbe02a0",
+    "acs-results.log": "01c521bbed5a448b8f39b0b1be48096cc294c36ada3ced09dab9f65e9edc2b98",
+    "acs-results.json": "f052bf00296bfb0adc7ffe1a32fb1f6add8cb1c1fb68ef7c50add6358b2dcb44",
+    "reports-results.log": "8c0b02c2d116c55213f9d25b9af2d7d2a3fb13640754cdc49002c063b5860ca2",
+    "reports-results.json": "8adb4345ebe4cc72181e82c1b4ab968512a021bfea0ad6e8039e641a134f68f9",
+    "run_affected.py": "5d068a14e3b02b4ef2e7f571fb7bf4c0a3ec71eb699d3c558c40980d8b4f480e"
+  },
+  "static_check": {
+    "owned_utf8_files": 5,
+    "trailing_whitespace_lines": 0
+  }
+}

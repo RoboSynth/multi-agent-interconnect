@@ -1,0 +1,42 @@
+{
+  "status": "OFFLINE_F12_TARGET_SOURCE_READY",
+  "base_commit": "5267a3a",
+  "payloads": [
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/eval/targets.py",
+      "target": "eval/targets.py",
+      "sha256": "17cf684d9e26604493a8c08716437a3f938a7a680145ab7699238371213c9c81",
+      "bytes": 7546
+    },
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/eval/inject.py",
+      "target": "eval/inject.py",
+      "sha256": "4ece9b9a4f1a95b5176ce64c42d2f4a8492c7775772b7a872617cd8e07c73567",
+      "bytes": 37520
+    },
+    {
+      "source": "artifacts/p0-continuation-20261019/checkout/tests/test_f12_target.py",
+      "target": "tests/test_f12_target.py",
+      "sha256": "900a9d478cd45b2926d784b7a1a0a39a4fd01cf46961f1559e049da7b0b9b1d6",
+      "bytes": 15948
+    }
+  ],
+  "checks_sha256": "183f519ebf87d6988f5580f310b2641327fbfc50715e229acec16473b9df3223",
+  "distinct_checks": 23,
+  "api": {
+    "schema": "incident-evaluator-target/1.0",
+    "ports": "Original three keys or explicit fourth reply_drop key",
+    "url": "DockerTarget.reply_drop_url",
+    "injector": "One instance: apply('F12') then finally restore('F12')",
+    "proof": "Injector.f12_proof contains session/project/input hashes/original route SHA/proxy immutable identity/cleanup booleans",
+    "cli": "Explicit target F12 apply/restore rejected; check requires fourth port; old native/implicit Docker unchanged"
+  },
+  "behavior": [
+    "Pin target/env/Compose bytes and ten baseline container/image/StartedAt identities",
+    "Preflight explicit loopback port, app-v2 image, proxy command/environment, isolated network, no extra mounts",
+    "Reject an existing running proxy; unique compose run name+session label; no dependencies/build/pull",
+    "Restore exact original route bytes and confirm public ready v2; stop only the session's immutable ID",
+    "Nested cleanup preserves original and cleanup errors, including route+stop errors; no rm or volume operations"
+  ],
+  "runtime_validation": "Not run; no new experiment or deployment authorization implied"
+}

@@ -1,0 +1,43 @@
+{
+  "aic": "1.2.156.3088.1.TEST.SYNTH.DB.1.0000",
+  "active": false,
+  "lastModifiedTime": "2026-10-19T00:00:00Z",
+  "protocolVersion": "02.02",
+  "name": "Synthetic database ACS fixture",
+  "description": "Offline schema and capability-mapper test input. This identity is fabricated, unregistered and has no certificate or running Inbox.",
+  "version": "1.0.0",
+  "provider": {
+    "name": "Incident Pilot synthetic test fixture",
+    "url": "https://fixture.invalid"
+  },
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "Schema declaration only; no credentials are supplied."
+    }
+  },
+  "endPoints": [
+    {
+      "transport": "AMQP",
+      "url": "amqps://fixture.invalid:5671/acps?inbox=inbox_1.2.156.3088.1.TEST.SYNTH.DB.1.0000",
+      "security": [{"mtls": []}]
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "notification": false,
+    "messageQueue": ["amqp:0.9.1"]
+  },
+  "defaultInputModes": ["application/json"],
+  "defaultOutputModes": ["application/json"],
+  "skills": [
+    {
+      "id": "db.observe",
+      "name": "Synthetic database observation",
+      "description": "Describe a synthetic database observation contract for offline tests only.",
+      "version": "1.0.0",
+      "tags": ["synthetic", "offline-fixture"]
+    }
+  ],
+  "entityMeta": {"synthetic": true, "purpose": "offline-fixture", "notRegistered": true}
+}

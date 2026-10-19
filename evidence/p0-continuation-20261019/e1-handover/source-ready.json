@@ -1,0 +1,72 @@
+{
+  "status": "FORMAL_HANDOVER_HELPER_SOURCE_READY",
+  "sources": [
+    {
+      "path": "eval/platform_handover.py",
+      "sha256": "00259a38a281def36f496608bffbfacfa5db36a8061c05554ff55be7ea376ca1",
+      "bytes": 5911
+    },
+    {
+      "path": "tests/test_platform_handover.py",
+      "sha256": "ea2a696c12fe7063bb4a69389a683c5614b466d6c3c97a2ec42e8c251e5ded0c",
+      "bytes": 9271
+    }
+  ],
+  "api": {
+    "bind_handover": "(transport, method, output) -> HandoverRecorder; installs exact pre-takeover history reader",
+    "verify_handover": "(transport, recorder, original_payload, product, *, backup_aic, now=None) -> {fresh_facts, metrics}"
+  },
+  "checks": {
+    "distinct_methods": 6,
+    "passed": 6,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "actual_exit": 0,
+    "completion_chunk": "96a01a"
+  },
+  "coverage": [
+    "three existing information methods",
+    "strict exact takeover history cutoff; no fallback",
+    "sole actual sent IFC text",
+    "incident/logical/operation and original/replacement fences",
+    "formal group session, sender, backup target and product identity",
+    "actual UTF-8 byte count and acknowledged transmitted handover digest",
+    "original observation TTL"
+  ],
+  "reused_dependencies_sha256": {
+    "eval/handover_experiment.py": "91bf9cab27c945f75677e6d321b8860415ebec1d97f994dfe571da0edbbfed7c",
+    "eval/resume_support.py": "7f82d27a50def328e4aae3ef5fd48de53b3f39da7f43fe7e37a14448affc0282"
+  },
+  "proof_sha256": {
+    "checks.json": "338bad0d41f0ecc291adeada9fe0974b8f9095330d25a0bb27934186b9e1be4d",
+    "checks.log": "53bb9d64ed3640804bd37805846723da69dc8cd84dbdadfd7fd7ea8bdd32c638",
+    "attempt-1-environment-failure.json": "c21067628204bc0ea215b89149dcbc53483ded1bfb6b441101ea5f3b46ad32d8",
+    "checks-runner-temp.json": "b8b9d67e45f8908be1a4c37b1abf72f1b6a3eaf1ead07f0c6eb764ae01048b80",
+    "checks-runner-temp.log": "ec6d0c03e5c234784b0e82babd64b7f313dcdd847dbc239428ac3b0fe7b45704",
+    "run_checks.py": "cd3aa2085b363ef066960373e1de3f76df587b943374a048f5dc136e220741d7"
+  },
+  "limits": {
+    "formal_platform_executed": false,
+    "faults": 0,
+    "model_calls": 0,
+    "resource_actions": 0,
+    "runner_changes": 0,
+    "transport_changes": 0,
+    "test_data": "fake transport and synthetic capture files only"
+  },
+  "retained_attempts": [
+    {
+      "completion_chunk": "52c71c",
+      "exit_code": 1,
+      "behavior_verdict": null,
+      "reason": "restricted default TEMP fixture-file PermissionError"
+    },
+    {
+      "completion_chunk": "cc1ff4",
+      "exit_code": 0,
+      "distinct_methods": 6,
+      "scope": "same helper; runner-owned workspace temp; before final fixture portability adjustment, not added to unique test count"
+    }
+  ]
+}

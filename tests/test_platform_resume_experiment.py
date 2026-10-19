@@ -24,6 +24,8 @@ def healthy():
 
 
 class Fixture(unittest.TestCase):
+    point = "after_applied"
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(dir=ROOT / "artifacts")
         self.root = Path(self.temp.name)
@@ -52,7 +54,7 @@ class Fixture(unittest.TestCase):
             ports={"app_v1": 18081, "app_v2": 18082, "order": 18088}))
         self.bundle = self.root / "bundle"
         prepare_workers(self.bundle, experiment_id="e1-synthetic", incident_id="incident-synthetic",
-            primary_aic="primary", backup_aic="backup", crash_point="after_applied", arm_primary=True)
+            primary_aic="primary", backup_aic="backup", crash_point=self.point, arm_primary=True)
         sources = {self.source}
         for name in ("eval/platform_database_worker.py", "acps_mcp_bridge/experiment.py", "incident/local_worker.py"):
             path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True)
@@ -64,9 +66,9 @@ class Fixture(unittest.TestCase):
         self.plan = e1.prepare(self.args)
 
     def auth(self, **changes):
-        value = dict(schema_version="platform-e1-authorization/1", authorized=True,
+        value = dict(schema_version="platform-e1-authorization/" + self.plan["schema_version"].rsplit("/", 1)[1], authorized=True,
             plan_sha256=e1.digest(self.args.plan), experiment_id=self.plan["experiment_id"], incident_id=self.plan["incident_id"],
-            output=self.plan["output"], case="E1-a", crash_point="after_applied", effects=e1.EFFECTS,
+            output=self.plan["output"], case=self.plan["case"], crash_point=self.plan["crash_point"], effects=self.plan["effects"],
             exclusive_coordinator=True, no_other_identity_consumers=True, no_active_or_unknown_operations=True)
         value.update(changes); path = self.root / "authorization.json"; e1.save(path, value)
         return path
@@ -417,6 +419,39 @@ class JournalTests(Fixture):
         with self.assertRaises(ValueError): e1.journal_resolution(journal, self.plan, original, "owned")
         with self.assertRaises(ValueError): e1.journal_resolution(journal, self.plan, original, "other-session")
 
+    def test_completed_resume_with_old_fence_is_rejected(self):
+        journal, original = self.journal()
+        rows = deepcopy(journal.list_tasks())
+        for row in rows:
+            if row.get("content"):
+                content = json.loads(row["content"])
+                if content.get("kind") == "resume":
+                    content["fence"] = original["fence"]
+                    row["content"] = json.dumps(content)
+        fake = SimpleNamespace(list_tasks=Mock(side_effect=lambda **kwargs:
+            journal.list_tasks(in_flight_only=True) if kwargs.get("in_flight_only") else rows))
+        with self.assertRaises(ValueError): e1.journal_resolution(fake, self.plan, original, "owned")
+
+    def test_received_action_requires_completed_replay_using_activated_fence(self):
+        journal, original = self.journal()
+        self.plan["crash_point"] = "before_modification"
+        with self.assertRaises(ValueError): e1.journal_resolution(journal, self.plan, original, "owned")
+        replay = {**original, "fence": {"coordinator_term": 3, "takeover_version": 1}}
+        attempt = journal.record_attempt("db-logical", session_id="owned", task_id="replay-aip", partner_aic="backup",
+                                         content=json.dumps(replay))
+        journal.transition(attempt, "awaiting_completion")
+        completed = journal.record_attempt("db-logical", session_id="owned", task_id="replay-aip", partner_aic="backup", command="complete")
+        journal.transition(completed, "completed")
+        result = e1.journal_resolution(journal, self.plan, original, "owned")
+        self.assertEqual(result["completed_backup_replay_task_id"], "replay-aip")
+        rows = deepcopy(journal.list_tasks())
+        for row in rows:
+            if row["task_id"] == "replay-aip" and row.get("content"):
+                row["content"] = json.dumps(original)
+        fake = SimpleNamespace(list_tasks=Mock(side_effect=lambda **kwargs:
+            journal.list_tasks(in_flight_only=True) if kwargs.get("in_flight_only") else rows))
+        with self.assertRaises(ValueError): e1.journal_resolution(fake, self.plan, original, "owned")
+
 
 class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
     def dependencies(self, *, main_error=False, close_error=False, restore_error=False):
@@ -436,6 +471,7 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
         session = SimpleNamespace(session_id="owned", leader_mq_client=SimpleNamespace(_state="connected"))
         selected = {role: self.plan["identities"][role] for role in self.config["skills"]}
         transport = SimpleNamespace(term=7, runtime=runtime, session=session, selected=selected,
+            active_fences={},
             descriptions={"ops": {"resource_scope": dict(compose_project="synthetic-e1", compose_service="app-v2",
                                                         container_name="synthetic-e1-app-v2-1")}},
             journal=SimpleNamespace(list_tasks=Mock(return_value=[])), start=AsyncMock())
@@ -448,12 +484,23 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
         transport.issue_approval = Mock(return_value={"proof": "synthetic-explicit-approval"})
         def journal_rows(*, in_flight_only=False):
             if in_flight_only: return []
-            db = next(p for p in sent if p["tool"] == "db.restore_writes")
-            content = {**db, "kind": "resume", "args": {"advance_fence": True}}
-            return [dict(command="start", session_id="owned", task_id="backup-aip", partner_aic="backup",
+            tool = e1.POINTS[self.point]["tool"]
+            db = next(p for p in sent if p["tool"] == tool)
+            operation = db.get("operation_id") or db["incident_id"] + ":observe:" + db["logical_task_id"]
+            content = {**db, "kind": "resume", "operation_id": operation, "args": {"advance_fence": True},
+                       "fence": {"coordinator_term": 7, "takeover_version": 1}}
+            rows = [dict(command="start", session_id="owned", task_id="backup-aip", partner_aic="backup",
                          logical_task_id=db["logical_task_id"], content=json.dumps(content), state="awaiting_completion"),
                     dict(command="complete", session_id="owned", task_id="backup-aip", partner_aic="backup",
                          logical_task_id=db["logical_task_id"], content=None, state="completed")]
+            if self.point != "after_applied":
+                rows.extend([dict(command="start", session_id="owned", task_id="replay-aip", partner_aic="backup",
+                                  logical_task_id=db["logical_task_id"],
+                                  content=json.dumps(db if db["kind"] == "observe" else {**db, "fence": content["fence"]}),
+                                  state="awaiting_completion"),
+                             dict(command="complete", session_id="owned", task_id="replay-aip", partner_aic="backup",
+                                  logical_task_id=db["logical_task_id"], content=None, state="completed")])
+            return rows
         transport.journal.list_tasks.side_effect = journal_rows
         async def call(payload):
             sent.append(deepcopy(payload)); order.append(payload["tool"])
@@ -463,10 +510,16 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
                 value["facts"] = [{"key": "business_recovered", "value": True}, {"key": "order_observation", "value": healthy()}]
             elif payload["tool"] == "db.read_only_status":
                 value["facts"] = [{"key": "read_only", "value": True}]
+                if self.point == "after_observation":
+                    from acps_sdk.aip.resumable import Fence
+                    transport.selected["database"] = "backup"
+                    transport.active_fences["database"] = Fence(7, 1)
+                    value["executor_aic"] = "backup"
             elif payload["tool"] == "db.restore_writes":
                 if main_error: raise ValueError("synthetic primary phase")
                 transport.selected["database"] = "backup"
-                value.update(executor_aic="backup", operation={"state": "skipped_already_applied"})
+                state = "skipped_already_applied" if self.point == "after_applied" else "applied"
+                value.update(executor_aic="backup", operation={"state": state, "operation_id": payload["operation_id"]})
             elif payload["tool"] == "application.status":
                 value["facts"] = [{"key": "application_pool_revision", "value": 7}]
             return value
@@ -486,6 +539,10 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len({p["logical_task_id"] for p in sent}), len(sent))
         actions = [p for p in sent if p["kind"] == "act"]
         self.assertEqual(actions[0]["operation_id"], self.plan["operation_id"])
+        if self.point == "after_observation":
+            self.assertEqual(actions[0]["fence"], {"coordinator_term": 7, "takeover_version": 1})
+        interrupted = controller.collect.call_args.args[0]
+        self.assertEqual(interrupted["tool"], e1.POINTS[self.point]["tool"])
         self.assertEqual(actions[1]["args"], {"expected_revision": 7})
         self.assertTrue(all(p["approval"]["proof"] == "synthetic-explicit-approval" for p in actions))
         self.assertLess(order.index("close"), order.index("restore"))
@@ -505,6 +562,21 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
         self.assertEqual(order[-2:], ["close", "restore"])
         health.assert_not_awaited()
 
+    async def test_wrong_operation_from_backup_is_not_recovery(self):
+        controller, transport, _, _ = self.dependencies()
+        original_call = transport.call.side_effect
+        async def wrong_operation(payload):
+            product = await original_call(payload)
+            if payload["tool"] == "db.restore_writes":
+                product["operation"]["operation_id"] = "foreign-operation"
+            return product
+        transport.call.side_effect = wrong_operation
+        code = await e1.run_case(self.plan, controller_factory=lambda *_: controller,
+                                 transport_factory=lambda *_: transport, final_health=AsyncMock(return_value=healthy()))
+        self.assertEqual(code, 1)
+        controller.collect.assert_not_called()
+        controller.restore.assert_called_once()
+
     async def test_unconfirmed_preflight_failure_never_starts_transport_restore_or_H00(self):
         controller, _, _, _ = self.dependencies()
         controller.ownership_confirmed = False
@@ -516,6 +588,115 @@ class FlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
         controller.restore.assert_not_called(); health.assert_not_awaited(); transport.assert_not_called()
         report = e1.load(self.args.output / "results.json")
         self.assertEqual(report["independent_final_H00_status"], "not_attempted_scope_unconfirmed")
+
+
+class AfterObservationFlowTests(FlowTests):
+    point = "after_observation"
+
+
+class BeforeModificationFlowTests(FlowTests):
+    point = "before_modification"
+
+
+class HandoverFlowTests(Fixture, unittest.IsolatedAsyncioTestCase):
+    dependencies = FlowTests.dependencies
+
+    async def test_all_methods_use_verified_handover_facts_or_observe_revision_again(self):
+        for method in e1.METHODS:
+            self.plan.update(case="E1-b", method=method, output="eval/results/platform/" + method)
+            controller, transport, _, sent = self.dependencies()
+            fresh = {} if method == "from_scratch" else {"application_pool_revision": {"value": 12}}
+            with patch("eval.platform_handover.bind_handover", return_value=object()) as bind, \
+                    patch("eval.platform_handover.verify_handover", return_value={"fresh_facts": fresh,
+                        "metrics": {"native_transmitted_ifc_text_bytes": 567, "model_calls": 0}}) as verify:
+                result = await e1.run_case(self.plan, controller_factory=lambda *_: controller,
+                    transport_factory=lambda *_: transport, final_health=AsyncMock(return_value=healthy()))
+            with self.subTest(method=method):
+                self.assertEqual(result, 0)
+                bind.assert_called_once_with(transport, method, e1.local(self.plan["output"]))
+                verify.assert_called_once()
+                calls = [p["tool"] for p in sent]
+                self.assertEqual(calls[1], "application.status")
+                self.assertEqual(calls.count("application.status"), 2 if method == "from_scratch" else 1)
+                pool = next(p for p in sent if p["tool"] == "application.pool_rebuild")
+                self.assertEqual(pool["args"]["expected_revision"], 7 if method == "from_scratch" else 12)
+                report = e1.load(e1.local(self.plan["output"]) / "results.json")
+                self.assertEqual(report["additional_post_handover_observations"], 1 if method == "from_scratch" else 0)
+                self.assertEqual(report["handover"]["native_transmitted_ifc_text_bytes"], 567)
+
+    async def test_bad_handover_acknowledgement_preserves_failure_and_restores(self):
+        self.plan.update(case="E1-b", method="resume_package")
+        controller, transport, _, sent = self.dependencies()
+        with patch("eval.platform_handover.bind_handover", return_value=object()), \
+                patch("eval.platform_handover.verify_handover", side_effect=ValueError("wrong transmitted handover")):
+            result = await e1.run_case(self.plan, controller_factory=lambda *_: controller,
+                transport_factory=lambda *_: transport, final_health=AsyncMock(return_value=healthy()))
+        self.assertEqual(result, 1)
+        self.assertNotIn("application.pool_rebuild", [p["tool"] for p in sent])
+        controller.restore.assert_called_once()
+        report = e1.load(self.args.output / "results.json")
+        self.assertEqual(report["error_class"], "ValueError")
+        self.assertEqual(report["resource_and_worker_restore"], "completed")
+
+
+class InterruptionEvidenceTests(Fixture):
+    def test_each_point_requires_exact_exit_marker_and_only_its_expected_writer(self):
+        for point, expected_writer in (("after_observation", "backup"), ("before_modification", "backup"),
+                                       ("after_applied", "primary")):
+            self.plan["crash_point"] = point
+            contract = e1.POINTS[point]
+            controller = e1.Controller(self.plan, self.root)
+            records = self.records(experiment=True)
+            controller.original = self.records()
+            controller.experimental = {name: records[name]["Id"] for name in e1.DB_SERVICES}
+            controller.experimental_started = {name: records[name]["State"]["StartedAt"] for name in e1.DB_SERVICES}
+            records[e1.DB_SERVICES[0]]["State"].update(Running=False, ExitCode=contract["exit_code"])
+            controller.inspect = Mock(return_value=records)
+            def traces(writer, *, ledger_state=contract["ledger_state"], duplicate=False):
+                common = dict(experiment_id=self.plan["experiment_id"], incident_id=self.plan["incident_id"],
+                              transport="wutong-amqps", logical_task_id="interrupted-task")
+                events = {}
+                for role, aic in (("primary", "primary"), ("backup", "backup")):
+                    events[aic] = [{**common, "event": "experiment_worker_start", "worker_role": role,
+                        "executor_aic": aic, "armed": role == "primary",
+                        "bundle_manifest_sha256": e1.digest(self.bundle / "worker-source-manifest.json")}]
+                crash = {**common, "event": "experiment_worker_crash", "executor_aic": "primary",
+                    "operation_id": None if point == "after_observation" else self.plan["operation_id"],
+                    "tool": contract["tool"], "crash_point": point, "exit_code": contract["exit_code"],
+                    "ledger_state": ledger_state, "AIP_product_submitted": False}
+                events["primary"].append(crash)
+                for index in range(2 if duplicate else 1):
+                    invocation = {**common, "executor_aic": writer, "operation_id": self.plan["operation_id"],
+                                  "invocation_id": "write-" + str(index), "tool": "db.restore_writes",
+                                  "server": "postgres", "upstream_tool": "query"}
+                    events[writer].extend([{**invocation, "event": "mcp_modify_invocation"},
+                                          {**invocation, "event": "mcp_modify_returned", "is_error": False}])
+                return ["".join(json.dumps(row) + "\n" for row in events[aic]) for aic in ("primary", "backup")]
+            controller.command = Mock(side_effect=traces(expected_writer))
+            with self.subTest(point=point, evidence="valid"):
+                result = controller.collect({"logical_task_id": "interrupted-task"})
+                self.assertEqual(result["actual_exit_code"], contract["exit_code"])
+            for bad in (traces("primary" if expected_writer == "backup" else "backup"),
+                        traces(expected_writer, duplicate=True), traces(expected_writer, ledger_state="unknown")):
+                controller.command = Mock(side_effect=bad)
+                with self.subTest(point=point, evidence="invalid"), self.assertRaises(ValueError):
+                    controller.collect({"logical_task_id": "interrupted-task"})
+
+    def test_plan_version_and_information_method_are_bound_before_runtime(self):
+        legacy = {**self.plan, "schema_version": "platform-e1-plan/1"}
+        self.assertEqual(e1.validate_plan(document=legacy), legacy)
+        for changes in ({"crash_point": "before_modification"}, {"case": "E1-b", "method": "full_history"}):
+            with self.subTest(version="legacy", changes=changes), self.assertRaises(ValueError):
+                e1.validate_plan(document={**legacy, **changes})
+        for method in e1.METHODS:
+            plan = {**self.plan, "case": "E1-b", "method": method,
+                    "effects": e1.effects("after_applied", "E1-b", method)}
+            self.assertEqual(e1.validate_plan(document=plan), plan)
+        with self.assertRaises(ValueError):
+            e1.validate_plan(document={**self.plan, "case": "E1-b", "method": "unspecified"})
+        for changes in ({"crash_point": "before_modification"}, {"case": "E1-b"}, {"method": "full_history"}):
+            with self.subTest(authorization=changes), self.assertRaises(ValueError):
+                e1.authorize(self.plan, self.args.plan, self.auth(**changes), True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,28 @@
+{
+  "status": "OFFLINE_CHECKS_PASSED",
+  "distinct_tests": 24,
+  "affected_fresh_tests": [
+    {
+      "test": "F12TargetTests.test_route_implementation_and_policies_cannot_use_old_image_attestation",
+      "chunk_id": "180283",
+      "actual_os_exit_code": 0
+    },
+    {
+      "test": "F12TargetTests.test_same_session_restores_exact_bytes_and_stops_only_owned_id",
+      "chunk_id": "180283",
+      "actual_os_exit_code": 0
+    },
+    {
+      "test": "TargetIsolationTests.test_stale_image_source_rejects_and_stable_image_reuses_verified_digest",
+      "chunk_id": "297142",
+      "actual_os_exit_code": 0
+    }
+  ],
+  "unchanged_reused_tests": 21,
+  "prior_checks": {
+    "path": "revision-1/offline-checks.json",
+    "sha256": "183f519ebf87d6988f5580f310b2641327fbfc50715e229acec16473b9df3223"
+  },
+  "delta": "Three mandatory runtime-source fingerprints plus one focused old-map/stale-file rejection test.",
+  "scope": "Fixture/mock only; no resource, Docker/WSL, network, model, platform or fault execution."
+}

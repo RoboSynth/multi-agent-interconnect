@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from itertools import combinations
+import re
 from .hypothesis import Hypothesis
 
 
@@ -152,9 +153,15 @@ class EvidencePlanner:
         if self.value("container_state") == "exited" and "ops.restart" not in self.completed:
             nodes.append(PlanNode("restart", "ops.restart", "act", "application",
                                   "应用进程未运行", risk="high"))
-        if self.value("route_version") == "v1" and "ops.route_rollback" not in self.completed:
+        route = self.value("route_version")
+        route_sha256 = self.value("route_sha256")
+        unregistered_route = (route == "unknown" and self.value("application_reachable") is True
+                              and isinstance(route_sha256, str) and re.fullmatch(r"[0-9a-f]{64}", route_sha256) is not None)
+        if (route == "v1" or unregistered_route) and "ops.route_rollback" not in self.completed:
             nodes.append(PlanNode("route", "ops.route_rollback", "act", "gateway",
-                                  "入口仍指向旧版本", risk="write"))
+                                  "入口上游未登记，应用域可达，恢复登记路由" if unregistered_route else "入口仍指向旧版本",
+                                  {"expected_route_version": "unknown", "expected_route_sha256": route_sha256} if unregistered_route else {},
+                                  risk="write"))
         if self.value("read_only") is True and "db.restore_writes" not in self.completed:
             nodes.append(PlanNode("restore-writes", "db.restore_writes", "act", "database",
                                   "数据库观察确认只读", risk="high"))
@@ -181,7 +188,7 @@ class EvidencePlanner:
         # Facts describing modified resources must be re-observed. Keep other
         # domains' evidence so compound faults continue after the first repair.
         invalidations = {"ops.restart": ["container_state", "application_reachable"],
-            "ops.route_rollback": ["route_version"], "db.restore_writes": ["read_only"],
+            "ops.route_rollback": ["route_version", "route_sha256"], "db.restore_writes": ["read_only"],
             "db.terminate_blocker": ["blocking_sessions"], "application.pool_rebuild": ["application_reachable", "application_pool_revision", "application_read_only"]}
         for key in invalidations.get(node.tool, []):
             self.facts.pop(key, None)

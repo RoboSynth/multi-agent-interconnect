@@ -25,7 +25,15 @@ tools:
     server: route
     mcp_tool: route_rollback
     risk: write
-    description: 仅当当前本地入口配置为 v1 时回退到已登记的 v2 端口并校验重载本项目 Nginx。
-    input_schema: {type: object, additionalProperties: false, properties: {}}
+    description: 当前入口为 v1，或未登记且精确文件哈希仍相同、登记 v2 应用健康时，恢复固定 v2 并校验重载。
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        expected_route_version: {type: string, enum: [unknown]}
+        expected_route_sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+      dependentRequired:
+        expected_route_version: [expected_route_sha256]
+        expected_route_sha256: [expected_route_version]
     fixed_arguments: {target_version: v2}
-    reconcile: {tool_alias: ops.route_status, expected_before: v1, expected_after: v2}
+    reconcile: {tool_alias: ops.route_status, expected_before: v1, expected_before_argument: expected_route_version, expected_after: v2}

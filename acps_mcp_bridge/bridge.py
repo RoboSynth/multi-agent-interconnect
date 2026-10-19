@@ -299,6 +299,12 @@ class Bridge:
                         ledger_options = {"inspect": inspect_resource, "expected_after": reconciliation["expected_after"]}
                         if "expected_before" in reconciliation:
                             ledger_options["expected_before"] = reconciliation["expected_before"]
+                        argument = reconciliation.get("expected_before_argument")
+                        if argument is not None and argument in payload.get("args", {}):
+                            if (call.alias != "ops.route_rollback" or argument != "expected_route_version"
+                                    or payload["args"][argument] != "unknown"):
+                                raise PolicyRejected("Only guarded unregistered-route recovery may override the v1 precondition")
+                            ledger_options["expected_before"] = payload["args"][argument]
                     # Deadline cancellation makes an in-flight action unknown in the durable ledger.
                     outcome = await asyncio.wait_for(self.ledger.execute(
                         payload["operation_id"], {"tool": call.alias, "args": payload.get("args", {}),
@@ -340,6 +346,10 @@ class Bridge:
             except ValueError:
                 pass
         extra_facts = []
+        if (alias in {"ops.route_status", "ops.route_rollback"} and isinstance(output, dict)
+                and isinstance(output.get("route_sha256"), str)
+                and re.fullmatch(r"[0-9a-f]{64}", output["route_sha256"])):
+            extra_facts.append(("route_sha256", output["route_sha256"]))
         key = {"db.health": "db_health", "db.read_only_status": "read_only",
                "db.blocking_sessions": "blocking_sessions", "db.restore_writes": "read_only",
                "db.terminate_blocker": "blocking_session_terminated", "ops.route_status": "route_version",

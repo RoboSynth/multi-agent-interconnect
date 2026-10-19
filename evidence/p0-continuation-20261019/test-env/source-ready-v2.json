@@ -1,0 +1,88 @@
+{
+  "status": "TEST_ENVIRONMENT_REPAIR_AND_SINGLE_DEV_ENVIRONMENT_SOURCE_READY",
+  "previous_source_ready_sha256": "8a8cb6b59df3d1d47c80e5ac4fd2281169441f7c23164b82dd0eb26ce73cb494",
+  "sources": [
+    {
+      "path": "integration/incident/database.submission.acs.json",
+      "sha256": "7ea10718481c23930cf3eeda2359229cc01cb08b21aee4cae7231ebd9d4dabe4",
+      "bytes": 1388
+    },
+    {
+      "path": "integration/incident/application.approved.acs.json",
+      "sha256": "3d53088e53aad7d3a7252c64cd34d11a10e8b2e1f55231e38a94473de17a9f74",
+      "bytes": 1441
+    },
+    {
+      "path": "requirements-dev.txt",
+      "sha256": "501ddebe71e7de56df78af062d738c91eb00068720e7b3b7c11d6680f9523563",
+      "bytes": 369
+    },
+    {
+      "path": "docs/test_environment_20261019.md",
+      "sha256": "0cdd6a09d9055f7f8227405d6ba9791c161d155adff83c6b9eb08310b651eb95",
+      "bytes": 3055
+    },
+    {
+      "path": "tests/test_acs_fixtures.py",
+      "sha256": "123809fd2ecbd49058bea6c9a2315b303fedec803c2f4344ad9c251001a0dd22",
+      "bytes": 2544
+    }
+  ],
+  "previous_behavior_checks": {
+    "acs_mapper_platform_fixtures": 9,
+    "reports_and_figures": 14,
+    "distinct_total": 23,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "new_environment": {
+    "path": "checkout/.venv-dev",
+    "python_version": "3.12.14",
+    "create_exit": 0,
+    "install_exit": 0,
+    "pip_check_exit": 0,
+    "installation_completion_chunk": "189b1a",
+    "verification_exit": 0,
+    "verification_completion_chunk": "1e065a",
+    "selected_methods_passed": 8,
+    "skipped": 0,
+    "coverage_scope": "Existing ACS1, formal handover helper6, report figure1 reverified under a new single environment; not additional distinct behavior coverage",
+    "dependency_modules_verified": 10,
+    "dependency_versions": {
+      "acps-sdk": "2.2.0",
+      "jsonschema": "4.26.0",
+      "cryptography": "50.0.2",
+      "jcs": "0.2.1",
+      "matplotlib": "3.11.2",
+      "mcp": "1.30.0",
+      "PyYAML": "6.0.3",
+      "asyncpg": "0.32.0",
+      "httpx": "0.28.1",
+      "pydantic": "2.14.1"
+    },
+    "combined_requirements_clean_install_verified": true,
+    "requirements_unchanged": true,
+    "previous_environments_modified": false
+  },
+  "proof_sha256": {
+    "source-ready.json": "8a8cb6b59df3d1d47c80e5ac4fd2281169441f7c23164b82dd0eb26ce73cb494",
+    "test_environment-before-dev-install.md": "ee19e06ca2df4936cee5a10c7f792aabd5d13af4302c07c4a576857593f7947a",
+    "install_dev_environment.py": "66dedaacbf961e17ebac540ff00b7ad25f5d044105fd7a9f567101febe1f9530",
+    "verify_dev_environment.py": "cabcc8bb2505dc6f95f27707416888f73c3e9a0a98cb423ceaf2bdaf52185000",
+    "dev-environment/installation.json": "f5bd9817a08b59f736176e912bdd6a4dc16c63068390a5c189c6259aaf36440f",
+    "dev-environment/verification.json": "41c9e3903c153f820cffb637ddb963f6704852328681d59250b660a482bb24a6",
+    "dev-environment/create.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "dev-environment/install.log": "47b7e4ac81919bbd672bb2a17f0fd598b870eecbab446f987216f52491c314d0",
+    "dev-environment/install-report.json": "0974b044ef89df51784143156eced7c57e2795f42c56afe82f3ced4c38a94b92",
+    "dev-environment/pip-check.log": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+    "dev-environment/selected-checks.log": "1e6e947a8529aefa541434482908b906ee998b5f58ff22665aaa2ccd8e2aca7f"
+  },
+  "constraints": {
+    "full_suite_run": false,
+    "runtime_or_platform_started": false,
+    "resource_actions": 0,
+    "model_calls": 0,
+    "pins_changed": false
+  }
+}

@@ -9,6 +9,7 @@ DOMAIN_SERVICES = {"application-agent": "application", "verification-agent": "ve
     "database-agent": "database", "database-backup-agent": "database", "ops-agent": "ops", "onboarding-agent": "onboarding"}
 DOMAIN_SOURCE_FILES = ("acps_mcp_bridge/bridge.py", "acps_mcp_bridge/policy.py", "incident/partners.py",
     "incident/contracts.py", "incident/platform_worker.py", "domains/ops/guard.py",
+    "domains/ops/route_mcp.py", "domains/ops/policy.yaml", "domains/ops/policy.native.yaml",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py",
@@ -85,10 +86,10 @@ class DockerTarget:
         if len(set(files)) != len(files) or any(path.suffix not in {".yaml", ".yml"} for path in files):
             raise ValueError("Compose inputs must be distinct YAML files")
         ports = value["ports"]
-        if (not isinstance(ports, dict) or set(ports) != {"app_v1", "app_v2", "order"}
+        if (not isinstance(ports, dict) or set(ports) not in ({"app_v1", "app_v2", "order"}, {"app_v1", "app_v2", "order", "reply_drop"})
                 or any(type(port) is not int or not 1 <= port <= 65535 for port in ports.values())
-                or len(set(ports.values())) != 3):
-            raise ValueError("Target needs three distinct integer host ports")
+                or len(set(ports.values())) != len(ports)):
+            raise ValueError("Target needs three or four distinct integer host ports")
         target = cls(value["project"], distro, files, local(value["env_file"]), local(value["route_file"]), dict(ports))
         # Reject unconvertible WSL paths before issuing any command.
         for file in (*target.compose_files, target.env_file, target.route_file):
@@ -118,6 +119,12 @@ class DockerTarget:
     @property
     def order_url(self):
         return f"http://127.0.0.1:{self.ports['order']}"
+
+    @property
+    def reply_drop_url(self):
+        if "reply_drop" not in self.ports:
+            raise ValueError("F12 requires an explicit reply_drop host port")
+        return f"http://127.0.0.1:{self.ports['reply_drop']}"
 
     def public_description(self):
         return {"project": self.project, "wsl_distro": self.wsl_distro, "ports": self.ports,

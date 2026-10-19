@@ -72,8 +72,11 @@ class DeploymentPreparationTests(unittest.TestCase):
         path = self.prepare("seven")
         manifest = deployment.load_deployment(path)
         target = json.loads((self.output / "target.json").read_text(encoding="utf-8"))
-        for key in ("project", "wsl_distro", "ports", "compose_files", "env_file", "route_file"):
+        for key in ("project", "wsl_distro", "compose_files", "env_file", "route_file"):
             self.assertEqual(target[key], manifest[key])
+        self.assertEqual(target["ports"], {**manifest["ports"], "reply_drop": manifest["reply_drop_port"]})
+        from eval.targets import DockerTarget
+        self.assertEqual(DockerTarget.from_file(self.output / "target.json").reply_drop_url, "http://127.0.0.1:49090")
         overlay = json.loads((self.output / "deployment.overlay.yml").read_text(encoding="utf-8"))["services"]
         self.assertEqual(set(overlay), {"nginx", *(role + "-agent" for role in deployment.ROLES)})
         self.assertEqual({overlay[role + "-agent"]["image"] for role in deployment.ROLES}, {"isolated-fixture-agent:local"})
@@ -88,6 +91,24 @@ class DeploymentPreparationTests(unittest.TestCase):
         self.assertNotIn("env_files", host)
         policy = (self.output / "domains/ops/policy.yaml").read_text(encoding="utf-8")
         self.assertIn("isolated-fixture-app-v2-1", policy)
+
+    def test_legacy_three_port_target_remains_valid_and_wrong_fourth_port_is_rejected(self):
+        path = self.prepare("seven")
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        target_path = self.output / "target.json"
+        target = json.loads(target_path.read_text(encoding="utf-8"))
+        target["ports"].pop("reply_drop")
+        deployment.save(target_path, target)
+        name = deployment.relative(target_path, ROOT)
+        manifest["input_sha256"][name] = deployment.digest(target_path)
+        deployment.save(path, manifest)
+        deployment.load_deployment(path)
+        target["ports"]["reply_drop"] = 49091
+        deployment.save(target_path, target)
+        manifest["input_sha256"][name] = deployment.digest(target_path)
+        deployment.save(path, manifest)
+        with self.assertRaisesRegex(ValueError, "target differs"):
+            deployment.load_deployment(path)
 
     def test_bad_options_and_incomplete_identity_fail_before_creating_output(self):
         for options in ({"project": "Bad Project"}, {"reply_port": self.ports["order"]},

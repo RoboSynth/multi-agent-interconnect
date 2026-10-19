@@ -1,0 +1,194 @@
+{
+  "schema_version": "p0-root-offline-checks/1",
+  "base_git_commit": "5267a3a4a47aeb0188df4894031cf18c240667ba",
+  "groups": [
+    {
+      "name": "E1 runner three points and information-flow integration",
+      "methods": 42,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_exit_code": 0,
+      "completion_chunk": "46c7aa",
+      "log": "e1-runner-tests.txt"
+    },
+    {
+      "name": "Deployment preparation including fourth and legacy port bindings",
+      "methods": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "actual_exit_code": 0,
+      "completion_chunk": "80944c"
+    }
+  ],
+  "earlier_attempts": [
+    {
+      "session_id": 40432,
+      "actual_exit_code": 1,
+      "behavior_verdict": null,
+      "reason": "Restricted executor stalled during the first test; stopped before normal-executor run."
+    },
+    {
+      "methods": 33,
+      "actual_exit_code": 0,
+      "completion_chunk": "214ba5",
+      "reason": "Earlier E1-a implementation; later source added negative and E1-b integration checks."
+    },
+    {
+      "methods": 35,
+      "actual_exit_code": 0,
+      "completion_chunk": "9d3003",
+      "log": "e1-runner-tests-v2.txt"
+    }
+  ],
+  "root_source_sha256": {
+    "eval/platform_resume_experiment.py": "ef121e4bd41b53179d4de33855878aa385faa2b71d1c680f8369cc36c6315907",
+    "tests/test_platform_resume_experiment.py": "b2dae9a44b4029fa783d8591b439b21e04f32ae10ed9b19a0d7103dd241fd30a",
+    "deploy/prepare_deployment.py": "b56c8237ab0eb1a9f77effd807e361c1ebbb50aa206421d9ffdc3472ebb3bbac",
+    "tests/test_deployment_preparation.py": "93ed457254bac2457ba06e4754343d0d76fa5145e6db9efe1a872b154f453e66"
+  },
+  "scope": "Synthetic files, MCP/HTTP/subprocess mocks, temporary ledgers; no new platform or resource fault execution.",
+  "copied_receipts": [
+    {
+      "path": "e1-handover/attempt-1-environment-failure.json",
+      "bytes": 603,
+      "sha256": "c21067628204bc0ea215b89149dcbc53483ded1bfb6b441101ea5f3b46ad32d8"
+    },
+    {
+      "path": "e1-handover/checks-runner-temp.json",
+      "bytes": 496,
+      "sha256": "b8b9d67e45f8908be1a4c37b1abf72f1b6a3eaf1ead07f0c6eb764ae01048b80"
+    },
+    {
+      "path": "e1-handover/checks.json",
+      "bytes": 496,
+      "sha256": "338bad0d41f0ecc291adeada9fe0974b8f9095330d25a0bb27934186b9e1be4d"
+    },
+    {
+      "path": "e1-handover/source-ready.json",
+      "bytes": 2812,
+      "sha256": "cfe68e1f9cccb4d6fc7c7fe4ae6d2f5ae9cdbfd176b06e44f1671e18e59800d4"
+    },
+    {
+      "path": "e1-runner-tests-v2.txt",
+      "bytes": 6762,
+      "sha256": "a3d0ed57946def601dc6f5c74eca737279882fc56aff99430d3844bd79d0c6d1"
+    },
+    {
+      "path": "e1-runner-tests.txt",
+      "bytes": 7984,
+      "sha256": "c8f3b99d4d4c938d9482fe336d791f6489c24b64145b86218d7c27f2e232c4a3"
+    },
+    {
+      "path": "f12-runner/planner-regression-v1.result.json",
+      "bytes": 129,
+      "sha256": "27e88507e638f2a18e4e85c3bdde35d4672df3be593cac1eddaeefc45ab233c5"
+    },
+    {
+      "path": "f12-runner/source-ready.json",
+      "bytes": 3842,
+      "sha256": "e16fa6488dfece9d92caed244dd0b9d6a2548a303e565f126617e735697321b6"
+    },
+    {
+      "path": "f12-runner/target-test-v1.result.json",
+      "bytes": 115,
+      "sha256": "542d5b92deec5938311c696589177e3a5bbba520af5b2d69ffd8af732d24c0dc"
+    },
+    {
+      "path": "f12-runner/target-test-v2.result.json",
+      "bytes": 115,
+      "sha256": "c0fb3346b991b07fd880b294fa85111171b133db01c3339f4767936b00e774a8"
+    },
+    {
+      "path": "f12-runner/target-test-v3.result.json",
+      "bytes": 115,
+      "sha256": "a224a294d8104656e2198b6f8b1400ab2fc9d3ce8c093af70997edbfc0d57702"
+    },
+    {
+      "path": "f12-runner/target-test-v4.result.json",
+      "bytes": 115,
+      "sha256": "e9cb521b5b3f6c1f3a2f496a583462fd6c1cc5a3f7cf7d09f3fe316d49457ae2"
+    },
+    {
+      "path": "f12-runner/verification.json",
+      "bytes": 15739,
+      "sha256": "a313a0daf7515b0a70e30c037974f7d326fc387951d19c5097e026a5b2ae46cd"
+    },
+    {
+      "path": "f12-target/offline-checks-v2.json",
+      "bytes": 1046,
+      "sha256": "7b1e8dbb265c21d87585f0151f822dae2b9fc6380365e84153756520f441731d"
+    },
+    {
+      "path": "f12-target/offline-checks.json",
+      "bytes": 1207,
+      "sha256": "183f519ebf87d6988f5580f310b2641327fbfc50715e229acec16473b9df3223"
+    },
+    {
+      "path": "f12-target/revision-1/offline-checks.json",
+      "bytes": 1207,
+      "sha256": "183f519ebf87d6988f5580f310b2641327fbfc50715e229acec16473b9df3223"
+    },
+    {
+      "path": "f12-target/revision-1/source-ready.json",
+      "bytes": 2116,
+      "sha256": "15a31f824e69b8e862478ad2b8c62a7fdfe14059064382720080e105bb2498a7"
+    },
+    {
+      "path": "f12-target/source-ready-v2.json",
+      "bytes": 2759,
+      "sha256": "6c9aa998ed1d122a927810d664b2ced44c5f92576c9b45e17f9973f2d8615f81"
+    },
+    {
+      "path": "f12-target/source-ready.json",
+      "bytes": 2116,
+      "sha256": "15a31f824e69b8e862478ad2b8c62a7fdfe14059064382720080e105bb2498a7"
+    },
+    {
+      "path": "test-env/acs-results.json",
+      "bytes": 1226,
+      "sha256": "f052bf00296bfb0adc7ffe1a32fb1f6add8cb1c1fb68ef7c50add6358b2dcb44"
+    },
+    {
+      "path": "test-env/baseline-missing-fixtures-elevated.json",
+      "bytes": 855,
+      "sha256": "4ffa194c426ae17bdb53c67fc6e57e90137ca877c37c43b4c7bbb6176bbe02a0"
+    },
+    {
+      "path": "test-env/baseline-restricted-process-stop.json",
+      "bytes": 298,
+      "sha256": "26db7bada1ff3abeaf413910d45c73260027d69a7ffcb61fb8909667475b9431"
+    },
+    {
+      "path": "test-env/dev-environment/installation.json",
+      "bytes": 1340,
+      "sha256": "f5bd9817a08b59f736176e912bdd6a4dc16c63068390a5c189c6259aaf36440f"
+    },
+    {
+      "path": "test-env/dev-environment/verification.json",
+      "bytes": 2073,
+      "sha256": "41c9e3903c153f820cffb637ddb963f6704852328681d59250b660a482bb24a6"
+    },
+    {
+      "path": "test-env/reports-results.json",
+      "bytes": 731,
+      "sha256": "8adb4345ebe4cc72181e82c1b4ab968512a021bfea0ad6e8039e641a134f68f9"
+    },
+    {
+      "path": "test-env/source-ready-v2.json",
+      "bytes": 3668,
+      "sha256": "cf3c96472140a721e687ce2ecdd6f7f8510a4c62ec69e0eeccf37b3866ee4c4b"
+    },
+    {
+      "path": "test-env/source-ready.json",
+      "bytes": 4813,
+      "sha256": "8a8cb6b59df3d1d47c80e5ac4fd2281169441f7c23164b82dd0eb26ce73cb494"
+    },
+    {
+      "path": "f12-target/runner-peer-review.json",
+      "bytes": 1756,
+      "sha256": "9063fb83662f8c085a6069b26ed5a360e88a717f60b9e1d14ea9d7a9d9ad9c69"
+    }
+  ]
+}
