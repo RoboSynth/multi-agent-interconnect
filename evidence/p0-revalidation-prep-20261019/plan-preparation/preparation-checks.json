@@ -1,0 +1,110 @@
+{
+  "schema_version": "revalidation-preparation-checks/1",
+  "started_at": "2026-10-19T04:17:38.828413+00:00",
+  "status": "passed",
+  "execution_authorization_written": false,
+  "project_actions": "file_only",
+  "image_result_sha256": "1195b486de21ae79e052dc37e6eb04b47819bfb884ecadc92f6292f5f9f8081c",
+  "tool_sha256": {
+    "prepare_bound_plans.py": "8351c278c2287a0286293327c11fc3c875134ed90b34abdf73c58f036121d943",
+    "test_prepare_bound_plans.py": "81fe2e27ee92c62bcefa5629dd8a2fa1a9e2cf633e7d4c37c2dee858ceaf55f1",
+    "run_preparation_checks.py": "e0d1d77fcb1a3c5e8d8eb8b232d2bf54126f11118fdd03c1cb3b0b972e9a1c50"
+  },
+  "stages": [
+    {
+      "stage": "guards",
+      "argv": [
+        "[project]/artifacts/p0-continuation-20261019/checkout/.venv-dev/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "[project]/artifacts/p0-revalidation-20261019/plan-preparation",
+        "-p",
+        "test_prepare_bound_plans.py",
+        "-v"
+      ],
+      "actual_exit_code": 0,
+      "stdout": "guards.stdout.txt",
+      "stderr": "guards.stderr.txt",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "39383f9e62ea55b78132be886212bb5d1d0aa2f5a7661076a719d092986c7134",
+      "passed_test_methods": 5
+    },
+    {
+      "stage": "describe",
+      "argv": [
+        "[project]/artifacts/p0-continuation-20261019/checkout/.venv-dev/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "[project]/artifacts/p0-revalidation-20261019/plan-preparation/prepare_bound_plans.py",
+        "--image-result",
+        "[project]/artifacts/p0-revalidation-20261019/image-build/result.json"
+      ],
+      "actual_exit_code": 0,
+      "stdout": "describe.stdout.txt",
+      "stderr": "describe.stderr.txt",
+      "stdout_sha256": "24d66c443e7b527ef663c29961d100da9941dc6b62a291a2fbdfb97227b55d51",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": {
+        "status": "PREPARATION_SCOPE_VALIDATED_NO_WRITES",
+        "plan_count": 12,
+        "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "project": "incident-pilot-revalidation-20261019",
+        "ports": {
+          "app_v1": 58081,
+          "app_v2": 58082,
+          "order": 58088,
+          "reply_drop": 58090
+        }
+      }
+    },
+    {
+      "stage": "prepare",
+      "argv": [
+        "[project]/artifacts/p0-continuation-20261019/checkout/.venv-dev/Scripts/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "[project]/artifacts/p0-revalidation-20261019/plan-preparation/prepare_bound_plans.py",
+        "--image-result",
+        "[project]/artifacts/p0-revalidation-20261019/image-build/result.json",
+        "--prepare"
+      ],
+      "actual_exit_code": 0,
+      "stdout": "prepare.stdout.txt",
+      "stderr": "prepare.stderr.txt",
+      "stdout_sha256": "e0ba7d41fe0d44c73a91c790f4c327fdbeee59d7a4c595f0dbe9d51402ecb29e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "summary": {
+        "status": "PLANS_PREPARED_VALIDATED_NOT_EXECUTED",
+        "plan_count": 12,
+        "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "project": "incident-pilot-revalidation-20261019",
+        "ports": {
+          "app_v1": 58081,
+          "app_v2": 58082,
+          "order": 58088,
+          "reply_drop": 58090
+        }
+      }
+    }
+  ],
+  "finished_at": "2026-10-19T04:18:11.773147+00:00",
+  "final_validation": {
+    "plan_count": 12,
+    "source_count": 163,
+    "validated_plans": 12,
+    "expected_schedule_equal": true,
+    "source_image_config_bundle_hashes_equal": true,
+    "result_root_absent": true,
+    "authorization_json_count": 0,
+    "resource_or_network_actions": 0,
+    "prepared_summary_sha256": "23552f95af1e86a33c6f4e3c923df471ab69edf7acad07f3acadfe4d85c353ac"
+  },
+  "publication_projection": "Absolute paths use [project]/ for the original local incident-pilot root; hashes and verdicts retain original meaning. Raw metadata is preserved locally."
+}

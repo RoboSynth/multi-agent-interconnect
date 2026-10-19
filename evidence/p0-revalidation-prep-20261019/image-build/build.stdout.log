@@ -1,0 +1,68 @@
+Sending build context to Docker daemon  33.66MB
+Step 1/24 : FROM docker:29-cli AS docker-cli
+ ---> 789cfa12cb23
+Step 2/24 : FROM python:3.12-slim
+ ---> 65cbf12d2535
+Step 3/24 : WORKDIR /srv
+ ---> Using cache
+ ---> 2bd74c4d336e
+Step 4/24 : COPY requirements-lock.txt requirements-high-score.txt /srv/
+ ---> Using cache
+ ---> e2462060d032
+Step 5/24 : COPY vendor/ACPs-community/acps-sdk /srv/vendor/ACPs-community/acps-sdk
+ ---> Using cache
+ ---> cfdf6b1031d1
+Step 6/24 : RUN pip install --no-cache-dir -r requirements-high-score.txt     && pip install --no-cache-dir './vendor/ACPs-community/acps-sdk[amp-sign]'
+ ---> Using cache
+ ---> 259e3328a824
+Step 7/24 : COPY domains/database/requirements.txt /tmp/database-requirements.txt
+ ---> Using cache
+ ---> 5e9ec20cc942
+Step 8/24 : COPY domains/ops/requirements.txt /tmp/docker-requirements.txt
+ ---> Using cache
+ ---> ce5a2ac52653
+Step 9/24 : RUN python -m venv /opt/postgres-mcp     && /opt/postgres-mcp/bin/pip install --no-cache-dir -r /tmp/database-requirements.txt     && python -m venv /opt/docker-mcp     && /opt/docker-mcp/bin/pip install --no-cache-dir -r /tmp/docker-requirements.txt
+ ---> Using cache
+ ---> 56c3ecf6c8d8
+Step 10/24 : COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
+ ---> Using cache
+ ---> d87f4ad2e1cf
+Step 11/24 : COPY business /srv/business
+ ---> Using cache
+ ---> dc5e8727b876
+Step 12/24 : COPY incident /srv/incident
+ ---> cbc038cd9af1
+Step 13/24 : COPY acps_mcp_bridge /srv/acps_mcp_bridge
+ ---> eadd4958e212
+Step 14/24 : COPY domains /srv/domains
+ ---> ddbf46beb915
+Step 15/24 : COPY integration/*.py /srv/integration/
+ ---> effe57829d09
+Step 16/24 : COPY vendor/ACPs-community/registry-server/app/agent/acsSchema.json /srv/vendor/ACPs-community/registry-server/app/agent/acsSchema.json
+ ---> cf19da5efa78
+Step 17/24 : COPY vendor/ACPs-community/registry-server/LICENSE /srv/vendor/ACPs-community/registry-server/LICENSE
+ ---> 4598cd02f3e0
+Step 18/24 : COPY tools/configure_local_coordinator.py /srv/tools/configure_local_coordinator.py
+ ---> 2f68d13cd490
+Step 19/24 : COPY workbench_server.py /srv/workbench_server.py
+ ---> 194820e8dbee
+Step 20/24 : COPY demo-ui /srv/demo-ui
+ ---> f19fd0e7b3eb
+Step 21/24 : RUN mkdir /state && chown 65534:65534 /state
+ ---> Running in 3b53530f92d0
+ ---> Removed intermediate container 3b53530f92d0
+ ---> d67a70f33a5c
+Step 22/24 : ENV PYTHONUNBUFFERED=1
+ ---> Running in ca621d6d6811
+ ---> Removed intermediate container ca621d6d6811
+ ---> e36848c3320d
+Step 23/24 : USER 65534:65534
+ ---> Running in 4de6913b75ba
+ ---> Removed intermediate container 4de6913b75ba
+ ---> 5a65ddf1b071
+Step 24/24 : CMD ["python", "incident/platform_worker.py", "--config", "/domain/config.json"]
+ ---> Running in a694c2b85d2f
+ ---> Removed intermediate container a694c2b85d2f
+ ---> f7e91b059a7b
+Successfully built f7e91b059a7b
+Successfully tagged incident-pilot-revalidation-20261019-agent:local

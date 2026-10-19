@@ -1,0 +1,23 @@
+Sending build context to Docker daemon  33.66MB
+Step 1/7 : FROM python:3.12-slim
+ ---> 65cbf12d2535
+Step 2/7 : WORKDIR /srv
+ ---> Using cache
+ ---> 2bd74c4d336e
+Step 3/7 : COPY business/order_app/requirements.txt /srv/requirements.txt
+ ---> Using cache
+ ---> 7aa41ed23554
+Step 4/7 : RUN pip install --no-cache-dir -r /srv/requirements.txt
+ ---> Using cache
+ ---> b927742a4265
+Step 5/7 : COPY business /srv/business
+ ---> Using cache
+ ---> f19c3324bc74
+Step 6/7 : USER 65534:65534
+ ---> Using cache
+ ---> c13de73f66cd
+Step 7/7 : CMD ["uvicorn", "business.order_app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]
+ ---> Using cache
+ ---> 165a53fd4237
+Successfully built 165a53fd4237
+Successfully tagged incident-pilot-revalidation-20261019-app-v2:local

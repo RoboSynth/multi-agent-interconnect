@@ -1,0 +1,168 @@
+{
+  "status": "IMPLEMENTED_OFFLINE_VERIFIED_REAL_INPUT_DESCRIBE_PASSED_NO_HTTP",
+  "checkout": "[project]/artifacts/p0-revalidation-20261019/receipt-checkout",
+  "base_commit": "c75554d6b6de3bdaba53677e678a6fd35e4fef80",
+  "source_files": [
+    {
+      "path": "eval/receipt_reconciliation.py",
+      "sha256": "912d1ce13963721f952696da22f00aead7ef2e5756e4b1aca45615a6e0bc4baf",
+      "bytes": 15183
+    },
+    {
+      "path": "tests/test_receipt_reconciliation.py",
+      "sha256": "f64a75258f8cf74194a2576697193b825e9dbc9c983e1dae1fc9dc64c9ab1ccf",
+      "bytes": 15095
+    },
+    {
+      "path": "docs/receipt_reconciliation.md",
+      "sha256": "9db9258307fabc3d4e34f7292ca5d47e7a7278c8a3ca231bec9313cc2253bcd2",
+      "bytes": 4651
+    }
+  ],
+  "reused_unchanged": [
+    {
+      "path": "business/load.py",
+      "sha256": "f09c4a98182b2fd4b7e83863e47cd3c9528a15330da0c931c05a7ab745f7fa90"
+    },
+    {
+      "path": "business/receipts.py",
+      "sha256": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255"
+    }
+  ],
+  "test_evidence": {
+    "distinct_methods": 14,
+    "previous_revision_passed_methods": 12,
+    "current_revision_executed_methods": 8,
+    "affected_previous_methods_reexecuted": 6,
+    "new_methods": 2,
+    "unaffected_methods_reused": 6,
+    "actual_exit_code": 0,
+    "tool_chunk_id": "1df7c0",
+    "log": "[project]/artifacts/p0-revalidation-20261019/receipt-review/tests-attempt-4-affected.log",
+    "log_sha256": "7c373378d554835cbca6bba68affa399e2084ccb7b91d7eea5aa927a204b048e",
+    "executed_method_names": [
+      "test_404_is_one_get_unknown_and_never_retried",
+      "test_arbitrary_key_or_successful_post_is_not_an_unknown_intent",
+      "test_cancel_requires_original_create_key_content_and_known_order_id",
+      "test_continuous_summary_counts_fault_window_and_replays_full_original_trace",
+      "test_create_commit_is_one_get_but_does_not_complete_workflow",
+      "test_redirect_timeout_invalid_json_each_get_once",
+      "test_total_deadline_cancels_slow_get_and_continues_next_intent",
+      "test_wrong_committed_receipt_bindings_remain_unknown"
+    ],
+    "reused_method_names": [
+      "test_default_describe_never_constructs_http_client_or_writes_output",
+      "test_changed_source_or_summary_trace_disagreement_is_rejected",
+      "test_midrun_source_change_is_saved_as_failed_preservation",
+      "test_run_disables_environment_proxy_and_redirects",
+      "test_target_output_and_source_change_protections",
+      "test_unsent_cancel_is_not_submitted_and_causes_no_request"
+    ],
+    "reused_evidence": {
+      "methods": 12,
+      "passed": 12,
+      "actual_exit_code": 0,
+      "tool_chunk_id": "8adcc2",
+      "log": "[project]/artifacts/p0-revalidation-20261019/receipt-review/tests-attempt-3.log",
+      "log_sha256": "f6279498a8c0115758038020b45a7e1b6e2dcd1d6a9ded756446cfd907559a2c",
+      "transport": "httpx.MockTransport only; synthetic original summaries/traces/receipts",
+      "coverage": [
+        "default description does not construct HTTP client or write output",
+        "original trace/key/path/phase and hash tampering rejection",
+        "wrong commit/key/type/order UUID/snapshot/content/version rejection",
+        "single GET per unknown and 404 remains unknown",
+        "unsent cancel makes zero requests",
+        "create commit is not terminal workflow",
+        "known original cancel identity and create key binding",
+        "redirect/timeout/invalid JSON stays unknown after one request",
+        "real run client options trust_env=false/follow_redirects=false",
+        "new output directory and before/after source protection"
+      ]
+    },
+    "transport": "MockTransport only; synthetic order evidence; no business service",
+    "current_revision_coverage": [
+      "ContinuousObserver summary counts fault-window suffix while target intent uses complete trace",
+      "per-intent total deadline cancels a slow response and continues next intent",
+      "original unknown proof/paths and receipt bindings; 404/create/cancel, redirect/HTTP timeout/invalid JSON"
+    ]
+  },
+  "prior_attempts_preserved": [
+    {
+      "log": "[project]/artifacts/p0-revalidation-20261019/receipt-review/tests-attempt-1.log",
+      "sha256": "2ae920d83e20c45824e2268e3593accf18b09afeb6e5abb71463ba634a5ce188",
+      "actual_exit_code": 1,
+      "tool_chunk_id": "3e8fe7",
+      "cause": "sandbox default tempfile writes and cleanup denied before behavior assertions"
+    },
+    {
+      "log": "[project]/artifacts/p0-revalidation-20261019/receipt-review/tests-attempt-2.log",
+      "sha256": "393bd005225cfac3bdb87e31a79872b22344038ca716c7793204c6d6e6084268",
+      "session_id": 93332,
+      "original_exit_code": null,
+      "cause": "sandbox run remained live without completion; parent verified owned parent23532/child33564 command, stopped child33564",
+      "ownership_probe_chunk_id": "c4acfc",
+      "scoped_stop_chunk_id": "84c646",
+      "subsequent_handle_state": "Unknown process id"
+    }
+  ],
+  "execution_bounds": {
+    "real_HTTP_requests": 0,
+    "real_original_keys_executed": 0,
+    "service_starts": 0,
+    "platform_calls": 0,
+    "resource_changes": 0,
+    "old_result_rewrites": 0,
+    "commits": 0,
+    "pushes": 0,
+    "real_original_key_HTTP_requests": 0,
+    "real_original_input_files_read_for_describe": 14
+  },
+  "cli_contract": {
+    "default": "validate immutable original manifest, describe only",
+    "explicit_run": "one GET per sent-unknown intent; no GET for never-submitted cancel",
+    "base_url": "literal HTTP 127.0.0.1 with explicit port only",
+    "retries": 0,
+    "redirects": false,
+    "environment_proxy": false,
+    "output": "exclusive new directory, scope then sanitized result, original source hashes checked before and after",
+    "workflow_semantics": "create committed snapshot confirms one create stage only; 404 does not prove non-execution; old results remain immutable",
+    "GET_total_deadline_seconds": 8,
+    "response_byte_limit_claimed": false
+  },
+  "limitations": [
+    "The seven original intents were validated locally with the actual default describe CLI; no --run or HTTP request occurred, and their original outcomes remain unresolved.",
+    "The manifest and source hashes preserve provided evidence, not independent source authenticity; compare with the original frozen inventory.",
+    "The tool does not complete absent creates or unsent cancellations; any later original-key write reconciliation has a separate execution scope."
+  ],
+  "source_review": {
+    "path": "[project]/artifacts/p0-revalidation-20261019/receipt-review/source-ready.json",
+    "sha256": "55e98724b409cbc4168611c2901315e73031796f9121821d468ada2de58f8bef"
+  },
+  "real_input_default_describe": {
+    "receipt": "[project]/artifacts/p0-revalidation-20261019/receipt-review/original-seven-describe-attempt-2.json",
+    "receipt_sha256": "ec63fa9c1b9974fe0864cdbe1713f0f0e0f9d90b072a232367c8f9541e1fb595",
+    "tool_chunk_id": "4de4ae",
+    "actual_exit_code": 0,
+    "original_summary_trace_files": 14,
+    "described_intents": 7,
+    "maximum_GETs_if_explicit_run": 6,
+    "unsent_cancel_count": 1,
+    "HTTP_requests": 0,
+    "original_inputs_unchanged": true,
+    "run_flag_used": false,
+    "private_manifest": "[project]/artifacts/p0-revalidation-20261019/receipt-review/original-seven-manifest.private.json",
+    "private_manifest_sha256": "6e654fedc93caa2e1006dc786579b98f2980f16a037540846ac366d24d67e501",
+    "prior_failed_describe": {
+      "receipt": "[project]/artifacts/p0-revalidation-20261019/receipt-review/original-seven-describe-attempt-1.json",
+      "receipt_sha256": "c4fe53aa043064cdd1b0e7b52cfe0cd338736daf82c2e1a336a075ec58288549",
+      "actual_exit_code": 1,
+      "HTTP_requests": 0,
+      "cause": "Initial implementation incorrectly compared fault-window summary counts with full trace including warmup; fixed using existing ContinuousObserver semantics."
+    }
+  },
+  "previous_source_ready": {
+    "path": "[project]/artifacts/p0-revalidation-20261019/receipt-review/source-ready-final.json",
+    "sha256": "bf0ffec1433984e49d5eeef1836955a5f8d2251861f6adc0bb3d91f161848fd1"
+  },
+  "publication_projection": "Absolute paths use [project]/ for the original local incident-pilot root; hashes and verdicts retain original meaning. Raw metadata is preserved locally."
+}

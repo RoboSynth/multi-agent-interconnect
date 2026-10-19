@@ -1,0 +1,291 @@
+{
+  "schema_version": "acceptance-deployment-validation/1",
+  "status": "FILES_AND_COMPOSE_VALIDATED_NOT_LAUNCHED",
+  "checked_at": "2026-10-19T04:15:26.324448+00:00",
+  "manifest_schema": "incident-deployment/1.1",
+  "project": "incident-pilot-revalidation-20261019",
+  "ports": {
+    "app_v1": 58081,
+    "app_v2": 58082,
+    "order": 58088,
+    "reply_drop": 58090
+  },
+  "checks": [
+    {
+      "stage": "quiet",
+      "argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "env",
+        "-u",
+        "POSTGRES_PASSWORD",
+        "-u",
+        "ORDERS_DB_PASSWORD",
+        "-u",
+        "APP_ADMIN_TOKEN",
+        "-u",
+        "BRIDGE_DB_PASSWORD",
+        "-u",
+        "ORDER_BIND",
+        "-u",
+        "APP_V1_PORT",
+        "-u",
+        "APP_V2_PORT",
+        "-u",
+        "ORDER_PORT",
+        "-u",
+        "REPLY_DROP_PORT",
+        "-u",
+        "COMPOSE_FILE",
+        "-u",
+        "COMPOSE_PROFILES",
+        "-u",
+        "COMPOSE_PROJECT_NAME",
+        "-u",
+        "COMPOSE_ENV_FILES",
+        "-u",
+        "COMPOSE_DISABLE_ENV_FILE",
+        "-u",
+        "COMPOSE_PATH_SEPARATOR",
+        "-u",
+        "COMPOSE_CONVERT_WINDOWS_PATHS",
+        "docker",
+        "compose",
+        "-p",
+        "incident-pilot-revalidation-20261019",
+        "--env-file",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/runtime/private/revalidation-20261019/compose.env",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/deploy/compose.yml",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/deploy/agents.yml",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/runtime/private/revalidation-20261019/deployment.overlay.yml",
+        "--profile",
+        "isolated",
+        "config",
+        "--quiet"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "stage": "render",
+      "argv": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "env",
+        "-u",
+        "POSTGRES_PASSWORD",
+        "-u",
+        "ORDERS_DB_PASSWORD",
+        "-u",
+        "APP_ADMIN_TOKEN",
+        "-u",
+        "BRIDGE_DB_PASSWORD",
+        "-u",
+        "ORDER_BIND",
+        "-u",
+        "APP_V1_PORT",
+        "-u",
+        "APP_V2_PORT",
+        "-u",
+        "ORDER_PORT",
+        "-u",
+        "REPLY_DROP_PORT",
+        "-u",
+        "COMPOSE_FILE",
+        "-u",
+        "COMPOSE_PROFILES",
+        "-u",
+        "COMPOSE_PROJECT_NAME",
+        "-u",
+        "COMPOSE_ENV_FILES",
+        "-u",
+        "COMPOSE_DISABLE_ENV_FILE",
+        "-u",
+        "COMPOSE_PATH_SEPARATOR",
+        "-u",
+        "COMPOSE_CONVERT_WINDOWS_PATHS",
+        "docker",
+        "compose",
+        "-p",
+        "incident-pilot-revalidation-20261019",
+        "--env-file",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/runtime/private/revalidation-20261019/compose.env",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/deploy/compose.yml",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/deploy/agents.yml",
+        "-f",
+        "[project]/artifacts/p0-revalidation-20261019/checkout/runtime/private/revalidation-20261019/deployment.overlay.yml",
+        "--profile",
+        "isolated",
+        "--profile",
+        "*",
+        "config",
+        "--format",
+        "json"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "f94de69aaedb1458f3b54bc8ed6e29986ef60f2da8fd4ebe084a39c091237ce0",
+      "stderr_sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    }
+  ],
+  "services": {
+    "app-v1": {
+      "command": null,
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "58081",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "app-v2": {
+      "image": "incident-pilot-revalidation-20261019-app-v2:local",
+      "command": null,
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8000,
+          "published": "58082",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "application-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": null,
+      "profiles": [
+        "agents",
+        "isolated"
+      ],
+      "read_only": true
+    },
+    "database-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": [
+        "python",
+        "-m",
+        "acps_mcp_bridge",
+        "--config",
+        "/domain/bridge.json"
+      ],
+      "profiles": [
+        "agents",
+        "isolated"
+      ],
+      "read_only": true
+    },
+    "database-backup-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": [
+        "python",
+        "-m",
+        "acps_mcp_bridge",
+        "--config",
+        "/domain/bridge.json"
+      ],
+      "profiles": [
+        "agents",
+        "isolated"
+      ],
+      "read_only": true
+    },
+    "fault-locker": {
+      "command": [
+        "python",
+        "-m",
+        "business.fault_lock"
+      ],
+      "profiles": [
+        "faults"
+      ]
+    },
+    "nginx": {
+      "image": "nginx:1.27-alpine",
+      "command": null,
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 80,
+          "published": "58088",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "onboarding-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": null,
+      "profiles": [
+        "onboarding",
+        "isolated"
+      ],
+      "read_only": true
+    },
+    "ops-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": [
+        "python",
+        "-m",
+        "acps_mcp_bridge",
+        "--config",
+        "/domain/bridge.json"
+      ],
+      "profiles": [
+        "agents",
+        "isolated"
+      ],
+      "read_only": true
+    },
+    "postgres": {
+      "image": "postgres:16-alpine",
+      "command": null
+    },
+    "reply-drop": {
+      "image": "incident-pilot-revalidation-20261019-app-v2:local",
+      "command": [
+        "python",
+        "-m",
+        "business.fault_reply_proxy"
+      ],
+      "profiles": [
+        "faults"
+      ],
+      "ports": [
+        {
+          "mode": "ingress",
+          "host_ip": "127.0.0.1",
+          "target": 8090,
+          "published": "58090",
+          "protocol": "tcp"
+        }
+      ]
+    },
+    "verification-agent": {
+      "image": "incident-pilot-revalidation-20261019-agent:local",
+      "command": null,
+      "profiles": [
+        "agents",
+        "isolated"
+      ],
+      "read_only": true
+    }
+  },
+  "shared_database_state_volume": "database-agent-state",
+  "coordinator_private_paths_inside_checkout": true,
+  "platform_consumers_started": 0,
+  "actual_runtime_image_presence_not_proven": true,
+  "publication_projection": "Absolute paths use [project]/ for the original local incident-pilot root; hashes and verdicts retain original meaning. Raw metadata is preserved locally."
+}

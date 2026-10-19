@@ -1,0 +1,140 @@
+{
+  "schema_version": "receipt-reconciliation-peer-review/1",
+  "status": "PASSED_FOR_FILE_VALIDATION_AND_BOUNDED_GET_ONLY_OBSERVATION_SCOPE",
+  "reviewer": "independent revalidation_review agent",
+  "base_commit": "c75554d6b6de3bdaba53677e678a6fd35e4fef80",
+  "source_ready": {
+    "path": "source-ready-revision2.json",
+    "sha256": "d86bc7a2fc1b9ef48ba181168626c4d7df5ca25e87d1ed19f151bc81d0ea437d"
+  },
+  "reviewed_files": [
+    {
+      "path": "eval/receipt_reconciliation.py",
+      "sha256": "912d1ce13963721f952696da22f00aead7ef2e5756e4b1aca45615a6e0bc4baf"
+    },
+    {
+      "path": "tests/test_receipt_reconciliation.py",
+      "sha256": "f64a75258f8cf74194a2576697193b825e9dbc9c983e1dae1fc9dc64c9ab1ccf"
+    },
+    {
+      "path": "docs/receipt_reconciliation.md",
+      "sha256": "9db9258307fabc3d4e34f7292ca5d47e7a7278c8a3ca231bec9313cc2253bcd2"
+    }
+  ],
+  "unchanged_dependencies_inspected": [
+    {
+      "path": "business/load.py",
+      "locator": "22-33 VersionedClient; 45-50 original intent; 66-117 original request/state transitions",
+      "sha256": "f09c4a98182b2fd4b7e83863e47cd3c9528a15330da0c931c05a7ab745f7fa90"
+    },
+    {
+      "path": "business/receipts.py",
+      "locator": "5-29 original operation key/kind, committed receipt, UUID and snapshot validation",
+      "sha256": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255"
+    },
+    {
+      "path": "eval/observation.py",
+      "locator": "64-72 preserves complete request trace; 79-109 summary counts only events after fault_at"
+    }
+  ],
+  "checks": [
+    {
+      "requirement": "Read actual preserved evidence without rewriting it",
+      "verdict": "passed",
+      "basis": "prepare reads original manifest/summary/trace bytes, verifies each supplied SHA256 and derives pending operation from the raw summary plus complete target trace. sources_unchanged checks all inputs before and after explicit run. Output must be a distinct previously nonexistent directory and may not contain an input.",
+      "locators": ["eval/receipt_reconciliation.py:48-132", "eval/receipt_reconciliation.py:135-181", "eval/receipt_reconciliation.py:237-262"]
+    },
+    {
+      "requirement": "Adapt OrderObserver and actual ContinuousObserver summaries correctly",
+      "verdict": "passed_after_revision",
+      "basis": "Direct observer summaries reconcile the entire trace. ContinuousObserver's count reconciles its suffix, matching its fault_at-based summary; the pending intent is still replayed against the complete preserved target trace, including any warmup. The actual seven original intents now pass default describe using 14 unchanged source files.",
+      "locators": ["eval/receipt_reconciliation.py:69-80", "eval/observation.py:79-109", "tests/test_receipt_reconciliation.py:100-117", "original-seven-describe-attempt-2.json"]
+    },
+    {
+      "requirement": "GET only, zero retry, zero redirect, one bounded request per submitted unknown",
+      "verdict": "passed",
+      "basis": "The CLI has no write/repair branch. observe makes one literal GET /receipts/{encoded original key} for each submitted unknown and skips unsent cancels. The client disables environment proxy and redirects; the real transport explicitly sets retries=0. asyncio.wait_for wraps the full VersionedClient request at 8 seconds; its timeout remains unknown and the loop continues to later intents.",
+      "locators": ["eval/receipt_reconciliation.py:24", "eval/receipt_reconciliation.py:195-234", "eval/receipt_reconciliation.py:248-251", "tests/test_receipt_reconciliation.py:150-161", "tests/test_receipt_reconciliation.py:177-228"]
+    },
+    {
+      "requirement": "Validate receipt version, original key/type/order identity and original contents",
+      "verdict": "passed",
+      "basis": "VersionedClient rejects missing/mismatched public order_api_version. The shared validator requires the exact original operation key, expected operation kind, committed outcome, valid UUID, matching embedded order identity, known original order ID when present, and the operation's historical CREATED/CANCELLED snapshot. Additional checks bind the original create request_key, item, and strict integer quantity.",
+      "locators": ["business/load.py:22-33", "business/receipts.py:5-29", "eval/receipt_reconciliation.py:216-222", "tests/test_receipt_reconciliation.py:119-133", "tests/test_receipt_reconciliation.py:163-175"]
+    },
+    {
+      "requirement": "Create commit must not be reported as full workflow completion",
+      "verdict": "passed",
+      "basis": "A valid create receipt sets only operation_commit_confirmed; workflow_terminal_confirmed stays false and manual_required stays true. Only a valid original cancel receipt marks the observation terminal. Neither branch edits original state/results.",
+      "locators": ["eval/receipt_reconciliation.py:223-226", "tests/test_receipt_reconciliation.py:135-148"]
+    },
+    {
+      "requirement": "404 and never-submitted cancellation must not change historical verdicts",
+      "verdict": "passed",
+      "basis": "404 remains unknown with execution_not_disproved; zero retries are made. An original trace with no cancel POST becomes not_submitted and causes zero GET. The CLI's success exit only means the observation completed with preserved inputs; docs explicitly state that this does not complete an old workflow or override a failed batch.",
+      "locators": ["eval/receipt_reconciliation.py:203-214", "eval/receipt_reconciliation.py:274-283", "tests/test_receipt_reconciliation.py:150-161", "docs/receipt_reconciliation.md"]
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "issue": "The initial full-trace count equality rejected authentic ContinuousObserver summaries whose counters cover only the fault window.",
+      "resolution": "Added the original observer's suffix counting semantics while retaining full-trace target replay; a new positive/negative regression covers the adaptation.",
+      "original_failure_preserved": "original-seven-describe-attempt-1.json",
+      "actual_original_input_confirmation": "original-seven-describe-attempt-2.json"
+    },
+    {
+      "id": "R2",
+      "issue": "HTTPX timeout=4 alone is per connection/read/write/pool phase, not a total request deadline; a continuous response could outlast it.",
+      "resolution": "Added the simple 8-second asyncio.wait_for around the entire VersionedClient request plus a TimeoutError result. The new behavior test blocks the first request, verifies cancellation and one attempt, then verifies the second intent is still observed.",
+      "new_test": "test_total_deadline_cancels_slow_get_and_continues_next_intent",
+      "scope_limit": "No response byte cap is claimed or required for this revision."
+    }
+  ],
+  "open_findings": [],
+  "test_evidence_reused_without_rerunning": {
+    "distinct_methods": 14,
+    "initial_methods": 12,
+    "initial_actual_exit_code": 0,
+    "initial_tool_chunk_id": "8adcc2",
+    "initial_log": "tests-attempt-3.log",
+    "latest_executed_methods": 8,
+    "latest_includes_new_methods": 2,
+    "latest_includes_affected_existing_methods": 6,
+    "latest_actual_exit_code": 0,
+    "latest_tool_chunk_id": "1df7c0",
+    "latest_log": "tests-attempt-4-affected.log",
+    "latest_log_sha256": "7c373378d554835cbca6bba68affa399e2084ccb7b91d7eea5aa927a204b048e",
+    "test_quality": "MockTransport behavior asserts actual request methods/counts, no request for unsent cancel, reject cases, source preservation and deadline cancellation/continuation. Client factory inspection checks the run-level proxy/redirect options. The real retry setting is also inspected in production source. The two new regressions address issues missed by the initial synthetic fixtures; 12 plus 8 is not reported as 20 distinct methods.",
+    "actual_exit_provenance": "Tool exit/chunk values were confirmed by the parent and recorded in source-ready-revision2.json; this reviewer did not rerun tests."
+  },
+  "actual_original_input_default_describe": {
+    "receipt": "original-seven-describe-attempt-2.json",
+    "sha256": "ec63fa9c1b9974fe0864cdbe1713f0f0e0f9d90b072a232367c8f9541e1fb595",
+    "actual_exit_code": 0,
+    "tool_chunk_id": "4de4ae",
+    "original_files": 14,
+    "intents": 7,
+    "maximum_GETs_if_run": 6,
+    "unsent_cancel_count": 1,
+    "original_inputs_unchanged": true,
+    "HTTP_requests": 0,
+    "run_flag_used": false
+  },
+  "review_actions": {
+    "test_runs": 0,
+    "HTTP_requests": 0,
+    "service_starts": 0,
+    "resource_mutations": 0,
+    "original_evidence_writes": 0,
+    "source_changes_by_reviewer": 0,
+    "only_new_written_file": "receipt-review/peer-review.json"
+  },
+  "limits": [
+    "This accepts the tracked read-only tool and its default adaptation to authentic preserved inputs; it does not claim that the original business service/database is running or was queried.",
+    "The seven original outcomes remain unresolved. Six potential GETs and one skipped unsent cancel are a described scope, not new receipt observations or recovery results.",
+    "Source/manifest hashes prove consistency with the supplied originals, not authenticity against a malicious provider who can replace both the source and its claimed hash; the original freeze must remain the trust anchor.",
+    "The tool imposes request-count and asynchronous request-deadline limits; it does not impose or claim a response-byte cap.",
+    "Original failed test attempts, the first real describe failure, and prior source-ready records remain preserved; no old result is reclassified."
+  ]
+}
