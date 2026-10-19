@@ -1,0 +1,75 @@
+{
+  "status": "SAME_MACHINE_NATIVE_LIFECYCLE_PASSED",
+  "started_at_utc": "2026-10-19T09:28:50.824150+00:00",
+  "base_commit": "3760b21c8a1ed62e8119925da6f24ebd8b851d14",
+  "ports": [
+    55432,
+    8081,
+    8082,
+    8088,
+    8093,
+    8766
+  ],
+  "model_calls": 0,
+  "formal_identity_consumers": 0,
+  "fault_injections": 0,
+  "same_machine_new_checkout": true,
+  "new_machine_acceptance": false,
+  "T96_complete": false,
+  "independent_H00": {
+    "run_id": "native-lifecycle-20261019-H00",
+    "duration_seconds": 30.015,
+    "requests": 30,
+    "success": 30,
+    "failed": 0,
+    "unknown": 0,
+    "completed_workflows": 10,
+    "unresolved_intents": 0,
+    "resolved_unknown_intents": 0,
+    "passed": true
+  },
+  "local_down": "ENTRYPOINT_EXIT_ZERO",
+  "all_observed_processes_actually_exited": true,
+  "remaining_owned_processes": 0,
+  "all_six_ports_released": true,
+  "finished_at_utc": "2026-10-19T09:29:45.192545+00:00",
+  "runtime_source": "detached worktree; no product source modification during execution",
+  "runtime_preparation": {
+    "python": "3.12.14",
+    "postgresql": "16.15",
+    "nginx": "1.30.6",
+    "official_runtime_archives": "copied from existing local cache, validated and extracted by original downloader",
+    "project_dependencies": "new .venv; new .venv-mcp-postgres; network/cached pip install"
+  },
+  "transport": "local-aip-stdio",
+  "participants": 5,
+  "observed_process_count": 57,
+  "actual_exit_code_histogram": {
+    "0": 52,
+    "1": 5
+  },
+  "nonzero_process_exits": "four native app launcher/runtime processes explicitly terminated by existing native stop (code 1); one PostgreSQL logical replication launcher code 1 during logged fast shutdown",
+  "actual_exit_success_criterion": "all observed handles signaled exited; workbench/supervisor normal-close codes 0; native entrypoint code 0; no owned residual process or six-port listener",
+  "prior_attempt": {
+    "status": "FAILED",
+    "cause": "measurement helper TypeError on missing CIM ExecutablePath",
+    "prepare_exit_code": 0,
+    "local_up_exit_code": 0,
+    "local_down_exit_code": 0,
+    "H00_executed": false,
+    "remaining_owned_processes": 0,
+    "all_six_ports_released": true,
+    "raw_failure_retained": true
+  },
+  "other_retained_preparation_failures": [
+    "sandbox ensurepip failure, followed by project-scoped successful ensurepip",
+    "driver preflight initially selected its own process ancestry; corrected before service start"
+  ],
+  "limits": [
+    "same machine and existing official runtime archives; not cold download or a different developer machine",
+    "second complete attempt reused its own stopped data and installed dependency environments",
+    "no platform transport, formal identities, model, incident repair or injected fault tested",
+    "no universal idempotent-down or repeated-start concurrency claim",
+    "T96 not marked complete"
+  ]
+}

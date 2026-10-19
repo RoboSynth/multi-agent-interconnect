@@ -1,0 +1,28 @@
+{
+  "plan_sha256": "439353dc36c8a2f77bf0b05d825116f085623a054c32dc4c5ba6f84dd1c6a95b",
+  "schema_version": "access-validation-f10-plan/1",
+  "case": "F10",
+  "method": "M0",
+  "repeat": 1,
+  "model_calls": 0,
+  "enable_llm": false,
+  "transport": "wutong-amqps",
+  "backend": "docker",
+  "project": "incident-pilot-access-validation-20261019",
+  "effects": [
+    "one F10 compound stale-route/read-only/pool fault on the bound project",
+    "M0 fixed planner; no model calls; approved bound resource repairs",
+    "normal SDK close of only the group created and owned by this case",
+    "independent F10 restoration and 30-second/10-workflow final H00"
+  ],
+  "image_id": "sha256:f91a92463cc29b39c55425e42115c81976183604911ee148e1f3a4ec7ab9ab3c",
+  "identities": {
+    "coordinator": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "database": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+    "database-backup": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+    "application": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+    "ops": "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+    "verification": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+    "onboarding": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF"
+  }
+}

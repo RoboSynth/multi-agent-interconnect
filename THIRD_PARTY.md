@@ -14,7 +14,7 @@
 
 上述截止下的 vendor 共305份文件：281份官方原生内容（272份仅换行差异、9份原字节相同）、3份SDK改造、10份SDK新增，以及11份官方文档/规范的发布链接改写。[11份逐条复查](evidence/source-attribution-20261019/reference-docs-revision2.json)确认仅将Markdown链接目标改为固定3985官方blob/raw URL，技术正文仍属官方，自研行数计0。后来增加的本地来源说明不在305份截止库存中。
 
-SDK运行时实际增量为 +916/-12 行，原生实现、测试和示例分别计数，见[SDK来源对照](docs/sdk_attribution_20261019.md)。当前依赖使用普通vendored文件，未绑定到一个最终fork提交；T01的AtomGit镜像、最终fork绑定及上游CI仍待完成。
+既有SDK运行时增量 +916/-12 行属于[SDK来源对照](docs/sdk_attribution_20261019.md)的历史截止；该页的140文件统计不代表后续147文件版本。当前普通vendored SDK已精确绑定公开集成提交`6b701c635139387ca536164226523d851b0388be`，147文件、Git模式及原字节哈希见[绑定清单](vendor/ACPs-community/sdk-binding.json)。T01的最终fork/vendor绑定已完成；AtomGit镜像及上游CI仍待完成。
 
 ## 按部署安装的依赖
 

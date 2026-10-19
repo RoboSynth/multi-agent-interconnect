@@ -1,0 +1,97 @@
+{
+  "schema_version": "owned-group-readonly-probe/1",
+  "started_at": "2026-10-19T10:03:52.495726+00:00",
+  "source_scope_sha256": "a9ad8c85ebc17ba68beeef574e2c3d2d23fb877357dedaeb70654fa7089b4e6c",
+  "effects": [
+    "connect and close original certificate transport",
+    "AMQP passive existence checks",
+    "two read-only health GETs to the original ACL endpoint with per-client proxy behavior"
+  ],
+  "new_resources": 0,
+  "consumers": 0,
+  "published_messages": 0,
+  "delete_requests": 0,
+  "group_creation_status_unchanged": true,
+  "mq_resources": [
+    {
+      "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+      "kind": "exchange",
+      "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-cef7f4c704374de1a376eab9ed086e60",
+      "passive": true,
+      "exists": false,
+      "error_class": "ChannelNotFoundEntity",
+      "broker_not_found": true
+    },
+    {
+      "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+      "kind": "leader_queue",
+      "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-cef7f4c704374de1a376eab9ed086e60_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "passive": true,
+      "exists": false,
+      "error_class": "ChannelNotFoundEntity",
+      "broker_not_found": true
+    },
+    {
+      "group_id": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+      "kind": "exchange",
+      "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-7bed224810f3458b8e32433dcdfa1744",
+      "passive": true,
+      "exists": false,
+      "error_class": "ChannelNotFoundEntity",
+      "broker_not_found": true
+    },
+    {
+      "group_id": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+      "kind": "leader_queue",
+      "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-7bed224810f3458b8e32433dcdfa1744_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "passive": true,
+      "exists": false,
+      "error_class": "ChannelNotFoundEntity",
+      "broker_not_found": true
+    }
+  ],
+  "health": [
+    {
+      "request": "GET /health",
+      "trust_env": true,
+      "http_status": 200,
+      "duration_seconds": 0.969
+    },
+    {
+      "request": "GET /health",
+      "trust_env": false,
+      "http_status": 200,
+      "duration_seconds": 0.156
+    }
+  ],
+  "preflight": {
+    "incident_project_containers_running": 0,
+    "platform_coordinator_or_worker_processes": 0,
+    "preexisting_stop_and_keeper_receipts_verified": true
+  },
+  "amqps_connected": true,
+  "effective_proxy_metadata": [
+    {
+      "type": "http",
+      "scheme": "http",
+      "loopback": true,
+      "port": 7890
+    },
+    {
+      "type": "https",
+      "scheme": "http",
+      "loopback": true,
+      "port": 7890
+    },
+    {
+      "type": "ftp",
+      "scheme": "http",
+      "loopback": true,
+      "port": 7890
+    }
+  ],
+  "acl_endpoint_sha256": "fa11556fea2c0177c384aa286b2bb4b446fffaa7adb64cfbfe3b71f672f02992",
+  "status": "completed",
+  "connection_closed": true,
+  "completed_at": "2026-10-19T10:04:00.390443+00:00"
+}

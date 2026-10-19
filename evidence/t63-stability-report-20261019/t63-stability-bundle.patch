@@ -1,0 +1,542 @@
+diff --git a/docs/stability_report.md b/docs/stability_report.md
+index 6a27fda..f347152 100644
+--- a/docs/stability_report.md
++++ b/docs/stability_report.md
+@@ -16,4 +16,23 @@
+ 
+ 访问时延p95采用nearest-rank，即排序后第`ceil(0.95*n)`个值。callee等于该记录AIC、caller为另一AIC的access另列为参与者处理耗时。发送侧耗时与处理耗时均不能替代协调者的真实任务往返耗时。
+ 
+-默认模式仍只衡量首末已见心跳之间的采样，不能测量边界外的在线时长或完全缺席身份；可选固定窗口与期望集合补齐的是采样分母，不把缺样推算成真实停机。本地文件不能证明密码学签名有效、Monitor/Kafka入库、巡检成功、连续24小时或7×24可用；这些结论仍需对应运行窗口、身份清单及平台证据。方法与验证边界见[本批结果说明](free_tools_matrix_20261018.md)。
+\ No newline at end of file
++默认模式仍只衡量首末已见心跳之间的采样，不能测量边界外的在线时长或完全缺席身份；可选固定窗口与期望集合补齐的是采样分母，不把缺样推算成真实停机。本地文件不能证明密码学签名有效、Monitor/Kafka入库、巡检成功、连续24小时或7×24可用；这些结论仍需对应运行窗口、身份清单及平台证据。方法与验证边界见[本批结果说明](free_tools_matrix_20261018.md)。
++
++## 巡检、演练与真实任务耗时组合报告
++
++`eval/stability_bundle.py` 是薄报告入口，直接复用上面的 `summarize`；原函数、原CLI与JSON语义保持不变。它只读取显式指定的已记录文件，不连接工作台、平台、模型或业务资源。示例：
++
++```powershell
++python eval/stability_bundle.py <AMP目录> --output <不存在的新目录> `
++  --window-start 2026-10-18T06:55:21Z --window-end 2026-10-18T07:25:21Z `
++  --expected-aic <身份1> --expected-aic <身份2> `
++  --scheduler <原生events.jsonl> --coordinator <最终incident.json>
++```
++
++两类输入都可重复指定。scheduler只接受`ops/schedule.py`原生JSONL：`at/event`，用`run_id`关联`job_started(kind,incident_id)`与`job_finished(status,seconds)`。只处理窗口内事件；缺端、冲突、不同事故身份或结束早于开始均保留unknown。未观察到演练不等于演练关闭或通过，未提供期望周期时不推算调度完成率。`seconds`是工作台报告的事故耗时，不是事件墙钟相减，也不是独立业务恢复验收。
++
++coordinator接受`IncidentCoordinator`保存的最终事故JSON（`id/tasks`），仅提取任务的`logical_task_id/kind/status/started_at/elapsed_ms`。按任务开始时间选入`[start,end)`；最终结果可能在窗口结束后返回，不声称窗口内均已完成。有效失败/unknown效果任务的实测耗时也保留。缺失、待派发、待审批或非法耗时不补零；不同最终快照对同一任务给出冲突时不选择较快值。
++
++任务`elapsed_ms`来自协调者monotonic计时，可能包括审批等待、传输、参与者处理和结果校验，不能叫纯网络RTT、AMP处理耗时或故障到恢复总时长。AMP两种耗时与协调者任务耗时分别作图，p95沿用nearest-rank。原AMP摘要没有有效耗时样本数，该项写unknown，不从access条数反推。
++
++输出是`summary.json`、四个CSV（心跳、调度任务、协调者任务、不同口径时延）、PNG/SVG静态图及产物SHA清单。缺失CSV数值写`unknown`；图上身份别名与`heartbeats.csv`对应。摘要保留原AMP字段与身份，发布前须按项目材料规则审核。manifest只记录输入顺序ID、字节数与SHA，不泄露原始路径、任务参数或产品正文。输出目录必须不存在；图形依赖沿用已有Matplotlib/Agg，不自动安装软件。
+diff --git a/eval/stability_bundle.py b/eval/stability_bundle.py
+new file mode 100644
+index 0000000..fa6a164
+--- /dev/null
++++ b/eval/stability_bundle.py
+@@ -0,0 +1,329 @@
++"""Export a fixed-window stability bundle from explicit, recorded inputs only.
++
++The existing stability_report.summarize API and its AMP JSON remain unchanged.
++Scheduler records are native ops/schedule.py events; coordinator inputs are final
++IncidentCoordinator incident JSON files. No service or network is contacted.
++"""
++from __future__ import annotations
++
++import argparse
++from collections import Counter
++import csv
++from datetime import datetime, timezone
++import hashlib
++import json
++import math
++from pathlib import Path
++import statistics
++import sys
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from eval.stability_report import percentile_95, summarize
++
++
++def _timestamp(value):
++    if not isinstance(value, str):
++        raise ValueError("timestamp must be a timezone-aware string")
++    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
++    if parsed.tzinfo is None:
++        raise ValueError("timestamp must include a timezone")
++    return parsed.astimezone(timezone.utc).timestamp()
++
++
++def _number(value):
++    return (type(value) in (int, float) and math.isfinite(value) and value >= 0)
++
++
++def _stats(values):
++    return {"measured_count": len(values),
++            "median_ms": statistics.median(values) if values else None,
++            "p95_ms": percentile_95(values)}
++
++
++def _identity(value):
++    return isinstance(value, str) and bool(value.strip())
++
++
++def _manifest(paths, kind):
++    records = []
++    for index, path in enumerate(paths, 1):
++        raw = path.read_bytes()
++        records.append({"source_id": f"{kind}-{index:03}", "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)})
++    return records
++
++
++def _scheduler(paths, start, end):
++    counters = Counter()
++    records, seen = [], set()
++    for path in paths:
++        with path.open(encoding="utf-8-sig") as stream:
++            for line in stream:
++                try:
++                    row = json.loads(line)
++                    if not isinstance(row, dict) or not _identity(row.get("event")):
++                        raise ValueError("invalid scheduler event")
++                    at = _timestamp(row.get("at"))
++                except (ValueError, TypeError, OverflowError):
++                    counters["invalid_records"] += 1
++                    continue
++                if not start <= at < end:
++                    counters["outside_window_records"] += 1
++                    continue
++                signature = json.dumps(row, sort_keys=True, separators=(",", ":"))
++                if signature in seen:
++                    counters["duplicate_records"] += 1
++                    continue
++                seen.add(signature)
++                records.append((at, row))
++    records.sort(key=lambda item: item[0])
++    incident_runs = {}
++    for _, row in records:
++        if row["event"] == "job_started" and _identity(row.get("incident_id")) and _identity(row.get("run_id")):
++            incident_runs.setdefault(row["incident_id"], set()).add(row["run_id"])
++    jobs = {}
++    for _, row in records:
++        event = row["event"]
++        if event not in {"job_started", "job_finished", "job_timeout", "dispatch_unknown",
++                         "operator_required", "operator_required_pending_drill"}:
++            counters["other_events"] += 1
++            continue
++        run_id = row.get("run_id")
++        if not _identity(run_id):
++            incident_id = row.get("incident_id")
++            matches = incident_runs.get(incident_id, set()) if _identity(incident_id) else set()
++            if len(matches) == 1:
++                run_id = next(iter(matches))
++        if not _identity(run_id):
++            counters["unattributed_events"] += 1
++            continue
++        jobs.setdefault(run_id, []).append(row)
++    result = []
++    for run_id, rows in sorted(jobs.items()):
++        starts = [row for row in rows if row["event"] == "job_started"]
++        finishes = [row for row in rows if row["event"] == "job_finished"]
++        kinds = {row.get("kind") if row.get("kind") in ("inspect", "drill") else "unknown" for row in starts}
++        kind = next(iter(kinds)) if len(kinds) == 1 and kinds <= {"inspect", "drill"} else "unknown"
++        terminal_values = {(row.get("status") if _identity(row.get("status")) else "unknown",
++                            json.dumps(row.get("seconds"), sort_keys=True)) for row in finishes}
++        incident_ids = {row.get("incident_id") if _identity(row.get("incident_id")) else None
++                        for row in starts + finishes}
++        identity_conflict = bool(starts and finishes) and (None in incident_ids or len(incident_ids) != 1)
++        reversed_events = bool(starts and finishes) and (
++            min(_timestamp(row["at"]) for row in finishes) < max(_timestamp(row["at"]) for row in starts))
++        conflict = len(terminal_values) > 1 or len(kinds) > 1 or identity_conflict or reversed_events
++        finish = finishes[-1] if finishes and not conflict else {}
++        status = finish.get("status") if _identity(finish.get("status")) else "unknown"
++        elapsed = finish.get("seconds")
++        duration = elapsed if _number(elapsed) and not conflict else None
++        counters["invalid_durations"] += sum(row.get("seconds") is not None and not _number(row["seconds"])
++                                               for row in finishes)
++        state = status if status in {"completed", "failed"} and starts and kind != "unknown" and not conflict else "unknown"
++        result.append({"run_id": run_id, "kind": kind, "outcome": state,
++                       "reported_status": status, "elapsed_seconds": duration,
++                       "start_events": len(starts), "finish_events": len(finishes),
++                       "missing_start": not bool(starts), "missing_finish": not bool(finishes),
++                       "conflicting_records": conflict,
++                       "signals": sorted({row["event"] for row in rows if row["event"] not in {"job_started", "job_finished"}})})
++    by_kind = []
++    for kind in ("inspect", "drill", "unknown"):
++        selected = [row for row in result if row["kind"] == kind]
++        by_kind.append({"kind": kind, "recorded_jobs": len(selected),
++                        "completed": sum(row["outcome"] == "completed" for row in selected),
++                        "failed": sum(row["outcome"] == "failed" for row in selected),
++                        "unknown": sum(row["outcome"] == "unknown" for row in selected),
++                        "evidence": "observed_jobs" if selected else "unknown_no_recorded_job"})
++    return {"input_provided": bool(paths), "jobs": result, "by_kind": by_kind, "diagnostics": dict(counters),
++            "counts": dict(Counter(row["outcome"] for row in result)),
++            "interpretation": "Observed in-window events only; reported completed is not independent business recovery. Missing endpoints and conflicts remain unknown; no expected schedule denominator is inferred."}
++
++
++def _coordinator(paths, start, end):
++    counters, tasks = Counter(), {}
++    for path in paths:
++        incident = json.loads(path.read_text(encoding="utf-8-sig"))
++        if not isinstance(incident, dict) or not _identity(incident.get("id")) or not isinstance(incident.get("tasks"), list):
++            raise ValueError("coordinator input must be a final incident JSON with id and tasks")
++        for row in incident["tasks"]:
++            try:
++                if not isinstance(row, dict) or not _identity(row.get("logical_task_id")):
++                    raise ValueError("invalid task")
++                at = _timestamp(row.get("started_at"))
++            except (ValueError, TypeError, OverflowError):
++                counters["invalid_records"] += 1
++                continue
++            if not start <= at < end:
++                counters["outside_window_tasks"] += 1
++                continue
++            raw_elapsed = row.get("elapsed_ms")
++            if raw_elapsed is not None and not _number(raw_elapsed):
++                counters["invalid_durations"] += 1
++            status = row.get("status") if _identity(row.get("status")) else "unknown"
++            # Approval may occur after started_at and before transport dispatch.
++            # Never derive a task duration from AMP, wall-clock subtraction or a
++            # whole incident's elapsed_seconds.
++            measured = _number(raw_elapsed) and status not in {"pending", "awaiting_approval"}
++            record = {"incident_id": incident["id"], "logical_task_id": row["logical_task_id"],
++                      "kind": row.get("kind") if row.get("kind") in ("observe", "act", "verify") else "unknown",
++                      "status": status, "started_at": row["started_at"],
++                      "elapsed_ms": raw_elapsed if measured else None, "conflicting_records": False}
++            key = (incident["id"], row["logical_task_id"])
++            if key in tasks:
++                old = tasks[key]
++                if old == record:
++                    counters["duplicate_records"] += 1
++                else:
++                    counters["conflicting_records"] += 1
++                    old.update(status="unknown", elapsed_ms=None, conflicting_records=True)
++            else:
++                tasks[key] = record
++    rows = [tasks[key] for key in sorted(tasks)]
++    values = [row["elapsed_ms"] for row in rows if row["elapsed_ms"] is not None]
++    return {"input_provided": bool(paths), "tasks": rows, "diagnostics": dict(counters),
++            "recorded_count": len(rows), "unknown_duration_count": sum(row["elapsed_ms"] is None for row in rows),
++            **_stats(values),
++            "interpretation": "Tasks are selected by started_at in [start,end); final snapshot outcomes may finish beyond the window. elapsed_ms is coordinator-measured task elapsed, including approval waiting when present, transport and validation; not pure network RTT, fault-to-recovery time or AMP duration. Failed task measurements are retained."}
++
++
++def summarize_bundle(directory, *, window_start, window_end, expected_aics=None,
++                     heartbeat_interval_seconds=15, scheduler_files=(), coordinator_files=()):
++    scheduler_files, coordinator_files = list(map(Path, scheduler_files)), list(map(Path, coordinator_files))
++    amp_files = sorted(Path(directory).rglob("amp_*.jsonl"))
++    before = _manifest(amp_files, "amp") + _manifest(scheduler_files, "scheduler") + _manifest(coordinator_files, "coordinator")
++    amp = summarize(directory, window_start=window_start, window_end=window_end,
++                    expected_aics=expected_aics, heartbeat_interval_seconds=heartbeat_interval_seconds)
++    start, end = _timestamp(window_start), _timestamp(window_end)
++    scheduler = _scheduler(scheduler_files, start, end)
++    coordinator = _coordinator(coordinator_files, start, end)
++    after = (_manifest(sorted(Path(directory).rglob("amp_*.jsonl")), "amp") +
++             _manifest(scheduler_files, "scheduler") + _manifest(coordinator_files, "coordinator"))
++    if before != after:
++        raise ValueError("recorded inputs changed during analysis; use an immutable snapshot")
++    latency = [
++        {"metric": "AMP access send-or-handler duration", "median_ms": amp["median_access_ms"],
++         "p95_ms": amp["p95_access_ms"], "measured_count": None},
++        {"metric": "AMP partner handler duration", "median_ms": amp["median_partner_processing_ms"],
++         "p95_ms": amp["p95_partner_processing_ms"], "measured_count": None},
++        {"metric": "Coordinator task elapsed (approval may be included)",
++         "median_ms": coordinator["median_ms"], "p95_ms": coordinator["p95_ms"],
++         "measured_count": coordinator["measured_count"]}]
++    return {"schema_version": 1, "amp": amp, "scheduler": scheduler, "coordinator": coordinator,
++            "latency_metrics": latency,
++            "inputs": before,
++            "limitations": ["Recorded fixed window; neither uptime nor 24-hour/7-day acceptance is inferred.",
++                            "Missing inputs, endpoints and durations remain unknown; zero events does not prove a disabled or healthy service.",
++                            "No Kafka/Monitor ingestion, certificate/signature validation, scheduled-cycle completeness or physical-effect proof is inferred.",
++                            "AMP send/handler duration and coordinator task elapsed are distinct measurements; AMP sample counts are unavailable in the unchanged legacy summary."]}
++
++
++def _csv(path, rows, fields):
++    with path.open("w", encoding="utf-8", newline="") as stream:
++        writer = csv.DictWriter(stream, fieldnames=fields)
++        writer.writeheader()
++        for row in rows:
++            writer.writerow({key: "unknown" if row.get(key) is None else (
++                json.dumps(row[key], ensure_ascii=False) if isinstance(row[key], (list, dict)) else row[key]) for key in fields})
++
++
++def _plot(bundle, output):
++    import matplotlib
++    matplotlib.use("Agg")
++    import matplotlib.pyplot as plt
++    from matplotlib.lines import Line2D
++    plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "svg.fonttype": "none",
++                         "axes.spines.top": False, "axes.spines.right": False})
++    fig, axes = plt.subplots(1, 3, figsize=(14, 5.4))
++    agents = bundle["amp"]["agents"]
++    if agents:
++        values = [row["heartbeat_sampling_window"]["coverage_percent"] for row in agents]
++        axes[0].barh(range(len(agents)), values, color="#2878b5")
++        axes[0].set_yticks(range(len(agents)), [f"A{i+1}" for i in range(len(agents))])
++        axes[0].set_xlim(0, 107)
++        for i, value in enumerate(values):
++            axes[0].text(value + 1, i, f"{value:g}%", va="center", fontsize=8)
++        axes[0].invert_yaxis()
++    else:
++        axes[0].text(.5, .5, "unknown: no heartbeat identities", transform=axes[0].transAxes, ha="center", wrap=True)
++    axes[0].set(title="Heartbeat sampling completeness", xlabel="Occupied fixed-window slots (%)")
++    jobs = bundle["scheduler"]["jobs"]
++    if jobs:
++        kinds = ["inspect", "drill"] + (["unknown"] if any(row["kind"] == "unknown" for row in jobs) else [])
++        left = [0] * len(kinds)
++        for outcome, color in [("completed", "#2878b5"), ("failed", "#ad4938"), ("unknown", "#a5aab0")]:
++            values = [sum(row["kind"] == kind and row["outcome"] == outcome for row in jobs) for kind in kinds]
++            axes[1].barh(kinds, values, left=left, label=outcome, color=color)
++            left = [a+b for a, b in zip(left, values)]
++        axes[1].legend(frameon=False, fontsize=8, loc="upper right")
++        axes[1].xaxis.get_major_locator().set_params(integer=True)
++        for i, count in enumerate(left):
++            if not count:
++                axes[1].text(.02, i, "unknown: no recorded job", transform=axes[1].get_yaxis_transform(), va="center", fontsize=8)
++    else:
++        axes[1].text(.5, .5, "unknown: no scheduler jobs", transform=axes[1].transAxes, ha="center")
++    axes[1].set(title="Observed scheduler outcomes", xlabel="Jobs (no expected-cycle denominator)")
++    labels = ["AMP send / handler", "AMP partner handler", "Coordinator task elapsed"]
++    for i, row in enumerate(bundle["latency_metrics"]):
++        if row["median_ms"] is None:
++            axes[2].text(.02, i, "unknown", transform=axes[2].get_yaxis_transform(), va="center", color="#7b4d33")
++        else:
++            axes[2].plot([row["median_ms"], row["p95_ms"]], [i, i], color="#a9b6c0", lw=2)
++            axes[2].scatter([row["median_ms"]], [i], color="#2878b5", marker="o", label="median" if i == 0 else None)
++            axes[2].scatter([row["p95_ms"]], [i], color="#c87022", marker="|", s=100, label="p95" if i == 0 else None)
++    axes[2].set_yticks(range(3), labels)
++    axes[2].set_ylim(2.6, -.6)
++    axes[2].set_xlim(left=0)
++    axes[2].set(title="Distinct latency measurements", xlabel="Milliseconds; nearest-rank p95")
++    axes[2].legend(handles=[Line2D([], [], marker="o", linestyle="none", color="#2878b5", label="median"),
++                           Line2D([], [], marker="|", markersize=12, linestyle="none", color="#c87022", label="p95")],
++                   frameon=False, fontsize=8, loc="upper right")
++    for axis in axes:
++        axis.grid(axis="x", alpha=.2)
++        axis.set_axisbelow(True)
++    window = bundle["amp"]["acceptance_window"]
++    fig.suptitle(f"Stability evidence — recorded window {window['duration_seconds']:g} s", x=.03, ha="left", fontsize=15)
++    fig.text(.03, .905, f"{window['start']}  to  {window['end']}  [start, end)", fontsize=9, color="#48515c")
++    fig.text(.03, .035, "Sampling is not uptime. Missing evidence remains unknown. Coordinator elapsed may include approval and is not pure network RTT.\n"
++             "Observed scheduler completion is not independent recovery. No platform ingestion or long-duration acceptance is inferred.", fontsize=8, color="#48515c")
++    fig.subplots_adjust(left=.055, right=.985, top=.79, bottom=.22, wspace=.75)
++    for suffix in ("png", "svg"):
++        fig.savefig(output / ("stability-overview." + suffix), dpi=180, facecolor="white")
++    plt.close(fig)
++
++
++def write_bundle(bundle, output):
++    output = Path(output)
++    output.mkdir(parents=True, exist_ok=False)
++    (output / "summary.json").write_text(json.dumps(bundle, ensure_ascii=False, indent=2, allow_nan=False)+"\n", encoding="utf-8")
++    heartbeats = [{"agent_alias": f"A{i+1}", "aic": row["aic"], **row["heartbeat_sampling_window"]}
++                  for i, row in enumerate(bundle["amp"]["agents"])]
++    _csv(output / "heartbeats.csv", heartbeats, ["agent_alias", "aic", "expected_slot_count", "observed_slot_count", "missing_slot_count", "coverage_percent"])
++    _csv(output / "scheduler-jobs.csv", bundle["scheduler"]["jobs"], ["run_id", "kind", "outcome", "reported_status", "elapsed_seconds", "start_events", "finish_events", "missing_start", "missing_finish", "conflicting_records", "signals"])
++    _csv(output / "coordinator-tasks.csv", bundle["coordinator"]["tasks"], ["incident_id", "logical_task_id", "kind", "status", "started_at", "elapsed_ms", "conflicting_records"])
++    _csv(output / "latency.csv", bundle["latency_metrics"], ["metric", "measured_count", "median_ms", "p95_ms"])
++    _plot(bundle, output)
++    artifacts = [{"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "bytes": path.stat().st_size}
++                 for path in sorted(output.iterdir())]
++    (output / "artifact-manifest.json").write_text(json.dumps({"files": artifacts}, indent=2)+"\n", encoding="utf-8")
++    return artifacts
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("directory", type=Path, help="Recorded AMP directory; only amp_*.jsonl files are read")
++    parser.add_argument("--output", type=Path, required=True, help="New directory; existing outputs are never overwritten")
++    parser.add_argument("--window-start", required=True)
++    parser.add_argument("--window-end", required=True)
++    parser.add_argument("--expected-aic", action="append", dest="expected_aics")
++    parser.add_argument("--heartbeat-interval-seconds", type=float, default=15)
++    parser.add_argument("--scheduler", action="append", type=Path, default=[], help="Native scheduler events.jsonl; repeat for explicit inputs")
++    parser.add_argument("--coordinator", action="append", type=Path, default=[], help="Final coordinator incident JSON with tasks[].elapsed_ms")
++    args = parser.parse_args()
++    bundle = summarize_bundle(args.directory, window_start=args.window_start, window_end=args.window_end,
++                              expected_aics=args.expected_aics, heartbeat_interval_seconds=args.heartbeat_interval_seconds,
++                              scheduler_files=args.scheduler, coordinator_files=args.coordinator)
++    files = write_bundle(bundle, args.output)
++    print(json.dumps({"written_files": len(files)+1, "window_seconds": bundle["amp"]["acceptance_window"]["duration_seconds"],
++                      "scheduler_jobs": len(bundle["scheduler"]["jobs"]), "coordinator_tasks": bundle["coordinator"]["recorded_count"]}))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tests/test_stability_bundle.py b/tests/test_stability_bundle.py
+new file mode 100644
+index 0000000..f981b90
+--- /dev/null
++++ b/tests/test_stability_bundle.py
+@@ -0,0 +1,171 @@
++"""Evidence boundaries for multi-input stability reporting; no service fixtures."""
++import csv
++import json
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++from eval.stability_bundle import summarize_bundle, write_bundle
++from eval.stability_report import summarize
++
++
++START, END = "2026-01-01T00:00:00Z", "2026-01-01T00:01:00Z"
++
++
++class StabilityBundleTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.amp = self.root / "amp"
++        self.amp.mkdir()
++        self.scheduler = self.root / "events.jsonl"
++        self.incident = self.root / "incident.json"
++
++    def rows(self, path, rows):
++        path.write_text("\n".join(json.dumps(row) if not isinstance(row, str) else row for row in rows)+"\n", encoding="utf-8")
++
++    def task(self, task_id="task-1", elapsed=2000, status="ok"):
++        return {"logical_task_id": task_id, "kind": "observe", "status": status,
++                "started_at": "2026-01-01T00:00:05Z", "elapsed_ms": elapsed}
++
++    def coordinator(self, tasks, path=None):
++        path = path or self.incident
++        path.write_text(json.dumps({"id": "incident-1", "tasks": tasks}), encoding="utf-8")
++        return path
++
++    def event(self, event, **extra):
++        return {"at": "2026-01-01T00:00:10Z", "event": event, "run_id": "run-1", **extra}
++
++    def bundle(self, **kwargs):
++        return summarize_bundle(self.amp, window_start=START, window_end=END,
++                                expected_aics=["a", "absent"], **kwargs)
++
++    def test_legacy_amp_json_unchanged_and_latencies_stay_distinct(self):
++        self.rows(self.amp / "amp_access.jsonl", [{"log_id": "one", "log_type": "access", "aic": "a",
++            "timestamp": "2026-01-01T00:00:05Z", "body": {"durationMs": 5,
++                "caller": {"aic": "other"}, "callee": {"aic": "a"}}}])
++        self.coordinator([self.task()])
++        result = self.bundle(coordinator_files=[self.incident])
++        self.assertEqual(result["amp"], summarize(self.amp, window_start=START, window_end=END, expected_aics=["a", "absent"]))
++        self.assertEqual([row["median_ms"] for row in result["latency_metrics"]], [5, 5, 2000])
++        self.assertEqual(result["amp"]["agents"][1]["heartbeat_sampling_window"]["missing_slot_count"], 4)
++
++    def test_scheduler_pairs_native_events_and_preserves_missing_drills(self):
++        start = self.event("job_started", kind="inspect", incident_id="incident-1")
++        finish = self.event("job_finished", incident_id="incident-1", status="completed", seconds=39.094)
++        self.rows(self.scheduler, [start, finish, finish, self.event("drill_disabled")])
++        result = self.bundle(scheduler_files=[self.scheduler])["scheduler"]
++        self.assertEqual(result["counts"], {"completed": 1})
++        self.assertEqual(result["jobs"][0]["elapsed_seconds"], 39.094)
++        self.assertEqual(result["diagnostics"]["duplicate_records"], 1)
++        self.assertEqual(result["by_kind"][1]["evidence"], "unknown_no_recorded_job")
++
++    def test_scheduler_incomplete_conflicting_and_orphan_terminal_stay_unknown(self):
++        self.rows(self.scheduler, [self.event("job_started", kind="drill"),
++            self.event("job_finished", status="completed", seconds=1),
++            self.event("job_finished", status="failed", seconds=2),
++            self.event("job_finished", run_id="orphan", status="completed", seconds=0),
++            self.event("job_started", run_id="unfinished", kind="inspect")])
++        result = self.bundle(scheduler_files=[self.scheduler])["scheduler"]
++        self.assertEqual(result["counts"], {"unknown": 3})
++        by_id = {row["run_id"]: row for row in result["jobs"]}
++        self.assertTrue(by_id["run-1"]["conflicting_records"])
++        self.assertIsNone(by_id["run-1"]["elapsed_seconds"])
++        self.assertTrue(by_id["orphan"]["missing_start"])
++        self.assertTrue(by_id["unfinished"]["missing_finish"])
++
++    def test_window_and_malformed_scheduler_records_do_not_become_successes(self):
++        bad = self.event("job_started", kind="inspect", at="2026-01-01T00:00:05")
++        outside = self.event("job_finished", at=END, status="completed", seconds=1)
++        self.rows(self.scheduler, ["not json", bad, outside, self.event("job_started", kind="inspect"),
++            self.event("job_finished", status="completed", seconds=True)])
++        result = self.bundle(scheduler_files=[self.scheduler])["scheduler"]
++        self.assertEqual(result["diagnostics"]["invalid_records"], 2)
++        self.assertEqual(result["diagnostics"]["outside_window_records"], 1)
++        self.assertEqual(result["diagnostics"]["invalid_durations"], 1)
++        self.assertIsNone(result["jobs"][0]["elapsed_seconds"])
++
++    def test_scheduler_cross_incident_and_reversed_terminal_do_not_count_completed(self):
++        self.rows(self.scheduler, [self.event("job_started", kind="inspect", incident_id="one"),
++            self.event("job_finished", status="completed", seconds=1, incident_id="other"),
++            self.event("job_started", run_id="reversed", kind="inspect", incident_id="two"),
++            self.event("job_finished", run_id="reversed", incident_id="two", status="completed", seconds=1,
++                       at="2026-01-01T00:00:01Z")])
++        result = self.bundle(scheduler_files=[self.scheduler])["scheduler"]
++        self.assertEqual(result["counts"], {"unknown": 2})
++        self.assertTrue(all(row["conflicting_records"] for row in result["jobs"]))
++
++    def test_task_missing_pending_invalid_and_failed_measurements(self):
++        self.coordinator([self.task("missing", None), self.task("boolean", True),
++                          self.task("pending", 12, "pending"), self.task("failed", 3000, "failed"),
++                          self.task("unknown-effect", 4000, "unknown")])
++        result = self.bundle(coordinator_files=[self.incident])["coordinator"]
++        self.assertEqual((result["recorded_count"], result["measured_count"], result["unknown_duration_count"]), (5, 2, 3))
++        self.assertEqual(result["median_ms"], 3500)
++        self.assertEqual(result["diagnostics"]["invalid_durations"], 1)
++
++    def test_conflicting_snapshots_cannot_double_count_or_pick_faster_measurement(self):
++        first = self.coordinator([self.task()])
++        duplicate = self.coordinator([self.task()], self.root / "duplicate.json")
++        conflict = self.coordinator([self.task(elapsed=10)], self.root / "conflict.json")
++        same = self.bundle(coordinator_files=[first, duplicate])["coordinator"]
++        self.assertEqual(same["measured_count"], 1)
++        self.assertEqual(same["diagnostics"]["duplicate_records"], 1)
++        changed = self.bundle(coordinator_files=[first, conflict])["coordinator"]
++        self.assertEqual(changed["measured_count"], 0)
++        self.assertIsNone(changed["median_ms"])
++        self.assertTrue(changed["tasks"][0]["conflicting_records"])
++
++    def test_absent_inputs_and_empty_latency_export_unknown_and_do_not_overwrite(self):
++        result = self.bundle()
++        self.assertFalse(result["scheduler"]["input_provided"])
++        self.assertFalse(result["coordinator"]["input_provided"])
++        output = self.root / "report"
++        artifacts = write_bundle(result, output)
++        self.assertEqual(len(artifacts), 7)
++        with (output / "latency.csv").open(encoding="utf-8", newline="") as stream:
++            rows = list(csv.DictReader(stream))
++        self.assertTrue(all(row["median_ms"] == "unknown" for row in rows))
++        self.assertTrue((output / "stability-overview.png").is_file())
++        self.assertTrue((output / "stability-overview.svg").is_file())
++        with self.assertRaises(FileExistsError):
++            write_bundle(result, output)
++
++    def test_timezone_bounds_and_invalid_coordinator_schema_are_rejected(self):
++        with self.assertRaises(ValueError):
++            summarize_bundle(self.amp, window_start=START, window_end="2026-01-01T00:01:00")
++        self.incident.write_text('{"id":"incident-1","tasks":{}}', encoding="utf-8")
++        with self.assertRaises(ValueError):
++            self.bundle(coordinator_files=[self.incident])
++
++    def test_malformed_optional_identifiers_do_not_crash_or_create_completed_jobs(self):
++        self.rows(self.scheduler, [self.event("job_started", run_id={}, incident_id={}, kind={}),
++            self.event("job_finished", run_id="orphan", status={}, seconds={})])
++        task = self.task()
++        task["kind"] = {}
++        self.coordinator([task])
++        result = self.bundle(scheduler_files=[self.scheduler], coordinator_files=[self.incident])
++        self.assertEqual(result["scheduler"]["counts"], {"unknown": 1})
++        self.assertEqual(result["scheduler"]["diagnostics"]["unattributed_events"], 1)
++        self.assertEqual(result["coordinator"]["tasks"][0]["kind"], "unknown")
++
++    def test_changing_inputs_cannot_be_bound_to_a_different_hash_after_analysis(self):
++        path = self.amp / "amp_heartbeat.jsonl"
++        self.rows(path, [])
++        legacy = summarize
++
++        def mutate(*args, **kwargs):
++            result = legacy(*args, **kwargs)
++            path.write_text("changed after reading\n", encoding="utf-8")
++            return result
++
++        with patch("eval.stability_bundle.summarize", side_effect=mutate), self.assertRaisesRegex(ValueError, "changed during analysis"):
++            self.bundle()
++
++
++if __name__ == "__main__":
++    unittest.main()

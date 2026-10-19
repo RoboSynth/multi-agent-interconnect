@@ -1,0 +1,55 @@
+{
+  "status": "failed",
+  "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+  "session_id": "incident-cef7f4c704374de1a376eab9ed086e60",
+  "coordinator_aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+  "project": "incident-pilot-access-validation-20261019",
+  "started_at": "2026-10-19T10:00:46.190667+00:00",
+  "prepared_sha256": "a9ad8c85ebc17ba68beeef574e2c3d2d23fb877357dedaeb70654fa7089b4e6c",
+  "new_groups": 0,
+  "new_tasks": 0,
+  "new_inbox_consumers": 0,
+  "official_dissolve_calls": 1,
+  "original_failure_retained": true,
+  "unknown_group_untouched": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+  "effects": [
+    "Connect the original coordinator certificate to its original AMQPS endpoint without consuming",
+    "Bind only the recorded existing cef7 group/session; create no group, queue, Inbox, worker or task",
+    "Call official dissolve_group_session once: DISBAND, delete this group's ACL, leader queue and exchange",
+    "Close the connection and preserve failed-run records, journals, stopped containers and volumes"
+  ],
+  "preflight": {
+    "incident_project_containers_running": 0,
+    "platform_coordinator_or_worker_processes": 0,
+    "preexisting_stop_and_keeper_receipts_verified": true
+  },
+  "sdk_events": [
+    {
+      "event": "rabbitmq_connected",
+      "level": "INFO"
+    },
+    {
+      "event": "dissolve_notify_failed",
+      "level": "WARNING"
+    },
+    {
+      "event": "group_acl_client_request",
+      "level": "INFO"
+    }
+  ],
+  "cleanup_warning_events": [
+    "dissolve_notify_failed"
+  ],
+  "close_checks": {
+    "no_group_sessions": true,
+    "no_inbox_created": true,
+    "connection_closed": true,
+    "owned_group_disconnected": false,
+    "no_cleanup_warnings": false,
+    "acl_delete_acknowledged": false,
+    "leader_queue_cleanup_attempted_once": false,
+    "exchange_cleanup_attempted_once": false
+  },
+  "error_class": "ConnectError",
+  "completed_at": "2026-10-19T10:01:02.827593+00:00"
+}

@@ -1,0 +1,52 @@
+{
+  "status": "prepared_not_executed",
+  "scope": {
+    "schema_version": "owned-group-close-scope/1",
+    "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+    "session_id": "incident-cef7f4c704374de1a376eab9ed086e60",
+    "coordinator_aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "project": "incident-pilot-access-validation-20261019",
+    "effects": [
+      "Connect the original coordinator certificate to its original AMQPS endpoint without consuming",
+      "Bind only the recorded existing cef7 group/session; create no group, queue, Inbox, worker or task",
+      "Call official dissolve_group_session once: DISBAND, delete this group's ACL, leader queue and exchange",
+      "Close the connection and preserve failed-run records, journals, stopped containers and volumes"
+    ],
+    "runner_sha256": "855b6b715890d48543d6f5f4d1fc3a9fd2b1799b1837aaef5e4944cb1f7d1cc2",
+    "journal_counts": {
+      "coordinator_terms": 0,
+      "takeover_events": 0,
+      "task_attempts": 0,
+      "task_events": 0
+    },
+    "untouched_unknown_group": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+    "input_sha256": {
+      "checkout/runtime/private/access-validation-plans-20261019/e1a-before_modification-r1/plan.json": "6f067bcb989e281e7175e0265c06592c8999752aa88539ebdb663e7cbc0772b8",
+      "execution/batch-authorization.json": "b38931a3bff8935639d1ca437f6ce1a58f6d13e5c66482b2beaa757f135b12bd",
+      "plan-preparation/prepared-summary.json": "b7bc975756db0ae78a02d8b80d52d670c214a9078ea8522f5191a55fa67cae82",
+      "checkout/runtime/private/access-validation-20261019/domains/coordinator/config.json": "48e4c1f0009f58d3eed828d680c68760711a312735a725d0a2fdc02c492f61f3",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/events.jsonl": "1daf978738a172102116ff5d115b921ddf484493796971f4cbb192e7ed77d625",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite": "5fc4c4ce2124727bd82ca08f63877c493540d5779e2cd0ce411439119576e234",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite-shm": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite-wal": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/results.json": "1184adc627011658008952452e45f1191ab0de13b2157e1a1196a1d960f68000",
+      "execution/e1a-before_modification-r1/runner.exit.json": "6b36ae840af5b88059752cbab08e2a0cb3117093edccb330fe40547b83cfc7c7",
+      "execution/result.json": "78e8a7e64df5433261556b052efce8102d808a40c4d117a28505dde949aa0c1d",
+      "execution/stop/result.json": "e33d19ce87f8db89ca92420882a8fb65f7bfe9195c2b7a5cab047b9299233459",
+      "execution/stop/after.json": "057cf52b2a902696226d3a0c5eed54c037d44cbb3ce195b0046079925acf3cab",
+      "execution/keeper.exit.json": "9392882d720b73c77adbb67a436d891ca13f730076afacf1b349f0ddd1d59700",
+      "checkout/eval/results/platform/access-validation-20261019/e1a-after_observation-r1/coordinator/events.jsonl": "8316deae78436e8cd159d771ea8b1c91725e1e00002639f5786ed435998b1c72",
+      "checkout/runtime/private/access-validation-20261019/domains/coordinator/cert.pem": "b4a934576d7254d66a9f1dff03078cbd07ea8e2ec0fcebdd5e0ee8c965204e25",
+      "checkout/runtime/private/access-validation-20261019/domains/coordinator/key.pem": "f79b3b4f76e623084fd811fff53aaf97397e63cfd039b46299bcfa6e025cdcc1",
+      "checkout/runtime/private/access-validation-20261019/domains/coordinator/trust.pem": "bbe54919bda445933591dfda36ac248fd2d3fe5b89b176328d00500d4be23bad",
+      "checkout/runtime/private/access-validation-20261019/target.json": "a397e26a565be3f11658fa3e6177f2594ea8bfafdf578f5028ffc63a54c41528",
+      "plan-preparation/batch_scope.py": "f53f3a414c596891064792fa4ae583449460b95676b7a76a8aeac35544f0628e",
+      "checkout/eval/platform_resume_experiment.py": "1c682bd45000108569e50a824891f82ad6be9be64ef7ad6bcac5033dbde5842e",
+      "checkout/eval/targets.py": "33133b738adf50eadf482c411482b629f642b1dc084782465b9735695b8ca21d",
+      "checkout/integration/wutong_smoke.py": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+      "checkout/vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+      "checkout/vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py": "03baa77d3de00dce6a314f4073a4ac60df9d682162a03a1eb51aa32246d4b1a4",
+      "checkout/vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_runtime.py": "1920f23b78dfd59b60a2b46cca8bc3a0507f2d166cab97d2d04d8d342608d056"
+    }
+  }
+}

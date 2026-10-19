@@ -1,5 +1,5 @@
-> **2026-10-19 当前收尾状态：** [原域接入日志恢复](docs/access_recovery_validation_20261019.md)及正常停机入口已实现并完成相关本地验证；[完整 SDK 一键检查](tools/sdk-suite/README.md)在独立复制仓库与仓库内虚拟环境中实际 605/605 通过。队友可使用自己的环境复现，不需要原开发者的平台账号。
-> [新四例复验](evidence/access-validation-prep-20261019/README.md)已准备，尚未授权或运行。旧正式22例为18通过/4失败，修复12例为11通过/1失败，旧访问日志缺口保持原判。当前[15页开发报告修订3](deliverables/development-report-20261019-revision3/technical-report-development.pdf)证据截止613ecbf；最新恢复代码和测试不在该报告截止内。新机器、Kafka/Monitor入库与长期运行仍待验收。下文为历次截面。
+> **2026-10-19 当前审查入口：** [完整进度、真实结果与高分缺口](docs/当前进度审查入口_20261019.md)。SDK最终公开提交与147文件vendor来源已[精确绑定](evidence/sdk-final-binding-20261019/README.md)；原605套件源码字节未变。[Windows同机完整启停](evidence/native-lifecycle-20261019/README.md)通过，57个观察进程实际退出；[稳定性汇总与图表](evidence/t63-stability-report-20261019/README.md)已实现，31个不同相关方法有通过记录。
+> [最新四例批次](evidence/access-validation-results-20261019/README.md)已获授权，实际尝试3项：1通过、2因平台连接失败，最后1项未执行；两个E1未到预设中断点，三次最终H00通过，自有10容器已停止。[后续清理收据](evidence/access-validation-results-20261019/group-cleanup/README.md)确认队列和交换机不存在，ACL仍未确认。旧22例18通过/4失败、修复12例11通过/1失败及历史访问缺口保持原判。[15页报告修订3](deliverables/development-report-20261019-revision3/technical-report-development.pdf)仍截止613ecbf；新机器、Kafka/Monitor与长期验收未闭合。下文为历次截面。
 > [上游贡献状态](evidence/upstream-status-20261019/recheck-1651/README.md)于北京时间16:51核验：PR13/14仍为开放草稿，无审阅、评论或自动检查记录；Issue15–18仍开放、无评论。
 
 > **完整源码包已更新：** [2018文件的固定版本与复现方法](docs/development_archive.md)，源码冻结 `3760b21`；逐文件与Git对象核验通过，含当前SDK检查入口和接手说明。新机器、平台入库与长期运行仍待独立验收。

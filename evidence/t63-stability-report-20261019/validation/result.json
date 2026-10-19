@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "source_commit": "3760b21c8a1ed62e8119925da6f24ebd8b851d14",
+  "status": "ready_for_integration_not_yet_applied",
+  "code_review": "No further definite code defect found; native scheduler and coordinator elapsed semantics checked against frozen source.",
+  "prior_tests_reused": {
+    "legacy_method_count": 20,
+    "legacy_evidence": "validation/attempt-2.log",
+    "final_bundle_method_count": 11,
+    "bundle_evidence": "validation/attempt-4-bundle-final.log",
+    "unique_related_method_count": 31,
+    "rerun_at_finalization": false
+  },
+  "artifact_checks": [
+    "baseline hashes",
+    "unchanged legacy source bytes",
+    "final test method coverage against passed log",
+    "nine projected input hashes",
+    "input-to-summary hash binding",
+    "seven report output hashes",
+    "semantic real-example values",
+    "CSV unknown values",
+    "patch check/apply and three exact file bytes"
+  ],
+  "patch_sha256": "f1aa308bc3098077f84542a5dda3bced19c428243ab12ba1602de976acc0a3ef",
+  "visual_review": {
+    "method": "actual local PNG opened with view_image",
+    "path": "real-example-r3/report/stability-overview.png",
+    "sha256": "8079dd44d1d985e068da4ee2c09333cc406f202d5bdf123e26c99f8e952b3228",
+    "result": "Labels, unknown values, axes, bars and median/p95 legend readable; SVG is the same Figure's vector export."
+  },
+  "example_scope": {
+    "window_seconds": 1800,
+    "expected_heartbeat_slots": 840,
+    "observed_heartbeat_slots": 840,
+    "recorded_inspections": 1,
+    "measured_tasks": 6,
+    "task_median_ms": 1531.5,
+    "task_nearest_rank_p95_ms": 31875
+  },
+  "preserved_failures": [
+    "validation/attempt-1.json",
+    "validation/real-example-attempt-1.json"
+  ],
+  "limitations": [
+    "Existing one-run 30-minute file analysis, no new runtime or fault experiment.",
+    "AMP durations are unknown here and remain distinct from coordinator elapsed.",
+    "No drill, uptime, 24-hour/7-day, Kafka/Monitor, signature verification or new-machine acceptance is established."
+  ],
+  "source_object_verification": {
+    "source_commit": "3760b21c8a1ed62e8119925da6f24ebd8b851d14",
+    "git_blob_count": 8,
+    "result": "all source-baseline hashes match actual Git object bytes",
+    "tool_chunk": "0d0dd0"
+  }
+}

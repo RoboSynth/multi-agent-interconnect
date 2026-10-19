@@ -1,0 +1,126 @@
+{
+  "schema_version": "access-validation-archive/1",
+  "project": "incident-pilot-access-validation-20261019",
+  "source_commit": "a4d71e83444228a71499a75c932a2b9e7ba678f1",
+  "prepared_plan_count": 4,
+  "attempted": 3,
+  "completed": 1,
+  "failed": 2,
+  "not_attempted": 1,
+  "model_calls_total_for_attempted_cases": 0,
+  "outer_actual_exit_code": 1,
+  "cases": [
+    {
+      "order": 1,
+      "key": "f10-m0-r1",
+      "case": "F10",
+      "point": null,
+      "plan_sha256": "439353dc36c8a2f77bf0b05d825116f085623a054c32dc4c5ba6f84dd1c6a95b",
+      "status": "completed",
+      "actual_exit_code": 0,
+      "model_calls": 0,
+      "crash_point_reached": null,
+      "independent_final_H00_passed": true,
+      "h00_duration_seconds": 30.016,
+      "h00_completed_workflows": 10,
+      "cleanup_and_recovery_verified_in_original_receipt": true,
+      "error_class": null,
+      "close_error_class": null
+    },
+    {
+      "order": 2,
+      "key": "e1a-after_observation-r1",
+      "case": "E1-a",
+      "point": "after_observation",
+      "plan_sha256": "f0bf7af269c7b115e27c56a9a806c0fd21b4c416071da861a08dc3b4e91b7355",
+      "status": "failed",
+      "actual_exit_code": 1,
+      "model_calls": 0,
+      "crash_point_reached": false,
+      "independent_final_H00_passed": true,
+      "h00_duration_seconds": 30.0,
+      "h00_completed_workflows": 10,
+      "cleanup_and_recovery_verified_in_original_receipt": true,
+      "error_class": "ConnectTimeout",
+      "close_error_class": null,
+      "coordinator_task_attempts": 0
+    },
+    {
+      "order": 3,
+      "key": "e1a-before_modification-r1",
+      "case": "E1-a",
+      "point": "before_modification",
+      "plan_sha256": "6f067bcb989e281e7175e0265c06592c8999752aa88539ebdb663e7cbc0772b8",
+      "status": "failed",
+      "actual_exit_code": 1,
+      "model_calls": 0,
+      "crash_point_reached": false,
+      "independent_final_H00_passed": true,
+      "h00_duration_seconds": 30.0,
+      "h00_completed_workflows": 10,
+      "cleanup_and_recovery_verified_in_original_receipt": false,
+      "error_class": "ConnectError",
+      "close_error_class": "ConnectError",
+      "coordinator_task_attempts": 0
+    },
+    {
+      "order": 4,
+      "key": "e1a-after_applied-r1",
+      "case": "E1-a",
+      "point": "after_applied",
+      "plan_sha256": "73065c09cb51be374443f1235238a7def259a0ce07e7c5f76329a18fe76cadb7",
+      "status": "not_attempted",
+      "actual_exit_code": null,
+      "model_calls": null,
+      "crash_point_reached": null,
+      "independent_final_H00_passed": null,
+      "reason": "Batch stopped after preceding cleanup guard failure; no individual receipt or case output exists"
+    }
+  ],
+  "count_basis": "Four prepared plans and all three individual execution receipt.json files; aggregate result is preserved as a projection and omits the third receipt because its cleanup guard raised before append.",
+  "aggregate_case_count": 2,
+  "individual_receipt_count": 3,
+  "independent_final_H00_passed_count": 3,
+  "coordinator_event_counts": {
+    "f10-m0-r1": {
+      "unified_inbox_listening": 1,
+      "group_session_creation_started": 1,
+      "group_session_created": 1,
+      "official_discovery": 4,
+      "participant_excluded": 2,
+      "adp_participant_confirmed": 4,
+      "group_session_close_started": 1,
+      "group_session_close_completed": 1,
+      "client_close_phase": 4
+    },
+    "e1a-after_observation-r1": {
+      "unified_inbox_listening": 1,
+      "group_session_creation_started": 1,
+      "group_session_creation_failed": 1,
+      "client_close_phase": 4
+    },
+    "e1a-before_modification-r1": {
+      "unified_inbox_listening": 1,
+      "group_session_creation_started": 1,
+      "group_session_created": 1,
+      "official_discovery": 1,
+      "participant_excluded": 1,
+      "capability_confirmation_failed": 1,
+      "group_session_close_started": 1,
+      "client_close_phase": 4
+    }
+  },
+  "owned_project_stop": {
+    "status": "ACTUALLY_STOPPED",
+    "owned_container_count": 10,
+    "after_running_count": 0,
+    "volumes_retained": true,
+    "keeper_actual_exit_code": 0
+  },
+  "remaining_owned_group_close": {
+    "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+    "status": "pending_external_cleanup_receipt",
+    "note": "Separate owned_cleanup_finish agent owns the live normal SDK close. This archive neither executes nor assumes that close; parent may add a final supplemental receipt."
+  },
+  "historical_results": "This batch is separate. Original 22/12 outcomes and historical missing access are not modified or backfilled."
+}

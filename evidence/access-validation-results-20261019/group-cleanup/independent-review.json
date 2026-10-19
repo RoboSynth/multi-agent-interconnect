@@ -1,0 +1,109 @@
+{
+  "schema_version": "access-batch-close-independent-review/1",
+  "reviewed_at_utc": "2026-10-19T10:03:24Z",
+  "reviewer": "close_scope_review",
+  "project": "incident-pilot-access-validation-20261019",
+  "review_mode": "Local evidence and source inspection only; reviewer made no network calls or cleanup attempt",
+  "authorization": {
+    "question_id": "call_eed3d32ab9a1402ebcb0e50876f1ed1e",
+    "exact_answer": "授权4次，确认七身份无其他消费者"
+  },
+  "scope_conclusion": {
+    "owned_group": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+    "session_id": "incident-cef7f4c704374de1a376eab9ed086e60",
+    "owner_aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "unique_successful_creation_record": true,
+    "creation_event_emitted_only_after_sdk_success": true,
+    "plan_sha256": "6f067bcb989e281e7175e0265c06592c8999752aa88539ebdb663e7cbc0772b8",
+    "plan_config_leader_aic_and_certificate_cn_match": true,
+    "frozen_config_cert_key_trust_and_approval_hashes_match": true,
+    "journal_counts": {
+      "coordinator_terms": 0,
+      "takeover_events": 0,
+      "task_attempts": 0,
+      "task_events": 0
+    },
+    "original_business_message_file_absent": true,
+    "original_runner_terminal": true,
+    "original_runner_exit_code": 1,
+    "ten_owned_containers_stopped": true,
+    "keeper_terminal_exit_code": 0,
+    "unknown_group_excluded": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+    "unknown_group_reason": "Creation intent followed by ConnectTimeout; no group_session_created record. Remote existence and ownership outcome remain unconfirmed."
+  },
+  "script_review": {
+    "path": "owned-group-cleanup/close_owned_group.py",
+    "sha256": "855b6b715890d48543d6f5f4d1fc3a9fd2b1799b1837aaef5e4944cb1f7d1cc2",
+    "prepared_path": "owned-group-cleanup/prepared-v2.json",
+    "prepared_sha256": "a9ad8c85ebc17ba68beeef574e2c3d2d23fb877357dedaeb70654fa7089b4e6c",
+    "fixed_owned_session_only": true,
+    "no_group_queue_or_inbox_declaration": true,
+    "no_consumer_or_business_task_start": true,
+    "official_dissolve_call_limit": 1,
+    "no_retry_loop": true,
+    "single_use_attempt_directory": true,
+    "same_identity_lock_and_runtime_preflight": true,
+    "external_helper_bound_to_same_source_commit_git_blob": true,
+    "journal_inspection_uses_immutable": true,
+    "messages_jsonl_guard_fix_adopted": true,
+    "messages_guard": ["messages.json", "messages.jsonl"],
+    "static_runtime_blocker_found": false,
+    "static_review_does_not_predict_remote_success": true
+  },
+  "actual_cleanup_result": {
+    "status": "failed",
+    "terminal": true,
+    "actual_exit_code": 1,
+    "finished_at_utc": "2026-10-19T10:01:02.979655+00:00",
+    "official_dissolve_calls": 1,
+    "amqps_connected": true,
+    "disband_result": "NOT_FOUND: exact owned group exchange absent in vhost acps",
+    "acl_delete_result": "ConnectError; no acknowledgment",
+    "queue_cleanup_attempted": false,
+    "exchange_cleanup_attempted": false,
+    "transport_connection_closed": true,
+    "owned_group_disconnected_check": false,
+    "cleanup_passed": false,
+    "remote_group_resource_state": "Unresolved; missing exchange does not establish ACL or queue cleanup",
+    "new_groups": 0,
+    "new_tasks": 0,
+    "new_inbox_consumers": 0,
+    "original_failure_retained": true,
+    "reviewer_reran_cleanup": false
+  },
+  "sqlite_inspection_side_effect": {
+    "description": "Reviewer's earlier SQLite mode=ro open automatically created an empty WAL and SHM. This was an unintended review side effect. The original journal bytes and modification time remained unchanged. Sidecars were retained, not deleted. No subsequent database open was performed by this reviewer.",
+    "prior_inspection_sidecars": [],
+    "prior_inspection_path": "review/access-batch-inspection.json",
+    "journal": {
+      "path": "D:/AI + 开源/incident-pilot/artifacts/p0-current-source-validation-20261019/checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite",
+      "bytes": 36864,
+      "sha256": "5fc4c4ce2124727bd82ca08f63877c493540d5779e2cd0ce411439119576e234",
+      "creation_time_utc": "2026-10-19T09:31:03.8285297Z",
+      "last_write_time_utc": "2026-10-19T09:31:03.8557127Z",
+      "sha256_unchanged": true
+    },
+    "retained_sidecars": [
+      {
+        "path": "D:/AI + 开源/incident-pilot/artifacts/p0-current-source-validation-20261019/checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite-wal",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc": "2026-10-19T09:56:51.5001708Z",
+        "last_write_time_utc": "2026-10-19T09:56:51.5001708Z"
+      },
+      {
+        "path": "D:/AI + 开源/incident-pilot/artifacts/p0-current-source-validation-20261019/checkout/eval/results/platform/access-validation-20261019/e1a-before_modification-r1/coordinator/journal.sqlite-shm",
+        "bytes": 32768,
+        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "creation_time_utc": "2026-10-19T09:56:51.5012216Z",
+        "last_write_time_utc": "2026-10-19T09:56:51.5021700Z"
+      }
+    ]
+  },
+  "evidence_sha256": {
+    "review/access-batch-inspection.json": "c382b081f86b01fe2dfd4471d1d2b2bd60fb33796154bbfaa3262804ac038e09",
+    "owned-group-cleanup/attempt-1/result.json": "373995b6c5cc784e46634ae371e738a024b06c1677be8cf2751cc9006666035b",
+    "owned-group-cleanup/attempt-1/sdk.log": "3b9e3115f621f3c6aee4bd3f54f6486a9e116e57f7dfc8eea4cf9d6983ac8986",
+    "owned-group-cleanup/execution/runner.exit.json": "a4d1944563fbb4d16e91c6e5521bc6af8ce21064be99bded084b5b229d2fd689"
+  }
+}

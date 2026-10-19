@@ -1,0 +1,145 @@
+{
+  "schema_version": "access-batch-owned-close-review/1",
+  "reviewed_at": "2026-10-19T10:06:08.037078+00:00",
+  "status": "cleanup_failed_no_more_runs",
+  "project": "incident-pilot-access-validation-20261019",
+  "user_authorization": {
+    "question_id": "call_eed3d32ab9a1402ebcb0e50876f1ed1e",
+    "exact_answer": "授权4次，确认七身份无其他消费者"
+  },
+  "known_created_group": {
+    "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+    "coordinator_aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "ownership": "unique group_session_created matches frozen plan and original certificate CN",
+    "original_journal_task_rows": 0,
+    "original_messages_json_or_jsonl_present": false,
+    "original_runner_terminal_exit": 1,
+    "official_dissolve_calls": 1,
+    "cleanup_terminal_exit": 1,
+    "amqps_connected": true,
+    "disband_failure": "broker NOT_FOUND: original owned exchange is absent",
+    "acl_delete_result": "ConnectError; no HTTP acknowledgement; unknown whether ACL remains",
+    "original_failure_retained": true,
+    "new_tasks": 0,
+    "new_inbox_consumers": 0
+  },
+  "intent_only_group": {
+    "group_id": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+    "intent_attribution": "exact session UUID and coordinator AIC recorded by this batch before create await",
+    "remote_creation_success": "unknown",
+    "original_error_class": "ConnectTimeout",
+    "original_http_and_rollback_acknowledgement": "not captured in this failed run",
+    "acl_state": "unknown",
+    "delete_requests_in_this_cleanup": 0
+  },
+  "readonly_probe": {
+    "completed_at": "2026-10-19T10:04:00.390443+00:00",
+    "resources": [
+      {
+        "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+        "kind": "exchange",
+        "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-cef7f4c704374de1a376eab9ed086e60",
+        "passive": true,
+        "exists": false,
+        "error_class": "ChannelNotFoundEntity",
+        "broker_not_found": true
+      },
+      {
+        "group_id": "group-incident-cef7f4c704374de1a376eab9ed086e60",
+        "kind": "leader_queue",
+        "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-cef7f4c704374de1a376eab9ed086e60_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+        "passive": true,
+        "exists": false,
+        "error_class": "ChannelNotFoundEntity",
+        "broker_not_found": true
+      },
+      {
+        "group_id": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+        "kind": "exchange",
+        "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-7bed224810f3458b8e32433dcdfa1744",
+        "passive": true,
+        "exists": false,
+        "error_class": "ChannelNotFoundEntity",
+        "broker_not_found": true
+      },
+      {
+        "group_id": "group-incident-7bed224810f3458b8e32433dcdfa1744",
+        "kind": "leader_queue",
+        "name": "group_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW_group-incident-7bed224810f3458b8e32433dcdfa1744_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+        "passive": true,
+        "exists": false,
+        "error_class": "ChannelNotFoundEntity",
+        "broker_not_found": true
+      }
+    ],
+    "acl_health_gets": [
+      {
+        "request": "GET /health",
+        "trust_env": true,
+        "http_status": 200,
+        "duration_seconds": 0.969
+      },
+      {
+        "request": "GET /health",
+        "trust_env": false,
+        "http_status": 200,
+        "duration_seconds": 0.156
+      }
+    ],
+    "connection_closed": true,
+    "interpretation": "four exact MQ resources absent now; health 200 is reachability, not proof that ACL entries are absent",
+    "system_proxy_changed": false
+  },
+  "stopped_state": {
+    "owned_container_count": 10,
+    "actual_stop": "ACTUALLY_STOPPED",
+    "keeper_terminal_exit": 0,
+    "probe_incident_containers_running": 0,
+    "probe_platform_coordinator_or_worker_processes": 0,
+    "volumes_and_records_retained": true
+  },
+  "batch_state": {
+    "attempted_cases": 3,
+    "successful_cases": 1,
+    "failed_cases": 2,
+    "not_attempted_cases": [
+      "e1a-after_applied-r1"
+    ],
+    "new_fault_case_launched_by_cleanup": false
+  },
+  "source_boundaries": {
+    "execution_checkout_commit": "a4d71e83444228a71499a75c932a2b9e7ba678f1",
+    "original_plan_source_profile_and_evidence_hashes_unchanged": true,
+    "local_sdk_namespace": "group_{leader_aic}_{group_id}; queue appends member AIC",
+    "local_acl_namespace": "group_acl:{leader_aic}:{group_id}",
+    "official_local_api_rules": "client certificate CN must equal leader route parameter; no group GET/list route in checked source",
+    "deployed_server_policy_verified": false
+  },
+  "local_server_source_reference": {
+    "scope": "separate original vendor copy; not the deployed server",
+    "files": {
+      "mq-auth-server/app/api/groups.py": "03928bc84caea5b3991fcd634bda95df792117960a462898674b4e63013b1faa",
+      "mq-auth-server/app/services/group_acl.py": "8d096e18ce0202ec86e2f71d18f4abf0043378c84a9e7e2b3cc35ab267032fe8"
+    }
+  },
+  "sidecar_note": "Independent SQLite mode=ro inspection created an empty WAL and 32768-byte SHM. Original journal hash unchanged. Sidecars retained; subsequent checks use immutable=1.",
+  "next_steps": [
+    "Review the failed HTTP path and determine an explicit safe next cleanup attempt; do not silently retry this consumed attempt",
+    "If cleaning ACLs later, target only the exact two recorded coordinator/group namespaces; retain 7bed creation outcome as unknown",
+    "Use an ACL DELETE acknowledgement or an official authoritative ACL inspection before declaring full cleanup complete",
+    "Review whether the original unused fourth plan can resume only after cleanup preconditions and exclusive identity ownership are rechecked"
+  ],
+  "evidence_sha256": {
+    "execution-observation.json": "e5c748b58ac0a617fb5531c4e47586f0c507fbf8efcdc5d49962ad259bda0708",
+    "execution/result.json": "78e8a7e64df5433261556b052efce8102d808a40c4d117a28505dde949aa0c1d",
+    "execution/stop/result.json": "e33d19ce87f8db89ca92420882a8fb65f7bfe9195c2b7a5cab047b9299233459",
+    "execution/stop/after.json": "057cf52b2a902696226d3a0c5eed54c037d44cbb3ce195b0046079925acf3cab",
+    "execution/keeper.exit.json": "9392882d720b73c77adbb67a436d891ca13f730076afacf1b349f0ddd1d59700",
+    "owned-group-cleanup/prepared-v2.json": "a9ad8c85ebc17ba68beeef574e2c3d2d23fb877357dedaeb70654fa7089b4e6c",
+    "owned-group-cleanup/attempt-1/result.json": "373995b6c5cc784e46634ae371e738a024b06c1677be8cf2751cc9006666035b",
+    "owned-group-cleanup/execution/runner.exit.json": "a4d1944563fbb4d16e91c6e5521bc6af8ce21064be99bded084b5b229d2fd689",
+    "owned-group-cleanup/attempt-1/sdk.log": "3b9e3115f621f3c6aee4bd3f54f6486a9e116e57f7dfc8eea4cf9d6983ac8986",
+    "owned-group-cleanup/readonly-probe-1/result.json": "259ab2dde79b4921449278cac852c26f9f99deb05d648b52415522a931b3a3f2",
+    "review/access-batch-close-independent-review.json": "1e8f739eeae578f8e69d823d9331f9c113b875671b539ec4a853157cb8bbc3b4"
+  }
+}

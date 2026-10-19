@@ -1,0 +1,7 @@
+{
+  "exit_code": 1,
+  "tool_chunk": "687785",
+  "helper_sha256": "ae7518b29b79dda7b734a15b05061e4436828bccd7d60394a51eb63c75d21337",
+  "cause": "Local projection assertion expected two total events; recorded window also contains real keep_awake_request before the two job lifecycle events. Raw inputs unchanged; partial projected inputs preserved in real-example.",
+  "correction": "Count the two job lifecycle events separately, retaining the observed other event."
+}

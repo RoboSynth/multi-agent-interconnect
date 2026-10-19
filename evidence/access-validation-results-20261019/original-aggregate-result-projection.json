@@ -1,0 +1,46 @@
+{
+  "status": "failed",
+  "project": "incident-pilot-access-validation-20261019",
+  "started_at": "2026-10-19T09:24:48.863159+00:00",
+  "cases": [
+    {
+      "key": "f10-m0-r1",
+      "started_at": "2026-10-19T09:25:32.543388+00:00",
+      "plan_sha256": "439353dc36c8a2f77bf0b05d825116f085623a054c32dc4c5ba6f84dd1c6a95b",
+      "batch_authorization_sha256": "b38931a3bff8935639d1ca437f6ce1a58f6d13e5c66482b2beaa757f135b12bd",
+      "status": "completed",
+      "finished_at": "2026-10-19T09:28:33.965290+00:00",
+      "actual_exit": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "finished_at": "2026-10-19T09:28:33.945978+00:00",
+        "duration_seconds": 181.406,
+        "stdout_sha256": "a92841d906ffba2221a7f4b8c45506be69129fceea87c129860a99af9e186d40",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cleanup_and_recovery_verified": true
+    },
+    {
+      "key": "e1a-after_observation-r1",
+      "started_at": "2026-10-19T09:28:37.706448+00:00",
+      "plan_sha256": "f0bf7af269c7b115e27c56a9a806c0fd21b4c416071da861a08dc3b4e91b7355",
+      "batch_authorization_sha256": "b38931a3bff8935639d1ca437f6ce1a58f6d13e5c66482b2beaa757f135b12bd",
+      "status": "failed",
+      "launcher_error_class": "RuntimeError",
+      "finished_at": "2026-10-19T09:30:26.479977+00:00",
+      "actual_exit": {
+        "actual_exit_code": 1,
+        "terminal": true,
+        "finished_at": "2026-10-19T09:30:26.467958+00:00",
+        "duration_seconds": 108.766,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cleanup_and_recovery_verified": true
+    }
+  ],
+  "error_class": "RuntimeError",
+  "traceback": "Traceback (most recent call last):\n  File \"<batch>/run_authorized.py\", line 287, in execute\n    rows_done.append(run_case(row, summary, authorization_path, consumed))\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<batch>/run_authorized.py\", line 197, in run_case\n    raise RuntimeError(\"Stop subsequent cases: cleanup/restoration/H00 unproven\")\nRuntimeError: Stop subsequent cases: cleanup/restoration/H00 unproven\n",
+  "project_stop": "ACTUALLY_STOPPED",
+  "finished_at": "2026-10-19T09:32:44.395652+00:00"
+}

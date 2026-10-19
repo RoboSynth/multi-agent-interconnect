@@ -1,0 +1,377 @@
+{
+  "schema_version": 1,
+  "amp": {
+    "unique_records": 840,
+    "log_types": {
+      "heartbeat": 840
+    },
+    "invalid_records": 0,
+    "duplicate_records_ignored": 0,
+    "invalid_access_durations": 0,
+    "agents": [
+      {
+        "aic": "A1",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.98,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 11.587,
+          "last_heartbeat_to_end_seconds": 2.433
+        }
+      },
+      {
+        "aic": "A2",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.994,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 11.649,
+          "last_heartbeat_to_end_seconds": 2.357
+        }
+      },
+      {
+        "aic": "A3",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.48,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 13.759,
+          "last_heartbeat_to_end_seconds": 0.761
+        }
+      },
+      {
+        "aic": "A4",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.869,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 0.86,
+          "last_heartbeat_to_end_seconds": 13.271
+        }
+      },
+      {
+        "aic": "A5",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.955,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 13.756,
+          "last_heartbeat_to_end_seconds": 0.289
+        }
+      },
+      {
+        "aic": "A6",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.671,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 11.584,
+          "last_heartbeat_to_end_seconds": 2.746
+        }
+      },
+      {
+        "aic": "A7",
+        "heartbeat_count": 120,
+        "unique_heartbeat_count": 120,
+        "duplicate_timestamp_count": 0,
+        "observed_seconds": 1785.747,
+        "estimated_missing_heartbeats": 0,
+        "coverage_percent_in_observed_window": 100.0,
+        "expected": true,
+        "valid_record_count": 120,
+        "heartbeat_sampling_window": {
+          "expected_slot_count": 120,
+          "observed_slot_count": 120,
+          "missing_slot_count": 0,
+          "coverage_percent": 100.0,
+          "start_to_first_heartbeat_seconds": 13.759,
+          "last_heartbeat_to_end_seconds": 0.494
+        }
+      }
+    ],
+    "median_access_ms": null,
+    "p95_access_ms": null,
+    "median_partner_processing_ms": null,
+    "p95_partner_processing_ms": null,
+    "heartbeat_interval_seconds": 15,
+    "heartbeat_estimator": "nearest cadence, half-interval tolerance; unique timestamps between first and last heartbeat only",
+    "latency_percentile_method": "nearest rank: ceil(0.95*n), one-based",
+    "coverage_limit": "Fixed-window sampling completeness, not uptime or TTL liveness. Cadence jitter across slot boundaries can create adjacent-slot misses. Internal first/last coverage is secondary. No platform ingestion, signature verification, 24-hour operation or Monitor evidence is inferred.",
+    "task_roundtrip": "Use coordinator per-task elapsed_ms; AMP access includes send or handler duration only.",
+    "evidence_level": "local AMP files; platform ingestion and continuous operation require separate evidence",
+    "expected_aics": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7"
+    ],
+    "expected_aics_without_records": [],
+    "expected_aics_without_heartbeat": [],
+    "unexpected_observed_aics": [],
+    "acceptance_window": {
+      "start": "2026-10-18T06:55:21Z",
+      "end": "2026-10-18T07:25:21Z",
+      "duration_seconds": 1800.0,
+      "expected_slots_per_agent": 120
+    },
+    "outside_window_records_ignored": 0,
+    "primary_heartbeat_metric": "agents[].heartbeat_sampling_window.coverage_percent",
+    "heartbeat_sampling_estimator": "[start,end); slots anchored at window start; floor((timestamp-start)/interval); one hit per slot; final partial slot counts once",
+    "expected_aic_sampling_window": {
+      "expected_agent_count": 7,
+      "expected_slot_count": 840,
+      "observed_slot_count": 840,
+      "missing_slot_count": 0,
+      "coverage_percent": 100.0,
+      "unexpected_agents_excluded": true
+    }
+  },
+  "scheduler": {
+    "input_provided": true,
+    "jobs": [
+      {
+        "run_id": "run-1",
+        "kind": "inspect",
+        "outcome": "completed",
+        "reported_status": "completed",
+        "elapsed_seconds": 39.094,
+        "start_events": 1,
+        "finish_events": 1,
+        "missing_start": false,
+        "missing_finish": false,
+        "conflicting_records": false,
+        "signals": []
+      }
+    ],
+    "by_kind": [
+      {
+        "kind": "inspect",
+        "recorded_jobs": 1,
+        "completed": 1,
+        "failed": 0,
+        "unknown": 0,
+        "evidence": "observed_jobs"
+      },
+      {
+        "kind": "drill",
+        "recorded_jobs": 0,
+        "completed": 0,
+        "failed": 0,
+        "unknown": 0,
+        "evidence": "unknown_no_recorded_job"
+      },
+      {
+        "kind": "unknown",
+        "recorded_jobs": 0,
+        "completed": 0,
+        "failed": 0,
+        "unknown": 0,
+        "evidence": "unknown_no_recorded_job"
+      }
+    ],
+    "diagnostics": {
+      "other_events": 1,
+      "invalid_durations": 0
+    },
+    "counts": {
+      "completed": 1
+    },
+    "interpretation": "Observed in-window events only; reported completed is not independent business recovery. Missing endpoints and conflicts remain unknown; no expected schedule denominator is inferred."
+  },
+  "coordinator": {
+    "input_provided": true,
+    "tasks": [
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-1",
+        "kind": "observe",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:37.176257+00:00",
+        "elapsed_ms": 1125.0,
+        "conflicting_records": false
+      },
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-2",
+        "kind": "observe",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:38.308208+00:00",
+        "elapsed_ms": 1500.0,
+        "conflicting_records": false
+      },
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-3",
+        "kind": "observe",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:39.815051+00:00",
+        "elapsed_ms": 1656.0,
+        "conflicting_records": false
+      },
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-4",
+        "kind": "observe",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:41.479678+00:00",
+        "elapsed_ms": 1563.0,
+        "conflicting_records": false
+      },
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-5",
+        "kind": "observe",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:43.057243+00:00",
+        "elapsed_ms": 1328.0,
+        "conflicting_records": false
+      },
+      {
+        "incident_id": "incident-1",
+        "logical_task_id": "task-6",
+        "kind": "verify",
+        "status": "ok",
+        "started_at": "2026-10-18T06:55:44.393985+00:00",
+        "elapsed_ms": 31875.0,
+        "conflicting_records": false
+      }
+    ],
+    "diagnostics": {},
+    "recorded_count": 6,
+    "unknown_duration_count": 0,
+    "measured_count": 6,
+    "median_ms": 1531.5,
+    "p95_ms": 31875.0,
+    "interpretation": "Tasks are selected by started_at in [start,end); final snapshot outcomes may finish beyond the window. elapsed_ms is coordinator-measured task elapsed, including approval waiting when present, transport and validation; not pure network RTT, fault-to-recovery time or AMP duration. Failed task measurements are retained."
+  },
+  "latency_metrics": [
+    {
+      "metric": "AMP access send-or-handler duration",
+      "median_ms": null,
+      "p95_ms": null,
+      "measured_count": null
+    },
+    {
+      "metric": "AMP partner handler duration",
+      "median_ms": null,
+      "p95_ms": null,
+      "measured_count": null
+    },
+    {
+      "metric": "Coordinator task elapsed (approval may be included)",
+      "median_ms": 1531.5,
+      "p95_ms": 31875.0,
+      "measured_count": 6
+    }
+  ],
+  "inputs": [
+    {
+      "source_id": "amp-001",
+      "sha256": "9469059e6e6bb55f3ff45706791b559a0a52d2d616860fd40776ef18cab29a84",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-002",
+      "sha256": "5cd57f65062739bebef2fb9c0dc3f748ee43762d4475a3a1a4f92e2543b9c5cb",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-003",
+      "sha256": "92f85dde99011263a72644ceac93396fbcce40cd474d0ce5c798a74cf04c19cd",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-004",
+      "sha256": "9973d5bfb6268be6315da611a614e2882de8fe83a4571a85a033193d02b141da",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-005",
+      "sha256": "17968480038fb9c689e877cc01123f29b333a1322cbcd5db6d5ce7cbc6eda14f",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-006",
+      "sha256": "b166878df953bcf069a84ac56436a8a775a04a708bd16552dab8ddcce7b81eea",
+      "bytes": 22680
+    },
+    {
+      "source_id": "amp-007",
+      "sha256": "deda8c27060f801cfdbb7afb46141936b720b771eee87f196e2c3156cc5bcff6",
+      "bytes": 22680
+    },
+    {
+      "source_id": "scheduler-001",
+      "sha256": "de301f2ec09fc31a13aa10a877f705958d1256f7b59da32b472a603f8bfd3c45",
+      "bytes": 410
+    },
+    {
+      "source_id": "coordinator-001",
+      "sha256": "1faf3e5a6e98cae84a79e42531666d21ecf4ee6124b56f0ea728c531bbf3c58f",
+      "bytes": 1266
+    }
+  ],
+  "limitations": [
+    "Recorded fixed window; neither uptime nor 24-hour/7-day acceptance is inferred.",
+    "Missing inputs, endpoints and durations remain unknown; zero events does not prove a disabled or healthy service.",
+    "No Kafka/Monitor ingestion, certificate/signature validation, scheduled-cycle completeness or physical-effect proof is inferred.",
+    "AMP send/handler duration and coordinator task elapsed are distinct measurements; AMP sample counts are unavailable in the unchanged legacy summary."
+  ]
+}

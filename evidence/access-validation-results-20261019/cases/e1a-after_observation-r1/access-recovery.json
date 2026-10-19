@@ -1,0 +1,72 @@
+{
+  "recorded_recovery": [
+    {
+      "service": "database-agent",
+      "schema_version": "domain-access-recovery/1",
+      "status": "recovered",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "name": "database",
+      "config_sha256": "5c306fbf5d18235019250444c4aa44e7b5a9763b2b8b1661d21793bff6f82fcd",
+      "log_before": {
+        "exists": true,
+        "bytes": 3345,
+        "sha256": "55f5343f7c47cdbaee15bba58f619716591d78fbc66d11f8b9f00113cb4ea289"
+      },
+      "log_after": {
+        "exists": true,
+        "bytes": 3345,
+        "sha256": "55f5343f7c47cdbaee15bba58f619716591d78fbc66d11f8b9f00113cb4ea289"
+      },
+      "journal_before": {
+        "exists": true,
+        "bytes": 28672,
+        "sha256": "73877135ed57f017763289bcc067f74c769afb8ef1a31387d8beda9666da2e49"
+      },
+      "journal_after": {
+        "exists": true,
+        "bytes": 28672,
+        "sha256": "73877135ed57f017763289bcc067f74c769afb8ef1a31387d8beda9666da2e49"
+      },
+      "unique_access_ids": 6,
+      "access_rows": 6,
+      "unconfirmed_outcomes": 0,
+      "business_or_platform_actions": 0,
+      "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+    },
+    {
+      "service": "database-backup-agent",
+      "schema_version": "domain-access-recovery/1",
+      "status": "recovered",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "name": "database-backup",
+      "config_sha256": "83cafbe305b04378c99c5cd81b54380538426f45817454498c8b0717a3ac8755",
+      "log_before": {
+        "exists": false,
+        "bytes": 0,
+        "sha256": null
+      },
+      "log_after": {
+        "exists": false,
+        "bytes": 0,
+        "sha256": null
+      },
+      "journal_before": {
+        "exists": true,
+        "bytes": 20480,
+        "sha256": "3a21d269d578910770fac070618c9f2206e0b29eb310ea822ea9c170ed838d05"
+      },
+      "journal_after": {
+        "exists": true,
+        "bytes": 20480,
+        "sha256": "3a21d269d578910770fac070618c9f2206e0b29eb310ea822ea9c170ed838d05"
+      },
+      "unique_access_ids": 0,
+      "access_rows": 0,
+      "unconfirmed_outcomes": 0,
+      "business_or_platform_actions": 0,
+      "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+    }
+  ],
+  "attribution": "The six database rows were already present in the shared project volume after F10. Both failed E1 attempts have empty coordinator task journals and no products; these counts do not demonstrate six new E1 task records or new case-specific recovery.",
+  "new_case_specific_access_rows_proven": false
+}

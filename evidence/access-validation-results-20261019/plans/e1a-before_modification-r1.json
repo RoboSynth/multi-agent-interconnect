@@ -1,0 +1,35 @@
+{
+  "plan_sha256": "6f067bcb989e281e7175e0265c06592c8999752aa88539ebdb663e7cbc0772b8",
+  "schema_version": "platform-e1-plan/2",
+  "case": "E1-a",
+  "crash_point": "before_modification",
+  "model_calls": 0,
+  "project": "incident-pilot-access-validation-20261019",
+  "effects": [
+    "F07 apply and restore on the bound orders target",
+    "replace only owned primary/backup database workers",
+    "one primary before_modification exit82",
+    "formal AMQPS ADP/describe/act/resume and owned group close",
+    "approved db.restore_writes and application.pool_rebuild",
+    "restore normal database workers and independent H00",
+    "after owned database workers stop, replay each original domain access journal in an offline network-disabled container before normal worker restoration"
+  ],
+  "image_id": "sha256:f91a92463cc29b39c55425e42115c81976183604911ee148e1f3a4ec7ab9ab3c",
+  "identities": {
+    "coordinator": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+    "database": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+    "database-backup": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+    "application": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+    "ops": "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+    "verification": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+    "onboarding": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF"
+  },
+  "recover_access": true,
+  "evidence_limits": [
+    "MCP invocations are not physical side effects",
+    "process-local ownership lock cannot exclude another host",
+    "normal close evidence is SDK return/local state/warnings, not a broker ACL inventory",
+    "one case only; no cross-method effectiveness claim",
+    "no old-primary resurrection claim"
+  ]
+}

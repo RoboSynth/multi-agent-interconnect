@@ -38,6 +38,6 @@ python tools/sdk-suite/run_sdk_suite.py --repo-root . --output ../sdk-suite-run-
 
 ## T01 边界
 
-这次补齐 vendor 测试树并给出当前组合 SDK 的完整本地验证。当前 vendor 仍包含两 PR 及较新的 durable access/coordinator 扩展，不能称为任一单独 PR 的 checkout。T01 的最终 fork 集成提交与 vendor 绑定、AtomGit 镜像及上游 CI 尚未完成。平台 fault、Monitor 入库、正式七身份重新连接及长期运行也不由这组本地测试证明。
+这次补齐 vendor 测试树并给出当前组合 SDK 的完整本地验证。当前 vendor 包含两 PR 及较新的 durable access/coordinator 扩展，已绑定公开集成提交[6b701c6](https://github.com/RoboSynth/ACPs-community/commit/6b701c635139387ca536164226523d851b0388be)。[最终绑定收据](../evidence/sdk-final-binding-20261019/README.md)逐字核实147文件和Git模式，SDK源码树与原605套件相同，因此没有为元数据更新重复运行套件。T01 的最终 fork/vendor 绑定已完成，AtomGit 镜像及上游 CI 仍待完成。Monitor 入库、正式故障验收及长期运行按各自真实记录判断。
 
 [此前 SDK 来源截面](sdk_attribution_20261019.md)继续以 `afb46e1` 为截止保留；其 140 文件/行数统计不改写为当前 147 文件。历史验收失败和缺失 access 记录也保持原有结论。
