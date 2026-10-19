@@ -24,9 +24,11 @@ SCENARIOS = {
     "H00": "healthy control; no mutation",
     "F01": "stop active app-v2 process/container",
     "F02": "route gateway to v1 (missing v2 response field)",
+    "F04": "exhaust the opt-in one-connection application pool without a database lock",
     "F06": "hold real SHARE table lock, leaving reads available",
     "F07": "set application role read-only and rebuild its connections",
     "F10": "F02 and F07",
+    "F01_F07": "F01 and F07; application stopped after its database role is set read-only",
     "F12": "gateway suppresses a successful committed create response",
 }
 UNSUPPORTED = {
@@ -308,6 +310,34 @@ class Injector:
                     time.sleep(0.25)
             raise RuntimeError("app-v2 did not become ready after restart")
 
+    def pool_exhaustion(self, enabled):
+        """F04 uses only the fixed app-v2 endpoint and a revision-checked config.
+
+        The application must explicitly enable its test fixture. Restore accepts
+        only stable or this exact fixture; it never replaces an unrelated config.
+        """
+        headers = {"Authorization": "Bearer " + self._environment("APP_ADMIN_TOKEN")}
+        port = self.runtime.get("app_v2_port", 8082)
+        url = f"http://127.0.0.1:{port}"
+        with httpx.Client(timeout=12, trust_env=False) as client:
+            response = client.get(url + "/admin/status", headers=headers)
+            response.raise_for_status()
+            status = response.json()
+            version = status.get("config_version")
+            if version not in {"stable", "candidate"} or (enabled and version != "stable"):
+                raise ValueError("F04 requires stable or its own known pool configuration")
+            if not enabled and version == "stable":
+                return
+            if not enabled and (status.get("pool", {}).get("max_size") != 1
+                                or status.get("pool_exhausted") is not True):
+                raise ValueError("F04 refuses to restore an unrelated candidate configuration")
+            path = "/admin/config/test-pool-exhaustion" if enabled else "/admin/config/rollback"
+            response = client.post(url + path, json={"expected_revision": status["config_revision"]}, headers=headers)
+            response.raise_for_status()
+            expected = "candidate" if enabled else "stable"
+            if response.json().get("config_version") != expected:
+                raise RuntimeError("F04 pool configuration transition was not confirmed")
+
     def lock(self, enabled):
         if self.backend == "docker":
             if enabled:
@@ -522,6 +552,8 @@ class Injector:
             self.application(False)
         elif scenario == "F02":
             self.route("v1")
+        elif scenario == "F04":
+            self.pool_exhaustion(True)
         elif scenario == "F06":
             self.lock(True)
         elif scenario == "F07":
@@ -529,6 +561,9 @@ class Injector:
         elif scenario == "F10":
             self.readonly(True)
             self.route("v1")
+        elif scenario == "F01_F07":
+            self.readonly(True)
+            self.application(False)
         elif scenario == "F12":
             self.reply_drop(True)
 
@@ -543,6 +578,8 @@ class Injector:
             self.application(True)
         elif scenario == "F02":
             self.route("v2")
+        elif scenario == "F04":
+            self.pool_exhaustion(False)
         elif scenario == "F06":
             self.lock(False)
         elif scenario == "F07":
@@ -550,6 +587,10 @@ class Injector:
         elif scenario == "F10":
             self.readonly(False)
             self.route("v2")
+        elif scenario == "F01_F07":
+            # The app must be running before readonly(False) rebuilds its pool.
+            self.application(True)
+            self.readonly(False)
         elif scenario == "F12":
             self.route("v2")
             self.reply_drop(False)

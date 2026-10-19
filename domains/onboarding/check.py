@@ -11,10 +11,11 @@ from integration.validate_acs import validate_document
 
 
 class OnboardingPartner:
-    def __init__(self, aic, *, discovery_url, allowed_callers, discover=None):
+    def __init__(self, aic, *, discovery_url, allowed_callers, discover=None, public_metadata_service=False):
         self.aic, self.discovery_url = aic, discovery_url
         self.allowed_callers = frozenset(allowed_callers)
         self.discover = discover or self._discover
+        self.public_metadata_service = public_metadata_service
 
     async def _discover(self, aic):
         request = DiscoveryRequest(type="filtered", limit=10, filter=DiscoveryFilter(conditions=[
@@ -34,7 +35,9 @@ class OnboardingPartner:
         result = {"schema_version": "ifc/1.0", "incident_id": task.incident_id,
                   "logical_task_id": task.logical_task_id, "executor_aic": self.aic,
                   "status": "ok", "facts": [], "local_hypotheses": []}
-        if caller_aic not in self.allowed_callers:
+        public_caller = (self.public_metadata_service and isinstance(caller_aic, str)
+                         and caller_aic != self.aic and validate_aic_format(caller_aic)[0])
+        if caller_aic not in self.allowed_callers and not public_caller:
             return {**result, "status": "rejected", "reason": "caller_not_allowed"}
         if task.kind == "describe":
             return {**result, "description": {"resources": ["public-acs"], "tools": ["aip.onboarding.check"],

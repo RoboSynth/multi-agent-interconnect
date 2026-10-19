@@ -1,0 +1,20 @@
+{
+  "scope": "P2 local preparation only",
+  "test_methods_passed": 26,
+  "checks": [
+    {"suite": "test_aic_lease.py initial methods", "passed": 10, "chunk": "e0e74d", "log": "lease-tests.txt", "offline": true},
+    {"suite": "test_aic_lease.py new cancellation methods only", "passed": 2, "chunk": "bb75b8", "log": "cancellation-regression-tests.txt", "offline": true},
+    {"suite": "test_schedule*.py", "passed": 7, "chunk": "d19994", "log": "schedule-regression-tests.txt", "offline": true},
+    {"suite": "test_longrun_status.py", "passed": 6, "chunk": "cee2c3", "log": "status-tests.txt", "offline": true},
+    {"suite": "test_managed_startup.py", "passed": 1, "chunk": "58ea91", "offline": true},
+    {"check": "three task XML template generation", "chunk": "c568a9", "status": "template_prepared", "registered": false, "started": false},
+    {"check": "Python AST 6 files / PowerShell parser / original recorded input status", "chunk": "ea5957", "exit_code": 0, "new_live_run": false}
+  ],
+  "environment_failure_preserved": [
+    {"chunk": "140b54", "suite": "test_longrun_status.py", "failure": "sandbox default TEMP PermissionError before test behavior; rerun with workspace TEMP passed"},
+    {"chunk": "ce7307", "suite": "test_managed_startup.py", "failure": "sandbox default TEMP PermissionError before test behavior; rerun with workspace TEMP passed"}
+  ],
+  "not_executed": ["real container startup/shutdown", "official platform consumers", "startup task registration", "OS restart", "24 hour window", "new fault experiments", "uploads"],
+  "defaults": {"inspect_interval_seconds": 1800, "optional_interval_seconds": 600, "automatic_login_changed": false, "sleep_settings_changed": false},
+  "limitations": ["old frozen runners do not participate in handoff", "ownership locks are local and directory-specific", "remote cleanup unknown quarantines all seven identities", "historical heartbeat coverage is not process uptime"]
+}

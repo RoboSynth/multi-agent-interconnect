@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-19",
+  "platform": "Windows",
+  "status": "passed_offline",
+  "python": "D:/AI + 开源/incident-pilot/artifacts/p0-continuation-20261019/checkout/.venv-dev/Scripts/python.exe",
+  "first_attempts": [
+    {"suite": "test_leased_batch.py", "passed": 4, "failed": 0, "log": "leased-batch-first.txt"},
+    {"suite": "test_platform_batch.py", "passed": 3, "failed": 0, "log": "platform-batch-first.txt"},
+    {"suite": "test_aic_lease.py", "passed": 12, "failed": 0, "log": "aic-lease-first.txt"}
+  ],
+  "after_new_cancellation_test": {
+    "suite": "test_leased_batch.py", "passed": 5, "failed": 0,
+    "log": "leased-batch-with-cancellation.txt"
+  },
+  "distinct_tests_passed": 20,
+  "new_tests": ["test_cancelled_case_is_recorded_and_quarantined_before_host_resume"],
+  "runtime_code_changed": false,
+  "real_services_started": false,
+  "network_attempted": false,
+  "formal_platform_validation": "not_run",
+  "limitations": [
+    "Lease exclusion covers local processes using the same lease directory, not other computers.",
+    "Frozen source/authorization/ownership binding belongs to a new caller; this helper has no execution CLI.",
+    "Existing frozen runners must not be nested while acquiring the same identity lock."
+  ]
+}

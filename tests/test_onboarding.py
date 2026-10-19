@@ -47,6 +47,19 @@ class OnboardingTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(denied["status"], "rejected")
         self.discover.assert_not_awaited()
 
+    async def test_public_metadata_optin_accepts_external_aic_but_not_active_probes(self):
+        self.partner.public_metadata_service = True
+        external = "1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6"
+        result = await self.partner.execute(self.payload, external)
+        self.assertTrue(result["facts"][0]["value"]["passed"])
+        self.discover.reset_mock()
+        self.payload["args"]["deep"] = True
+        result = await self.partner.execute(self.payload, external)
+        self.assertEqual(result["status"], "rejected")
+        result = await self.partner.execute(self.payload, "invalid-aic")
+        self.assertEqual(result["status"], "rejected")
+        self.discover.assert_not_awaited()
+
 
 if __name__ == "__main__":
     unittest.main()

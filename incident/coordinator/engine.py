@@ -10,14 +10,14 @@ import uuid
 
 from incident.contracts import Fact, TaskPayload, TaskProduct, utc_now
 from .hypothesis import HypothesisEngine
-from .planner import EvidencePlanner, PROBES
+from .planner import EvidencePlanner, PROBES, observation_cost
 
 
 class IncidentCoordinator:
     def __init__(self, transport, directory, *, hypothesis=None, approval_issuer=None,
                  term=1, task_budget=40, on_update=None, planner_factory=EvidencePlanner,
                  eager_actions=True, probe_selector=None, generate_hypotheses=True, entry_first=True,
-                 step_selector=None):
+                 step_selector=None, skip_deterministic_model_calls=False, incident_hypotheses=False):
         self.transport = transport
         self.directory = Path(directory)
         self.directory.mkdir(parents=True, exist_ok=True)
@@ -29,6 +29,8 @@ class IncidentCoordinator:
         self.planner_factory, self.eager_actions, self.probe_selector = planner_factory, eager_actions, probe_selector
         self.generate_hypotheses, self.entry_first = generate_hypotheses, entry_first
         self.step_selector = step_selector
+        self.skip_deterministic_model_calls = skip_deterministic_model_calls
+        self.incident_hypotheses = incident_hypotheses
         self.runs = {}
         self.approvals = {}
 
@@ -225,7 +227,8 @@ class IncidentCoordinator:
         if (step.kind not in {"observe", "act", "verify"} or step.tool not in available
                 or not isinstance(step.args, dict)
                 or (step.kind == "verify" and (step.tool != "incident.verification" or step.args))
-                or (step.kind == "observe" and step.tool not in {probe.tool for probe in PROBES})):
+                or (step.kind == "observe" and step.tool not in (
+                    {probe.tool for probe in PROBES} | set(getattr(self.step_selector, "observation_tools", ()))))):
             raise ValueError("selector returned an invalid or unavailable tool step")
         if len(planner.history) == history_before:
             planner.history.append({"reason": "自由选择下一次工具调用", "tool": step.tool,
@@ -241,6 +244,9 @@ class IncidentCoordinator:
                 return True
             if (facts is not None and facts.get("service_recovered") is True
                     and (facts.get("manual_required") is True or facts.get("original_request_resolved") is False)):
+                state["status"] = "needs_attention"
+                return True
+            if getattr(self.step_selector, "method", None) == "MR":
                 state["status"] = "needs_attention"
                 return True
         else:
@@ -265,6 +271,107 @@ class IncidentCoordinator:
                    result=state["result"] if step.kind == "verify" else None)
         return False
 
+    async def _observe_batch(self, state, planner, tools, local_hypotheses):
+        """At most three domains concurrently; each partner receives one task."""
+        locks = {}
+        semaphore = asyncio.Semaphore(3)
+        async def observe(tool):
+            domain = tool.split(".")[0]
+            async with locks.setdefault(domain, asyncio.Lock()), semaphore:
+                self.event(state, "probe_selected", tool=tool, reason=planner.history[-1] if planner.history else {})
+                product = await self._call(state, tool)
+                planner.update(tool, product["facts"])
+                local_hypotheses.extend(product.get("local_hypotheses", []))
+                state["facts"] = list(planner.facts.values())
+                self.save(state)
+                return product
+        # Settle every dispatched observation before returning or modifying a
+        # resource. gather's default early exception would leave tasks running.
+        results = await asyncio.gather(*(observe(tool) for tool in tools), return_exceptions=True)
+        for result in results:
+            if isinstance(result, BaseException):
+                raise result
+        return results
+
+    async def _quick_symptoms(self, state, planner, available, local_hypotheses):
+        if "incident.symptom_check" not in available:
+            # An old deployment must not silently substitute a full verify or
+            # claim that the new three-request check happened.
+            raise RuntimeError("M2v2 requires incident.symptom_check on the verification partner")
+        tools = [tool for tool in ("application.status", "incident.symptom_check") if tool in available]
+        products = await self._observe_batch(state, planner, tools, local_hypotheses)
+        symptom = next(product for tool, product in zip(tools, products) if tool == "incident.symptom_check")
+        facts = {fact["key"]: fact["value"] for fact in symptom["facts"]}
+        passed = facts.get("symptom_check_passed") is True
+        self.event(state, "quick_symptom_check", passed=passed,
+                   summary=facts.get("symptom_observation"), final_verification=False)
+        return passed
+
+    async def _run_incident_planning(self, state, planner, available, local_hypotheses):
+        """Once initially, one bounded regeneration only after contradiction."""
+        hypotheses, generations = [], 0
+        generation_evidence = None
+        async def generate(reason):
+            nonlocal hypotheses, generations, generation_evidence
+            generation_evidence = json.dumps(list(planner.facts.values()), sort_keys=True)
+            generations += 1
+            state["hypothesis_generations"] = generations
+            self.event(state, "hypothesis_generation", reason=reason, generation=generations)
+            hypotheses = await self.hypothesis.generate(state["symptom"], list(planner.facts.values()),
+                sorted(available), list(local_hypotheses), max_attempts=1,
+                probe_costs={probe.tool: probe.cost for probe in planner.probes}) if self.generate_hypotheses else []
+        # Initial context is captured before entry observations. Their ordering
+        # remains fixed, and the same ops partner is never called concurrently.
+        model = asyncio.create_task(generate("incident_start"))
+        entry = [tool for tool in ("ops.containers", "ops.route_status") if tool in available]
+        try:
+            results = await asyncio.gather(model, self._observe_batch(state, planner, entry, local_hypotheses),
+                                           return_exceptions=True)
+            for result in results:
+                if isinstance(result, BaseException):
+                    raise result
+        finally:
+            if not model.done():
+                model.cancel()
+                await asyncio.gather(model, return_exceptions=True)
+        quick_passed = False
+        while True:
+            diagnosed = set(state.get("diagnosed_causes", []))
+            for key, expected, cause in (("container_state", "exited", "application_unavailable"),
+                    ("route_version", "v1", "stale_route"), ("read_only", True, "database_read_only")):
+                if key in planner.facts and planner.value(key) == expected:
+                    diagnosed.add(cause)
+            if planner.value("blocking_sessions", []):
+                diagnosed.add("database_blocked")
+            state["diagnosed_causes"] = sorted(diagnosed)
+            actions = planner.actions()
+            if actions:
+                state["plan"] = [asdict(node) for node in actions]
+                for node in actions:
+                    self.event(state, "plan_adjusted", reason=node.reason, node=asdict(node))
+                    await self._call(state, node.tool, kind="act", args=node.args, node=node)
+                    planner.action_completed(node)
+                state["facts"] = list(planner.facts.values())
+                quick_passed = await self._quick_symptoms(state, planner, available, local_hypotheses)
+                continue
+            required = planner.required_probe(available)
+            if quick_passed and required is None:
+                selected = []
+            else:
+                current_evidence = json.dumps(list(planner.facts.values()), sort_keys=True)
+                if (hypotheses and not planner.candidates(hypotheses) and generations < 2
+                        and current_evidence != generation_evidence):
+                    await generate("all_candidates_contradicted_by_new_evidence")
+                selected = [required] if required else planner.next_probes(hypotheses, available, maximum=3)
+            state["hypotheses"] = [hypothesis.model_dump() for hypothesis in planner.candidates(hypotheses)]
+            state["planning_history"] = planner.history
+            if not selected:
+                facts = await self._verify(state)
+                state["status"] = "completed" if facts.get("business_recovered") is True else "needs_attention"
+                break
+            await self._observe_batch(state, planner, selected, local_hypotheses)
+        state["hypothesis_generations"] = generations
+
     async def run(self, state):
         planner = self.planner_factory()
         self.hypothesis.begin_run()
@@ -276,6 +383,9 @@ class IncidentCoordinator:
         local_hypotheses = []
         try:
             available = set(getattr(self.transport, "tools", [p.tool for p in PROBES]))
+            if self.incident_hypotheses:
+                await self._run_incident_planning(state, planner, available, local_hypotheses)
+                return state
             while True:
                 diagnosed = set(state.get("diagnosed_causes", []))
                 for key, predicate, cause in (
@@ -301,18 +411,30 @@ class IncidentCoordinator:
                         planner.action_completed(node)
                     state["facts"] = list(planner.facts.values())
                     continue
-                hypotheses = await self.hypothesis.generate(state["symptom"], list(planner.facts.values()),
-                    sorted(available), local_hypotheses) if self.generate_hypotheses else []
-                state["hypotheses"] = [h.model_dump() for h in planner.candidates(hypotheses)]
-                state["model_source"] = self.hypothesis.last_source
-                state["tokens"] = self.hypothesis.tokens - model_tokens_before
                 # The public entry is a prerequisite for downstream business
                 # recovery. Rank its probes with the same score, then open the
                 # remaining graph after the entry has been observed/repaired.
                 entry_probes = {"ops.containers", "ops.route_status"} & available
                 eligible = entry_probes if self.entry_first and self.eager_actions and entry_probes - planner.observed else available
                 planner.symptom, planner.local_hypotheses = state["symptom"], local_hypotheses
-                tool = await self.probe_selector(planner, hypotheses, eligible) if self.probe_selector else planner.next_probe(hypotheses, eligible)
+                required = None
+                deterministic = False
+                if self.skip_deterministic_model_calls and self.probe_selector is None:
+                    required = planner.required_probe(eligible)
+                    choices = [p for p in PROBES if p.tool in eligible and p.tool not in planner.observed]
+                    deterministic = required is not None or len(choices) <= 1
+                if deterministic:
+                    # A required observation, a single available observation, or
+                    # verification has no model ranking decision to make. This
+                    # opt-in method keeps every resource/approval/verify guard.
+                    tool = required if required is not None else planner.next_probe([], eligible)
+                    reason = "required_probe" if required is not None else "single_probe" if tool else "verification"
+                    state.setdefault("model_skip_events", []).append({"reason": reason, "tool": tool})
+                else:
+                    hypotheses = await self.hypothesis.generate(state["symptom"], list(planner.facts.values()),
+                        sorted(available), local_hypotheses) if self.generate_hypotheses else []
+                    state["hypotheses"] = [h.model_dump() for h in planner.candidates(hypotheses)]
+                    tool = await self.probe_selector(planner, hypotheses, eligible) if self.probe_selector else planner.next_probe(hypotheses, eligible)
                 state["model_source"] = self.hypothesis.last_source
                 state["tokens"] = self.hypothesis.tokens - model_tokens_before
                 state["planning_history"] = planner.history
@@ -349,6 +471,7 @@ class IncidentCoordinator:
                          model_requests=self.hypothesis.requests[model_requests_before:])
             state["token_usage_complete"] = all("usage" in request and "total_tokens" in request["usage"]
                                                for request in state["model_requests"])
+            state["observation_cost"] = observation_cost(state["tasks"])
             state.update(finished_at=utc_now(), elapsed_seconds=round(time.monotonic()-started, 3))
             self.save(state)
         return state

@@ -12,6 +12,7 @@ import re
 import time
 
 from .policy import PolicyRejected
+from .handover import HISTORY_BODY_FIELDS, HISTORY_COMMON_FIELDS, HISTORY_OPTIONAL_FIELDS
 
 
 class ToolExecutionError(RuntimeError):
@@ -102,9 +103,9 @@ def _handover_digest(payload, args):
             raise PolicyRejected("handover conversation must be a list")
         for item in conversation:
             direction = item.get("direction") if isinstance(item, dict) else None
-            body = {"request": "payload", "product": "product"}.get(direction) if isinstance(direction, str) else None
-            required = {"direction", "aip_task_id", body}
-            if (body is None or not required <= set(item) or set(item) - required - {"aip_session_id"}
+            body = HISTORY_BODY_FIELDS.get(direction) if isinstance(direction, str) else None
+            required = HISTORY_COMMON_FIELDS | {body}
+            if (body is None or not required <= set(item) or set(item) - required - HISTORY_OPTIONAL_FIELDS
                     or not isinstance(item["aip_task_id"], str) or not item["aip_task_id"]
                     or not isinstance(item[body], dict)):
                 raise PolicyRejected("invalid handover conversation entry")

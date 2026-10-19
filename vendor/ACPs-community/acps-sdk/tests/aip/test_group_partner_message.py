@@ -79,6 +79,8 @@ async def test_consume_task_command_emits_receive_and_ack(tmp_path: Path) -> Non
     ack = json.loads(lines[1])
     assert receive["body"]["eventType"] == "receive"
     assert receive["parent_span_id"] == send_span
+    assert receive["correlation_id"] == "task-1"
+    assert ack["correlation_id"] == "task-1"
     assert ack["body"]["eventType"] == "ack"
 
 
@@ -121,6 +123,7 @@ async def test_publish_task_result_emits_send(tmp_path: Path) -> None:
     await client._publish_message(_task_result())
     record = json.loads(log_file.read_text(encoding="utf-8").strip())
     assert record["body"]["eventType"] == "send"
+    assert record["correlation_id"] == "task-1"
 
 
 @pytest.mark.asyncio

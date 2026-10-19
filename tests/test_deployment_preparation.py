@@ -73,7 +73,7 @@ class DeploymentPreparationTests(unittest.TestCase):
         self.assertEqual(overlay["reply-drop"], overlay["app-v2"])
 
     def test_seven_manifest_target_and_domain_scopes_share_exact_sources(self):
-        path = self.prepare("seven")
+        path = self.prepare("seven", public_onboarding=True)
         manifest = deployment.load_deployment(path)
         target = json.loads((self.output / "target.json").read_text(encoding="utf-8"))
         for key in ("project", "wsl_distro", "compose_files", "env_file", "route_file"):
@@ -95,6 +95,9 @@ class DeploymentPreparationTests(unittest.TestCase):
         self.assertEqual(host["term_namespace"], "isolated-fixture/orders")
         self.assertEqual(host["initial_participant_aics"]["database"], "fixture-database")
         self.assertNotIn("env_files", host)
+        onboard = json.loads((self.output / "domains/onboarding/config.json").read_text(encoding="utf-8"))
+        self.assertTrue(onboard["public_metadata_service"])
+        self.assertFalse((self.output / "domains/onboarding/domain.env").exists())
         policy = (self.output / "domains/ops/policy.yaml").read_text(encoding="utf-8")
         self.assertIn("isolated-fixture-app-v2-1", policy)
 

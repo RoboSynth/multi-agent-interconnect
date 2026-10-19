@@ -24,7 +24,9 @@ def save(path, value):
 
 
 def prepare(source, output, business_env, approval_env, project, *, include_onboarding=False,
-            include_coordinator=False, ops_service=None):
+            include_coordinator=False, ops_service=None, public_onboarding=False):
+    if public_onboarding and not include_onboarding:
+        raise ValueError("public_onboarding requires include_onboarding")
     if output.exists() and any(output.iterdir()):
         raise ValueError("Choose an empty output directory; existing credentials are never overwritten")
     if not project or any(c not in "abcdefghijklmnopqrstuvwxyz0123456789_-" for c in project):
@@ -94,6 +96,7 @@ def prepare(source, output, business_env, approval_env, project, *, include_onbo
             config = {key: config[key] for key in ("aic", "endpoint", "allowed_leaders", "cert", "key",
                 "trust_bundle", "mq_auth_url", "amp_directory", "evidence_path", "discovery_url")}
             config.update(name="onboarding", role="onboarding")
+            config["public_metadata_service"] = bool(public_onboarding or source_configs[role].get("public_metadata_service") is True)
             save(domain / "config.json", config)
         else:
             database = role.startswith("database")
@@ -189,6 +192,7 @@ def main():
     parser.add_argument("--approval-env", type=Path, default=ROOT / "runtime/private/approval.env")
     parser.add_argument("--project", default="incident-pilot-container")
     parser.add_argument("--include-onboarding", action="store_true", help="Prepare the optional public-metadata domain")
+    parser.add_argument("--public-onboarding", action="store_true", help="Allow external AICs to use only the public metadata check")
     parser.add_argument("--include-coordinator", action="store_true", help="Prepare a separate Windows coordinator identity/config")
     parser.add_argument("--ops-service", help="Opt in to exact Compose project/service/container operations scope")
     parser.add_argument("--provision-db-only", action="store_true", help="Apply the existing least-privilege bootstrap to this labeled database")
@@ -201,7 +205,8 @@ def main():
         parser.error("--source is required for config preparation")
     print(json.dumps(prepare(args.source.resolve(), args.output.resolve(), args.business_env.resolve(),
                              args.approval_env.resolve(), args.project, include_onboarding=args.include_onboarding,
-                             include_coordinator=args.include_coordinator, ops_service=args.ops_service), ensure_ascii=False))
+                             include_coordinator=args.include_coordinator, ops_service=args.ops_service,
+                             public_onboarding=args.public_onboarding), ensure_ascii=False))
 
 
 if __name__ == "__main__":

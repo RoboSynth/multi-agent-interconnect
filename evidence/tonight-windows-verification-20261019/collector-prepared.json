@@ -1,0 +1,47 @@
+{
+  "status": "prepared_not_started",
+  "stages": [
+    {
+      "stage": "heartbeat-access",
+      "output": "artifacts\\tonight-collector-prepared-20261019\\heartbeat-access",
+      "kinds": [
+        "heartbeat",
+        "access"
+      ],
+      "tail_inputs": 14,
+      "outputs": 2,
+      "read_from_head": false,
+      "status": "prepared_not_started"
+    },
+    {
+      "stage": "all-six",
+      "output": "artifacts\\tonight-collector-prepared-20261019\\all-six",
+      "kinds": [
+        "audit",
+        "heartbeat",
+        "metrics",
+        "access",
+        "message",
+        "system"
+      ],
+      "tail_inputs": 42,
+      "outputs": 6,
+      "read_from_head": false,
+      "status": "prepared_not_started"
+    }
+  ],
+  "all_sources_new_project": true,
+  "native_collector_version": "5.1.3",
+  "native_executable": "D:\\AI + 开源\\incident-pilot\\tools\\runtime\\fluent-bit-5.1.3\\fluent-bit-5.1.3-win64\\bin\\fluent-bit.exe",
+  "official_linux_image_cached": true,
+  "image": "cr.fluentbit.io/fluent/fluent-bit@sha256:0c768b8263e8935e19cea66fbd7e1c768db7f9edc710e832e93f058bad0ef027",
+  "actual_log_records_created": 0,
+  "kafka_sends": 0,
+  "pending": [
+    "scan actual new logs",
+    "check fresh isolated Kafka offsets",
+    "stop owned Windows source collector before switching to seven-source Linux collector",
+    "verify source subpaths exist and only mount AMP directories",
+    "observe fresh heartbeats and request platform access confirmation"
+  ]
+}

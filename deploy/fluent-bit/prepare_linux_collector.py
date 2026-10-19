@@ -69,11 +69,13 @@ def sources_from_plan(plan, root=ROOT):
     return sources
 
 
-def render_config(sources, *, mode="stdout", kafka=None):
+def render_config(sources, *, mode="stdout", kafka=None, read_from_head=None, kinds=KINDS):
+    if read_from_head is None:
+        read_from_head = mode == "stdout"
     config = fluent.render_collection_paths(
         {row["role"]: row["target"] for row in sources},
         {role: "/collector-state/amp-" + role + "-{kind}.db" for role in COLLECTION_ROLES},
-        "/collector/parsers.conf", mode=mode, kafka=kafka, read_from_head=True)
+        "/collector/parsers.conf", mode=mode, kafka=kafka, read_from_head=read_from_head, kinds=kinds)
     config = config.replace("    Grace 1", "    Grace 5")
     if mode == "stdout":
         config = config.replace("    Workers 0", "    Workers 0\n    Format json_lines\n    Json_Date_Key false")
@@ -144,7 +146,9 @@ def kafka_transport(profile):
     return mapped, mounts, environment
 
 
-def prepare(output, image, plan_path=HERE / "collection-plan.example.json", *, mode="stdout", kafka_settings=None):
+def prepare(output, image, plan_path=HERE / "collection-plan.example.json", *, mode="stdout", kafka_settings=None,
+            read_from_head=None, kinds=KINDS):
+    kinds = fluent.parse_kinds(kinds)
     output = Path(output).resolve()
     if not output.is_relative_to(ROOT / "artifacts") or output == ROOT / "artifacts":
         raise ValueError("Use a new dedicated project artifact directory")
@@ -157,7 +161,9 @@ def prepare(output, image, plan_path=HERE / "collection-plan.example.json", *, m
         mapped, transport, environment = kafka_transport(json.loads(Path(kafka_settings).read_text(encoding="utf-8-sig")))
     elif kafka_settings is not None:
         raise ValueError("Kafka settings require explicit Kafka mode")
-    config = render_config(sources, mode=mode, kafka=mapped)
+    if read_from_head is None:
+        read_from_head = mode == "stdout"
+    config = render_config(sources, mode=mode, kafka=mapped, read_from_head=read_from_head, kinds=kinds)
     spec = compose_spec(sources, image, linux_path(output / "collector.conf"), linux_path(output / "parsers.conf"),
         mode=mode, transport_mounts=transport, environment=environment)
     output.mkdir(parents=True, exist_ok=False)
@@ -168,14 +174,15 @@ def prepare(output, image, plan_path=HERE / "collection-plan.example.json", *, m
         "project": project_name(mode), "container_name": project_name(mode), "state_volume_name": project_name(mode) + "-offsets",
         "state_volume_labels": state_labels(digest(sources), mode), "source_collection": sources,
         "source_collection_sha256": digest(sources), "image": image,
-        "read_from_head": True, "mode": mode, "historical_replay_scope": "Only this mode's new isolated offset volume; stdout consumption does not imply Kafka delivery",
-        "tail_inputs": 42, "offset_databases": 42, "named_source_volumes": 5,
+        "read_from_head": read_from_head, "mode": mode, "historical_replay_scope": "Existing offsets resume regardless of Read_From_Head; on a new isolated offset volume Kafka defaults to new lines. Historical replay must be explicitly selected; stdout consumption does not imply Kafka delivery",
+        "kinds": list(kinds), "tail_inputs": 7 * len(kinds), "offset_databases": 7 * len(kinds),
+        "outputs": len(kinds), "routes": ["amp." + kind for kind in kinds], "named_source_volumes": 5,
         "actual_container_starts": 0, "network": mode == "kafka", "kafka_or_monitor_verified": False,
         "preconditions": ["Verify exclusive one-collector ownership of all seven directories",
             "Inspect existing state volume and call validate_existing_state before every start; never reuse with a changed source mapping",
             "Verify all six AMP volume subpaths exist; never fall back to the entire source volume",
             "Record all 29 original container IDs/StartedAt/restart counts and verify them unchanged after stop"],
-        "observation": "Parse stdout; verify seven configured AIC identities and all six kinds with natural appends only; do not reject ordinary source growth by frozen log-file hashes",
+        "observation": "Verify seven configured AIC identities and selected kinds (" + ",".join(kinds) + ") with natural appends only; stdout observations do not prove Kafka delivery; do not reject ordinary source growth by frozen log-file hashes",
         "stop": "Verify held collector ID/name/labels, docker stop with SIGTERM and 15-second grace, require actual ExitCode 0 and no forced kill; preserve offsets and originals",
         "file_sha256": {name: sha(output / name) for name in ("collector.conf", "parsers.conf", "compose.json")},
         "input_sha256": {"collection_plan": sha(plan_path), "renderer": sha(HERE / "render.py"),
@@ -190,10 +197,16 @@ def main():
     parser.add_argument("--image", required=True, help="Official cr.fluentbit.io repository digest")
     parser.add_argument("--mode", "--Mode", choices=["stdout", "kafka"], default="stdout")
     parser.add_argument("--kafka-settings", "--KafkaSettings", type=Path)
+    parser.add_argument("--read-from-head", action="store_true", default=None,
+                        help="Explicit historical collection; Kafka otherwise starts at new lines with fresh offsets")
+    parser.add_argument("--kinds", default="all", help="Comma-separated AMP kinds, e.g. heartbeat,access; default all six")
     args = parser.parse_args()
-    plan = prepare(args.output, args.image, mode=args.mode, kafka_settings=args.kafka_settings)
+    plan = prepare(args.output, args.image, mode=args.mode, kafka_settings=args.kafka_settings,
+                   read_from_head=args.read_from_head, kinds=args.kinds)
     print(json.dumps({"status": plan["status"], "source_collection_sha256": plan["source_collection_sha256"],
-        "tail_inputs": 42, "offset_databases": 42, "actual_container_starts": 0}))
+        "kinds": plan["kinds"], "tail_inputs": plan["tail_inputs"], "offset_databases": plan["offset_databases"],
+        "outputs": plan["outputs"], "routes": plan["routes"],
+        "actual_container_starts": 0}))
 
 
 if __name__ == "__main__":

@@ -105,6 +105,17 @@ _active_cmd_trace: ContextVar[TraceContext | None] = ContextVar(
 )
 
 
+class PartnerCleanupError(RuntimeError):
+    """Owned participant resources were attempted but not fully confirmed closed."""
+
+    def __init__(self, partner_aic, group_id, queue_name, failures, *,
+                 consumer_state="unknown", queue_state="unknown"):
+        self.partner_aic, self.group_id, self.queue_name = partner_aic, group_id, queue_name
+        self.failures, self.consumer_state, self.queue_state = failures, consumer_state, queue_state
+        super().__init__(f"Partner cleanup incomplete group_id={group_id} queue={queue_name}: " +
+                         ", ".join(f"{name}={type(error).__name__}" for name, error in failures.items()))
+
+
 class PartnerGroupState(str, Enum):
     """Partner 群组连接状态"""
 
@@ -797,7 +808,7 @@ class GroupPartnerMqClient:
                             trace_id=trace_id,
                             span_id=recv_span,
                             parent_span_id=ctx.span_id if ctx else "",
-                            correlation_id=body.get("sessionId"),
+                            correlation_id=message_tap._message_correlation(body),
                         )
                         _active_cmd_trace.set(TraceContext(trace_id=trace_id, span_id=recv_span))
                     await self._handle_incoming_message(body)
@@ -818,7 +829,7 @@ class GroupPartnerMqClient:
                             trace_id=trace_id,
                             span_id=new_span_id(),
                             parent_span_id=recv_span,
-                            correlation_id=body.get("sessionId"),
+                            correlation_id=message_tap._message_correlation(body),
                         )
                         _active_cmd_trace.set(None)
                     logger.error(
@@ -842,7 +853,7 @@ class GroupPartnerMqClient:
                         trace_id=trace_id,
                         span_id=new_span_id(),
                         parent_span_id=recv_span,
-                        correlation_id=body.get("sessionId"),
+                        correlation_id=message_tap._message_correlation(body),
                     )
                     _active_cmd_trace.set(None)
             if self._pending_leave:
@@ -1119,7 +1130,7 @@ class GroupPartnerMqClient:
                 trace_id=trace_id,
                 span_id=span_id,
                 parent_span_id=parent_span,
-                correlation_id=body.get("sessionId"),
+                correlation_id=message_tap._message_correlation(body),
             )
         logger.debug(
             "event=message_published partner_aic=%s type=%s id=%s",
@@ -1253,27 +1264,34 @@ class GroupPartnerMqClient:
             return
 
         left_group_id = self._group_id
+        queue_name = self._queue_name or getattr(self._queue, "name", None)
         disconnect_handler = self._disconnect_handler
         self._state = PartnerGroupState.LEAVING
+        failures = {}
+        consumer_state, queue_state = "not_registered", "not_present"
 
         # 停止消费
         if self._queue and self._consumer_tag:
             try:
                 await self._queue.cancel(self._consumer_tag)
             except Exception as e:
+                failures["consumer_cancel"] = e
+                consumer_state = "unknown"
                 logger.warning(
                     "event=consumer_cancel_failed partner_aic=%s group_id=%s error=%s",
                     self.partner_aic,
                     self._group_id,
                     str(e),
                 )
-            finally:
+            else:
                 self._consumer_tag = None
-        logger.info(
-            "event=consumer_stopped partner_aic=%s group_id=%s",
-            self.partner_aic,
-            self._group_id,
-        )
+                consumer_state = "cancelled"
+        if "consumer_cancel" not in failures:
+            logger.info(
+                "event=consumer_stopped partner_aic=%s group_id=%s",
+                self.partner_aic,
+                self._group_id,
+            )
 
         # 删除队列（允许强制删除，避免 consumer 占用导致 PRECONDITION_FAILED）
         try:
@@ -1284,7 +1302,10 @@ class GroupPartnerMqClient:
                     self._queue.name,
                 )
                 await self._queue.delete(if_unused=False, if_empty=False)
+                queue_state = "removed"
         except Exception as e:
+            failures["queue_delete"] = e
+            queue_state = "unknown"
             logger.warning(
                 "event=queue_delete_failed partner_aic=%s error=%s",
                 self.partner_aic,
@@ -1292,14 +1313,21 @@ class GroupPartnerMqClient:
             )
 
         # 关闭连接
-        if self._channel and not getattr(self._channel, "is_closed", False):
-            await self._channel.close()
-        if (
-            self._connection_owner
-            and self._connection
-            and not getattr(self._connection, "is_closed", False)
-        ):
-            await self._connection.close()
+        resources = [("channel", self._channel)]
+        if self._connection_owner:
+            resources.append(("connection", self._connection))
+        for name, resource in resources:
+            try:
+                if resource is not None and not getattr(resource, "is_closed", False):
+                    await resource.close()
+            except Exception as error:
+                failures[name] = error
+
+        if failures:
+            # Retain the group/queue/consumer references for diagnosis and an
+            # explicit owned cleanup attempt. Do not invoke disconnected hooks.
+            raise PartnerCleanupError(self.partner_aic, left_group_id, queue_name, failures,
+                                      consumer_state=consumer_state, queue_state=queue_state)
 
         logger.info(
             "event=connection_closed partner_aic=%s group_id=%s",
@@ -1369,16 +1397,27 @@ class GroupPartnerMqClient:
 
     async def close(self) -> None:
         """关闭客户端"""
-        if self._state != PartnerGroupState.DISCONNECTED:
-            await self.leave_group()
-        if self._inbox_channel and not getattr(self._inbox_channel, "is_closed", False):
-            await self._inbox_channel.close()
-        if (
-            self._connection_owner
-            and self._connection
-            and not getattr(self._connection, "is_closed", False)
-        ):
-            await self._connection.close()
+        group_id, queue_name = self._group_id, self._queue_name or getattr(self._queue, "name", None)
+        failures = {}
+        try:
+            if self._state != PartnerGroupState.DISCONNECTED:
+                await self.leave_group()
+        except Exception as error:
+            failures["group"] = error
+        resources = [("group_channel", self._channel), ("inbox_channel", self._inbox_channel)]
+        if self._connection_owner:
+            resources.append(("connection", self._connection))
+        for name, resource in resources:
+            try:
+                if resource is not None and not getattr(resource, "is_closed", False):
+                    await resource.close()
+            except Exception as error:
+                failures[name] = error
+        if failures:
+            group_error = failures.get("group")
+            raise PartnerCleanupError(self.partner_aic, group_id, queue_name, failures,
+                consumer_state=getattr(group_error, "consumer_state", "unknown"),
+                queue_state=getattr(group_error, "queue_state", "unknown")) from group_error
 
 
 class PartnerGroupSession:

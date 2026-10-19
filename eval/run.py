@@ -21,10 +21,12 @@ sys.path.insert(0, str(ROOT / "vendor/ACPs-community/acps-sdk"))
 from incident.coordinator.engine import IncidentCoordinator
 from incident.coordinator.hypothesis import HypothesisEngine
 from eval.methods import FixedPlanner
+from eval.methods.runbook import BlindRunbookSelector
+from incident.coordinator.incident_planner import IncidentPlanner
 from eval.methods.free_tools import FreeToolSelector, ACTIONS
 from eval.observation import ContinuousObserver
 from eval.targets import DockerTarget, DOMAIN_SOURCE_FILES, validate_platform_bindings
-from incident.coordinator.planner import PROBES
+from incident.coordinator.planner import PROBES, observation_cost
 
 
 async def inject(scenario, action, runtime, record, *, pool_rebuilds=0, backend="native", target_config=None,
@@ -104,15 +106,15 @@ async def run(args):
     injection_options = {"backend": args.backend, "target_config": args.target_config}
     methods = args.methods.split(",")
     scenarios = args.scenarios.split(",")
-    if any(scenario not in {"H00", "F01", "F02", "F06", "F07", "F10", "F12"} for scenario in scenarios):
+    if any(scenario not in {"H00", "F01", "F02", "F04", "F06", "F07", "F10", "F01_F07", "F12"} for scenario in scenarios):
         raise ValueError("Unknown or unsupported matrix scenario")
     if target and "F12" in scenarios:
         raise ValueError("E3 container target does not declare a reply-drop port")
     instance_seeds = [int(seed) for seed in args.instance_seeds.split(",")]
     if len(instance_seeds) < args.repeats:
         raise ValueError("provide at least one held-out instance seed per repeat")
-    if any(m not in {"M0", "M1", "M2"} for m in methods):
-        raise ValueError("methods must be M0,M1,M2")
+    if any(m not in {"MR", "M0", "M1", "M2", "M2v2"} for m in methods):
+        raise ValueError("methods must be MR,M0,M1,M2,M2v2")
     if "M1" in methods and not args.enable_llm:
         raise ValueError("M1 is unavailable without --enable-llm and a model endpoint")
     args.model_base_url = args.model_base_url or os.environ.get("INCIDENT_LLM_BASE_URL", "")
@@ -147,9 +149,12 @@ async def run(args):
             "recovery_confirmed_seconds": "injection start to 30-second healthy window with at least 10 completed workflows"},
         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
         "M0": "frozen observation order, then confirmed repairs; no model calls",
-        "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1"},
+        "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1",
+            "M2v2": "evidence-ranked-per-incident-v3", "MR": "symptom-runbook-guarded-v1"},
         "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
+        "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; 3-request symptom checks followed by unchanged final verification",
+        "MR": "public-symptom fixed runbook; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
     if model_manifest.exists():
@@ -194,6 +199,8 @@ async def run(args):
     try:
         await transport.start()
         required_tools = {probe.tool for probe in PROBES} | set(ACTIONS) | {"incident.verification"}
+        if {"MR", "M2v2"} & set(methods):
+            required_tools.add("incident.symptom_check")
         if required_tools - set(transport.tools):
             raise ValueError("Confirmed participants do not expose the common evaluation tool inventory")
         if args.transport == "wutong-amqps":
@@ -218,11 +225,15 @@ async def run(args):
                                                  pool_rebuilds=repeat % 3, **injection_options)
                         observer.fault_at = injection["started_monotonic"]
                         await asyncio.sleep(3)
-                        hypothesis = HypothesisEngine(enabled=args.enable_llm and method != "M0",
+                        hypothesis = HypothesisEngine(enabled=args.enable_llm and method not in {"M0", "MR"},
                             base_url=args.model_base_url, model=args.model, seed=args.seed,
                             temperature=0, top_p=1, max_output_tokens=args.max_output_tokens,
                             max_calls=args.model_call_budget, token_budget=args.model_token_budget)
                         options = {"planner_factory": FixedPlanner, "eager_actions": False} if method == "M0" else {}
+                        if method == "M2v2":
+                            options.update(planner_factory=IncidentPlanner, incident_hypotheses=True)
+                        if method == "MR":
+                            options.update(step_selector=BlindRunbookSelector(), generate_hypotheses=False, entry_first=False)
                         if method == "M1":
                             options["step_selector"] = FreeToolSelector(hypothesis)
                             options.update(generate_hypotheses=False, entry_first=False)
@@ -255,10 +266,14 @@ async def run(args):
                         control_passed = (state["status"] == "completed"
                             and workload["healthy_control_confirmed"] and modification_attempts == 0) if scenario == "H00" else None
                         expected_actions = {"F01": {"ops.restart"}, "F02": {"ops.route_rollback"},
+                            "F04": {"application.config_rollback"},
                             "F06": {"db.terminate_blocker"}, "F07": {"db.restore_writes", "application.pool_rebuild"},
+                            "F01_F07": {"ops.restart", "db.restore_writes", "application.pool_rebuild"},
                             "F10": {"ops.route_rollback", "db.restore_writes", "application.pool_rebuild"}}
                         expected_causes = {"F01": {"application_unavailable"}, "F02": {"stale_route"},
+                            "F04": {"application_pool_exhausted"},
                             "F06": {"database_blocked"}, "F07": {"database_read_only"},
+                            "F01_F07": {"application_unavailable", "database_read_only"},
                             "F10": {"stale_route", "database_read_only"}}
                         high_tools = {"ops.restart", "db.restore_writes", "db.terminate_blocker"}
                         approval_wait = sum((datetime.fromisoformat(a["decided_at"]) - datetime.fromisoformat(a["requested_at"])).total_seconds()
@@ -281,7 +296,7 @@ async def run(args):
                             "approval_wait_seconds": round(approval_wait, 3),
                             "diagnosis_exact_match": set(state.get("diagnosed_causes", [])) == expected_causes.get(scenario, set()),
                             "model_enabled": hypothesis.enabled, "token_usage_complete": state["token_usage_complete"],
-                            "model_calls": state["model_calls"], "model_fallbacks": state["model_source_counts"].get("rules", 0) if method == "M2" and hypothesis.enabled else 0,
+                            "model_calls": state["model_calls"], "model_fallbacks": state["model_source_counts"].get("rules", 0) if method in {"M2", "M2v2"} and hypothesis.enabled else 0,
                             "model_failures": sum(r["status"] != "validated" for r in state["model_requests"]),
                             "repair_action_match": set(actions) == expected_actions.get(scenario, set(actions)),
                             "high_privilege_calls": sum(t["kind"] == "act" and t["tool"] in high_tools for t in state["tasks"]),
@@ -289,6 +304,15 @@ async def run(args):
                                 and t["tool"] not in expected_actions.get(scenario, set()) for t in state["tasks"]),
                             "unnecessary_modifications": len([tool for tool in actions if tool not in expected_actions.get(scenario, actions)]),
                             "error": state["error"] or ""}
+                        # A shared measurement for every method, including M0.
+                        # Declared domain boundaries are not a verified count
+                        # of distinct companies; both meanings stay separate.
+                        costs = observation_cost(state["tasks"])
+                        row.update(observation_cost=costs, **{key: costs[key] for key in (
+                            "resource_organizations_contacted", "cross_organization_calls", "sensitive_observations", "weighted_probe_cost")},
+                            rejected_actions=sum(task["kind"] == "act" and task["status"] == "rejected" for task in state["tasks"]),
+                            runbook_skipped_actions=sum(event.get("runbook_action_skipped") is True
+                                for event in state.get("planning_history", [])))
                         results.append(row)
                         with (output / "results.jsonl").open("a", encoding="utf-8") as stream:
                             stream.write(json.dumps(row, ensure_ascii=False) + "\n")

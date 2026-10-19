@@ -2,8 +2,29 @@
 from __future__ import annotations
 import asyncio
 import math
+import random
 from urllib.parse import urlparse
 import httpx
+
+
+async def _discovery_request(client, url, request, record):
+    # ADP filtered discovery is a read-only query even though its HTTP verb is POST.
+    for attempt in range(1, 5):
+        try:
+            response = await client.post(url, json=request)
+        except (httpx.ConnectError, httpx.ConnectTimeout, httpx.ReadTimeout) as exc:
+            if attempt == 4:
+                raise
+            failure = {"error_class": type(exc).__name__}
+        else:
+            if response.status_code < 500 or attempt == 4:
+                response.raise_for_status()
+                return response
+            failure = {"status_code": response.status_code}
+        delay = .5 * (2 ** (attempt - 1)) + random.uniform(0, .1)
+        if record:
+            record("official_discovery_retry", attempt=attempt, delay_seconds=delay, **failure)
+        await asyncio.sleep(delay)
 
 
 async def discover_candidates(url, skill_id, *, client=None, record=None):
@@ -14,11 +35,11 @@ async def discover_candidates(url, skill_id, *, client=None, record=None):
     request["extFilter"] = {"logic": "and", "conditions": [
         {"field": "alive", "op": "in", "value": ["online", "offline", "unknown"]}]}
     if client is None:
-        async with httpx.AsyncClient(timeout=25) as owned:
-            response = await owned.post(url, json=request)
+        async with httpx.AsyncClient(timeout=httpx.Timeout(connect=5, read=10, write=10, pool=5),
+                                     trust_env=False) as owned:
+            response = await _discovery_request(owned, url, request, record)
     else:
-        response = await client.post(url, json=request)
-    response.raise_for_status()
+        response = await _discovery_request(client, url, request, record)
     raw = response.json()
     parsed = DiscoveryResponse.from_dict(raw)
     if parsed.is_error() or parsed.result is None:

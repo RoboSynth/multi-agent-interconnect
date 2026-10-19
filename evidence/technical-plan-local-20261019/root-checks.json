@@ -1,0 +1,100 @@
+{
+  "scope": "Root local P1/P3/P4/P6 implementation; P2/P5/SDK checks are recorded separately; no live platform, fault, model or upload execution",
+  "checks": [
+    {
+      "suite": "test_platform_accounting_tools.py",
+      "passed": 7,
+      "tool_chunk": "b6e205"
+    },
+    {
+      "suite": "test_deployment_preparation.py",
+      "passed": 15,
+      "tool_chunk": "adba15"
+    },
+    {
+      "suite": "test_bridge_platform_preparation.py:PlatformPreparationTests",
+      "passed": 6,
+      "tool_chunk": "cc4716"
+    },
+    {
+      "suite": "business_container_preparation_test.py:ContainerPreparationTests",
+      "passed": 5,
+      "tool_chunk": "8d19a9"
+    },
+    {
+      "suite": "test_platform_batch.py",
+      "passed": 3,
+      "tool_chunk": "3486ae"
+    },
+    {
+      "suite": "TargetIsolationTests",
+      "passed": 9,
+      "tool_chunk": "780689"
+    },
+    {
+      "suite": "test_fluent_bit_preparation.py",
+      "passed": 20,
+      "tool_chunk": "4812f6",
+      "log": "collector-cli-tests.txt"
+    },
+    {
+      "suite": "test_fluent_bit_linux_collector.py",
+      "passed": 7,
+      "tool_chunks": [
+        "df8881",
+        "5cae93"
+      ],
+      "note": "Six methods passed in first run; remaining method passed after synthetic source-plan fixture correction",
+      "logs": [
+        "collector-linux-tests.txt",
+        "collector-linux-fixture-rerun.txt"
+      ]
+    }
+  ],
+  "first_attempts": [
+    {
+      "tool_chunk": "56dfbc",
+      "check": "public documents GET",
+      "status": "sandbox URLError; unchanged public contents verified by scoped read-only elevated retry 1cf49e"
+    },
+    {
+      "tool_chunks": [
+        "d3ad9e",
+        "46d874"
+      ],
+      "check": "full preparation suites",
+      "status": "async mocks hung under Windows sandbox; container suite additionally reached an encoding-dependent fixture read error before hanging",
+      "stopped_exact_verified_test_pids": [
+        15084,
+        39844,
+        11412,
+        18408
+      ],
+      "stop_tool_chunk": "72148f",
+      "resolution": "Run only changed synchronous preparation classes with explicit PYTHONUTF8=1; relevant 6 and 5 tests passed"
+    },
+    {
+      "tool_chunk": "df8881",
+      "check": "Linux collector explicit Kafka profile test",
+      "status": "One fixture used the absent real coordinator directory and failed before Kafka validation",
+      "resolution": "Use the existing synthetic source plan; only affected method rerun, passed in 5cae93"
+    }
+  ],
+  "final_review": {
+    "git_diff_check": "passed",
+    "line_endings_normalized_only": [
+      "deploy/README.md",
+      "eval/platform_resume_experiment.py",
+      "vendor/ACPs-community/sdk-binding.json"
+    ],
+    "independent_read_only_review": "P2 cancellation, lease release, SDK cleanup error propagation and runtime dependency binding reviewed; no concrete defect found",
+    "sdk_overlay": {
+      "published": false,
+      "modified": 7,
+      "added": 3,
+      "deleted": 0
+    },
+    "real_execution": false,
+    "uploads": false
+  }
+}

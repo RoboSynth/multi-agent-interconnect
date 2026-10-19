@@ -47,6 +47,9 @@ def load_config(path):
         if not isinstance(config.get(field), str) or not config[field].strip():
             raise ValueError("missing platform configuration field: " + field)
     config["aic"] = config["aic"].strip().upper()
+    public = config.get("public_metadata_service", False)
+    if type(public) is not bool or public and (config["role"] != "onboarding" or config.get("env_file")):
+        raise ValueError("public_metadata_service is onboarding-only and cannot load resource environment files")
     leaders = config.get("allowed_leaders")
     if not isinstance(leaders, list) or not leaders or not all(isinstance(aic, str) for aic in leaders):
         raise ValueError("allowed_leaders must be a nonempty AIC list")
@@ -117,11 +120,13 @@ class DomainExecutorAdapter:
     Existing MCP gateways keep their own CLI and Bridge.bind_partner. This
     adapter supplies the same contract for ApplicationPartner/VerificationPartner.
     """
-    def __init__(self, executor, aic, allowed_leaders, amp, *, secret_values=(), task_capacity=4096):
+    def __init__(self, executor, aic, allowed_leaders, amp, *, secret_values=(), task_capacity=4096,
+                 public_metadata_service=False):
         if type(task_capacity) is not int or task_capacity < 1:
             raise ValueError("task_capacity must be a positive integer")
         self.executor, self.executor_aic, self.amp = executor, aic, amp
         self.allowed_leaders = frozenset(allowed_leaders)
+        self.public_metadata_service = public_metadata_service
         self.policy = SimpleNamespace(allowed_callers=self.allowed_leaders)
         self.secret_values, self.task_capacity = tuple(secret_values), task_capacity
 
@@ -145,7 +150,9 @@ class DomainExecutorAdapter:
                 return None
             group = getattr(client, "_group_info", None)
             leader = getattr(getattr(group, "leader", None), "aic", None)
-            if (command.senderRole != "leader" or command.senderId not in self.allowed_leaders or command.senderId != leader
+            allowed = command.senderId in self.allowed_leaders or (self.public_metadata_service
+                and command.senderId != self.executor_aic and validate_aic_format(command.senderId)[0])
+            if (command.senderRole != "leader" or not allowed or command.senderId != leader
                     or command.groupId != client.group_id or not command.taskId or not command.sessionId):
                 self._audit(command, {}, "rejected", "identity_context_mismatch")
                 return {"status": "rejected", "reason": "identity_context_mismatch"}
@@ -222,8 +229,9 @@ class DomainExecutorAdapter:
 
 
 class DomainGroupRuntime(BridgeGroupRuntime):
-    def __init__(self, *, allowed_leaders, **kwargs):
+    def __init__(self, *, allowed_leaders, public_metadata_service=False, **kwargs):
         self.allowed_leaders = frozenset(allowed_leaders)
+        self.public_metadata_service = public_metadata_service
         if not self.allowed_leaders:
             raise ValueError("a domain Leader allowlist is required")
         super().__init__(allowed_peer_aic=sorted(self.allowed_leaders)[0], **kwargs)
@@ -234,7 +242,8 @@ class DomainGroupRuntime(BridgeGroupRuntime):
         leader = invitation.group.leader.aic
         if self._inbound_closing:
             return "Runtime is closing"
-        if leader not in self.allowed_leaders or leader == self.leader_aic:
+        allowed = leader in self.allowed_leaders or (self.public_metadata_service and validate_aic_format(leader)[0])
+        if not allowed or leader == self.leader_aic:
             return "Leader is not authorized for this domain"
         if not any(member.aic == self.leader_aic for member in invitation.group.partners):
             return "Invitation does not include this identity"
@@ -265,6 +274,9 @@ class PlatformWorker:
     def prepare(self):
         if self.runtime is not None:
             return self.runtime
+        public = self.config.get("public_metadata_service", False)
+        if type(public) is not bool or public and (self.config["role"] != "onboarding" or self.config.get("env_file")):
+            raise ValueError("public metadata access is only available to the credential-free onboarding domain")
         self.secret_values = domain_environment(self.config)
         if self.ssl_context is None:
             self.ssl_context, _ = tls_context(self.config)
@@ -281,11 +293,13 @@ class PlatformWorker:
                     allowed_callers=self.config["allowed_leaders"], duration=self.config.get("verification_duration", 30))
             else:
                 self.executor = OnboardingPartner(self.config["aic"], discovery_url=self.config["discovery_url"],
-                    allowed_callers=self.config["allowed_leaders"])
+                    allowed_callers=self.config["allowed_leaders"], public_metadata_service=public)
         bridge = DomainExecutorAdapter(self.executor, self.config["aic"], self.config["allowed_leaders"], self.amp,
-                                       secret_values=self.secret_values, task_capacity=self.config.get("task_capacity", 4096))
+            secret_values=self.secret_values, task_capacity=self.config.get("task_capacity", 4096),
+            public_metadata_service=public)
         endpoint = native.parse_amqp_endpoint_url(self.config["endpoint"], aic=self.config["aic"])
         self.runtime = DomainGroupRuntime(bridge=bridge, amp=self.amp, allowed_leaders=self.config["allowed_leaders"],
+            public_metadata_service=public,
             leader_aic=self.config["aic"], record=self.record, ssl_context=self.ssl_context, identity_binding_enabled=True,
             rabbitmq_config={"host": endpoint.host, "port": endpoint.port, "vhost": endpoint.vhost,
                 "user": None, "password": None, "auth_service_url": self.config["mq_auth_url"]})

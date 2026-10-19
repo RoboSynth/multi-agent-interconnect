@@ -32,11 +32,12 @@ class PoolManager:
         self.pool = None
         self.revision = 0
         self.config_version = "stable"
+        self.pressure_connection = None
         self.lock = asyncio.Lock()
 
     async def _create(self, version):
         import asyncpg
-        dsn = (os.environ.get("DATABASE_URL_STABLE") or os.environ.get("DATABASE_URL")) if version == "stable" else os.environ.get("DATABASE_URL")
+        dsn = (os.environ.get("DATABASE_URL_STABLE") or os.environ.get("DATABASE_URL")) if version in {"stable", "candidate"} else os.environ.get("DATABASE_URL")
         kwargs = {} if dsn else {
             "host": os.environ.get("PGHOST", "postgres"),
             "port": int(os.environ.get("PGPORT", "5432")),
@@ -45,7 +46,7 @@ class PoolManager:
             "password": os.environ["PGPASSWORD"],
         }
         return await asyncpg.create_pool(
-            dsn=dsn, min_size=1, max_size=int(os.environ.get("DB_POOL_MAX", "8")),
+            dsn=dsn, min_size=1, max_size=1 if version == "candidate" else int(os.environ.get("DB_POOL_MAX", "8")),
             command_timeout=float(os.environ.get("DB_COMMAND_TIMEOUT", "3")),
             timeout=float(os.environ.get("DB_CONNECT_TIMEOUT", "3")),
             server_settings={"application_name": "incident-pilot-orders-" + os.environ.get("APP_VERSION", "v2")},
@@ -56,6 +57,9 @@ class PoolManager:
 
     async def close(self):
         if self.pool:
+            if self.pressure_connection is not None:
+                await self.pool.release(self.pressure_connection)
+                self.pressure_connection = None
             await self._close(self.pool)
 
     @staticmethod
@@ -84,17 +88,34 @@ class PoolManager:
                 raise Conflict("stale_config_revision")
             selected = version or self.config_version
             replacement = await self._create(selected)
+            pressure = None
+            try:
+                if selected == "candidate":
+                    # The opt-in F04 fixture occupies the sole application
+                    # connection without any database lock or query. Rebuilding
+                    # this bad configuration must not silently roll it back.
+                    pressure = await replacement.acquire(timeout=4)
+            except BaseException:
+                await self._close(replacement)
+                raise
+            previous_pressure = self.pressure_connection
             previous, self.pool = self.pool, replacement
+            self.pressure_connection = pressure
             self.config_version = selected
             self.revision += 1
         if previous:
+            if previous_pressure is not None:
+                await previous.release(previous_pressure)
             await self._close(previous)
         return {"config_revision": self.revision, "config_version": self.config_version}
 
     def status(self):
         return {"config_revision": self.revision, "config_version": self.config_version,
                 "pool": {"size": self.pool.get_size() if self.pool else 0,
-                         "idle": self.pool.get_idle_size() if self.pool else 0}}
+                         "idle": self.pool.get_idle_size() if self.pool else 0,
+                         "max_size": self.pool.get_max_size() if self.pool else 0},
+                "pool_exhausted": bool(self.pool and self.pool.get_size() >= self.pool.get_max_size()
+                                       and self.pool.get_idle_size() == 0)}
 
 
 class OrderStore:

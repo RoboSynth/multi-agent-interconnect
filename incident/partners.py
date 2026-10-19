@@ -12,11 +12,15 @@ from acps_sdk.aip.resumable import Fence
 
 class ApplicationPartner:
     def __init__(self, aic, ledger, *, base_url=None, token=None, allowed_callers=(), client=None,
-                 allowed_hosts=()):
+                 allowed_hosts=(), pool_diagnostics=None):
         self.aic, self.ledger = aic, ledger
         self.base_url = base_url or os.environ.get("APP_BASE_URL", "http://127.0.0.1:8082")
         self.token = token or os.environ.get("APP_ADMIN_TOKEN", "")
         self.allowed_callers, self.client = set(allowed_callers), client
+        self.pool_diagnostics = (os.environ.get("INCIDENT_POOL_DIAGNOSTICS") == "1"
+                                 if pool_diagnostics is None else pool_diagnostics)
+        if type(self.pool_diagnostics) is not bool:
+            raise ValueError("pool_diagnostics must be a boolean")
         # Only trusted domain configuration may opt into fixed Compose names.
         # No task argument supplies an endpoint or extends this allowlist.
         if isinstance(allowed_hosts, str) or not set(allowed_hosts) <= {"app-v1", "app-v2"}:
@@ -57,6 +61,14 @@ class ApplicationPartner:
                         fact("application_pool_revision", value["config_revision"]),
                         fact("application_read_only", value.get("read_only")),
                         fact("application_error_codes", [e["code"] for e in value.get("errors", [])])]
+                    if self.pool_diagnostics:
+                        # Opt-in shared F04 observations; legacy M0/M2 retain
+                        # their exact application fact contract by default.
+                        result["facts"].extend([
+                            fact("application_config_version", value.get("config_version")),
+                            fact("application_pool_capacity", value.get("pool", {}).get("max_size")),
+                            fact("application_pool_idle", value.get("pool", {}).get("idle")),
+                            fact("application_pool_exhausted", value.get("pool_exhausted"))])
                     if value.get("read_only"):
                         result["local_hypotheses"] = [{"cause": "db_read_only", "confidence": "high",
                                                        "because": ["application_read_only"]}]
@@ -96,6 +108,7 @@ class VerificationPartner:
     def __init__(self, aic, *, base_url="http://127.0.0.1:8088", allowed_callers=(), duration=30):
         self.aic, self.base_url, self.allowed_callers = aic, base_url, set(allowed_callers)
         self.duration = duration
+        self.symptom_states = {}
 
     async def execute(self, payload, caller_aic):
         from business.load import OrderObserver, VersionedClient
@@ -107,7 +120,31 @@ class VerificationPartner:
         if caller_aic not in self.allowed_callers:
             return {**result, "status": "rejected"}
         if task.kind == "describe":
-            return {**result, "description": {"resources": ["orders"], "tools": ["incident.verification"]}}
+            return {**result, "description": {"resources": ["orders"],
+                "tools": ["incident.verification", "incident.symptom_check"]}}
+        if task.kind == "observe" and task.tool == "incident.symptom_check":
+            # Three fresh create/query/cancel requests are an intermediate
+            # symptom check; they never satisfy the final 30-second contract.
+            summary = await OrderObserver(self.base_url,
+                run_id=f"quick-{task.incident_id}-{task.logical_task_id}", expected_api_version="v2",
+                state=self.symptom_states.get(task.incident_id)).observe(
+                    duration=3, min_complete=1, stop_after_completed=1)
+            self.symptom_states[task.incident_id] = summary["state"]
+            # An interrupted earlier check continues the SAME request keys;
+            # completing its query/cancel may need fewer than three requests.
+            passed = (0 < summary["requests"] <= 3 and summary["success"] == summary["requests"]
+                      and summary["completed_workflows"] == 1 and summary["unresolved_intents"] == 0
+                      and summary["failed"] == 0 and summary["unknown"] == 0)
+            events = summary.get("events", [])
+            category = "healthy" if passed else (
+                "entry_error" if any(event.get("http_status") == 502 or event.get("public_contract_error") is True
+                                     for event in events) else
+                "write_error" if any(event.get("phase") == "create" and event.get("outcome") != "success"
+                                     for event in events) else "unknown")
+            result["facts"] = [{"key": key, "value": value, "source": "order-symptom-check", "observed_at": utc_now()}
+                for key, value in {"symptom_check_passed": passed, "symptom_category": category,
+                                   "symptom_observation": summary}.items()]
+            return result
         if task.kind != "verify" or task.tool != "incident.verification":
             return {**result, "status": "rejected"}
         original_unknown = task.args.get("original_request_unknown", False)
@@ -132,8 +169,12 @@ class VerificationPartner:
         # A repeated verification must exercise fresh writes, not replay receipts
         # from a previous healthy window under the same incident identifier.
         observation_id = f"{task.incident_id}-{task.logical_task_id}"
-        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2").observe(
+        pending_symptoms = self.symptom_states.get(task.incident_id, {})
+        continuation = {"state": pending_symptoms} if pending_symptoms.get("pending") else {}
+        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2", **continuation).observe(
             duration=self.duration, min_complete=max(1, int(self.duration // 3)))
+        if continuation:
+            self.symptom_states[task.incident_id] = summary["state"]
         service_recovered = summary["passed"] is True
         result["facts"] = [{"key": key, "value": value, "source": "order-workflows", "observed_at": utc_now()}
             for key, value in {"business_recovered": service_recovered and original_resolved,

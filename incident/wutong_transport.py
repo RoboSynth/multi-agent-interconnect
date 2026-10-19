@@ -133,7 +133,7 @@ class WutongTransport:
         self.record("group_session_creation_started", session_id=session_id, group_id="group-"+session_id,
                     owner_aic=self.aic)
         try:
-            self.session = await asyncio.wait_for(self.runtime.create_group_session(session_id, []), 30)
+            self.session = await asyncio.wait_for(self.runtime.create_group_session(session_id, []), 60)
         except Exception as exc:
             self.record("group_session_creation_failed", session_id=session_id, phase="group-create",
                         error_class=type(exc).__name__)
@@ -237,8 +237,16 @@ class WutongTransport:
             try:
                 result = await self._takeover(role, target, value, type(exc).__name__)
             except Exception as takeover_error:
-                self.record("takeover_unavailable", failed_aic=target, error_class=type(takeover_error).__name__)
+                details = {"initial_error_class": type(exc).__name__,
+                           "takeover_error_class": type(takeover_error).__name__,
+                           "takeover_reason": str(takeover_error),
+                           "takeover_rejection": getattr(takeover_error, "takeover_rejection", None)}
+                for key, item in details.items():
+                    setattr(exc, key, item)
+                self.record("takeover_unavailable", failed_aic=target,
+                            error_class=type(takeover_error).__name__, **details)
                 raise exc from takeover_error
+            result = {**result, "initial_error_class": type(exc).__name__, "takeover_error_class": None}
         self.evidence.setdefault(value["incident_id"], []).extend(result.get("facts", []))
         return result
 
@@ -344,6 +352,7 @@ class WutongTransport:
             # Match the complete resource scope of the failed participant, not only a skill label.
             previous_scope = self.descriptions[role].get("resource_scope", self.descriptions[role].get("resources"))
             candidate_error = None
+            rejections = []
             for candidate in sorted(candidates, key=lambda item: item["aic"]):
                 if candidate["aic"] == failed:
                     continue
@@ -370,7 +379,10 @@ class WutongTransport:
                             detail = "replacement returned " + control["status"]
                         self.record("takeover_control_rejected", incident_id=incident, logical_task_id=logical_id,
                                     candidate_aic=acs["aic"], status=control["status"], reason=detail)
-                        raise RuntimeError("replacement did not accept the resume: " + detail)
+                        error = RuntimeError("replacement did not accept the resume: " + detail)
+                        error.takeover_rejection = {"candidate_aic": acs["aic"],
+                                                    "status": control["status"], "reason": detail}
+                        raise error
                     operation = control.get("operation")
                     operation = operation if isinstance(operation, dict) else {}
                     confirmed = control.get("active_fence") or operation.get("active_fence")
@@ -399,9 +411,19 @@ class WutongTransport:
                     return result
                 except (TimeoutError, ConnectionError, OSError, RuntimeError, ValueError) as exc:
                     candidate_error = exc
+                    rejection = getattr(exc, "takeover_rejection", None)
+                    if rejection:
+                        rejections.append(rejection)
+                    self.record("takeover_candidate_failed", candidate_aic=candidate["aic"],
+                        error_class=type(exc).__name__, reason=str(exc),
+                        rejection=rejection)
                     self.journal.record_takeover(incident, failed, reason, replacement=candidate["aic"],
                                                 state="candidate_failed:"+type(exc).__name__)
-            raise RuntimeError("no confirmed ADP replacement completed the takeover") from candidate_error
+            error = RuntimeError("no confirmed ADP replacement completed the takeover")
+            error.takeover_rejection = rejections[-1] if rejections else None
+            if error.takeover_rejection:
+                error.args = (str(error) + ": " + error.takeover_rejection["reason"],)
+            raise error from candidate_error
 
     async def _resume_payload(self, default: dict, package: ResumePackage, *, original_fence=None) -> dict:
         """Match the local factory contract: replace information, never authority."""
@@ -440,7 +462,7 @@ class WutongTransport:
             if self.session and self.runtime:
                 self.record("group_session_close_started", session_id=self.session.session_id,
                             group_id=self.session.group_id)
-                await asyncio.wait_for(self.runtime.dissolve_group_session(self.session.session_id), 15)
+                await asyncio.wait_for(self.runtime.dissolve_group_session(self.session.session_id), 60)
                 self.record("group_session_close_completed", session_id=self.session.session_id,
                             group_id=self.session.group_id)
         finally:

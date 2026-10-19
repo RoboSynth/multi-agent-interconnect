@@ -95,6 +95,7 @@ class ContainerPreparationTests(unittest.TestCase):
             self.assertFalse(report["ready_for_live_start"])
             onboard = json.loads((output / "onboarding/config.json").read_text())
             self.assertEqual(onboard["role"], "onboarding")
+            self.assertFalse(onboard["public_metadata_service"])
             self.assertNotIn("env_file", onboard)
             self.assertNotIn("servers", onboard)
             self.assertFalse((output / "onboarding/domain.env").exists())

@@ -1,0 +1,22 @@
+{
+  "scope": "Windows verification and reversible local preparation only",
+  "distinct_tests_passed": 72,
+  "suites": [
+    {"group": "collector", "passed": 33, "receipt": "collector/checks.json"},
+    {"group": "lease_and_batch", "passed": 20, "receipt": "lease/checks.json"},
+    {"group": "schedule_startup_status", "passed": 14, "receipt": "readiness/checks.json"},
+    {"suite": "test_secret_scan.py", "passed": 5, "tool_chunk": "872413", "log": "secret-scan-tests.txt"}
+  ],
+  "real_new_log_scan": "pending_new_deployment",
+  "local_material_checks": {"roles": 7, "passed": true, "tool_chunk": "e6270d", "receipt": "certificate-material-check.json"},
+  "deployment_preparation": {"compose_static_check": "passed", "images_built": 3, "services_started": false, "receipt": "deployment-prepared/summary.json"},
+  "startup_preparation": {"tasks_prepared": 3, "registered": false, "interval_seconds": 600, "receipt": "startup-prepared.json"},
+  "collector_preparation": {"two_stages_prepared": true, "started": false, "receipt": "collector-prepared.json"},
+  "github_main_read": {"passed": true, "tool_chunk": "f607c3", "commit": "2a401c6527e2d6e0b7b7dac9ce2edcd1fd876fbf"},
+  "final_diff_check": {"passed": true, "tool_chunk": "ce3659"},
+  "platform_consumers_started": false,
+  "kafka_logs_sent": false,
+  "startup_tasks_registered": false,
+  "committed_or_pushed": false,
+  "new_experiments_executed": false
+}

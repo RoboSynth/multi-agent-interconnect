@@ -49,9 +49,11 @@ class OrderObserver:
         return {"request_key": key, "operation_key": key + "-cancel", "item": self.random.choice(["book", "pen", "keyboard"]),
                 "quantity": self.random.randint(1, 3), "phase": "create", "was_unknown": False}
 
-    async def observe(self, *, duration=30, requests_per_second=1, min_complete=10):
+    async def observe(self, *, duration=30, requests_per_second=1, min_complete=10, stop_after_completed=None):
         if duration <= 0 or requests_per_second <= 0:
             raise ValueError("duration and requests_per_second must be positive")
+        if stop_after_completed is not None and (type(stop_after_completed) is not int or stop_after_completed < 1):
+            raise ValueError("stop_after_completed must be a positive integer")
         started = time.monotonic()
         events = []
         before = len(self.state["completed"])
@@ -107,6 +109,8 @@ class OrderObserver:
                     sample.update(outcome="unknown", error=type(exc).__name__)
                 except (ValueError, KeyError, TypeError) as exc:
                     sample.update(outcome="failed", error=type(exc).__name__)
+                    if str(exc) == "public_order_contract_version_missing_or_mismatched":
+                        sample["public_contract_error"] = True
                 if sample["outcome"] == "unknown":
                     intent["was_unknown"] = True
                     if phase in {"create", "cancel"}:
@@ -116,6 +120,8 @@ class OrderObserver:
                         # Missing receipt cannot prove non-execution; continue the SAME original key.
                         intent["phase"] = intent["resume_phase"]
                 events.append(sample)
+                if stop_after_completed is not None and len(self.state["completed"]) - before >= stop_after_completed:
+                    break
             await asyncio.sleep(max(0, started + duration - time.monotonic()))
         finally:
             if owned:

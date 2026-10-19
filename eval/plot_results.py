@@ -16,8 +16,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
-COLORS = {"M0": "#68727d", "M1": "#2878b5", "M2": "#c87022"}
-MARKERS = {"M0": "o", "M1": "s", "M2": "D"}
+COLORS = {"M0": "#68727d", "M1": "#2878b5", "M2": "#c87022", "M2v2": "#278064"}
+MARKERS = {"M0": "o", "M1": "s", "M2": "D", "M2v2": "^"}
 
 
 def plot(directory, output, formats=("png", "pdf", "svg"), rows_file=None):

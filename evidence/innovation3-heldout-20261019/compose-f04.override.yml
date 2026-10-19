@@ -1,0 +1,8 @@
+# Merge only into the reviewed isolated G4 profile, never a production target.
+services:
+  app-v2:
+    environment:
+      INCIDENT_ENABLE_TEST_FAULTS: "1"
+  application-agent:
+    environment:
+      INCIDENT_POOL_DIAGNOSTICS: "1"

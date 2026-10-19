@@ -1,0 +1,73 @@
+{
+  "schema_version": "g4-local-verification/1",
+  "status": "LOCAL_ANALYSIS_AND_MOCK_TESTS_COMPLETE",
+  "new_fault_runs": 0,
+  "new_platform_runs": 0,
+  "new_model_calls": 0,
+  "source_bindings_sha256": "a93fb5f8ac5ceec485659a6472b81a35cc339fed172bbd85cb94a3761f31737e",
+  "run_plan_sha256": "8e44fcc42925d080e2b0122aff6453280fa923c13b0af24b652d8facc6bd9ccb",
+  "tests": [
+    {
+      "suite": "test_innovation_heldout.py",
+      "passed": 12,
+      "skipped": 0,
+      "exit_code": 0,
+      "log": "offline-tests.log"
+    },
+    {
+      "suite": "test_model_eval.py",
+      "passed": 16,
+      "skipped": 0,
+      "exit_code": 0,
+      "log": "model-eval-regression.log"
+    },
+    {
+      "suite": "test_coordinator.py",
+      "passed": 22,
+      "skipped": 0,
+      "exit_code": 0,
+      "log": "coordinator-regression.log"
+    },
+    {
+      "suite": "business_test.py",
+      "passed": 4,
+      "skipped": 5,
+      "exit_code": 0,
+      "log": "business-contract-regression.log"
+    }
+  ],
+  "initial_failure": {
+    "suite": "business_test.py",
+    "reason": "executor cwd did not include repository on sys.path; fixed command by absolute PYTHONPATH, no test-source change",
+    "exit_code": 1,
+    "log": "business-contract-regression-first.log"
+  },
+  "figure_visual_review": {
+    "file": "offline-comparison.png",
+    "readable": true,
+    "scope": "frozen 45-cell analysis only"
+  },
+  "not_run": [
+    "new real model or faults",
+    "F04 real pool exhaustion",
+    "M2v2 real timing",
+    "seven-identity live platform",
+    "Docker image build or deployment"
+  ],
+  "unchanged_method_sources_vs_baseline": {
+    "incident/coordinator/planner.py": true,
+    "incident/coordinator/hypothesis.py": true,
+    "eval/methods/__init__.py": true
+  },
+  "offline_analysis_exit_code": 0,
+  "frozen_raw_matrix_complete": true,
+  "frozen_raw_cells": 45,
+  "comparison_figure_sha256": "95c05319af87a841b578d182954d98991e22eeca71598377c182666db53f58ed",
+  "test_log_sha256": {
+    "offline-tests.log": "d3fd35b88800e547d8651c719c8813345c5d5ef415c36935da01ed1ddd3ab105",
+    "model-eval-regression.log": "fdb09aa6572215a7ea410f1b531defe062afef405591cfc9214f77c2b13734fc",
+    "coordinator-regression.log": "bca9a0df9aaee7a993ed2520549e3b188f503e4c7297ff3116f4123171e43871",
+    "business-contract-regression.log": "81cb20bbd7ee413c8831b4c377ccbc9d91952f811280b1dbb7bc4a862fa883da"
+  },
+  "initial_failure_log_sha256": "adb4281c49cac64f871e4736372a3503864240a2ac0e542195a9c69265167da9"
+}

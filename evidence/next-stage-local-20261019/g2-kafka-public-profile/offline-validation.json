@@ -1,0 +1,56 @@
+{
+  "status": "PUBLIC_KAFKA_PROFILE_OFFLINE_VALIDATED",
+  "profile": "deploy/fluent-bit/kafka-settings.wutong-public.example.json",
+  "profile_sha256": "68cda8ef3d287da11c6286b86201193c3cd95da4850c561ae81ea3e28be3010f",
+  "renderer_sha256": "662974a75ddc23b380ffbb628b99abaa6b551f1061d453992ec08f4e69c8eef1",
+  "metadata_validation": {
+    "security_protocol": "plaintext",
+    "tls_files_checked": []
+  },
+  "six_kind_preflight": {
+    "status": "FLUENT_BIT_FILE_PREFLIGHT",
+    "passed": true,
+    "mode": "kafka",
+    "log_files_by_kind": {
+      "audit": 1,
+      "heartbeat": 1,
+      "metrics": 1,
+      "access": 1,
+      "message": 1,
+      "system": 1
+    },
+    "errors": [],
+    "kafka_connection_tested": false,
+    "platform_ingestion_tested": false
+  },
+  "preflight_source": "evidence/access-validation-results-20261019/cases/f10-m0-r1/amp",
+  "rendered_example": {
+    "file": "seven-source-public.example.conf",
+    "source_paths": "synthetic Linux mount paths",
+    "inputs": 42,
+    "outputs": 6,
+    "workers_per_output": 1,
+    "read_from_head": false,
+    "auto_create_topics": false
+  },
+  "one_page_lines": 19,
+  "official_observations": {
+    "docs": {
+      "url": "https://wt.ioa.pub/docs.html",
+      "observed_at_utc": "2026-10-19T10:25:36.825708+00:00",
+      "http_status": 200,
+      "sha256": "a8b37b703ba7145a99f49073802d9dc251bf049dd2c0843199abf2eaac6f684f"
+    },
+    "amp": {
+      "url": "https://wt.ioa.pub/amp",
+      "observed_at_utc": "2026-10-19T10:25:43.203277+00:00",
+      "http_status": 200,
+      "sha256": "14875b1a65f7fe92a7beb2ed909cd9a4431aa12249bfc9261234ef1a45c51c88"
+    }
+  },
+  "network_calls": 0,
+  "collector_started": false,
+  "kafka_records_sent": 0,
+  "monitor_queried": false,
+  "discovery_queried": false
+}

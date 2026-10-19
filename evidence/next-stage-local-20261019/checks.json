@@ -1,0 +1,22 @@
+{
+  "schema_version": "next-stage-local-checks/1",
+  "baseline": "2a401c6527e2d6e0b7b7dac9ce2edcd1fd876fbf",
+  "checks": [
+    {"suite": "test_schedule*.py", "passed": 7, "exit_code": 0, "tool_chunk": "b30bcd", "real_faults": 0},
+    {"suite": "test_longrun_status.py", "passed": 5, "exit_code": 0, "tool_chunk": "7b4119", "network": false},
+    {"suite": "test_platform_worker.py", "passed": 12, "exit_code": 0, "tool_chunk": "9bf4f9", "synthetic_certificates_and_broker": true},
+    {"suite": "test_onboarding.py", "passed": 5, "exit_code": 0, "tool_chunk": "db87e2", "discovery_mocked": true},
+    {"suite": "test_onboarding_client.py", "passed": 2, "exit_code": 0, "tool_chunk": "62d381", "sent_requests": 0},
+    {"check": "recorded_30minute_window_status", "exit_code": 0, "tool_chunk": "a572d6", "live_run": false}
+  ],
+  "g4_evidence": "../innovation3-heldout-20261019/verification.json",
+  "g2_evidence": "g2-kafka-public-profile/offline-validation.json",
+  "public_docs_fetch": {"http_gets": 2, "both_status_200": true, "login": false, "tool_chunk": "c032a3"},
+  "initial_async_test_attempt": {"result": "hung_in_sandbox", "session_id": 56048, "original_terminal_exit_code": 1,
+    "cleanup": "stopped only attested test PIDs 2988 and 37792", "cleanup_tool_chunk": "ffeea3"},
+  "new_platform_runs": 0,
+  "new_model_calls": 0,
+  "new_fault_runs": 0,
+  "upload_performed": false,
+  "startup_task_registered": false
+}

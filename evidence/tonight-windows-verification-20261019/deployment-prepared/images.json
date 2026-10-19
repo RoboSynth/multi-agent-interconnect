@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu-22.04",
+    "--exec",
+    "/usr/bin/docker",
+    "--host",
+    "unix:///var/run/docker.sock",
+    "image",
+    "inspect",
+    "incident-pilot-new7-tech-20261019-app-v1:latest",
+    "incident-pilot-new7-tech-20261019-app-v2:local",
+    "incident-pilot-new7-tech-20261019-agent:local",
+    "--format",
+    "{{json .Id}} {{json .RepoTags}} {{json .Created}}"
+  ],
+  "exit_code": 0,
+  "stdout": "\"sha256:b8cb74850ffe38262cf99968fc785a08c54e56de2ffc71790bcc43b1cac148b8\" [\"incident-pilot-new7-tech-20261019-app-v1:latest\"] \"2026-10-19T06:15:08.344957487-07:00\"\n\"sha256:f98d48bd3b7373fbf4b56be806383620a8b7f08bc9762cd3052047d9a2ce1209\" [\"incident-pilot-new7-tech-20261019-app-v2:local\"] \"2026-10-19T06:15:08.344957487-07:00\"\n\"sha256:17be525d03c710dcf52f22fbbf25f5e31530b2a05b32a6f68c517e8697d80d7b\" [\"incident-pilot-new7-tech-20261019-agent:local\"] \"2026-10-19T06:18:16.175594495-07:00\"\n",
+  "stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n"
+}

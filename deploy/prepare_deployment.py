@@ -153,12 +153,14 @@ def protect_output(output):
 
 
 def prepare(output, project, ports, *, reply_port=8090, mode="business", source=None,
-            identity_file=None, wsl=None, root=ROOT):
+            identity_file=None, wsl=None, root=ROOT, public_onboarding=False):
     root = Path(root).resolve()
     output = inside(output, root)
     validate_options(project, ports, reply_port, wsl)
     if mode not in {"business", "seven"}:
         raise ValueError("Unknown deployment mode")
+    if public_onboarding and mode != "seven":
+        raise ValueError("public_onboarding requires seven mode")
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise ValueError("Choose a new empty deployment directory; existing files are never overwritten")
     if source is not None and identity_file is not None:
@@ -197,7 +199,8 @@ def prepare(output, project, ports, *, reply_port=8090, mode="business", source=
         approval = output / "approval.env"
         approval.write_text("INCIDENT_APPROVAL_SECRET=" + secrets.token_urlsafe(36) + "\n", encoding="utf-8")
         report = prepare_agents(source, output / "domains", env, approval, project,
-            include_onboarding=True, include_coordinator=True, ops_service="app-v2")
+            include_onboarding=True, include_coordinator=True, ops_service="app-v2",
+            public_onboarding=public_onboarding)
         if set(report["prepared"]) != set(ROLES) or report["pending_identities"]:
             raise ValueError("Seven-domain preparation is incomplete; do not launch this output")
         compose_files.append("deploy/agents.yml")
@@ -335,6 +338,7 @@ def main():
     parser.add_argument("--mode", choices=("business", "seven"), default="business")
     parser.add_argument("--source", type=Path, help="Existing domains/setup_platform.py output; no registration is performed")
     parser.add_argument("--identity-file", type=Path, help="Registered seven-identity source; skips native setup_local prerequisites")
+    parser.add_argument("--public-onboarding", action="store_true", help="Allow external public-metadata checks in seven mode")
     parser.add_argument("--wsl")
     parser.add_argument("--app-v1-port", type=int, default=8081)
     parser.add_argument("--app-v2-port", type=int, default=8082)
@@ -345,7 +349,7 @@ def main():
     args = parser.parse_args()
     try:
         if args.launch is not None:
-            if any(value is not None for value in (args.output, args.project, args.source, args.identity_file, args.wsl)):
+            if args.public_onboarding or any(value is not None for value in (args.output, args.project, args.source, args.identity_file, args.wsl)):
                 parser.error("--launch accepts only its manifest and --validate-only")
             return launch(args.launch, validate_only=args.validate_only)
         if args.output is None or args.project is None or args.validate_only:
@@ -353,7 +357,7 @@ def main():
         print(json.dumps(prepare(args.output, args.project,
             {"app_v1": args.app_v1_port, "app_v2": args.app_v2_port, "order": args.order_port},
             reply_port=args.reply_drop_port, mode=args.mode, source=args.source, identity_file=args.identity_file,
-            wsl=args.wsl), ensure_ascii=False))
+            wsl=args.wsl, public_onboarding=args.public_onboarding), ensure_ascii=False))
         return 0
     except (ValueError, KeyError, OSError) as error:
         # File paths and validation reasons only; do not dump configs or env values.

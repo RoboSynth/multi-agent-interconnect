@@ -22,6 +22,18 @@ PROBES = [Probe("ops.containers", "container_state"),
           Probe("db.blocking_sessions", "blocking_sessions", 1.5)]
 
 
+def observation_cost(tasks):
+    """Same attempted-call accounting for every method; no inferred companies."""
+    observations = [task for task in tasks if task["kind"] == "observe"]
+    roles = {"ops": "ops", "application": "application", "db": "database", "incident": "verification"}
+    domains = {roles.get(task["tool"].split(".")[0], "unknown") for task in observations}
+    return {"resource_organizations_contacted": len(domains), "resource_organizations": sorted(domains),
+        "cross_organization_calls": len(observations),
+        "sensitive_observations": sum(task["tool"] == "db.blocking_sessions" for task in observations),
+        "weighted_probe_cost": sum(2 if task["tool"] == "db.blocking_sessions" else 1 for task in observations),
+        "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"}
+
+
 def category(key, value):
     if key == "read_only":
         return "ro" if value is True else "rw" if value is False else "unknown"

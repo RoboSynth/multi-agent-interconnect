@@ -1,174 +1,127 @@
-# 业务底座部署
+# 新机器 Windows 部署：10 步
 
-新队友先按[本地开发环境与操作](../docs/本地开发环境与操作_20261018.md)准备自己的账号、Python/MCP 环境，使用独立四业务项目完成启动、验收与停止。Windows native 工作台是另一条可选路线；所需权限、8093 端口与已知测试失败也在该文档说明。正式七角色身份使用[自有账号配置](../docs/自有账号平台配置_20261018.md)。本机历史运行不代表原开发机当前在线。
+队友用自己的 GitHub 账号克隆，用自己的七个梧桐身份做正式联调。本文主线使用 PowerShell 7.4+、Python 3.12、Windows Docker CLI 和 Linux 容器；只有 WSL Docker 的机器按 [ISOLATED.md](ISOLATED.md)给准备命令加 `--wsl <自己的发行版>`，后续启动、停止都沿用该 manifest。
 
-团队成员在新检出目录中部署时，优先使用[独立部署准备](ISOLATED.md)：一次生成独立项目、随机凭据、路由、端口与部署清单，再让 Windows/Linux 启动器读取同一份清单。七角色模式还会生成与部署一致的评测 target；纯业务模式不生成可用于正式智能体实验的 target。准备命令只写新目录，不启动容器或身份。
+每步把开始、结束、错误和处理填入[计时与试用反馈模板](新机器部署计时与反馈模板.md)。第 1–7 步完成四业务服务与 H00；第 8 步只准备七身份文件；**第 9–10 步等待用户确认实际项目、七身份独占和 F10 故障范围后执行。** T96 要另一台机器实际跑通 F10；业务 H00 通过时只记业务验收通过。
 
-启动后使用 `deploy/verify.py --deployment-file <deployment.json> --output <新的证据目录>` 验收。它固定运行 30 秒、每秒 1 请求、10 个创建/查询/取消流程，逐响应校验 v2，前后检查公共 `/ready`，要求失败、未知和待决均为 0；失败记录和原请求键保留。该入口已在现有本机 8088 实跑通过，属于新入口的业务验收；新机器 15 分钟冷部署仍须另测。
+旧版详细说明完整保留在[操作参考](操作参考.md)，原生 Windows 工作台、Linux、旧 profile、故障含义和历史运行记录在那里；历史状态以[当前审查入口](../docs/当前进度审查入口_20261019.md)为准。
 
-## 一键准备与本地模型
-
-先准备 Python 3.12 项目 `.venv`，再使用 PowerShell 7.4+：
+## 1. 检查工具并记开始时间
 
 ```powershell
-pwsh -NoProfile -File deploy/local-up.ps1 -Install
-# 已有依赖后普通重跑；保留当前模型选择。
-pwsh -NoProfile -File deploy/local-up.ps1
-# 已有本机 8089 Qwen 服务时，显式启用本地模型。
-pwsh -NoProfile -File deploy/local-up.ps1 -EnableLocalModel
+(Get-Date).ToUniversalTime().ToString('o')
+$PSVersionTable.PSVersion
+py -3.12 --version
+git --version
+docker info --format '{{.OSType}}'
+docker compose version
 ```
 
-`-EnableLocalModel` 将本机 `http://127.0.0.1:8089/v1`、`Qwen3-1.7B-Q8_0` 与预算持久写入协调配置；该开关不启动或下载模型。默认首次配置关闭模型，普通重跑保留用户已选配置。启动器核对完整配置原始字节 SHA、运行模式、连接状态及 Python 实际进程；发现旧实例未加载所选配置时明确拒绝，需保存记录、确认空闲并显式重启旧工作台。具体配置命令与范围见[本地模型工作台](../docs/local_model_workbench_20261018.md)。
+预期：Python 3.12、PowerShell 7.4+、Docker 返回 `linux`，Compose v2。常见错误：`docker` 不存在或 daemon 未启动，先安装/启动自己的 Docker 环境；Windows 容器模式改为 Linux 容器。工具安装时间和部署时间分别记录，原始总耗时保留。
 
-本轮实际运行的是既有环境中的受控工作台重启与一次健康验收（6 次有效模型输出、7098 tokens、零修改任务、30.015 秒/10 流程）。数据库初始化/ZIP 缓存边界为 9 项离线检查；启动入口与进程核验为 12 项当前适用检查。尚未重跑完整 `local-up` 链路，也不据此宣称新机器或 15 分钟冷部署通过。
-
-## Windows 本地开发
-
-官方 PostgreSQL 16 Windows binaries 解压到项目 `tools/runtime/pgsql/`；官方 Nginx Windows ZIP 解压到 `tools/runtime/nginx-<版本>/`。
-PostgreSQL 数据目录、`orders` 数据库、`orders_app` 最小权限账号由本项目初始化步骤创建。
-数据库管理员在 `orders` 库运行 `business/order_app/schema.sql`，然后授权：
-
-```sql
-GRANT CONNECT ON DATABASE orders TO orders_app;
-GRANT USAGE ON SCHEMA public TO orders_app;
-GRANT SELECT, INSERT, UPDATE ON orders TO orders_app;
-GRANT SELECT, INSERT ON operation_receipts TO orders_app;
-```
-
-私密环境保存在本机 `runtime/private/application.env`（PG* 和 APP_ADMIN_TOKEN）与
-`runtime/private/postgres-superuser.env`（PGADMINPASSWORD 或管理员 PGPASSWORD）。
-密码由初始化过程随机生成，不在代码或运行报告内保存。
-
-使用 PowerShell 7.4+：
+## 2. 用自己的账号克隆并固定版本
 
 ```powershell
-pwsh -NoProfile -File deploy/native.ps1 start
-pwsh -NoProfile -File deploy/native.ps1 status
-.\.venv\Scripts\python.exe deploy/verify.py --url http://127.0.0.1:8088 --output artifacts/h00-native-new
-# 完成本机演示后需要关闭时：
-pwsh -NoProfile -File deploy/native.ps1 stop
+$G8Workspace = Join-Path $env:USERPROFILE 'source'
+New-Item -ItemType Directory -Force $G8Workspace | Out-Null
+git clone https://github.com/RoboSynth/multi-agent-interconnect.git (Join-Path $G8Workspace 'multi-agent-interconnect')
+Set-Location (Join-Path $G8Workspace 'multi-agent-interconnect')
+git rev-parse HEAD
 ```
 
-`-EnvFile` 可指定其他应用域环境文件；`-RuntimeFile` 可指定已有运行配置。
-中文项目路径下，Windows Nginx 使用运行配置记录的 `native_drive`（当前 P:）临时映射，
-映射仍指向项目目录，没有复制数据库或修改系统 PATH。受限会话每次启动时重建本会话映射。
-Nginx 重载需等待公共 `/health` 返回预期版本，信号命令成功不能直接认定新路由已生效。
-脚本仅管理其记录且命令行匹配本项目的应用进程，以及指定数据目录的 PostgreSQL / Nginx。
-停止命令会停止本项目数据库与网关，请在需要保留在线演示时保持运行。
+预期：得到完整提交 SHA。常见错误：私有仓库 `404`/`403`，用自己的 GitHub 账号接受仓库邀请并重新认证；目标已存在时选择新检出目录。后续命令在本仓库根目录的同一个 PowerShell 窗口运行。
 
-原生start只在route.conf缺失时初始化v2，保留已有故障路由，不替代F02/F10复原。公共order_port现要求ok=true且api_version=v2，v1/v2直连探针仍保留自身版本；不符时提示检查既有route及适用的正常restore。该修订已实际native start退出0、公共入口v2，并由VerificationPartner完成30.031秒/30次全成功/10流程、失败未知未决0的本地公共产品验证；证明与原实验边界见[本批说明](../docs/free_tools_matrix_20261018.md)，不代表正式平台或新机器冷部署验收。
-
-## 真实故障注入
+## 3. 建自己的 Python 环境
 
 ```powershell
-.\.venv\Scripts\python.exe eval/inject.py F07 apply --backend native
-.\.venv\Scripts\python.exe eval/inject.py F07 restore --backend native
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-high-score.txt
+.\.venv\Scripts\python.exe -m pip install './vendor/ACPs-community/acps-sdk[amp-sign]'
+.\.venv\Scripts\python.exe -m pip check
 ```
 
-| 场景 | 实际资源变化 | 复原 |
-| --- | --- | --- |
-| H00 | 无修改 | 无修改 |
-| F01 | 停止实际 app-v2 进程 / 容器，入口变为 502 | 重启并等待数据库就绪 |
-| F02 | 修改并重载实际 Nginx 上游到 v1，响应缺 v2 字段 | 上游回 v2 |
-| F06 | 独立数据库事务持有 orders 的 SHARE 锁，读正常，写等待超时 | 结束实验持锁进程 / 容器，事务释放 |
-| F07 | ALTER ROLE 设置真实默认只读，重建应用池使新会话生效 | 恢复角色读写，再重建池 |
-| F10 | F02 + F07 | 恢复读写、连接及 v2 路由 |
-| F12 | Nginx 转向实际回复代理；代理接收已提交成功响应后丢弃客户端回复 | 路由回 v2、停止代理 |
+预期：依赖安装退出 0，`pip check` 无损坏依赖。常见错误：解释器版本不符，使用第 1 步的 Python 3.12；下载失败保留错误，修复自己的网络后只续装未完成依赖。无需激活脚本、付费 API 或下载模型。
 
-F15 的三个精确中断点、F19 的参与者进程 / 心跳实验由接续评测器提供。
-本注入器对 F15 / F19 明确拒绝，不能用业务故障或任意杀进程冒充接续实验成功。
-原因只追加到 `eval/results/private/injections.jsonl`；协调方输入应只带业务症状，不能读取此目录。
-每个故障复原后运行 30 秒 `business/load.py` 记录 H00，而不是仅以管理接口成功认定业务恢复。
-
-## Windows / WSL Docker 与 Linux Docker
-
-本机 WSL2 Ubuntu-22.04 已有 Docker 29.1.3 / Compose 2.40.3。独立项目
-`incident-pilot-container` 使用 18081、18082、18088 和独立 `orders-data` 卷，原生 808x 服务可同时运行。
-`eval/results/local/docker-h00-20261017.json` 记录真实 30 秒、30 次请求、10 个完整流程通过。
-
-Windows 从项目目录执行；本机有 Docker CLI 时直接使用，否则启动器调用指定 WSL 发行版：
+## 4. 准备独立四业务项目
 
 ```powershell
-pwsh -NoProfile -File deploy/up.ps1 -EnvFile runtime/private/container.env -ProjectName incident-pilot-container
-.\.venv\Scripts\python.exe deploy/verify.py --url http://127.0.0.1:18088 --output artifacts/h00-docker-new
+$G8Run = 'g8-' + (Get-Date -Format 'yyyyMMdd-HHmmss')
+$G8Business = 'runtime/private/' + $G8Run + '-business'
+$G8Seven = 'runtime/private/' + $G8Run + '-seven'
+$G8BusinessProject = 'incident-pilot-' + $G8Run + '-business'
+$G8SevenProject = 'incident-pilot-' + $G8Run + '-seven'
+Get-NetTCPConnection -State Listen -LocalPort 58081,58082,58088,58090 -ErrorAction SilentlyContinue
+.\.venv\Scripts\python.exe deploy/prepare_deployment.py --output $G8Business --project $G8BusinessProject --app-v1-port 58081 --app-v2-port 58082 --order-port 58088 --reply-drop-port 58090
 ```
 
-环境文件必须设置三个随机凭据 `POSTGRES_PASSWORD`、`ORDERS_DB_PASSWORD`、`APP_ADMIN_TOKEN`；
-独立演练另外设置 `APP_V1_PORT=18081`、`APP_V2_PORT=18082`、`ORDER_PORT=18088`、`REPLY_DROP_PORT=18090`。
-启动器把文件路径交给 Compose，不把其凭据加载到协调者环境。保留历史结果时使用新的输出文件名。
+预期：四端口无既有监听；输出 `prepared_only=true`、`resources_started=false`，生成 `deployment.json`。常见错误：端口占用就统一换四个空闲端口；输出非空就保留旧目录、重新设置新 `$G8Run`。准备器生成随机凭据，只写文件。
 
-Linux 宿主机需先安装 Python 3.12 及其 venv 组件、Docker Engine 和 Compose v2。
-从项目根目录建立自己的虚拟环境；容器镜像中的 Python 依赖不能替代宿主机运行验收工具所需的依赖。
-以下安装方式与 Windows 接手指南使用同一份项目依赖和仓库内 SDK：
-
-```sh
-python3.12 -m venv .venv
-mkdir -p artifacts
-.venv/bin/python -m pip install -r requirements-high-score.txt
-.venv/bin/python -m pip install "./vendor/ACPs-community/acps-sdk[amp-sign]"
-.venv/bin/python -m pip check
-test -f deploy/.env || cp deploy/.env.example deploy/.env
-# 在资源主机填入三个独立随机凭据，并限制文件权限。
-chmod 600 deploy/.env
-sh deploy/up.sh
-.venv/bin/python deploy/verify.py --url http://127.0.0.1:8088 --output artifacts/h00-linux-new
-```
-
-已有环境文件应保留，凭据只在本机资源侧填写。沿用本节旧参数入口时，H00 的 `--url` 必须与实际端口一致，默认 `eval/inject.py` 不会自动读取这些自定义参数。新的[独立部署入口](ISOLATED.md)以同一清单生成启动配置及七角色评测 target；后续受控实验显式使用该 target，仍需六域身份和运行检查全部通过。本节只执行 H00，不包含故障注入。验收工具会保留公共 v2 检查和完整订单窗口；启动命令返回不能替代验收结果。
-
-Compose 包含 PostgreSQL16、两个版本应用、Nginx 与按需启用的真实故障辅助容器，
-统一使用 `incident-pilot=true` 标签。数据库不向主机公开端口，应用管理端仅绑定回环，
-公共入口默认也绑定回环。修改 `ORDER_BIND` 时应按实际部署需求设置入口访问范围。
-数据卷保留订单；更新已有数据库时管理员显式执行迁移，不删除卷重新初始化。
-
-两种启动器调用同一 `compose.yml`，Linux 可用 `INCIDENT_ENV_FILE` 与 `INCIDENT_PROJECT_NAME` 指定相同隔离配置。
-
-### 正式参与者容器
-
-`Dockerfile.agent` 复用已有 `incident/platform_worker.py` 和 `python -m acps_mcp_bridge`；
-网关使用 MCP v1，Postgres MCP 与 Docker MCP 分别位于 `/opt/postgres-mcp`、`/opt/docker-mcp`，避免 v1/v2 依赖冲突。
-`agents.yml` 为应用、验证、数据库主/备、运维各挂载一个域目录；只有运维域可访问 Docker socket。
-数据库主备共享 `/state/operations.sqlite` 所在的一个持久卷，AMP 使用各自子目录。协调者留在用户本机工作台，
-不挂数据库、应用或运维的私密卷。
-
-先用 `domains/setup_platform.py` 准备正式配置，再只在本地生成每域挂载；此步骤复制本域证书引用，
-不会注册、启动或邀请任何身份。缺 AIC 的备/运维身份记入 `readiness.json`，不能伪造为已就绪。
+## 5. 检查并启动四业务
 
 ```powershell
-.\.venv\Scripts\python.exe deploy/prepare_agents.py --source runtime/platform-preparation-<时间> --business-env runtime/private/container.env
-# 独立 Docker 数据库已有数据卷时，显式应用现有最小权限 bootstrap；不删除卷。
-.\.venv\Scripts\python.exe deploy/prepare_agents.py --business-env runtime/private/container.env --provision-db-only --wsl Ubuntu-22.04
-# 仅在本批正式身份已注册、证书有效、且同 AIC 原进程已退出后启动；勿与本机正式 runner 重复消费 Inbox。
-pwsh -NoProfile -File deploy/up.ps1 -EnvFile runtime/private/container.env -ProjectName incident-pilot-container -Agents
+pwsh -NoProfile -File deploy/up.ps1 -DeploymentFile "$G8Business/deployment.json" -ValidateOnly
+pwsh -NoProfile -File deploy/up.ps1 -DeploymentFile "$G8Business/deployment.json"
 ```
 
-生成的应用配置仅显式允许固定服务名 `app-v2`，不会接受任务提供的任意管理地址。数据库上游使用
-`bridge_operator` 的域内 `DATABASE_URI`，应用管理 token 只出现在应用挂载，数据库管理员密码不写入任何代理挂载。
-首次空数据库若环境已有 `BRIDGE_DB_PASSWORD`，`postgres/init.sh` 会自动应用同一权限脚本；旧卷使用上面的显式迁移。
-`up.ps1 -Agents` 要求五个域目录都已准备完成；缺身份时先构建镜像和离线检查，不能报正式参与者已运行。
+预期：Compose 配置与构建/启动均退出 0。常见错误：镜像拉取失败，检查 Docker 自身的网络与错误日志；`prepared deployment input changed` 则保留原目录并重新准备，勿手改 manifest 的 SHA 或重置数据卷。
 
-独立容器资源可使用独立的持久任期库；若将工作台改为操作现有原生资源，必须与其复用同一个
-`term_journal_path` 和 `term_namespace`，不得因输出目录更换而从 term=1 重置。正式身份和 AMP Kafka/Monitor 链路仍分别验收。
-
-### 镜像下载与 F12
-
-本机 Docker daemon 直连 Docker Hub 曾超时，而 Windows 既有代理可达。实际使用 Google 官方
-`go-containerregistry` crane v0.22.1（官方 checksums.txt 校验）`crane pull --platform linux/amd64` 下载
-`postgres:16-alpine`、`nginx:1.27-alpine`、`python:3.12-slim`、`docker:29-cli` 的 tar，再由 WSL `docker load -i` 导入。
-没有修改 Mihomo、主机路由或 Docker daemon 代理。常规网络可达时不需要此补救。
-
-F12 独立验收使用真实回复代理，仅在后端提交后丢回复：
+## 6. 跑 30 秒业务 H00
 
 ```powershell
-.\.venv\Scripts\python.exe eval/unknown_receipt_experiment.py --wsl Ubuntu-22.04 --env-file runtime/private/container.env
+.\.venv\Scripts\python.exe deploy/verify.py --deployment-file "$G8Business/deployment.json" --output "artifacts/$G8Run-business-h00"
 ```
 
-该 runner 核验原键回执、同键重试和 PostgreSQL 单据数为 1；缺原键时保留 unknown/人工状态，不创建新键冒充恢复。
-随后停止隔离代理并进行 30 秒业务观察。它属于 F12，F19 在当前方案指运维参与者宕机。
+预期：`result.json` 为 `passed`，30 次请求成功、10 个完整创建/查询/取消流程，前后 `/ready` 为 v2，失败/未知/待决为 0。常见错误：v1/502/数据库错误先保存 `readiness.json`、`h00.json` 与容器日志；输出目录已存在时用新目录，保留旧失败。这是业务验收，不是平台 F10。
 
-技术依据：[asyncpg Pool API](https://magicstack.github.io/asyncpg/current/api/index.html#connection-pools)、
-[PostgreSQL16 显式锁](https://www.postgresql.org/docs/16/explicit-locking.html)。
+## 7. 停止自己的四业务，保留数据
 
-### 新七角色独立 profile
+本段为 Windows 直接 Docker CLI 主线；WSL 模式使用[操作参考的 manifest 停止方法](操作参考.md#按同一-manifest-停止四业务或七角色)，传入本次四业务 manifest。
 
-[新七角色隔离计划](NEW7.md) 使用 `deploy/new7.yml`、380xx 和 Windows 8877；离线配置隔离已验证。2026-10-17 证书办理曾按用户安排暂缓；2026-10-18 获新授权后七角色均已实际签发，CN/AIC、有效期、clientAuth 和密钥匹配检查通过，证书分别在 2026-12-06 对应时刻到期。七个新版 AIC 的官方 ADP 只读元数据与端点核对已通过；新版 AMQPS 健康往返已完成：六域共 12 项任务、30 秒/10 个完整订单流程，自有群组正常关闭，见[健康验收](../evidence/new7-platform-runtime-20261018/healthy-amqps.json)；新版 E3 45 次实验中 37 格确认持续恢复，8 格 M1 未确认，见[完整结果与失败记录](../evidence/new7-e3-45-20261018-first/README.md)。正式 E1 接管实验尚未执行，24 小时持续运行验收尚未完成；默认业务与旧五域 `agents` profile 分开验收。
+```powershell
+$G8BusinessCompose = @('compose','-p',$G8BusinessProject,'--env-file',"$G8Business/compose.env",'-f','deploy/compose.yml','-f',"$G8Business/deployment.overlay.yml")
+docker @G8BusinessCompose stop --timeout 30
+docker @G8BusinessCompose ps --all
+```
+
+预期：本项目四个服务均停止。常见错误：命令失败或仍有运行服务时保留日志并查原因；不要删除卷、重建密码或停止其他项目。第 9 步复用这些端口前先确认监听已释放。
+
+## 8. 准备自己的七身份与 target（只写本机文件）
+
+先按[自有账号配置第 2–3 节](../docs/自有账号平台配置_20261018.md#2-在自己的梧桐账号下登记七个角色)完成注册、审核和证书，再把[身份模板](../integration/seven-identities.example.json)填入自己的 `integration/private/<自己目录>/source.json`；七角色为协调、应用、主数据库、备用数据库、运维、业务验证、接入体检，各自证书/私钥/信任链使用本机绝对路径。缺身份时停在此处，先交第 6 步结果。
+
+```powershell
+$G8Identities = 'integration/private/自己的目录/source.json' # 改为自己的实际文件
+.\.venv\Scripts\python.exe deploy/prepare_deployment.py --mode seven --identity-file $G8Identities --output $G8Seven --project $G8SevenProject --app-v1-port 58081 --app-v2-port 58082 --order-port 58088 --reply-drop-port 58090
+pwsh -NoProfile -File deploy/up.ps1 -DeploymentFile "$G8Seven/deployment.json" -ValidateOnly
+```
+
+预期：生成同项目的 `deployment.json`、`target.json`、`domains/coordinator/config.json`，准备输出 `platform_ready=false`；尚未连接平台。常见错误：文件不存在/七 AIC 重复/路径非绝对，按原错误修正输入并重新准备新目录；文件检查不代替证书有效期、clientAuth 和私钥匹配。
+
+## 9. 确认范围后启动正式六域
+
+**待用户确认：本项目及端口、七个具体 AIC 没有其他消费者；若原机巡检使用同身份，先正常停巡检并记停机时间。** 本步启动六个领域消费者，协调者由下一步 F10 runner 唯一启动；不用另开工作台或 scheduler。
+
+```powershell
+pwsh -NoProfile -File deploy/up.ps1 -DeploymentFile "$G8Seven/deployment.json"
+.\.venv\Scripts\python.exe deploy/verify.py --deployment-file "$G8Seven/deployment.json" --output "artifacts/$G8Run-seven-h00-before"
+```
+
+预期：本项目十个容器启动、业务 H00 通过；正式发现/邀请是否成功由第 10 步逐项记录。常见错误：证书、TLS、DNS/ACL 连接问题保留原阶段与错误，检查自己的配置和平台状态；不反复注册、领取 EAB 或启动同 AIC 第二消费者。
+
+## 10. 确认后只跑 1 次 F10/M0，验收并停止
+
+**待用户确认范围：一次旧路由＋数据库只读＋连接池故障及受控恢复，M0、模型 0 调用、显式七身份 `target.json`，包含本例正常 SDK 关组；结束核验 30 秒/10 流程并停止自有项目。** 将项目名、七 AIC、端口和这段范围交用户确认后才执行下列命令；旧实验授权与准备文件不能代替本次确认。
+
+```powershell
+.\.venv\Scripts\python.exe eval/run.py --transport wutong-amqps --backend docker --target-config "$G8Seven/target.json" --config "$G8Seven/domains/coordinator/config.json" --scenarios F10 --methods M0 --repeats 1 --approve-high --output "artifacts/$G8Run-f10"
+$G8F10Exit = $LASTEXITCODE
+.\.venv\Scripts\python.exe deploy/verify.py --deployment-file "$G8Seven/deployment.json" --output "artifacts/$G8Run-seven-h00-after"
+$G8FinalH00Exit = $LASTEXITCODE
+$G8SevenCompose = @('compose','-p',$G8SevenProject,'--env-file',"$G8Seven/compose.env",'-f','deploy/compose.yml','-f','deploy/agents.yml','-f',"$G8Seven/deployment.overlay.yml",'--profile','isolated')
+docker @G8SevenCompose stop --timeout 30 application-agent verification-agent onboarding-agent database-agent database-backup-agent ops-agent
+docker @G8SevenCompose stop --timeout 30 nginx app-v1 app-v2 postgres
+docker @G8SevenCompose ps --all
+(Get-Date).ToUniversalTime().ToString('o')
+```
+
+预期：F10 退出 0，单行结果为 `completed` 且 `continuous_recovery_confirmed=true`；最终 H00 退出 0，本项目十个服务停止，提交完整计时与试用反馈。常见错误：任意失败都保留原输出，不重复同一计划；F10 未成功、SDK 关组未完成、停止未完成分别记录，最终 H00 通过不消除原失败。WSL 停止改用第 7 步所链接的 manifest 方法。T96 与 15 分钟目标只按这台新机器的真实记录判定。

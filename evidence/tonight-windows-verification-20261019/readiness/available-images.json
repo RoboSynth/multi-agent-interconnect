@@ -1,0 +1,21 @@
+{
+  "command": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu-22.04",
+    "--exec",
+    "/usr/bin/docker",
+    "--host",
+    "unix:///var/run/docker.sock",
+    "image",
+    "ls",
+    "--filter",
+    "reference=incident-pilot*",
+    "--format",
+    "{{.Repository}}:{{.Tag}} {{.ID}}"
+  ],
+  "exit_code": 0,
+  "stdout": "incident-pilot-access-validation-20261019-app-v2:local aafad4dda029\nincident-pilot-access-validation-20261019-app-v1:latest aafad4dda029\nincident-pilot-access-validation-20261019-agent:local f91a92463cc2\nincident-pilot-revalidation-20261019-agent:local f7e91b059a7b\nincident-pilot-acceptance-20261019-agent:local ccc35272ab40\nincident-pilot-acceptance-20261019-app-v2:local 165a53fd4237\nincident-pilot-revalidation-20261019-app-v1:latest 165a53fd4237\nincident-pilot-revalidation-20261019-app-v2:local 165a53fd4237\nincident-pilot-acceptance-20261019-app-v1:latest 165a53fd4237\nincident-pilot-agent:new7-ampfix-20261018 7821688fb601\nincident-pilot-h00-20261018-app-v1:latest 571e3fb085fc\nincident-pilot-new7-app-v1:latest 2424d1b2ff72\nincident-pilot-new7-app-v2:latest d2d190489d3a\nincident-pilot-new7-fault-locker:latest d2d190489d3a\nincident-pilot-entry-check-20261018-app-v1:latest f06383181b3e\nincident-pilot-h00-20261018-app-v2:latest 5f772493bb54\nincident-pilot-entry-check-20261018-app-v2:latest 6f5350892505\nincident-pilot-agent:new7 3b4be5b24c4d\nincident-pilot-agent:local 10cbb56c5a96\nincident-pilot-docker-mcp:0.3.0 b4a881fea4df\nincident-pilot-team-cold-app-v1:latest ea0113d918e4\nincident-pilot-team-cold-app-v2:latest 5e3cb2adb9c4\nincident-pilot-container-reply-drop:latest ce8cd1978e8d\nincident-pilot-container-app-v1:latest 66776df6a3ba\nincident-pilot-container-app-v2:latest 26cbe3577c43\n",
+  "stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+  "inspection_only": true
+}

@@ -1,0 +1,21 @@
+test_inspection_does_not_resume_or_restore_a_pending_drill (test_schedule.ScheduleTests.test_inspection_does_not_resume_or_restore_a_pending_drill) ... {"at": "2026-10-19T11:01:15.831625+00:00", "event": "operator_required_pending_drill", "run_id": "pending-drill"}
+ok
+test_inspection_never_approves_a_high_action (test_schedule.ScheduleTests.test_inspection_never_approves_a_high_action) ... {"at": "2026-10-19T11:01:15.876155+00:00", "event": "job_started", "run_id": "schedule-e8512a95af61479798212868bf971007", "kind": "inspect", "incident_id": "incident", "mode": "wutong-amqps"}
+{"at": "2026-10-19T11:01:15.876658+00:00", "event": "operator_required", "incident_id": "incident", "approval_id": "high", "tool": "db.restore_writes"}
+ok
+test_local_transport_is_explicit_and_checked_before_fault (test_schedule.ScheduleTests.test_local_transport_is_explicit_and_checked_before_fault) ... ok
+test_lost_dispatch_reply_restores_lab_and_does_not_repost (test_schedule.ScheduleTests.test_lost_dispatch_reply_restores_lab_and_does_not_repost) ... {"at": "2026-10-19T11:01:15.964770+00:00", "event": "dispatch_unknown", "run_id": "schedule-6756504f60d5435d8ba16513035e25e6"}
+{"at": "2026-10-19T11:01:15.972289+00:00", "event": "dispatch_unknown", "run_id": "schedule-6756504f60d5435d8ba16513035e25e6"}
+ok
+test_apply_and_restore_keep_same_scenario_and_persist_rotation (test_schedule_rotation.RotationTests.test_apply_and_restore_keep_same_scenario_and_persist_rotation) ... {"at": "2026-10-19T11:01:16.018009+00:00", "event": "job_started", "run_id": "schedule-d26448e2a2de41d69d44d2faaf076606", "kind": "drill", "incident_id": "incident", "mode": "wutong-amqps"}
+{"at": "2026-10-19T11:01:16.021014+00:00", "event": "job_finished", "run_id": "schedule-d26448e2a2de41d69d44d2faaf076606", "kind": "drill", "incident_id": "incident", "status": "completed", "seconds": 1}
+ok
+test_failed_restore_retains_exact_pending_scenario (test_schedule_rotation.RotationTests.test_failed_restore_retains_exact_pending_scenario) ... {"at": "2026-10-19T11:01:16.072406+00:00", "event": "job_started", "run_id": "schedule-7920ba72fe1a4ee2a5183e43754523e7", "kind": "drill", "incident_id": "incident", "mode": "wutong-amqps"}
+{"at": "2026-10-19T11:01:16.074915+00:00", "event": "job_failed", "run_id": "schedule-7920ba72fe1a4ee2a5183e43754523e7", "kind": "drill", "phase": "restore", "error_class": "RuntimeError"}
+ok
+test_rotating_docker_uses_bound_target_and_current_scenario (test_schedule_rotation.RotationTests.test_rotating_docker_uses_bound_target_and_current_scenario) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.363s
+
+OK

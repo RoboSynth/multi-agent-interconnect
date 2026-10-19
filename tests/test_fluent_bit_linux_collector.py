@@ -93,6 +93,9 @@ class LinuxCollectorPreparationTests(unittest.TestCase):
         self.assertIn("${T06_COLLECTOR_TEST_PASSWORD}", config)
         self.assertNotIn("synthetic-secret", config)
         self.assertEqual(config.count("    Name kafka"), 6)
+        self.assertEqual(config.count("    Read_From_Head False"), 42)
+        historical = collector.render_config(self.sources, mode="kafka", kafka=mapped, read_from_head=True)
+        self.assertEqual(historical.count("    Read_From_Head True"), 42)
         result = collector.compose_spec(self.sources, IMAGE, "/config/collector.conf", "/config/parsers.conf",
             mode="kafka", transport_mounts=mounts, environment=environment)
         self.assertEqual(result["services"]["collector"]["network_mode"], "bridge")
@@ -112,12 +115,34 @@ class LinuxCollectorPreparationTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             collector.prepare(output, IMAGE, plan_path)
 
+    def test_prepare_staged_kinds_records_selected_inputs(self):
+        plan_path = self.directory / "sources.json"
+        plan_path.write_text(json.dumps(self.plan), encoding="utf-8")
+        output = self.directory / "staged"
+        with patch("subprocess.run", side_effect=AssertionError("No process may run during preparation")):
+            plan = collector.prepare(output, IMAGE, plan_path, kinds="heartbeat,access")
+        self.assertEqual(plan["kinds"], ["heartbeat", "access"])
+        self.assertEqual((plan["tail_inputs"], plan["offset_databases"]), (14, 14))
+        self.assertEqual(plan["outputs"], 2)
+        self.assertEqual(plan["routes"], ["amp.heartbeat", "amp.access"])
+        self.assertIn("selected kinds (heartbeat,access)", plan["observation"])
+        config = (output / "collector.conf").read_text(encoding="utf-8")
+        self.assertEqual(config.count("    Name tail\n"), 14)
+        self.assertNotIn("amp.system", config)
+        expanded = collector.render_config(self.sources)
+        staged_databases = {line for line in config.splitlines() if line.startswith("    DB ")}
+        expanded_databases = {line for line in expanded.splitlines() if line.startswith("    DB ")}
+        self.assertTrue(staged_databases < expanded_databases)
+        self.assertEqual(plan["state_volume_labels"], collector.state_labels(collector.digest(self.sources)))
+
     def test_requires_explicit_pinned_image_and_kafka_mode(self):
         for image in ("fluent/fluent-bit:latest", "cr.fluentbit.io/fluent/fluent-bit:5.1.3", "sha256:" + "a" * 64):
             with self.assertRaises(ValueError):
                 collector.compose_spec(self.sources, image, "/config/collector.conf", "/config/parsers.conf")
+        plan_path = self.directory / "sources.json"
+        plan_path.write_text(json.dumps(self.plan), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "Explicit Kafka settings"):
-            collector.prepare(self.directory / "kafka", IMAGE, mode="kafka")
+            collector.prepare(self.directory / "kafka", IMAGE, plan_path, mode="kafka")
 
 
 if __name__ == "__main__":

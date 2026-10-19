@@ -1,4 +1,4 @@
-"""Persistent 30-minute checks and optional, preauthorized F01 lab drills.
+"""Persistent 30-minute checks and optional, preauthorized rotating lab drills.
 
 All coordination goes through the workbench; fault injection is a separate lab
 evaluator process. This process never loads a domain credential file.
@@ -11,6 +11,7 @@ import ctypes
 from datetime import datetime, timezone
 import json
 import os
+import random
 from pathlib import Path
 import sys
 import time
@@ -89,6 +90,20 @@ class Scheduler:
                           "drill": self.config.get("drill_interval_seconds", 7200)}
         if any(type(value) is not int or value < 60 for value in self.intervals.values()):
             raise ValueError("schedule intervals must be integer seconds >=60")
+        self.drills = config.get("drill_scenarios", ["F01"])
+        if (not isinstance(self.drills, list) or not self.drills or len(set(self.drills)) != len(self.drills)
+                or any(item not in {"F01", "F02", "F06", "F07"} for item in self.drills)):
+            raise ValueError("drill_scenarios must be distinct supported lab scenarios")
+        seed = config.get("drill_seed", 0)
+        if type(seed) is not int:
+            raise ValueError("drill_seed must be an integer")
+        self.drills = list(self.drills)
+        random.Random(seed).shuffle(self.drills)
+        self.auto_approvals = config.get("drill_auto_approvals", [{"tool": "ops.restart", "args": {}}])
+        if (not isinstance(self.auto_approvals, list) or any(not isinstance(row, dict)
+                or set(row) != {"tool", "args"} or not isinstance(row["tool"], str)
+                or not isinstance(row["args"], dict) for row in self.auto_approvals)):
+            raise ValueError("drill_auto_approvals must contain exact tool/args pairs")
 
     def save(self):
         temporary = self.path.with_suffix(".tmp")
@@ -114,15 +129,23 @@ class Scheduler:
         backend = self.config.get("fault_backend", "native")
         if backend not in {"native", "docker"}:
             raise ValueError("unsupported lab fault backend")
-        command = [sys.executable, str(ROOT / "eval/inject.py"), "F01", action, "--backend", backend,
+        active = self.state.get("active") or {}
+        scenario = active.get("scenario", "F01")
+        if scenario not in self.drills:
+            raise ValueError("persisted drill scenario differs from this configuration")
+        command = [sys.executable, str(ROOT / "eval/inject.py"), scenario, action, "--backend", backend,
                    "--record", str(self.directory / "private/injections.jsonl")]
         if backend == "native":
             command.extend(["--runtime", str(project_path(self.config["native_runtime"]))])
+        elif self.config.get("target_config"):
+            command.extend(["--target-config", str(project_path(self.config["target_config"]))])
+        elif len(self.drills) > 1:
+            raise ValueError("rotating Docker drills require an explicit target_config")
         process = await asyncio.create_subprocess_exec(*command, cwd=ROOT,
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
         _, _ = await process.communicate()
         if process.returncode:
-            raise RuntimeError(f"lab F01 {action} exited {process.returncode}")
+            raise RuntimeError(f"lab {scenario} {action} exited {process.returncode}")
 
     async def run_job(self, kind):
         if kind not in {"inspect", "drill"}:
@@ -130,6 +153,13 @@ class Scheduler:
         if kind == "drill" and not self.enable_fault_drills:
             self.record("drill_disabled", reason="start with --enable-fault-drills for this lab")
             return
+        control = self.config.get("longrun_control_directory")
+        if control:
+            host_path = project_path(control) / "host.json"
+            host = json.loads(host_path.read_text(encoding="utf-8-sig")) if host_path.is_file() else {}
+            if host.get("status") != "running":
+                self.record("job_skipped_host_unavailable", kind=kind, host_status=host.get("status", "not_recorded"))
+                return
         view = await self.request("GET", "/api/state")
         if not view["connected"] or view.get("resource_credential_count") != 0:
             raise RuntimeError("coordinator must be connected and contain no resource credentials")
@@ -145,6 +175,11 @@ class Scheduler:
                 self.record("job_skipped_busy", kind=kind)
                 return
             active = {"id": "schedule-"+uuid.uuid4().hex, "kind": kind}
+            if kind == "drill":
+                index = self.state.get("next_drill_index", 0)
+                if type(index) is not int or index < 0:
+                    raise ValueError("invalid persisted drill rotation index")
+                active["scenario"] = self.drills[index % len(self.drills)]
             active["symptom"] = f"定时{'巡检' if kind == 'inspect' else '演练'} {active['id']}：检查订单业务，通过资源域确认并处理异常。"
             self.state["active"] = active
             self.save()
@@ -152,7 +187,17 @@ class Scheduler:
             await self._run_active(view, active, fresh)
         finally:
             if active["kind"] == "drill":
-                await self.inject("restore")
+                try:
+                    await self.inject("restore")
+                except Exception as error:
+                    self.record("job_failed", run_id=active["id"], kind="drill", phase="restore",
+                                error_class=type(error).__name__)
+                    raise
+                if active.get("finished"):
+                    self.record("job_finished", run_id=active["id"], kind="drill", **active["terminal_result"])
+                    self.state["active"] = None
+                    self.state["next_drill_index"] = self.state.get("next_drill_index", 0) + 1
+                    self.save()
 
     async def _run_active(self, view, active, fresh):
         if not fresh:
@@ -180,16 +225,21 @@ class Scheduler:
                 for approval in state.get("approvals", []):
                     if approval["status"] == "pending":
                         approved = (self.enable_fault_drills and active["kind"] == "drill"
-                                    and approval["tool"] == "ops.restart" and approval["args"] == {})
+                                    and {"tool": approval["tool"], "args": approval["args"]} in self.auto_approvals)
                         if not approved:
                             self.record("operator_required", incident_id=incident_id, approval_id=approval["id"], tool=approval["tool"])
                             return
                         await self.request("POST", "/api/approvals/"+approval["id"], json={"approved": True})
                         self.record("lab_restart_approved", incident_id=incident_id, approval_id=approval["id"])
                 if state["status"] not in {"running", "awaiting_approval"}:
-                    self.record("job_finished", run_id=active["id"], incident_id=incident_id, status=state["status"],
-                                seconds=state.get("elapsed_seconds"))
-                    self.state["active"] = None
+                    if active["kind"] == "drill":
+                        active["finished"] = True
+                        active["terminal_result"] = {"incident_id": incident_id, "status": state["status"],
+                                                     "seconds": state.get("elapsed_seconds")}
+                    else:
+                        self.record("job_finished", run_id=active["id"], kind=active["kind"],
+                                    incident_id=incident_id, status=state["status"], seconds=state.get("elapsed_seconds"))
+                        self.state["active"] = None
                     self.save()
                     return
                 await asyncio.sleep(self.config.get("poll_seconds", 2))
@@ -215,7 +265,8 @@ class Scheduler:
                         try:
                             await self.run_job(kind)
                         except (OSError, ValueError, RuntimeError, httpx.HTTPError) as exc:
-                            self.record("job_failed", kind=kind, error_class=type(exc).__name__)
+                            self.record("job_failed", kind=kind, error_class=type(exc).__name__,
+                                        run_id=(self.state.get("active") or {}).get("id", "schedule-failed-"+uuid.uuid4().hex))
                         self.state["next_due"][kind] = time.time()+interval
                         self.save()
                 await asyncio.sleep(5)

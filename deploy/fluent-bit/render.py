@@ -17,6 +17,23 @@ TLS_FILES = ("ssl.ca.location", "ssl.certificate.location", "ssl.key.location")
 ENV_REFERENCE = re.compile(r"\$\{([A-Z_][A-Z0-9_]*)\}")
 
 
+def parse_kinds(value=None):
+    """Select a nonempty subset of the six AMP kinds, kept in canonical order.
+
+    A staged rollout can first send only heartbeat and access, then widen the
+    selection; every kind keeps its own offset database, so adding a kind later
+    starts that kind at new lines when Read_From_Head is false and that kind has
+    no existing offset. Existing offsets always resume without resetting others.
+    """
+    if value is None or value == "all":
+        return KINDS
+    items = value.split(",") if isinstance(value, str) else list(value)
+    items = [item.strip() for item in items]
+    if not items or any(item not in KINDS for item in items) or len(set(items)) != len(items):
+        raise ValueError("kinds.invalid")
+    return tuple(kind for kind in KINDS if kind in items)
+
+
 def source_id(directory):
     """One stable owner/state identity for relative, absolute and Windows aliases."""
     normalized = os.path.normcase(str(Path(directory).resolve()))
@@ -66,13 +83,14 @@ def validate_kafka(kafka):
     return {"security_protocol": protocol, "tls_files_checked": checked}
 
 
-def check(log_directory, parser_file, *, mode="stdout", kafka=None):
+def check(log_directory, parser_file, *, mode="stdout", kafka=None, kinds=KINDS):
     """Pure preflight: no native_path/subst, writes, subprocesses or network."""
+    kinds = parse_kinds(kinds)
     errors, counts = [], {}
     directory = Path(log_directory).resolve()
     if not directory.is_dir():
         errors.append("logs.directory_missing")
-    for kind in KINDS:
+    for kind in kinds:
         counts[kind] = sum(path.is_file() for path in directory.glob(f"amp_{kind}_*.jsonl")) if directory.is_dir() else 0
         if not counts[kind]:
             errors.append("logs.missing_kind:" + kind)
@@ -87,7 +105,7 @@ def check(log_directory, parser_file, *, mode="stdout", kafka=None):
     elif mode != "stdout":
         errors.append("mode.invalid")
     return {"status": "FLUENT_BIT_FILE_PREFLIGHT", "passed": not errors, "source_id": source_id(directory),
-            "mode": mode, "log_files_by_kind": counts, "errors": errors, "kafka": kafka_report,
+            "mode": mode, "kinds": list(kinds), "log_files_by_kind": counts, "errors": errors, "kafka": kafka_report,
             "kafka_connection_tested": False, "platform_ingestion_tested": False}
 
 
@@ -149,13 +167,13 @@ def collection_owner(sources):
         yield
 
 
-def check_collection(sources, parser_file, *, mode="stdout", kafka=None):
+def check_collection(sources, parser_file, *, mode="stdout", kafka=None, kinds=KINDS):
     try:
         checked = collection_sources(sources)
     except ValueError as error:
         return {"status": "FLUENT_BIT_COLLECTION_PREFLIGHT", "passed": False, "errors": [str(error)],
                 "kafka_connection_tested": False, "platform_ingestion_tested": False}
-    reports = {role: check(directory, parser_file, mode=mode, kafka=kafka) for role, directory in checked.items()}
+    reports = {role: check(directory, parser_file, mode=mode, kafka=kafka, kinds=kinds) for role, directory in checked.items()}
     return {"status": "FLUENT_BIT_COLLECTION_PREFLIGHT", "passed": all(item["passed"] for item in reports.values()),
             "sources": reports, "errors": [], "kafka_connection_tested": False, "platform_ingestion_tested": False}
 
@@ -190,7 +208,7 @@ def _render_paths(inputs, parser_file, *, mode, kafka, read_from_head):
             "    Path " + filename, "    Parser amp_json", "    DB " + database,
             "    Read_From_Head " + ("True" if read_from_head else "False"),
             "    Refresh_Interval 1", "    Buffer_Max_Size 1M", "    Skip_Long_Lines Off", ""])
-    for kind in KINDS:
+    for kind in (kind for kind in KINDS if any(row[0] == kind for row in inputs)):
         lines.extend(["[OUTPUT]", "    Name " + ("kafka" if mode == "kafka" else "stdout"), f"    Match amp.{kind}"])
         if mode == "kafka":
             lines.extend(["    Brokers " + kafka["brokers"], f"    Topics amp.{kind}", "    Workers 1",
@@ -207,7 +225,7 @@ def _render_paths(inputs, parser_file, *, mode, kafka, read_from_head):
     return "\n".join(lines)
 
 
-def _render(sources, parser_file, *, mode, kafka, read_from_head):
+def _render(sources, parser_file, *, mode, kafka, read_from_head, kinds=KINDS):
     if mode not in {"stdout", "kafka"}:
         raise ValueError("mode.invalid")
     if mode == "kafka":
@@ -215,7 +233,7 @@ def _render(sources, parser_file, *, mode, kafka, read_from_head):
     parser = native_path(parser_file)
     inputs = []
     for log_directory, state_directory in sources:
-        for kind in KINDS:
+        for kind in parse_kinds(kinds):
             filename = native_path(Path(log_directory) / f"amp_{kind}_*.jsonl")
             if os.name == "nt":
                 # Windows Tail globbing needs backslashes; config loading does not.
@@ -224,19 +242,22 @@ def _render(sources, parser_file, *, mode, kafka, read_from_head):
     return _render_paths(inputs, parser, mode=mode, kafka=kafka, read_from_head=read_from_head)
 
 
-def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=None, read_from_head=False):
+def render(log_directory, state_directory, parser_file, *, mode="stdout", kafka=None, read_from_head=False,
+           kinds=KINDS):
     return _render([(log_directory, state_directory)], parser_file,
-                   mode=mode, kafka=kafka, read_from_head=read_from_head)
+                   mode=mode, kafka=kafka, read_from_head=read_from_head, kinds=kinds)
 
 
-def render_collection(sources, state_root, parser_file, *, mode="stdout", kafka=None, read_from_head=True):
+def render_collection(sources, state_root, parser_file, *, mode="stdout", kafka=None, read_from_head=True,
+                      kinds=KINDS):
     checked = collection_sources(sources)
     inputs = [(directory, Path(state_root) / source_id(directory) / mode)
               for directory in checked.values()]
-    return _render(inputs, parser_file, mode=mode, kafka=kafka, read_from_head=read_from_head)
+    return _render(inputs, parser_file, mode=mode, kafka=kafka, read_from_head=read_from_head, kinds=kinds)
 
 
-def render_collection_paths(sources, state_paths, parser_file, *, mode="stdout", kafka=None, read_from_head=True):
+def render_collection_paths(sources, state_paths, parser_file, *, mode="stdout", kafka=None, read_from_head=True,
+                            kinds=KINDS):
     """Render Linux mount paths without host IO; validate Kafka on the host first.
 
     state_paths maps each role to a flat DB template with one ``{kind}`` token.
@@ -259,7 +280,7 @@ def render_collection_paths(sources, state_paths, parser_file, *, mode="stdout",
         template = state_paths[role]
         if not isinstance(template, str) or template.count("{kind}") != 1 or "{" in template.replace("{kind}", "") or "}" in template.replace("{kind}", ""):
             raise ValueError("collection.invalid_database_template")
-        for kind in KINDS:
+        for kind in parse_kinds(kinds):
             inputs.append((kind, paths[role] + f"/amp_{kind}_*.jsonl", linux_path(template.replace("{kind}", kind))))
     if len({database for _, _, database in inputs}) != len(inputs):
         raise ValueError("collection.duplicate_database")
@@ -283,9 +304,12 @@ def main(argv=None):
     parser.add_argument("--mode", choices=["stdout", "kafka"], default="stdout")
     parser.add_argument("--kafka-settings", type=Path)
     parser.add_argument("--read-from-head", action="store_true")
+    parser.add_argument("--kinds", default="all",
+                        help="Comma-separated AMP kinds to route, e.g. heartbeat,access; default all six")
     parser.add_argument("--check", action="store_true", help="Read-only field/path check; never render or run")
     parser.add_argument("--executable", type=Path, help="Internal foreground runner; holds the input owner lock until exit")
     args = parser.parse_args(argv)
+    kinds = parse_kinds(args.kinds)
     if args.check and args.executable:
         parser.error("--check cannot run --executable")
     if args.collection_sources:
@@ -293,7 +317,8 @@ def main(argv=None):
             raise ValueError("collection.kafka_settings_require_kafka_mode")
         sources = json.loads(args.collection_sources.read_text(encoding="utf-8-sig"))
         settings = json.loads(args.kafka_settings.read_text(encoding="utf-8-sig")) if args.kafka_settings else None
-        report = check_collection(sources, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings)
+        report = check_collection(sources, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings,
+                                  kinds=kinds)
         if args.check or not report["passed"]:
             print(json.dumps(report))
             return 0 if report["passed"] else 1
@@ -304,12 +329,15 @@ def main(argv=None):
         if args.executable and not args.executable.is_file():
             raise ValueError("executable.file_missing")
         def prepare_collection():
-            config = render_collection(sources, state, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings)
+            config = render_collection(sources, state, Path(__file__).with_name("parsers.conf"), mode=args.mode,
+                                       kafka=settings, read_from_head=args.read_from_head, kinds=kinds)
             for directory in collection_sources(sources).values():
                 (state / source_id(directory) / args.mode).mkdir(parents=True, exist_ok=True)
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(config, encoding="utf-8")
-            print(json.dumps(dict(report, status="FLUENT_BIT_COLLECTION_PREPARED", inputs=42, offset_databases=42)))
+            count = len(collection_sources(sources)) * len(kinds)
+            print(json.dumps(dict(report, status="FLUENT_BIT_COLLECTION_PREPARED", kinds=list(kinds),
+                                  inputs=count, offset_databases=count)))
         if args.executable:
             with collection_owner(sources):
                 prepare_collection()
@@ -317,7 +345,8 @@ def main(argv=None):
         prepare_collection()
         return 0
     settings = json.loads(args.kafka_settings.read_text(encoding="utf-8-sig")) if args.kafka_settings else None
-    report = check(args.log_directory, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings)
+    report = check(args.log_directory, Path(__file__).with_name("parsers.conf"), mode=args.mode, kafka=settings,
+                   kinds=kinds)
     if args.check or not report["passed"]:
         print(json.dumps(report))
         return 0 if report["passed"] else 1
@@ -333,12 +362,12 @@ def main(argv=None):
 
     def prepare():
         config = render(directory, state, Path(__file__).with_name("parsers.conf"),
-                        mode=args.mode, kafka=settings, read_from_head=args.read_from_head)
+                        mode=args.mode, kafka=settings, read_from_head=args.read_from_head, kinds=kinds)
         state.mkdir(parents=True, exist_ok=True)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(config, encoding="utf-8")
         print(json.dumps(dict(report, status="FLUENT_BIT_CONFIG_PREPARED", output=str(output.resolve()),
-                              routes=["amp." + kind for kind in KINDS])))
+                              routes=["amp." + kind for kind in kinds])))
 
     if args.executable:
         with source_owner(directory):

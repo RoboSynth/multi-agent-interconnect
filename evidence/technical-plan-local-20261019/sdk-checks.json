@@ -1,0 +1,107 @@
+{
+  "scope": "local SDK P1/P3 and local/platform transport P4 attribution only",
+  "changed_files": [
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+    "vendor/ACPs-community/acps-sdk/tests/test_group_network_resilience.py",
+    "vendor/ACPs-community/acps-sdk/tests/amp/test_group_correlation.py",
+    "vendor/ACPs-community/acps-sdk/tests/aip/test_group_leader_message.py",
+    "vendor/ACPs-community/acps-sdk/tests/aip/test_group_partner_message.py",
+    "incident/selection.py",
+    "incident/wutong_transport.py",
+    "incident/local_transport.py",
+    "tests/test_discovery_resilience.py",
+    "tests/test_takeover_error_details.py",
+    "vendor/ACPs-community/acps-sdk/tests/test_partner_cleanup_failures.py"
+  ],
+  "line_endings": "LF for all touched source/tests; normalization is formatting only",
+  "normalized_files": [
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py",
+    "vendor/ACPs-community/acps-sdk/tests/aip/test_group_leader_message.py",
+    "vendor/ACPs-community/acps-sdk/tests/aip/test_group_partner_message.py"
+  ],
+  "distinct_passed_tests": 134,
+  "passed_subtests": 52,
+  "results": [
+    {
+      "receipt": "sdk-new-tests-r2.txt",
+      "passed": 24,
+      "subtests_passed": 3,
+      "note": "13 ACL/cleanup + 3 correlation + 4 discovery + 4 takeover tests; ACL suite later superseded by r3"
+    },
+    {
+      "receipt": "sdk-cleanup-r3.txt",
+      "passed": 14,
+      "subtests_passed": 3,
+      "note": "final ACL/cleanup suite adds idempotent disconnected cleanup and supersedes 13 of r2"
+    },
+    {
+      "receipt": "sdk-regression-r1.txt",
+      "passed": 62,
+      "subtests_passed": 0
+    },
+    {
+      "receipt": "transport-regression-r1.txt",
+      "passed": 45,
+      "subtests_passed": 49,
+      "note": "includes shared formal history producer -> Bridge contract"
+    },
+    {
+      "receipt": "partner-cleanup-r1.txt",
+      "passed": 23,
+      "subtests_passed": 0,
+      "note": "2 new partner cleanup failures + 21 existing invitation/partner-message regression tests; 21 were already counted in sdk-regression-r1"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "tool_chunk": "f895dd",
+      "result": "pytest unavailable in requested dev venv; no tests executed"
+    },
+    {
+      "tool_chunks": [
+        "4e55d6",
+        "da0a43"
+      ],
+      "result": "default Windows sandbox stalled at first async unittest; only verified test PIDs stopped",
+      "stopped_pids": [
+        8708,
+        37452,
+        32448,
+        28024
+      ],
+      "pid_verification": [
+        "dace94",
+        "f45859"
+      ],
+      "stop_receipt": "4dd3cb"
+    },
+    {
+      "receipt": "sdk-new-tests-r1.txt",
+      "result": "collection error due SDK tests/integration shadowing project integration; no tests executed; resolved with importlib test mode"
+    }
+  ],
+  "python": "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-continuation-20261019\\checkout\\.venv-dev\\Scripts\\python.exe",
+  "pytest_dependencies_read_from": "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-current-source-validation-20261019\\sdk-reproducer\\validation-repo\\.venv-sdk\\Lib\\site-packages",
+  "platform_calls": 0,
+  "log_sends": 0,
+  "real_fault_runs": 0,
+  "unresolved": [
+    "Real platform validation pending",
+    "Prior ACL unknowns remain unknown",
+    "SDK changes are local and not rebound to published integration provenance"
+  ],
+  "partner_cleanup": {
+    "owned_resources_only": true,
+    "borrowed_connection_closed": false,
+    "leader_exchange_deleted": false,
+    "cancel_or_delete_failure_retains_references": true,
+    "cleanup_errors_propagate": true
+  }
+}

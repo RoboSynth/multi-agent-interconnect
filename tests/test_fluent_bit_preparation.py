@@ -237,6 +237,13 @@ class FluentPreparationTests(unittest.TestCase):
         with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()), redirect_stdout(io.StringIO()):
             self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(self.root / "state")]), 0)
         self.assertEqual(len(list((self.root / "state").glob("*/stdout"))), 7)
+        prepared = (self.root / "state" / "collection-stdout.conf").read_text(encoding="utf-8")
+        self.assertEqual(prepared.count("    Read_From_Head False"), 42)
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()), redirect_stdout(io.StringIO()):
+            self.assertEqual(fluent.main(["--collection-sources", str(mapping), "--state-root", str(self.root / "history-state"),
+                                         "--read-from-head"]), 0)
+        historical = (self.root / "history-state" / "collection-stdout.conf").read_text(encoding="utf-8")
+        self.assertEqual(historical.count("    Read_From_Head True"), 42)
         self.assertFalse(any(self.root.glob("*.db")))
         stream = io.StringIO()
         with redirect_stdout(stream):
@@ -278,6 +285,7 @@ class FluentPreparationTests(unittest.TestCase):
         self.assertEqual(stdout.count("    Name stdout\n"), 6)
         self.assertEqual(kafka.count("    Name tail\n"), 42)
         self.assertEqual(kafka.count("    Name kafka\n"), 6)
+        self.assertEqual(kafka.count("    Read_From_Head False"), 42)
         self.assertEqual(kafka.count("    timestamp_key _fb_ts"), 1)
         self.assertEqual(kafka.count("rdkafka.allow.auto.create.topics false"), 6)
         databases = [line.replace("\\", "/") for text in (stdout, kafka) for line in text.splitlines() if line.startswith("    DB ")]
@@ -325,6 +333,67 @@ class FluentPreparationTests(unittest.TestCase):
                 fluent.render_collection_paths(source, state, "/collector/parsers.conf")
         with self.assertRaisesRegex(ValueError, "brokers_required"):
             fluent.render_collection_paths(sources, databases, "/collector/parsers.conf", mode="kafka")
+
+
+    def test_kinds_subset_routes_only_selected_topics_in_canonical_order(self):
+        self.assertEqual(fluent.parse_kinds("access, heartbeat"), ("heartbeat", "access"))
+        self.assertEqual(fluent.parse_kinds("all"), fluent.KINDS)
+        for value in ("", "access,access", "access,unknown", []):
+            with self.assertRaises(ValueError):
+                fluent.parse_kinds(value)
+        with patch.object(fluent, "native_path", side_effect=lambda path: str(Path(path).resolve())):
+            text = fluent.render(self.logs, self.root / "state", self.parser, mode="kafka",
+                                 kafka=self.tls_profile(), kinds="heartbeat,access")
+        self.assertEqual(text.count("    Name tail\n"), 2)
+        self.assertEqual([line.strip().split(" ")[-1] for line in text.splitlines() if line.strip().startswith("Topics ")],
+                         ["amp.heartbeat", "amp.access"])
+        self.assertNotIn("amp.system", text); self.assertNotIn("amp.audit", text)
+        self.assertIn("amp-heartbeat.db", text); self.assertIn("amp-access.db", text)
+
+    def test_kinds_check_only_requires_selected_files(self):
+        (self.logs / "amp_system_synthetic.jsonl").unlink()
+        code, report = self.invoke("--check", "--kinds", "heartbeat,access")
+        self.assertEqual(code, 0); self.assertTrue(report["passed"])
+        self.assertEqual(report["kinds"], ["heartbeat", "access"])
+        self.assertEqual(report["log_files_by_kind"], {"heartbeat": 1, "access": 1})
+        code, report = self.invoke("--check")
+        self.assertEqual(code, 1); self.assertIn("logs.missing_kind:system", report["errors"])
+
+    def test_collection_kinds_subset_counts_inputs_and_linux_paths(self):
+        sources = self.collection()
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()):
+            text = fluent.render_collection(sources, self.root / "state", self.parser, kinds=("access",))
+        self.assertEqual(text.count("    Name tail\n"), 7)
+        self.assertEqual(text.count("    Name stdout\n"), 1)
+        linux = fluent.render_collection_paths(
+            {role: "/amp/" + role for role in fluent.COLLECTION_ROLES},
+            {role: "/state/" + role + "-{kind}.db" for role in fluent.COLLECTION_ROLES},
+            "/collector/parsers.conf", kinds="heartbeat,access")
+        self.assertEqual(linux.count("    Name tail\n"), 14)
+        self.assertNotIn("amp_system_", linux)
+
+    def test_expanding_kinds_preserves_existing_offset_paths(self):
+        with patch.object(fluent, "native_path", side_effect=lambda value: Path(value).resolve().as_posix()):
+            staged = fluent.render(self.logs, self.root / "state", self.parser, kinds="heartbeat,access")
+            expanded = fluent.render(self.logs, self.root / "state", self.parser)
+        databases = lambda config: {line.strip()[3:] for line in config.splitlines() if line.strip().startswith("DB ")}
+        self.assertTrue(databases(staged) < databases(expanded))
+        self.assertEqual(staged.count("    Read_From_Head False"), 2)
+        self.assertEqual(expanded.count("    Read_From_Head False"), 6)
+
+    @unittest.skipUnless(os.name == "nt", "PowerShell wrapper check runs on Windows")
+    def test_powershell_check_forwards_selected_kinds_and_explicit_python(self):
+        (self.logs / "amp_system_synthetic.jsonl").unlink()
+        script = SOURCE.with_name("run.ps1")
+        result = subprocess.run(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script),
+            "-LogDirectory", str(self.logs), "-Kinds", "access,heartbeat", "-PythonExecutable", sys.executable,
+            "-CheckOnly"], capture_output=True, encoding="utf-8", timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["kinds"], ["heartbeat", "access"])
+        self.assertTrue(report["passed"])
+        self.assertFalse(report["kafka_connection_tested"])
+        self.assertFalse((self.root / "state").exists())
 
 
 if __name__ == "__main__":

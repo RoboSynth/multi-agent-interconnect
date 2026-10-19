@@ -52,7 +52,7 @@ $TaskXml=@"
   <RegistrationInfo><Description>$(Xml-Text $Marker)</Description></RegistrationInfo>
   <Triggers><LogonTrigger><Enabled>true</Enabled><UserId>$(Xml-Text $UserSid)</UserId></LogonTrigger></Triggers>
   <Principals><Principal id="CurrentUser"><UserId>$(Xml-Text $UserSid)</UserId><LogonType>InteractiveToken</LogonType><RunLevel>LeastPrivilege</RunLevel></Principal></Principals>
-  <Settings><MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy><DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries><StopIfGoingOnBatteries>false</StopIfGoingOnBatteries><StartWhenAvailable>true</StartWhenAvailable><Enabled>true</Enabled><Hidden>true</Hidden><ExecutionTimeLimit>PT0S</ExecutionTimeLimit></Settings>
+  <Settings><MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy><DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries><StopIfGoingOnBatteries>false</StopIfGoingOnBatteries><StartWhenAvailable>true</StartWhenAvailable><Enabled>true</Enabled><Hidden>true</Hidden><ExecutionTimeLimit>PT0S</ExecutionTimeLimit><RestartOnFailure><Interval>PT1M</Interval><Count>5</Count></RestartOnFailure></Settings>
   <Actions Context="CurrentUser"><Exec><Command>$(Xml-Text $Shell)</Command><Arguments>$(Xml-Text $Arguments)</Arguments><WorkingDirectory>$(Xml-Text $ProjectRoot)</WorkingDirectory></Exec></Actions>
 </Task>
 "@

@@ -1,0 +1,25 @@
+test_kafka_transport_keeps_secrets_as_environment_references_and_mounts_only_tls_files (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_kafka_transport_keeps_secrets_as_environment_references_and_mounts_only_tls_files) ... ok
+test_offset_reuse_rejects_changed_source_collection_mode_and_missing_labels (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_offset_reuse_rejects_changed_source_collection_mode_and_missing_labels) ... ok
+test_prepare_writes_only_four_new_files_without_running_processes (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_prepare_writes_only_four_new_files_without_running_processes) ... ok
+test_render_uses_42_flat_databases_and_stable_body_globs (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_render_uses_42_flat_databases_and_stable_body_globs) ... ok
+test_requires_explicit_pinned_image_and_kafka_mode (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_requires_explicit_pinned_image_and_kafka_mode) ... FAIL
+test_source_plan_rejects_whole_volume_missing_role_and_wrong_target (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_source_plan_rejects_whole_volume_missing_role_and_wrong_target) ... ok
+test_stdout_sources_are_readonly_subpaths_with_separate_labeled_offsets (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_stdout_sources_are_readonly_subpaths_with_separate_labeled_offsets) ... ok
+
+======================================================================
+FAIL: test_requires_explicit_pinned_image_and_kafka_mode (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_requires_explicit_pinned_image_and_kafka_mode)
+----------------------------------------------------------------------
+ValueError: The coordinator AMP directory must exist inside this project
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_fluent_bit_linux_collector.py", line 122, in test_requires_explicit_pinned_image_and_kafka_mode
+    with self.assertRaisesRegex(ValueError, "Explicit Kafka settings"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "Explicit Kafka settings" does not match "The coordinator AMP directory must exist inside this project"
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.085s
+
+FAILED (failures=1)

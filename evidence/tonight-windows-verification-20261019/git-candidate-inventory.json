@@ -1,0 +1,743 @@
+{
+  "status": "LOCAL_REVIEW_INVENTORY_NOT_COMMITTED",
+  "proposed_branch": "tech-plan-20261019",
+  "origin": "https://github.com/RoboSynth/multi-agent-interconnect",
+  "candidate_files": 183,
+  "candidate_bytes": 2022810,
+  "over_10_mib": [],
+  "scope": "Current tracked modifications and non-ignored untracked files, excluding this inventory itself. Local review snapshot, not a frozen commit; ignored private runtime and original local logs remain excluded.",
+  "files": [
+    {
+      "path": "acps_mcp_bridge/bridge.py",
+      "bytes": 29275
+    },
+    {
+      "path": "acps_mcp_bridge/handover.py",
+      "bytes": 471
+    },
+    {
+      "path": "business/load.py",
+      "bytes": 9116
+    },
+    {
+      "path": "business/order_app/main.py",
+      "bytes": 5205
+    },
+    {
+      "path": "business/order_app/store.py",
+      "bytes": 7781
+    },
+    {
+      "path": "deploy/README.md",
+      "bytes": 9456
+    },
+    {
+      "path": "deploy/fluent-bit/README.md",
+      "bytes": 9639
+    },
+    {
+      "path": "deploy/fluent-bit/kafka-settings.wutong-public.example.json",
+      "bytes": 93
+    },
+    {
+      "path": "deploy/fluent-bit/linux-collector.md",
+      "bytes": 3996
+    },
+    {
+      "path": "deploy/fluent-bit/prepare_linux_collector.py",
+      "bytes": 12384
+    },
+    {
+      "path": "deploy/fluent-bit/render.py",
+      "bytes": 20089
+    },
+    {
+      "path": "deploy/fluent-bit/run.ps1",
+      "bytes": 1719
+    },
+    {
+      "path": "deploy/prepare_agents.py",
+      "bytes": 13553
+    },
+    {
+      "path": "deploy/prepare_deployment.py",
+      "bytes": 21429
+    },
+    {
+      "path": "deploy/操作参考.md",
+      "bytes": 15953
+    },
+    {
+      "path": "deploy/新机器部署计时与反馈模板.md",
+      "bytes": 4205
+    },
+    {
+      "path": "docs/contributions/G9_公开贡献待审稿_20261019.md",
+      "bytes": 11458
+    },
+    {
+      "path": "docs/kafka_接入一页纸.md",
+      "bytes": 4031
+    },
+    {
+      "path": "docs/windows_startup.md",
+      "bytes": 8216
+    },
+    {
+      "path": "docs/下一阶段任务_给GPT_20261019.md",
+      "bytes": 16423
+    },
+    {
+      "path": "docs/当前进度审查入口_20261019.md",
+      "bytes": 7946
+    },
+    {
+      "path": "docs/技术问题分析与解决方案_20261019.md",
+      "bytes": 22936
+    },
+    {
+      "path": "docs/接下来的行动_20261019.md",
+      "bytes": 5521
+    },
+    {
+      "path": "docs/接入体检使用说明.md",
+      "bytes": 2677
+    },
+    {
+      "path": "docs/需求调研材料/公开故障复盘.md",
+      "bytes": 4986
+    },
+    {
+      "path": "docs/需求调研材料/平台接入问题表.md",
+      "bytes": 6512
+    },
+    {
+      "path": "docs/需求调研材料/访谈与问卷.md",
+      "bytes": 6260
+    },
+    {
+      "path": "domains/onboarding/check.py",
+      "bytes": 5664
+    },
+    {
+      "path": "domains/setup_platform.py",
+      "bytes": 14071
+    },
+    {
+      "path": "eval/inject.py",
+      "bytes": 39860
+    },
+    {
+      "path": "eval/leased_batch.py",
+      "bytes": 2691
+    },
+    {
+      "path": "eval/methods/runbook.py",
+      "bytes": 3470
+    },
+    {
+      "path": "eval/platform_batch.py",
+      "bytes": 4828
+    },
+    {
+      "path": "eval/platform_resume_experiment.py",
+      "bytes": 64030
+    },
+    {
+      "path": "eval/plot_results.py",
+      "bytes": 8661
+    },
+    {
+      "path": "eval/reconcile_access.py",
+      "bytes": 6203
+    },
+    {
+      "path": "eval/resume_support.py",
+      "bytes": 12602
+    },
+    {
+      "path": "eval/run.py",
+      "bytes": 27248
+    },
+    {
+      "path": "eval/scheduling_audit.py",
+      "bytes": 18175
+    },
+    {
+      "path": "eval/secret_scan.py",
+      "bytes": 4359
+    },
+    {
+      "path": "eval/targets.py",
+      "bytes": 7954
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/compose-f04.override.yml",
+      "bytes": 230
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-cells.csv",
+      "bytes": 6400
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-cells.json",
+      "bytes": 183929
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-comparison.md",
+      "bytes": 2381
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-comparison.png",
+      "bytes": 106441
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-comparison.svg",
+      "bytes": 22488
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/offline-summary.json",
+      "bytes": 11886
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/run-plan.json",
+      "bytes": 4680
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/run-scope.md",
+      "bytes": 5142
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/source-bindings.json",
+      "bytes": 1380
+    },
+    {
+      "path": "evidence/innovation3-heldout-20261019/verification.json",
+      "bytes": 2560
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/checks.json",
+      "bytes": 1425
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/g2-kafka-public-profile/README.md",
+      "bytes": 3324
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/g2-kafka-public-profile/offline-validation.json",
+      "bytes": 1827
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/g2-kafka-public-profile/seven-source-public.example.conf",
+      "bytes": 12880
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/longrun-status-recorded-window.json",
+      "bytes": 5490
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/progress.md",
+      "bytes": 2827
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/public-platform-docs/amp.html",
+      "bytes": 42455
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/public-platform-docs/amp.txt",
+      "bytes": 33019
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/public-platform-docs/docs.html",
+      "bytes": 25100
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/public-platform-docs/docs.txt",
+      "bytes": 9057
+    },
+    {
+      "path": "evidence/next-stage-local-20261019/public-platform-docs/result.json",
+      "bytes": 9872
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/README.md",
+      "bytes": 1747
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/checks.json",
+      "bytes": 1945
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/recorded-window-status.json",
+      "bytes": 5924
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/host.json",
+      "bytes": 464
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/resources-task.xml",
+      "bytes": 2842
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/schedule.json",
+      "bytes": 606
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/scheduler-task.xml",
+      "bytes": 2882
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/startup-plan.json",
+      "bytes": 707
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p2/startup-template/workbench-task.xml",
+      "bytes": 2882
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p5/README.md",
+      "bytes": 1980
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p5/checks.json",
+      "bytes": 971
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p5/offline-tests-final.txt",
+      "bytes": 7666
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/p5/run-scope-60.json",
+      "bytes": 14951
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/partner-cleanup-r1.txt",
+      "bytes": 101
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/progress.md",
+      "bytes": 3335
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs-read/amp.html",
+      "bytes": 42455
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs-read/amp.txt",
+      "bytes": 33019
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs-read/docs.html",
+      "bytes": 25100
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs-read/docs.txt",
+      "bytes": 9057
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs-read/result.json",
+      "bytes": 9874
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/public-platform-docs/result.json",
+      "bytes": 512
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/root-checks.json",
+      "bytes": 3146
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-checks.json",
+      "bytes": 4131
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-cleanup-r3.txt",
+      "bytes": 117
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-local-overlay.json",
+      "bytes": 58110
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-new-tests-r1.txt",
+      "bytes": 1385
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-new-tests-r2.txt",
+      "bytes": 117
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-progress.md",
+      "bytes": 1527
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/sdk-regression-r1.txt",
+      "bytes": 102
+    },
+    {
+      "path": "evidence/technical-plan-local-20261019/transport-regression-r1.txt",
+      "bytes": 145
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/README.md",
+      "bytes": 3532
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/certificate-material-check.json",
+      "bytes": 1495
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector-prepared.json",
+      "bytes": 1527
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/README.md",
+      "bytes": 1878
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/checks.json",
+      "bytes": 2344
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/linux-collector-final-run.txt",
+      "bytes": 1741
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/linux-collector-first-run.txt",
+      "bytes": 1741
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/powershell-first-run.txt",
+      "bytes": 714
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/powershell-fixture/amp_access_fixture.jsonl",
+      "bytes": 4
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/powershell-fixture/amp_heartbeat_fixture.jsonl",
+      "bytes": 4
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/preparation-final-run.txt",
+      "bytes": 4843
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/collector/preparation-first-run.txt",
+      "bytes": 4483
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/01-config-quiet.txt",
+      "bytes": 132
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/02-build-app-v1-app-v2.txt",
+      "bytes": 3248
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/03-build-application-agent.txt",
+      "bytes": 62722
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/actions.json",
+      "bytes": 5438
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/images.json",
+      "bytes": 1110
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/preflight.json",
+      "bytes": 205
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/preparation.json",
+      "bytes": 362
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/prepare_build.py",
+      "bytes": 7670
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/deployment-prepared/summary.json",
+      "bytes": 7601
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/README.md",
+      "bytes": 1902
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/aic-lease-first.txt",
+      "bytes": 2097
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/checks.json",
+      "bytes": 1278
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/leased-batch-first.txt",
+      "bytes": 653
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/leased-batch-with-cancellation.txt",
+      "bytes": 832
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/lease/platform-batch-first.txt",
+      "bytes": 632
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/README.md",
+      "bytes": 4961
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/available-images.json",
+      "bytes": 1920
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/checks.json",
+      "bytes": 308
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/deployment-preflight.json",
+      "bytes": 1781
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/runtime-read-only.json",
+      "bytes": 1670
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/readiness/test-readiness.txt",
+      "bytes": 2366
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/root-checks.json",
+      "bytes": 1414
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/secret-scan-tests.txt",
+      "bytes": 822
+    },
+    {
+      "path": "evidence/tonight-windows-verification-20261019/startup-prepared.json",
+      "bytes": 571
+    },
+    {
+      "path": "incident/coordinator/engine.py",
+      "bytes": 29740
+    },
+    {
+      "path": "incident/coordinator/hypothesis.py",
+      "bytes": 11719
+    },
+    {
+      "path": "incident/coordinator/incident_planner.py",
+      "bytes": 2888
+    },
+    {
+      "path": "incident/coordinator/planner.py",
+      "bytes": 10666
+    },
+    {
+      "path": "incident/local_transport.py",
+      "bytes": 41661
+    },
+    {
+      "path": "incident/partners.py",
+      "bytes": 12209
+    },
+    {
+      "path": "incident/platform_worker.py",
+      "bytes": 21229
+    },
+    {
+      "path": "incident/selection.py",
+      "bytes": 5459
+    },
+    {
+      "path": "incident/wutong_transport.py",
+      "bytes": 30109
+    },
+    {
+      "path": "ops/aic_lease.py",
+      "bytes": 9698
+    },
+    {
+      "path": "ops/domain_entry.py",
+      "bytes": 2605
+    },
+    {
+      "path": "ops/install_startup.ps1",
+      "bytes": 5680
+    },
+    {
+      "path": "ops/longrun.consumers.yml",
+      "bytes": 1281
+    },
+    {
+      "path": "ops/longrun.example.json",
+      "bytes": 350
+    },
+    {
+      "path": "ops/longrun_host.py",
+      "bytes": 16647
+    },
+    {
+      "path": "ops/longrun_status.py",
+      "bytes": 10993
+    },
+    {
+      "path": "ops/schedule.new7.example.json",
+      "bytes": 435
+    },
+    {
+      "path": "ops/schedule.py",
+      "bytes": 15585
+    },
+    {
+      "path": "ops/startup.py",
+      "bytes": 10380
+    },
+    {
+      "path": "tests/business_container_preparation_test.py",
+      "bytes": 12248
+    },
+    {
+      "path": "tests/test_aic_lease.py",
+      "bytes": 9580
+    },
+    {
+      "path": "tests/test_bridge_platform_preparation.py",
+      "bytes": 9038
+    },
+    {
+      "path": "tests/test_deployment_preparation.py",
+      "bytes": 19939
+    },
+    {
+      "path": "tests/test_discovery_resilience.py",
+      "bytes": 3480
+    },
+    {
+      "path": "tests/test_fluent_bit_linux_collector.py",
+      "bytes": 9226
+    },
+    {
+      "path": "tests/test_fluent_bit_preparation.py",
+      "bytes": 27614
+    },
+    {
+      "path": "tests/test_innovation_heldout.py",
+      "bytes": 13053
+    },
+    {
+      "path": "tests/test_leased_batch.py",
+      "bytes": 7502
+    },
+    {
+      "path": "tests/test_longrun_status.py",
+      "bytes": 7668
+    },
+    {
+      "path": "tests/test_managed_startup.py",
+      "bytes": 2783
+    },
+    {
+      "path": "tests/test_onboarding.py",
+      "bytes": 3226
+    },
+    {
+      "path": "tests/test_onboarding_client.py",
+      "bytes": 1910
+    },
+    {
+      "path": "tests/test_p5_incident_scheduling.py",
+      "bytes": 14303
+    },
+    {
+      "path": "tests/test_platform_accounting_tools.py",
+      "bytes": 4414
+    },
+    {
+      "path": "tests/test_platform_batch.py",
+      "bytes": 3851
+    },
+    {
+      "path": "tests/test_platform_worker.py",
+      "bytes": 16879
+    },
+    {
+      "path": "tests/test_schedule_rotation.py",
+      "bytes": 3960
+    },
+    {
+      "path": "tests/test_secret_scan.py",
+      "bytes": 3310
+    },
+    {
+      "path": "tests/test_takeover_error_details.py",
+      "bytes": 5373
+    },
+    {
+      "path": "tools/check_alive.py",
+      "bytes": 4179
+    },
+    {
+      "path": "tools/check_platform_docs.py",
+      "bytes": 3165
+    },
+    {
+      "path": "tools/onboarding_client.py",
+      "bytes": 3576
+    },
+    {
+      "path": "vendor/ACPs-community/ORIGIN.md",
+      "bytes": 2139
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py",
+      "bytes": 4506
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+      "bytes": 100884
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+      "bytes": 56092
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py",
+      "bytes": 3460
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+      "bytes": 5703
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_group_leader_message.py",
+      "bytes": 8018
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_group_partner_message.py",
+      "bytes": 7012
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_group_correlation.py",
+      "bytes": 2288
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_network_resilience.py",
+      "bytes": 10942
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_partner_cleanup_failures.py",
+      "bytes": 3561
+    },
+    {
+      "path": "vendor/ACPs-community/sdk-binding.json",
+      "bytes": 38854
+    }
+  ]
+}

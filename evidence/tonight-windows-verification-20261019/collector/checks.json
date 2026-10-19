@@ -1,0 +1,41 @@
+{
+  "schema_version": "tonight-windows-verification/1",
+  "platform": "Windows",
+  "status": "offline_passed",
+  "python": "D:/AI + 开源/incident-pilot/artifacts/p0-continuation-20261019/checkout/.venv-dev/Scripts/python.exe",
+  "environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONPATH": "D:/AI + 开源/team-repository-multi-agent-interconnect",
+    "TEMP": "D:/AI + 开源/incident-pilot/artifacts/next-stage-local-20261019/tmp"
+  },
+  "first_runs": [
+    {"suite": "test_fluent_bit_preparation.py", "tests": 23, "passed": true, "exit_code": 0, "log": "preparation-first-run.txt"},
+    {"suite": "test_fluent_bit_linux_collector.py", "tests": 8, "passed": true, "exit_code": 0, "log": "linux-collector-first-run.txt"},
+    {"check": "PowerShell wrapper -CheckOnly -Kinds heartbeat,access with default interpreter", "passed": false, "exit_code": 1, "reason": "Project .venv/Scripts/python.exe does not exist", "log": "powershell-first-run.txt"}
+  ],
+  "final_runs": [
+    {"suite": "test_fluent_bit_preparation.py", "tests": 25, "passed": true, "exit_code": 0, "log": "preparation-final-run.txt"},
+    {"suite": "test_fluent_bit_linux_collector.py", "tests": 8, "passed": true, "exit_code": 0, "log": "linux-collector-final-run.txt"}
+  ],
+  "distinct_final_tests": 33,
+  "corrections": [
+    "Allow an explicit PythonExecutable in the PowerShell wrapper while retaining its default",
+    "Report selected Linux output count and routes and use selected kinds in the observation requirement",
+    "Clarify that new-only semantics require Read_From_Head false and no previous per-kind offset"
+  ],
+  "verified_contracts": [
+    "Selected kinds preflight and route counts",
+    "Per-kind DB names remain stable during selection expansion",
+    "Source/mode labels remain stable during selection expansion",
+    "Actual PowerShell argument forwarding with paths containing spaces and non-ASCII characters",
+    "Kafka defaults to new lines; stdout preparation retains historical default"
+  ],
+  "actual_fluent_bit_runs": 0,
+  "actual_container_starts": 0,
+  "actual_kafka_sends": 0,
+  "platform_ingestion_verified": false,
+  "limitations": [
+    "Existing offsets resume, including when re-enabling a previously consumed kind",
+    "No real tail consumption or Linux runtime execution was exercised"
+  ]
+}

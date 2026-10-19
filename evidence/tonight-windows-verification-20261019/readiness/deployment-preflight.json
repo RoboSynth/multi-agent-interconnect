@@ -1,0 +1,64 @@
+{
+  "identity_source": "D:\\AI + 开源\\incident-pilot\\runtime\\private\\new7-container-20261018\\source.json",
+  "role_count": 7,
+  "expected_roles_present": true,
+  "distinct_aic_count": 7,
+  "trust_bundle_exists": true,
+  "material_files": [
+    {
+      "role": "leader",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "application",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "verification",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "database",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "database_backup",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "ops",
+      "cert_exists": true,
+      "key_exists": true
+    },
+    {
+      "role": "onboarding",
+      "cert_exists": true,
+      "key_exists": true
+    }
+  ],
+  "material_content_read": false,
+  "certificate_validity_and_key_match_checked": false,
+  "canonical_private_root_exists": false,
+  "historical_image_source_comparison": {
+    "evidence": "evidence\\p0-revalidation-prep-20261019\\image-attestation\\probe.stdout.json",
+    "files": 28,
+    "same": 20,
+    "changed": [
+      "acps_mcp_bridge/bridge.py",
+      "business/load.py",
+      "incident/partners.py",
+      "incident/platform_worker.py",
+      "incident/wutong_transport.py",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+      "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py"
+    ],
+    "missing": [],
+    "meaning": "Historical source snapshot only; current images not rebuilt or attested"
+  }
+}

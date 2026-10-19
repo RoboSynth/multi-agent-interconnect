@@ -121,6 +121,14 @@ def make_app(store=None, pools=None):
             raise HTTPException(400, "config_version_not_allowlisted")
         return await pools.replace(body.expected_revision, "stable")
 
+    @app.post("/admin/config/test-pool-exhaustion", dependencies=[Depends(admin)])
+    async def exhaust_test_pool(body: RebuildPool):
+        if os.environ.get("INCIDENT_ENABLE_TEST_FAULTS") != "1":
+            raise HTTPException(404, "test_fault_not_enabled")
+        if type(body.expected_revision) is not int or body.expected_revision < 0:
+            raise HTTPException(400, "expected_revision_required")
+        return await pools.replace(body.expected_revision, "candidate")
+
     return app
 
 

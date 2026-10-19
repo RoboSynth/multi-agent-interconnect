@@ -74,8 +74,10 @@ def native_skills(role):
                                  "kind": "describe", "tool": "describe", "args": {}}, ensure_ascii=False)]}]
 
 
-def prepare(source: dict, output: Path):
+def prepare(source: dict, output: Path, *, public_onboarding=False):
     onboarding = source["agents"].get("onboarding")
+    if public_onboarding and not onboarding:
+        raise ValueError("public_onboarding requires an onboarding identity")
     if onboarding and onboarding.get("aic") and any(
             agent.get("aic") == onboarding["aic"] for role, agent in source["agents"].items() if role != "onboarding"):
         raise ValueError("The onboarding identity must use an AIC distinct from every other role")
@@ -133,7 +135,7 @@ def prepare(source: dict, output: Path):
         elif domain == "verification":
             config.update(base_url="http://127.0.0.1:8088", verification_duration=30)
         elif domain == "onboarding":
-            config.update(discovery_url=discovery)
+            config.update(discovery_url=discovery, public_metadata_service=bool(public_onboarding))
         else:
             local_config = ROOT / "runtime" / ("database-bridge.json" if domain == "database" else "ops-bridge.json")
             if not local_config.exists():
@@ -189,9 +191,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=ROOT / "integration/private/incident/config.json")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--public-onboarding", action="store_true", help="Prepare an externally callable public metadata check")
     args = parser.parse_args()
     output = args.output or ROOT / "runtime" / ("platform-preparation-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
-    result = prepare(json.loads(args.source.read_text(encoding="utf-8-sig")), output.resolve())
+    result = prepare(json.loads(args.source.read_text(encoding="utf-8-sig")), output.resolve(),
+                     public_onboarding=args.public_onboarding)
     print(json.dumps({"output": str(output.resolve()), "offline_acs_valid": list(result["acs_validation"]),
                       "pending_identities": [role for role, value in result["identities"].items() if not value["registered_identity_available"]],
                       "external_writes": False}))

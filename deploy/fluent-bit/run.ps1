@@ -4,10 +4,16 @@ param(
     [string]$KafkaSettings = '',
     [string]$Executable = '',
     [string]$StateRoot = '',
+    [string]$Kinds = 'all',
+    [string]$PythonExecutable = '',
     [switch]$CheckOnly
 )
 $ErrorActionPreference = 'Stop'
 $ProjectRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '../..')).Path
+if (-not $PythonExecutable) { $PythonExecutable = Join-Path $ProjectRoot '.venv/Scripts/python.exe' }
+if (-not (Test-Path -LiteralPath $PythonExecutable -PathType Leaf)) {
+    throw 'Create the project Python environment or pass -PythonExecutable with an existing Python interpreter.'
+}
 if (-not $LogDirectory) { $LogDirectory = Join-Path $ProjectRoot 'runtime/amp-platform' }
 if (-not $StateRoot) { $StateRoot = Join-Path $ProjectRoot 'runtime/fluent-bit-state' }
 if (-not $CheckOnly -and -not $Executable) {
@@ -16,12 +22,12 @@ if (-not $CheckOnly -and -not $Executable) {
     $Executable = $Portable[0].FullName
 }
 $RenderArgs = @((Join-Path $PSScriptRoot 'render.py'), '--log-directory', $LogDirectory,
-    '--state-root', $StateRoot, '--mode', $Mode)
+    '--state-root', $StateRoot, '--mode', $Mode, '--kinds', $Kinds)
 if ($CheckOnly) { $RenderArgs += '--check' }
 else { $RenderArgs += @('--executable', $Executable) }
 if ($Mode -eq 'kafka') {
     if (-not $KafkaSettings) { throw 'Kafka broker/authentication is unknown: provide confirmed domain-local -KafkaSettings.' }
     $RenderArgs += @('--kafka-settings', $KafkaSettings)
 }
-& (Join-Path $ProjectRoot '.venv/Scripts/python.exe') @RenderArgs
+& $PythonExecutable @RenderArgs
 exit $LASTEXITCODE

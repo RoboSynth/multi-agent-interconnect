@@ -98,6 +98,18 @@ from acps_sdk.amp.trace_context import (
     parse_traceparent,
 )
 
+
+class GroupCleanupError(RuntimeError):
+    """Cleanup was attempted, but the named resources are not confirmed removed."""
+
+    def __init__(self, group_id: str, failures: dict[str, Exception], *,
+                 acl_state: str = "unknown", resource_state: str = "unknown") -> None:
+        self.group_id, self.failures = group_id, failures
+        self.acl_state, self.resource_state = acl_state, resource_state
+        super().__init__("Group cleanup incomplete: " + ", ".join(
+            f"{phase}={type(error).__name__}" for phase, error in failures.items()))
+
+
 logger = logging.getLogger(__name__)
 
 DATA_PLANE_TYPES = frozenset({"task-command", "task-result"})
@@ -472,7 +484,7 @@ class GroupLeaderMqClient:
                             trace_id=trace_id,
                             span_id=recv_span,
                             parent_span_id=ctx.span_id if ctx else "",
-                            correlation_id=body.get("sessionId"),
+                            correlation_id=message_tap._message_correlation(body),
                         )
                     parsed_message = self._parse_incoming_message(body)
                     if parsed_message:
@@ -509,7 +521,7 @@ class GroupLeaderMqClient:
                             trace_id=trace_id,
                             span_id=new_span_id(),
                             parent_span_id=recv_span,
-                            correlation_id=body.get("sessionId"),
+                            correlation_id=message_tap._message_correlation(body),
                         )
                     logger.error(
                         "event=message_processing_error group_id=%s error=%s",
@@ -537,7 +549,7 @@ class GroupLeaderMqClient:
                         trace_id=trace_id,
                         span_id=new_span_id(),
                         parent_span_id=recv_span,
-                        correlation_id=body.get("sessionId"),
+                        correlation_id=message_tap._message_correlation(body),
                     )
 
         self._consume_task = asyncio.create_task(self._leader_queue.consume(on_message))
@@ -876,7 +888,7 @@ class GroupLeaderMqClient:
                 trace_id=trace_id,
                 span_id=span_id,
                 parent_span_id=parent_span,
-                correlation_id=body.get("sessionId"),
+                correlation_id=message_tap._message_correlation(body),
             )
         logger.info(
             "event=message_published group_id=%s type=%s id=%s mentions=%s",
@@ -1305,12 +1317,15 @@ class GroupLeaderMqClient:
             )
 
     async def cleanup_group_resources(self) -> None:
+        failures: dict[str, Exception] = {}
         if self._consume_task:
             self._consume_task.cancel()
             try:
                 await self._consume_task
             except asyncio.CancelledError:
                 pass
+            except Exception as exc:
+                failures["consumer"] = exc
 
         if self._leader_queue:
             try:
@@ -1327,13 +1342,14 @@ class GroupLeaderMqClient:
                     if_empty=False,
                 )
             except Exception as e:
+                failures["queue"] = e
                 logger.warning(
                     "event=queue_cleanup_failed group_id=%s queue=%s error=%s",
                     self._group_id,
                     self._leader_queue.name,
                     str(e),
                 )
-            finally:
+            else:
                 self._leader_queue = None
 
         if self._exchange_name:
@@ -1350,15 +1366,18 @@ class GroupLeaderMqClient:
                     if_unused=False,
                 )
             except Exception as e:
+                failures["exchange"] = e
                 logger.warning(
                     "event=exchange_cleanup_failed group_id=%s exchange=%s error=%s",
                     self._group_id,
                     self._exchange_name,
                     str(e),
                 )
-            finally:
+            else:
                 self._exchange = None
                 self._exchange_name = None
+        if failures:
+            raise GroupCleanupError(self._group_id, failures)
 
     async def dissolve_group(self) -> None:
         """解散群组"""
@@ -1730,6 +1749,33 @@ class GroupLeader:
     # ------------------------------------------------------------------
     # 群组初始化与成员邀请
     # ------------------------------------------------------------------
+    async def _rollback_group_creation(self, session_id, group_id, session_client, original):
+        failures: dict[str, Exception] = {}
+        acl_state = "not_configured"
+        if self._group_acl_client:
+            try:
+                await self._group_acl_client.delete_group(leader_aic=self.leader_aic, group_id=group_id)
+                acl_state = "removed"
+            except (GroupAclError, httpx.RequestError) as exc:
+                failures["acl"] = exc
+                acl_state = "unknown"
+        try:
+            await session_client.cleanup_group_resources()
+        except Exception as exc:
+            failures["resources"] = exc
+        try:
+            if session_client._channel and not getattr(session_client._channel, "is_closed", False):
+                await session_client._channel.close()
+        except Exception as exc:
+            failures["channel"] = exc
+        if failures:
+            error = GroupCleanupError(group_id, failures, acl_state=acl_state,
+                                      resource_state="unknown" if "resources" in failures else "removed")
+            original.cleanup_error = error
+            # Preserve ownership for a later explicit cleanup; creation still fails.
+            self.group_sessions[session_id] = GroupLeaderSession(session_id, group_id, session_client)
+            logger.warning("event=group_creation_rollback_incomplete group_id=%s error=%s", group_id, error)
+
     async def create_group_session(
         self, session_id: str, initial_partners: List[ACSObject]
     ) -> GroupLeaderSession:
@@ -1760,9 +1806,8 @@ class GroupLeader:
             trace_context_provider=self._trace_context_provider,
         )
 
-        await session_client.connect()
-
         try:
+            await session_client.connect()
             if self._group_acl_client:
                 await self._group_acl_client.add_member(
                     leader_aic=self.leader_aic,
@@ -1779,41 +1824,16 @@ class GroupLeader:
             group_id = await session_client.create_group(
                 group_id=group_id_seed, partner_acs_list=initial_partners
             )
-        except Exception:
-            if self._group_acl_client:
-                try:
-                    await self._group_acl_client.delete_group(
-                        leader_aic=self.leader_aic,
-                        group_id=group_id_seed,
-                    )
-                except GroupAclError:
-                    logger.warning(
-                        "event=group_acl_rollback_failed leader_aic=%s group_id=%s",
-                        self.leader_aic,
-                        group_id_seed,
-                    )
+        except BaseException as exc:
+            await self._rollback_group_creation(session_id, group_id_seed, session_client, exc)
             raise
 
         session_client.set_message_handler(self._handle_group_message)
         try:
             await session_client.start_consuming()
-        except Exception:
-            # 如果消费启动失败，尝试清理由刚创建的资源，保持一致性
-            try:
-                if self._group_acl_client:
-                    try:
-                        await self._group_acl_client.delete_group(
-                            leader_aic=self.leader_aic,
-                            group_id=group_id,
-                        )
-                    except GroupAclError:
-                        logger.warning(
-                            "event=group_acl_delete_failed_after_start_error group_id=%s",
-                            group_id,
-                        )
-                await session_client.dissolve_group()
-            finally:
-                raise
+        except BaseException as exc:
+            await self._rollback_group_creation(session_id, group_id, session_client, exc)
+            raise
 
         if self._cleanup_task is None or self._cleanup_task.done():
             self._cleanup_task = asyncio.create_task(self._cleanup_loop())
@@ -1932,7 +1952,7 @@ class GroupLeader:
                 ssl_context=self.ssl_context,
                 client_cert=self.ssl_cert,
             )
-        except Exception:
+        except Exception as original:
             if self._group_acl_client:
                 try:
                     await self._group_acl_client.remove_member(
@@ -1940,7 +1960,8 @@ class GroupLeader:
                         group_id=session.group_id,
                         member_aic=partner_acs.aic,
                     )
-                except GroupAclError:
+                except (GroupAclError, httpx.RequestError) as cleanup_error:
+                    original.cleanup_error = cleanup_error
                     logger.warning(
                         "event=partner_acl_rollback_failed session_id=%s partner=%s",
                         session.session_id,
@@ -2013,7 +2034,7 @@ class GroupLeader:
             )
             await future
             self._clear_pending_invitation(partner_acs.aic)
-        except Exception:
+        except Exception as original:
             self._clear_pending_invitation(partner_acs.aic)
             try:
                 await self._group_acl_client.remove_member(
@@ -2021,7 +2042,8 @@ class GroupLeader:
                     group_id=session.group_id,
                     member_aic=partner_acs.aic,
                 )
-            except GroupAclError:
+            except (GroupAclError, httpx.RequestError) as cleanup_error:
+                original.cleanup_error = cleanup_error
                 logger.warning(
                     "event=partner_acl_rollback_failed session_id=%s partner=%s route=inbox",
                     session.session_id,
@@ -2368,7 +2390,7 @@ class GroupLeader:
         }
 
     async def dissolve_group_session(self, session_id: str) -> None:
-        session = self.group_sessions.pop(session_id, None)
+        session = self.group_sessions.get(session_id)
         if session:
             for partner_aic, pending in list(self._pending_invitations.items()):
                 if pending.session_id != session_id:
@@ -2381,28 +2403,48 @@ class GroupLeader:
                     )
                 self._clear_pending_invitation(partner_aic)
 
+            already_disconnected = session.leader_mq_client._state == GroupLeaderState.DISCONNECTED
             session.leader_mq_client._state = GroupLeaderState.DISSOLVING
-            await session.leader_mq_client.broadcast_group_shutdown()
+            failures: dict[str, Exception] = {}
+            acl_state = "not_configured"
+            if not already_disconnected:
+                try:
+                    await session.leader_mq_client.broadcast_group_shutdown()
+                except Exception as exc:
+                    failures["notification"] = exc
             if self._group_acl_client:
                 try:
                     await self._group_acl_client.delete_group(
                         leader_aic=self.leader_aic,
                         group_id=session.group_id,
                     )
-                except GroupAclError:
+                    acl_state = "removed"
+                except Exception as exc:
+                    failures["acl"] = exc
+                    acl_state = "unknown"
                     logger.warning(
                         "event=group_acl_delete_failed session_id=%s group_id=%s",
                         session_id,
                         session.group_id,
                     )
 
-            await session.leader_mq_client.cleanup_group_resources()
-            if session.leader_mq_client._channel and not getattr(
-                session.leader_mq_client._channel, "is_closed", False
-            ):
-                await session.leader_mq_client._channel.close()
+            try:
+                await session.leader_mq_client.cleanup_group_resources()
+            except Exception as exc:
+                failures["resources"] = exc
+            try:
+                if session.leader_mq_client._channel and not getattr(
+                    session.leader_mq_client._channel, "is_closed", False
+                ):
+                    await session.leader_mq_client._channel.close()
+            except Exception as exc:
+                failures["channel"] = exc
             session.leader_mq_client._partners.clear()
             session.leader_mq_client._state = GroupLeaderState.DISCONNECTED
+            if failures:
+                raise GroupCleanupError(session.group_id, failures, acl_state=acl_state,
+                    resource_state="unknown" if "resources" in failures else "removed")
+            self.group_sessions.pop(session_id, None)
 
     async def close(self) -> None:
         if self._cleanup_task:
@@ -2420,17 +2462,23 @@ class GroupLeader:
                 )
             self._clear_pending_invitation(partner_aic)
 
+        failures: dict[str, Exception] = {}
         for session_id in list(self.group_sessions.keys()):
-            await self.dissolve_group_session(session_id)
+            try:
+                await self.dissolve_group_session(session_id)
+            except Exception as exc:
+                failures["session:" + session_id] = exc
 
-        if self._inbox_channel and not getattr(self._inbox_channel, "is_closed", False):
-            await self._inbox_channel.close()
-
-        if self._connection and not getattr(self._connection, "is_closed", False):
-            await self._connection.close()
-
-        if self._group_acl_client is not None:
-            await self._group_acl_client.aclose()
+        for name, resource, method in (("inbox", self._inbox_channel, "close"),
+                                       ("connection", self._connection, "close"),
+                                       ("acl_client", self._group_acl_client, "aclose")):
+            try:
+                if resource is not None and not getattr(resource, "is_closed", False):
+                    await getattr(resource, method)()
+            except Exception as exc:
+                failures[name] = exc
+        if failures:
+            raise GroupCleanupError("leader-runtime", failures)
 
     # ------------------------------------------------------------------
     # 会话清理机制

@@ -84,6 +84,7 @@ async def test_publish_task_command_emits_send_and_traceparent(tmp_path: Path) -
     assert record["body"]["messageId"] == "cmd-001"
     assert record["body"]["destination"]["name"] == "group.test"
     assert record["trace_id"] == "a" * 32
+    assert record["correlation_id"] == "task-1"
 
 
 @pytest.mark.asyncio
@@ -108,6 +109,8 @@ async def test_on_message_task_result_emits_receive_and_ack(tmp_path: Path) -> N
     ack = json.loads(lines[1])
     assert receive["body"]["eventType"] == "receive"
     assert receive["parent_span_id"] == send_span
+    assert receive["correlation_id"] == "task-1"
+    assert ack["correlation_id"] == "task-1"
     assert ack["body"]["eventType"] == "ack"
 
 

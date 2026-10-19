@@ -70,11 +70,18 @@ class PlatformPreparationTests(unittest.TestCase):
                 self.assertNotIn("env_file", onboard)
                 self.assertNotIn("ledger_path", onboard)
                 self.assertEqual(onboard["discovery_url"], source["discovery_url"])
+                self.assertFalse(onboard["public_metadata_service"])
+                platform_preparation.prepare(source, root / "public", public_onboarding=True)
+                public = json.loads((root / "public/onboarding.json").read_text(encoding="utf-8"))
+                self.assertTrue(public["public_metadata_service"])
+                self.assertNotIn("env_file", public)
                 source["agents"].pop("onboarding")
                 platform_preparation.prepare(source, root / "default")
                 default = json.loads((root / "default/coordinator.json").read_text(encoding="utf-8"))
                 self.assertNotIn("onboarding", default["skills"])
                 self.assertFalse((root / "default/onboarding.json").exists())
+                with self.assertRaisesRegex(ValueError, "onboarding identity"):
+                    platform_preparation.prepare(source, root / "missing", public_onboarding=True)
             self.assertNotIn("onboarding", platform_preparation.SKILLS)
 
     def test_onboarding_cannot_reuse_another_role_or_leader_aic(self):

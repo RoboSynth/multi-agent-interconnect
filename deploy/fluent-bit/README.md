@@ -1,5 +1,7 @@
 # AMP 转发准备
 
+2026-10-19 公开文档已给出 `wt.ioa.pub:19092` 与 PLAINTEXT、无需 Kafka 凭据，现用[公开 profile](kafka-settings.wutong-public.example.json)及[接入一页纸](../../docs/kafka_接入一页纸.md)。下文 TLS/SASL 说明保留为其他部署的可选配置，不是当前梧桐上报前置条件。Monitor 查询需要平台管理权限，普通 Agent 注册账号请由管理员协助核实入库。
+
 原有默认行为保留：`render.py` 写配置，`run.ps1` 默认启动 stdout 模式的 Fluent Bit。网络发送需显式 `-Mode kafka`，并提供通过字段/路径预检的私密 profile。未完成 Kafka、Monitor 或 Discovery 入库验收。
 
 只读检查：
@@ -11,6 +13,8 @@ pwsh -NoProfile -File deploy/fluent-bit/run.ps1 -Mode kafka -LogDirectory <本�
 ```
 
 Python 预检只检查六类 `amp_<kind>_*.jsonl` 文件存在性、parser、Kafka 字段和 TLS 文件路径，不读取 TLS 内容，不解析日志正文，不联网、不运行子进程、不建目录/文件、不创建 subst。PowerShell `-CheckOnly` 是调用该 Python 预检的薄入口，不查找或运行 Fluent Bit。输出仅含源哈希、文件数量、字段名和错误码，不输出 broker、账户、密码或证书路径。缺一类输入时失败，先让相应 Emitter 生成文件；文件存在不等于记录有效或平台可见。
+
+用 `--kinds heartbeat,access`（PowerShell 为 `-Kinds 'heartbeat,access'`）可只检查和转发所选类型，默认 `all`。后续扩展类型沿用原 offset 路径；新加入且没有既有 offset 的类型，在 `Read_From_Head False` 时从新行开始，已有 offset 始终续读。`run.ps1` 默认使用项目 `.venv/Scripts/python.exe`，也可用 `-PythonExecutable '<已有解释器绝对路径>'` 指定已配置的 Python。
 
 Kafka profile 延用 `brokers` 与 `rdkafka` 结构，模板见 `kafka-settings.example.json`。SSL/SASL_SSL 要求显式存在的绝对 `ssl.ca.location`；如使用客户端证书，`ssl.certificate.location` 和 `ssl.key.location` 成对存在。SASL 要求机制、用户名和密码；密码只能为 `${ENV_NAME}`，引用的环境变量须已设置。预检不会尝试认证。七张 AIC 证书的 clientAuth 用途不能代替 Kafka 信任/ACL 确认，Monitor 的 OIDC/local-auth 也须另行配置。
 
@@ -41,7 +45,7 @@ pwsh -NoProfile -File deploy/fluent-bit/run.ps1 -Mode kafka -LogDirectory <本�
 
 Linux collector 的纯配置接口为 `render_collection_paths(sources, state_paths, parser_file, *, mode="stdout", kafka=None, read_from_head=True)`：七角色日志目录例如 `/sources/ops`，每角色 DB 模板例如 `/collector-state/amp-ops-{kind}.db`。它复用相同的 42 Tail / 六路输出，不检查宿主目录、读取文件、创建别名或启动进程；调用者先用 `validate_kafka` 检查宿主 profile，再把 TLS 位置替换为各自只读容器挂载路径。该接口不授予 Kafka 访问权限，也不验证服务器连接。
 
-集合配置有 42 个 Tail、42 个隔离的 offset DB，以及六个选定模式的输出。单源和集合都只匹配正文 `amp_<kind>_*.jsonl`，不把 `.jsonl.1` 等归档或临时文件加入 Path；[官方 Tail 轮转说明](https://docs.fluentbit.io/manual/data-pipeline/inputs/tail#file-rotation) 提醒，Path 匹配轮转归档会造成重复采集。当前 SDK 六类 Emitter 向固定文件追加；支持这些稳定文件的追加，以及保留原文件并创建新的稳定 `*.jsonl` 文件。集合入口显式 `Read_From_Head True`，复用原状态目录以持久 offset 续读，新正文文件从头读取。初次 Kafka 状态可能补发既有正文，须先约定历史范围与平台去重口径。外部 rename、copytruncate 和停机归档尚未获得无漏读、无重放保证。
+集合配置有 42 个 Tail、42 个隔离的 offset DB，以及六个选定模式的输出。单源和集合都只匹配正文 `amp_<kind>_*.jsonl`，不把 `.jsonl.1` 等归档或临时文件加入 Path；[官方 Tail 轮转说明](https://docs.fluentbit.io/manual/data-pipeline/inputs/tail#file-rotation) 提醒，Path 匹配轮转归档会造成重复采集。当前 SDK 六类 Emitter 向固定文件追加；支持这些稳定文件的追加，以及保留原文件并创建新的稳定 `*.jsonl` 文件。集合命令行默认 `Read_From_Head False`，显式 `--read-from-head` 才从头读；纯配置接口保留 `read_from_head=True` 供既有历史采集调用者使用。Linux 准备入口默认 stdout 从头读、Kafka 仅采新行。既有 offset 始终续读，首次只发新行要使用独立的新 Kafka 状态，并先启动 collector 再产生日志；历史补发须另定范围与去重口径。外部 rename、copytruncate 和停机归档尚未获得无漏读、无重放保证。
 
 独立合成验收入口：
 

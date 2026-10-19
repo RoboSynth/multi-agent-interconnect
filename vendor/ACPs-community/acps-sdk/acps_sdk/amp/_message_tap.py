@@ -9,6 +9,13 @@ from acps_sdk.amp.models import ErrorInfo, MessageBody, MessageDestination, Mess
 _SETTLEMENT_EVENT_TYPES = frozenset({"ack", "nack", "reject", "timeout", "dead_letter"})
 
 
+def _message_correlation(body: dict[str, Any]) -> str | None:
+    """Pair task traffic by taskId; retain session context for management traffic."""
+    if body.get("type") in {"task-command", "task-result"}:
+        return body.get("taskId")
+    return body.get("sessionId")
+
+
 def build_send_body(
     *,
     system: str,

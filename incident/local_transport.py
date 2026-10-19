@@ -358,9 +358,16 @@ class LocalAipStdioTransport:
             except Exception as takeover_error:
                 # Preserve the actual task/channel failure; a failed replacement
                 # is separate evidence, never an invented task timeout.
+                details = {"initial_error_class": type(exc).__name__,
+                           "takeover_error_class": type(takeover_error).__name__,
+                           "takeover_reason": str(takeover_error),
+                           "takeover_rejection": getattr(takeover_error, "takeover_rejection", None)}
+                for key, item in details.items():
+                    setattr(exc, key, item)
                 await self._event("takeover_unavailable", failed_aic=worker.spec["aic"],
-                                  error_class=type(takeover_error).__name__)
+                                  error_class=type(takeover_error).__name__, **details)
                 raise exc from takeover_error
+            result = {**result, "initial_error_class": type(exc).__name__, "takeover_error_class": None}
         if result.get("facts"):
             self.evidence.setdefault(task.incident_id, []).extend(result["facts"])
         return result
@@ -502,6 +509,8 @@ class LocalAipStdioTransport:
                               failed_aic=failed.spec["aic"], reason=reason, discovery="local process directory")
             candidates = [w for w in self.workers.values() if w is not failed and w.spec["role"] == role
                           and w.state == "ready" and original["tool"] in w.tools]
+            candidate_error = None
+            rejections = []
             for candidate in candidates:
                 describe_payload = {"schema_version": "ifc/1.0", "incident_id": incident_id,
                     "logical_task_id": (logical_id + ":describe:" + candidate.spec["name"])[:128],
@@ -536,7 +545,19 @@ class LocalAipStdioTransport:
                               "args": {"advance_fence": True, "resume_package": package.to_dict()}}
                     resume = await self._resume_payload(resume, package, original_fence=previous.to_dict())
                     control = await self._call_worker(candidate, resume)
-                    confirmed = control.get("active_fence", control.get("operation", {}).get("active_fence"))
+                    if control.get("status") in {"rejected", "tool_error"}:
+                        detail = control.get("reason")
+                        if not isinstance(detail, str) or not detail:
+                            detail = "replacement returned " + control["status"]
+                        error = RuntimeError("replacement did not accept the resume: " + detail)
+                        error.takeover_rejection = {"candidate_aic": candidate.spec["aic"],
+                                                    "status": control["status"], "reason": detail}
+                        await self._event("takeover_control_rejected", incident_id=incident_id,
+                            logical_task_id=logical_id, **error.takeover_rejection)
+                        raise error
+                    operation = control.get("operation")
+                    operation = operation if isinstance(operation, dict) else {}
+                    confirmed = control.get("active_fence") or operation.get("active_fence")
                     if not isinstance(confirmed, dict) or Fence(**confirmed) < proposed:
                         raise RuntimeError("replacement did not confirm resource-domain fence activation")
                     fence = Fence(**confirmed)
@@ -544,7 +565,7 @@ class LocalAipStdioTransport:
                     self.active_fences[role] = fence
                     self.journal.record_takeover(incident_id, failed.spec["aic"], reason,
                         replacement=candidate.spec["aic"], fence=confirmed, state="fenced")
-                    state = control.get("operation", {}).get("state", "unknown")
+                    state = operation.get("state", "unknown")
                     if original["kind"] in ("observe", "verify", "describe"):
                         # Observation replay has no modifying effect or operation identity.
                         resumed = {**original, "fence": confirmed}
@@ -570,13 +591,23 @@ class LocalAipStdioTransport:
                                     self.pending.pop(task_id, None)
                     await self._event("takeover_completed", incident_id=incident_id, logical_task_id=logical_id,
                         failed_aic=failed.spec["aic"], replacement_aic=candidate.spec["aic"], fence=confirmed,
-                        operation_state=result.get("operation", {}).get("state"), status=result.get("status"),
+                        operation_state=(result.get("operation") or {}).get("state"), status=result.get("status"),
                         elapsed_seconds=round(time.monotonic()-started, 3), discovery="local process directory")
                     return result
                 except (ConnectionError, asyncio.TimeoutError, ValueError, RuntimeError) as exc:
+                    candidate_error = exc
+                    rejection = getattr(exc, "takeover_rejection", None)
+                    if rejection:
+                        rejections.append(rejection)
+                    await self._event("takeover_candidate_failed", candidate_aic=candidate.spec["aic"],
+                        error_class=type(exc).__name__, reason=str(exc), rejection=rejection)
                     self.journal.record_takeover(incident_id, failed.spec["aic"], reason,
                         replacement=candidate.spec["aic"], state="candidate_failed:"+type(exc).__name__)
-            raise RuntimeError("no confirmed local standby completed takeover")
+            error = RuntimeError("no confirmed local standby completed takeover")
+            error.takeover_rejection = rejections[-1] if rejections else None
+            if error.takeover_rejection:
+                error.args = (str(error) + ": " + error.takeover_rejection["reason"],)
+            raise error from candidate_error
 
     async def _resume_payload(self, default: dict, package: ResumePackage, *, original_fence=None) -> dict:
         """Customize handover information while preserving the fencing handshake.

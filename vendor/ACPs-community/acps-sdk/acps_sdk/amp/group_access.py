@@ -53,6 +53,12 @@ class GroupAccessMiddleware:
         key = (getattr(command, "sessionId", None), getattr(command, "taskId", None), direction)
         if method != "start":
             return await callback()
+        mentions = getattr(command, "mentions", None)
+        if direction == "send" and (not isinstance(mentions, list) or len(mentions) != 1):
+            logger.warning(
+                "event=group_access_unpairable_mentions session_id=%s task_id=%s mentions=%r",
+                key[0], key[1], mentions,
+            )
         durable = isinstance(self.emitter, DurableAccessEmitter)
         if key in self._seen and not durable:
             self._seen.move_to_end(key)

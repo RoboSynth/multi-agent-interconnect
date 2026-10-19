@@ -884,6 +884,9 @@ async def run_case(plan, *, controller_factory=None, transport_factory=None, fin
         report["task_phase_status"] = "completed"
     except Exception as error:
         report["error_class"] = type(error).__name__
+        for field in ("initial_error_class", "takeover_error_class", "takeover_reason", "takeover_rejection"):
+            if hasattr(error, field):
+                report[field] = getattr(error, field)
     finally:
         if deferred_removal is not None:
             deferred_removal.detach()

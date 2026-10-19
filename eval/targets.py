@@ -7,15 +7,18 @@ import re
 ROOT = Path(__file__).resolve().parents[1]
 DOMAIN_SERVICES = {"application-agent": "application", "verification-agent": "verification",
     "database-agent": "database", "database-backup-agent": "database", "ops-agent": "ops", "onboarding-agent": "onboarding"}
-DOMAIN_SOURCE_FILES = ("acps_mcp_bridge/bridge.py", "acps_mcp_bridge/policy.py", "incident/partners.py",
+DOMAIN_SOURCE_FILES = ("acps_mcp_bridge/bridge.py", "acps_mcp_bridge/handover.py", "acps_mcp_bridge/policy.py", "incident/partners.py",
+    "business/load.py",
     "incident/contracts.py", "incident/platform_worker.py", "domains/ops/guard.py",
     "domains/ops/route_mcp.py", "domains/ops/policy.yaml", "domains/ops/policy.native.yaml",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py", "incident/amp_setup.py", "incident/recover_access.py")
 
 

@@ -201,6 +201,25 @@ class PlatformWorkerTests(unittest.IsolatedAsyncioTestCase):
         wrong=invitation.model_copy(update={"amqp":AMQPConfig(exchange="unrelated",exchangeType="fanout",routingKey="")})
         self.assertIsNotNone(self.runtime._invitation_policy(wrong))
 
+    def test_public_metadata_flag_rejects_resource_domains_and_nonboolean(self):
+        for public in (True, "true"):
+            self.path.write_text(json.dumps({**self.config_dict, "public_metadata_service": public}), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                load_config(self.path)
+
+    async def test_external_onboarding_leader_keeps_official_sender_identity_checks(self):
+        config = {**self.config, "role": "onboarding", "public_metadata_service": True, "env_file": None}
+        worker = PlatformWorker(config, executor=self.executor, amp=self.worker.amp, ssl_context=self.worker.ssl_context)
+        self.runtime = worker.prepare()
+        self.assertIsNone(self.runtime._invitation_policy(self.invitation(OTHER)))
+        client, consume = await self.partner()
+        client._group_info = self.invitation(OTHER).group
+        await consume(Incoming(self.command(sender=OTHER), user_id=OTHER))
+        self.executor.execute.assert_awaited_once()
+        self.assertEqual(self.executor.execute.await_args.args[1], OTHER)
+        with self.assertRaises(SenderIdentityMismatchError):
+            await consume(Incoming(self.command(sender=OTHER, task="spoofed"), user_id=LEADER))
+
     async def test_business_handler_is_bound_before_join_starts_task_consumer(self):
         client=self.runtime._partner_client()
         client._group_id="platform-group"

@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "wsl.exe",
+      "--list",
+      "--verbose"
+    ],
+    "exit_code": 0,
+    "stdout": "  NAME            STATE           VERSION\r\n* Ubuntu-22.04    Running         2\r\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-22.04",
+      "--exec",
+      "/usr/bin/docker",
+      "--host",
+      "unix:///var/run/docker.sock",
+      "info",
+      "--format",
+      "{{.OSType}}"
+    ],
+    "exit_code": 0,
+    "stdout": "linux\n",
+    "stderr": "w\u0000s\u0000l\u0000:\u0000 \u0000�hKm0R \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006tM�n\f�FO*g\\��P0R \u0000W\u0000S\u0000L\u0000\u00020N\u0000A\u0000T\u0000 \u0000!j\u000f_\u000bN�v \u0000W\u0000S\u0000L\u0000 \u0000\rN/e\u0001c \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006t\u00020\r\u0000\n\u0000"
+  },
+  {
+    "command": [
+      "wsl.exe",
+      "-d",
+      "Ubuntu-22.04",
+      "--exec",
+      "/usr/bin/docker",
+      "--host",
+      "unix:///var/run/docker.sock",
+      "compose",
+      "version",
+      "--short"
+    ],
+    "exit_code": 0,
+    "stdout": "2.40.3+ds1-0ubuntu1~22.04.1\n",
+    "stderr": "w\u0000s\u0000l\u0000:\u0000 \u0000�hKm0R \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006tM�n\f�FO*g\\��P0R \u0000W\u0000S\u0000L\u0000\u00020N\u0000A\u0000T\u0000 \u0000!j\u000f_\u000bN�v \u0000W\u0000S\u0000L\u0000 \u0000\rN/e\u0001c \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006t\u00020\r\u0000\n\u0000"
+  }
+]

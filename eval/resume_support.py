@@ -9,6 +9,7 @@ from pathlib import Path
 import sqlite3
 
 import httpx
+from acps_mcp_bridge.handover import history_entry
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -217,14 +218,13 @@ def formal_semantic_history(messages_path, incident_id, *, before_bytes):
         request = starts.get(identity)
         if request is None:
             continue
-        base = {"aip_session_id": identity[0], "aip_task_id": identity[1]}
         if entry.get("direction") == "send" and message.get("command") == "start":
             if not any(item_value(item) == request for item in message.get("dataItems", [])):
                 continue
             dedupe = ("request", identity)
             if dedupe not in seen:
                 seen.add(dedupe)
-                records.append({"direction": "request", **base, "payload": request})
+                records.append(history_entry("request", *identity, request))
         elif entry.get("direction") == "receive":
             for product in message.get("products", []):
                 for item in product.get("dataItems", []):
@@ -235,5 +235,5 @@ def formal_semantic_history(messages_path, incident_id, *, before_bytes):
                     dedupe = ("product", identity, json.dumps(data, sort_keys=True, ensure_ascii=False))
                     if dedupe not in seen:
                         seen.add(dedupe)
-                        records.append({"direction": "product", **base, "product": data})
+                        records.append(history_entry("product", *identity, data))
     return records
