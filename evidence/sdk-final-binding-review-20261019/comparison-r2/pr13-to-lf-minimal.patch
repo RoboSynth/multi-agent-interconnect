@@ -1,0 +1,1157 @@
+diff --git a/acps-sdk/acps_sdk/amp/__init__.py b/acps-sdk/acps_sdk/amp/__init__.py
+index 9ff91c712b7e900c45e7b1e2de828d1dce9a8a57..aec19b600f3e3d7b1a557cc01e9d90cf51da11fc
+--- a/acps-sdk/acps_sdk/amp/__init__.py
++++ b/acps-sdk/acps_sdk/amp/__init__.py
+@@ -13,6 +13,7 @@
+ """
+ 
+ from acps_sdk.amp.access_emitter import AccessEmitter
++from acps_sdk.amp.durable_access import DurableAccessEmitter, AccessLogIntegrityError
+ from acps_sdk.amp.message_emitter import MessageEmitter
+ from acps_sdk.amp.system_emitter import SystemEmitter
+ from acps_sdk.amp.emitter import AuditEmitter
+@@ -119,6 +120,8 @@
+     "compute_log_id_fallback",
+     # 发射器
+     "AccessEmitter",
++    "DurableAccessEmitter",
++    "AccessLogIntegrityError",
+     "MessageEmitter",
+     "SystemEmitter",
+     "AuditEmitter",
+diff --git a/acps-sdk/acps_sdk/amp/durable_access.py b/acps-sdk/acps_sdk/amp/durable_access.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..75a72645232b16de079a802e0ffe7a3c9b9b0fae
+--- /dev/null
++++ b/acps-sdk/acps_sdk/amp/durable_access.py
+@@ -0,0 +1,242 @@
++"""Process-crash recovery for local access logs, with immutable outbox records.
++
++The derived journal is the exclusive owner of one canonical JSONL file. Recovery
++records an unconfirmed outcome, never an invented response or request duration.
++"""
++from __future__ import annotations
++
++import asyncio
++from datetime import datetime, timezone
++import json
++import logging
++import os
++from pathlib import Path
++import sqlite3
++import threading
++
++from .access_emitter import AccessEmitter
++from .models import AccessBody, AccessLogRecord, ErrorInfo
++
++logger = logging.getLogger(__name__)
++
++
++class AccessLogIntegrityError(ValueError):
++    """An existing log cannot safely accept an outbox replay."""
++
++
++def _json(value):
++    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
++
++
++class DurableAccessEmitter(AccessEmitter):
++    """Opt-in access emitter; SQLite FULL transactions precede handler execution.
++
++    ``begin`` and ``finish`` are used by GroupAccessMiddleware. Ordinary ``emit``
++    remains available for completed standalone events. The original AccessEmitter
++    is unchanged. Use this emitter as the sole writer of its JSONL file.
++    """
++
++    def __init__(self, log_file: Path, aic: str, *, resource=None):
++        super().__init__(Path(log_file).resolve(), aic, resource=resource)
++        self.journal_path = self._log_file.with_suffix(".outbox.sqlite3")
++        self._lock = threading.RLock()
++        self._connection = None
++        self._active = set()
++        self._known = {}
++        self._offset = 0
++        self._file_identity = None
++
++    def _record(self, log_id, body, **kwargs):
++        record = AccessLogRecord(log_id=log_id,
++            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
++            aic=self._aic, body=body, **kwargs)
++        value = record.model_dump(mode="json", by_alias=True, exclude_none=True)
++        if self._resource:
++            value["resource"] = self._resource
++        return _json(value)
++
++    def start_sync(self):
++        with self._lock:
++            if self._connection is not None:
++                return
++            self._log_file.parent.mkdir(parents=True, exist_ok=True)
++            if self.journal_path.is_symlink():
++                raise AccessLogIntegrityError("Access journal must not be a symlink")
++            for path in (self._log_file, self.journal_path):
++                if path.exists() and path.stat().st_nlink > 1:
++                    raise AccessLogIntegrityError("Access files must not have hard-link aliases")
++            connection = sqlite3.connect(self.journal_path, timeout=0, check_same_thread=False)
++            try:
++                connection.execute("PRAGMA locking_mode=EXCLUSIVE")
++                connection.execute("PRAGMA journal_mode=DELETE")
++                connection.execute("PRAGMA synchronous=FULL")
++                with connection:
++                    connection.execute("CREATE TABLE IF NOT EXISTS owner (aic TEXT, log_path TEXT)")
++                    connection.execute("CREATE TABLE IF NOT EXISTS attempts (event_key TEXT PRIMARY KEY, "
++                        "log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)")
++                    owner = connection.execute("SELECT aic, log_path FROM owner").fetchone()
++                    identity = (self._aic, os.path.normcase(str(self._log_file)))
++                    if owner is None:
++                        connection.execute("INSERT INTO owner VALUES (?, ?)", identity)
++                    elif owner != identity:
++                        raise AccessLogIntegrityError("Access journal identity or canonical log path mismatch")
++                    # A real write acquires a lock retained by EXCLUSIVE mode after commit.
++                    connection.execute("UPDATE owner SET aic=aic")
++                self._connection = connection
++                self._flush_locked()
++            except BaseException:
++                connection.close()
++                self._connection = None
++                self._known, self._offset, self._file_identity = {}, 0, None
++                raise
++
++    def _scan_existing(self):
++        if not self._log_file.exists():
++            if self._offset:
++                raise AccessLogIntegrityError("Access log disappeared while owned")
++            return
++        stat = self._log_file.stat()
++        identity = (stat.st_dev, stat.st_ino)
++        if (self._file_identity is not None and identity != self._file_identity) or stat.st_size < self._offset:
++            raise AccessLogIntegrityError("Access log was replaced or truncated while owned")
++        with self._log_file.open("rb") as stream:
++            stream.seek(self._offset)
++            while line := stream.readline():
++                if not line.endswith(b"\n"):
++                    raise AccessLogIntegrityError("Partial access line retained; replay stopped")
++                try:
++                    value = json.loads(line)
++                except (UnicodeError, ValueError) as error:
++                    raise AccessLogIntegrityError("Malformed access line retained; replay stopped") from error
++                if (not isinstance(value, dict) or value.get("aic") != self._aic
++                        or not isinstance(value.get("log_id"), str) or not value["log_id"]):
++                    raise AccessLogIntegrityError("Existing access identity is invalid")
++                log_id, content = value["log_id"], _json(value)
++                if log_id in self._known and self._known[log_id] != content:
++                    raise AccessLogIntegrityError("Same access log ID has different content")
++                self._known[log_id] = content
++                self._offset = stream.tell()
++        self._file_identity = identity
++
++    def _append(self, record):
++        with self._log_file.open("ab") as stream:
++            raw = (record + "\n").encode("utf-8")
++            if stream.write(raw) != len(raw):
++                raise OSError("Incomplete access append")
++            stream.flush()
++            os.fsync(stream.fileno())
++
++    def _flush_locked(self):
++        self._scan_existing()
++        connection = self._connection
++        with connection:
++            for key, log_id, intent in connection.execute(
++                    "SELECT event_key, log_id, intent FROM attempts WHERE record IS NULL").fetchall():
++                if key in self._active:
++                    continue
++                saved = json.loads(intent)
++                body = AccessBody.model_validate(saved["body"])
++                body.error = ErrorInfo(code="OutcomeUnconfirmed", message=
++                    "Recovery observed no durable outcome for an inactive request")
++                connection.execute("UPDATE attempts SET record=? WHERE event_key=?",
++                    (self._record(log_id, body, **saved["trace"]), key))
++        for key, log_id, record in connection.execute(
++                "SELECT event_key, log_id, record FROM attempts WHERE record IS NOT NULL AND written=0 ORDER BY rowid").fetchall():
++            if log_id in self._known:
++                if self._known[log_id] != record:
++                    raise AccessLogIntegrityError("Outbox replay conflicts with an existing access record")
++                # A visible line may come from a crash before its original fsync.
++                with self._log_file.open("r+b") as stream:
++                    os.fsync(stream.fileno())
++            else:
++                self._append(record)
++                self._scan_existing()
++            with connection:
++                connection.execute("UPDATE attempts SET written=1 WHERE event_key=?", (key,))
++
++    def begin_sync(self, key, body, *, trace_id, correlation_id):
++        if (len(key) != 3 or any(not isinstance(value, str) or not value for value in key)
++                or key[:2] != (trace_id, correlation_id) or key[2] not in ("send", "receive")):
++            raise ValueError("Durable group access requires session, task and direction")
++        if body.response is not None or body.duration_ms is not None or body.error is not None:
++            raise ValueError("A request intent must not assert an outcome")
++        event_key = _json(key)
++        intent = _json(dict(body=body.model_dump(mode="json", by_alias=True, exclude_none=True),
++            trace=dict(trace_id=trace_id, correlation_id=correlation_id),
++            received_at=datetime.now(timezone.utc).isoformat()))
++        with self._lock:
++            self.start_sync()
++            previous = self._connection.execute("SELECT intent FROM attempts WHERE event_key=?", (event_key,)).fetchone()
++            if previous:
++                original, current = json.loads(previous[0]), json.loads(intent)
++                if original["body"] != current["body"] or original["trace"] != current["trace"]:
++                    raise AccessLogIntegrityError("Redelivered access key changed request metadata")
++                return False
++            with self._connection:
++                self._connection.execute("INSERT INTO attempts(event_key,log_id,intent) VALUES (?,?,?)",
++                    (event_key, AccessLogRecord.new_log_id(), intent))
++            self._active.add(event_key)
++            return True
++
++    def finish_sync(self, key, body):
++        event_key = _json(key)
++        with self._lock:
++            if self._connection is None:
++                raise RuntimeError("Access owner closed before callback finalization")
++            row = self._connection.execute("SELECT log_id,intent,record FROM attempts WHERE event_key=?", (event_key,)).fetchone()
++            if row is None:
++                raise ValueError("No durable request intent")
++            try:
++                if row[2] is None:
++                    if event_key not in self._active:
++                        raise RuntimeError("Only the active owner may finalize a request")
++                    original = AccessBody.model_validate(json.loads(row[1])["body"])
++                    if (body.request, body.caller, body.callee) != (original.request, original.caller, original.callee):
++                        raise AccessLogIntegrityError("Final access changed its durable request identity")
++                    record = self._record(row[0], body, **json.loads(row[1])["trace"])
++                    with self._connection:
++                        self._connection.execute("UPDATE attempts SET record=? WHERE event_key=?", (record, event_key))
++                self._flush_locked()
++                return row[0]
++            finally:
++                self._active.discard(event_key)
++
++    def emit_sync(self, body, **kwargs):
++        with self._lock:
++            self.start_sync()
++            log_id = AccessLogRecord.new_log_id()
++            with self._connection:
++                self._connection.execute("INSERT INTO attempts(event_key,log_id,intent,record) VALUES (?,?,?,?)",
++                    ("event:" + log_id, log_id, "{}", self._record(log_id, body, **kwargs)))
++            self._flush_locked()
++            return log_id
++
++    async def emit(self, body, **kwargs):
++        # Complete the small local transaction before cancellation can release
++        # its owner. No detached thread may reopen the journal after shutdown.
++        return self.emit_sync(body, **kwargs)
++
++    def flush_sync(self):
++        with self._lock:
++            self.start_sync()
++            self._flush_locked()
++
++    async def run_periodic(self, interval=5):
++        while True:
++            await asyncio.sleep(interval)
++            try:
++                self.flush_sync()
++            except Exception:
++                logger.warning("Durable access flush pending", exc_info=True)
++
++    def close_sync(self):
++        with self._lock:
++            if self._active:
++                raise RuntimeError("Cannot release access ownership while callbacks are active")
++            if self._connection is not None:
++                try:
++                    self._flush_locked()
++                finally:
++                    self._connection.close()
++                    self._connection = None
++                    self._known, self._offset, self._file_identity = {}, 0, None
+diff --git a/acps-sdk/acps_sdk/amp/group_access.py b/acps-sdk/acps_sdk/amp/group_access.py
+index e30300dcd513c02d42474f52bfd4b78d988ee659..756719a36746ca5b3fadef83bfb016fb0f3774b3
+--- a/acps-sdk/acps_sdk/amp/group_access.py
++++ b/acps-sdk/acps_sdk/amp/group_access.py
+@@ -12,6 +12,7 @@
+ from typing import Any, Callable
+ 
+ from .access_emitter import AccessEmitter
++from .durable_access import DurableAccessEmitter
+ from .models import AccessBody, AccessParticipant, AccessRequest, AccessResponse, ErrorInfo
+ 
+ logger = logging.getLogger(__name__)
+@@ -52,9 +53,21 @@
+         key = (getattr(command, "sessionId", None), getattr(command, "taskId", None), direction)
+         if method != "start":
+             return await callback()
+-        if key in self._seen:
++        durable = isinstance(self.emitter, DurableAccessEmitter)
++        if key in self._seen and not durable:
+             self._seen.move_to_end(key)
+             return await callback()
++        intent = None
++        if durable:
++            mentions = getattr(command, "mentions", None)
++            callee = self.aic if direction == "receive" else (
++                mentions[0] if isinstance(mentions, list) and len(mentions) == 1 else "group:" + str(getattr(command, "groupId", "")))
++            intent = AccessBody(request=AccessRequest(method=method, route=self.route(command)),
++                caller=AccessParticipant(aic=getattr(command, "senderId", None)),
++                callee=AccessParticipant(aic=callee))
++            owned = self.emitter.begin_sync(key, intent, trace_id=key[0], correlation_id=key[1])
++            if not owned:
++                return await callback()
+         # A handler failure is the first attempt's outcome. Redelivering its
+         # same TaskId still invokes the handler but does not add another access.
+         self._seen[key] = None
+@@ -78,15 +91,19 @@
+                 mentions[0] if isinstance(mentions, list) and len(mentions) == 1 else "group:" + str(getattr(command, "groupId", "")))
+             body = AccessBody(
+                 duration_ms=(monotonic() - start) * 1000,
+-                request=AccessRequest(method=method, route=self.route(command)),
++                request=intent.request if intent is not None else AccessRequest(method=method, route=self.route(command)),
+                 response=AccessResponse(status_code=500 if error else (202 if direction == "send" else 200)),
+                 caller=AccessParticipant(aic=getattr(command, "senderId", None)),
+                 callee=AccessParticipant(aic=callee),
+                 error=ErrorInfo(code=error, message=error) if error else None,
+             )
+             try:
+-                await self.emitter.emit(body, trace_id=getattr(command, "sessionId", None),
+-                                        correlation_id=getattr(command, "taskId", None))
++                if durable:
++                    body.request, body.caller, body.callee = intent.request, intent.caller, intent.callee
++                    self.emitter.finish_sync(key, body)
++                else:
++                    await self.emitter.emit(body, trace_id=getattr(command, "sessionId", None),
++                                            correlation_id=getattr(command, "taskId", None))
+             except Exception:
+                 logger.warning("Group access emission failed", exc_info=True)
+ 
+diff --git a/acps-sdk/acps_sdk/amp/message_emitter.py b/acps-sdk/acps_sdk/amp/message_emitter.py
+index 730867093a19aef1f220a69e993358d0dbe53c7b..62b395c94664ca468f2e7e2828f60556c3569234
+--- a/acps-sdk/acps_sdk/amp/message_emitter.py
++++ b/acps-sdk/acps_sdk/amp/message_emitter.py
+@@ -12,6 +12,8 @@
+ import asyncio
+ import json
+ import logging
++import os
++import threading
+ from datetime import datetime, timezone
+ from pathlib import Path
+ from typing import Any
+@@ -19,6 +21,17 @@
+ from acps_sdk.amp.models import MessageBody, MessageLogRecord
+ 
+ _logger = logging.getLogger(__name__)
++
++# Windows append handles do not serialize independent thread-pool writes.
++# Share a lock between emitter instances targeting the same canonical path.
++_file_locks_guard = threading.Lock()
++_file_locks: dict[str, threading.RLock] = {}
++
++
++def _lock_for_path(path: Path):
++    key = os.path.normcase(str(path.resolve()))
++    with _file_locks_guard:
++        return _file_locks.setdefault(key, threading.RLock())
+ 
+ 
+ class MessageEmitter:
+@@ -31,7 +44,8 @@
+         *,
+         resource: dict[str, Any] | None = None,
+     ) -> None:
+-        self._log_file = log_file
++        self._log_file = log_file.resolve()
++        self._write_lock = _lock_for_path(self._log_file)
+         self._aic = aic
+         self._resource = resource
+ 
+@@ -74,7 +88,8 @@
+             if self._resource:
+                 record_dict["resource"] = self._resource
+             line = json.dumps(record_dict, ensure_ascii=False)
+-            with self._log_file.open("a", encoding="utf-8") as f:
+-                f.write(line + "\n")
++            with self._write_lock:
++                with self._log_file.open("a", encoding="utf-8") as f:
++                    f.write(line + "\n")
+         except Exception:
+             _logger.warning("MessageEmitter: 写入失败，跳过", exc_info=True)
+diff --git a/acps-sdk/tests/amp/fixtures/durable_access_process.py b/acps-sdk/tests/amp/fixtures/durable_access_process.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..097af188324859dbdaca495be6847fc631c2043b
+--- /dev/null
++++ b/acps-sdk/tests/amp/fixtures/durable_access_process.py
+@@ -0,0 +1,62 @@
++"""Owned local subprocesses for access-log crash windows; no network or resources."""
++import asyncio
++import json
++import os
++from pathlib import Path
++import sys
++from types import SimpleNamespace
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
++from acps_sdk.amp.durable_access import DurableAccessEmitter
++from acps_sdk.amp.group_access import GroupAccessMiddleware
++
++
++def main():
++    mode, filename = sys.argv[1:]
++    path = Path(filename).resolve()
++
++    class CrashEmitter(DurableAccessEmitter):
++        def _append(self, record):
++            if mode == "ready":
++                os._exit(72)
++            if mode == "partial":
++                with self._log_file.open("wb") as stream:
++                    stream.write(record[:40].encode())
++                    stream.flush()
++                os._exit(74)
++            if mode == "before_fsync":
++                with self._log_file.open("ab") as stream:
++                    stream.write((record + "\n").encode())
++                    stream.flush()
++                os._exit(75)
++            super()._append(record)
++            if mode == "append":
++                os._exit(73)
++
++    emitter = CrashEmitter(path, "worker")
++    if mode == "recover":
++        emitter.start_sync()
++        emitter.close_sync()
++        print(json.dumps(dict(pid=os.getpid(), status="recovered")), flush=True)
++        return
++    if mode == "hold":
++        emitter.start_sync()
++        path.with_suffix(".ready.json").write_text(json.dumps(dict(pid=os.getpid())), encoding="utf-8")
++        sys.stdin.readline()
++        emitter.close_sync()
++        return
++    command = SimpleNamespace(command=SimpleNamespace(value="start"), sessionId="session", taskId="task",
++        senderId="caller", mentions=["worker"], groupId="group", commandParams={"skill": "database.inspect"}, dataItems=[])
++
++    async def callback():
++        path.with_suffix(".effect.txt").write_text("callback entered once", encoding="utf-8")
++        if mode == "handler":
++            os._exit(71)
++        return {"status": "ok"}
++
++    asyncio.run(GroupAccessMiddleware(emitter, "worker").run(command, callback))
++    raise AssertionError("The requested crash window was not reached")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/acps-sdk/tests/amp/test_durable_access.py b/acps-sdk/tests/amp/test_durable_access.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1b1e095981ed8da934f5edc9d131b9b018740994
+--- /dev/null
++++ b/acps-sdk/tests/amp/test_durable_access.py
+@@ -0,0 +1,299 @@
++"""Real local process exits, ownership, immutable replay and middleware behavior."""
++import asyncio
++from concurrent.futures import ThreadPoolExecutor
++from contextlib import closing
++import json
++import os
++from pathlib import Path
++import sqlite3
++import subprocess
++import sys
++import tempfile
++import time
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
++from acps_sdk.amp import AccessBody, AccessParticipant, AccessRequest, AccessResponse
++from acps_sdk.amp.durable_access import AccessLogIntegrityError, DurableAccessEmitter
++from acps_sdk.amp.group_access import GroupAccessMiddleware
++
++FIXTURE = Path(__file__).with_name("fixtures") / "durable_access_process.py"
++KEY = ("session", "task", "receive")
++
++
++def intent():
++    return AccessBody(request=AccessRequest(method="start", route="database.inspect"),
++        caller=AccessParticipant(aic="caller"), callee=AccessParticipant(aic="worker"))
++
++
++def success():
++    return intent().model_copy(update={"response": AccessResponse(status_code=200), "duration_ms": 1.0})
++
++
++class DurableAccessTests(unittest.IsolatedAsyncioTestCase):
++    def setUp(self):
++        base = os.environ.get("INCIDENT_TEST_TMPDIR")
++        self.temp = tempfile.TemporaryDirectory(dir=base)
++        self.path = Path(self.temp.name) / "amp_access_worker.jsonl"
++        self.emitters = []
++
++    def tearDown(self):
++        for emitter in self.emitters:
++            emitter.close_sync()
++        self.temp.cleanup()
++
++    def emitter(self, aic="worker", cls=DurableAccessEmitter):
++        value = cls(self.path, aic)
++        self.emitters.append(value)
++        return value
++
++    def begin(self, emitter):
++        return emitter.begin_sync(KEY, intent(), trace_id=KEY[0], correlation_id=KEY[1])
++
++    def fixture_inputs(self, mode):
++        env = os.environ.copy()
++        env["PYTHONPATH"] = os.pathsep.join(path for path in sys.path if path and Path(path).is_dir())
++        executable = getattr(sys, "_base_executable", sys.executable)
++        return [executable, str(FIXTURE), mode, str(self.path)], env
++
++    def run_fixture(self, mode, expected):
++        command, env = self.fixture_inputs(mode)
++        value = subprocess.run(command,
++            stdin=subprocess.DEVNULL, capture_output=True, timeout=30, env=env)
++        self.assertEqual(value.returncode, expected, value.stderr.decode(errors="replace"))
++        return value
++
++    def record_in_journal(self):
++        with closing(sqlite3.connect(self.path.with_suffix(".outbox.sqlite3"))) as connection:
++            return connection.execute("SELECT log_id,record,written FROM attempts").fetchone()
++
++    def rows(self):
++        return [json.loads(line) for line in self.path.read_text(encoding="utf-8").splitlines()]
++
++    def test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process(self):
++        self.run_fixture("handler", 71)
++        original_id, original_record, _ = self.record_in_journal()
++        self.assertIsNone(original_record)
++        effect = self.path.with_suffix(".effect.txt").read_bytes()
++        self.run_fixture("recover", 0)
++        row = self.rows()[0]
++        self.assertEqual(row["log_id"], original_id)
++        self.assertEqual((row["trace_id"], row["correlation_id"]), KEY[:2])
++        self.assertEqual(row["body"]["error"]["code"], "OutcomeUnconfirmed")
++        self.assertNotIn("response", row["body"])
++        self.assertNotIn("durationMs", row["body"])
++        before = self.path.read_bytes()
++        self.run_fixture("recover", 0)
++        self.assertEqual(self.path.read_bytes(), before)
++        self.assertEqual(self.path.with_suffix(".effect.txt").read_bytes(), effect)
++
++    def test_hard_exit_after_ready_snapshot_replays_original_known_outcome(self):
++        self.run_fixture("ready", 72)
++        log_id, record, written = self.record_in_journal()
++        self.assertEqual(written, 0)
++        self.run_fixture("recover", 0)
++        self.assertEqual(self.rows(), [json.loads(record)])
++        self.assertEqual(self.record_in_journal(), (log_id, record, 1))
++
++    def test_hard_exit_after_append_before_ack_adds_no_duplicate(self):
++        self.run_fixture("append", 73)
++        before = self.path.read_bytes()
++        original = self.record_in_journal()
++        self.assertEqual(original[2], 0)
++        self.run_fixture("recover", 0)
++        self.assertEqual(self.path.read_bytes(), before)
++        self.assertEqual(self.record_in_journal(), (*original[:2], 1))
++
++    def test_visible_line_from_pre_fsync_crash_is_synced_before_ack(self):
++        self.run_fixture("before_fsync", 75)
++        before = self.path.read_bytes()
++        emitter = self.emitter()
++        with patch("acps_sdk.amp.durable_access.os.fsync", wraps=os.fsync) as synced:
++            emitter.start_sync()
++        self.assertGreater(synced.call_count, 0)
++        emitter.close_sync()
++        self.assertEqual(self.path.read_bytes(), before)
++        self.assertEqual(self.record_in_journal()[2], 1)
++
++    def test_partial_line_is_retained_and_recovery_refuses_to_ack(self):
++        self.run_fixture("partial", 74)
++        before = self.path.read_bytes()
++        emitter = self.emitter()
++        with self.assertRaises(AccessLogIntegrityError):
++            emitter.start_sync()
++        self.assertEqual(self.path.read_bytes(), before)
++        self.assertEqual(self.record_in_journal()[2], 0)
++
++    def test_only_one_owner_and_identity_binding_survive_close(self):
++        first, second = self.emitter(), self.emitter()
++        first.start_sync()
++        with self.assertRaises(sqlite3.OperationalError):
++            second.start_sync()
++        first.close_sync()
++        second.start_sync()
++        second.close_sync()
++        other = self.emitter("other-worker")
++        with self.assertRaises(AccessLogIntegrityError):
++            other.start_sync()
++
++    def test_other_process_cannot_own_same_canonical_log(self):
++        command, env = self.fixture_inputs("hold")
++        process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
++        try:
++            ready = self.path.with_suffix(".ready.json")
++            deadline = time.monotonic() + 15
++            while not ready.exists() and process.poll() is None and time.monotonic() < deadline:
++                time.sleep(.02)
++            self.assertTrue(ready.exists())
++            self.assertEqual(json.loads(ready.read_bytes())["pid"], process.pid)
++            self.assertIsNone(process.poll())
++            alias = self.path.parent / "unused" / ".." / self.path.name
++            competitor = DurableAccessEmitter(alias, "worker")
++            self.emitters.append(competitor)
++            with self.assertRaises(sqlite3.OperationalError):
++                competitor.start_sync()
++        finally:
++            try:
++                process.communicate(b"release\n", timeout=5)
++            except subprocess.TimeoutExpired:
++                process.kill()
++                process.communicate(timeout=5)
++        self.assertEqual(process.returncode, 0)
++        competitor.start_sync()
++
++    def test_close_cannot_release_owner_while_callback_is_active(self):
++        emitter, second = self.emitter(), self.emitter()
++        self.assertTrue(self.begin(emitter))
++        with self.assertRaises(RuntimeError):
++            emitter.close_sync()
++        with self.assertRaises(sqlite3.OperationalError):
++            second.start_sync()
++        emitter.finish_sync(KEY, success())
++        emitter.close_sync()
++        second.start_sync()
++        self.assertEqual(len(self.rows()), 1)
++
++    def test_same_key_after_restart_keeps_first_outcome_immutable(self):
++        emitter = self.emitter()
++        self.begin(emitter)
++        emitter.finish_sync(KEY, success())
++        emitter.close_sync()
++        before = self.path.read_bytes()
++        self.assertFalse(self.begin(emitter))
++        emitter.finish_sync(KEY, intent().model_copy(update={"response": AccessResponse(status_code=500)}))
++        self.assertEqual(self.path.read_bytes(), before)
++
++    def test_changed_request_metadata_is_rejected_before_reuse(self):
++        emitter = self.emitter()
++        self.begin(emitter)
++        emitter.finish_sync(KEY, success())
++        changed = intent().model_copy(update={"callee": AccessParticipant(aic="different")})
++        with self.assertRaises(AccessLogIntegrityError):
++            emitter.begin_sync(KEY, changed, trace_id=KEY[0], correlation_id=KEY[1])
++
++    def test_conflicting_existing_log_id_is_retained_and_rejected(self):
++        self.run_fixture("ready", 72)
++        _, record, _ = self.record_in_journal()
++        value = json.loads(record)
++        value["body"]["response"]["statusCode"] = 500
++        self.path.write_text(json.dumps(value) + "\n", encoding="utf-8")
++        before = self.path.read_bytes()
++        with self.assertRaises(AccessLogIntegrityError):
++            self.emitter().start_sync()
++        self.assertEqual(self.path.read_bytes(), before)
++        self.assertEqual(self.record_in_journal()[2], 0)
++
++    def test_failed_append_is_not_acknowledged_and_retries_same_id(self):
++        class Flaky(DurableAccessEmitter):
++            fail = True
++            def _append(self, record):
++                if self.fail:
++                    raise OSError("fixture append refused")
++                return super()._append(record)
++        emitter = self.emitter(cls=Flaky)
++        with self.assertRaises(OSError):
++            emitter.emit_sync(success(), trace_id="session", correlation_id="task")
++        emitter.fail = False
++        emitter.close_sync()
++        log_id, record, written = self.record_in_journal()
++        self.assertEqual((self.rows()[0]["log_id"], written), (log_id, 1))
++        self.assertEqual(self.rows()[0], json.loads(record))
++
++    def test_concurrent_completed_events_have_unique_complete_records(self):
++        emitter = self.emitter()
++        with ThreadPoolExecutor(max_workers=4) as pool:
++            ids = list(pool.map(lambda n: emitter.emit_sync(success(), correlation_id=str(n)), range(12)))
++        self.assertEqual(len(set(ids)), 12)
++        self.assertEqual({row["log_id"] for row in self.rows()}, set(ids))
++
++    def test_unrecorded_finished_outcome_recovers_unknown_without_restart(self):
++        class CannotFreezeSuccess(DurableAccessEmitter):
++            def _record(self, log_id, body, **kwargs):
++                if body.response is not None:
++                    raise OSError("fixture final snapshot refused")
++                return super()._record(log_id, body, **kwargs)
++        emitter = self.emitter(cls=CannotFreezeSuccess)
++        self.begin(emitter)
++        emitter.flush_sync()
++        self.assertFalse(self.path.exists())
++        with self.assertRaises(OSError):
++            emitter.finish_sync(KEY, success())
++        emitter.flush_sync()
++        self.assertEqual(self.rows()[0]["body"]["error"]["code"], "OutcomeUnconfirmed")
++        self.assertNotIn("response", self.rows()[0]["body"])
++
++    async def test_durable_middleware_records_intent_before_handler_and_not_payload(self):
++        emitter = self.emitter()
++        command = SimpleNamespace(command=SimpleNamespace(value="start"), sessionId="session", taskId="task",
++            senderId="caller", mentions=["worker"], groupId="group", commandParams={"skill": "database.inspect", "secret": "do-not-store-payload"}, dataItems=[])
++        invoked = []
++        async def callback():
++            invoked.append(True)
++            self.assertFalse(self.path.exists())
++            with self.assertRaises(sqlite3.OperationalError):
++                self.emitter().start_sync()
++            return {"status": "ok"}
++        middleware = GroupAccessMiddleware(emitter, "worker")
++        self.assertEqual(await middleware.run(command, callback), {"status": "ok"})
++        emitter.close_sync()
++        self.assertNotIn(b"do-not-store-payload", emitter.journal_path.read_bytes())
++        self.assertEqual(len(self.rows()), 1)
++        async def redelivered():
++            invoked.append(True)
++            return {"status": "tool_error"}
++        await GroupAccessMiddleware(emitter, "worker").run(command, redelivered)
++        self.assertEqual(len(invoked), 2)
++        self.assertEqual(self.rows()[0]["body"]["response"]["statusCode"], 200)
++
++    async def test_live_middleware_checks_changed_duplicate_metadata(self):
++        emitter = self.emitter()
++        command = SimpleNamespace(command=SimpleNamespace(value="start"), sessionId="session", taskId="task",
++            senderId="caller", mentions=["worker"], groupId="group", commandParams={}, dataItems=[])
++        invoked = []
++        async def callback():
++            invoked.append(True)
++            return {"status": "ok"}
++        middleware = GroupAccessMiddleware(emitter, "worker")
++        await middleware.run(command, callback)
++        command.senderId = "different-caller"
++        with self.assertRaises(AccessLogIntegrityError):
++            await middleware.run(command, callback)
++        self.assertEqual(invoked, [True])
++
++    async def test_failed_intent_persistence_prevents_handler_execution(self):
++        owner, other = self.emitter(), self.emitter()
++        owner.start_sync()
++        command = SimpleNamespace(command=SimpleNamespace(value="start"), sessionId="session", taskId="task",
++            senderId="caller", mentions=["worker"], groupId="group", commandParams={}, dataItems=[])
++        invoked = []
++        async def callback():
++            invoked.append(True)
++        with self.assertRaises(sqlite3.OperationalError):
++            await GroupAccessMiddleware(other, "worker").run(command, callback)
++        self.assertEqual(invoked, [])
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/acps-sdk/tests/amp/test_message_emitter_concurrency.py b/acps-sdk/tests/amp/test_message_emitter_concurrency.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fc6fc27d604a7893ab97e45ff5c0e84e7571079
+--- /dev/null
++++ b/acps-sdk/tests/amp/test_message_emitter_concurrency.py
+@@ -0,0 +1,135 @@
++"""MessageEmitter thread/path concurrency and compatibility checks; no live services."""
++from __future__ import annotations
++
++import asyncio
++from collections import Counter
++from contextlib import contextmanager
++from concurrent.futures import ThreadPoolExecutor
++import json
++import os
++from pathlib import Path
++import sys
++import tempfile
++import threading
++import time
++import unittest
++from unittest.mock import patch
++
++from acps_sdk.amp.models import MessageBody, MessageDestination
++
++from acps_sdk.amp import message_emitter as module
++Emitter = module.MessageEmitter
++
++
++def body(i=0):
++    return MessageBody(event_type="send", system="rabbitmq",
++                       destination=MessageDestination(name="synthetic", kind="exchange"),
++                       message_id=f"synthetic-{i}", payload_size_bytes=128,
++                       attributes={"synthetic": "中" * (400 if i % 2 else 800)})
++
++
++class MessageEmitterConcurrencyTests(unittest.TestCase):
++    def test_relative_absolute_and_case_aliases_keep_original_sink_after_chdir(self):
++        with tempfile.TemporaryDirectory() as directory:
++            first_dir, later_dir = Path(directory) / "first", Path(directory) / "later"
++            first_dir.mkdir()
++            later_dir.mkdir()
++            path = first_dir / "records.jsonl"
++            previous = Path.cwd()
++            try:
++                os.chdir(first_dir)
++                relative = Emitter(Path("./records.jsonl"), "synthetic")
++                absolute = Emitter(path, "synthetic")
++                emitters = [relative, absolute]
++                if sys.platform == "win32":
++                    emitters.append(Emitter(Path(str(path).upper()), "synthetic"))
++                os.chdir(later_dir)
++                ids = [emitter.emit_sync(body(i)) for i, emitter in enumerate(emitters)]
++            finally:
++                os.chdir(previous)
++            records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
++            self.assertEqual(Counter(row["log_id"] for row in records), Counter(ids))
++            self.assertFalse((later_dir / "records.jsonl").exists())
++
++    def test_mixed_async_sync_instances_serialize_complete_lines(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / "records.jsonl"
++            # Two instances writing mixed sync/async records to one destination.
++            first, second = Emitter(path, "synthetic"), Emitter(path.parent / "." / path.name, "synthetic")
++            guard = threading.Lock()
++            active, max_active = 0, 0
++            original = Path.open
++
++            @contextmanager
++            def tracked_open(target, *args, **kwargs):
++                nonlocal active, max_active
++                with guard:
++                    active += 1
++                    max_active = max(max_active, active)
++                try:
++                    with original(target, *args, **kwargs) as stream:
++                        time.sleep(0.001)  # Deliberately allow concurrent writers to meet here.
++                        yield stream
++                finally:
++                    with guard:
++                        active -= 1
++
++            async def write_all():
++                with ThreadPoolExecutor(max_workers=4) as pool:
++                    sync = [pool.submit(second.emit_sync, body(i)) for i in range(40)]
++                    async_ids = await asyncio.gather(*(first.emit(body(i + 40)) for i in range(40)))
++                    return [future.result() for future in sync] + async_ids
++
++            with patch.object(Path, "open", tracked_open):
++                ids = asyncio.run(write_all())
++            records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
++            self.assertEqual(max_active, 1)
++            self.assertEqual(Counter(row["log_id"] for row in records), Counter(ids))
++            self.assertEqual(len(records), 80)
++
++    def test_different_files_can_write_concurrently(self):
++        with tempfile.TemporaryDirectory() as directory:
++            emitters = [Emitter(Path(directory) / f"{i}.jsonl", "synthetic") for i in range(2)]
++            barrier = threading.Barrier(2, timeout=3)
++            original = Path.open
++
++            @contextmanager
++            def rendezvous(target, *args, **kwargs):
++                with original(target, *args, **kwargs) as stream:
++                    barrier.wait()
++                    yield stream
++
++            with patch.object(Path, "open", rendezvous), ThreadPoolExecutor(max_workers=2) as pool:
++                ids = list(pool.map(lambda emitter: emitter.emit_sync(body()), emitters))
++            for emitter, log_id in zip(emitters, ids):
++                self.assertEqual(json.loads(emitter._log_file.read_text(encoding="utf-8"))["log_id"], log_id)
++
++    def test_schema_resource_and_trace_fields_preserved(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / "records.jsonl"
++            emitter = Emitter(path, "synthetic", resource={"service.name": "synthetic-service"})
++            log_id = emitter.emit_sync(body(), trace_id="trace", span_id="span", correlation_id="session")
++            record = json.loads(path.read_text(encoding="utf-8"))
++            self.assertEqual(record["log_id"], log_id)
++            self.assertEqual(record["body"]["eventType"], "send")
++            self.assertEqual(record["trace_id"], "trace")
++            self.assertEqual(record["correlation_id"], "session")
++            self.assertEqual(record["resource"], {"service.name": "synthetic-service"})
++            self.assertNotIn("integrity", record)
++            self.assertNotIn("severity_text", record)
++
++    def test_write_error_warns_and_lock_is_released(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / "records.jsonl"
++            emitter = Emitter(path, "synthetic")
++            with patch.object(Path, "open", side_effect=OSError("synthetic write failure")):
++                with self.assertLogs(module.__name__, level="WARNING"):
++                    self.assertTrue(emitter.emit_sync(body()))
++            # A second worker must acquire the same lock after the failed write.
++            with ThreadPoolExecutor(max_workers=1) as pool:
++                log_id = pool.submit(emitter.emit_sync, body()).result(timeout=3)
++            self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["log_id"], log_id)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+diff --git a/acps-sdk/tests/resumable/fixtures/coordinator_process.py b/acps-sdk/tests/resumable/fixtures/coordinator_process.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8a0371898b10b58751e908a3ede87ab14bbcc8a6
+--- /dev/null
++++ b/acps-sdk/tests/resumable/fixtures/coordinator_process.py
+@@ -0,0 +1,124 @@
++"""Offline coordinator process fixture; never opens a platform connection."""
++from __future__ import annotations
++
++import argparse
++import asyncio
++import hashlib
++import json
++import os
++import sys
++import time
++from pathlib import Path
++from types import SimpleNamespace
++
++SDK_ROOT = Path(__file__).resolve().parents[3]
++sys.path.insert(0, str(SDK_ROOT))
++
++print("fixture: importing SDK", flush=True)
++from acps_sdk.aip.aip_base_model import TaskResult, TaskState, TaskStatus
++from acps_sdk.aip.resumable import CoordinatorTerm, ResumableGroupLeader, TaskJournal
++print("fixture: SDK ready", flush=True)
++
++
++class OfflineLeader:
++    """Transport double: real SDK wrapper/journal, no broker or resource action."""
++
++    def __init__(self):
++        self.group_sessions = {"session-fixture": SimpleNamespace(group_id="group-fixture")}
++        self.listeners = []
++        self.calls = []
++
++    def add_task_listener(self, listener):
++        self.listeners.append(listener)
++
++    async def start_task(self, session_id, *, task_content, task_id, target_partners):
++        self.calls.append({"command": "start", "task_id": task_id, "partners": target_partners})
++        if task_id == "task-unknown":
++            raise TimeoutError("synthetic transport outcome is unknown")
++        return task_id
++
++    async def continue_task(self, session_id, task_id, content, target_partner):
++        self.calls.append({"command": "continue", "task_id": task_id, "partners": [target_partner]})
++
++    def deliver_update(self, task_id, partner, state):
++        task = TaskResult(id="result-" + task_id + "-" + state.value,
++            senderId=partner, senderRole="partner", sentAt="2026-10-19T00:00:00Z",
++            sessionId="session-fixture", groupId="group-fixture", taskId=task_id,
++            status=TaskStatus(state=state, stateChangedAt="2026-10-19T00:00:00Z"))
++        for listener in self.listeners:
++            listener(SimpleNamespace(session_id="session-fixture", group_id="group-fixture"), task)
++
++
++def source_hashes():
++    paths = [Path(__file__).resolve(), SDK_ROOT / "acps_sdk/aip/resumable/journal.py",
++             SDK_ROOT / "acps_sdk/aip/_task_order.py", SDK_ROOT / "acps_sdk/aip/aip_base_model.py"]
++    return {path.relative_to(SDK_ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
++            for path in paths}
++
++
++def snapshot(journal, term, leader, phase):
++    rows = journal.list_tasks()
++    return {"schema_version": "coordinator-process-fixture/1", "phase": phase,
++        "pid": os.getpid(), "parent_pid": os.getppid(), "coordinator_term": int(term),
++        "tasks": rows, "in_flight": journal.list_tasks(in_flight_only=True),
++        "events": {row["attempt_id"]: journal.events(row["attempt_id"]) for row in rows},
++        "transport_calls": leader.calls, "source_sha256": source_hashes()}
++
++
++def save(path, value):
++    temporary = path.with_suffix(path.suffix + ".tmp")
++    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
++    temporary.replace(path)
++
++
++async def seed(wrapper, leader):
++    await wrapper.start_task("session-fixture", task_content="observe fixture",
++        task_id="task-observe", target_partners=["database-primary", "application"], logical_task_id="logical-observe")
++    leader.deliver_update("task-observe", "database-primary", TaskState.Working)
++    await wrapper.continue_task("session-fixture", "task-observe", "continue fixture", "database-primary",
++        logical_task_id="logical-observe")
++    leader.deliver_update("task-observe", "database-primary", TaskState.Working)
++    await wrapper.start_task("session-fixture", task_content="completed fixture",
++        task_id="task-completed", target_partners=["verification"], logical_task_id="logical-completed")
++    leader.deliver_update("task-completed", "verification", TaskState.Completed)
++    try:
++        await wrapper.start_task("session-fixture", task_content="unknown fixture",
++            task_id="task-unknown", target_partners=["database-backup"], logical_task_id="logical-unknown")
++    except TimeoutError:
++        pass
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument("phase", choices=("seed", "recover"))
++    parser.add_argument("--journal", type=Path, required=True)
++    parser.add_argument("--receipt", type=Path, required=True)
++    parser.add_argument("--finally-marker", type=Path)
++    parser.add_argument("--exit-mode", choices=("hard-exit", "wait-for-parent"), default="hard-exit")
++    args = parser.parse_args()
++    print("fixture: opening journal", flush=True)
++    journal = TaskJournal(args.journal)
++    print("fixture: journal opened", flush=True)
++    term = CoordinatorTerm(journal)
++    print("fixture: term allocated", flush=True)
++    leader = OfflineLeader()
++    wrapper = ResumableGroupLeader(leader, journal, term)
++    if args.phase == "recover":
++        save(args.receipt, snapshot(journal, term, leader, "recovered"))
++        return
++    print("fixture: starting asyncio", flush=True)
++    asyncio.run(seed(wrapper, leader))
++    print("fixture: tasks committed", flush=True)
++    save(args.receipt, snapshot(journal, term, leader, "durable-ready"))
++    try:
++        if args.exit_mode == "hard-exit":
++            os._exit(37)
++        while True:
++            time.sleep(0.05)
++    finally:
++        if args.finally_marker:
++            args.finally_marker.write_text("normal fixture cleanup ran\n", encoding="utf-8")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/acps-sdk/tests/resumable/test_coordinator_process.py b/acps-sdk/tests/resumable/test_coordinator_process.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..223a43e47ad1ec75389d2f1b482db34b035a9694
+--- /dev/null
++++ b/acps-sdk/tests/resumable/test_coordinator_process.py
+@@ -0,0 +1,128 @@
++"""Real interpreter restart checks for the public task journal/wrapper APIs."""
++from __future__ import annotations
++
++import hashlib
++import json
++import os
++import shutil
++import subprocess
++import sys
++import tempfile
++import time
++import unittest
++from contextlib import nullcontext
++from pathlib import Path
++
++SDK_ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(SDK_ROOT))
++FIXTURE = Path(__file__).resolve().parent / "fixtures" / "coordinator_process.py"
++
++
++def fixture_command(phase, journal, receipt, *extra):
++    # A Windows venv executable may be a launcher with a child interpreter.
++    # Hold the interpreter itself so terminating this fixture cannot orphan it.
++    interpreter = getattr(sys, "_base_executable", sys.executable)
++    bootstrap = "import json,runpy,sys; sys.path[:0]=json.loads(sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name='__main__')"
++    return [interpreter, "-I", "-B", "-c", bootstrap, json.dumps(sys.path), str(FIXTURE),
++            phase, "--journal", str(journal), "--receipt", str(receipt), *extra]
++
++
++class CoordinatorProcessTests(unittest.TestCase):
++    def run_restart_case(self, exit_mode):
++        evidence_root = os.environ.get("INCIDENT_T30_EVIDENCE_DIR")
++        evidence = Path(evidence_root) / exit_mode if evidence_root else None
++        if evidence:
++            evidence.mkdir(parents=True, exist_ok=False)
++        process_receipts = []
++        outcome = {"schema_version": "coordinator-restart-test/1", "exit_mode": exit_mode,
++                   "status": "failed", "platform_or_business_started": False}
++        working_directory = nullcontext(evidence) if evidence else tempfile.TemporaryDirectory(prefix="coordinator-restart-")
++        with working_directory as directory:
++            temporary = Path(directory)
++            journal = temporary / "tasks.sqlite"
++            writer_receipt, reader_receipt = temporary / "writer.json", temporary / "reader.json"
++            marker = temporary / "finally-ran.txt"
++            env = dict(os.environ, PYTHONPATH=str(SDK_ROOT), PYTHONDONTWRITEBYTECODE="1")
++            command = fixture_command("seed", journal, writer_receipt,
++                "--finally-marker", str(marker), "--exit-mode", exit_mode)
++            child = subprocess.Popen(command, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
++            terminated_after_ready = False
++            try:
++                if exit_mode == "wait-for-parent":
++                    deadline = time.monotonic() + 15
++                    while not writer_receipt.exists() and child.poll() is None and time.monotonic() < deadline:
++                        time.sleep(0.02)
++                    self.assertTrue(writer_receipt.exists(), "writer did not reach its durable-ready handshake")
++                    self.assertIsNone(child.poll(), "writer must be alive when parent requests termination")
++                    child.terminate()  # Only the exact Popen handle created by this test.
++                    terminated_after_ready = True
++                stdout, stderr = child.communicate(timeout=15)
++                process_receipts.append({"phase": "writer", "pid": child.pid, "actual_returncode": child.returncode,
++                    "terminated_after_durable_ready": terminated_after_ready, "stdout": stdout, "stderr": stderr})
++                if exit_mode == "hard-exit":
++                    self.assertEqual(child.returncode, 37)
++                else:
++                    self.assertNotEqual(child.returncode, 0)
++                self.assertEqual(stderr, "")
++                self.assertFalse(marker.exists(), "hard termination must bypass Python finally cleanup")
++                before = json.loads(writer_receipt.read_text(encoding="utf-8"))
++                self.assertEqual(before["pid"], child.pid)
++                self.assertEqual(before["parent_pid"], os.getpid())
++                self.assertEqual(before["coordinator_term"], 1)
++
++                reader = subprocess.Popen(fixture_command("recover", journal, reader_receipt),
++                    env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
++                try:
++                    stdout, stderr = reader.communicate(timeout=15)
++                finally:
++                    if reader.poll() is None:
++                        reader.kill()
++                        reader.communicate(timeout=5)
++                process_receipts.append({"phase": "reader", "pid": reader.pid, "actual_returncode": reader.returncode,
++                                         "stdout": stdout, "stderr": stderr})
++                self.assertEqual((reader.returncode, stderr), (0, ""))
++                after = json.loads(reader_receipt.read_text(encoding="utf-8"))
++                self.assertEqual(after["pid"], reader.pid)
++                self.assertEqual(after["parent_pid"], os.getpid())
++                self.assertEqual(after["coordinator_term"], 2)
++                for field in ("tasks", "in_flight", "events", "source_sha256"):
++                    self.assertEqual(before[field], after[field], field)
++                self.assertEqual(after["transport_calls"], [], "reopening must not send or replay tasks")
++                self.assertEqual(len(after["tasks"]), 5)
++                self.assertTrue(all(row["coordinator_term"] == 1 for row in after["tasks"]))
++                self.assertEqual({(row["logical_task_id"], row["task_id"], row["partner_aic"], row["command"], row["state"])
++                    for row in after["in_flight"]}, {
++                    ("logical-observe", "task-observe", "application", "start", "sent"),
++                    ("logical-observe", "task-observe", "database-primary", "continue", "working"),
++                    ("logical-unknown", "task-unknown", "database-backup", "start", "delivery_unknown")})
++                self.assertEqual(sum(row["state"] == "completed" for row in after["tasks"]), 1)
++                histories = {tuple(event["state"] for event in history) for history in after["events"].values()}
++                self.assertEqual(histories, {("dispatching", "sent"), ("dispatching", "sent", "working"),
++                    ("dispatching", "sent", "completed"), ("dispatching", "delivery_unknown")})
++                self.assertEqual(sum(len(history) for history in after["events"].values()), 13)
++                outcome.update(status="passed", task_attempts=5, in_flight_attempts=3, persisted_events=13,
++                    recovered_term=2, cleanup_finally_ran=marker.exists(), replayed_transport_calls=0)
++            finally:
++                if child.poll() is None:
++                    child.kill()
++                    stdout, stderr = child.communicate(timeout=5)
++                    process_receipts.append({"phase": "writer-cleanup", "pid": child.pid,
++                        "actual_returncode": child.returncode, "stdout": stdout, "stderr": stderr})
++                if evidence:
++                    for receipt in (writer_receipt, reader_receipt):
++                        if receipt.exists() and receipt != evidence / receipt.name:
++                            shutil.copyfile(receipt, evidence / receipt.name)
++                    outcome["process_receipts"] = process_receipts
++                    outcome["source_sha256"] = {Path(__file__).resolve().relative_to(SDK_ROOT).as_posix():
++                        hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
++                    (evidence / "test-result.json").write_text(json.dumps(outcome, indent=2) + "\n", encoding="utf-8")
++
++    def test_hard_exit_recovers_all_durable_inflight_attempts(self):
++        self.run_restart_case("hard-exit")
++
++    def test_parent_termination_recovers_all_durable_inflight_attempts(self):
++        self.run_restart_case("wait-for-parent")
++
++
++if __name__ == "__main__":
++    unittest.main()
