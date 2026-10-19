@@ -233,3 +233,6 @@ T06[本机采集准备](deploy/fluent-bit/README.md)补只读预检、固定源�
 ### 2026-10-19 正式历史交接契约修复
 
 正式历史中的可选 aip_session_id 现在由 Bridge 接受并校验；拒绝响应的 operation=None 保留原 reason，unknown 接续仍不重发。两产品源与一个回归测试文件为独立修复版本，39 个不同离线方法通过，详见 [修复证据](evidence/handover-wire-fix-20261019/verification-summary.json)及[独立审阅](evidence/handover-wire-fix-20261019/peer-review.json)。原22项验收使用冻结镜像，修复未部署或平台复验；原失败保留。
+
+
+2026-10-19 正式验收补证：准备22项、尝试22、通过18、失败4、未尝试0。见[本批结果](docs/platform_acceptance_results_20261019.md)；首环境失败、独立恢复/关组warning与资源absent分别保留。独立handover wire修复仅39个离线方法通过，未部署或重验原批；T05/T62按实际findings发布，旧E3和旧未知请求未改判。

@@ -1,0 +1,1956 @@
+{
+  "reviews": [
+    {
+      "source": "acceptance/publication/remaining5-consistency-review-final.json",
+      "schema": "acceptance-remaining5-consistency-review/1",
+      "status": "closed",
+      "reviewed_at_utc": "2026-10-19T03:24:43.708332+00:00",
+      "reviewed_terminal_count": 5,
+      "batch_closed_review": true,
+      "runtime_actions": 0,
+      "product_tests_run": 0,
+      "pending_known_plan_keys": [],
+      "other_pending_label_sha256": [],
+      "checks": [],
+      "cases": [
+        {
+          "key": "e1b-from_scratch-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "from_scratch",
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:08:15.559628+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "after_applied_exit83_durable_ledger",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume",
+              "passed": true
+            },
+            {
+              "name": "actual_IFC_information_byte_counts_and_target",
+              "passed": true
+            },
+            {
+              "name": "actual_received_backup_ACK",
+              "passed": true
+            },
+            {
+              "name": "same_operation_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-full_history-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "full_history",
+          "repeat": 3,
+          "verdict": "failed",
+          "actual_runner_exit": 1,
+          "finished_at": "2026-10-19T03:11:26.743536+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-resume_package-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "resume_package",
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:15:16.353662+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "after_applied_exit83_durable_ledger",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume",
+              "passed": true
+            },
+            {
+              "name": "actual_IFC_information_byte_counts_and_target",
+              "passed": true
+            },
+            {
+              "name": "actual_received_backup_ACK",
+              "passed": true
+            },
+            {
+              "name": "same_operation_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1c-before_modification-r3",
+          "case": "E1-c",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:19:47.106991+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_suspended_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_revived_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_stale_request_result_once",
+              "passed": true
+            },
+            {
+              "name": "same_process_original_wire_SHA_stale_rejection",
+              "passed": true
+            },
+            {
+              "name": "single_SIGCONT_and_same_proc_snapshots",
+              "passed": true
+            },
+            {
+              "name": "applied_forward_fence_ledger_unchanged",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "f12e5-r1",
+          "case": "F12/E5",
+          "point": null,
+          "method": null,
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:23:30.199474+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "F12_restore_and_H00",
+              "passed": true
+            },
+            {
+              "name": "F12_recorded_contract_checks_all_true",
+              "passed": true
+            },
+            {
+              "name": "exactly_one_actual_route_act_no_order_write_task",
+              "passed": true
+            },
+            {
+              "name": "original_key_is_resolved_by_its_own_key",
+              "passed": true
+            },
+            {
+              "name": "missing_key_remains_unknown_despite_fresh_health",
+              "passed": true
+            },
+            {
+              "name": "missing_key_not_forwarded_and_no_replacement_action",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "acceptance/publication/batch-consistency-review-merged22-final.json",
+      "schema": "acceptance-merged22-consistency-review/1",
+      "status": "closed",
+      "reviewed_at_utc": "2026-10-19T03:24:43.708332+00:00",
+      "expected_count": 22,
+      "reviewed_terminal_count": 22,
+      "batch_closed_review": true,
+      "raw_sources_modified": false,
+      "runtime_actions": 0,
+      "verdict_counts": {
+        "failed": 4,
+        "completed": 18
+      },
+      "pending_known_plan_keys": [],
+      "other_pending_label_sha256": [],
+      "checks": [],
+      "cases": [
+        {
+          "key": "e1a-after_observation-r1",
+          "case": "E1-a",
+          "point": "after_observation",
+          "method": null,
+          "repeat": 1,
+          "verdict": "failed",
+          "actual_runner_exit": 1,
+          "receipt_recorded_exit": null,
+          "finished_at": "2026-10-19T01:38:52.739704+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-before_modification-r1",
+          "case": "E1-a",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:04:25.991949+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-after_applied-r1",
+          "case": "E1-a",
+          "point": "after_applied",
+          "method": null,
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:07:49.156665+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-from_scratch-r1",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "from_scratch",
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:11:35.665529+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume_message",
+              "passed": true
+            },
+            {
+              "name": "actual_transmitted_handover_and_byte_counts",
+              "passed": true
+            },
+            {
+              "name": "actual_backup_ACK_matches_handover_digest",
+              "passed": true
+            },
+            {
+              "name": "handover_keeps_operation_and_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-full_history-r1",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "full_history",
+          "repeat": 1,
+          "verdict": "failed",
+          "actual_runner_exit": 1,
+          "receipt_recorded_exit": 1,
+          "finished_at": "2026-10-19T02:15:27.615808+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-resume_package-r1",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "resume_package",
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:19:53.684769+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume_message",
+              "passed": true
+            },
+            {
+              "name": "actual_transmitted_handover_and_byte_counts",
+              "passed": true
+            },
+            {
+              "name": "actual_backup_ACK_matches_handover_digest",
+              "passed": true
+            },
+            {
+              "name": "handover_keeps_operation_and_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1c-before_modification-r1",
+          "case": "E1-c",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:25:47.393360+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_results.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_e1c-revival-metrics.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_e1c-process-snapshots.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_mcp-operation-counts.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_e1c-restore.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_primary-trace.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_backup-trace.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_pre-revival-primary-trace.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_pre-revival-backup-trace.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_experimental-domains.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_03-injector-apply.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_subprocess-exits.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_coordinator/messages.jsonl",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_case-receipt.json",
+              "passed": true
+            },
+            {
+              "name": "reused_first_c_unchanged_runner.exit.json",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-after_observation-r2",
+          "case": "E1-a",
+          "point": "after_observation",
+          "method": null,
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:31:01.629175+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-before_modification-r2",
+          "case": "E1-a",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:36:00.712982+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-after_applied-r2",
+          "case": "E1-a",
+          "point": "after_applied",
+          "method": null,
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:39:34.629626+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-from_scratch-r2",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "from_scratch",
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:43:05.028891+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume_message",
+              "passed": true
+            },
+            {
+              "name": "actual_transmitted_handover_and_byte_counts",
+              "passed": true
+            },
+            {
+              "name": "actual_backup_ACK_matches_handover_digest",
+              "passed": true
+            },
+            {
+              "name": "handover_keeps_operation_and_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-full_history-r2",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "full_history",
+          "repeat": 2,
+          "verdict": "failed",
+          "actual_runner_exit": 1,
+          "receipt_recorded_exit": 1,
+          "finished_at": "2026-10-19T02:46:07.923618+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-resume_package-r2",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "resume_package",
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:49:46.053235+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume_message",
+              "passed": true
+            },
+            {
+              "name": "actual_transmitted_handover_and_byte_counts",
+              "passed": true
+            },
+            {
+              "name": "actual_backup_ACK_matches_handover_digest",
+              "passed": true
+            },
+            {
+              "name": "handover_keeps_operation_and_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1c-before_modification-r2",
+          "case": "E1-c",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 2,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:53:43.891594+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_suspended_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_revived_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_stale_request_result_once",
+              "passed": true
+            },
+            {
+              "name": "same_process_original_request_and_stale_rejection",
+              "passed": true
+            },
+            {
+              "name": "same_proc_snapshots_and_single_signal",
+              "passed": true
+            },
+            {
+              "name": "unchanged_applied_advanced_ledger_probe_hashes",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-after_observation-r3",
+          "case": "E1-a",
+          "point": "after_observation",
+          "method": null,
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T02:57:14.409889+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-before_modification-r3",
+          "case": "E1-a",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T03:00:45.103140+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1a-after_applied-r3",
+          "case": "E1-a",
+          "point": "after_applied",
+          "method": null,
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "receipt_recorded_exit": 0,
+          "finished_at": "2026-10-19T03:04:31.087097+00:00",
+          "source_map_sha256": "e98f218f348f983d3109e5e4d59915a79055e9a0dd99f0535e72bdb2e9685321",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "plan_and_case_bound",
+              "passed": true
+            },
+            {
+              "name": "terminal_result_and_observed_exit",
+              "passed": true
+            },
+            {
+              "name": "verdict_matches_assigned_retained_failures",
+              "passed": true
+            },
+            {
+              "name": "frozen_public_source_map_matches",
+              "passed": true
+            },
+            {
+              "name": "passed_case_cleanup_restore_H00",
+              "passed": true
+            },
+            {
+              "name": "passed_case_business_verification",
+              "passed": true
+            },
+            {
+              "name": "journal_unexpected_inflight_zero",
+              "passed": true
+            },
+            {
+              "name": "primary_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "backup_invocations_returned_without_error",
+              "passed": true
+            },
+            {
+              "name": "exact_expected_primary_backup_MCP_counts",
+              "passed": true
+            },
+            {
+              "name": "planned_durable_crash_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "observed_worker_exit_and_count_report",
+              "passed": true
+            },
+            {
+              "name": "backup_product_original_operation_and_ledger_state",
+              "passed": true
+            },
+            {
+              "name": "raw_assigned_sources_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-from_scratch-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "from_scratch",
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:08:15.559628+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "after_applied_exit83_durable_ledger",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume",
+              "passed": true
+            },
+            {
+              "name": "actual_IFC_information_byte_counts_and_target",
+              "passed": true
+            },
+            {
+              "name": "actual_received_backup_ACK",
+              "passed": true
+            },
+            {
+              "name": "same_operation_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-full_history-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "full_history",
+          "repeat": 3,
+          "verdict": "failed",
+          "actual_runner_exit": 1,
+          "finished_at": "2026-10-19T03:11:26.743536+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1b-resume_package-r3",
+          "case": "E1-b",
+          "point": "after_applied",
+          "method": "resume_package",
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:15:16.353662+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "after_applied_exit83_durable_ledger",
+              "passed": true
+            },
+            {
+              "name": "one_actual_resume",
+              "passed": true
+            },
+            {
+              "name": "actual_IFC_information_byte_counts_and_target",
+              "passed": true
+            },
+            {
+              "name": "actual_received_backup_ACK",
+              "passed": true
+            },
+            {
+              "name": "same_operation_forward_fence",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "e1c-before_modification-r3",
+          "case": "E1-c",
+          "point": "before_modification",
+          "method": null,
+          "repeat": 3,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:19:47.106991+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "common_frozen_source_map",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "owned_restore_and_two_health_windows",
+              "passed": true
+            },
+            {
+              "name": "journal_keeps_expected_old_attempt_only",
+              "passed": true
+            },
+            {
+              "name": "primary_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "backup_MCP_returns_bound",
+              "passed": true
+            },
+            {
+              "name": "expected_primary_backup_invocations",
+              "passed": true
+            },
+            {
+              "name": "backup_product_bound_to_original_operation",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_suspended_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_worker_revived_once",
+              "passed": true
+            },
+            {
+              "name": "experiment_stale_request_result_once",
+              "passed": true
+            },
+            {
+              "name": "same_process_original_wire_SHA_stale_rejection",
+              "passed": true
+            },
+            {
+              "name": "single_SIGCONT_and_same_proc_snapshots",
+              "passed": true
+            },
+            {
+              "name": "applied_forward_fence_ledger_unchanged",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        },
+        {
+          "key": "f12e5-r1",
+          "case": "F12/E5",
+          "point": null,
+          "method": null,
+          "repeat": 1,
+          "verdict": "completed",
+          "actual_runner_exit": 0,
+          "finished_at": "2026-10-19T03:23:30.199474+00:00",
+          "review_consistent": true,
+          "checks": [
+            {
+              "name": "frozen_plan_and_receipt_bound",
+              "passed": true
+            },
+            {
+              "name": "observed_exit_matches_terminal_verdict",
+              "passed": true
+            },
+            {
+              "name": "six_close_gates_and_no_captured_cleanup_warning",
+              "passed": true
+            },
+            {
+              "name": "F12_restore_and_H00",
+              "passed": true
+            },
+            {
+              "name": "F12_recorded_contract_checks_all_true",
+              "passed": true
+            },
+            {
+              "name": "exactly_one_actual_route_act_no_order_write_task",
+              "passed": true
+            },
+            {
+              "name": "original_key_is_resolved_by_its_own_key",
+              "passed": true
+            },
+            {
+              "name": "missing_key_remains_unknown_despite_fresh_health",
+              "passed": true
+            },
+            {
+              "name": "missing_key_not_forwarded_and_no_replacement_action",
+              "passed": true
+            },
+            {
+              "name": "raw_inputs_unchanged",
+              "passed": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "acceptance/publication/group-cleanup-review.json",
+      "schema_version": "owned-group-cleanup-review/1.0",
+      "status": "passed",
+      "pending_known_plan_keys": [],
+      "other_pending_label_sha256": [],
+      "checks": [
+        {
+          "name": "same_group",
+          "passed": true
+        },
+        {
+          "name": "prior_failed",
+          "passed": true
+        },
+        {
+          "name": "prior_hash_match",
+          "passed": true
+        },
+        {
+          "name": "partial_probe_hash_match",
+          "passed": true
+        },
+        {
+          "name": "exact_8_names",
+          "passed": true
+        },
+        {
+          "name": "five_confirmed",
+          "passed": true
+        },
+        {
+          "name": "leader_included",
+          "passed": true
+        },
+        {
+          "name": "all_404_class",
+          "passed": true
+        },
+        {
+          "name": "acl_204_exact_group",
+          "passed": true
+        },
+        {
+          "name": "close_connection_closed",
+          "passed": true
+        },
+        {
+          "name": "probe_connection_closed",
+          "passed": true
+        }
+      ],
+      "cases": []
+    },
+    {
+      "source": "acceptance/publication/e1b-full-history-r1-failure-review.json",
+      "schema_version": "platform-case-failure-review/1.0",
+      "status": "analysis_complete",
+      "pending_known_plan_keys": [],
+      "other_pending_label_sha256": [],
+      "checks": [],
+      "cases": []
+    },
+    {
+      "source": "acceptance/publication/handover-field-review-v4.json",
+      "status": "THREE_CLOSED_CASES_MAPPING_VALIDATED",
+      "pending_known_plan_keys": [],
+      "other_pending_label_sha256": [],
+      "checks": [],
+      "cases": []
+    }
+  ],
+  "limits": "Only verdict/check booleans and counts are projected. Raw case evidence, AIP bodies, timeline IDs and private paths stay in local originals bound below."
+}

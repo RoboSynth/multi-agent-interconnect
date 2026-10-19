@@ -1,0 +1,325 @@
+{
+  "scope": "Original failure and separate recovery; neither changes the other verdict.",
+  "first_case": {
+    "key": "e1a-after_observation-r1",
+    "state": "failed",
+    "actual_case_exit_code": 1,
+    "prepared_plan_sha256": "d2608812aaa9495b6195a431a801aeafa4f74574d0fd338f846f00bf83746a60"
+  },
+  "first_case_reported": {
+    "errors": {
+      "error_class": "TimeoutError",
+      "close_error_class": "ConnectError",
+      "restore_or_H00_error_class": "ValueError"
+    },
+    "close_checks": null,
+    "resource_and_worker_restore": null,
+    "independent_final_H00": null
+  },
+  "environment_recovery": {
+    "resource_restoration_attempts": [
+      {
+        "locator": "environment-recovery/resource-restore/result.json",
+        "status": "failed",
+        "started_at": "2026-10-19T01:45:16.106707+00:00",
+        "completed_at": null,
+        "error_class": "ValueError",
+        "new_faults": 0,
+        "original_case_result_retained": null,
+        "normal_database_workers_restored": null,
+        "active_or_unknown_operations": null,
+        "independent_h00_status": null,
+        "independent_h00": null
+      },
+      {
+        "locator": "environment-recovery/resource-restore-v2/result.json",
+        "status": "passed",
+        "started_at": "2026-10-19T01:47:52.930453+00:00",
+        "completed_at": "2026-10-19T01:49:08.396620+00:00",
+        "error_class": null,
+        "new_faults": 0,
+        "original_case_result_retained": true,
+        "normal_database_workers_restored": true,
+        "active_or_unknown_operations": 0,
+        "independent_h00_status": "passed",
+        "independent_h00": {
+          "status": "passed",
+          "error_class": null,
+          "started_at": "2026-10-19T01:48:37.889149+00:00",
+          "completed_at": "2026-10-19T01:49:08.394447+00:00",
+          "business": {
+            "status": null,
+            "duration_seconds": 30.0,
+            "requests": 30,
+            "success": 30,
+            "failed": 0,
+            "unknown": 0,
+            "completed_workflows": 10,
+            "unresolved_intents": 0,
+            "resolved_unknown_intents": 0,
+            "passed": true,
+            "pending_intents": null
+          }
+        }
+      }
+    ],
+    "original_owned_group_close_attempts": [
+      {
+        "locator": "environment-recovery/owned-group-close/attempt-1/result.json",
+        "status": "failed",
+        "completed_at": "2026-10-19T01:57:32.385529+00:00",
+        "error_class": "ValueError",
+        "official_dissolve_returned": true,
+        "new_groups": 0,
+        "new_tasks": 0,
+        "new_inbox_consumers": 0,
+        "original_failure_retained": true,
+        "cleanup_warning_events": [
+          "dissolve_notify_failed"
+        ],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbox_created": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": false,
+          "acl_delete_acknowledged": true,
+          "leader_queue_cleanup_attempted": true,
+          "exchange_cleanup_attempted": true
+        }
+      }
+    ],
+    "original_owned_group_close_process": {
+      "actual_exit_code": 1,
+      "terminal": true,
+      "duration_seconds": 12.235,
+      "completed_at": "2026-10-19T01:57:32.472149+00:00"
+    },
+    "independent_group_resource_verifications": [
+      {
+        "locator": "environment-recovery/owned-group-close/passive-verification/result.json",
+        "status": "passed",
+        "completed_at": "2026-10-19T01:58:52.404772+00:00",
+        "connection_closed": true,
+        "new_groups": 0,
+        "new_queues": 0,
+        "new_tasks": 0,
+        "new_inbox_consumers": 0,
+        "prior_close_status_retained": "failed",
+        "notification_warning_retained": true,
+        "acl_delete_acknowledged_204": true,
+        "prior_result_sha256": "c2db5159ec9d70fe14036e3f0d3a8e46f9a44844c121b918bcab56d5bf08ec2e",
+        "previous_partial_probe_sha256": null,
+        "coverage": "coordinator_and_forced_initial_database_only",
+        "resources": [
+          {
+            "kind": "exchange",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "9c6150fa7458139240025cb20efc9a7da56591a5da5534a5a9c1a0091b814e8d"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "de1a4fb79a6f6e7a17eed39c9ab33a1e50f76a295fd440668a3daf82da6c12d9"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "7f752cf04cc844d9c288cee1500506367eb941221f89a0f422bf86e104792b36"
+          }
+        ],
+        "resource_counts": {
+          "exchange": 1,
+          "queue": 2
+        },
+        "disposition": "partial_or_unconfirmed",
+        "meaning": "Passive absence includes names that may never have been created; it does not convert the prior failed close or notify warning into success."
+      },
+      {
+        "locator": "environment-recovery/owned-group-close/passive-verification-v2/result.json",
+        "status": "passed",
+        "completed_at": "2026-10-19T01:59:27.473656+00:00",
+        "connection_closed": true,
+        "new_groups": 0,
+        "new_queues": 0,
+        "new_tasks": 0,
+        "new_inbox_consumers": 0,
+        "prior_close_status_retained": "failed",
+        "notification_warning_retained": true,
+        "acl_delete_acknowledged_204": true,
+        "prior_result_sha256": "c2db5159ec9d70fe14036e3f0d3a8e46f9a44844c121b918bcab56d5bf08ec2e",
+        "previous_partial_probe_sha256": "b412b29ce3413a44b69e4c7d27de4fa98f9dd6a8f827c16b730300fbed8e1650",
+        "coverage": "all_seven_bound_identities",
+        "resources": [
+          {
+            "kind": "exchange",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "9c6150fa7458139240025cb20efc9a7da56591a5da5534a5a9c1a0091b814e8d"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "008f7b5e8a20d146e894a30e51fd8731e23112bb5f912b8837bf1f484a3c77bb"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "4b877c660d2ebffa3b64d2ffc8f4e8168984a8f4163497396fa70fab0e1374f7"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "e79e05bca38f35001874695361bc37d7df10982e8a3a07e6c78cc541559170ce"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "de1a4fb79a6f6e7a17eed39c9ab33a1e50f76a295fd440668a3daf82da6c12d9"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "b3702a116a0da231553df68d5eacf247cfd8186d5803ee78cf500e4fac339ea4"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "e4c53faefeea584ddf9f324e522d637fe2bc959982c6f9e49de656885817b2cf"
+          },
+          {
+            "kind": "queue",
+            "mode": "passive_assert_only",
+            "state": "absent",
+            "error_class": "ChannelNotFoundEntity",
+            "resource_name_sha256": "7f752cf04cc844d9c288cee1500506367eb941221f89a0f422bf86e104792b36"
+          }
+        ],
+        "resource_counts": {
+          "exchange": 1,
+          "queue": 7
+        },
+        "disposition": "resources_verified_absent",
+        "meaning": "Passive absence includes names that may never have been created; it does not convert the prior failed close or notify warning into success."
+      }
+    ],
+    "scope": "Separate recovery evidence; it does not change the original formal-case failure or supply missing in-case close/H00 metrics."
+  },
+  "startup_and_stop_stages": [
+    {
+      "locator": "execution/startup/result.json",
+      "status": "started",
+      "completed_at": "2026-10-19T01:31:36.736336+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": 0,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": null,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 18.828,
+        "completed_at": "2026-10-19T01:31:35.552953+00:00"
+      }
+    },
+    {
+      "locator": "execution/stop-20261019T013201/result.json",
+      "status": "stopped",
+      "completed_at": "2026-10-19T01:32:06.032730+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": null,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": 0,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 2.734,
+        "completed_at": "2026-10-19T01:32:05.158719+00:00"
+      }
+    },
+    {
+      "locator": "execution-v2/startup/result.json",
+      "status": "started",
+      "completed_at": "2026-10-19T01:34:43.097658+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": 0,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": null,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 18.204,
+        "completed_at": "2026-10-19T01:34:41.806089+00:00"
+      }
+    },
+    {
+      "locator": "execution-v2/stop-20261019T013852/result.json",
+      "status": "stopped",
+      "completed_at": "2026-10-19T01:38:59.029009+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": null,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": 0,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 3.188,
+        "completed_at": "2026-10-19T01:38:57.673937+00:00"
+      }
+    },
+    {
+      "locator": "execution-v2/stop-20261019T014632/result.json",
+      "status": "stopped",
+      "completed_at": "2026-10-19T01:46:39.128032+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": null,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": 0,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 3.297,
+        "completed_at": "2026-10-19T01:46:37.915522+00:00"
+      }
+    },
+    {
+      "locator": "execution-v2/stop-20261019T032330/result.json",
+      "status": "stopped",
+      "completed_at": "2026-10-19T03:23:37.596741+00:00",
+      "old_ids_preserved": true,
+      "actual_startup_exit_code": null,
+      "actual_stop_exit_code": null,
+      "remaining_running_owned": 0,
+      "compose_process": {
+        "actual_exit_code": 0,
+        "terminal": true,
+        "duration_seconds": 3.047,
+        "completed_at": "2026-10-19T03:23:35.599099+00:00"
+      }
+    }
+  ],
+  "final_stop": {
+    "status": "stopped",
+    "completed_at": "2026-10-19T03:23:37.596741+00:00",
+    "old_ids_preserved": true,
+    "remaining_running_owned": 0
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": "acceptance-postcheck-provenance/1",
+  "status": "complete_with_preserved_findings",
+  "outer_execution_evidence_source": "Actual execution/wait results reported by the root executor; JSON records independently hashed below.",
+  "stages": [
+    {
+      "stage": "initial_linux_analysis_setup",
+      "completion_chunk": "a60f81",
+      "actual_outer_exit_code": 1,
+      "status": "analysis_failed",
+      "error_class": "FileNotFoundError",
+      "source": "publication/closed-access-credentials-final/analysis-failure.json",
+      "meaning": "Setup/import failed; this attempt did not provide a complete credential or access verdict."
+    },
+    {
+      "stage": "six_domain_readonly_collection",
+      "completion_chunk": "d7c496",
+      "actual_outer_exit_code": 0,
+      "status": "collected",
+      "domain_count": 6,
+      "file_count": 36,
+      "source_container_identity_unchanged": true,
+      "analysis_executed": false,
+      "private_manifest_sha256": "5634415d194f8fa3370fd6029cf1c1788a2c82f0fcfb30a6592b29c983e73e22",
+      "source": "publication/six-domains-collected-final/collection-result.json"
+    },
+    {
+      "stage": "windows_complete_analysis",
+      "completion_chunk": "7b244c",
+      "actual_outer_exit_code": 1,
+      "analysis_exit_code": 1,
+      "status": "findings_or_incomplete",
+      "credential_scan_passed": true,
+      "endpoint_access_match_passed": false,
+      "overall_passed": false,
+      "credential_files": 214,
+      "known_distinct": 68,
+      "raw_hits": 0,
+      "decoded_hits": 0,
+      "parse_or_decode_errors": 0,
+      "cases_with_one_missing_endpoint_access": 18,
+      "total_missing_access_records": 18,
+      "cases_with_incomplete_lifecycle": 21,
+      "f12_lifecycle_complete": true,
+      "source": "publication/closed-access-credentials-windows-final/analysis-exit.json"
+    },
+    {
+      "stage": "owned_keeper_normal_exit",
+      "completion_chunk": "1eeee1",
+      "actual_outer_exit_code": 0,
+      "stopped_at": "2026-10-19T03:26:48.749559+00:00",
+      "reason": "owner stop sentinel",
+      "source": "environment-recovery/keeper-exit.json"
+    }
+  ],
+  "inputs": {
+    "publication/closed-access-credentials-final/analysis-failure.json": {
+      "sha256": "23edbdea0effc8c870e08b7f2cb6cb14e7a7a7d9a4b68afa5bdc7c64d3fc9224",
+      "bytes": 164
+    },
+    "publication/six-domains-collected-final/collection-result.json": {
+      "sha256": "533b3b373cc49d812e4727afed1ea3d48f66f78c68488c77d6e56128dccfe94b",
+      "bytes": 594
+    },
+    "publication/six-domains-collected-final/private-domain-snapshot-manifest.json": {
+      "sha256": "5634415d194f8fa3370fd6029cf1c1788a2c82f0fcfb30a6592b29c983e73e22",
+      "bytes": 9976
+    },
+    "publication/closed-access-credentials-windows-final/analysis-exit.json": {
+      "sha256": "4624691921d86a2b004d63ca9a4f70ab712864587ff839b88f0d64ce8d327025",
+      "bytes": 189
+    },
+    "publication/closed-access-credentials-windows-final/closed-access-credentials.json": {
+      "sha256": "078730d35dab252cda8e52722741e6bc5068dd16ce56530aa760ac4efe0df75d",
+      "bytes": 165569
+    },
+    "environment-recovery/keeper-exit.json": {
+      "sha256": "67ba027d7c26bc608c306efdfee85212cf8ab4dc8baacd948cf38cd65155bb73",
+      "bytes": 96
+    }
+  },
+  "limits": [
+    "The missing access records remain unexplained; no cause or repaired T05 claim is inferred.",
+    "Credential zero-hit/parse results do not make endpoint access matching pass.",
+    "Private manifests, raw messages, environment values, keys and process IDs are not copied.",
+    "Prior analysis failure and final analysis findings retain their actual nonzero exits."
+  ]
+}

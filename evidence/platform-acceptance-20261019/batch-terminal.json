@@ -1,0 +1,62 @@
+{
+  "status": "terminal",
+  "recorded_at_utc": "2026-10-19T03:24:18.101592+00:00",
+  "actual_wait_observed": true,
+  "phase_sessions": [
+    {
+      "session_id": 78843,
+      "actual_os_exit_code": 1,
+      "terminal": true
+    },
+    {
+      "session_id": 27780,
+      "actual_os_exit_code": 0,
+      "terminal": true,
+      "completion_chunk": "89445f"
+    },
+    {
+      "session_id": 6447,
+      "actual_os_exit_code": 0,
+      "terminal": true,
+      "completion_chunk": "c81d36"
+    }
+  ],
+  "expected_plans": 22,
+  "attempted_count": 22,
+  "unattempted_count": 0,
+  "passed_count": 18,
+  "failed_count": 4,
+  "prepared_summary_sha256": "055f14e4e021ff3971fb6f46c0fb73860515660e52efdde3d8f5ff9d10587933",
+  "owned_project_stop_receipt": {
+    "path": "execution-v2/stop-20261019T032330/result.json",
+    "sha256": "9979b3c6e1883b3f38e39b082088390215df8f2a57edc02b00121807d9f34c8e"
+  },
+  "plan_dispositions": {
+    "e1a-after_observation-r1": "failed",
+    "e1a-before_modification-r1": "passed",
+    "e1a-after_applied-r1": "passed",
+    "e1b-from_scratch-r1": "passed",
+    "e1b-full_history-r1": "failed",
+    "e1b-resume_package-r1": "passed",
+    "e1c-before_modification-r1": "passed",
+    "f12e5-r1": "passed",
+    "e1a-after_observation-r2": "passed",
+    "e1a-before_modification-r2": "passed",
+    "e1a-after_applied-r2": "passed",
+    "e1b-from_scratch-r2": "passed",
+    "e1b-full_history-r2": "failed",
+    "e1b-resume_package-r2": "passed",
+    "e1c-before_modification-r2": "passed",
+    "e1a-after_observation-r3": "passed",
+    "e1a-before_modification-r3": "passed",
+    "e1a-after_applied-r3": "passed",
+    "e1b-from_scratch-r3": "passed",
+    "e1b-full_history-r3": "failed",
+    "e1b-resume_package-r3": "passed",
+    "e1c-before_modification-r3": "passed"
+  },
+  "limits": [
+    "Phase exit0 records orderly completion and does not change failed case verdicts.",
+    "Independent recovery does not rewrite the first formal failure."
+  ]
+}
