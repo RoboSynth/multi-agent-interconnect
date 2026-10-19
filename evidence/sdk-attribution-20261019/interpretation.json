@@ -1,0 +1,60 @@
+{
+  "PR13_test_difference": {
+    "changed_local_file": "tests/amp/test_amp_metrics_emitter.py",
+    "missing_local_file": "tests/aip/test_task_ordering.py"
+  },
+  "PR14_test_difference": {
+    "changed_local_file": "tests/amp/test_amp_metrics_emitter.py",
+    "missing_local_file": "tests/amp/test_message_emitter_concurrency.py"
+  },
+  "PR_runtime_relationship": "After only CRLF-to-LF normalization, local new resumable/group_access modules and edited GroupLeader/GroupPartner match PR13 head 09fe13bd; local MessageEmitter matches PR14 head 72a994bf. Product source combines changes from two independent PR branches; neither isolated PR head equals the local SDK tree.",
+  "T01_conclusion": "Current runtime source is an official vendored snapshot plus local increments. Public GitHub fork/PR heads exist locally and in previously captured remote evidence, but local dependency metadata still chooses the copied tree, not either immutable public fork head. AtomGit and a final vendor-to-fork binding are unproved. Do not change metadata merely to declare completion.",
+  "baseline_identity": "Official 3985 and 94077 SDK Git blobs are byte-identical for all 130 files. The frozen Windows filesystem baseline differs only by CRLF in 128 files; 2 files are byte-identical. This confirms source equivalence without treating CRLF changes as local product changes.",
+  "hash_definition": "Per-file SHA256 is over exact raw Git blob bytes; lf_sha256 replaces CRLF only. Bucket raw_manifest_sha256 is SHA256 of canonical JSON UTF-8 (sorted keys, indent 2, trailing LF) containing path, byte length and raw SHA256 records sorted by path. Bucket LF manifest uses normalized byte length and hash. It is not a hash of ambiguous file concatenation.",
+  "inventory_scope": "The complete tracked SDK subtree has 130 official files and 140 current files. The historical source-selector inventory had 129 official files because it excluded uv.lock by suffix. This audit includes uv.lock in inventory and excludes it from runtime code counts.",
+  "new_tests": {
+    "ast_test_method_count": 25,
+    "ast_test_method_names": [
+      "test_missing_record_executes_once_and_applied_replays_skip",
+      "test_received_checks_precondition_before_modifying",
+      "test_uncertain_exception_never_automatically_retries",
+      "test_uncertain_retry_requires_inspection_and_explicit_opt_in",
+      "test_old_fence_rejected_even_for_an_applied_replay",
+      "test_parameter_conflict_is_not_a_second_effect",
+      "test_concurrent_connections_do_not_duplicate_effects",
+      "test_fence_advance_waits_for_current_effect_to_finish",
+      "test_real_process_death_after_effect_reconciles_without_replay",
+      "test_fence_rejects_invalid_token_types",
+      "test_restart_preserves_attempts_events_and_increasing_terms",
+      "test_transport_failure_remains_delivery_unknown",
+      "test_observation_evidence_reused_only_until_expiry",
+      "test_takeover_confirms_invites_waits_and_fences_before_resume",
+      "test_invitation_without_membership_does_not_dispatch",
+      "test_failure_sources_use_actual_reply_and_priority",
+      "test_remote_domain_fence_and_ifc_resume_factory_need_no_local_ledger",
+      "test_native_leader_task_listener_runs_after_state_is_recorded",
+      "test_partner_one_access_per_addressed_task_and_failure",
+      "test_leader_send_access_is_202_and_preserves_publisher",
+      "test_partner_business_tool_error_is_an_access_failure",
+      "test_partner_start_complete_redelivery_counts_one_structured_route",
+      "test_leader_start_complete_redelivery_counts_one_access",
+      "test_failed_start_redelivery_keeps_one_first_failure_access",
+      "test_partner_wrapper_requires_operation_identity_and_skips_replay"
+    ],
+    "file": "vendor/ACPs-community/acps-sdk/tests/resumable/test_resumable.py",
+    "runtime_executed_in_this_audit": false
+  },
+  "sdk_runtime_lines": {
+    "actual_modified_official_lines_added": 71,
+    "actual_modified_official_lines_removed": 12,
+    "added_runtime_file_count": 7,
+    "added_runtime_physical_lines": 845,
+    "meaning": "Physical line counts include comments and blanks. 4220 is the size of modified official files, not newly authored code; attributable runtime delta is +916/-12 across new and edited files. Tests/examples/docs/lockfiles and historical evidence/patch copies are separate.",
+    "modified_files_current_physical_lines": 4220,
+    "modified_official_file_count": 3,
+    "native_current_physical_lines": 12073,
+    "native_file_count": 57,
+    "total_runtime_lines_added_including_new_files": 916,
+    "total_runtime_lines_removed": 12
+  }
+}
