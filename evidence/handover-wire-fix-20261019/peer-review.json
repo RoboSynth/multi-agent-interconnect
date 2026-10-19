@@ -1,0 +1,145 @@
+{
+  "schema_version": "handover-fix-peer-review/1",
+  "status": "PASS_NO_BLOCKING_FINDINGS",
+  "created_at": "2026-10-19T02:30:25.408064+00:00",
+  "source_ready_sha256": "bbd0cdf4aa4af3c8b1e46f7863e9edef07dfcd06b836ca3c28aab46eda9ac13a",
+  "base_commit": "c1c09e569ef67b7f0f0c2b2e8a948afec53f0c31",
+  "source_scope": {
+    "production_files": 2,
+    "new_test_files": 1,
+    "patch_paths": [
+      "acps_mcp_bridge/bridge.py",
+      "incident/wutong_transport.py",
+      "tests/test_handover_wire_contract.py"
+    ]
+  },
+  "checks": [
+    {
+      "topic": "optional_session_metadata",
+      "result": "pass",
+      "evidence": [
+        "checkout/acps_mcp_bridge/bridge.py:103",
+        "checkout/acps_mcp_bridge/bridge.py:199"
+      ],
+      "finding": "Only aip_session_id is newly permitted, with nonblank string validation. It participates in the handover digest. Caller authorization, original/replacement operation/fence validation, and the later ledger fence activation remain unchanged; this metadata grants no execution authority."
+    },
+    {
+      "topic": "rejected_null_operation",
+      "result": "pass",
+      "evidence": [
+        "checkout/incident/wutong_transport.py:367",
+        "checkout/incident/wutong_transport.py:400"
+      ],
+      "finding": "Rejected/tool_error control is handled before operation lookup; its reason is recorded and kept as the candidate exception cause. Candidate selection/fence state and primary membership are not updated by this rejection. Operation None is normalized only for the remaining valid-result handling."
+    },
+    {
+      "topic": "unknown_no_retry",
+      "result": "pass",
+      "evidence": [
+        "checkout/incident/wutong_transport.py:377",
+        "checkout/incident/wutong_transport.py:385"
+      ],
+      "finding": "A confirmed replacement fence with operation None yields unknown reconciliation state. The original act is still resent only for a recorded received state; unknown effect is not resent."
+    },
+    {
+      "topic": "real_history_bridge_regression",
+      "result": "pass",
+      "finding": "New test uses formal_semantic_history on a complete pre-boundary prefix with multiple sessions and reused task IDs, bind_handover, real Policy/Bridge and shared SQLite OperationLedger. It verifies applied operation reconciliation without extra modification or backup-resume MCP calls, while filtering foreign/orphan/later records."
+    },
+    {
+      "topic": "real_task_result_regression",
+      "result": "pass",
+      "finding": "New fake runtime inserts real SDK TaskResult/Product/StructuredDataItem models, then runs real _send/_dispatch/TaskProduct parsing. It verifies default operation None, reason event/exception-chain preservation, rejection without candidate activation, and unknown without another act."
+    },
+    {
+      "topic": "affected_regression_scope",
+      "result": "pass",
+      "finding": "Existing 34 methods cover takeover trust/resource/fence rules, replay and unknown behavior, formal history/factory envelope authority, actual-send correlation and handover digest, TTL freshness and Bridge rejection-before-fence behavior. Together with 5 new methods they form 39 distinct methods, not an additional platform rerun."
+    }
+  ],
+  "existing_execution_evidence": {
+    "new_methods": 5,
+    "new_actual_exit_code": 0,
+    "new_completion_chunk": "9982cc",
+    "affected_existing_methods": 34,
+    "affected_actual_exit_code": 0,
+    "affected_completion_chunk": "d915ef",
+    "distinct_methods": 39,
+    "first_attempt_actual_exit_code": 1,
+    "first_attempt_retained": true,
+    "first_attempt_reason": "One test incorrectly counted read-only pre/postcondition MCP queries as modifications. The assertion was corrected to count only restore_writes and to require no calls during backup resume. Production source did not change for this correction.",
+    "wrapper_display_error_retained": true
+  },
+  "independent_narrow_peer": "suite_service_review independently read patch and corresponding source; no blocking finding on metadata authority, rejected None reason handling, or unknown replay behavior.",
+  "limits": [
+    "Review reused completed offline executions and did not rerun tests.",
+    "No deployment or platform/network/resource/model/fault execution was performed by this review.",
+    "The original failed full_history case and frozen acceptance source/results remain historical evidence; this offline fix does not make that case pass."
+  ],
+  "inputs": {
+    "source-ready.json": {
+      "sha256": "bbd0cdf4aa4af3c8b1e46f7863e9edef07dfcd06b836ca3c28aab46eda9ac13a",
+      "bytes": 8961
+    },
+    "release/source/acps_mcp_bridge/bridge.py": {
+      "sha256": "548896b9ac0149fefc6cd1931a401108eaa0003f0203c6e6ef9fb05f4dd99ee3",
+      "bytes": 29209
+    },
+    "checkout/acps_mcp_bridge/bridge.py": {
+      "sha256": "548896b9ac0149fefc6cd1931a401108eaa0003f0203c6e6ef9fb05f4dd99ee3",
+      "bytes": 29209
+    },
+    "release/source/incident/wutong_transport.py": {
+      "sha256": "a9a93f3e4e084d17148a4445a956a540e80a8eec27ac1e258b75985128e330e8",
+      "bytes": 28701
+    },
+    "checkout/incident/wutong_transport.py": {
+      "sha256": "a9a93f3e4e084d17148a4445a956a540e80a8eec27ac1e258b75985128e330e8",
+      "bytes": 28701
+    },
+    "release/source/tests/test_handover_wire_contract.py": {
+      "sha256": "ef87e842f12d7f0802b5283b2dff63719f65f5d459bd8e04b6f9b27f6479b8ad",
+      "bytes": 13296
+    },
+    "checkout/tests/test_handover_wire_contract.py": {
+      "sha256": "ef87e842f12d7f0802b5283b2dff63719f65f5d459bd8e04b6f9b27f6479b8ad",
+      "bytes": 13296
+    },
+    "release/handover-fix.patch": {
+      "sha256": "0665ef756f064cd919fde5ba494ec05003b4b6108aee5387245e9e14afb17e03",
+      "bytes": 19060
+    },
+    "release/verification-summary.json": {
+      "sha256": "84b5141d372b2cb5edf1347edf3c035db25df9cc159108236361217799190ae4",
+      "bytes": 6295
+    },
+    "verification/new-regressions-attempt-2/result.json": {
+      "sha256": "c76d3a3ce96ce25dc42bc4e238833b38d8ff646fa9dcefce48d765ab8a74a264",
+      "bytes": 524
+    },
+    "verification/affected-regressions/result.json": {
+      "sha256": "352f45489eebe26d775fe72666be7363ea113e56cbd5be438ae249490b4256e6",
+      "bytes": 5086
+    },
+    "verification/new-regressions-attempt-1/result.json": {
+      "sha256": "899830dffcfab92911d2600ee0a678d9e8435d743d7292a9766cb79b8b75dd86",
+      "bytes": 500
+    },
+    "verification/new-regressions-attempt-2/stderr.log": {
+      "sha256": "c411ec36647c7ae0de4d90901e57ffbe1c94c62fb7ed9da9920255b3a808f477",
+      "bytes": 2300
+    },
+    "verification/new-regressions-attempt-2/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "verification/affected-regressions/stderr.log": {
+      "sha256": "63f75224232f268fe2cf8f3e4d338b2bb933cb8e9cf2c453c8edd66908c1fcf0",
+      "bytes": 8853
+    },
+    "verification/affected-regressions/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

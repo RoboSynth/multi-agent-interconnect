@@ -103,10 +103,14 @@ def _handover_digest(payload, args):
         for item in conversation:
             direction = item.get("direction") if isinstance(item, dict) else None
             body = {"request": "payload", "product": "product"}.get(direction) if isinstance(direction, str) else None
-            if (body is None or set(item) != {"direction", "aip_task_id", body}
+            required = {"direction", "aip_task_id", body}
+            if (body is None or not required <= set(item) or set(item) - required - {"aip_session_id"}
                     or not isinstance(item["aip_task_id"], str) or not item["aip_task_id"]
                     or not isinstance(item[body], dict)):
                 raise PolicyRejected("invalid handover conversation entry")
+            if "aip_session_id" in item and (not isinstance(item["aip_session_id"], str)
+                                             or not item["aip_session_id"].strip()):
+                raise PolicyRejected("invalid handover conversation session")
             request = item[body]
             if direction == "request" and request.get("operation_id") == payload["operation_id"]:
                 if (request.get("tool") != payload.get("tool") or request.get("incident_id") != payload["incident_id"]

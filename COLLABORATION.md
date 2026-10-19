@@ -228,3 +228,8 @@ fixed-SDK健康窗口按12个captured Start逐taskId核对两端AMP access：coo
 两PR正文PATCH200及随后GET200一致，仍draft、未合并，没有新PR/Issue/评论；[后续公开状态](evidence/upstream-public-submission-20261018/followup.json)与[完整测试及审阅代码](docs/contributions/full-suite-20261018/README.md)新增，原[六项提交快照](evidence/upstream-public-submission-20261018/submission.json)、旧3985/94077包、16件E3及8件E1证据逐字保留。测试在两个父提交加精确一测试修正的隔离树运行，公开新提交源字节一致，提交后未重复跑相同输入。
 
 T06[本机采集准备](deploy/fluent-bit/README.md)补只读预检、固定源归属和隔离state，13个不同Python离线检查（12新增+1既有）与PS解析0错；最终1项局部重验和12项复用不另加总，早期GBK测试夹具错误保留。未启动真实采集器，Kafka/Monitor未配置或验收。09:24Z[第五周期快照](evidence/new7-runtime-followup-20261018/inspect-fifth-cycle.json)核实原host与第五次自然巡检完成，最新30.002秒/30成功/10流程、act/模型0；35条历史awaiting与effective in-flight0分别记录，时点观察不当连续在线。计划中的verify会写合成订单，零act不等于零业务写入。本批不重跑既有测试、不改变E1授权模板/冻结输入或原科学结论；正式NEW7 E1待独立授权，AtomGit/上游CI/24小时验收仍未完成。
+
+
+### 2026-10-19 正式历史交接契约修复
+
+正式历史中的可选 aip_session_id 现在由 Bridge 接受并校验；拒绝响应的 operation=None 保留原 reason，unknown 接续仍不重发。两产品源与一个回归测试文件为独立修复版本，39 个不同离线方法通过，详见 [修复证据](evidence/handover-wire-fix-20261019/verification-summary.json)及[独立审阅](evidence/handover-wire-fix-20261019/peer-review.json)。原22项验收使用冻结镜像，修复未部署或平台复验；原失败保留。

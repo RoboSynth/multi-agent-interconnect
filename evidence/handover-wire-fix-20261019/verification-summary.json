@@ -1,0 +1,75 @@
+{
+  "schema_version": "handover-fix-offline-verification/1.0",
+  "status": "passed",
+  "base_commit": "c1c09e569ef67b7f0f0c2b2e8a948afec53f0c31",
+  "distinct_test_methods": 39,
+  "new_tests": {
+    "chunk_id": "9982cc",
+    "actual_exit_code": 0,
+    "method_count": 5,
+    "test_names": [
+      "test_handover_wire_contract.HistoryBridgeContractTests.test_formal_multisession_history_reaches_real_bridge_and_shared_ledger",
+      "test_handover_wire_contract.HistoryBridgeContractTests.test_legacy_entries_still_work_and_only_valid_optional_session_is_allowed",
+      "test_handover_wire_contract.ResumeControlParsingTests.test_rejected_sdk_product_with_null_operation_preserves_reason",
+      "test_handover_wire_contract.ResumeControlParsingTests.test_tool_error_does_not_activate_candidate_even_with_a_reported_fence",
+      "test_handover_wire_contract.ResumeControlParsingTests.test_unknown_null_operation_keeps_existing_no_retry_semantics"
+    ],
+    "result": "verification/new-regressions-attempt-2/result.json"
+  },
+  "affected_existing_tests": {
+    "chunk_id": "d915ef",
+    "actual_exit_code": 0,
+    "method_count": 34,
+    "test_names": [
+      "test_wutong_transport.WutongTakeoverTests.test_applied_operation_is_reconciled_without_second_modification",
+      "test_wutong_transport.WutongTakeoverTests.test_candidate_deadline_records_the_invitation_phase",
+      "test_wutong_transport.WutongTakeoverTests.test_coordinator_term_persists_across_output_directories",
+      "test_wutong_transport.WutongTakeoverTests.test_handover_does_not_refresh_old_evidence",
+      "test_wutong_transport.WutongTakeoverTests.test_initial_primary_does_not_depend_on_aic_sort_order",
+      "test_wutong_transport.WutongTakeoverTests.test_missing_or_untrusted_initial_primary_never_invites_backup",
+      "test_wutong_transport.WutongTakeoverTests.test_onboarding_is_selected_for_public_metadata_resource_only",
+      "test_wutong_transport.WutongTakeoverTests.test_onboarding_observation_routes_to_confirmed_onboarding_identity",
+      "test_wutong_transport.WutongTakeoverTests.test_received_operation_reuses_identity_with_confirmed_fence",
+      "test_wutong_transport.WutongTakeoverTests.test_same_skill_on_different_resource_cannot_take_over",
+      "test_wutong_transport.WutongTakeoverTests.test_trusted_role_aics_are_filtered_before_any_invitation",
+      "test_wutong_transport.WutongTakeoverTests.test_unknown_effect_is_not_retried",
+      "test_formal_handover.FormalFactoryTests.test_async_information_factory_receives_copies_and_preserves_envelope",
+      "test_formal_handover.FormalFactoryTests.test_control_approval_budget_identity_and_package_mutations_are_rejected",
+      "test_formal_handover.FormalFactoryTests.test_default_factory_keeps_original_payload",
+      "test_formal_handover.FormalFactoryTests.test_takeover_uses_factory_and_freezes_history_before_discovery",
+      "test_formal_handover.FormalHistoryTests.test_conflicting_reuse_of_group_task_cannot_supply_another_incident_request",
+      "test_formal_handover.FormalHistoryTests.test_cutoff_ignores_later_bytes_and_rejects_invalid_or_partial_boundaries",
+      "test_formal_handover.FormalHistoryTests.test_group_incident_separation_out_of_order_and_duplicate_products",
+      "test_formal_handover.FormalHistoryTests.test_orphan_wrong_session_incident_and_logical_products_are_excluded",
+      "test_formal_handover.FormalHistoryTests.test_recorder_default_preserves_local_history_behavior",
+      "test_formal_handover.FormalHistoryTests.test_recorder_requires_original_incident_and_logical_task_even_for_same_operation",
+      "test_platform_handover.PlatformHandoverTests.test_actual_resume_correlation_session_sender_and_target_are_bound",
+      "test_platform_handover.PlatformHandoverTests.test_all_three_methods_use_actual_send_and_same_pre_boundary_control",
+      "test_platform_handover.PlatformHandoverTests.test_byte_count_and_actual_handover_digest_must_match_acknowledgement",
+      "test_platform_handover.PlatformHandoverTests.test_expired_facts_are_not_renewed_by_formal_handover",
+      "test_platform_handover.PlatformHandoverTests.test_missing_cutoff_and_partial_prefix_cannot_fall_back_to_full_history",
+      "test_platform_handover.PlatformHandoverTests.test_missing_duplicate_and_non_text_resume_cannot_claim_actual_transfer",
+      "test_bridge_gateway.BridgePolicyTests.test_resume_handover_strategies_acknowledge_data_without_executing_it",
+      "test_bridge_gateway.BridgePolicyTests.test_resume_minimal_handover_is_compatible",
+      "test_bridge_gateway.BridgePolicyTests.test_invalid_handover_rejected_before_advancing_fence",
+      "test_bridge_gateway.BridgePolicyTests.test_invalid_history_and_package_rejected_before_advancing_fence",
+      "test_bridge_gateway.BridgePolicyTests.test_handover_cannot_expand_resume_arguments_or_bypass_identity",
+      "test_bridge_gateway.BridgePolicyTests.test_resume_rejects_old_fence_and_unauthorized_caller"
+    ],
+    "result": "verification/affected-regressions/result.json"
+  },
+  "first_failure_retained": {
+    "child_actual_exit_code": 1,
+    "path": "verification/new-regressions-attempt-1",
+    "reason": "One test incorrectly counted read-only pre/postcondition MCP queries as modifications. The assertion was corrected to count only restore_writes and to require no calls during backup resume. Production source did not change for this correction.",
+    "wrapper_display_error": "The first log printer additionally raised UnicodeEncodeError under GBK; the actual child exit and complete raw logs had already been saved. Subsequent execution uses explicit UTF-8."
+  },
+  "patch_reverse_check_exit_code": 0,
+  "original_acceptance_source_files_checked": 6,
+  "original_acceptance_sources_unchanged": true,
+  "runtime_scope": "Only temporary file/ledger fixtures, real SDK model parsing and in-memory MCP responses. No platform/network/Docker/WSL/service/fault execution.",
+  "limitations": [
+    "This fix is confined to the new independent worktree and has not been deployed or applied to the running frozen acceptance batch.",
+    "The failed full_history experiment remains failed; no actual platform rerun or successful E1-b result is claimed."
+  ]
+}

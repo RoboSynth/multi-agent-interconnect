@@ -1,0 +1,33 @@
+{
+  "runs": [
+    {
+      "source": "fix/verification/new-regressions-attempt-1/result.json",
+      "distinct_methods": null,
+      "actual_exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ac710fb948de52e34805a2f62336acd1a8c0bf1fdbeb3cc195ba5c2899d89977"
+    },
+    {
+      "source": "fix/verification/new-regressions-attempt-2/result.json",
+      "distinct_methods": 5,
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c411ec36647c7ae0de4d90901e57ffbe1c94c62fb7ed9da9920255b3a808f477"
+    },
+    {
+      "source": "fix/verification/affected-regressions/result.json",
+      "distinct_methods": 34,
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "63f75224232f268fe2cf8f3e4d338b2bb933cb8e9cf2c453c8edd66908c1fcf0"
+    }
+  ],
+  "distinct_final_methods": 39,
+  "retained_first_failure": {
+    "child_actual_exit_code": 1,
+    "path": "verification/new-regressions-attempt-1",
+    "reason": "One test incorrectly counted read-only pre/postcondition MCP queries as modifications. The assertion was corrected to count only restore_writes and to require no calls during backup resume. Production source did not change for this correction.",
+    "wrapper_display_error": "The first log printer additionally raised UnicodeEncodeError under GBK; the actual child exit and complete raw logs had already been saved. Subsequent execution uses explicit UTF-8."
+  },
+  "scope": "Reuses completed offline runs; no new test/platform execution, deployment, or rerun of failed acceptance cells."
+}

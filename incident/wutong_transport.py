@@ -343,6 +343,7 @@ class WutongTransport:
             candidates = await self._discover_candidates(role, skill)
             # Match the complete resource scope of the failed participant, not only a skill label.
             previous_scope = self.descriptions[role].get("resource_scope", self.descriptions[role].get("resources"))
+            candidate_error = None
             for candidate in sorted(candidates, key=lambda item: item["aic"]):
                 if candidate["aic"] == failed:
                     continue
@@ -363,7 +364,16 @@ class WutongTransport:
                         "fence": proposed.to_dict(), "args": {"advance_fence": True, "resume_package": package.to_dict()}}
                     resume = await self._resume_payload(resume, package, original_fence=original_fence)
                     control = await self._send(resume, acs["aic"])
-                    confirmed = control.get("active_fence") or control.get("operation", {}).get("active_fence")
+                    if control.get("status") in {"rejected", "tool_error"}:
+                        detail = control.get("reason")
+                        if not isinstance(detail, str) or not detail:
+                            detail = "replacement returned " + control["status"]
+                        self.record("takeover_control_rejected", incident_id=incident, logical_task_id=logical_id,
+                                    candidate_aic=acs["aic"], status=control["status"], reason=detail)
+                        raise RuntimeError("replacement did not accept the resume: " + detail)
+                    operation = control.get("operation")
+                    operation = operation if isinstance(operation, dict) else {}
+                    confirmed = control.get("active_fence") or operation.get("active_fence")
                     if not isinstance(confirmed, dict) or Fence(**confirmed) < proposed:
                         raise RuntimeError("replacement did not activate the shared-resource fence")
                     fence = Fence(**confirmed)
@@ -372,7 +382,7 @@ class WutongTransport:
                     self.descriptions[role] = description
                     self.journal.record_takeover(incident, failed, reason, replacement=acs["aic"], fence=confirmed, state="fenced")
                     await self.runtime.force_remove_partner(failed, session_id=self.session.session_id)
-                    state = control.get("operation", {}).get("state", "unknown")
+                    state = operation.get("state", "unknown")
                     if original["kind"] in {"observe", "verify", "describe"}:
                         result = await self._send(original, acs["aic"])
                     elif state in {"applied", "skipped_already_applied", "reconciled_applied"} and control.get("status") == "ok":
@@ -388,9 +398,10 @@ class WutongTransport:
                         elapsed_seconds=round(time.monotonic()-started, 3), discovery="official-adp")
                     return result
                 except (TimeoutError, ConnectionError, OSError, RuntimeError, ValueError) as exc:
+                    candidate_error = exc
                     self.journal.record_takeover(incident, failed, reason, replacement=candidate["aic"],
                                                 state="candidate_failed:"+type(exc).__name__)
-            raise RuntimeError("no confirmed ADP replacement completed the takeover")
+            raise RuntimeError("no confirmed ADP replacement completed the takeover") from candidate_error
 
     async def _resume_payload(self, default: dict, package: ResumePackage, *, original_fence=None) -> dict:
         """Match the local factory contract: replace information, never authority."""
