@@ -1,0 +1,59 @@
+{
+  "status": "WINDOWS_NEW_VENV_INSTALL_IMPORT_AND_CLI_HELP_PASSED",
+  "recorded_at_utc": "2026-10-19T04:41:59.596932+00:00",
+  "installation_and_pip_check": [
+    {
+      "stage": "venv",
+      "actual_exit_code": 0,
+      "terminal": true,
+      "elapsed_seconds": 6.938000000000102,
+      "pid": 6448,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "install",
+      "actual_exit_code": 0,
+      "terminal": true,
+      "elapsed_seconds": 83.51599999999962,
+      "pid": 2436,
+      "stdout_sha256": "e3653345c9c2ea4c592d1f3013505e4a00c50aac1325b9fd04530a7be07ac836",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "pip-check",
+      "actual_exit_code": 0,
+      "terminal": true,
+      "elapsed_seconds": 2.0310000000008586,
+      "pid": 36492,
+      "stdout_sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "corrected_probe_checks": [
+    {
+      "stage": "imports-and-parser",
+      "actual_exit_code": 0,
+      "stdout_sha256": "9f2f1fc5fde8dd2c2465e1c1f1cab2066ff89c26a2d674dbd0ea6df61f3662d4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "stage": "entrypoint-help",
+      "actual_exit_code": 0,
+      "stdout_sha256": "8d45e93acd88a7fca2ac52030c9356a0f7a7116425977161fd50a091f701e5b1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_probe_failure": {
+    "actual_exit_code": 1,
+    "actual_chunk": "36d007",
+    "cause": "Probe imported undeclared packaging; use pip's already installed vendored SpecifierSet",
+    "production_dependency_change": false
+  },
+  "requirements_unchanged": true,
+  "service_starts": 0,
+  "platform_calls": 0,
+  "database_connections": 0,
+  "new_machine_verified": false,
+  "cold_download_claimed": false
+}

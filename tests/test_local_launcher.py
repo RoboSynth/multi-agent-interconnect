@@ -185,7 +185,7 @@ exit $fixtureExit
 
 @unittest.skipUnless(os.name == "nt" and PWSH, "Windows PowerShell 7 local entry")
 class LocalStartupEntryTests(unittest.TestCase):
-    def run_fixture(self, *, enable=False, reject_config=False, nginx="default"):
+    def run_fixture(self, *, enable=False, reject_config=False, reject_host=False, nginx="default"):
         with fixture_directory() as directory:
             root = Path(directory)
             for folder in ("tools", "domains", "deploy", ".venv/Scripts",
@@ -204,6 +204,8 @@ class LocalStartupEntryTests(unittest.TestCase):
                 (root / "deploy/native-runtime.json").write_text(json.dumps({"nginx_bin": str(nginx_path)}), encoding="utf-8")
             if reject_config:
                 (root / "reject-config").touch()
+            if reject_host:
+                (root / "reject-host").touch()
             stub = """import json,sys
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
@@ -211,16 +213,18 @@ with (root/'events.jsonl').open('a',encoding='utf-8') as stream:
     stream.write(json.dumps({'stage':Path(__file__).stem,'args':sys.argv[1:]})+'\\n')
 if Path(__file__).stem=='configure_local_coordinator' and '--check' in sys.argv and (root/'reject-config').exists():
     raise SystemExit(9)
+if Path(__file__).stem=='workbench_host' and (root/'reject-host').exists():
+    raise SystemExit(12)
 if Path(__file__).stem=='download_native_runtime':
     nginx=root/'tools/runtime/nginx-1.30.6/nginx.exe'
     nginx.parent.mkdir(parents=True,exist_ok=True)
     nginx.write_bytes(b'fixture only')
 """
             for name in ("tools/configure_local_coordinator.py", "tools/prepare_native_database.py",
-                         "tools/download_native_runtime.py", "domains/setup_local.py"):
+                         "tools/download_native_runtime.py", "domains/setup_local.py", "tools/workbench_host.py"):
                 (root / name).write_text(stub, encoding="utf-8")
             events = root / "events.jsonl"
-            for name, stage in (("deploy/native.ps1", "native"), ("tools/start_workbench.ps1", "workbench")):
+            for name, stage in (("deploy/native.ps1", "native"), ("tools/start_workbench.ps1", "legacy_workbench")):
                 (root / name).write_text("Add-Content -LiteralPath " + quote(events)
                     + " -Value " + quote(json.dumps({"stage": stage})) + "\nexit 0\n", encoding="utf-8")
             command = [PWSH, "-NoProfile", "-NonInteractive", "-File", str(root / "deploy/local-up.ps1")]
@@ -236,17 +240,29 @@ if Path(__file__).stem=='download_native_runtime':
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["stage"], "configure_local_coordinator")
         self.assertIn("--check", rows[0]["args"])
+        self.assertNotIn("Local workbench: http://", result.stdout)
 
     def test_default_preserves_existing_model_selection_and_checks_first(self):
         result, rows = self.run_fixture()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual([row["stage"] for row in rows], ["configure_local_coordinator", "prepare_native_database", "native",
-            "setup_local", "configure_local_coordinator", "workbench"])
+            "setup_local", "configure_local_coordinator", "workbench_host"])
+        self.assertEqual(rows[-1]["args"], ["--launch"])
+        self.assertIn("Local workbench: http://127.0.0.1:8766", result.stdout)
         configuration = [row["args"] for row in rows if row["stage"] == "configure_local_coordinator"]
         self.assertIn("--check", configuration[0])
         self.assertNotIn("--check", configuration[1])
         self.assertFalse(any(flag in arguments for arguments in configuration
             for flag in ("--enable-llm", "--disable-llm", "--model-base-url", "--model")))
+
+    def test_workbench_host_failure_cannot_report_success_url(self):
+        result, rows = self.run_fixture(reject_host=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual([row["stage"] for row in rows], ["configure_local_coordinator", "prepare_native_database", "native",
+            "setup_local", "configure_local_coordinator", "workbench_host"])
+        self.assertEqual(rows[-1]["args"], ["--launch"])
+        self.assertIn("workbench_host.py", result.stderr)
+        self.assertNotIn("Local workbench: http://", result.stdout)
 
     def test_local_model_requires_opt_in_and_uses_fixed_loopback_arguments(self):
         result, rows = self.run_fixture(enable=True)

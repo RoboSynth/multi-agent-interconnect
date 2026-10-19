@@ -1,0 +1,19 @@
+usage: postgres-mcp [-h] [--access-mode {unrestricted,restricted}]
+                    [--transport {stdio,sse}] [--sse-host SSE_HOST]
+                    [--sse-port SSE_PORT]
+                    [database_url]
+
+PostgreSQL MCP Server
+
+positional arguments:
+  database_url          Database connection URL
+
+options:
+  -h, --help            show this help message and exit
+  --access-mode {unrestricted,restricted}
+                        Set SQL access mode: unrestricted (unrestricted) or
+                        restricted (read-only with protections)
+  --transport {stdio,sse}
+                        Select MCP transport: stdio (default) or sse
+  --sse-host SSE_HOST   Host to bind SSE server to (default: localhost)
+  --sse-port SSE_PORT   Port for SSE server (default: 8000)

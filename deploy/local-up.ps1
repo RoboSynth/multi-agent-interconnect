@@ -41,6 +41,5 @@ $DomainArguments=@((Join-Path $ProjectRoot 'domains/setup_local.py'),'--provisio
 if($Install -or -not(Test-Path -LiteralPath (Join-Path $ProjectRoot '.venv-mcp-postgres/Scripts/postgres-mcp.exe'))){$DomainArguments+='--install'}
 Run-Python $DomainArguments
 Run-Python $CoordinatorArguments
-& (Join-Path $ProjectRoot 'tools/start_workbench.ps1')
-if($LASTEXITCODE -ne 0){throw 'Workbench startup failed.'}
+Run-Python @((Join-Path $ProjectRoot 'tools/workbench_host.py'),'--launch')
 Write-Output 'Local workbench: http://127.0.0.1:8766'
