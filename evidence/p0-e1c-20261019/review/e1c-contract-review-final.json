@@ -1,0 +1,62 @@
+{
+  "schema_version": "e1c-contract-review/2",
+  "status": "FINAL_SOURCE_READ_ONLY_REVIEW_PASSED",
+  "created_at": "2026-10-19T00:49:18.7539157Z",
+  "source_sha256": {
+    "eval/platform_e1c_transport.py": "5b16d82778de881f3028465455b3de17048f028ae357299d1c1a77ec61b59650",
+    "eval/platform_e1c_controller.py": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+    "acps_mcp_bridge/experiment.py": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b",
+    "incident/wutong_transport.py": "a17c7e623dd76ee37e5f4283291422fb0bca972d3861aaaed485170ef47b4b1a",
+    "acps_mcp_bridge/bridge.py": "7568fc75db879442835c7583b06dd3f9f06c46d9705149dadb6d0ddbdf3ba99f",
+    "acps_mcp_bridge/approval.py": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "integration/wutong_smoke.py": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py": "4b1302a1dbe9867a2fe16b9f8c33143774e678af5240ec6721a34f17ed98729f",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+  },
+  "changed_since_initial_review": [
+    {
+      "sha256": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+      "path": "eval/platform_e1c_controller.py",
+      "previous_sha256": "233d5e408aa20a4a4787710baf284814e63acf5acfdf863490002e7d2fa3819e"
+    }
+  ],
+  "final_controller_delta_review": [
+    "Backup startup identity may be PID1; primary signal target remains strictly PID > 1 and same start ticks",
+    "Every suspend/revive/stale-result marker now requires exact before_modification crash_point",
+    "Original approval expiry is checked before _process and again inside exact PROCESS_CODE immediately before pidfd SIGCONT",
+    "Pre-revival trace prefix must remain unchanged; replay_attempts=1 and rejected_stale_fence=1 derive from unique validated original-request markers",
+    "Same-PID live check, unchanged durable ledger, zero primary modifying calls and one backup matched return remain required"
+  ],
+  "os_probe": {
+    "scope": "Only a Popen-owned synthetic stdlib child; exact extracted PROCESS_CODE; no Controller construction, project config or service access",
+    "controller_sha256": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+    "status": "passed",
+    "child_exit_code": 0,
+    "linux_duration_seconds": 0.088338,
+    "completion_chunk": "7e3a56",
+    "stopped_state": "T",
+    "same_pid_and_start_ticks": true,
+    "cleanup_needed": false,
+    "resumed_state": "S",
+    "signals_via_process_code": 1,
+    "approval_expiry_branch": "Source reviewed; OS probe omitted optional synthetic approval field and did not claim runtime approval coverage",
+    "distro": "Ubuntu-22.04",
+    "process_code_sha256": "b046f3ba1860ab0d75d505c1c17502b8f17caf6462fcfd0b40ce060dd032e21b",
+    "actual_outer_exit_code": 0,
+    "child_terminal": true
+  },
+  "proof_sha256": {
+    "e1c-contract-review.json": "48f6e6b87afc0fa4a0dc0e3ef1537d5566ba3a3dd0be91af627a3e59ead2c93b",
+    "process-probe/probe_linux.py": "735fbdad42e9f146bced7abc80a7ff771ddacca9f3e7a6d8c88f3a747fd69591",
+    "process-probe/run_probe.py": "3a111df8ed7990702740f1f1f8dff6e1eacb4798721fa16e61dc8d22a43f5a02",
+    "process-probe/linux-result.json": "036ba02533e912de0a849a1963c7e309e1d3e5db9bd6f865ac2cf9a608a0ceb9",
+    "process-probe/supervisor-result.json": "c5ab3cb50b33b203701e13cd80f1cb6af6796fd729b225256f91418d6fcf7e71"
+  },
+  "limits": [
+    "No formal E1, platform, DB, Docker, MCP, model or project-process execution",
+    "Final approval TTL branch was source-reviewed, not an additional behavioral test",
+    "Local installed AMQP cancellation-chain evidence remains source-level, not runtime-image dependency parity"
+  ]
+}

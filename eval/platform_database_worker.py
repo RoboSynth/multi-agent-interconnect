@@ -27,7 +27,7 @@ for package in (acps_mcp_bridge, incident):
         package.__path__.insert(0, extra)
 
 from acps_mcp_bridge import ApprovalAuthority, McpStdioClient, Policy, ServerConfig
-from acps_mcp_bridge.experiment import DurableTrace, ExperimentBridge, ExperimentSpec, TracedSystemEmitter
+from acps_mcp_bridge.experiment import DurableTrace, ExperimentBridge, ExperimentSpec, TracedSystemEmitter, process_identity
 from acps_mcp_bridge.platform import BridgeGroupRuntime
 from acps_sdk.aip.resumable import OperationLedger
 from incident.amp_setup import AmpRuntime
@@ -123,6 +123,7 @@ async def serve(args, config_path, config, experiment):
         try:
             trace.append({"event": "experiment_worker_start", "incident_id": experiment.incident_id,
                           "worker_role": experiment.worker_role, "armed": experiment.armed,
+                          "process_identity": process_identity(),
                           "bundle_manifest_sha256": args.bundle_sha})
             await amp.start()
             await runtime.start_inbound()

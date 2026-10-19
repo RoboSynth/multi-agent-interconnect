@@ -1,0 +1,72 @@
+{
+  "schema_version": "e1c-contract-review/1",
+  "status": "READ_ONLY_REVIEW_NO_REMAINING_DESIGN_BLOCKER",
+  "created_at": "2026-10-19T00:45:56.6847366Z",
+  "base": "4396461",
+  "scope": "Same-PID primary revival, stale-fence rejection and group cleanup",
+  "source_sha256": {
+    "eval/platform_e1c_transport.py": "5b16d82778de881f3028465455b3de17048f028ae357299d1c1a77ec61b59650",
+    "eval/platform_e1c_controller.py": "233d5e408aa20a4a4787710baf284814e63acf5acfdf863490002e7d2fa3819e",
+    "acps_mcp_bridge/experiment.py": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b",
+    "incident/wutong_transport.py": "a17c7e623dd76ee37e5f4283291422fb0bca972d3861aaaed485170ef47b4b1a",
+    "acps_mcp_bridge/bridge.py": "7568fc75db879442835c7583b06dd3f9f06c46d9705149dadb6d0ddbdf3ba99f",
+    "acps_mcp_bridge/approval.py": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "integration/wutong_smoke.py": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py": "4b1302a1dbe9867a2fe16b9f8c33143774e678af5240ec6721a34f17ed98729f",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+  },
+  "findings": [
+    {
+      "original": "Normal takeover removes the old member before replaying a received action to backup. Forced AMQP connection close can cancel an in-flight consumer handler.",
+      "locators": [
+        "incident/wutong_transport.py:365-381",
+        "eval/platform_e1c_transport.py:12-39",
+        "integration/wutong_smoke.py:341-361"
+      ],
+      "resolution": "E1-c-only DeferredPrimaryRemoval retains exactly the old primary/session until backup applied, same-PID revival and durable exact stale-result marker; then original SDK removal is flushed.",
+      "id": "cancel-race"
+    },
+    {
+      "locators": [
+        "acps_mcp_bridge/experiment.py:148-205",
+        "eval/platform_e1c_controller.py:180-238"
+      ],
+      "resolution": "Suspend branch resumes without ExperimentExit; PID/start ticks and canonical request digest are checked. Controller requires matching startup/suspend/revive/result markers and zero primary plus one backup matched modifying-call return.",
+      "id": "same-request"
+    },
+    {
+      "locators": [
+        "eval/platform_e1c_controller.py:208-221",
+        "acps_mcp_bridge/approval.py:32-43",
+        "acps_mcp_bridge/bridge.py:247-312"
+      ],
+      "resolution": "Original approval is never renewed. Controller requires more than five seconds remaining before owned SIGCONT and accepts only rejected/rejected_stale_fence for the original operation. Expiry/cancellation cannot count as success.",
+      "id": "approval"
+    },
+    {
+      "locators": [
+        "eval/platform_resume_experiment.py:827-831",
+        "eval/platform_e1c_controller.py:240-271"
+      ],
+      "resolution": "Adapter detaches in finally; existing owned group close is reused. Controller restore checks the exact owned PID and continues it if still stopped before parent restoration. Failed restoration remains explicit.",
+      "id": "cleanup"
+    }
+  ],
+  "dependency_evidence": {
+    "scope": "Local installed aiormq source only; no runtime-image dependency comparison executed",
+    "chain": [
+      "aiormq/channel.py:483 delivery callback tracked as task",
+      "aiormq/base.py:174-182 close rejects tracked tasks",
+      "aiormq/base.py:63-80 reject_all invokes TaskWrapper.throw",
+      "aiormq/abc.py:36-38 throw cancels underlying asyncio task"
+    ]
+  },
+  "limits": [
+    "Source inspection only; no platform, Docker, AMQP, MCP, fault, signal, model or behavioral test execution",
+    "Removing an old member before result-marker persistence remains unsafe for this experiment proof",
+    "No requirement that the old primary Product reaches coordinator; durable worker result and unchanged ledger are the proof",
+    "Operation trace invocation without a matching return is a wrapper pre-call intent/unknown, not proof of physical execution"
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": "e1c-worker-offline-verification/1",
+  "status": "PASSED_OFFLINE_ONLY",
+  "actual_execution": {
+    "chunk_id": "9287d6",
+    "exit_code": 0,
+    "elapsed_test_seconds": 2.038,
+    "method_count": 21,
+    "new_method_count": 9,
+    "legacy_method_count": 12,
+    "test_names": [
+      "test_platform_e1_worker.WorkerHooksTests.test_after_applied_is_durable_before_submit_backup_skips_and_old_fence_rejected",
+      "test_platform_e1_worker.WorkerHooksTests.test_after_observation_is_after_read_and_before_AIP_product",
+      "test_platform_e1_worker.WorkerHooksTests.test_before_modification_has_approval_and_durable_received_no_upstream_write",
+      "test_platform_e1_worker.WorkerHooksTests.test_counted_client_retains_default_local_transport",
+      "test_platform_e1_worker.WorkerHooksTests.test_exact_incident_tool_unarmed_backup_and_caller_do_not_exit",
+      "test_platform_e1_worker.WorkerHooksTests.test_main_backup_operation_counts_exclude_inspection_and_keep_unknown_return",
+      "test_platform_e1_worker.WorkerHooksTests.test_missing_or_tampered_approval_and_invalid_envelope_never_record_or_exit",
+      "test_platform_e1_worker.WorkerHooksTests.test_stale_before_hook_and_already_applied_replay_do_not_crash_or_modify",
+      "test_platform_e1_worker.WorkerPreparationTests.test_backup_and_experiment_identity_guards",
+      "test_platform_e1_worker.WorkerPreparationTests.test_default_worker_checks_never_read_env_open_ledger_or_start_clients",
+      "test_platform_e1_worker.WorkerPreparationTests.test_invalid_plan_does_not_create_output",
+      "test_platform_e1_worker.WorkerPreparationTests.test_overlay_pins_sources_and_roles_one_RO_mount_only_main_restart_disabled",
+      "test_platform_e1c_worker.SuspendPreparationTests.test_linux_process_identity_reads_proc_field22_with_parenthesized_name",
+      "test_platform_e1c_worker.SuspendPreparationTests.test_old_schema_default_exit_and_new_schema_exact_modes",
+      "test_platform_e1c_worker.SuspendPreparationTests.test_other_suspend_points_rejected_before_output_is_created",
+      "test_platform_e1c_worker.SuspendPreparationTests.test_real_suspend_requires_exact_noninit_linux_process_and_only_self_sigstop",
+      "test_platform_e1c_worker.SuspendPreparationTests.test_suspend_bundle_adds_init_only_to_primary_and_pins_exact_new_sources",
+      "test_platform_e1c_worker.SuspendedWorkerTests.test_invalid_caller_approval_and_initial_stale_fence_never_suspend",
+      "test_platform_e1c_worker.SuspendedWorkerTests.test_original_authorized_request_revives_and_is_rejected_after_backup_apply",
+      "test_platform_e1c_worker.SuspendedWorkerTests.test_revived_identity_or_request_change_stops_before_original_execution",
+      "test_platform_e1c_worker.SuspendedWorkerTests.test_unarmed_suspend_plan_and_backup_keep_normal_execution"
+    ],
+    "logs": {
+      "offline-tests-01.stdout.log": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      "offline-tests-01.stderr.log": {
+        "sha256": "0095167109d6a541e496b536bfebe8acc584be4bfa2cab348ecedd7b970b02cd",
+        "bytes": 4059
+      },
+      "offline-tests-01.exit.json": {
+        "sha256": "d11b18063dd15e7f14383e68fefcf380ae148812c03bea505d6e5e01b6aa7e6d",
+        "bytes": 109
+      }
+    },
+    "command": [
+      "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-continuation-20261019\\checkout\\.venv-dev\\Scripts\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-e1c-20261019\\checkout\\tests",
+      "-p",
+      "test_platform_e1*worker.py",
+      "-v"
+    ]
+  },
+  "interpreter": {
+    "executable": "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-continuation-20261019\\checkout\\.venv-dev\\Scripts\\python.exe",
+    "version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "prefix": "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-continuation-20261019\\checkout\\.venv-dev",
+    "base_prefix": "C:\\Users\\16080\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python"
+  },
+  "source_sha256": {
+    "acps_mcp_bridge/experiment.py": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b",
+    "eval/prepare_platform_e1_worker.py": "4eec29fa6440989490352da184ad6499344ecb84a207b1e2c9723358ff5943df",
+    "eval/platform_database_worker.py": "5ee504b0e600f6504faf1972d955e65cd29cc3b1e4c12451213f9159888e61bd",
+    "tests/test_platform_e1c_worker.py": "554a87c39f7fbd540ab11d5de5e55c9c3b26b7e0724eafaf9073bca2800ae77a"
+  },
+  "dependency_sha256": {
+    "tests/test_platform_e1_worker.py": "9ce8b956b8e8bdf4c084b01c6cb915270c6e21c813e192e00d39c83271127efc",
+    "acps_mcp_bridge/bridge.py": "7568fc75db879442835c7583b06dd3f9f06c46d9705149dadb6d0ddbdf3ba99f",
+    "domains/database/policy.yaml": "14aa84a47c2747479ca4998d61d06436634f97883c5bd7279c3e7fe8e7dfd99b",
+    "incident/local_worker.py": "20194e39d364f7dbd2d8329366d6f84b33766d632c5e774c6e0094b1f27d136b",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+  },
+  "result": {
+    "real_Bridge_and_OperationLedger": true,
+    "temporary_SQLite": true,
+    "fake_MCP": true,
+    "injected_suspend_callback": true,
+    "original_request_resumed": true,
+    "original_request_hash_and_fence_unchanged": true,
+    "primary_modifying_invocations": 0,
+    "backup_modifying_invocations": 1,
+    "revived_status": "rejected",
+    "revived_operation_state": "rejected_stale_fence",
+    "process_identity_unchanged": true,
+    "default_suspend_only_self_SIGSTOP_mocked": true,
+    "primary_init_true_only_in_suspend_overlay": true,
+    "legacy_schema_default_exit_compatible": true
+  },
+  "trace_contract": {
+    "events": [
+      "experiment_worker_suspended",
+      "experiment_worker_revived",
+      "experiment_stale_request_result"
+    ],
+    "process_identity_fields": [
+      "pid",
+      "linux_start_ticks"
+    ],
+    "common_fields": [
+      "crash_point",
+      "incident_id",
+      "logical_task_id",
+      "operation_id",
+      "tool",
+      "fence",
+      "request_sha256",
+      "process_identity",
+      "AIP_product_submitted"
+    ],
+    "suspended_and_revived_fields": [
+      "ledger_state"
+    ],
+    "result_fields": [
+      "status",
+      "operation_state",
+      "result_operation_id"
+    ],
+    "request_hash": "SHA256 UTF-8 json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False)",
+    "AIP_product_submitted_false_scope": "At each trace write before Bridge handler may submit the rejected product"
+  },
+  "post_test_nonbehavior_changes": [
+    "Generated bundle README adds suspend/init/trace explanation",
+    "Removed unused signal import from new test"
+  ],
+  "limitations": [
+    "No actual Linux signal/suspend/resume",
+    "No Docker/WSL/AMQPS/official platform/model/resource execution",
+    "Invocation counts describe fake MCP calls, not physical database effects"
+  ]
+}

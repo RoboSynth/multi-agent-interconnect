@@ -43,13 +43,28 @@ def effects(point, case="E1-a", method=None):
     result[2] = f"one primary {point} exit{POINTS[point]['exit_code']}"
     if case == "E1-b":
         result.append("one formal handover using " + method + "; same authority, remaining repairs and verification")
+    elif case == "E1-c":
+        result[2] = "one primary before_modification SIGSTOP and SIGCONT of the same Linux PID/start ticks"
+        result.append("one resumed original stale-fence request; primary MCP modifications zero, backup one")
+        result.append("retain the stopped primary group member until stale rejection evidence, then normal SDK removal")
     return result
 
 
 def validate_case(case, point, method):
     if not (case == "E1-a" and method is None or
-            case == "E1-b" and point == "after_applied" and method in METHODS):
-        raise ValueError("E1-a has no comparison method; E1-b requires after_applied and one exact information method")
+            case == "E1-b" and point == "after_applied" and method in METHODS or
+            case == "E1-c" and point == "before_modification" and method is None):
+        raise ValueError("E1-a has no method; E1-b requires after_applied/method; E1-c requires before_modification/no method")
+
+
+def validate_interruption(case, primary, backup):
+    from acps_mcp_bridge.experiment import ExperimentSpec
+    for role, document in (("primary", primary), ("backup", backup)):
+        spec = ExperimentSpec.from_document(document, experiment_id=primary["experiment_id"],
+            executor_aic=primary["primary_aic"] if role == "primary" else primary["backup_aic"])
+        expected_mode = "suspend" if case == "E1-c" and role == "primary" else "exit"
+        if spec.worker_role != role or getattr(spec, "interruption_mode", "exit") != expected_mode:
+            raise ValueError("Worker interruption mode differs from the planned case")
 
 
 def digest(path):
@@ -131,6 +146,7 @@ def prepare(args):
         raise ValueError("An exact armed E1 primary interruption and unarmed backup are required")
     case, method = getattr(args, "case", "E1-a"), getattr(args, "method", None)
     validate_case(case, point, method)
+    validate_interruption(case, primary, backup)
     if any(primary[k] != backup[k] for k in ("experiment_id", "incident_id", "primary_aic", "backup_aic")):
         raise ValueError("Worker role documents differ in identity or experiment scope")
     if any(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,95}", value) is None for value in (experiment, incident)):
@@ -146,7 +162,7 @@ def prepare(args):
     output = local(args.output)
     if not output.is_relative_to(ROOT / "eval/results/platform") or output.exists():
         raise ValueError("E1 output must be a new eval/results/platform directory")
-    plan = dict(schema_version="platform-e1-plan/2", case=case, crash_point=point,
+    plan = dict(schema_version="platform-e1-plan/3" if case == "E1-c" else "platform-e1-plan/2", case=case, crash_point=point,
         experiment_id=experiment, incident_id=incident, operation_id=incident + ":db-restore-writes",
         target_config=local(args.target_config).relative_to(ROOT).as_posix(),
         config=config_path.relative_to(ROOT).as_posix(), domain_profile=profile.relative_to(ROOT).as_posix(),
@@ -155,7 +171,12 @@ def prepare(args):
         file_sha256=files, model_calls=0, approve_high_required=True, effects=effects(point, case, method),
         evidence_limits=["MCP invocations are not physical side effects", "process-local ownership lock cannot exclude another host",
                          "normal close evidence is SDK return/local state/warnings, not a broker ACL inventory",
-                         "one case only; no cross-method effectiveness or old-primary resurrection claim"])
+                         "one case only; no cross-method effectiveness claim"])
+    if case == "E1-c":
+        plan.update(interruption_mode="suspend", replay_attempts=1)
+        plan["evidence_limits"].append("one resumed pending original request, not additional AIP replay messages or physical effect counts")
+    else:
+        plan["evidence_limits"].append("no old-primary resurrection claim")
     if method is not None:
         plan["method"] = method
     path = local(args.plan)
@@ -171,10 +192,16 @@ def validate_plan(path=None, *, document=None):
     plan = load(path) if document is None else document
     version, point = plan.get("schema_version"), plan.get("crash_point")
     case, method = plan.get("case"), plan.get("method")
-    if (version not in {"platform-e1-plan/1", "platform-e1-plan/2"} or point not in POINTS
-            or version == "platform-e1-plan/1" and (point != "after_applied" or case != "E1-a" or "method" in plan)):
+    if (version not in {"platform-e1-plan/1", "platform-e1-plan/2", "platform-e1-plan/3"} or point not in POINTS
+            or version == "platform-e1-plan/1" and (point != "after_applied" or case != "E1-a" or "method" in plan)
+            or (version == "platform-e1-plan/3") != (case == "E1-c")):
         raise ValueError("Unsupported formal E1 plan")
     validate_case(case, point, method)
+    if case == "E1-c":
+        if plan.get("interruption_mode") != "suspend" or type(plan.get("replay_attempts")) is not int or plan["replay_attempts"] != 1:
+            raise ValueError("E1-c binds one suspended original request on the same process")
+    elif "interruption_mode" in plan or "replay_attempts" in plan:
+        raise ValueError("Legacy exit cases cannot acquire revival effects")
     if plan.get("effects") != effects(point, case, method) or plan.get("model_calls") != 0 or plan.get("approve_high_required") is not True:
         raise ValueError("E1 effect/model/approval contract changed")
     if not plan.get("file_sha256"):
@@ -199,6 +226,7 @@ def validate_plan(path=None, *, document=None):
         raise ValueError("Operation differs from the preallocated incident")
     bundle = local(plan["bundle"])
     primary, backup, manifest = (load(bundle / name) for name in ("primary.json", "backup.json", "worker-source-manifest.json"))
+    validate_interruption(case, primary, backup)
     common = {"experiment_id": plan["experiment_id"], "incident_id": plan["incident_id"],
               "primary_aic": plan["identities"]["database"], "backup_aic": plan["identities"]["database-backup"]}
     if any(document.get(k) != v for document in (primary, backup) for k, v in common.items()):
@@ -234,6 +262,8 @@ def validate_plan(path=None, *, document=None):
                           target="/experiment", read_only=True)],
             labels={"incident-pilot.experiment": plan["experiment_id"], "incident-pilot.e1-role": role})
     expected_services[DB_SERVICES[0]]["restart"] = "no"
+    if case == "E1-c":
+        expected_services[DB_SERVICES[0]]["init"] = True
     if yaml.safe_load((bundle / "e1-worker-overlay.yml").read_text(encoding="utf-8")) != {"services": expected_services}:
         raise ValueError("E1 overlay differs from the exact two-worker readonly bundle contract")
     return plan
@@ -251,8 +281,11 @@ def authorize(plan, plan_path, authorization_path, approve_high):
         exclusive_coordinator=True, no_other_identity_consumers=True, no_active_or_unknown_operations=True)
     if plan["case"] == "E1-b":
         expected["method"] = plan["method"]
+    elif plan["case"] == "E1-c":
+        expected.update(interruption_mode=plan["interruption_mode"], replay_attempts=plan["replay_attempts"])
     boolean_fields = ("authorized", "exclusive_coordinator", "no_other_identity_consumers", "no_active_or_unknown_operations")
-    if auth != expected or any(type(auth.get(key)) is not bool for key in boolean_fields):
+    if (auth != expected or any(type(auth.get(key)) is not bool for key in boolean_fields)
+            or plan["case"] == "E1-c" and type(auth.get("replay_attempts")) is not int):
         raise ValueError("Authorization must exactly bind this plan, one case and ownership preconditions")
     forbidden = [name for name in os.environ if name.upper().startswith("PG") or name.upper() in RESOURCE_NAMES]
     if forbidden:
@@ -426,6 +459,10 @@ class Controller:
                     raise ValueError("E1 overlay changed an unowned service")
                 continue
             mutable = {"command", "volumes", "restart", "labels"}
+            if self.plan["case"] == "E1-c" and name == DB_SERVICES[0]:
+                if changed.get("init") is not True:
+                    raise ValueError("Suspended primary requires init so the worker is not namespace PID 1")
+                mutable.add("init")
             if {k: v for k, v in value.items() if k not in mutable} != {k: v for k, v in changed.items() if k not in mutable}:
                 raise ValueError("E1 overlay changed database permissions/image/environment")
             proof[name] = {}
@@ -654,15 +691,23 @@ def journal_resolution(journal, plan, original, session_id, *, coordinator_term=
     return dict(raw_in_flight_count=len(pending), expected_unacknowledged_primary_attempts=len(pending),
         unexpected_in_flight_count=0, completed_backup_resume_task_id=completed_resume[0], raw_journal_modified=False,
         completed_backup_replay_task_id=completed_replay[0] if completed_replay else None,
-        basis=f"Primary {point}/exit{POINTS[point]['exit_code']} and exact MCP counts were independently verified; backup continuation completed.")
+        basis=("Same primary PID/start ticks resumed its original stale request and was rejected; backup continuation and MCP counts verified."
+               if plan["case"] == "E1-c" else
+               f"Primary {point}/exit{POINTS[point]['exit_code']} and exact MCP counts were independently verified; backup continuation completed."))
 
 
-async def run_case(plan, *, controller_factory=Controller, transport_factory=None, final_health=None):
+async def run_case(plan, *, controller_factory=None, transport_factory=None, final_health=None):
     from incident.contracts import TaskPayload
     from eval.targets import validate_platform_bindings
     if transport_factory is None:
         from incident.wutong_transport import WutongTransport
         transport_factory = WutongTransport
+    if controller_factory is None:
+        if plan["case"] == "E1-c":
+            from eval.platform_e1c_controller import RevivalController
+            controller_factory = RevivalController
+        else:
+            controller_factory = Controller
     output = local(plan["output"]); output.mkdir(parents=True, exist_ok=False)
     source_hashes = {}
     for path in source_paths():
@@ -674,13 +719,16 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
         source_hashes[relative] = plan["file_sha256"][relative]
     controller = controller_factory(plan, output)
     transport = None; warnings = CleanupWarnings(); logging.getLogger().addHandler(warnings)
-    report = dict(schema_version="platform-e1-result/2", case=plan["case"], crash_point=plan["crash_point"],
+    report = dict(schema_version="platform-e1-result/3" if plan["case"] == "E1-c" else "platform-e1-result/2", case=plan["case"], crash_point=plan["crash_point"],
         experiment_id=plan["experiment_id"], incident_id=plan["incident_id"], operation_id=plan["operation_id"],
         status="failed", model_calls=0, source_sha256=source_hashes,
         started_at=datetime.now(timezone.utc).isoformat(), products=[])
     recorder = None
+    deferred_removal = None
     if plan["case"] == "E1-b":
         report.update(method=plan["method"], model_tokens=0)
+    elif plan["case"] == "E1-c":
+        report.update(interruption_mode=plan["interruption_mode"], replay_attempts=plan["replay_attempts"])
     try:
         await asyncio.to_thread(controller.begin)
         config = load(local(plan["config"])); config["automatic_takeover"] = True
@@ -694,6 +742,10 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
         expected_selected = {role: aic for role, aic in plan["identities"].items() if role in config["skills"]}
         if transport.selected != expected_selected:
             raise ValueError("Initial official participants differ from exact planned identities")
+        if plan["case"] == "E1-c":
+            from eval.platform_e1c_transport import DeferredPrimaryRemoval
+            deferred_removal = DeferredPrimaryRemoval(transport, plan["identities"]["database"],
+                                                       plan["identities"]["database-backup"])
         task_index = 0
         async def call(kind, tool, args=None):
             nonlocal task_index
@@ -734,7 +786,9 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
                 or product.get("operation", {}).get("operation_id") != plan["operation_id"]):
             raise ValueError("Expected formal backup continuation of the planned interruption was not confirmed")
         interrupted = interrupted or report["products"][-1]["payload"]
-        report["worker_exit_and_mcp"] = await asyncio.to_thread(controller.collect, interrupted)
+        report["worker_revival_and_mcp" if plan["case"] == "E1-c" else "worker_exit_and_mcp"] = await asyncio.to_thread(controller.collect, interrupted)
+        if deferred_removal is not None:
+            report["old_primary_removal"] = await deferred_removal.flush()
         reusable = {}
         if recorder is not None:
             from eval.platform_handover import verify_handover
@@ -770,6 +824,8 @@ async def run_case(plan, *, controller_factory=Controller, transport_factory=Non
     except Exception as error:
         report["error_class"] = type(error).__name__
     finally:
+        if deferred_removal is not None:
+            deferred_removal.detach()
         if transport is not None:
             try:
                 report["close_checks"] = await close_owned(transport, warnings)
@@ -808,7 +864,7 @@ def main(argv=None):
     parser.add_argument("--plan", required=True, type=Path)
     parser.add_argument("--prepare", action="store_true")
     parser.add_argument("--execute", action="store_true")
-    parser.add_argument("--case", choices=("E1-a", "E1-b"), default="E1-a")
+    parser.add_argument("--case", choices=("E1-a", "E1-b", "E1-c"), default="E1-a")
     parser.add_argument("--method", choices=METHODS)
     for name in ("config", "target-config", "domain-profile", "bundle", "output", "image-id"):
         parser.add_argument("--" + name)

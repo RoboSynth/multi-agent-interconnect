@@ -1,0 +1,227 @@
+test_pidfd_bound_signal_and_finally_close (__main__.ProcessProbeTests.test_pidfd_bound_signal_and_finally_close) ... ok
+test_reused_pid_changed_command_running_state_or_pid1_never_signals (__main__.ProcessProbeTests.test_reused_pid_changed_command_running_state_or_pid1_never_signals) ... ok
+test_container_restart_replacement_init_mount_and_other_service_changes_refuse_signal (__main__.RevivalTests.test_container_restart_replacement_init_mount_and_other_service_changes_refuse_signal) ... ERROR
+test_expired_original_approval_is_not_renewed_or_signaled (__main__.RevivalTests.test_expired_original_approval_is_not_renewed_or_signaled) ... ERROR
+test_extra_primary_mcp_invocation_is_not_one_backup_effect (__main__.RevivalTests.test_extra_primary_mcp_invocation_is_not_one_backup_effect) ... ERROR
+test_missing_or_wrong_stale_result_preserves_failure_after_one_signal (__main__.RevivalTests.test_missing_or_wrong_stale_result_preserves_failure_after_one_signal) ... ERROR
+test_other_case_refuses_before_target_initialization (__main__.RevivalTests.test_other_case_refuses_before_target_initialization) ... ERROR
+test_restore_already_running_does_not_resignal (__main__.RevivalTests.test_restore_already_running_does_not_resignal) ... ERROR
+test_restore_never_signals_foreign_identity_and_keeps_both_errors (__main__.RevivalTests.test_restore_never_signals_foreign_identity_and_keeps_both_errors) ... ERROR
+test_restore_resumes_owned_stopped_primary_then_calls_parent (__main__.RevivalTests.test_restore_resumes_owned_stopped_primary_then_calls_parent) ... ERROR
+test_same_process_revival_requires_backup_effect_and_keeps_ledger_bytes (__main__.RevivalTests.test_same_process_revival_requires_backup_effect_and_keeps_ledger_bytes) ... ERROR
+test_unadvanced_fence_or_unapplied_ledger_refuses_signal (__main__.RevivalTests.test_unadvanced_fence_or_unapplied_ledger_refuses_signal) ... ERROR
+test_wrong_request_marker_start_identity_or_pid1_refuses_signal (__main__.RevivalTests.test_wrong_request_marker_start_identity_or_pid1_refuses_signal) ... ERROR
+
+======================================================================
+ERROR: test_container_restart_replacement_init_mount_and_other_service_changes_refuse_signal (__main__.RevivalTests.test_container_restart_replacement_init_mount_and_other_service_changes_refuse_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_expired_original_approval_is_not_renewed_or_signaled (__main__.RevivalTests.test_expired_original_approval_is_not_renewed_or_signaled)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_extra_primary_mcp_invocation_is_not_one_backup_effect (__main__.RevivalTests.test_extra_primary_mcp_invocation_is_not_one_backup_effect)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_missing_or_wrong_stale_result_preserves_failure_after_one_signal (__main__.RevivalTests.test_missing_or_wrong_stale_result_preserves_failure_after_one_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_other_case_refuses_before_target_initialization (__main__.RevivalTests.test_other_case_refuses_before_target_initialization)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_restore_already_running_does_not_resignal (__main__.RevivalTests.test_restore_already_running_does_not_resignal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_restore_never_signals_foreign_identity_and_keeps_both_errors (__main__.RevivalTests.test_restore_never_signals_foreign_identity_and_keeps_both_errors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_restore_resumes_owned_stopped_primary_then_calls_parent (__main__.RevivalTests.test_restore_resumes_owned_stopped_primary_then_calls_parent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_same_process_revival_requires_backup_effect_and_keeps_ledger_bytes (__main__.RevivalTests.test_same_process_revival_requires_backup_effect_and_keeps_ledger_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_unadvanced_fence_or_unapplied_ledger_refuses_signal (__main__.RevivalTests.test_unadvanced_fence_or_unapplied_ledger_refuses_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+======================================================================
+ERROR: test_wrong_request_marker_start_identity_or_pid1_refuses_signal (__main__.RevivalTests.test_wrong_request_marker_start_identity_or_pid1_refuses_signal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\tests\test_platform_e1c_controller.py", line 42, in setUp
+    self.controller = revival.RevivalController(self.plan, self.root)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_e1c_controller.py", line 72, in __init__
+    super().__init__(plan, output)
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\platform_resume_experiment.py", line 328, in __init__
+    self.target = DockerTarget.from_file(local(plan["target_config"]))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 70, in from_file
+    source = local(str(path))
+             ^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\artifacts\p0-e1c-20261019\checkout\eval\targets.py", line 68, in local
+    raise ValueError("Target file must exist inside this project")
+ValueError: Target file must exist inside this project
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.142s
+
+FAILED (errors=11)

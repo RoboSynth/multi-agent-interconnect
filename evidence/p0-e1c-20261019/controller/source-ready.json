@@ -1,0 +1,43 @@
+{
+  "status": "E1C_CONTROLLER_OFFLINE_SOURCE_READY_NOT_EXECUTED",
+  "recorded_at_utc": "2026-10-19T00:47:39.621982+00:00",
+  "payloads": [
+    {
+      "source": "checkout/eval/platform_e1c_controller.py",
+      "target": "eval/platform_e1c_controller.py",
+      "sha256": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+      "bytes": 17398,
+      "kind": "production_source"
+    },
+    {
+      "source": "checkout/tests/test_platform_e1c_controller.py",
+      "target": "tests/test_platform_e1c_controller.py",
+      "sha256": "d40f42dabdfebaf8990feaba961bec63990fd068fb93be56be9eade9becba37f",
+      "bytes": 17606,
+      "kind": "offline_test"
+    }
+  ],
+  "checks": {
+    "path": "offline-checks.json",
+    "sha256": "531b8a3a37ab42799da7124af7466398e67bd6dfc2ea538aaa1c7011ab7dd3ca",
+    "distinct_tests": 15
+  },
+  "patch_sha256": "3875688cd85892b532f9e344e7c3bda22aa12c55f5effb411b2e563bec464c14",
+  "interfaces": {
+    "class": "eval.platform_e1c_controller.RevivalController",
+    "base": "eval.platform_resume_experiment.Controller",
+    "constructor": "(plan, output)",
+    "collect": "collect(original_payload)",
+    "restore": "restore()",
+    "metrics": "e1c-revival-metrics.json",
+    "process_proofs": "e1c-process-snapshots.json",
+    "cleanup_proof": "e1c-restore.json"
+  },
+  "real_experiment_executed": false,
+  "frozen_canonical_inputs_modified": false,
+  "evidence_limits": [
+    "All Docker/exec outputs and pidfd/signals are synthetic mocks",
+    "Read-only state/fence queries use a temporary local SQLite file",
+    "No actual Linux SIGSTOP/SIGCONT, container recreation or E1-c platform run"
+  ]
+}

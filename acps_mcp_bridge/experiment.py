@@ -4,10 +4,13 @@ from __future__ import annotations
 from contextvars import ContextVar
 from dataclasses import dataclass
 import inspect
+import hashlib
 import json
 import os
 from pathlib import Path
 import re
+import signal
+import sys
 import threading
 
 from .bridge import Bridge
@@ -27,15 +30,17 @@ class ExperimentSpec:
     armed: bool
     crash_point: str | None
     crash_tool: str
+    interruption_mode: str = "exit"
 
     @classmethod
     def from_document(cls, document, *, experiment_id, executor_aic):
         fields = set(cls.__dataclass_fields__)
-        if not isinstance(document, dict) or set(document) != fields | {"schema_version"}:
-            raise ValueError("exact e1-worker/1 experiment fields required")
-        if document["schema_version"] != "e1-worker/1":
+        if not isinstance(document, dict) or document.get("schema_version") not in {"e1-worker/1", "e1-worker/2"}:
             raise ValueError("unsupported experiment schema")
-        value = cls(**{name: document[name] for name in fields})
+        supplied = fields - {"interruption_mode"} if document["schema_version"] == "e1-worker/1" else fields
+        if set(document) != supplied | {"schema_version"}:
+            raise ValueError("exact versioned E1 experiment fields required")
+        value = cls(**{name: document[name] for name in supplied})
         if (not isinstance(value.experiment_id, str)
                 or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,95}", value.experiment_id)
                 or value.experiment_id != experiment_id
@@ -58,6 +63,11 @@ class ExperimentSpec:
             raise ValueError("observation exit is restricted to db.read_only_status")
         if value.crash_point in {"before_modification", "after_applied"} and value.crash_tool != "db.restore_writes":
             raise ValueError("modification exits are restricted to db.restore_writes")
+        if value.interruption_mode not in {"exit", "suspend"}:
+            raise ValueError("unsupported experiment interruption mode")
+        if value.interruption_mode == "suspend" and (value.worker_role != "primary"
+                or value.crash_point != "before_modification" or value.crash_tool != "db.restore_writes"):
+            raise ValueError("suspension is restricted to primary before db.restore_writes")
         return value
 
     def matches(self, point, payload, executor_aic):
@@ -72,6 +82,32 @@ class ExperimentExit(BaseException):
     def __init__(self, code):
         self.code = code
         super().__init__(code)
+
+
+def process_identity():
+    """Namespace PID and Linux start time distinguish the same living process."""
+    identity = {"pid": os.getpid(), "linux_start_ticks": None}
+    if sys.platform == "linux":
+        # comm is parenthesized and can itself contain spaces or parentheses.
+        fields = Path("/proc/self/stat").read_text(encoding="utf-8").rsplit(")", 1)[1].split()
+        ticks = int(fields[19])  # Field 22; field 3 (state) begins this suffix.
+        if ticks <= 0:
+            raise ValueError("Linux process start ticks must be positive")
+        identity["linux_start_ticks"] = ticks
+    return identity
+
+
+def suspend_current_process(identity):
+    if (sys.platform != "linux" or type(identity.get("pid")) is not int or identity["pid"] <= 1
+            or type(identity.get("linux_start_ticks")) is not int or identity["linux_start_ticks"] <= 0
+            or identity != process_identity()):
+        raise ValueError("Suspension requires this exact non-init Linux process")
+    os.kill(os.getpid(), signal.SIGSTOP)
+
+
+def request_sha256(payload):
+    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 class DurableTrace:
@@ -101,9 +137,11 @@ class TracedSystemEmitter:
 
 
 class ExperimentBridge(Bridge):
-    def __init__(self, *args, experiment, current_payload=None, trace, exit_callback=os._exit, **kwargs):
+    def __init__(self, *args, experiment, current_payload=None, trace, exit_callback=os._exit,
+                 suspend_callback=suspend_current_process, identity_callback=process_identity, **kwargs):
         super().__init__(*args, **kwargs)
         self.experiment, self.trace, self.exit_callback = experiment, trace, exit_callback
+        self.suspend_callback, self.identity_callback = suspend_callback, identity_callback
         self.current_payload = current_payload or ContextVar("e1_bridge_payload", default=None)
         self._tripped = False
 
@@ -112,6 +150,23 @@ class ExperimentBridge(Bridge):
             return
         self._tripped = True
         operation = self.ledger.get(payload["operation_id"]) if payload.get("operation_id") else None
+        if self.experiment.interruption_mode == "suspend":
+            identity, digest = dict(self.identity_callback()), request_sha256(payload)
+            common = {"crash_point": point, "incident_id": payload["incident_id"],
+                "logical_task_id": payload["logical_task_id"], "operation_id": payload["operation_id"],
+                "tool": payload["tool"], "fence": dict(payload["fence"]), "request_sha256": digest,
+                "process_identity": identity, "AIP_product_submitted": False}
+            self.trace.append({**common, "event": "experiment_worker_suspended",
+                               "ledger_state": operation["state"] if operation else None})
+            result = self.suspend_callback(dict(identity))
+            if inspect.isawaitable(result):
+                await result
+            if self.identity_callback() != identity or request_sha256(payload) != digest:
+                raise RuntimeError("Revived process or original request identity changed")
+            revived = self.ledger.get(payload["operation_id"])
+            self.trace.append({**common, "event": "experiment_worker_revived",
+                               "ledger_state": revived["state"] if revived else None})
+            return common
         self.trace.append({"event": "experiment_worker_crash", "crash_point": point,
             "exit_code": EXIT_CODES[point], "incident_id": payload["incident_id"],
             "logical_task_id": payload["logical_task_id"], "operation_id": payload.get("operation_id"),
@@ -124,6 +179,7 @@ class ExperimentBridge(Bridge):
 
     async def execute(self, payload, caller_aic):
         token = self.current_payload.set(payload)
+        suspended = None
         try:
             if self.experiment.matches("before_modification", payload, self.executor_aic):
                 # Preserve the real policy/approval and durable ledger implementations.
@@ -141,8 +197,12 @@ class ExperimentBridge(Bridge):
                     except (PolicyRejected, ValueError, TypeError):
                         return await super().execute(payload, caller_aic)
                     if received["state"] == "received":
-                        await self._trip("before_modification", payload)
+                        suspended = await self._trip("before_modification", payload)
             result = await super().execute(payload, caller_aic)
+            if suspended is not None:
+                self.trace.append({**suspended, "event": "experiment_stale_request_result",
+                    "status": result.get("status"), "operation_state": result.get("operation", {}).get("state"),
+                    "result_operation_id": result.get("operation", {}).get("operation_id")})
             if result.get("status") == "ok":
                 if payload.get("kind") == "observe":
                     await self._trip("after_observation", payload)

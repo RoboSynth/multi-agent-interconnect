@@ -1,0 +1,100 @@
+{
+  "status": "PASSED_SYNTHETIC_OFFLINE_ONLY",
+  "distinct_tests": 15,
+  "fresh_affected": 6,
+  "unaffected_reused": 9,
+  "test_names": [
+    "RevivalTests.test_same_process_revival_requires_backup_effect_and_keeps_ledger_bytes",
+    "RevivalTests.test_other_case_refuses_before_target_initialization",
+    "RevivalTests.test_backup_may_be_namespace_pid1_but_is_never_signaled",
+    "RevivalTests.test_container_restart_replacement_init_mount_and_other_service_changes_refuse_signal",
+    "RevivalTests.test_wrong_request_marker_start_identity_or_pid1_refuses_signal",
+    "RevivalTests.test_unadvanced_fence_or_unapplied_ledger_refuses_signal",
+    "RevivalTests.test_extra_primary_mcp_invocation_is_not_one_backup_effect",
+    "RevivalTests.test_expired_original_approval_is_not_renewed_or_signaled",
+    "RevivalTests.test_missing_or_wrong_stale_result_preserves_failure_after_one_signal",
+    "RevivalTests.test_restore_resumes_owned_stopped_primary_then_calls_parent",
+    "RevivalTests.test_restore_never_signals_foreign_identity_and_keeps_both_errors",
+    "RevivalTests.test_restore_already_running_does_not_resignal",
+    "ProcessProbeTests.test_pidfd_bound_signal_and_finally_close",
+    "ProcessProbeTests.test_reused_pid_changed_command_running_state_or_pid1_never_signals",
+    "ProcessProbeTests.test_expiry_is_rechecked_inside_pidfd_guard_before_signal"
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "successful_runs": [
+    {
+      "log": "offline-tests-final.log",
+      "actual_exit_code": 0,
+      "tool_chunk": "3d48fb",
+      "tests": 12,
+      "sha256": "c1509c1619a61396143806a8c71b20302389a68dcded3540d16cdf1f684363dd"
+    },
+    {
+      "log": "offline-tests-affected-final.log",
+      "actual_exit_code": 0,
+      "tool_chunk": "36b176",
+      "tests": 6,
+      "sha256": "97fcda845f45ce090db9c980873f3785150ade57fcb6c1c99f861413785ade6b"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "log": "offline-tests-attempt1.log",
+      "chunk": "5ca3a6",
+      "actual_exit_code": 1,
+      "tests": 13,
+      "errors": 22,
+      "reason": "Sandbox TEMP fixture permissions; 2 process-probe tests passed"
+    },
+    {
+      "log": "offline-tests-attempt2.log",
+      "chunk": "7c355d",
+      "actual_exit_code": 1,
+      "tests": 13,
+      "errors": 11,
+      "reason": "Fixture used out-of-project temp target; real target guard rejected it"
+    },
+    {
+      "log": "offline-tests-attempt3.log",
+      "chunk": "acf443",
+      "actual_exit_code": 1,
+      "tests": 11,
+      "errors": 8,
+      "reason": "Fixture SQLite handles not explicitly closed during cleanup"
+    },
+    {
+      "log": "offline-tests-attempt4.log",
+      "chunk": "f92b27",
+      "actual_exit_code": 0,
+      "tests": 11
+    }
+  ],
+  "fixture_cleanup": {
+    "removed_exact_log_bound_directories": [],
+    "retained": [
+      "tmp3qpgh7zi",
+      "tmp5fz6z2iv",
+      "tmp6yj1cyer",
+      "tmpb5751nn8",
+      "tmpk0ng4y8u",
+      "tmpqlljm783",
+      "tmpsrb76cr6",
+      "tmpxrzm_2u0"
+    ]
+  },
+  "real_actions": {
+    "docker": 0,
+    "wsl": 0,
+    "network": 0,
+    "signals": 0,
+    "platform": 0,
+    "model": 0
+  },
+  "limits": [
+    "All Docker/exec outputs and pidfd/signals are synthetic mocks",
+    "Read-only state/fence queries use a temporary local SQLite file",
+    "No actual Linux SIGSTOP/SIGCONT, container recreation or E1-c platform run"
+  ]
+}

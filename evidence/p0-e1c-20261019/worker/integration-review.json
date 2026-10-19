@@ -1,0 +1,55 @@
+{
+  "schema_version": "e1c-worker-integration-review/1",
+  "status": "READ_ONLY_REVIEW_NO_BLOCKING_FINDINGS",
+  "reviewed_at": "2026-10-19T00:48:02.051454+00:00",
+  "checkout_base_commit": "4396461",
+  "reviewed_files": {
+    "eval/platform_resume_experiment.py": {
+      "sha256": "263cd43430f62d865d7ea449a24fa02c3d2bb4c9b811b41ac870dae311f104ef",
+      "bytes": 59721
+    },
+    "eval/platform_e1c_transport.py": {
+      "sha256": "5b16d82778de881f3028465455b3de17048f028ae357299d1c1a77ec61b59650",
+      "bytes": 1994
+    },
+    "tests/test_platform_e1c_runner.py": {
+      "sha256": "6d5b97b895d98491c19c360a9c03bc04df686199bb64237e3bf16e80157de4ae",
+      "bytes": 9302
+    },
+    "tests/test_platform_e1c_transport.py": {
+      "sha256": "e2b3e4cba8f3ba12f955549266fa29bacd6824d17b7a9b2263e4cb9edfdd689c",
+      "bytes": 2854
+    }
+  },
+  "contract_dependencies_read_only": {
+    "incident/wutong_transport.py": {
+      "sha256": "a17c7e623dd76ee37e5f4283291422fb0bca972d3861aaaed485170ef47b4b1a",
+      "bytes": 27908
+    },
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": {
+      "sha256": "2e57f1dc5d1cefc444fef245e9aa4a12512c15aa04be17845626a6916dc530df",
+      "bytes": 100667
+    }
+  },
+  "findings": [],
+  "checks": [
+    "Plan /3 iff E1-c; before_modification, no information method, suspend and exact int replay_attempts=1 required.",
+    "Role documents are validated by ExperimentSpec; primary suspend and backup exit modes are independently required.",
+    "Bundle source manifest, both role documents, current source set and exact overlay including primary-only init:true are frozen.",
+    "Authorization must exactly match plan schema suffix, plan SHA, case, effects, interruption mode and replay count; booleans and int types are checked before coordinator lock/run.",
+    "Deferral is installed only for E1-c after exact initial identities are verified. It accepts only the owned session primary removal after selected database is the planned backup, once.",
+    "Normal takeover dependency confirms and activates shared fence before selecting backup and calling force_remove_partner; adapter does not bypass resume/fence logic.",
+    "Successful backup product is checked for exact executor, operation and applied state before collect; collect occurs before flush and remaining business work.",
+    "flush delegates to original SDK force_remove_partner and only records completed removal after normal return; failure propagates. Other participants delegate unchanged.",
+    "finally detaches adapter, runs normal owned-group close gate, then owned resource/worker restore and independent final H00; failed collect/close cannot yield completed result.",
+    "Legacy /1 and /2 exit cases reject revival fields, use original Controller and worker_exit_and_mcp report path. Existing old point/method behavior remains in unchanged flow.",
+    "New offline fixtures cover schema/auth/mode/init drift, collect-before-flush-before-repair ordering, failure cleanup and adapter ownership/multiple-removal guards."
+  ],
+  "review_actions": {
+    "production_edits": 0,
+    "tests_run": 0,
+    "Docker_WSL_platform_model_resource_actions": 0,
+    "controller_re_reviewed": false
+  },
+  "validation_scope": "Source and targeted diff review only; parent test receipts are separate. No live pause/resume or broker behavior is established by this review."
+}

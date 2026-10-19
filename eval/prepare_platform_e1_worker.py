@@ -17,12 +17,18 @@ encode = lambda value: (json.dumps(value, ensure_ascii=False, indent=2) + "\n").
 sha = lambda data: hashlib.sha256(data).hexdigest()
 
 
-def documents(*, experiment_id, incident_id, primary_aic, backup_aic, crash_point, arm_primary=False):
+def documents(*, experiment_id, incident_id, primary_aic, backup_aic, crash_point, arm_primary=False,
+              suspend_primary=False):
+    if suspend_primary and crash_point != "before_modification":
+        raise ValueError("Primary suspension is only supported before modification")
     tool = "db.read_only_status" if crash_point == "after_observation" else "db.restore_writes"
     common = dict(schema_version="e1-worker/1", experiment_id=experiment_id, incident_id=incident_id,
                   primary_aic=primary_aic, backup_aic=backup_aic, crash_tool=tool)
     primary = dict(common, worker_role="primary", armed=arm_primary, crash_point=crash_point)
     backup = dict(common, worker_role="backup", armed=False, crash_point=None)
+    if suspend_primary:
+        primary.update(schema_version="e1-worker/2", interruption_mode="suspend")
+        backup.update(schema_version="e1-worker/2", interruption_mode="exit")
     for value, aic in ((primary, primary_aic), (backup, backup_aic)):
         ExperimentSpec.from_document(value, experiment_id=experiment_id, executor_aic=aic)
     return {"primary.json": primary, "backup.json": backup}
@@ -54,6 +60,8 @@ def prepare(output, **options):
                           target="/experiment", read_only=True)],
             labels={"incident-pilot.experiment": options["experiment_id"], "incident-pilot.e1-role": role})
     services["database-agent"]["restart"] = "no"
+    if options.get("suspend_primary"):
+        services["database-agent"]["init"] = True
     payloads["e1-worker-overlay.yml"] = yaml.safe_dump(dict(services=services), sort_keys=False, allow_unicode=True).encode()
     payloads["README.md"] = ("# E1 worker overlay preparation\n\n"
         "This bundle only prepares source/configuration. The primary is unarmed by default; backup is always unarmed. "
@@ -65,6 +73,10 @@ def prepare(output, **options):
         "Only primary restart is disabled. Existing /domain and shared /state mounts remain; "
         "the extra /experiment mount is read-only. The normal /srv image sources remain intact; "
         "only the three declared experiment imports use the bundle. The manifest pins all three sources and both role documents.\n\n"
+        "--suspend-primary selects e1-worker/2 only before db.restore_writes. Its primary has init: true, "
+        "so the Linux worker can SIGSTOP its own non-init PID after durable received, then continue that same request "
+        "after SIGCONT; the backup remains unarmed exit mode. Default e1-worker/1 exit behavior is unchanged. "
+        "Suspended/revived/result traces bind the original request SHA and PID/start ticks before AIP product submission.\n\n"
         "The trace counts actual modifying MCP invocations/returns per operation and executor, including attempts with no return; "
         "it does not count physical side effects. Traces belong in the separate primary/backup /state paths. "
         "Source preparation is not an experiment authorization, image/import attestation, live exit, takeover, or H00 result.\n").encode()
@@ -87,6 +99,7 @@ def main(argv=None):
     parser.add_argument("--backup-aic", required=True)
     parser.add_argument("--crash-point", choices=sorted(EXIT_CODES), required=True)
     parser.add_argument("--arm-primary", action="store_true")
+    parser.add_argument("--suspend-primary", action="store_true", help="E1-c only: suspend the same non-init primary before modification")
     parser.add_argument("--prepare", action="store_true")
     args = parser.parse_args(argv)
     options = {key: value for key, value in vars(args).items() if key not in {"output", "prepare"}}
