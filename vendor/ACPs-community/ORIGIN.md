@@ -2,6 +2,8 @@
 
 本目录以普通文件随团队仓库保存，当前安装使用其中的`acps-sdk`，不是Git子模块。
 
+云端阶段5另有清理顺序修复：伙伴先删除本域队列，再发送离线通知；协调者等待伙伴退出后撤销整组ACL。该增量尚未公开发布，逐文件来源和验证边界见[云部署增量](../../evidence/cloud-cleanup-order-20261019/overlay.json)。原公开绑定与历史实验结果保持原来的适用范围。
+
 2026-10-19 技术方案本地增量：当前工作区已追加任务消息关联、ACL重试与清理错误保留，尚未提交或公开发布；下面的精确绑定及605项结果属于原公开快照。当前差异见[本地SDK增量清单](../../evidence/technical-plan-local-20261019/sdk-local-overlay.json)，本轮局部验证见[检查回执](../../evidence/technical-plan-local-20261019/sdk-checks.json)，不能把本地增量称作已经绑定到公开fork。
 
 - 官方来源：[AIP-PUB/ACPs-community](https://github.com/AIP-PUB/ACPs-community)，SDK版本2.2.0；实现基线`3985c1330209f075c124669cc9d31f0e75448140`。

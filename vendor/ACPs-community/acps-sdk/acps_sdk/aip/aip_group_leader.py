@@ -2293,9 +2293,11 @@ class GroupLeader:
         self,
         session: GroupLeaderSession,
         partner_aic: str,
+        *, timeout_seconds: Optional[float] = None,
     ) -> bool:
         deadline = (
-            asyncio.get_running_loop().time() + self._force_remove_grace_period_seconds
+            asyncio.get_running_loop().time() + (self._force_remove_grace_period_seconds
+                if timeout_seconds is None else timeout_seconds)
         )
         while True:
             partner = session.leader_mq_client.partners.get(partner_aic)
@@ -2407,9 +2409,19 @@ class GroupLeader:
             session.leader_mq_client._state = GroupLeaderState.DISSOLVING
             failures: dict[str, Exception] = {}
             acl_state = "not_configured"
+            connected_partners = [aic for aic, partner in session.leader_mq_client.partners.items()
+                                  if partner.connected]
             if not already_disconnected:
                 try:
                     await session.leader_mq_client.broadcast_group_shutdown()
+                    disconnected = await asyncio.gather(*(
+                        self._wait_for_partner_disconnect(session, aic, timeout_seconds=10)
+                        for aic in connected_partners
+                    ))
+                    remaining = [aic for aic, done in zip(connected_partners, disconnected) if not done]
+                    if remaining:
+                        failures["partners"] = TimeoutError(
+                            "Partner queue cleanup was not acknowledged: " + ", ".join(remaining))
                 except Exception as exc:
                     failures["notification"] = exc
             if self._group_acl_client:

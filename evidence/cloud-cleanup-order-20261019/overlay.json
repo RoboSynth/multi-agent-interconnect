@@ -1,0 +1,42 @@
+{
+  "status": "LOCAL_CLOUD_CLEANUP_FIX_NOT_PUBLISHED",
+  "base_team_commit": "aed6d7fbfc2fc49ca763fba31e22fefc4bc21239",
+  "changes": [
+    "Delete participant queue before notifying disconnection and ACL revocation",
+    "Wait for connected participants to acknowledge cleanup before group ACL removal",
+    "Preserve genuine failures and still close owned resources"
+  ],
+  "files": [
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+      "before_sha256": "91b3c6009caa0f4316565f7bab334939925286529f2d049b110bab649350e91a",
+      "after_sha256": "7e38725068c3d0ad47ca61ae841dceaf8ffa63ba997dd4aca69ba66717c747e2"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+      "before_sha256": "d9d45f548e9e27acff527a44848248435dfcc44287ea6f1a4c3bb9773ca30d54",
+      "after_sha256": "b710eaab6ddab4fbf7390ac744ea57450b477350b73601c183d53881c176b10b"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_partner_cleanup_failures.py",
+      "before_sha256": "74b86f547bdd48349abd56fcec1964cd4dd9db5f6aa6905b1bd143b56329d6c1",
+      "after_sha256": "bf27944c6765dae3ff80445052f515a0185b12b9ad07bdf6e52d7ed7c9bec303"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_network_resilience.py",
+      "before_sha256": "bb5b950559e9649848f5eff8ced3d96ab9b4fc4a9f5df9265e4ec8c5a218657e",
+      "after_sha256": "b63b4ab666d3a4c09992feb551c87c242f0def65bc6b614b060e5c95da1f21fd"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_invitation.py",
+      "before_sha256": "d223b1f35dd5a43ef7f120007a6b99a9a3baaa14951ce2d29e66254d397c9af8",
+      "after_sha256": "fa75246af2f6d9abe58108c422ce9245136b948634ad29f0f4dd90b76a622765"
+    }
+  ],
+  "validation": {
+    "windows_unittest_passed": 21,
+    "linux_pytest": "pending",
+    "platform_regression": "pending"
+  },
+  "historical_results_rewritten": false
+}

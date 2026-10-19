@@ -1014,25 +1014,19 @@ class GroupPartnerMqClient:
     async def _handle_leave_request(self) -> None:
         """处理退出请求"""
         self._state = PartnerGroupState.LEAVING
-
-        # 发送断开状态消息，回显之前收到的 sessionId
         leave_session_id = getattr(self, "_pending_leave_session_id", None)
-        try:
+
+        async def notify_disconnected():
+            # connected=False lets the leader revoke this member's ACL. Send it
+            # only after our queue is gone, while the publish channel is open.
             await self.send_status_result(
                 connected=False, muted=self._muted, session_id=leave_session_id
             )
-        except Exception as exc:
-            logger.warning(
-                "event=partner_leave_status_failed partner_aic=%s group_id=%s error=%s",
-                self.partner_aic,
-                self._group_id,
-                str(exc),
-            )
+
+        try:
+            await self._cleanup_group_resources(on_queue_removed=notify_disconnected)
         finally:
             self._pending_leave_session_id = None
-
-        # 清理资源
-        await self._cleanup_group_resources()
 
     async def send_status_result(
         self,
@@ -1253,7 +1247,9 @@ class GroupPartnerMqClient:
         self._muted = False
         self._task_states.clear()
 
-    async def _cleanup_group_resources(self) -> None:
+    async def _cleanup_group_resources(
+        self, *, on_queue_removed: Optional[Callable[[], Awaitable[None]]] = None
+    ) -> None:
         """清理群组本地资源。"""
         if (
             self._state == PartnerGroupState.DISCONNECTED
@@ -1312,6 +1308,12 @@ class GroupPartnerMqClient:
                 str(e),
             )
 
+        if not failures and on_queue_removed is not None:
+            try:
+                await on_queue_removed()
+            except Exception as error:
+                failures["leave_notification"] = error
+
         # 关闭连接
         resources = [("channel", self._channel)]
         if self._connection_owner:
@@ -1349,15 +1351,16 @@ class GroupPartnerMqClient:
     async def leave_group(self, session_id: Optional[str] = None) -> None:
         """主动退出群组。
 
-        主动退出时先广播 LEAVE_GROUP 命令，再发送 connected=false 状态，
-        最后执行本地资源清理。
+        先停止消费并删除本域队列，再通知退出，最后关闭连接。
         """
         if self._state == PartnerGroupState.DISCONNECTED:
             return
 
         self._state = PartnerGroupState.LEAVING
 
-        if self._group_id and self._exchange:
+        async def notify_disconnected():
+            if not self._group_id or not self._exchange:
+                return
             leave_command = GroupMgmtCommand(
                 id=f"mgmt-cmd-{uuid.uuid4()}",
                 sentAt=datetime.now(timezone.utc).isoformat(),
@@ -1369,31 +1372,12 @@ class GroupPartnerMqClient:
                 groupId=self._group_id,
                 sessionId=session_id,
             )
-            try:
-                await self._publish_message(leave_command)
-            except Exception as exc:
-                logger.warning(
-                    "event=partner_leave_command_failed partner_aic=%s group_id=%s error=%s",
-                    self.partner_aic,
-                    self._group_id,
-                    str(exc),
-                )
+            await self._publish_message(leave_command)
+            await self.send_status_result(
+                connected=False, muted=self._muted, session_id=session_id
+            )
 
-            try:
-                await self.send_status_result(
-                    connected=False,
-                    muted=self._muted,
-                    session_id=session_id,
-                )
-            except Exception as exc:
-                logger.warning(
-                    "event=partner_leave_status_failed partner_aic=%s group_id=%s error=%s",
-                    self.partner_aic,
-                    self._group_id,
-                    str(exc),
-                )
-
-        await self._cleanup_group_resources()
+        await self._cleanup_group_resources(on_queue_removed=notify_disconnected)
 
     async def close(self) -> None:
         """关闭客户端"""

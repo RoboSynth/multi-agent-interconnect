@@ -130,6 +130,48 @@ class GroupCleanupTests(unittest.IsolatedAsyncioTestCase):
         await leader.dissolve_group_session("session")
         self.assertEqual(leader.group_sessions, {})
 
+    async def test_dissolve_waits_for_member_queue_cleanup_before_revoking_group_acl(self):
+        leader = self.leader()
+        _, mq = self.session(leader)
+        partner = SimpleNamespace(connected=True)
+        mq._partners["partner"] = partner
+        events = []
+        leader._force_remove_poll_interval_seconds = .001
+
+        async def finish_member():
+            await asyncio.sleep(.02)
+            events.append("queue_deleted")
+            partner.connected = False
+
+        task = None
+        async def broadcast():
+            nonlocal task
+            task = asyncio.create_task(finish_member())
+
+        async def revoke(**kwargs):
+            self.assertEqual(events, ["queue_deleted"])
+            events.append("acl_deleted")
+
+        mq.broadcast_group_shutdown.side_effect = broadcast
+        leader._group_acl_client.delete_group.side_effect = revoke
+        await leader.dissolve_group_session("session")
+        await task
+        self.assertEqual(events, ["queue_deleted", "acl_deleted"])
+
+    async def test_unconfirmed_partner_timeout_retains_failure_and_attempts_remaining_cleanup(self):
+        leader = self.leader()
+        _, mq = self.session(leader)
+        mq._partners["partner"] = SimpleNamespace(connected=True)
+        leader._wait_for_partner_disconnect = AsyncMock(return_value=False)
+        with self.assertRaises(GroupCleanupError) as caught:
+            await leader.dissolve_group_session("session")
+        self.assertIsInstance(caught.exception.failures["partners"], TimeoutError)
+        leader._wait_for_partner_disconnect.assert_awaited_once()
+        leader._group_acl_client.delete_group.assert_awaited_once()
+        mq.cleanup_group_resources.assert_awaited_once()
+        mq._channel.close.assert_awaited_once()
+        self.assertIn("session", leader.group_sessions)
+
     async def test_cleanup_retry_does_not_notify_through_closed_channel(self):
         leader = self.leader()
         _, mq = self.session(leader)

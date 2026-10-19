@@ -260,7 +260,7 @@ def test_partner_connect_can_disable_robust_reconnect(
     assert client._channel is fake_channel
 
 
-def test_partner_leave_group_announces_exit_before_cleanup() -> None:
+def test_partner_leave_group_announces_exit_after_queue_cleanup() -> None:
     client = GroupPartnerMqClient(partner_aic=PARTNER_AIC)
     client._state = PartnerGroupState.JOINED
     client._group_id = "group-session-1"
@@ -269,8 +269,13 @@ def test_partner_leave_group_announces_exit_before_cleanup() -> None:
 
     published: dict[str, object] = {}
     status_args: dict[str, object] = {}
+    queue = Mock()
+    queue.name = "queue-1"
+    queue.delete = AsyncMock()
+    client._queue = queue
 
     async def fake_publish(message) -> None:
+        queue.delete.assert_awaited_once()
         published["message"] = message
 
     async def fake_send_status_result(
@@ -284,7 +289,6 @@ def test_partner_leave_group_announces_exit_before_cleanup() -> None:
 
     client._publish_message = fake_publish  # type: ignore[method-assign]
     client.send_status_result = fake_send_status_result  # type: ignore[method-assign]
-    client._cleanup_group_resources = AsyncMock()  # type: ignore[method-assign]
 
     asyncio.run(client.leave_group(session_id="session-1"))
 
@@ -300,7 +304,8 @@ def test_partner_leave_group_announces_exit_before_cleanup() -> None:
         "muted": False,
         "session_id": "session-1",
     }
-    client._cleanup_group_resources.assert_awaited_once()  # type: ignore[attr-defined]
+    queue.delete.assert_awaited_once()
+    assert client.state == PartnerGroupState.DISCONNECTED
 
 
 def test_partner_cleanup_cancels_registered_consumer_before_queue_delete() -> None:
