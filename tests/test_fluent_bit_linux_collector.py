@@ -116,8 +116,10 @@ class LinuxCollectorPreparationTests(unittest.TestCase):
         for image in ("fluent/fluent-bit:latest", "cr.fluentbit.io/fluent/fluent-bit:5.1.3", "sha256:" + "a" * 64):
             with self.assertRaises(ValueError):
                 collector.compose_spec(self.sources, image, "/config/collector.conf", "/config/parsers.conf")
+        plan_path = self.directory / "sources.json"
+        plan_path.write_text(json.dumps(self.plan), encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "Explicit Kafka settings"):
-            collector.prepare(self.directory / "kafka", IMAGE, mode="kafka")
+            collector.prepare(self.directory / "kafka", IMAGE, plan_path, mode="kafka")
 
 
 if __name__ == "__main__":

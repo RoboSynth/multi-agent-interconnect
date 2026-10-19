@@ -79,7 +79,8 @@ class WindowsStartupConfigurationTests(unittest.TestCase):
         if what_if:
             command += " -Register -WhatIf"
         shell = Path(os.environ["SystemRoot"]) / "System32/WindowsPowerShell/v1.0/powershell.exe"
-        return subprocess.run([str(shell), "-NoProfile", "-NonInteractive", "-Command", command],
+        # Process-scoped policy only; a Restricted machine policy would otherwise block the script.
+        return subprocess.run([str(shell), "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", command],
             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30)
 
     def test_default_and_register_whatif_only_prepare_fixed_hidden_inspection_task(self):
