@@ -1,0 +1,60 @@
+{
+  "baseline_commit": "412f791ac8c4ef35217dca60d512c967c6b0d54e",
+  "legacy_managed_process_function_text_unchanged": true,
+  "files": [
+    {
+      "path": "business/native_process.py",
+      "bytes": 13704,
+      "sha256": "e60996e654bc16d745f448b57c9518f73af804adf72d65e5306ba77a95db0669"
+    },
+    {
+      "path": "deploy/native.ps1",
+      "bytes": 10173,
+      "sha256": "e6a98a4a6348bedc6bd81bc92745c644a3af851d853d3fc1db66733e7fd11d65"
+    },
+    {
+      "path": "tests/test_native_app_stop.py",
+      "bytes": 15158,
+      "sha256": "9925846af44080a1e0cf87175ac5eff992e06437e4f05498e8e4f4d363af3993"
+    },
+    {
+      "path": "docs/windows_native_app_stop_20261019.md",
+      "bytes": 2395,
+      "sha256": "26c6243b1d97710f3bd6de7d779b38b4b4ef8908f1c54e375fe4e1c16d4b24b2"
+    }
+  ],
+  "validation": {
+    "distinct_test_methods": 14,
+    "actual_exit": 0,
+    "final_log": "native-stop-final-behavior.log",
+    "tool_chunk": "1bb9cc",
+    "real_fixture": {
+      "stopped_child_then_launcher": [
+        23680,
+        11928
+      ],
+      "independent_sibling_observed_alive": [
+        38428,
+        28496
+      ],
+      "network_or_business_started": false
+    }
+  },
+  "preserved_attempts": [
+    {
+      "log": "native-stop-unit-attempt1.log",
+      "actual_exit": 1,
+      "cause": "PowerShell test stub pg_ctl function used slash spelling instead of normalized Windows path"
+    },
+    {
+      "log": "native-stop-unit-attempt2.log",
+      "actual_exit": 0,
+      "real_fixture_skipped": true
+    },
+    {
+      "log": "native-stop-real-fixture-attempt1.log",
+      "actual_exit": 0,
+      "source_before_parent-handle_check": true
+    }
+  ]
+}

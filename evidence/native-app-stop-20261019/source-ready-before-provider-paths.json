@@ -1,0 +1,81 @@
+{
+  "baseline_commit": "412f791ac8c4ef35217dca60d512c967c6b0d54e",
+  "legacy_managed_process_function_text_unchanged": true,
+  "files": [
+    {
+      "path": "business/native_process.py",
+      "bytes": 14639,
+      "sha256": "1bf8b38ba9ca4e11f2464331355771634c319ad1b853e3ac88e6c92b8f9b3887"
+    },
+    {
+      "path": "deploy/native.ps1",
+      "bytes": 10212,
+      "sha256": "675304199e50c4506d809e4c2cf401060de07959134be2279bb0e25a91b7a95e"
+    },
+    {
+      "path": "tests/test_native_app_stop.py",
+      "bytes": 17245,
+      "sha256": "00144061f1b4791178bf041587c5c2a3a0937456007642d19f3b3829cd79cc40"
+    },
+    {
+      "path": "docs/windows_native_app_stop_20261019.md",
+      "bytes": 2540,
+      "sha256": "f45d01b8bd5ec14b89d03d6a049ecb845300baa8e6a091df84465e2f0bc4c8af"
+    }
+  ],
+  "validation": {
+    "distinct_test_methods": 15,
+    "actual_exit": 0,
+    "final_log": "native-stop-configured-python-final.log",
+    "tool_chunk": "c29f7b",
+    "affected_test_fixture_followup": {
+      "log": "native-stop-portable-error-fixture.log",
+      "actual_exit": 0,
+      "distinct_affected_methods": 1,
+      "reason": "Mock last-error is now portable when ctypes lacks get_last_error"
+    },
+    "derived_path_fixture_followup": {
+      "log": "native-stop-derived-fixture-paths.log",
+      "actual_exit": 0,
+      "tool_chunk": "9e27cd",
+      "distinct_affected_methods": 4,
+      "relation_to_fifteen_method_run": "Replaces the three PowerShell fixtures and one argv method; eleven unaffected methods including the real custom-venv fixture are reused",
+      "production_source_unchanged": true
+    },
+    "real_fixture": {
+      "configured_interpreter": "custom-app-python/Scripts/python.exe",
+      "stopped_child_then_launcher": [
+        8820,
+        33864
+      ],
+      "independent_sibling_observed_alive": [
+        34980,
+        32980
+      ],
+      "network_or_business_started": false
+    }
+  },
+  "preserved_attempts": [
+    {
+      "log": "native-stop-unit-attempt1.log",
+      "actual_exit": 1,
+      "cause": "PowerShell test stub pg_ctl function used slash spelling instead of normalized Windows path"
+    },
+    {
+      "log": "native-stop-unit-attempt2.log",
+      "actual_exit": 0,
+      "real_fixture_skipped": true
+    },
+    {
+      "log": "native-stop-real-fixture-attempt1.log",
+      "actual_exit": 0,
+      "source_before_parent-handle_check": true
+    },
+    {
+      "log": "native-stop-final-behavior.log",
+      "actual_exit": 0,
+      "distinct_test_methods": 14,
+      "source_before_configured-interpreter-parameter": true
+    }
+  ]
+}

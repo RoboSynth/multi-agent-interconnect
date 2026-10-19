@@ -82,9 +82,10 @@ if ($Action -eq 'status') {
 }
 if ($Action -eq 'stop') {
     foreach ($Version in 'v1','v2') {
-        $AppProcess = Get-ManagedApp $Version
-        if ($AppProcess) {
-            & $Config.app_python (Join-Path $ProjectRoot 'business/native_process.py') --pid $AppProcess.ProcessId --script run_app.py --version $Version --terminate | Out-Null
+        $RegisteredAppPid = $Config.managed[$Version]
+        if ($RegisteredAppPid) {
+            $AppPort = $Config["app_$($Version)_port"]
+            & $Config.app_python (Join-Path $ProjectRoot 'business/native_process.py') --pid $RegisteredAppPid --script run_app.py --version $Version --port $AppPort --python-executable $Config.app_python --app-family --terminate | Out-Null
             if ($LASTEXITCODE -ne 0) { throw "Unable to stop managed app $Version." }
         }
         $Config.managed.Remove($Version)
