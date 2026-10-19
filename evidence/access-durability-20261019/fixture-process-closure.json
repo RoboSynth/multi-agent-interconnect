@@ -1,0 +1,50 @@
+{
+  "checked_at_utc": "2026-10-19T06:55:38.003874+00:00",
+  "query_backend": "business/native_process.py ctypes Toolhelp/OpenProcess/NtQueryInformationProcess/GetProcessTimes",
+  "execution_scope": "host read-only process query",
+  "query_scope": "exact fixture argv[1] or -m unittest discover -s exact absolute AMP test directory",
+  "raw_query_sha256": "38116289ebf991818d557dda7cad69403a264de4634a40251bf0156ce3bf3ef8",
+  "raw_query_retention": "hash only; raw unrelated commands not written or printed",
+  "counts": {
+    "snapshot_processes": 378,
+    "opened": 205,
+    "queried": 205,
+    "unavailable": 173,
+    "matches": 0
+  },
+  "unavailable_counts": {
+    "open_87": 1,
+    "open_5": 172
+  },
+  "whitelist": [
+    {
+      "match_kind": "durable_access_fixture",
+      "script_path": "vendor\\acps-community\\acps-sdk\\tests\\amp\\fixtures\\durable_access_process.py"
+    },
+    {
+      "match_kind": "resumable_coordinator_fixture",
+      "script_path": "vendor\\acps-community\\acps-sdk\\tests\\resumable\\fixtures\\coordinator_process.py"
+    },
+    {
+      "match_kind": "amp_unittest_discover",
+      "start_directory": "vendor/ACPs-community/acps-sdk/tests/amp"
+    }
+  ],
+  "matches": [],
+  "termination_performed": false,
+  "initial_restricted_probe": {
+    "checked_at_utc": "2026-10-19T06:54:36.052841+00:00",
+    "raw_query_sha256": "27b0e5ee2e3aacd0f59f478ecd3bb237123b516fc93ffe5bd88330f116815397",
+    "counts": {
+      "snapshot_processes": 5,
+      "opened": 4,
+      "queried": 4,
+      "unavailable": 1,
+      "matches": 0
+    },
+    "unavailable_counts": {
+      "open_87": 1
+    }
+  },
+  "closure_conclusion": "no exact matching readable process at this snapshot; unreadable processes remain unclassified"
+}

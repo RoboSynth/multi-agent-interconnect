@@ -1,0 +1,160 @@
+test_adapter_forwards_all_ifc_kinds_without_resource_commands_in_transport (test_platform_worker.PlatformWorkerTests.test_adapter_forwards_all_ifc_kinds_without_resource_commands_in_transport) ... ERROR
+test_binding_requires_official_identity_and_config_resolves_only_domain_paths (test_platform_worker.PlatformWorkerTests.test_binding_requires_official_identity_and_config_resolves_only_domain_paths) ... ok
+test_business_handler_is_bound_before_join_starts_task_consumer (test_platform_worker.PlatformWorkerTests.test_business_handler_is_bound_before_join_starts_task_consumer) ... ok
+test_complete_rejects_other_leader_and_session_without_state_change (test_platform_worker.PlatformWorkerTests.test_complete_rejects_other_leader_and_session_without_state_change) ... ERROR
+test_encrypted_key_stays_on_disk_encrypted_and_signs_with_domain_password (test_platform_worker.PlatformWorkerTests.test_encrypted_key_stays_on_disk_encrypted_and_signs_with_domain_password) ... ok
+test_invalid_schema_and_business_rejection_are_not_access_success (test_platform_worker.PlatformWorkerTests.test_invalid_schema_and_business_rejection_are_not_access_success) ... ERROR
+test_invitation_uses_unified_inbox_authenticated_identity (test_platform_worker.PlatformWorkerTests.test_invitation_uses_unified_inbox_authenticated_identity) ... ok
+test_official_consumer_rejects_spoofed_amqp_identity_before_executor (test_platform_worker.PlatformWorkerTests.test_official_consumer_rejects_spoofed_amqp_identity_before_executor) ... ok
+test_official_group_identity_start_complete_trace_and_cached_product (test_platform_worker.PlatformWorkerTests.test_official_group_identity_start_complete_trace_and_cached_product) ... ERROR
+test_periodic_start_close_writes_six_official_amp_types (test_platform_worker.PlatformWorkerTests.test_periodic_start_close_writes_six_official_amp_types) ... FAIL
+test_periodic_start_close_writes_six_official_amp_types (test_platform_worker.PlatformWorkerTests.test_periodic_start_close_writes_six_official_amp_types) ... ERROR
+
+======================================================================
+ERROR: test_adapter_forwards_all_ifc_kinds_without_resource_commands_in_transport (test_platform_worker.PlatformWorkerTests.test_adapter_forwards_all_ifc_kinds_without_resource_commands_in_transport)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmpzoyb3gw7/amp/amp_access_application-test.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/tests/test_platform_worker.py", line 107, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmpzoyb3gw7/amp/amp_access_application-test.outbox.sqlite3'
+
+======================================================================
+ERROR: test_complete_rejects_other_leader_and_session_without_state_change (test_platform_worker.PlatformWorkerTests.test_complete_rejects_other_leader_and_session_without_state_change)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmp1cymmc4f/amp/amp_access_application-test.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/tests/test_platform_worker.py", line 107, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmp1cymmc4f/amp/amp_access_application-test.outbox.sqlite3'
+
+======================================================================
+ERROR: test_invalid_schema_and_business_rejection_are_not_access_success (test_platform_worker.PlatformWorkerTests.test_invalid_schema_and_business_rejection_are_not_access_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmp6k6qt38p/amp/amp_access_application-test.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/tests/test_platform_worker.py", line 107, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmp6k6qt38p/amp/amp_access_application-test.outbox.sqlite3'
+
+======================================================================
+ERROR: test_official_group_identity_start_complete_trace_and_cached_product (test_platform_worker.PlatformWorkerTests.test_official_group_identity_start_complete_trace_and_cached_product)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmpjaty0ghg/amp/amp_access_application-test.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/tests/test_platform_worker.py", line 107, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmpjaty0ghg/amp/amp_access_application-test.outbox.sqlite3'
+
+======================================================================
+ERROR: test_periodic_start_close_writes_six_official_amp_types (test_platform_worker.PlatformWorkerTests.test_periodic_start_close_writes_six_official_amp_types)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmphva8zuw7/amp/amp_access_application-test.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/tests/test_platform_worker.py", line 107, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: '[system-temp]/tmphva8zuw7/amp/amp_access_application-test.outbox.sqlite3'
+
+======================================================================
+FAIL: test_periodic_start_close_writes_six_official_amp_types (test_platform_worker.PlatformWorkerTests.test_periodic_start_close_writes_six_official_amp_types)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "[project]/tests/test_platform_worker.py", line 234, in test_periodic_start_close_writes_six_official_amp_types
+    self.assertEqual(len(self.worker.amp.tasks),2)
+AssertionError: 3 != 2
+
+----------------------------------------------------------------------
+Ran 10 tests in 2.310s
+
+FAILED (failures=1, errors=5)

@@ -341,9 +341,9 @@ class PlannerSelectionAmpTests(unittest.IsolatedAsyncioTestCase):
         with tempfile.TemporaryDirectory() as directory:
             amp = AmpRuntime(directory, "coordinator-test", "test-aic")
             await amp.start()
-            self.assertEqual(len(amp.tasks), 2)
+            self.assertEqual(len(amp.tasks), 3)
             await amp.start()
-            self.assertEqual(len(amp.tasks), 2)
+            self.assertEqual(len(amp.tasks), 3)
             await amp.heartbeat.emit()
             await amp.metrics.emit()
             amp.audit_event({"incident_id": "inc", "tool": "observe", "status": "ok"})

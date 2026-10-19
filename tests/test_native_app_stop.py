@@ -175,7 +175,7 @@ def ps_quote(value):
 
 @unittest.skipUnless(os.name == "nt" and PWSH, "Windows PowerShell native-stop fixture")
 class NativeStopEntryTests(unittest.TestCase):
-    def run_fixture(self, failing_version=None, managed=True):
+    def run_fixture(self, failing_version=None, managed=True, *, nginx=False, failing_service=None):
         with fixture_directory() as root:
             (root / "deploy").mkdir()
             entry = root / "deploy/native.ps1"
@@ -183,15 +183,20 @@ class NativeStopEntryTests(unittest.TestCase):
             runtime = root / "runtime.json"
             saved = {"app_python": str(root / "stub-runtime/python.exe"), "postgres_bin": str(root / "stub-runtime/pg"),
                      "pgdata": str(root / "data"), "nginx_prefix": str((root / "nginx").relative_to(root)),
+                     "nginx_bin": str(root / "stub-runtime/nginx.exe"),
                      "app_v1_port": 28081, "app_v2_port": 28082,
                      "managed": {"v1": 10, "v2": 20} if managed else {}}
             runtime.write_text(json.dumps(saved), encoding="utf-8")
+            if nginx:
+                (root / "nginx/logs").mkdir(parents=True)
+                (root / "nginx/logs/nginx.pid").write_text("12345", encoding="ascii")
             events = root / "events.json"
             wrapper = root / "fixture.ps1"
             wrapper.write_text("""
 $ErrorActionPreference='Stop'
 $global:NativeStopEvents=@()
 $global:NativeStopFailure=FAILURE
+$global:NativeStopServiceFailure=SERVICEFAILURE
 Set-Item -Path PYTHONFUNCTION -Value {
     $global:NativeStopEvents+=,@($args)
     $version=$args[([Array]::IndexOf($args,'--version')+1)]
@@ -200,17 +205,23 @@ Set-Item -Path PYTHONFUNCTION -Value {
 }
 Set-Item -Path POSTGRESFUNCTION -Value {
     $global:NativeStopEvents+=,@('pg_ctl',@($args))
-    $global:LASTEXITCODE=0
+    $global:LASTEXITCODE=if($global:NativeStopServiceFailure -eq 'postgres'){8}else{0}
+}
+Set-Item -Path NGINXFUNCTION -Value {
+    $global:NativeStopEvents+=,@('nginx',@($args))
+    $global:LASTEXITCODE=if($global:NativeStopServiceFailure -eq 'nginx'){7}else{0}
 }
 $fixtureExit=0
 try { & ENTRY stop -RuntimeFile RUNTIME -EnvFile ABSENT }
 catch { [Console]::Error.WriteLine($_.Exception.Message);$fixtureExit=1 }
 ConvertTo-Json -InputObject @($global:NativeStopEvents) -Depth 5 | Set-Content -LiteralPath EVENTS -Encoding utf8
 exit $fixtureExit
-""".replace("FAILURE", ps_quote(failing_version or "none")).replace("ENTRY", ps_quote(entry))
+""".replace("SERVICEFAILURE", ps_quote(failing_service or "none"))
+                .replace("FAILURE", ps_quote(failing_version or "none")).replace("ENTRY", ps_quote(entry))
                 .replace("RUNTIME", ps_quote(runtime)).replace("ABSENT", ps_quote(root / "no-env"))
                 .replace("PYTHONFUNCTION", ps_quote(f"Function:{os.sep}{saved['app_python']}"))
                 .replace("POSTGRESFUNCTION", ps_quote(f"Function:{os.sep}{Path(saved['postgres_bin']) / 'pg_ctl.exe'}"))
+                .replace("NGINXFUNCTION", ps_quote(f"Function:{os.sep}{saved['nginx_bin']}"))
                 .replace("EVENTS", ps_quote(events)), encoding="utf-8")
             result = subprocess.run([PWSH, "-NoProfile", "-NonInteractive", "-File", str(wrapper)],
                                     cwd=root, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20)
@@ -243,6 +254,30 @@ exit $fixtureExit
         self.assertEqual(saved["managed"], {})
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0][0], "pg_ctl")
+
+    def test_nginx_success_continues_to_database_and_saves_runtime(self):
+        result, rows, saved, _ = self.run_fixture(nginx=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual([row[0] for row in rows[2:]], ["nginx", "pg_ctl"])
+        self.assertIn("quit", rows[2][1])
+        self.assertEqual(saved["managed"], {})
+
+    def test_nginx_failure_preserves_runtime_and_stops_before_database(self):
+        result, rows, saved, original = self.run_fixture(nginx=True, failing_service="nginx")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Nginx", result.stderr)
+        self.assertIn("7", result.stderr)
+        self.assertEqual(saved, original)
+        self.assertEqual(rows[-1][0], "nginx")
+        self.assertFalse(any(row[0] == "pg_ctl" for row in rows))
+
+    def test_database_failure_preserves_runtime_after_nginx_success(self):
+        result, rows, saved, original = self.run_fixture(nginx=True, failing_service="postgres")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("PostgreSQL", result.stderr)
+        self.assertIn("8", result.stderr)
+        self.assertEqual(saved, original)
+        self.assertEqual([row[0] for row in rows[2:]], ["nginx", "pg_ctl"])
 
 
 @unittest.skipUnless(os.name == "nt" and os.environ.get("INCIDENT_NATIVE_STOP_FIXTURE") == "1",

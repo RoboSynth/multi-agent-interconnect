@@ -1,0 +1,129 @@
+{
+  "schema_version": "t30-process-restart-evidence/1",
+  "created_at": "2026-10-19T06:49:29.676564+00:00",
+  "scope": "temporary offline coordinator processes with real SDK public wrapper/journal and an explicit transport double",
+  "new_behavior_test_methods": 2,
+  "existing_related_test_methods": 1,
+  "new_suite": {
+    "schema_version": "t30-suite-process/1",
+    "started_at": "2026-10-19T06:47:36.1228917+00:00",
+    "finished_at": "2026-10-19T06:47:42.5305079+00:00",
+    "actual_exit_code": 0,
+    "suite": "SDK tests/resumable/test_coordinator_process.py",
+    "evidence_directory": "run-5",
+    "execution_environment": "local asyncio fixture outside restricted executor",
+    "platform_or_business_started": false
+  },
+  "original_suite": {
+    "schema_version": "t30-suite-process/1",
+    "started_at": "2026-10-19T06:48:40.1200669+00:00",
+    "finished_at": "2026-10-19T06:48:41.9195435+00:00",
+    "actual_exit_code": 0,
+    "suite": "original SDK same-process restart test",
+    "platform_or_business_started": false
+  },
+  "cases": [
+    {
+      "mode": "hard-exit",
+      "status": "passed",
+      "process_receipts": [
+        {
+          "phase": "writer",
+          "pid": 38304,
+          "actual_returncode": 37,
+          "terminated_after_durable_ready": false,
+          "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\nfixture: starting asyncio\nfixture: tasks committed\n",
+          "stderr": ""
+        },
+        {
+          "phase": "reader",
+          "pid": 27244,
+          "actual_returncode": 0,
+          "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\n",
+          "stderr": ""
+        }
+      ],
+      "task_attempts": 5,
+      "in_flight_attempts": 3,
+      "events": 13,
+      "terms": [
+        1,
+        2
+      ],
+      "replayed_transport_calls": 0,
+      "cleanup_finally_ran": false,
+      "receipts": {
+        "test-result.json": {
+          "path": "run-5/hard-exit/test-result.json",
+          "sha256": "cd8833b94bb3bc1683fa4bc94af73aaf333878c00000a087e5be024b47931102"
+        },
+        "writer.json": {
+          "path": "run-5/hard-exit/writer.json",
+          "sha256": "57e4fa2c6302b7fe60913020535a8ea0429fc62435c936a16a500c0b7969be42"
+        },
+        "reader.json": {
+          "path": "run-5/hard-exit/reader.json",
+          "sha256": "7d16a006ae05b215144c68a508314705d6b2a5398f42fc558cec32b2599136dd"
+        }
+      }
+    },
+    {
+      "mode": "wait-for-parent",
+      "status": "passed",
+      "process_receipts": [
+        {
+          "phase": "writer",
+          "pid": 36660,
+          "actual_returncode": 1,
+          "terminated_after_durable_ready": true,
+          "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\nfixture: starting asyncio\nfixture: tasks committed\n",
+          "stderr": ""
+        },
+        {
+          "phase": "reader",
+          "pid": 29800,
+          "actual_returncode": 0,
+          "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\n",
+          "stderr": ""
+        }
+      ],
+      "task_attempts": 5,
+      "in_flight_attempts": 3,
+      "events": 13,
+      "terms": [
+        1,
+        2
+      ],
+      "replayed_transport_calls": 0,
+      "cleanup_finally_ran": false,
+      "receipts": {
+        "test-result.json": {
+          "path": "run-5/wait-for-parent/test-result.json",
+          "sha256": "524e881fa16c8ca0beb7c7cbd022f4a99f24e770c3855f1a0f3c7a58d8803651"
+        },
+        "writer.json": {
+          "path": "run-5/wait-for-parent/writer.json",
+          "sha256": "bb95721aa8da484bc28e3724c389c65f3b57bcfadf4276fcb2088bec55a21d33"
+        },
+        "reader.json": {
+          "path": "run-5/wait-for-parent/reader.json",
+          "sha256": "529a149082b6a12f6515732dfa85f98614551d0e0d014a63744ee3f3885a0a56"
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py": "ce68b27607de08ff2883c8c0e3a0bcec3e090d0404eb3c1a8f54ac28f00bd13e",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_base_model.py": "ab7f700d6841eeb7355e8d2ed58334422cdfcb6a5237ba5d649160d210a721bc",
+    "vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py": "6bb63bd0927fb2f3a782e28c9ace9af3f3c43ef39c92ddf878b0b13024b5f74d"
+  },
+  "final_matching_fixture_processes": 0,
+  "limits": [
+    "not a live platform GroupLeader kill or business-incident restart acceptance",
+    "no platform, business, model, or resource side effects",
+    "T33 full incident restart continuity remains separate",
+    "restricted-executor attempts and interrupted initial suite are preserved separately"
+  ]
+}

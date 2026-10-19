@@ -1,0 +1,140 @@
+{
+  "status": "OFFLINE_IMPLEMENTED_VALIDATED_NOT_DEPLOYED",
+  "created_at_utc": "2026-10-19T07:00:59.848890+00:00",
+  "base_commit": "d8ae1958aef411c61742f57ddb96e0de453ec885",
+  "files": [
+    {
+      "path": "deploy/native.ps1",
+      "bytes": 10415,
+      "sha256": "03febec9e00f0cdbe2d0c16f839c891cde903e083ae7d5a7f2817750c09b39ef"
+    },
+    {
+      "path": "eval/targets.py",
+      "bytes": 7733,
+      "sha256": "b73251380b467394517ef955b22422f1c4c88d72b89b439a22bf00b77da9c15a"
+    },
+    {
+      "path": "incident/amp_setup.py",
+      "bytes": 4724,
+      "sha256": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd"
+    },
+    {
+      "path": "tests/test_bridge_platform_preparation.py",
+      "bytes": 8477,
+      "sha256": "47224501ebdebda3e57db1cb17540b38b785e1cbe777fad7ea3df6be4efd7bdf"
+    },
+    {
+      "path": "tests/test_coordinator.py",
+      "bytes": 24386,
+      "sha256": "dfc7e753eccbd9b11c421629b73873162dc503b4adab0df25afef5b5a71b0850"
+    },
+    {
+      "path": "tests/test_f12_target.py",
+      "bytes": 17195,
+      "sha256": "a85c53c5608e26997ddefe62d1404c0dd8c052a7388a2674732fd63b77e8a411"
+    },
+    {
+      "path": "tests/test_native_app_stop.py",
+      "bytes": 19249,
+      "sha256": "663d7863da9e92fe33a74d77602414820dea21aa89bb3290fdd4a1b6f531919a"
+    },
+    {
+      "path": "tests/test_platform_worker.py",
+      "bytes": 15646,
+      "sha256": "3dac92d063348751906a00a3c8d02a21342546bdb1b3eaaa9f0fb679af36df91"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/__init__.py",
+      "bytes": 5682,
+      "sha256": "bf0a524474bcf2df493db341d61c200fa022e9c66a1134766fe3215afdc248b1"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py",
+      "bytes": 12068,
+      "sha256": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+      "bytes": 5379,
+      "sha256": "caa31611e69bcb4858808ba73b2d076f894c60bf944a5204bf5f0331ffe1de60"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/fixtures/durable_access_process.py",
+      "bytes": 2216,
+      "sha256": "21a0e9c1a56043fa6d7f05f2a5db3a2b2466dbe76e83c81452204c3c10eae901"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py",
+      "bytes": 13639,
+      "sha256": "6da76b2d5ac9e891a15f329246d00962a48c85d7bbe099de9d3169f8b177c053"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py",
+      "bytes": 5429,
+      "sha256": "ce68b27607de08ff2883c8c0e3a0bcec3e090d0404eb3c1a8f54ac28f00bd13e"
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py",
+      "bytes": 7770,
+      "sha256": "6bb63bd0927fb2f3a782e28c9ace9af3f3c43ef39c92ddf878b0b13024b5f74d"
+    }
+  ],
+  "validation": {
+    "durable": {
+      "distinct_methods": 17,
+      "actual_exit": 0,
+      "tool_session": 92350,
+      "completion_chunk": "186166",
+      "log": "durable-tests-final.log.txt",
+      "log_sha256": "19be9926c5597ac267fde84abc1cfa3d105c17fa444e3f0094daff224b514b9d"
+    },
+    "legacy_groups": {
+      "distinct_methods": 8,
+      "actual_exit": 0,
+      "completion_chunk": "eb6338",
+      "log": "legacy-group-tests.log.txt",
+      "log_sha256": "7f8afc26f2adab3ea48df15cc9297d4707fd57b5204024b78025091328abd042"
+    },
+    "amp_integration": {
+      "distinct_methods": 20,
+      "reexecuted": 18,
+      "reused_unchanged": 2,
+      "summary": "amp-integration-evidence/summary-v2.json",
+      "sha256": "577948172516570f82713731aeb66711405b3ce8a113843fbc14a3f68bac0b94"
+    },
+    "native_stop": {
+      "distinct_methods": 6,
+      "before_failures": 2,
+      "after_exit": 0,
+      "summary": "native-stop-evidence/summary.json",
+      "sha256": "330fac4f476c423a3f757b278ba8d3790c4c66fc5b66c1a1c159fdfb6489fde8"
+    },
+    "coordinator_restart": {
+      "new_methods": 2,
+      "existing_related": 1,
+      "summary": "t30-evidence/summary.json",
+      "sha256": "6d5d30b224658a0734c9347f98b38d181bea51c3f8c95087633bc30f81bfb2ef"
+    }
+  },
+  "original_formal22": {
+    "passed": 18,
+    "failed": 4,
+    "missing_access": 18,
+    "unchanged": true
+  },
+  "original_revalidation12": {
+    "passed": 11,
+    "failed": 1,
+    "missing_access": 12,
+    "unchanged": true
+  },
+  "platform_business_model_requests": 0,
+  "formal_fault_cases": 0,
+  "original_frozen_sources_modified": false,
+  "limits": [
+    "Local SDK/process fixtures are not formal platform recovery or Monitor ingestion evidence.",
+    "Current AmpRuntime writes small synchronous local durability transactions. No latency improvement claim.",
+    "Partial/malformed logs are retained and reject further replay. No silent truncation.",
+    "Full native business up/H00/stop and independent-machine deployment remain unverified."
+  ]
+}

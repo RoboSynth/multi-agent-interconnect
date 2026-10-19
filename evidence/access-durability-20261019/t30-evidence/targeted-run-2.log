@@ -1,0 +1,33 @@
+test_hard_exit_recovers_all_durable_inflight_attempts (test_coordinator_process.CoordinatorProcessTests.test_hard_exit_recovers_all_durable_inflight_attempts) ... ERROR
+test_parent_termination_recovers_all_durable_inflight_attempts (test_coordinator_process.CoordinatorProcessTests.test_parent_termination_recovers_all_durable_inflight_attempts) ... FAIL
+
+======================================================================
+ERROR: test_hard_exit_recovers_all_durable_inflight_attempts (test_coordinator_process.CoordinatorProcessTests.test_hard_exit_recovers_all_durable_inflight_attempts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py", line 119, in test_hard_exit_recovers_all_durable_inflight_attempts
+    self.run_restart_case("hard-exit")
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py", line 57, in run_restart_case
+    stdout, stderr = child.communicate(timeout=15)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/subprocess.py", line 1630, in _communicate
+    raise TimeoutExpired(self.args, orig_timeout)
+subprocess.TimeoutExpired: Command '['[python-runtime]/python.exe', '-I', '-B', '-c', "import json,runpy,sys; sys.path[:0]=json.loads(sys.argv.pop(1)); runpy.run_path(sys.argv.pop(1),run_name='__main__')", '["[project]/vendor/ACPs-community/acps-sdk", "[project]/vendor/ACPs-community/acps-sdk/tests/resumable", "[workspace]", "[python-runtime]/python312.zip", "[python-runtime]/DLLs", "[python-runtime]/Lib", "[python-runtime]", "[test-venv]", "[test-venv]/Lib/site-packages", "[test-venv]/Lib/site-packages/win32", "[test-venv]/Lib/site-packages/win32/lib", "[test-venv]/Lib/site-packages/pythonwin"]', '[project]/vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py', 'seed', '--journal', '[batch]/t30-evidence/run-2/coordinator-restart-ckqzwuqt/tasks.sqlite', '--receipt', '[batch]/t30-evidence/run-2/coordinator-restart-ckqzwuqt/writer.json', '--finally-marker', '[batch]/t30-evidence/run-2/coordinator-restart-ckqzwuqt/finally-ran.txt', '--exit-mode', 'hard-exit']' timed out after 15 seconds
+
+======================================================================
+FAIL: test_parent_termination_recovers_all_durable_inflight_attempts (test_coordinator_process.CoordinatorProcessTests.test_parent_termination_recovers_all_durable_inflight_attempts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py", line 122, in test_parent_termination_recovers_all_durable_inflight_attempts
+    self.run_restart_case("wait-for-parent")
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py", line 53, in run_restart_case
+    self.assertTrue(writer_receipt.exists(), "writer did not reach its durable-ready handshake")
+AssertionError: False is not true : writer did not reach its durable-ready handshake
+
+----------------------------------------------------------------------
+Ran 2 tests in 30.074s
+
+FAILED (failures=1, errors=1)

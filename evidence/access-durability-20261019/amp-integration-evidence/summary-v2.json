@@ -1,0 +1,121 @@
+{
+  "schema_version": "amp-integration-final/1",
+  "passed": true,
+  "unique_test_methods": 20,
+  "rerun_test_methods": 18,
+  "reused_test_methods": 2,
+  "selections": [
+    {
+      "selection": "amp-start-stop",
+      "file": "test_coordinator.py",
+      "match": "*amp_runtime_start_and_stop_use_official_emitters*",
+      "started_at": "2026-10-19T06:52:57.301853+00:00",
+      "finished_at": "2026-10-19T06:52:57.505957+00:00",
+      "methods": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "8496ed1002fb81f586c00fce38e38dd069cd907d8b4f5c9a8e6cc9ca57ba2ed5",
+      "attempt": "run-1",
+      "reused": true
+    },
+    {
+      "selection": "domain-source-rejection",
+      "file": "test_eval_platform.py",
+      "match": "*stale_image_source_rejects_and_stable_image_reuses_verified_digest*",
+      "started_at": "2026-10-19T06:52:57.734418+00:00",
+      "finished_at": "2026-10-19T06:52:57.772465+00:00",
+      "methods": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "a97f243d7628cf17c9df0cd21f23999c7a5bc3f1ff2a80dc45afa08f7b4f10a5",
+      "attempt": "run-1",
+      "reused": true
+    },
+    {
+      "selection": "platform-worker",
+      "file": "test_platform_worker.py",
+      "match": null,
+      "started_at": "2026-10-19T06:54:05.289669+00:00",
+      "finished_at": "2026-10-19T06:54:07.463158+00:00",
+      "methods": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "71c57aef1cbdcf94b9e533c1be0f96b2ecee6fc79dc37de4e0778a7021f7919b",
+      "attempt": "run-2",
+      "reused": false
+    },
+    {
+      "selection": "bridge-preparation",
+      "file": "test_bridge_platform_preparation.py",
+      "match": null,
+      "started_at": "2026-10-19T06:54:07.495142+00:00",
+      "finished_at": "2026-10-19T06:54:07.723612+00:00",
+      "methods": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "d3749dd0c30e2ad549bdfa6b8975b9c766a90c77d1cedece511711dede719451",
+      "attempt": "run-2",
+      "reused": false
+    },
+    {
+      "selection": "domain-source-members",
+      "file": "test_f12_target.py",
+      "match": "*cannot_use_old_image_attestation*",
+      "started_at": "2026-10-19T06:54:07.781378+00:00",
+      "finished_at": "2026-10-19T06:54:07.849385+00:00",
+      "methods": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "8aae0f50659e315e945e60aff1bbab39b5dfb2077d0ba77f590eb8cd98ce7e32",
+      "attempt": "run-2",
+      "reused": false
+    }
+  ],
+  "source_sha256": {
+    "incident/amp_setup.py": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd",
+    "incident/platform_worker.py": "c84ba0ac36a55d9526890c810ffc6b6a6a715bec01c5487a869ca1da3288b0e0",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "eval/targets.py": "b73251380b467394517ef955b22422f1c4c88d72b89b439a22bf00b77da9c15a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "caa31611e69bcb4858808ba73b2d076f894c60bf944a5204bf5f0331ffe1de60",
+    "tests/test_platform_worker.py": "3dac92d063348751906a00a3c8d02a21342546bdb1b3eaaa9f0fb679af36df91",
+    "tests/test_bridge_platform_preparation.py": "47224501ebdebda3e57db1cb17540b38b785e1cbe777fad7ea3df6be4efd7bdf",
+    "tests/test_coordinator.py": "dfc7e753eccbd9b11c421629b73873162dc503b4adab0df25afef5b5a71b0850",
+    "tests/test_f12_target.py": "a85c53c5608e26997ddefe62d1404c0dd8c052a7388a2674732fd63b77e8a411",
+    "tests/test_eval_platform.py": "8262b32d57e62d7c020d2c315793df3343ccea7550fc6913fbf8262f6121eef2"
+  },
+  "reused_input_sources_unchanged": true,
+  "initial_worker_failure_count": 1,
+  "initial_worker_error_count": 5,
+  "initial_cleanup_directory_count": 5,
+  "initial_cleanup_directories_still_present": 0,
+  "attempt_summary_sha256": {
+    "run-1": "befb94f265f324ad273a214540bbfbf351436056ac3b69af00434b08178f531b",
+    "run-2": "92d38143b57cbdf274d8434ebe1beaff761714f3fb56855bff8513fb3d6eb124"
+  },
+  "limits": [
+    "temporary certificates and broker/resource doubles only; no live platform or resources",
+    "no product source edited by this integration task",
+    "initial failures are retained; current T05 runtime and platform accounting are separate gates"
+  ],
+  "initial_fixture_cleanup_receipt": {
+    "path": "initial-fixture-temp-cleanup.json",
+    "sha256": "a31413e68c625bd8090c7a2b23250fc8c7b311fac849a199ae1a4a4e2dcfed6f",
+    "schema_version": "initial-fixture-cleanup/1",
+    "finished_at": "2026-10-19T06:56:17.213167+00:00",
+    "exact_logged_fixture_directories": 5,
+    "removed": 5,
+    "remaining": 0,
+    "failure_log_preserved": true
+  }
+}

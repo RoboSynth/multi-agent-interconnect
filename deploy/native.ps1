@@ -92,8 +92,10 @@ if ($Action -eq 'stop') {
     }
     if (Test-Path -LiteralPath (Join-Path $Config.nginx_prefix 'logs/nginx.pid')) {
         & $Config.nginx_bin -p ($Config.nginx_prefix.Replace([char]92,[char]47) + '/') -s quit
+        if ($LASTEXITCODE -ne 0) { throw "Unable to stop project Nginx (exit code $LASTEXITCODE)." }
     }
     & (Join-Path $Config.postgres_bin 'pg_ctl.exe') stop -D $Config.pgdata -m fast
+    if ($LASTEXITCODE -ne 0) { throw "Unable to stop project PostgreSQL (exit code $LASTEXITCODE)." }
     Save-Runtime
     exit 0
 }

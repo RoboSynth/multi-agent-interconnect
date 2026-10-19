@@ -1,0 +1,75 @@
+{
+  "schema_version": "amp-integration-checks/1",
+  "selections": [
+    {
+      "selection": "platform-worker",
+      "file": "test_platform_worker.py",
+      "match": null,
+      "started_at": "2026-10-19T06:54:05.289669+00:00",
+      "finished_at": "2026-10-19T06:54:07.463158+00:00",
+      "methods": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "71c57aef1cbdcf94b9e533c1be0f96b2ecee6fc79dc37de4e0778a7021f7919b"
+    },
+    {
+      "selection": "bridge-preparation",
+      "file": "test_bridge_platform_preparation.py",
+      "match": null,
+      "started_at": "2026-10-19T06:54:07.495142+00:00",
+      "finished_at": "2026-10-19T06:54:07.723612+00:00",
+      "methods": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "d3749dd0c30e2ad549bdfa6b8975b9c766a90c77d1cedece511711dede719451"
+    },
+    {
+      "selection": "domain-source-members",
+      "file": "test_f12_target.py",
+      "match": "*cannot_use_old_image_attestation*",
+      "started_at": "2026-10-19T06:54:07.781378+00:00",
+      "finished_at": "2026-10-19T06:54:07.849385+00:00",
+      "methods": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "log_sha256": "8aae0f50659e315e945e60aff1bbab39b5dfb2077d0ba77f590eb8cd98ce7e32"
+    }
+  ],
+  "methods": 18,
+  "source_stable": true,
+  "source_sha256": {
+    "incident/amp_setup.py": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd",
+    "incident/platform_worker.py": "c84ba0ac36a55d9526890c810ffc6b6a6a715bec01c5487a869ca1da3288b0e0",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "eval/targets.py": "b73251380b467394517ef955b22422f1c4c88d72b89b439a22bf00b77da9c15a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "caa31611e69bcb4858808ba73b2d076f894c60bf944a5204bf5f0331ffe1de60",
+    "tests/test_platform_worker.py": "3dac92d063348751906a00a3c8d02a21342546bdb1b3eaaa9f0fb679af36df91",
+    "tests/test_bridge_platform_preparation.py": "47224501ebdebda3e57db1cb17540b38b785e1cbe777fad7ea3df6be4efd7bdf",
+    "tests/test_coordinator.py": "dfc7e753eccbd9b11c421629b73873162dc503b4adab0df25afef5b5a71b0850",
+    "tests/test_f12_target.py": "a85c53c5608e26997ddefe62d1404c0dd8c052a7388a2674732fd63b77e8a411",
+    "tests/test_eval_platform.py": "8262b32d57e62d7c020d2c315793df3343ccea7550fc6913fbf8262f6121eef2"
+  },
+  "source_after_sha256": {
+    "incident/amp_setup.py": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd",
+    "incident/platform_worker.py": "c84ba0ac36a55d9526890c810ffc6b6a6a715bec01c5487a869ca1da3288b0e0",
+    "acps_mcp_bridge/platform.py": "be5748b7d49ad770b64314d1aa9c74293ca3137b500b2d13eb097de61e79f096",
+    "eval/targets.py": "b73251380b467394517ef955b22422f1c4c88d72b89b439a22bf00b77da9c15a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "caa31611e69bcb4858808ba73b2d076f894c60bf944a5204bf5f0331ffe1de60",
+    "tests/test_platform_worker.py": "3dac92d063348751906a00a3c8d02a21342546bdb1b3eaaa9f0fb679af36df91",
+    "tests/test_bridge_platform_preparation.py": "47224501ebdebda3e57db1cb17540b38b785e1cbe777fad7ea3df6be4efd7bdf",
+    "tests/test_coordinator.py": "dfc7e753eccbd9b11c421629b73873162dc503b4adab0df25afef5b5a71b0850",
+    "tests/test_f12_target.py": "a85c53c5608e26997ddefe62d1404c0dd8c052a7388a2674732fd63b77e8a411",
+    "tests/test_eval_platform.py": "8262b32d57e62d7c020d2c315793df3343ccea7550fc6913fbf8262f6121eef2"
+  },
+  "passed": true,
+  "scope": "offline unit/integration fixtures with generated temporary certificates, SQLite and transport doubles",
+  "platform_business_model_or_docker_started": false
+}

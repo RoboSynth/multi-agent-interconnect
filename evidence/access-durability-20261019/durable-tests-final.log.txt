@@ -1,0 +1,23 @@
+test_changed_request_metadata_is_rejected_before_reuse (test_durable_access.DurableAccessTests.test_changed_request_metadata_is_rejected_before_reuse) ... ok
+test_close_cannot_release_owner_while_callback_is_active (test_durable_access.DurableAccessTests.test_close_cannot_release_owner_while_callback_is_active) ... ok
+test_concurrent_completed_events_have_unique_complete_records (test_durable_access.DurableAccessTests.test_concurrent_completed_events_have_unique_complete_records) ... ok
+test_conflicting_existing_log_id_is_retained_and_rejected (test_durable_access.DurableAccessTests.test_conflicting_existing_log_id_is_retained_and_rejected) ... ok
+test_durable_middleware_records_intent_before_handler_and_not_payload (test_durable_access.DurableAccessTests.test_durable_middleware_records_intent_before_handler_and_not_payload) ... Executing <Task finished name='Task-18' coro=<DurableAccessTests.test_durable_middleware_records_intent_before_handler_and_not_payload() done, defined at [project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py:247> result=None created at [python-runtime]/Lib/asyncio/runners.py:100> took 0.110 seconds
+ok
+test_failed_append_is_not_acknowledged_and_retries_same_id (test_durable_access.DurableAccessTests.test_failed_append_is_not_acknowledged_and_retries_same_id) ... ok
+test_failed_intent_persistence_prevents_handler_execution (test_durable_access.DurableAccessTests.test_failed_intent_persistence_prevents_handler_execution) ... ok
+test_hard_exit_after_append_before_ack_adds_no_duplicate (test_durable_access.DurableAccessTests.test_hard_exit_after_append_before_ack_adds_no_duplicate) ... ok
+test_hard_exit_after_ready_snapshot_replays_original_known_outcome (test_durable_access.DurableAccessTests.test_hard_exit_after_ready_snapshot_replays_original_known_outcome) ... ok
+test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process (test_durable_access.DurableAccessTests.test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process) ... ok
+test_live_middleware_checks_changed_duplicate_metadata (test_durable_access.DurableAccessTests.test_live_middleware_checks_changed_duplicate_metadata) ... ok
+test_only_one_owner_and_identity_binding_survive_close (test_durable_access.DurableAccessTests.test_only_one_owner_and_identity_binding_survive_close) ... ok
+test_other_process_cannot_own_same_canonical_log (test_durable_access.DurableAccessTests.test_other_process_cannot_own_same_canonical_log) ... ok
+test_partial_line_is_retained_and_recovery_refuses_to_ack (test_durable_access.DurableAccessTests.test_partial_line_is_retained_and_recovery_refuses_to_ack) ... ok
+test_same_key_after_restart_keeps_first_outcome_immutable (test_durable_access.DurableAccessTests.test_same_key_after_restart_keeps_first_outcome_immutable) ... ok
+test_unrecorded_finished_outcome_recovers_unknown_without_restart (test_durable_access.DurableAccessTests.test_unrecorded_finished_outcome_recovers_unknown_without_restart) ... ok
+test_visible_line_from_pre_fsync_crash_is_synced_before_ack (test_durable_access.DurableAccessTests.test_visible_line_from_pre_fsync_crash_is_synced_before_ack) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 9.273s
+
+OK

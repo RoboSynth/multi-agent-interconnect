@@ -118,8 +118,9 @@ class F12TargetTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 DockerTarget.from_file(fixture.path, root=fixture.path.parent)
 
-    def test_route_implementation_and_policies_cannot_use_old_image_attestation(self):
-        required = {"domains/ops/route_mcp.py", "domains/ops/policy.yaml", "domains/ops/policy.native.yaml"}
+    def test_route_and_access_implementations_cannot_use_old_image_attestation(self):
+        required = {"domains/ops/route_mcp.py", "domains/ops/policy.yaml", "domains/ops/policy.native.yaml",
+            "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py", "incident/amp_setup.py"}
         self.assertTrue(required <= set(DOMAIN_SOURCE_FILES))
         fixture = self.fixture
         fixture.injector(self.stack)

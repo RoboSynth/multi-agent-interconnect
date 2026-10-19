@@ -6,7 +6,7 @@ from pathlib import Path
 import statistics
 import time
 
-from acps_sdk.amp import (AccessEmitter, AuditEmitter, AuditBody, AuditActor, AuditAction,
+from acps_sdk.amp import (DurableAccessEmitter, AuditEmitter, AuditBody, AuditActor, AuditAction,
     AuditTarget, AuditResult, CertificateAuditSigner, HeartbeatEmitter, MessageEmitter,
     MetricsEmitter, MetricsBody, LoadMetrics, WindowMetrics, SystemEmitter)
 
@@ -53,17 +53,19 @@ class AmpRuntime:
         self.metrics = MetricsEmitter(filename("metrics"), aic, self.sampler)
         self.system = SystemEmitter(filename("system"), aic)
         self.audit = AuditEmitter(filename("audit"), aic, signer=signer)
-        self.access = AccessEmitter(filename("access"), aic)
+        self.access = DurableAccessEmitter(filename("access"), aic)
         self.message = MessageEmitter(filename("message"), aic)
         self.tasks = []
 
     async def start(self):
         if self.tasks:
             return
+        self.access.start_sync()
         await self.system.emit({"event": "process_started", "name": self.name,
                                 "signed_audit": self.signed_audit})
         self.tasks = [asyncio.create_task(self.heartbeat.run_periodic(15)),
-                      asyncio.create_task(self.metrics.run_periodic(30))]
+                      asyncio.create_task(self.metrics.run_periodic(30)),
+                      asyncio.create_task(self.access.run_periodic(5))]
 
     async def close(self):
         for task in self.tasks:
@@ -72,6 +74,12 @@ class AmpRuntime:
             with suppress(asyncio.CancelledError):
                 await task
         self.tasks = []
+        try:
+            self.access.close_sync()
+        except Exception as error:
+            await self.system.emit({"event": "process_stop_failed", "name": self.name,
+                                    "error_class": type(error).__name__})
+            raise
         await self.system.emit({"event": "process_stopped", "name": self.name})
 
     def audit_event(self, event):

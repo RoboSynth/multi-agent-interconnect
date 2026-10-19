@@ -15,7 +15,8 @@ DOMAIN_SOURCE_FILES = ("acps_mcp_bridge/bridge.py", "acps_mcp_bridge/policy.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py",
     "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py",
-    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py")
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py", "incident/amp_setup.py")
 
 
 def validate_platform_bindings(config, domains, *, selected=None, descriptions=None, project=None):

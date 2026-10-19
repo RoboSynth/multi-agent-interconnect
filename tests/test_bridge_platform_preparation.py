@@ -103,36 +103,39 @@ class PlatformAmpBindingTests(unittest.IsolatedAsyncioTestCase):
         from acps_sdk.aip import TaskCommandType
         with tempfile.TemporaryDirectory() as directory:
             amp = AmpRuntime(directory, "bridge-test", "local-test")
-            class Adapter:
-                def bind_partner(self, client):
-                    async def handler(command, mentioned):
-                        return {"status": "rejected"}
-                    client.set_command_handler(handler)
-                    return handler
-            runtime = BridgeGroupRuntime(bridge=Adapter(), amp=amp, leader_aic="local-test", allowed_peer_aic="peer-test",
-                record=lambda *a, **k: None, rabbitmq_config={"host": "localhost", "port": 5671, "vhost": "/"})
-            real_client = runtime._partner_client()
-            self.assertIs(real_client._message_emitter, amp.message)
-            self.assertIs(real_client._group_access.emitter, amp.access)
-            class Partner:
-                group_id = None
-                is_joined = False
-                def set_command_handler(self, handler): self.handler = handler
-                def set_disconnect_handler(self, handler): self.disconnected = handler
-                async def join_group_from_invitation(self, invitation):
-                    self.group_id = invitation.groupId
-                    command = SimpleNamespace(groupId=self.group_id, sessionId="s", taskId="t", command=TaskCommandType.Start)
-                    self.result = await self.handler(command, True)
-                    self.is_joined = True
-                    return True
-                async def close(self): pass
-            partner = Partner()
-            runtime._partner_client = lambda: partner
-            runtime._invitation_policy = lambda invitation: None
-            await runtime._accept_probe_invitation(SimpleNamespace(groupId="group-test"))
-            self.assertEqual(partner.result["status"], "rejected")
-            self.assertEqual(len(amp.sampler.samples), 1)
-            self.assertEqual(amp.sampler.active, 0)
+            try:
+                class Adapter:
+                    def bind_partner(self, client):
+                        async def handler(command, mentioned):
+                            return {"status": "rejected"}
+                        client.set_command_handler(handler)
+                        return handler
+                runtime = BridgeGroupRuntime(bridge=Adapter(), amp=amp, leader_aic="local-test", allowed_peer_aic="peer-test",
+                    record=lambda *a, **k: None, rabbitmq_config={"host": "localhost", "port": 5671, "vhost": "/"})
+                real_client = runtime._partner_client()
+                self.assertIs(real_client._message_emitter, amp.message)
+                self.assertIs(real_client._group_access.emitter, amp.access)
+                class Partner:
+                    group_id = None
+                    is_joined = False
+                    def set_command_handler(self, handler): self.handler = handler
+                    def set_disconnect_handler(self, handler): self.disconnected = handler
+                    async def join_group_from_invitation(self, invitation):
+                        self.group_id = invitation.groupId
+                        command = SimpleNamespace(groupId=self.group_id, sessionId="s", taskId="t", command=TaskCommandType.Start)
+                        self.result = await self.handler(command, True)
+                        self.is_joined = True
+                        return True
+                    async def close(self): pass
+                partner = Partner()
+                runtime._partner_client = lambda: partner
+                runtime._invitation_policy = lambda invitation: None
+                await runtime._accept_probe_invitation(SimpleNamespace(groupId="group-test"))
+                self.assertEqual(partner.result["status"], "rejected")
+                self.assertEqual(len(amp.sampler.samples), 1)
+                self.assertEqual(amp.sampler.active, 0)
+            finally:
+                await amp.close()
 
 
 if __name__ == "__main__":

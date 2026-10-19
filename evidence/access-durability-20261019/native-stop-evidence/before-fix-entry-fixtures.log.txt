@@ -1,0 +1,27 @@
+test_database_failure_preserves_runtime_after_nginx_success (test_native_app_stop.NativeStopEntryTests.test_database_failure_preserves_runtime_after_nginx_success) ... FAIL
+test_family_failure_preserves_original_records_and_stops_before_database (test_native_app_stop.NativeStopEntryTests.test_family_failure_preserves_original_records_and_stops_before_database) ... ok
+test_nginx_failure_preserves_runtime_and_stops_before_database (test_native_app_stop.NativeStopEntryTests.test_nginx_failure_preserves_runtime_and_stops_before_database) ... FAIL
+test_nginx_success_continues_to_database_and_saves_runtime (test_native_app_stop.NativeStopEntryTests.test_nginx_success_continues_to_database_and_saves_runtime) ... ok
+test_repeat_stop_without_managed_pids_has_no_app_termination (test_native_app_stop.NativeStopEntryTests.test_repeat_stop_without_managed_pids_has_no_app_termination) ... ok
+test_stop_explicitly_binds_both_families_and_configured_ports (test_native_app_stop.NativeStopEntryTests.test_stop_explicitly_binds_both_families_and_configured_ports) ... ok
+
+======================================================================
+FAIL: test_database_failure_preserves_runtime_after_nginx_success (test_native_app_stop.NativeStopEntryTests.test_database_failure_preserves_runtime_after_nginx_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_native_app_stop.py", line 276, in test_database_failure_preserves_runtime_after_nginx_success
+    self.assertNotEqual(result.returncode, 0)
+AssertionError: 0 == 0
+
+======================================================================
+FAIL: test_nginx_failure_preserves_runtime_and_stops_before_database (test_native_app_stop.NativeStopEntryTests.test_nginx_failure_preserves_runtime_and_stops_before_database)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_native_app_stop.py", line 267, in test_nginx_failure_preserves_runtime_and_stops_before_database
+    self.assertNotEqual(result.returncode, 0)
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 6 tests in 5.831s
+
+FAILED (failures=2)

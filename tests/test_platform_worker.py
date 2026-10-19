@@ -102,6 +102,9 @@ class PlatformWorkerTests(unittest.IsolatedAsyncioTestCase):
         self.worker = PlatformWorker(self.config, executor=self.executor)
         self.runtime = self.worker.prepare()
 
+    async def asyncTearDown(self):
+        await self.worker.amp.close()
+
     def tearDown(self):
         self.env_patch.stop()
         self.temp.cleanup()
@@ -231,7 +234,7 @@ class PlatformWorkerTests(unittest.IsolatedAsyncioTestCase):
         self.runtime.start_inbound=AsyncMock()
         self.runtime.close=AsyncMock()
         await self.worker.start()
-        self.assertEqual(len(self.worker.amp.tasks),2)
+        self.assertEqual(len(self.worker.amp.tasks),3)
         _,consume=await self.partner()
         await consume(Incoming(self.command(kind="describe")))
         await self.worker.amp.heartbeat.emit()

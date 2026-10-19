@@ -1,0 +1,204 @@
+test_changed_request_metadata_is_rejected_before_reuse (test_durable_access.DurableAccessTests.test_changed_request_metadata_is_rejected_before_reuse) ... ok
+test_close_cannot_release_owner_while_callback_is_active (test_durable_access.DurableAccessTests.test_close_cannot_release_owner_while_callback_is_active) ... ok
+test_concurrent_completed_events_have_unique_complete_records (test_durable_access.DurableAccessTests.test_concurrent_completed_events_have_unique_complete_records) ... ok
+test_conflicting_existing_log_id_is_retained_and_rejected (test_durable_access.DurableAccessTests.test_conflicting_existing_log_id_is_retained_and_rejected) ... ERROR
+test_durable_middleware_records_intent_before_handler_and_not_payload (test_durable_access.DurableAccessTests.test_durable_middleware_records_intent_before_handler_and_not_payload) ... Executing <Task finished name='Task-18' coro=<DurableAccessTests.test_durable_middleware_records_intent_before_handler_and_not_payload() done, defined at [project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py:216> result=None created at [python-runtime]/Lib/asyncio/runners.py:100> took 0.110 seconds
+ok
+test_failed_append_is_not_acknowledged_and_retries_same_id (test_durable_access.DurableAccessTests.test_failed_append_is_not_acknowledged_and_retries_same_id) ... ERROR
+test_failed_intent_persistence_prevents_handler_execution (test_durable_access.DurableAccessTests.test_failed_intent_persistence_prevents_handler_execution) ... ok
+test_hard_exit_after_append_before_ack_adds_no_duplicate (test_durable_access.DurableAccessTests.test_hard_exit_after_append_before_ack_adds_no_duplicate) ... ERROR
+test_hard_exit_after_ready_snapshot_replays_original_known_outcome (test_durable_access.DurableAccessTests.test_hard_exit_after_ready_snapshot_replays_original_known_outcome) ... ERROR
+test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process (test_durable_access.DurableAccessTests.test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process) ... ERROR
+test_live_middleware_checks_changed_duplicate_metadata (test_durable_access.DurableAccessTests.test_live_middleware_checks_changed_duplicate_metadata) ... ok
+test_only_one_owner_and_identity_binding_survive_close (test_durable_access.DurableAccessTests.test_only_one_owner_and_identity_binding_survive_close) ... ok
+test_partial_line_is_retained_and_recovery_refuses_to_ack (test_durable_access.DurableAccessTests.test_partial_line_is_retained_and_recovery_refuses_to_ack) ... ERROR
+test_same_key_after_restart_keeps_first_outcome_immutable (test_durable_access.DurableAccessTests.test_same_key_after_restart_keeps_first_outcome_immutable) ... ok
+test_unrecorded_finished_outcome_recovers_unknown_without_restart (test_durable_access.DurableAccessTests.test_unrecorded_finished_outcome_recovers_unknown_without_restart) ... ok
+test_visible_line_from_pre_fsync_crash_is_synced_before_ack (test_durable_access.DurableAccessTests.test_visible_line_from_pre_fsync_crash_is_synced_before_ack) ... ERROR
+
+======================================================================
+ERROR: test_conflicting_existing_log_id_is_retained_and_rejected (test_durable_access.DurableAccessTests.test_conflicting_existing_log_id_is_retained_and_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp34w_ov99/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp34w_ov99/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_failed_append_is_not_acknowledged_and_retries_same_id (test_durable_access.DurableAccessTests.test_failed_append_is_not_acknowledged_and_retries_same_id)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp7eyexdv9/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp7eyexdv9/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_hard_exit_after_append_before_ack_adds_no_duplicate (test_durable_access.DurableAccessTests.test_hard_exit_after_append_before_ack_adds_no_duplicate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpbsbwp4lz/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpbsbwp4lz/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_hard_exit_after_ready_snapshot_replays_original_known_outcome (test_durable_access.DurableAccessTests.test_hard_exit_after_ready_snapshot_replays_original_known_outcome)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpg7jgikt7/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpg7jgikt7/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process (test_durable_access.DurableAccessTests.test_hard_exit_during_handler_recovers_honest_unknown_in_fresh_process)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp8tj517g0/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmp8tj517g0/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_partial_line_is_retained_and_recovery_refuses_to_ack (test_durable_access.DurableAccessTests.test_partial_line_is_retained_and_recovery_refuses_to_ack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpvtzfiqzp/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpvtzfiqzp/amp_access_worker.outbox.sqlite3'
+
+======================================================================
+ERROR: test_visible_line_from_pre_fsync_crash_is_synced_before_ack (test_durable_access.DurableAccessTests.test_visible_line_from_pre_fsync_crash_is_synced_before_ack)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpwf3sizni/amp_access_worker.outbox.sqlite3'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "[project]/vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py", line 43, in tearDown
+    self.temp.cleanup()
+  File "[python-runtime]/Lib/tempfile.py", line 954, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "[python-runtime]/Lib/tempfile.py", line 934, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "[python-runtime]/Lib/shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "[python-runtime]/Lib/shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "[python-runtime]/Lib/tempfile.py", line 909, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] ��һ����������ʹ�ô��ļ��������޷����ʡ�: '[batch]/test-temp/tmpwf3sizni/amp_access_worker.outbox.sqlite3'
+
+----------------------------------------------------------------------
+Ran 16 tests in 8.705s
+
+FAILED (errors=7)

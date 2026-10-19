@@ -1,0 +1,19 @@
+{
+  "schema_version": "coordinator-restart-test/1",
+  "exit_mode": "hard-exit",
+  "status": "failed",
+  "platform_or_business_started": false,
+  "process_receipts": [
+    {
+      "phase": "writer",
+      "pid": 15576,
+      "actual_returncode": 1,
+      "terminated_after_durable_ready": false,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"[project]/vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py\", line 117, in <module>\n    main()\n  File \"[project]/vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py\", line 97, in main\n    journal = TaskJournal(args.journal)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"[project]/vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py\", line 21, in __init__\n    with self._connect() as conn:\n         ^^^^^^^^^^^^^^^\n  File \"[python-runtime]/Lib/contextlib.py\", line 137, in __enter__\n    return next(self.gen)\n           ^^^^^^^^^^^^^^\n  File \"[project]/vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py\", line 43, in _connect\n    conn = sqlite3.connect(self.path, timeout=30)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsqlite3.OperationalError: unable to open database file\n"
+    }
+  ],
+  "source_sha256": {
+    "tests/resumable/test_coordinator_process.py": "b20c795fdeabd7eedfef8dca20103b5bc9c11577d4f39a3ae89329d34b4fee7b"
+  }
+}
