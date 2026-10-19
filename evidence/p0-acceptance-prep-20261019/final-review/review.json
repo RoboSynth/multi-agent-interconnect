@@ -1,0 +1,304 @@
+{
+  "schema_version": "acceptance-preparation-readonly-review/1",
+  "reviewed_at_utc": "2026-10-19T01:15:40.156283+00:00",
+  "status": "PASS_NO_BLOCKING_FINDINGS",
+  "base_commit": "4f157a1d557eba3008eec338d0cde5d7d523ee8a",
+  "review_scope": [
+    "deploy/prepare_deployment.py",
+    "domains/database/requirements.txt",
+    "tests/test_deployment_preparation.py",
+    "docs/acceptance_preparation_20261019.md"
+  ],
+  "source_sha256": {
+    "deploy/prepare_deployment.py": "df8ba9a397b13df2cc8e39508929d0ff1bb8f9b74d6ad407416b596b85de7c41",
+    "domains/database/requirements.txt": "1bc30f5a8dd2007e1641f4da3bb1dde101200f557e9a675ceba76bd9145ebf7c",
+    "tests/test_deployment_preparation.py": "ce8ee0700b5b5e3eeef019192e49b25cbf7c166d3ba96b6091c661720a8874e2",
+    "docs/acceptance_preparation_20261019.md": "12ed0836f4cce8e1d369e6cb9258ea3276bb781724e613f34411f647352dfb9d"
+  },
+  "findings": [],
+  "compatibility": {
+    "legacy_schema": "incident-deployment/1.0",
+    "new_schema": "incident-deployment/1.1",
+    "legacy_overlay_shape_preserved": true,
+    "legacy_seven_three_or_four_ports_preserved": true,
+    "new_seven_requires_four_ports": true,
+    "new_app_v2_reply_drop_explicit_shared_image": true,
+    "default_project_namespace_paths_and_launch_behavior_unchanged_by_reviewed_diff": true,
+    "existing_mutable_route_not_reinitialized_on_load": true
+  },
+  "dependency_build_adoption": {
+    "log": "image-build-retry2/build.stdout.log",
+    "log_sha256": "df3a903060f158d48046a6d7a095447749f0a5e1c71f16106ce410300ae90b53",
+    "evidence_lines": {
+      "requirements_copy": 18,
+      "database_pip_install": 22,
+      "exact_linux_url_and_hash_selected": 24,
+      "windows_marker_not_selected_on_linux": 27,
+      "installed_original_pglast_postgres_mcp_and_mcp": 277,
+      "built_agent": 440,
+      "tagged_agent": 441
+    },
+    "agent_image_id": "sha256:ccc35272ab4086325292ddfcaedac156e95ab4086df6a0d93276c030efaab837",
+    "original_pins_preserved": [
+      "postgres-mcp==0.3.0",
+      "mcp==1.30.0"
+    ],
+    "linux_cp312_x86_64_direct_original_wheel_actually_used": true,
+    "windows_cp312_amd64_download_hash_verified_not_fresh_install": true
+  },
+  "plans_readonly_check": {
+    "prepared_summary_sha256": "055f14e4e021ff3971fb6f46c0fb73860515660e52efdde3d8f5ff9d10587933",
+    "count": 22,
+    "case_counts": {
+      "E1-a": 9,
+      "E1-b": 9,
+      "E1-c": 3,
+      "F12/E5": 1
+    },
+    "schema_counts": {
+      "platform-e1-plan/2": 18,
+      "platform-e1-plan/3": 3,
+      "platform-f12-plan/1": 1
+    },
+    "unique_outputs": 22,
+    "all_recorded_plan_hashes_match": true,
+    "all_outputs_absent_at_review": true,
+    "all_bind_current_database_requirements": true,
+    "summary_source_requirements_hash_matches": true,
+    "all_model_calls_zero": true,
+    "execution_authorization_written": false,
+    "authorization_json_files_found": 0,
+    "plans": [
+      {
+        "key": "e1a-after_observation-r1",
+        "sha256": "d2608812aaa9495b6195a431a801aeafa4f74574d0fd338f846f00bf83746a60",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_observation-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-before_modification-r1",
+        "sha256": "9af07a2ca78d8bf0cf2b07871633d2ef7dd1db11577e2ee21a44c11718136463",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-before_modification-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-after_applied-r1",
+        "sha256": "456ea7f174040bcc8cb77aac091e8ace9f18916c97ec8127dc94ba2086a0d4cf",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_applied-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-from_scratch-r1",
+        "sha256": "581ef866a84c051f81df1751628f701035ad946895dd846dec6b611c5224bb43",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-from_scratch-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-full_history-r1",
+        "sha256": "8464ca360a820de1caa3a872edd7cbf0b10694faf2b956b0275aa6f9ee3987bd",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-full_history-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-resume_package-r1",
+        "sha256": "86ba8f8f5044e1ec288d4e3d26f26a83cf1b088c03610d233dfbe93d2bb84dd9",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-resume_package-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1c-before_modification-r1",
+        "sha256": "d78ba3e03c620d0c94b88e37406efe98cd3f5657da26101cc449b2391f7bae5e",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1c-before_modification-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "f12e5-r1",
+        "sha256": "8e2e3e509c87cc21dc6742a66689d985bdc558c0f770528d6c0efe71dc3cd3aa",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/f12e5-r1",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-after_observation-r2",
+        "sha256": "9591feb547024d43f2f8f28a6bafe6a4dddc3769a4955329b625affd0ec4ccb4",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_observation-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-before_modification-r2",
+        "sha256": "12f5ce1a525780722fc0031f8f6c72b4cd023fc6c6a73c030e10109fe67ea5fc",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-before_modification-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-after_applied-r2",
+        "sha256": "1ff2f2747cd5d0791038bae68ba189b41ed08ee73d53da0bdd22876b5d565f1f",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_applied-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-from_scratch-r2",
+        "sha256": "2f0e9710e2adeee1b01ea5a8972e771693c15f79e0d171e654ee63824a3a9295",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-from_scratch-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-full_history-r2",
+        "sha256": "7efec6153d00d844f0ea92fdb3a7f76decc7730a2fd70cedb96dd408d7d930d7",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-full_history-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-resume_package-r2",
+        "sha256": "74dc015453474fc01bb7f689052f849d392de25b2d655cda2c8ea2d9cc4147fd",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-resume_package-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1c-before_modification-r2",
+        "sha256": "b1314aaf7dd21df979776b80377773b064992061b8e76d7da9fb63054f7ab113",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1c-before_modification-r2",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-after_observation-r3",
+        "sha256": "974e18e482da1f33b72c77ef3f3cfb0450f54562a44fb08962f45d8772f82faf",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_observation-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-before_modification-r3",
+        "sha256": "eaea2ababe9200df6e28d0b58f876262111b9e43a015f3240ecbcf0e0f904be0",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-before_modification-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1a-after_applied-r3",
+        "sha256": "69e7e2fe6ab825af9a2c0471fa4c9f7be04e2f8d0058f3f9505aa29c1f3675f1",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1a-after_applied-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-from_scratch-r3",
+        "sha256": "703c978fa344d0444ba8531b8977392bc7ce8a83274eea82109bf96581411998",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-from_scratch-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-full_history-r3",
+        "sha256": "17aa74c436bfca5f2f55f353070c5320f78a659a855be8c4f578f4b3e23d7570",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-full_history-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1b-resume_package-r3",
+        "sha256": "e25936115ab276824e274ddd762e9d8fdbab9eeedf4fc63b844c039db2af723d",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1b-resume_package-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      },
+      {
+        "key": "e1c-before_modification-r3",
+        "sha256": "a30b5a5609f0af960af8a1df554dac2ecda6827644bf51ef29fbcff1d623ba25",
+        "summary_hash_matches": true,
+        "output": "eval/results/platform/acceptance-20261019/e1c-before_modification-r3",
+        "output_absent": true,
+        "requirements_hash_matches": true,
+        "model_calls": 0
+      }
+    ]
+  },
+  "verification_reused_not_rerun": [
+    {
+      "owner": "root",
+      "kind": "deployment_offline_tests",
+      "distinct_test_methods": 15,
+      "actual_chunk": "cd06aa",
+      "actual_exit_code": 0,
+      "note": "Earlier 7-test subset is included, not additive."
+    },
+    {
+      "owner": "root",
+      "kind": "all_22_original_runner_file_validations",
+      "actual_chunk": "ebbdc9",
+      "actual_exit_code": 0
+    }
+  ],
+  "documentation_evidence_boundaries": [
+    "22 plans are prepared and file-validated, not executed; no authorized=true issued.",
+    "Image builds and dependency probes do not establish business, AMQPS, recovery, T11/T96 new-machine, Kafka/Monitor or long-term acceptance.",
+    "Windows original wheel is downloaded and hash-verified; fresh Windows dependency installation remains unverified.",
+    "Inbox records are dated 2026-10-18 and were not refreshed in this offline identity check; concurrent consumers elsewhere remain to be excluded."
+  ],
+  "review_actions": {
+    "source_edits": 0,
+    "test_runs": 0,
+    "plan_validator_runs": 0,
+    "network_calls": 0,
+    "docker_or_wsl_calls": 0
+  },
+  "limits": [
+    "Source review and existing evidence reuse only; no formal acceptance execution performed by this review."
+  ]
+}

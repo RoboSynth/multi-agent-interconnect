@@ -1,0 +1,49 @@
+{
+  "status": "DEPLOYMENT_IMAGE_BINDING_SOURCE_READY_OFFLINE_ONLY",
+  "recorded_at_utc": "2026-10-19T00:59:15.459924+00:00",
+  "baseline_commit": "4f157a1",
+  "payloads": [
+    {
+      "source": "checkout/deploy/prepare_deployment.py",
+      "target": "deploy/prepare_deployment.py",
+      "sha256": "df8ba9a397b13df2cc8e39508929d0ff1bb8f9b74d6ad407416b596b85de7c41",
+      "bytes": 21047,
+      "baseline_sha256": "b56c8237ab0eb1a9f77effd807e361c1ebbb50aa206421d9ffdc3472ebb3bbac",
+      "kind": "production_source"
+    },
+    {
+      "source": "checkout/tests/test_deployment_preparation.py",
+      "target": "tests/test_deployment_preparation.py",
+      "sha256": "ce8ee0700b5b5e3eeef019192e49b25cbf7c166d3ba96b6091c661720a8874e2",
+      "bytes": 19665,
+      "baseline_sha256": "93ed457254bac2457ba06e4754343d0d76fa5145e6db9efe1a872b154f453e66",
+      "kind": "offline_test"
+    },
+    {
+      "source": "checkout/docs/deployment_image_binding_20261019.md",
+      "target": "docs/deployment_image_binding_20261019.md",
+      "sha256": "5846b206b775ead87fc835bfb842d8f478fdca81cfc95fd4f88a585c8ca3eca8",
+      "bytes": 1802,
+      "baseline_sha256": null,
+      "kind": "developer_document"
+    }
+  ],
+  "checks": {
+    "path": "offline-checks.json",
+    "sha256": "53aa61ce6fd287ca455d793aff8ca53b65d1cee54e0a035787a75a998b569755",
+    "count": 7
+  },
+  "initial_review": {
+    "path": "initial-review.md",
+    "sha256": "d8b0417eaa7968a29281e700e79a506474b6ddf6e2c709f8c3ab44fd78b3557c"
+  },
+  "patch_sha256": "7b135756ae07f267ac928aac303e71ec790a9b1a0172b3633f5b58fc6224a57a",
+  "new_manifest_schema": "incident-deployment/1.1",
+  "legacy_manifest_schema_read_only": "incident-deployment/1.0",
+  "image_binding": {
+    "app-v2": "<project>-app-v2:local",
+    "reply-drop": "<project>-app-v2:local"
+  },
+  "real_build_or_deployment_executed": false,
+  "old_canonical_frozen_inputs_modified": false
+}

@@ -66,7 +66,11 @@ class DeploymentPreparationTests(unittest.TestCase):
         self.assertEqual(env["ORDER_BIND"], "127.0.0.1")
         self.assertEqual((self.output / "nginx-runtime/route.conf").read_bytes(),
                          (ROOT / "deploy/nginx/route.default.conf").read_bytes())
-        self.assertEqual(set(json.loads((self.output / "deployment.overlay.yml").read_text(encoding="utf-8"))["services"]), {"nginx"})
+        overlay = json.loads((self.output / "deployment.overlay.yml").read_text(encoding="utf-8"))["services"]
+        self.assertEqual(set(overlay), {"nginx", "app-v2", "reply-drop"})
+        self.assertEqual(manifest["schema_version"], "incident-deployment/1.1")
+        self.assertEqual(overlay["app-v2"]["image"], "isolated-fixture-app-v2:local")
+        self.assertEqual(overlay["reply-drop"], overlay["app-v2"])
 
     def test_seven_manifest_target_and_domain_scopes_share_exact_sources(self):
         path = self.prepare("seven")
@@ -78,7 +82,9 @@ class DeploymentPreparationTests(unittest.TestCase):
         from eval.targets import DockerTarget
         self.assertEqual(DockerTarget.from_file(self.output / "target.json").reply_drop_url, "http://127.0.0.1:49090")
         overlay = json.loads((self.output / "deployment.overlay.yml").read_text(encoding="utf-8"))["services"]
-        self.assertEqual(set(overlay), {"nginx", *(role + "-agent" for role in deployment.ROLES)})
+        self.assertEqual(set(overlay), {"nginx", "app-v2", "reply-drop", *(role + "-agent" for role in deployment.ROLES)})
+        self.assertEqual(overlay["app-v2"]["image"], "isolated-fixture-app-v2:local")
+        self.assertEqual(overlay["reply-drop"], overlay["app-v2"])
         self.assertEqual({overlay[role + "-agent"]["image"] for role in deployment.ROLES}, {"isolated-fixture-agent:local"})
         for role in deployment.ROLES:
             mount = overlay[role + "-agent"]["volumes"][0]
@@ -94,7 +100,7 @@ class DeploymentPreparationTests(unittest.TestCase):
 
     def test_legacy_three_port_target_remains_valid_and_wrong_fourth_port_is_rejected(self):
         path = self.prepare("seven")
-        manifest = json.loads(path.read_text(encoding="utf-8"))
+        manifest = self.convert_to_legacy(path)
         target_path = self.output / "target.json"
         target = json.loads(target_path.read_text(encoding="utf-8"))
         target["ports"].pop("reply_drop")
@@ -106,6 +112,52 @@ class DeploymentPreparationTests(unittest.TestCase):
         target["ports"]["reply_drop"] = 49091
         deployment.save(target_path, target)
         manifest["input_sha256"][name] = deployment.digest(target_path)
+        deployment.save(path, manifest)
+        with self.assertRaisesRegex(ValueError, "target differs"):
+            deployment.load_deployment(path)
+
+    def convert_to_legacy(self, path):
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        manifest["schema_version"] = "incident-deployment/1.0"
+        overlay_path = self.output / "deployment.overlay.yml"
+        overlay = json.loads(overlay_path.read_text(encoding="utf-8"))
+        del overlay["services"]["app-v2"]
+        del overlay["services"]["reply-drop"]
+        deployment.save(overlay_path, overlay)
+        manifest["input_sha256"][deployment.relative(overlay_path)] = deployment.digest(overlay_path)
+        deployment.save(path, manifest)
+        return manifest
+
+    def test_legacy_business_and_seven_overlay_load_without_rewriting_old_inputs(self):
+        for mode in ("business", "seven"):
+            self.output = Path(self.temporary.name) / mode
+            path = self.prepare(mode)
+            self.convert_to_legacy(path)
+            before = {file: file.read_bytes() for file in self.output.rglob("*") if file.is_file()}
+            self.assertEqual(deployment.load_deployment(path)["schema_version"], "incident-deployment/1.0")
+            self.assertEqual(before, {file: file.read_bytes() for file in self.output.rglob("*") if file.is_file()})
+
+    def test_image_binding_tamper_or_new_three_port_target_rejected_even_with_updated_fingerprint(self):
+        path = self.prepare("seven")
+        original_manifest = json.loads(path.read_text(encoding="utf-8"))
+        overlay_path = self.output / "deployment.overlay.yml"
+        original_overlay = overlay_path.read_bytes()
+        for service in ("app-v2", "reply-drop"):
+            overlay = json.loads(original_overlay)
+            overlay["services"][service]["image"] = "other-project-app:local"
+            deployment.save(overlay_path, overlay)
+            manifest = json.loads(json.dumps(original_manifest))
+            manifest["input_sha256"][deployment.relative(overlay_path)] = deployment.digest(overlay_path)
+            deployment.save(path, manifest)
+            with self.subTest(service=service), self.assertRaisesRegex(ValueError, "overlay"):
+                deployment.load_deployment(path)
+        overlay_path.write_bytes(original_overlay)
+        target_path = self.output / "target.json"
+        target = json.loads(target_path.read_text(encoding="utf-8"))
+        del target["ports"]["reply_drop"]
+        deployment.save(target_path, target)
+        manifest = original_manifest
+        manifest["input_sha256"][deployment.relative(target_path)] = deployment.digest(target_path)
         deployment.save(path, manifest)
         with self.assertRaisesRegex(ValueError, "target differs"):
             deployment.load_deployment(path)

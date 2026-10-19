@@ -1,0 +1,154 @@
+{
+  "status": "STARTUP_IMAGE_PREPARATION_BLOCKED",
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "incident-pilot-acceptance-20261019-app-v2:local"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "f33008b9cc4cc7e427ba884b1858b26fdc3bfeb242664d80f269042148e416be",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "incident-pilot-acceptance-20261019-agent:local"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "e52045970e8c376d20811066fc647e21062810c27a324a6c4a55da5cd5199500",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "postgres:16-alpine"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "bd6acbf68054b84c4d1db798db31024909f847f3591b91f8dce32c000488696f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "nginx:1.27-alpine"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "a51974ae335b90e714640bee5eb605d129fad96696e1332cf2cc20ebb1dab1e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "incident-pilot-acceptance-20261019-app-v1"
+      ],
+      "actual_exit_code": 1,
+      "stdout_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "stderr_sha256": "d0b352512dee43abc274bc3cc647c7d09d449dfbc3c440692b704df5eea0f32c"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "tag",
+        "sha256:165a53fd42371edbb3618b7dfd269208d080526c0ce07ef686ab2a53d1240c25",
+        "incident-pilot-acceptance-20261019-app-v1"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "image",
+        "inspect",
+        "--format",
+        "{{json .Id}}",
+        "incident-pilot-acceptance-20261019-app-v1"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "f33008b9cc4cc7e427ba884b1858b26fdc3bfeb242664d80f269042148e416be",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "docker",
+        "--host",
+        "unix:///var/run/docker.sock",
+        "ps",
+        "--all",
+        "--quiet",
+        "--no-trunc"
+      ],
+      "actual_exit_code": 0,
+      "stdout_sha256": "4953d9046d2781ae178ccd8963671de62e0d4a6ed2ead9db2655e99611a2d5c7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "images": {
+    "app-v2": {
+      "reference": "incident-pilot-acceptance-20261019-app-v2:local",
+      "image_id": "sha256:165a53fd42371edbb3618b7dfd269208d080526c0ce07ef686ab2a53d1240c25"
+    },
+    "agent": {
+      "reference": "incident-pilot-acceptance-20261019-agent:local",
+      "image_id": "sha256:ccc35272ab4086325292ddfcaedac156e95ab4086df6a0d93276c030efaab837"
+    },
+    "postgres": {
+      "reference": "postgres:16-alpine",
+      "image_id": "sha256:530a5243e576c08debb4860c981029bd9896b96686a65140da9e3b11c92f698e"
+    },
+    "nginx": {
+      "reference": "nginx:1.27-alpine",
+      "image_id": "sha256:1c7709d5f4d86d38773f8f908825dbc968da1fe2ee9d1d2542eeeb504a6a4fa8"
+    },
+    "app-v1": {
+      "reference": "incident-pilot-acceptance-20261019-app-v1",
+      "image_id": "sha256:165a53fd42371edbb3618b7dfd269208d080526c0ce07ef686ab2a53d1240c25"
+    }
+  },
+  "tag_actions": 1,
+  "project": "incident-pilot-acceptance-20261019",
+  "container_start_stop_build_actions": 0,
+  "app_v1_before": null,
+  "before_container_count": 34,
+  "current_container_count": 40,
+  "old_container_ids_preserved": true,
+  "container_ids_unchanged": false,
+  "error_class": "ValueError",
+  "reason": "Container inventory differs from the original read-only snapshot"
+}

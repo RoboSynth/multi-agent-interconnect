@@ -10,6 +10,8 @@
 
 同日新增[正式 E1-c 旧主同进程恢复](docs/platform_e1c_20261019.md)：共享账本接管后恢复原 PID、拒绝旧请求，计划与授权单独绑定；正式故障实验尚待运行。
 
+[正式验收准备](docs/acceptance_preparation_20261019.md)已生成独立镜像、七身份配置及 22 个新计划，并修复 F12 镜像绑定与旧依赖下载阻断；计划尚未执行。
+
 本轮完成[原请求回执正确性修复](docs/original_receipt_correctness_20261018.md)：HTTP200与v2标记不足以解除未知请求，共享校验要求原键、committed和一致的合法订单UUID及快照。两个旧缺陷经模拟HTTP复现，21个不同方法通过；[证据](evidence/original-receipt-correctness-20261018/summary.json)保留失败与适用范围。新修订未部署到现有运行进程，未新增真实F12/E5或改判旧未决。原204冻结不变；旧E1公开集合157、保留原源树动态158、本修订动态159，正式E1须新revision绑定，不能直接复用旧plan。按用户要求，本轮上传后暂停。
 
 新增[独立部署入口](deploy/ISOLATED.md)：manifest绑定项目、端口、环境及路由，准备默认只写新目录，四业务与七身份模式分开。[业务验收工具](evidence/deployment-verifier-20261018/summary.json)支持URL或manifest并检查公共v2和30秒/10完整流程；原8088验收与[新580xx部署实跑](evidence/isolated-deployment-runtime-20261018/summary.json)分别留证，后者30.016秒/30成功/10流程，原30容器元数据保持，自有4容器正常停止并保留。两次监督检查误判退出1保留，最终H00/stop为0，没有第三次up。六份接手文档同步当前NEW7状态；[场景缺口审阅](docs/scenario_gaps_20261018.md)列出待实施的回执判据和F12显式目标缺口。本轮是同机缓存验收，正式E1、新机器T96、Kafka/Monitor及24小时仍待。

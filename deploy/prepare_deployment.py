@@ -15,7 +15,8 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 ROLES = ("application", "verification", "database", "database-backup", "ops", "onboarding")
 PROFILE = "isolated"
-SCHEMA = "incident-deployment/1.0"
+SCHEMA = "incident-deployment/1.1"
+LEGACY_SCHEMA = "incident-deployment/1.0"
 GENERATED_ENV_KEYS = ("POSTGRES_PASSWORD", "ORDERS_DB_PASSWORD", "APP_ADMIN_TOKEN", "BRIDGE_DB_PASSWORD",
                       "ORDER_BIND", "APP_V1_PORT", "APP_V2_PORT", "ORDER_PORT", "REPLY_DROP_PORT")
 COMPOSE_SCOPE_KEYS = ("COMPOSE_FILE", "COMPOSE_PROFILES", "COMPOSE_PROJECT_NAME", "COMPOSE_ENV_FILES",
@@ -61,10 +62,17 @@ def validate_options(project, ports, reply_port, wsl):
         raise ValueError("Invalid WSL distribution")
 
 
-def overlay_value(output, project, mode, wsl):
+def overlay_value(output, project, mode, wsl, *, schema=SCHEMA):
+    if schema not in {SCHEMA, LEGACY_SCHEMA}:
+        raise ValueError("Unsupported deployment overlay schema")
     route = docker_path(output / "nginx-runtime", wsl)
     services = {"nginx": {"volumes": [{"type": "bind", "source": route,
         "target": "/etc/nginx/runtime", "read_only": True}]}}
+    if schema == SCHEMA:
+        # The opt-in reply-loss proxy must reuse the already built application
+        # image. Injector separately verifies its immutable ID against app-v2.
+        application_image = project + "-app-v2:local"
+        services.update({"app-v2": {"image": application_image}, "reply-drop": {"image": application_image}})
     if mode == "seven":
         for role in ROLES:
             services[role + "-agent"] = {"image": project + "-agent:local", "profiles": [PROFILE],
@@ -226,7 +234,8 @@ def load_deployment(path, *, root=ROOT):
     manifest = json.loads(path.read_text(encoding="utf-8-sig"))
     required = {"schema_version", "mode", "project", "wsl_distro", "compose_files", "env_file", "route_file",
                 "ports", "reply_drop_port", "profiles", "target_config", "coordinator_config", "input_sha256"}
-    if not isinstance(manifest, dict) or set(manifest) != required or manifest["schema_version"] != SCHEMA:
+    if (not isinstance(manifest, dict) or set(manifest) != required
+            or manifest["schema_version"] not in {SCHEMA, LEGACY_SCHEMA}):
         raise ValueError("Unsupported deployment manifest")
     mode = manifest["mode"]
     if mode not in {"business", "seven"}:
@@ -255,7 +264,7 @@ def load_deployment(path, *, root=ROOT):
             or any(environment.get(key) != value for key, value in expected_environment.items())):
         raise ValueError("Private environment bindings differ from the deployment manifest")
     if json.loads((output / "deployment.overlay.yml").read_text(encoding="utf-8")) != overlay_value(
-            output, manifest["project"], mode, manifest["wsl_distro"]):
+            output, manifest["project"], mode, manifest["wsl_distro"], schema=manifest["schema_version"]):
         raise ValueError("Generated overlay no longer matches this deployment")
     hashes = manifest["input_sha256"]
     if not isinstance(hashes, dict) or not set((*expected_files, manifest["env_file"])) <= hashes.keys():
@@ -274,7 +283,8 @@ def load_deployment(path, *, root=ROOT):
         expected_target = {**legacy_target, "ports": {**manifest["ports"], "reply_drop": manifest["reply_drop_port"]}}
         # Earlier preparations remain usable for their three-port experiments;
         # the F12 injector separately requires an explicitly bound fourth port.
-        if target_json not in (legacy_target, expected_target):
+        allowed_targets = (legacy_target, expected_target) if manifest["schema_version"] == LEGACY_SCHEMA else (expected_target,)
+        if target_json not in allowed_targets:
             raise ValueError("Evaluator target differs from the deployment manifest")
         if target.project != manifest["project"]:
             raise ValueError("Evaluator project mismatch")

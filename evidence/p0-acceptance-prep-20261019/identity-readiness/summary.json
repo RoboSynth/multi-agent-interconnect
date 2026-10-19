@@ -1,0 +1,253 @@
+{
+  "schema_version": "seven-identity-local-readiness/1",
+  "status": "FAILED_OFFLINE_READINESS",
+  "checked_at_utc": "2026-10-19T00:57:09.034156+00:00",
+  "recommended_identity_file": "D:\\AI + 开源\\incident-pilot\\integration\\private\\incident-high-score-certificates-20261018\\source.json",
+  "candidates": [
+    {
+      "path": "D:\\AI + 开源\\incident-pilot\\integration\\private\\incident-high-score-certificates-20261018\\source.json",
+      "sha256": "87d29d7f025374df2b4bbe5cfd50f6a05b28ae80b1e088a5318a3f286b9d4ee4",
+      "document_equal_to_recommended": true
+    },
+    {
+      "path": "D:\\AI + 开源\\incident-pilot\\runtime\\private\\new7-container-20261018\\source.json",
+      "sha256": "87d29d7f025374df2b4bbe5cfd50f6a05b28ae80b1e088a5318a3f286b9d4ee4",
+      "document_equal_to_recommended": true
+    }
+  ],
+  "trust_bundle": {
+    "exists": true,
+    "path": "D:\\AI + 开源\\incident-pilot\\integration\\private\\incident-high-score-certificates-20261018\\coordinator\\trust-bundle.pem",
+    "sha256": "bbe54919bda445933591dfda36ac248fd2d3fe5b89b176328d00500d4be23bad",
+    "parsed_certificate_count": 2,
+    "ssl_trust_load_succeeded": true
+  },
+  "metadata_urls": {
+    "discovery_url": "https://wt.ioa.pub/discovery/acps-adp-v2/discover",
+    "mq_auth_url": "https://wt.ioa.pub:9007"
+  },
+  "deployment_identity_configs_accepted": true,
+  "identities": [
+    {
+      "role": "coordinator",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "b4a934576d7254d66a9f1dff03078cbd07ea8e2ec0fcebdd5e0ee8c965204e25",
+      "not_before_utc": "2026-10-18T02:59:14+00:00",
+      "not_after_utc": "2026-12-06T02:59:14+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "passed": false
+    },
+    {
+      "role": "application",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "b5d3ac13d9d993cfb9dc7501287e4dc0838bf0e725f0b66946b3737288c5ee98",
+      "not_before_utc": "2026-10-18T03:00:18+00:00",
+      "not_after_utc": "2026-12-06T03:00:18+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "passed": false
+    },
+    {
+      "role": "database",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "7883c156ed7cd689b838deec5a4d94a1aa7ca91ba1a9143876e12d99df694199",
+      "not_before_utc": "2026-10-18T03:00:32+00:00",
+      "not_after_utc": "2026-12-06T03:00:32+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "passed": false
+    },
+    {
+      "role": "database-backup",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "58be8e208d4f3c11ce0a01106cce6ba3e2d5edaacac8e94469480829ea99e68d",
+      "not_before_utc": "2026-10-18T03:00:52+00:00",
+      "not_after_utc": "2026-12-06T03:00:52+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "passed": false
+    },
+    {
+      "role": "ops",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "cda951e222f0b141b57adc990117ab2ac383b0c4605d0f01724e47b5ee15d6cf",
+      "not_before_utc": "2026-10-18T03:01:02+00:00",
+      "not_after_utc": "2026-12-06T03:01:02+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+      "passed": false
+    },
+    {
+      "role": "verification",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "82fb81912de3792788dab7ff5a7693ee90913073740f13a4f688f949019db2ca",
+      "not_before_utc": "2026-10-18T03:01:18+00:00",
+      "not_after_utc": "2026-12-06T03:01:18+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "passed": false
+    },
+    {
+      "role": "onboarding",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "endpoint": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "checks": {
+        "absolute_existing_cert_and_key": true,
+        "private_key_matches": true,
+        "subject_aic_matches": true,
+        "client_auth_eku": true,
+        "currently_valid": true,
+        "exact_aic_inbox": true,
+        "public_aic_endpoint_matches": true,
+        "prior_issued_certificate_bytes_unchanged": true,
+        "role_binding_matches": true,
+        "original_public_observation_hash_matches": false,
+        "trust_bundle_matches_role_binding": true
+      },
+      "certificate_file_sha256": "0b2a9dae7ff2db802ec9f9efaab9aba9871536b160efbcee850c09965f4e67c7",
+      "not_before_utc": "2026-10-18T02:57:03+00:00",
+      "not_after_utc": "2026-12-06T02:57:03+00:00",
+      "inbox": "inbox_1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "passed": false
+    }
+  ],
+  "failures": [
+    {
+      "role": "coordinator",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "application",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "database",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "database-backup",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "ops",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "verification",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    },
+    {
+      "role": "onboarding",
+      "failed_checks": [
+        "original_public_observation_hash_matches"
+      ]
+    }
+  ],
+  "evidence": {
+    "public_metadata_observed_at_utc": "2026-10-18T03:04:51.216608+00:00",
+    "public_metadata_file": "D:\\AI + 开源\\incident-pilot\\artifacts\\p0-acceptance-prep-20261019\\checkout\\evidence\\platform-certificates-20261018\\adp-identity-observation.json",
+    "public_metadata_sha256": "9e08aea62f9a88b04374e37350e97f0e008665e2a847ca35744e65d90cbd1be1",
+    "issued_certificate_summary_sha256": "1d070468527234528734f114fa6e249724b22329902770c3ff959a3740206d2d",
+    "role_bindings_sha256": "da92de100854c8d5b4037298b9cf637a3bc58bc50abb6972e92cb772dfb22909",
+    "parser_source_sha256": "b56c8237ab0eb1a9f77effd807e361c1ebbb50aa206421d9ffdc3472ebb3bbac"
+  },
+  "actions": {
+    "network_calls": 0,
+    "platform_consumers_started": 0,
+    "services_started": 0,
+    "key_copies": 0,
+    "old_configuration_writes": 0
+  },
+  "scope": "Current local certificate/key/AIC/validity and stored official public Inbox evidence only; no live broker/ADP/ACL or exclusive consumer assertion."
+}

@@ -1,0 +1,40 @@
+{
+  "status": "PASSED_OFFLINE_AFFECTED_CHECKS",
+  "actual_exit_code": 0,
+  "actual_tool_chunk": "06d34d",
+  "checks": 7,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "test_names": [
+    "test_business_preparation_is_offline_private_and_has_no_injector_target",
+    "test_seven_manifest_target_and_domain_scopes_share_exact_sources",
+    "test_legacy_three_port_target_remains_valid_and_wrong_fourth_port_is_rejected",
+    "test_legacy_business_and_seven_overlay_load_without_rewriting_old_inputs",
+    "test_image_binding_tamper_or_new_three_port_target_rejected_even_with_updated_fingerprint",
+    "test_seven_launcher_builds_one_shared_agent_image_then_uses_no_build",
+    "test_wsl_target_and_launcher_use_identical_unicode_spaced_paths_and_distro"
+  ],
+  "log": "affected-tests-attempt1.log",
+  "log_sha256": "727a8d9c3dc66c445979178a6cf1f0c2c338686002f6b494c63a3a14d974ad9d",
+  "scope": [
+    "New business/seven overlays bind app-v2 and reply-drop to the identical project-local image tag",
+    "Legacy 1.0 business/seven manifests load without rewriting bytes; legacy three-port target remains accepted",
+    "New 1.1 target requires the fourth port; wrong image and port bindings fail even if outer fingerprint is updated",
+    "Seven launch argv still builds application pair and one shared agent image; final up uses no-build",
+    "Windows WSL/distro/unicode spaced paths remain consistent"
+  ],
+  "real_actions": {
+    "docker": 0,
+    "wsl": 0,
+    "build": 0,
+    "network": 0,
+    "platform_consumer": 0,
+    "fault": 0
+  },
+  "limits": [
+    "Only seven relevant fixture tests were run; not the whole repository suite",
+    "No actual rendered Compose or existing image ID was queried",
+    "Image ID equality remains an execution-time Injector guard"
+  ]
+}

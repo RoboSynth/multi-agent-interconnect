@@ -1,0 +1,343 @@
+{
+  "schema_version": "pglast-original-release-investigation/1",
+  "status": "OFFICIAL_ORIGINAL_WHEELS_VERIFIED_AND_LINUX_RUNTIME_CHECKED",
+  "recorded_at_utc": "2026-10-19T01:08:26.602286+00:00",
+  "root_cause": "Current official pglast index omits7.2; official CDN retains original files. postgres-mcp0.3.0 requires pglast==7.2.0.",
+  "current_index": {
+    "url": "https://pypi.org/pypi/pglast/json",
+    "release_names": [
+      "6.12",
+      "7.20",
+      "7.21",
+      "8.3",
+      "8.4",
+      "8.5",
+      "8.6",
+      "8.7"
+    ],
+    "raw_sha256": "59b59b10fb7e5225b161d67260e7af70f28b8214b42a74309510b6b15f9516c8",
+    "release72_status": 404
+  },
+  "official_postgres_mcp": {
+    "url": "https://pypi.org/pypi/postgres-mcp/0.3.0/json",
+    "raw_sha256": "2f93e5d1dc7cb5565eee4936160d4bef473b1b2638a7af72005d596de1982168",
+    "requires_dist": [
+      "attrs>=25.3.0",
+      "humanize>=4.8.0",
+      "instructor>=1.7.9",
+      "mcp[cli]>=1.5.0",
+      "pglast==7.2.0",
+      "psycopg-pool>=3.2.6",
+      "psycopg[binary]>=3.2.6"
+    ]
+  },
+  "wheels": [
+    {
+      "filename": "pglast-7.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "requirement_url": "https://files.pythonhosted.org/packages/58/e6/bf739bd61518c4a90ff05dbd456c973b21ca2a7b664d1f9910c1fe4f3088/pglast-7.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl#sha256=e2613ad4228165125047706c26925230202d63adc4d5a10cbe8a8896af024ced",
+      "sha256": "e2613ad4228165125047706c26925230202d63adc4d5a10cbe8a8896af024ced",
+      "blake2b_256": "58e6bf739bd61518c4a90ff05dbd456c973b21ca2a7b664d1f9910c1fe4f3088",
+      "bytes": 5643862,
+      "metadata_version": "7.2",
+      "requires_dist": [
+        "setuptools",
+        "cython; extra == \"dev\"",
+        "metapensiero.tool.bump_version; extra == \"dev\"",
+        "pycparser; extra == \"dev\"",
+        "readme_renderer; extra == \"dev\""
+      ],
+      "wheel_metadata": "Wheel-Version: 1.0\nGenerator: setuptools (75.6.0)\nRoot-Is-Purelib: false\nTag: cp312-cp312-manylinux_2_17_x86_64\nTag: cp312-cp312-manylinux2014_x86_64\n\n",
+      "actual_download_chunk": "a8e95a",
+      "hash_source": {
+        "url": "https://pypi.org/project/pglast/7.2/",
+        "file_section": "pglast-7.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+        "access": "Cached indexed official release Details; live release page/JSON now404"
+      }
+    },
+    {
+      "filename": "pglast-7.2-cp312-cp312-win_amd64.whl",
+      "requirement_url": "https://files.pythonhosted.org/packages/be/4b/a4d244211dd3dcfd99c704bb6195d9c5c564da175531b0fb8c844f311b8d/pglast-7.2-cp312-cp312-win_amd64.whl#sha256=06a5b2d3dd63c44ca71e29fcc0fe162f959708bd348754e420ac1b9332d1d340",
+      "sha256": "06a5b2d3dd63c44ca71e29fcc0fe162f959708bd348754e420ac1b9332d1d340",
+      "blake2b_256": "be4ba4d244211dd3dcfd99c704bb6195d9c5c564da175531b0fb8c844f311b8d",
+      "bytes": 1054938,
+      "metadata_version": "7.2",
+      "requires_dist": [
+        "setuptools",
+        "cython; extra == \"dev\"",
+        "metapensiero.tool.bump_version; extra == \"dev\"",
+        "pycparser; extra == \"dev\"",
+        "readme_renderer; extra == \"dev\""
+      ],
+      "wheel_metadata": "Wheel-Version: 1.0\nGenerator: setuptools (75.6.0)\nRoot-Is-Purelib: false\nTag: cp312-cp312-win_amd64\n\n",
+      "actual_download_chunk": "313399",
+      "hash_source": {
+        "url": "https://pypi.org/project/pglast/7.2/",
+        "file_section": "pglast-7.2-cp312-cp312-win_amd64.whl",
+        "access": "Cached indexed official release Details; live release page/JSON now404"
+      }
+    }
+  ],
+  "native_packages": {
+    "postgres-mcp": {
+      "version": "0.3.0",
+      "requires_dist": [
+        "attrs>=25.3.0",
+        "humanize>=4.8.0",
+        "instructor>=1.7.9",
+        "mcp[cli]>=1.5.0",
+        "pglast==7.2.0",
+        "psycopg-pool>=3.2.6",
+        "psycopg[binary]>=3.2.6"
+      ],
+      "metadata_sha256": "d7fc35a237bbc2ca2a7bf01f0a23a820a1d4f2cae4a0b862102efbb87463926a"
+    },
+    "pglast": {
+      "version": "7.2",
+      "requires_dist": [
+        "setuptools",
+        "cython; extra == \"dev\"",
+        "metapensiero.tool.bump_version; extra == \"dev\"",
+        "pycparser; extra == \"dev\"",
+        "readme_renderer; extra == \"dev\""
+      ],
+      "metadata_sha256": "c97ec653e5936811c0ed1f6b114580c78bb26f81278320a769fb19469b2dfc68"
+    }
+  },
+  "native_metadata_actual_chunk": "a91cdf",
+  "native_mcp_version": "1.30.0",
+  "old_image": {
+    "image_id": "sha256:7821688fb6017c427afb18c2e15bcc8bbefd360efe529fcb5231b686927e0312",
+    "actual_chunk": "7c285c",
+    "exit_code": 0,
+    "observed": {
+      "python": "3.12.15 (main, Oct  6 2026, 02:02:22) [GCC 14.2.0]",
+      "packages": {
+        "postgres-mcp": {
+          "version": "0.3.0",
+          "requires": [
+            "attrs>=25.3.0",
+            "humanize>=4.8.0",
+            "instructor>=1.7.9",
+            "mcp[cli]>=1.5.0",
+            "pglast==7.2.0",
+            "psycopg-pool>=3.2.6",
+            "psycopg[binary]>=3.2.6"
+          ]
+        },
+        "pglast": {
+          "version": "7.2",
+          "requires": null
+        },
+        "mcp": {
+          "version": "1.30.0",
+          "requires": null
+        },
+        "pip": {
+          "version": "25.0.1",
+          "requires": null
+        }
+      }
+    }
+  },
+  "linux_probe": {
+    "actual_chunk": "75381e",
+    "exit_code": 0,
+    "base_image": "sha256:65cbf12d253553a7b305a6c9a909878c66d08c2a89154becdbd10a342d02f4d1",
+    "python": "3.12.15",
+    "network": "none",
+    "isolated_venv": true,
+    "actual_command_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "checks": [
+      "Official pglast7.2 wheel and real setuptools84 dependency install",
+      "pip dry-run pglast==7.2.0 satisfied by7.2",
+      "pip check no broken requirements",
+      "actual parse_sql SELECT1 yields1 statement"
+    ]
+  },
+  "prior_failures": [
+    {
+      "chunk": "17292b",
+      "reason": "Restricted network WinError10013; normal permission reads used after this"
+    },
+    {
+      "chunk": "425ee2",
+      "exit_code": 1,
+      "reason": "First tmpfs lacked exec permission; venv failed before installation"
+    },
+    {
+      "chunk": "2104ee",
+      "exit_code": 1,
+      "reason": "Offline wheelhouse omitted real setuptools dependency; resolver correctly refused"
+    },
+    {
+      "chunk": "610b85",
+      "exit_code": 1,
+      "reason": "Summary packaging default Windows text encoding rejected UTF8 JSON; no summary created"
+    }
+  ],
+  "minimal_fix": "Retain postgres-mcp0.3.0/mcp1.30.0 and normal dependency resolution. Add official exact pglast7.2 URL+SHA with CPython3.12 Linux x86_64 and Windows AMD64 markers. Other Python/platforms need separately verified files.",
+  "owned_probe_containers": [
+    {
+      "id": "8955ce97eb20d5c3d0b4c147c87b9c5ce8ce5e3dea9a59db2363d5a88c61a913",
+      "name": "/incident-pilot-dep-probe-20261019",
+      "state": "exited",
+      "exit_code": 0,
+      "network_mode": "none",
+      "readonly_rootfs": true
+    },
+    {
+      "id": "6d06b8f4f22dc75dd5b5fe09a720237b73910253d5ed2f3cfec8ba9b13a34714",
+      "name": "/incident-pilot-dep-wheel-probe-20261019",
+      "state": "exited",
+      "exit_code": 1,
+      "network_mode": "none",
+      "readonly_rootfs": true
+    },
+    {
+      "id": "3f43536eeb9e60e709a57a905fd74d66a8e606d519cc72417f104c65f133df3e",
+      "name": "/incident-pilot-dep-wheel-probe2-20261019",
+      "state": "exited",
+      "exit_code": 1,
+      "network_mode": "none",
+      "readonly_rootfs": true
+    },
+    {
+      "id": "0d73c320ab90c05acf01b29ad6f45ff685f811c6c1684ccdffd8ecdd93726537",
+      "name": "/incident-pilot-dep-wheel-probe3-20261019",
+      "state": "exited",
+      "exit_code": 0,
+      "network_mode": "none",
+      "readonly_rootfs": true
+    }
+  ],
+  "owned_probe_inspection": {
+    "chunk": "ab09f0",
+    "exit_code": 0
+  },
+  "artifacts": {
+    "old-image-probe.exit.json": {
+      "bytes": 24,
+      "sha256": "75876e0e3f497cad271143ba85bd4f36569cd81195509043f860dab14265b716"
+    },
+    "old-image-probe.stderr.log": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "old-image-probe.stdout.log": {
+      "bytes": 417,
+      "sha256": "2e34f1ac3cdb42438d01bf206f14f9b36848feba44ba79d76cc4319e90d67d7d"
+    },
+    "owned-probes-after.exit.json": {
+      "bytes": 24,
+      "sha256": "75876e0e3f497cad271143ba85bd4f36569cd81195509043f860dab14265b716"
+    },
+    "owned-probes-after.stderr.log": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "owned-probes-after.stdout.log": {
+      "bytes": 496,
+      "sha256": "30b670d24b3346879535f877f58e90fcacb07a2c15d067cf93694ea809a65baa"
+    },
+    "pglast-7.2.fetch-failure-elevated.json": {
+      "bytes": 126,
+      "sha256": "270c7d9c7865ed7b3d39d6cb4e2f0788ccc6d8e1f9cc3e72a8886c002b816038"
+    },
+    "pglast-7.2.fetch-failure.json": {
+      "bytes": 289,
+      "sha256": "784245b62ef238d57ada98922bcc265086de512a89168a8d692e75f317f85078"
+    },
+    "pglast-current-pypi.json": {
+      "bytes": 508854,
+      "sha256": "59b59b10fb7e5225b161d67260e7af70f28b8214b42a74309510b6b15f9516c8"
+    },
+    "pglast-native.METADATA.txt": {
+      "bytes": 36323,
+      "sha256": "c97ec653e5936811c0ed1f6b114580c78bb26f81278320a769fb19469b2dfc68"
+    },
+    "postgres-mcp-0.3.0.fetch-failure.json": {
+      "bytes": 297,
+      "sha256": "e36eb203b2ce6ec9230f897e11ab5b676e9c6c07209aeb4fee97216c9d2fe8d7"
+    },
+    "postgres-mcp-0.3.0.official-response.json": {
+      "bytes": 40435,
+      "sha256": "2f93e5d1dc7cb5565eee4936160d4bef473b1b2638a7af72005d596de1982168"
+    },
+    "postgres-mcp-native.METADATA.txt": {
+      "bytes": 37513,
+      "sha256": "d7fc35a237bbc2ca2a7bf01f0a23a820a1d4f2cae4a0b862102efbb87463926a"
+    },
+    "probe_wheel.py": {
+      "bytes": 1395,
+      "sha256": "d3f597e98eaa708491971adb26e316f4b630e9d9e38679426eea001b39e2d50f"
+    },
+    "probe_wheel_v2.py": {
+      "bytes": 1448,
+      "sha256": "4d33a1091ea49c4a9a9ca5831a54bdc537e0f76634eea7585ba5190eb17bafcf"
+    },
+    "setuptools-current-pypi.json": {
+      "bytes": 1179626,
+      "sha256": "b17d794d3d3176216e3aabb872735d5e2d7aa16f62b374694af32ee6287ca73f"
+    },
+    "wheel-probe.exit.json": {
+      "bytes": 119,
+      "sha256": "a156442cdb9ad33ed934813d794523ffeb42895d01db8143f997108acca53f4a"
+    },
+    "wheel-probe.stderr.log": {
+      "bytes": 1513,
+      "sha256": "f5f6e483bdc6e273a734cc579eaeaec2ba2553e88d7995ffb372379fd3166d75"
+    },
+    "wheel-probe.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "wheel-probe2.exit.json": {
+      "bytes": 119,
+      "sha256": "2eed3c8c0cb95beecbce05096a704bcc4820ce9f9ef10d0324822178e8339e10"
+    },
+    "wheel-probe2.stderr.log": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "wheel-probe2.stdout.log": {
+      "bytes": 799,
+      "sha256": "a949d1d0997af76bfd0ef964e384bbc07a4967fefe98ac29231ed60a9d44e930"
+    },
+    "wheel-probe3.exit.json": {
+      "bytes": 119,
+      "sha256": "3de8420f8f18f7070f5dbc8b5b8585bc8386741022a47dc944053819b35af61a"
+    },
+    "wheel-probe3.stderr.log": {
+      "bytes": 153,
+      "sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98"
+    },
+    "wheel-probe3.stdout.log": {
+      "bytes": 1669,
+      "sha256": "c7346538c9e082fd3c1edc24b1717edc23b5f015967532aa9e4b9af3c96e6308"
+    },
+    "write_summary.py": {
+      "bytes": 5944,
+      "sha256": "fc86a55053ff2376ec2e4ec41d762dd1cf703f8b0bc6fc930ba6fe218a0dd915"
+    }
+  },
+  "scope": {
+    "project_source_edits": 0,
+    "existing_environment_installs": 0,
+    "existing_project_services_started_or_stopped": 0,
+    "project_consumers_or_databases_started": 0,
+    "Config_Env_reads": 0,
+    "owned_temp_containers_created": 4,
+    "all_owned_temp_containers_exited": true,
+    "windows_downloaded_wheel_installed": false
+  },
+  "limits": [
+    "pglast availability/compatibility proof; full agent build/acceptance belongs to parent run",
+    "Wheel archives remain local; do not publish dependency archives",
+    "All original failures and stopped probe containers retained"
+  ]
+}
