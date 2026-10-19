@@ -1,3 +1,7 @@
+> **2026-10-19 当前收尾状态：** [原域接入日志恢复](docs/access_recovery_validation_20261019.md)及正常停机入口已实现并完成相关本地验证；[完整 SDK 一键检查](tools/sdk-suite/README.md)在独立复制仓库与仓库内虚拟环境中实际 605/605 通过。队友可使用自己的环境复现，不需要原开发者的平台账号。
+> [新四例复验](evidence/access-validation-prep-20261019/README.md)已准备，尚未授权或运行。旧正式22例为18通过/4失败，修复12例为11通过/1失败，旧访问日志缺口保持原判。当前[15页开发报告修订3](deliverables/development-report-20261019-revision3/technical-report-development.pdf)证据截止613ecbf；最新恢复代码和测试不在该报告截止内。新机器、Kafka/Monitor入库与长期运行仍待验收。下文为历次截面。
+> [上游贡献状态](evidence/upstream-status-20261019/recheck-1651/README.md)于北京时间16:51核验：PR13/14仍为开放草稿，无审阅、评论或自动检查记录；Issue15–18仍开放、无评论。
+
 > **完整源码包已更新：** [1613文件的固定版本与复现方法](docs/development_archive.md)，源码冻结 `7fb2b2c`；逐文件校验通过。新机器、平台入库与长期运行仍待独立验收。
 
 > **2026-10-19 后续补证：** [E2-c逐条策略审计](docs/gateway_policy_evaluation_20261019.md)已完成14拒绝＋1合法正控及落盘验签；[18条访问缺端诊断](docs/access_accounting_20261019.md)保留原T05=false及4条原因未定。[8页技术报告开发稿](deliverables/development-report-20261019/technical-report-development.pdf)已更新并逐页检查，证据截止634c46d；本轮新E2-c结果另见链接。平台复验、新机、Kafka/Monitor和长期验收继续单列。

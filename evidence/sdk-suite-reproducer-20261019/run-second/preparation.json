@@ -1,0 +1,58 @@
+{
+  "status": "PORTABLE_COMPLETE_SDK_SUITE_PREPARED",
+  "source_manifest_sha256": "6f637ca34feaf3c92315648be8a09fc40dd337b863f1652e8ccae1e5113e2bbd",
+  "actual_interpreter": "[repo-test-python]/Scripts/python.exe",
+  "actual_base_interpreter": "[python-runtime]/python.exe",
+  "python_prefix": "[repo-test-python]",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "dependency_versions": {
+    "pytest": "9.0.2",
+    "pytest-asyncio": "1.4.0",
+    "anyio": "4.13.0",
+    "pydantic": "2.12.5",
+    "httpx": "0.28.1",
+    "aio-pika": "9.6.2",
+    "fastapi": "0.135.2",
+    "uvicorn": "0.49.0",
+    "jcs": "0.2.1",
+    "cryptography": "49.0.0",
+    "PyJWT": "2.13.0"
+  },
+  "sdk_tree": "[run-second]/suite-copy/acps-sdk",
+  "synthetic_fixture_sha256": {
+    "demo-partner/partners/online/beijing_food/server.pem": "983d98db36aab0cde8c01eec356a57738329ddbfc532a99f2f22bb5726e4b109",
+    "demo-partner/partners/online/beijing_food/server.key": "e79e5b1f1992be4174d77bc26282396801b3c1a4a8feb7ad57d86669e6ba0efd",
+    "demo-partner/partners/online/beijing_food/client.pem": "5f3c86d7db9678ce4f7e881a176bbb94a68f8f5c504a59101e3056a7f47493e2",
+    "demo-partner/partners/online/beijing_food/client.key": "93b48ba70f62056cd3dd0d6b4cd301b4e4820178e434c7fd0d555ab0e059cf1e",
+    "demo-partner/partners/online/beijing_food/trust-bundle.pem": "536ff93a3d62cfa9e533fdedc206d9e57048c3755ab34d10bdd547413c31d597",
+    "demo-leader/leader/atr/client.pem": "7bebca4ee896704e7ec43b2e088b75e8d420ee20d5598cc9d90f7182bd08dceb",
+    "demo-leader/leader/atr/client.key": "2b435f238dc93d6f2b551332d4ed581711023521a4b18c16797aa40440028636",
+    "demo-leader/leader/atr/trust-bundle.pem": "536ff93a3d62cfa9e533fdedc206d9e57048c3755ab34d10bdd547413c31d597"
+  },
+  "private_keys_local_only": true,
+  "public_tls_sha256": "2e537b83e1ae6b1587eae4966b1e0f3a203fe049f0a5c9a2ba53d491e3c82f84",
+  "runner_sha256": "9ced5840dbfd5ade9f00c98525921b31f56f6eda12cf2be6fb069093cbdb7fe0",
+  "tls_generator_sha256": "63b471dd66ab7859dec0c64e72ac45da4baca48fd0800ee72153739cd2b1d6b8",
+  "pytest_arguments": [
+    "-c",
+    "[run-second]/suite-copy/acps-sdk/pyproject.toml",
+    "--rootdir=[run-second]/suite-copy/acps-sdk",
+    "--confcutdir=[run-second]/suite-copy/acps-sdk",
+    "-p",
+    "pytest_asyncio.plugin",
+    "-p",
+    "anyio.pytest_plugin",
+    "-ra",
+    "--basetemp=[run-second]/pytest-temporary",
+    "-o",
+    "cache_dir=[run-second]/pytest-cache",
+    "--junitxml=[run-second]/junit.xml",
+    "[run-second]/suite-copy/acps-sdk/tests"
+  ],
+  "backend": [
+    "asyncio"
+  ],
+  "plugin_autoload_disabled": true,
+  "all_tests_included": true,
+  "platform_or_model_started": false
+}

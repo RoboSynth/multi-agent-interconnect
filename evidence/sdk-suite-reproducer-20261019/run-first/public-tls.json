@@ -1,0 +1,67 @@
+{
+  "test_only": true,
+  "registered_platform_identity_used": false,
+  "CA_private_key_persisted": false,
+  "CA_certificate_sha256": "5a7a1adc39e63a8ea565ca04432569445f21daa26d0e41c7b4e2103524fcb47f",
+  "leaves": {
+    "partner-server": {
+      "common_name": "1.2.156.3088.1.1.TESTCA.TEST01.TEST01.0001",
+      "certificate_sha256": "36803ab054b1da0e31fbe1189f387a229964596638f757c46321c1cdbbc71405",
+      "public_key_sha256": "800bb67f1b258275e3f3d1ba2b0d9820538f0d1d6ff131ca0aeae552e242cdc3",
+      "valid_from_utc": "2026-10-19T08:22:59+00:00",
+      "valid_until_utc": "2026-10-21T08:27:59+00:00",
+      "extended_key_usage": [
+        "serverAuth",
+        "clientAuth"
+      ],
+      "SAN": [
+        "localhost",
+        "127.0.0.1",
+        "acps://1.2.156.3088.1.1.TESTCA.TEST01.TEST01.0001"
+      ]
+    },
+    "partner-client": {
+      "common_name": "1.2.156.3088.1.1.TESTCA.TEST01.TEST01.0001",
+      "certificate_sha256": "92827d3c2caf703fdbc6369b39a9f9caf9ad8f0718a9f1498001e88e9d57d865",
+      "public_key_sha256": "5cb05f13bad1fd72341e901bb90bd2b3878aa3aa317bdf60a3bbb662bb670458",
+      "valid_from_utc": "2026-10-19T08:22:59+00:00",
+      "valid_until_utc": "2026-10-21T08:27:59+00:00",
+      "extended_key_usage": [
+        "serverAuth",
+        "clientAuth"
+      ],
+      "SAN": [
+        "localhost",
+        "127.0.0.1",
+        "acps://1.2.156.3088.1.1.TESTCA.TEST01.TEST01.0001"
+      ]
+    },
+    "leader-client": {
+      "common_name": "1.2.156.3088.1.1.TESTCA.TEST01.TEST02.0002",
+      "certificate_sha256": "c2db37c7d7d6a27acb64803b811754bf188368e62e91303eda4751eb316902f7",
+      "public_key_sha256": "5192a92591afe85fe80f1bf7656fe1f08834238e5d661ebbc398239354281f23",
+      "valid_from_utc": "2026-10-19T08:22:59+00:00",
+      "valid_until_utc": "2026-10-21T08:27:59+00:00",
+      "extended_key_usage": [
+        "serverAuth",
+        "clientAuth"
+      ],
+      "SAN": [
+        "localhost",
+        "127.0.0.1",
+        "acps://1.2.156.3088.1.1.TESTCA.TEST01.TEST02.0002"
+      ]
+    }
+  },
+  "expected_fixture_paths": [
+    "demo-partner/partners/online/beijing_food/server.pem",
+    "demo-partner/partners/online/beijing_food/server.key",
+    "demo-partner/partners/online/beijing_food/client.pem",
+    "demo-partner/partners/online/beijing_food/client.key",
+    "demo-partner/partners/online/beijing_food/trust-bundle.pem",
+    "demo-leader/leader/atr/client.pem",
+    "demo-leader/leader/atr/client.key",
+    "demo-leader/leader/atr/trust-bundle.pem"
+  ],
+  "private_keys_publication_allowed": false
+}

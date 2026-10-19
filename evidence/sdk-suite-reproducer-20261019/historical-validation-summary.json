@@ -1,0 +1,83 @@
+{
+  "status": "PORTABLE_SDK_REPRODUCER_READY_FOR_NEXT_PUBLICATION",
+  "root_checkout_modified": false,
+  "git_committed": false,
+  "current_runner_sha256": "9ced5840dbfd5ade9f00c98525921b31f56f6eda12cf2be6fb069093cbdb7fe0",
+  "tls_generator_sha256": "63b471dd66ab7859dec0c64e72ac45da4baca48fd0800ee72153739cd2b1d6b8",
+  "first_run": {
+    "source": "run-first",
+    "pytest_exit_code": 0,
+    "collected": 605,
+    "call_outcomes": {
+      "passed": 605
+    },
+    "executor_session_id": 32778,
+    "terminal_chunk": "714734",
+    "actual_exit_code": 0,
+    "runner_version_has_known_fixed_venv_filter_and_TMPDIR_issues": true,
+    "exact_old_runner_preserved": "run-first/run_sdk_suite.executed.py"
+  },
+  "second_run": {
+    "source": "run-second",
+    "pytest_exit_code": 0,
+    "collected": 605,
+    "call_outcomes": {
+      "passed": 605
+    },
+    "warnings": [],
+    "worker_actual_returncode": 0,
+    "driver_exit_code": 0,
+    "executor_session_id": 59815,
+    "terminal_chunk": "e70512",
+    "actual_exit_code": 0,
+    "elapsed_seconds": 42.562,
+    "test_environment_within_temporary_repo": true,
+    "source_repo_before_after_exact": true,
+    "source_snapshot_before_after_exact": true,
+    "synthetic_tls_before_after_exact": true,
+    "loaded_sdk_modules_from_snapshot": true,
+    "reference_manifest147_matched": true,
+    "nodeids_match_current_official605_suite": true,
+    "results_sha256": "97c24903415247d5c4bb63586660328bb1bb6380d147d558beec292f0963cae6",
+    "driver_result_sha256": "0a559e854193edf4fd576119b752fb15db831c36c3d7403b148e5bf48116d351"
+  },
+  "independent_review": "review.md records first version findings; both fixed, second full run uses repo-internal venv; TMPDIR static only on Windows",
+  "suggested_public_files": [
+    {
+      "source": "run_sdk_suite.py",
+      "target": "tools/sdk-suite/run_sdk_suite.py",
+      "sha256": "9ced5840dbfd5ade9f00c98525921b31f56f6eda12cf2be6fb069093cbdb7fe0"
+    },
+    {
+      "source": "synthetic_tls.py",
+      "target": "tools/sdk-suite/synthetic_tls.py",
+      "sha256": "63b471dd66ab7859dec0c64e72ac45da4baca48fd0800ee72153739cd2b1d6b8"
+    },
+    {
+      "source": "requirements-tested.txt",
+      "target": "tools/sdk-suite/requirements-tested.txt",
+      "sha256": "b820cafcbb5809fe2ed514e93b5e8bb77e2842aa1436806bb33fef17d187b085"
+    },
+    {
+      "source": "tls-source-binding.json",
+      "target": "tools/sdk-suite/tls-source-binding.json",
+      "sha256": "696d3a4091196b5e6e148d37be5ac07e6162836e4aae27cf4baeb4995a1f8991"
+    },
+    {
+      "source": "README.md",
+      "target": "tools/sdk-suite/README.md",
+      "sha256": "46951e4ea8bfddf1e9c4cceb91a6b04e15accec4596a5fcc55af00cbaec408ad"
+    }
+  ],
+  "local_only_paths": [
+    "run-first/suite-copy",
+    "run-second/suite-copy",
+    "validation-repo"
+  ],
+  "limitations": [
+    "Linux/macOS not run",
+    "Environment prerequisites must be installed before offline runner",
+    "Raw output includes local absolute paths; publish only bounded projected evidence",
+    "Current package has not been placed in or uploaded from team checkout"
+  ]
+}

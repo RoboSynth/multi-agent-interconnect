@@ -24,6 +24,18 @@
 
 605 是这一次当前组合套件的实际数量。旧 PR13 的 581 项与 PR14 的 558 项共享 553 项，本次结果不与其相加，也不与此前 durable17、coordinator2 单项记录重复累计。
 
+## 一条命令复现
+
+按[SDK 检查入口](../tools/sdk-suite/README.md)准备独立 Python 环境后，在仓库根目录执行：
+
+```text
+python tools/sdk-suite/run_sdk_suite.py --repo-root . --output ../sdk-suite-run-01 --python .venv-sdk/Scripts/python.exe
+```
+
+入口复制当前完整 SDK、生成临时 synthetic TLS 并运行全部测试，不必手工拼接原开发机的 artifact 路径；输出目录必须为新目录。`--python`也可指定自己的既有环境；Linux 的 venv 路径为`.venv-sdk/bin/python`。
+
+[可移植入口的两次验证](../evidence/sdk-suite-reproducer-20261019/README.md)各自实际605/605、0 warning；修复后的入口另在独立复制仓库及其内部36包venv上通过，147份源码前后相同。两次和本页原605结果不重复累计。两份已验证程序保持原字节，其他操作系统尚未实测。
+
 ## T01 边界
 
 这次补齐 vendor 测试树并给出当前组合 SDK 的完整本地验证。当前 vendor 仍包含两 PR 及较新的 durable access/coordinator 扩展，不能称为任一单独 PR 的 checkout。T01 的最终 fork 集成提交与 vendor 绑定、AtomGit 镜像及上游 CI 尚未完成。平台 fault、Monitor 入库、正式七身份重新连接及长期运行也不由这组本地测试证明。

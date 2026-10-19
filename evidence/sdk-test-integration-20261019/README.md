@@ -8,7 +8,13 @@
 
 本次实际使用独立的冻结36包Python环境，完整保留`acps-sdk/tests`，显式启用pytest-asyncio和AnyIO，关闭无关插件自动加载。TLS listener仅为本机随机回环端口；MQ/Registry/OIDC使用fake、ASGI或MockTransport，进程恢复fixture只持有自己的临时子进程。源码和TLS夹具前后完全一致，SDK模块均来自隔离副本；SDK产品源码未随测试整合修改。
 
-若要复现同一检查范围，先按[准备回执](preparation.json)建立相同依赖环境，将[清单](source-manifest.json)中的完整SDK复制到独立测试树，再从`helpers/original_tls_preparer.py`复用`make_tls()`在其同级demo目录生成八份synthetic TLS文件；按`helpers/run_current_sdk_suite.py`中的完整pytest参数运行，不过滤测试。证书重新生成后哈希会变化，应另存新的准备和结果回执。
+若要复现同一检查范围，先按[仓库随附的SDK入口说明](../../tools/sdk-suite/README.md)准备独立Python环境，在仓库根目录运行：
+
+```text
+python tools/sdk-suite/run_sdk_suite.py --repo-root . --output ../sdk-suite-run-01 --python .venv-sdk/Scripts/python.exe
+```
+
+入口自动复制当前完整SDK并生成八份synthetic TLS文件，无需使用本目录历史helper的本机工件布局。[可移植入口的两次验证](../sdk-suite-reproducer-20261019/README.md)另存；本目录原605及其源码/结果绑定保持不变。证书重新生成后哈希会变化，每次输出到新目录并保留新的回执。
 
 本轮是当前SDK本地完整suite；不代表上游CI、真实平台故障、Monitor入库或七身份重连。最终fork绑定和AtomGit仍待后续处理。旧两PR的581/558以及此前单项17/2结果不与本轮605相加。
 

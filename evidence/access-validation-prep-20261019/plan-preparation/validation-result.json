@@ -1,0 +1,120 @@
+{
+  "schema_version": "access-validation-preparation-evidence/1",
+  "status": "PREPARED_VALIDATED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "source_commit": "a4d71e83444228a71499a75c932a2b9e7ba678f1",
+  "prepared_summary_sha256": "b7bc975756db0ae78a02d8b80d52d670c214a9078ea8522f5191a55fa67cae82",
+  "batch_plans_sha256": "d1b6e10de8820cafd5a34d705bbea49f806c80257349eb5283abe8d590408fba",
+  "plans": {
+    "f10-m0-r1": "439353dc36c8a2f77bf0b05d825116f085623a054c32dc4c5ba6f84dd1c6a95b",
+    "e1a-after_observation-r1": "f0bf7af269c7b115e27c56a9a806c0fd21b4c416071da861a08dc3b4e91b7355",
+    "e1a-before_modification-r1": "6f067bcb989e281e7175e0265c06592c8999752aa88539ebdb663e7cbc0772b8",
+    "e1a-after_applied-r1": "73065c09cb51be374443f1235238a7def259a0ce07e7c5f76329a18fe76cadb7"
+  },
+  "checks": [
+    {
+      "name": "14 file/mock guards",
+      "actual_exit_code": 0,
+      "tool_chunk": "d9e386",
+      "log": "guard-tests-r2.log"
+    },
+    {
+      "name": "15 file/mock guards including exact restored-ID registration",
+      "actual_exit_code": 0,
+      "tool_chunk": "7fa3b9",
+      "log": "guard-tests-r3.log"
+    },
+    {
+      "name": "file-only preparation",
+      "actual_exit_code": 0,
+      "tool_chunk": "8385ba",
+      "log": "prepare.log"
+    },
+    {
+      "name": "prior revision 2 default batch entrypoint",
+      "actual_exit_code": 0,
+      "tool_chunk": "e70686",
+      "log": "launcher-validate-r2.log"
+    },
+    {
+      "name": "prior revision 2 default F10 entrypoint",
+      "actual_exit_code": 0,
+      "tool_chunk": "ee4944",
+      "log": "f10-validate-r2.log"
+    },
+    {
+      "name": "actual --execute with no authorization fails before effects",
+      "actual_exit_code": 1,
+      "expected_rejection": true,
+      "tool_chunk": "520dd9",
+      "log": "missing-authorization-rejection.log"
+    },
+    {
+      "name": "affected stop identity guards: backward and forward start-time changes plus bound DB replacement",
+      "actual_exit_code": 0,
+      "test_count": 3,
+      "tool_chunk": "3e8164",
+      "log": "guard-start-identity-r4.log"
+    },
+    {
+      "name": "current revision 3 default batch entrypoint",
+      "actual_exit_code": 0,
+      "tool_chunk": "3ea1e0",
+      "log": "launcher-validate-r3.log"
+    },
+    {
+      "name": "current revision 3 default F10 entrypoint",
+      "actual_exit_code": 0,
+      "tool_chunk": "e679f1",
+      "log": "f10-validate-r3.log"
+    }
+  ],
+  "logs_sha256": {
+    "f10-validate-r2.log": "2584e1694998e11ce88f3e644bf5fa98c96a7234ea0188d526ed3bd6810371eb",
+    "f10-validate-r3.log": "2584e1694998e11ce88f3e644bf5fa98c96a7234ea0188d526ed3bd6810371eb",
+    "f10-validate.log": "2584e1694998e11ce88f3e644bf5fa98c96a7234ea0188d526ed3bd6810371eb",
+    "file-preflight.log": "b6d2801ff160bcbf7d0b32a3a797abc6e9c44fe23f2106a4cb01601490e7acb2",
+    "guard-start-identity-r4.log": "bc4a7cc0bc5410c2c89c580f5c8ea4c9dc95b2d3358cd8478554af1abf6a9bde",
+    "guard-tests-r2.log": "09da27cf48b0e6542d6f60872098009faa1f73611e6a9afef2561b1327a66868",
+    "guard-tests-r3.log": "e9ad8d2651c6382dca7c91bed8e15c394d37bc067c87d1a53b35efc025ab1c33",
+    "guard-tests.log": "36dd52242a7311ad55f4f4e1dcea516eacad65167d7a1411ab1e8ddc980f1e5d",
+    "launcher-validate-r2.log": "6daec9bee8fd285b3542f7acae3a161278e3012c5f1cc0aefba125a1925316e5",
+    "launcher-validate-r3.log": "6daec9bee8fd285b3542f7acae3a161278e3012c5f1cc0aefba125a1925316e5",
+    "launcher-validate.log": "6daec9bee8fd285b3542f7acae3a161278e3012c5f1cc0aefba125a1925316e5",
+    "missing-authorization-rejection.log": "51cfcc8ae6c0663c999c112ce7e7b2206494d09e4a4a0289e977233ae1ce07c2",
+    "prepare.log": "210aadb1e85408084b9c918b4dc0f5313ec646b424f4889311e70b0a52a5d31e"
+  },
+  "execution_directory_exists": false,
+  "case_output_directory_exists": false,
+  "per_case_authorizations": [],
+  "real_project_or_platform_or_model_or_faults_executed": false,
+  "initial_sandbox_test": {
+    "tool_chunk": "68ed95",
+    "observation": "Four synchronous test setup errors; async fixture subsequently stalled in sandbox. No final unittest summary. Test temporary directories moved into BATCH fixtures; scoped rerun passed.",
+    "termination": {
+      "tool_chunk": "f4a3b2",
+      "verified_test_pids": [
+        36512,
+        20856
+      ],
+      "creation_time_local": "2026-10-19T16:28:11",
+      "scope": "Only this test script, exact PIDs/start time; no project runtime"
+    }
+  },
+  "limitations": [
+    "Only file/mock tests and preparation have run; all four real cases remain unexecuted.",
+    "Unknown replacement containers without matching child original/restored ID receipts cause reported stop failure, with ownership records retained.",
+    "Old 22/12 cohorts remain unchanged; this does not prove Monitor/Kafka ingestion or a fresh-machine start/stop."
+  ],
+  "evidence_revision": 2,
+  "prior_validation_sha256": "35481ef9f2d8b1155b33484e54539b1b33aa2d62edc11b3c070ae01ec8b267f7",
+  "preparation_revision": 3,
+  "revision_reason": "Exact same-ID StartedAt matching added; targeted regression/default-only revalidation passed. Frozen source and all four plan hashes unchanged.",
+  "execution_script_sha256": {
+    "plan-preparation/batch_scope.py": "f53f3a414c596891064792fa4ae583449460b95676b7a76a8aeac35544f0628e",
+    "plan-preparation/prepare_bound_plans.py": "36f2558370037a81c65bfa6528979ae060e2334f2d880eb7a780f13459fe759a",
+    "run_authorized.py": "c4897d3751f6eb6605bf06d46304c0c343cb35da0ce213a3567d9afafbdf04d1",
+    "run_f10.py": "7a21b0fa5d90d660db7d78f447835857ef278a12b7d94c188a32cc8101080392"
+  },
+  "test_batch_guards_sha256": "12c21189a52ed6ccc3686a352ef9a9902dc828855476cb1beca0160fa249f604",
+  "run_scope_sha256": "40fa34e6c762ac618496ed9490e06b8da04bda5cda25959bfbed4dbd4479d28c"
+}

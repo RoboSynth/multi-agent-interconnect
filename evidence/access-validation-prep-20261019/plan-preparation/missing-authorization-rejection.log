@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "[batch]/run_authorized.py", line 358, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "[batch]/run_authorized.py", line 353, in main
+    scope.validate_authorization(args.authorization_file, summary)
+  File "[batch]/plan-preparation/batch_scope.py", line 178, in validate_authorization
+    raise ValueError("A new explicit four-case batch authorization file is required before execution")
+ValueError: A new explicit four-case batch authorization file is required before execution
