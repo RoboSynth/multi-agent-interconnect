@@ -1,3 +1,5 @@
+> **完整源码包已更新：** [1613文件的固定版本与复现方法](docs/development_archive.md)，源码冻结 `7fb2b2c`；逐文件校验通过。新机器、平台入库与长期运行仍待独立验收。
+
 > **2026-10-19 后续补证：** [E2-c逐条策略审计](docs/gateway_policy_evaluation_20261019.md)已完成14拒绝＋1合法正控及落盘验签；[18条访问缺端诊断](docs/access_accounting_20261019.md)保留原T05=false及4条原因未定。[8页技术报告开发稿](deliverables/development-report-20261019/technical-report-development.pdf)已更新并逐页检查，证据截止634c46d；本轮新E2-c结果另见链接。平台复验、新机、Kafka/Monitor和长期验收继续单列。
 
 > **2026-10-19 最新正式验收：** [22项逐例结果与剩余P0](docs/platform_acceptance_results_20261019.md)。本批准备22项，实际尝试22项：通过18、失败4；未尝试0。失败照原结果保留，发布不要求全部通过。 接手见[开发者指南](docs/开发者接手指南_20261018.md)。

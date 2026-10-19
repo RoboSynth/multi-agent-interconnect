@@ -1,3 +1,17 @@
+> **2026-10-19 新版完整源码包：** 固定提交 `7fb2b2c3cb7f4ad41dc40dba5b7ab0f12feb116b`，1613个文件，ZIP 16,553,937字节；全部文件与Git blob及快照清单逐字一致，80项必要入口齐全。包含本轮E2-c源码/测试/证据、18条缺端诊断和8页报告。下文69647cf包为历史截面。
+
+## 当前包复现
+
+```text
+git archive --format=zip --prefix=incident-pilot-development-7fb2b2c/ --output=../incident-pilot-development-7fb2b2c.zip 7fb2b2c3cb7f4ad41dc40dba5b7ab0f12feb116b
+```
+
+本次实际ZIP SHA256：`3330f1606c105be0fd92229bb108e28c3b22721d6bf3f41bb6c2196e10211474`。GitHub也可从该固定提交导出源码；ZIP容器元数据可能随工具变化，核验应绑定固定提交和逐文件内容。本地实际校验见[验证结果](../evidence/deployment/development-archive-7fb2b2c/verification.json)及[退出收据](../evidence/deployment/development-archive-7fb2b2c/verification-exit.json)。
+
+这一次只读验证无解压、构建、启动或真实业务调用；不计新机器15分钟部署、网盘永久分享或另账号访问验收。源码包不携带实际env、私钥、数据库、模型和依赖环境；队友按[开发者接手指南](开发者接手指南_20261018.md)配置自己的环境。归档固定在代码/报告提交，随后入库的归档验证记录可从最新主分支取得。
+
+---
+
 # 完整开发复现包
 
 本轮源码固定于团队仓库提交 `69647cf29de96b50091c0a3e51ae2308115ad2fb`。归档包含1069个已审定跟踪文件：项目源码、完整改造SDK/CLI、部署模板与许可证、筛选基线、资料和闭合派生证据。它不依赖旧的baseline源码overlay来补齐SDK。

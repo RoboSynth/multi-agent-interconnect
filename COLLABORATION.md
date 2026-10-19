@@ -241,3 +241,8 @@ T06[本机采集准备](deploy/fluent-bit/README.md)补只读预检、固定源�
 ### 2026-10-19 策略审计、访问缺端诊断与报告更新
 
 新增可独立运行E2-c：真实MCP stdio与项目fixture的15例中14拒绝均签名audit落盘且转发0，合法正控3次MCP/1次fixture修改，16个独立探测另列；4项验证器检查通过，先前Windows初始化失败保留。新8页技术报告吸收634c46d闭合结果，已逐页目视；缺端诊断为14条确证硬退出、3条缺主进程证据、1条环境验证中断，不改T05=false。见[策略审计](docs/gateway_policy_evaluation_20261019.md)、[缺端诊断](docs/access_accounting_20261019.md)和[报告](deliverables/development-report-20261019/README.md)。本轮未启动真实业务、平台或长期巡检，后续源码复验与外部验收仍待各自证据。
+
+
+### 2026-10-19 新版完整源码归档
+
+源码提交7fb2b2c已导出1613文件ZIP并逐项核对Git blob和快照，80个必要入口齐全；16,553,937字节，SHA3330f1606c105be0fd92229bb108e28c3b22721d6bf3f41bb6c2196e10211474。见[归档复现](docs/development_archive.md)；本次无解压、Compose启动或跨机验收。旧69647cf包和原科学结果保留，最新归档验证资料是后续文档提交。
