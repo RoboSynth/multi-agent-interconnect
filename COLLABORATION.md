@@ -236,3 +236,8 @@ T06[本机采集准备](deploy/fluent-bit/README.md)补只读预检、固定源�
 
 
 2026-10-19 正式验收补证：准备22项、尝试22、通过18、失败4、未尝试0。见[本批结果](docs/platform_acceptance_results_20261019.md)；首环境失败、独立恢复/关组warning与资源absent分别保留。独立handover wire修复仅39个离线方法通过，未部署或重验原批；T05/T62按实际findings发布，旧E3和旧未知请求未改判。
+
+
+### 2026-10-19 策略审计、访问缺端诊断与报告更新
+
+新增可独立运行E2-c：真实MCP stdio与项目fixture的15例中14拒绝均签名audit落盘且转发0，合法正控3次MCP/1次fixture修改，16个独立探测另列；4项验证器检查通过，先前Windows初始化失败保留。新8页技术报告吸收634c46d闭合结果，已逐页目视；缺端诊断为14条确证硬退出、3条缺主进程证据、1条环境验证中断，不改T05=false。见[策略审计](docs/gateway_policy_evaluation_20261019.md)、[缺端诊断](docs/access_accounting_20261019.md)和[报告](deliverables/development-report-20261019/README.md)。本轮未启动真实业务、平台或长期巡检，后续源码复验与外部验收仍待各自证据。

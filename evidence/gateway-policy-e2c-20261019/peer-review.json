@@ -1,0 +1,53 @@
+{
+  "schema": "gateway-policy-e2c-peer-review/1",
+  "reviewed_at_utc": "2026-10-19T03:53:54.391548+00:00",
+  "status": "PASS_NO_BLOCKERS",
+  "checks": {
+    "15_case_rows_match_report": true,
+    "14_refusals_zero_forwarded_calls_each": true,
+    "all15_persisted_signed_audit_checks_passed": true,
+    "persisted_audit_file_hash_matches": true,
+    "positive_control3calls1fixture_modification": true,
+    "four_required_groups_present_and_passed": true,
+    "actual_run_and4local_tests_exit0": true,
+    "all13_current_source_sha_match_actual_run": true,
+    "ready_payload_sha_and_bytes_match": true,
+    "temporary_private_material_cleaned_recorded": true,
+    "stdio_closed_and16_probes_separate": true
+  },
+  "source_ready_sha256": "c47a0af7415abb1acb75aa8d937aa7f0636600a1b4115316a69079a910840852",
+  "results_sha256": "fa11906e8bc847d13973355c7c7784d0d85d4f218bd70aae05fc1cfb4e0415ba",
+  "actual_proofs_reused": {
+    "run": {
+      "completion_chunk": "7da6ad",
+      "exit": 0
+    },
+    "validator_tests": {
+      "completion_chunk": "450a23",
+      "exit": 0,
+      "distinct_methods": 4
+    }
+  },
+  "source_sha256": {
+    "eval/gateway_policy_experiment.py": "181a4eca5e779688f36b557cbeaabbeee4d90e04be1c9a5f1b80252cbd0c8072",
+    "tests/test_gateway_policy_experiment.py": "bd7cf7f64fd8bb62e338f7f0bebaca3f7caee6dba59cfbddd90bd6278efdf42b"
+  },
+  "source_review": {
+    "required_groups_not_masked_by_generic_envelope_schema": "Source uses valid envelope IDs for all four required groups; recorded reasons distinguish caller/tool/argument/approval/ledger gates. Old fence case has valid approval and reaches rejected_stale_fence.",
+    "persisted_audit_validation": "Verifier requires one read-back AuditLogRecord, JCS signature against the generated certificate, matching serial kid/EdDSA, executor/actor/action/target/incident/logical-task/result and evidence_ref log_id.",
+    "negative_evidence_checks": "Four existing test methods cover re-signed wrong semantic bindings, wrong evidence ref, absent/duplicate/tampered/unsigned rows, actual writer path failure with a returned ID, and signing-error downgrade.",
+    "stdio_and_resource_boundary": "Real MCP stdio subprocess and official MCP SDK are exercised against this repository fixture. Three counted positive Bridge calls include one fixture-only SQL-template state change; 16 direct verification probes and tools/list are separate. No real PostgreSQL, Docker, platform or business resource is exercised.",
+    "temporary_secrets": "TemporaryDirectory owns generated Ed25519 private key, approval secrets and SQLite; public certificate is self-signed test material. Output guard excludes approval proofs/secrets and PEM body; cleanup success is recorded after context exit.",
+    "source_freeze": "13 recorded runtime source SHA values and all release payload byte identities still match current files."
+  },
+  "limits": [
+    "Read-only source/evidence peer review; no behavior tests, stdio server, signature verification execution, resource or platform call was rerun.",
+    "Existing self-signed fixture signatures do not claim platform CA trust or Monitor ingestion.",
+    "Original Windows asyncio initialization failure and all previous platform/T05 results remain retained."
+  ],
+  "findings": [],
+  "files_modified": [
+    "e2c/peer-review.json"
+  ],
+  "resource_operations": 0
+}

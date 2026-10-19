@@ -1,0 +1,821 @@
+{
+  "schema_version": "gateway-policy-e2c/1",
+  "status": "passed",
+  "started_at": "2026-10-19T03:51:26.621873+00:00",
+  "completed_at": "2026-10-19T03:51:29.014049+00:00",
+  "scope": "Actual Policy/Bridge/OperationLedger, official stdio MCP fixture, AmpAuditSink and CertificateAuditSigner; temporary self-signed Ed25519 certificate; JCS verification of persisted rows.",
+  "required_groups": {
+    "unauthorized_caller": {
+      "cases": 1,
+      "passed": true
+    },
+    "non_allowlisted_sql": {
+      "cases": 2,
+      "passed": true
+    },
+    "high_without_approval": {
+      "cases": 1,
+      "passed": true
+    },
+    "stale_fence": {
+      "cases": 1,
+      "passed": true
+    }
+  },
+  "case_count": 15,
+  "rejection_cases": 14,
+  "rejections_with_verified_signed_audit": 14,
+  "required_group_interception_rate": 1.0,
+  "required_group_signed_audit_rate": 1.0,
+  "positive_controls": 1,
+  "positive_controls_passed": 1,
+  "rejected_policy_execution_mcp_calls": 0,
+  "policy_execution_mcp_calls": 3,
+  "fixture_modifications": 1,
+  "independent_verification_probe_calls": 16,
+  "stdio_context_closed": true,
+  "all_sources_unchanged_during_run": true,
+  "source_sha256": {
+    "eval/gateway_policy_experiment.py": "181a4eca5e779688f36b557cbeaabbeee4d90e04be1c9a5f1b80252cbd0c8072",
+    "tests/test_gateway_policy_experiment.py": "bd7cf7f64fd8bb62e338f7f0bebaca3f7caee6dba59cfbddd90bd6278efdf42b",
+    "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+    "acps_mcp_bridge/bridge.py": "548896b9ac0149fefc6cd1931a401108eaa0003f0203c6e6ef9fb05f4dd99ee3",
+    "acps_mcp_bridge/approval.py": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+    "acps_mcp_bridge/audit.py": "b0e6916f96910582b8295cce7948251b76a431973fcce5930561f5507c269deb",
+    "acps_mcp_bridge/client.py": "5faca959a28633c5177f04099a625667f7d923798768dce791276630f4684f62",
+    "domains/database/policy.yaml": "14aa84a47c2747479ca4998d61d06436634f97883c5bd7279c3e7fe8e7dfd99b",
+    "tests/fixtures/bridge_mcp_server.py": "7b7927fd58166f1623f89e542cfe56fe81450ef1362710f639f99b14e77e88f9",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/emitter.py": "c4f87b4325d00d5657e0b6ff83487e789e0974d3493956a4acbe72d657aaf447",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/signer.py": "11cdf45482f0f5a0fee55f8d6911f5927b91450ce61f7f93497f0a8e5be08c33",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/models.py": "b32d9766d1df46ee156f3150107f7ede34ce24a9d705c4f3c569b4b3d8651840",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4"
+  },
+  "cases": [
+    {
+      "key": "unauthorized-caller",
+      "group": "unauthorized_caller",
+      "expected_rejection_layer": "caller_allowlist",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": false,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": false,
+        "approval_verifies": false,
+        "fence": null,
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "caller_aic is not authorized for this resource domain",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "bf764059-ff78-4be2-92c8-53fd41d7f723",
+        "record_jcs_sha256": "8ba631ac661c69f478bd7cbfe7d978075cc8e6c00db5a6e3de7ca40f2f792204"
+      },
+      "passed": true
+    },
+    {
+      "key": "raw-sql-alias",
+      "group": "non_allowlisted_sql",
+      "expected_rejection_layer": "tool_allowlist",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": false,
+        "arguments_schema_valid": null,
+        "kind_matches_tool_risk": null,
+        "approval_present": false,
+        "approval_verifies": false,
+        "fence": null,
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "tool is not in the allowlist",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "63ad2a29-31e2-42b7-97ab-c282c72cf660",
+        "record_jcs_sha256": "42194586cc09a4d62ffa32c9b17a62df2f320dc92e6ed1c4d4b9248660acb69b"
+      },
+      "passed": true
+    },
+    {
+      "key": "sql-argument-injection",
+      "group": "non_allowlisted_sql",
+      "expected_rejection_layer": "argument_schema",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": false,
+        "kind_matches_tool_risk": true,
+        "approval_present": false,
+        "approval_verifies": false,
+        "fence": null,
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "arguments do not match the registered tool schema",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "aebea0cf-8062-4ad1-8830-c03a55f1617e",
+        "record_jcs_sha256": "cc7039632fe8509fb02ab6d599d912c336d923222ab6fe3903eb8cf0cf87b9a2"
+      },
+      "passed": true
+    },
+    {
+      "key": "high-without-approval",
+      "group": "high_without_approval",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": false,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "f3c60f54-ce6f-483a-b791-7aa3fd54da1e",
+        "record_jcs_sha256": "8147d3d2c57dcc590ffc2153bbd4b87e0d0c88239ec220e29d8505dde9b840cf"
+      },
+      "passed": true
+    },
+    {
+      "key": "stale-fence",
+      "group": "stale_fence",
+      "expected_rejection_layer": "operation_ledger",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": true,
+        "fence": {
+          "coordinator_term": 1,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": null,
+        "operation_state": "rejected_stale_fence"
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "47b2ca24-ea92-468d-a085-38fd491bd8e7",
+        "record_jcs_sha256": "348ac7b8b706fdc3a1ec27fe7f1c6d370d7031c44d6bbcc19957b35fd5fdbff4"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-operation-binding",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "d214931a-d30c-40bb-aeae-8a5166ff4f94",
+        "record_jcs_sha256": "b94f45b88f23708431c5388c9b4105657fc416961c013024407a97028339bcc7"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-caller-binding",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "1b094d5a-2391-4355-98b1-ddc123c11517",
+        "record_jcs_sha256": "f6e9513d90342234c3e40c83c11b3c52ce21f6343cec650a7d68aa8ff479bd4a"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-incident-binding",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "fc544b0f-abe3-46e9-8b81-a6dac8b11111",
+        "record_jcs_sha256": "79fbd7b06ae045daf6301451d6149e4ff8258f00e92146d71bf3cc42eb822a2a"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-argument-binding",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "92e2f704-9508-4625-ac0a-fde57e72737e",
+        "record_jcs_sha256": "acbb26ef7614775912fe4615b2e5e8ecc371b8265f6729cece17a20f266b28e7"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-expired",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "925db6d2-43f3-44f9-9da4-b454c6b9f1a1",
+        "record_jcs_sha256": "d1929f6cc859b173a6aa040191ab0ebcfd1b72524f0c287c36fff735426e8548"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-future-issued",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "d1d431a5-e1c8-455f-a99d-96e09df21e40",
+        "record_jcs_sha256": "2014b264339f38b7668ebb7a4cef8a56e2d786efd410777723e1d014134c7e91"
+      },
+      "passed": true
+    },
+    {
+      "key": "approval-forged",
+      "group": "approval_boundaries",
+      "expected_rejection_layer": "approval",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": false,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "high risk tool requires a valid independent approval proof",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "8ae39f25-3d13-41a3-a91d-05ef122e3b04",
+        "record_jcs_sha256": "5c6248a35bea7975018b73e1f468fdc330892f3aba85a0ad9ce8177fead28c06"
+      },
+      "passed": true
+    },
+    {
+      "key": "write-disguised-as-observe",
+      "group": "risk_and_schema_boundaries",
+      "expected_rejection_layer": "risk_kind",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": false,
+        "approval_present": true,
+        "approval_verifies": true,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "task kind does not match tool risk",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "aefa5a1f-bec2-48df-ab9a-ecf0a9f7a5c5",
+        "record_jcs_sha256": "720fd9b73666807bc975b4ef998f6b359cbad21f6f2a40f58f86f05be827d861"
+      },
+      "passed": true
+    },
+    {
+      "key": "pid-out-of-range",
+      "group": "risk_and_schema_boundaries",
+      "expected_rejection_layer": "argument_schema",
+      "accepted_control": false,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": false,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": true,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "rejected",
+        "reason": "arguments do not match the registered tool schema",
+        "operation_state": null
+      },
+      "policy_execution_mcp_calls": 0,
+      "policy_execution_mcp_modification_calls": 0,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 0,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": null,
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "e520568f-7bba-4e25-840c-c867571d28a6",
+        "record_jcs_sha256": "6fa49ac1de7627035bd40971ca55736d6caec512e6230ad46157bb78231be870"
+      },
+      "passed": true
+    },
+    {
+      "key": "valid-approved-write",
+      "group": "positive_control",
+      "expected_rejection_layer": "authorized_write",
+      "accepted_control": true,
+      "input_summary": {
+        "schema_version_valid": true,
+        "envelope_identifiers_valid": true,
+        "caller_allowed": true,
+        "tool_allowlisted": true,
+        "arguments_schema_valid": true,
+        "kind_matches_tool_risk": true,
+        "approval_present": true,
+        "approval_verifies": true,
+        "fence": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        },
+        "active_fence_before": {
+          "coordinator_term": 2,
+          "takeover_version": 0
+        }
+      },
+      "result": {
+        "status": "ok",
+        "reason": null,
+        "operation_state": "applied"
+      },
+      "policy_execution_mcp_calls": 3,
+      "policy_execution_mcp_modification_calls": 1,
+      "fixture_writes_before": 0,
+      "fixture_writes_after": 1,
+      "verification_probe_calls": 1,
+      "operation_ledger_entry_state": "applied",
+      "behavior_passed": true,
+      "audit": {
+        "passed": true,
+        "checks": {
+          "exactly_one_record": true,
+          "schema_valid": true,
+          "signature_valid": true,
+          "certificate_kid_and_algorithm_match": true,
+          "semantic_fields_match": true,
+          "evidence_ref_matches": true
+        },
+        "record_count": 1,
+        "log_id": "348ab468-f0b8-4a3c-8653-fdcfd3c27d85",
+        "record_jcs_sha256": "11132c659e6c788ef936d0659318a772fa54c70d40a6722adfae75b3823cf9b1"
+      },
+      "passed": true
+    }
+  ],
+  "audit_file_sha256": "94c0d21e85765373708cd759d4da0f89ee517916b5d9436bf287c4f7dda06e60",
+  "audit_records": 15,
+  "private_keys_and_approval_values_in_output": false,
+  "limits": [
+    "Fixture tool-call counts exclude tools/list and separately counted health verification probes.",
+    "One authorized fixture modification proves the positive path; no real business/database/container/platform operation occurs.",
+    "Self-signed fixture verification does not prove platform CA trust, Monitor ingestion or production certificate validity.",
+    "Historical platform cases, T05 failures and pending acceptance are unchanged."
+  ],
+  "temporary_private_material_cleaned": true
+}

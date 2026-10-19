@@ -1,0 +1,77 @@
+{
+  "status": "DIAGNOSED_WITH_RETAINED_UNRESOLVED_CAUSES",
+  "recorded_at_utc": "2026-10-19T03:42:36.873551+00:00",
+  "team_baseline": "634c46d7404dc2f8cb7f57964367d5997bf8adb3",
+  "actual_analysis": {
+    "chunk_id": "ba7c55",
+    "actual_os_exit_code": 0
+  },
+  "retained_initial_analysis": {
+    "chunk_id": "de28dd",
+    "actual_os_exit_code": 1,
+    "reason": "Diagnostic assumptions about primary-only missing endpoints and AMP key semantics were incorrect; retained revision1 is not the final diagnosis.",
+    "files": [
+      {
+        "path": "diagnose_missing_access-revision1.py",
+        "sha256": "023647fddb981a210557d07de405a33a7301cf8a11588cf6ee5f7f31ed98b02a"
+      },
+      {
+        "path": "missing-access-diagnosis-revision1.json",
+        "sha256": "06510c11f7e75c54ed0bdaffa91399f5d8c94257f5a441f918535239b7ea218b"
+      }
+    ]
+  },
+  "summary": {
+    "missing_count": 18,
+    "missing_roles": {
+      "verification": 1,
+      "database": 17
+    },
+    "missing_sides": {
+      "callee": 18
+    },
+    "by_fault_point": {
+      "after_observation": 3,
+      "before_modification": 3,
+      "after_applied": 12
+    },
+    "cause_classifications": {
+      "environment_failed_verification_without_terminal_access": 1,
+      "exact_planned_hard_exit_before_access_finally": 14,
+      "primary_timeout_without_retained_crash_trace_cause_unresolved": 3
+    },
+    "all_checks_passed": true
+  },
+  "original_totals": {
+    "captured_start_tasks": 289,
+    "expected_access_records": 578,
+    "actual_access_records": 560,
+    "missing_records": 18,
+    "extra_records": 0,
+    "incomplete_task_lifecycles": 21
+  },
+  "original_T05_passed": false,
+  "all_18_have_caller_access_and_callee_receive": true,
+  "hard_exit_14_exact_causal_checks": true,
+  "unresolved_causes": 4,
+  "raw_sources_unchanged": true,
+  "source_code_matches_all_7": true,
+  "network_resource_platform_model_operations": 0,
+  "payloads": [
+    {
+      "source": "diagnose_missing_access.py",
+      "sha256": "be71bd87f045f0a2922fbe026353e4f91c932ef20b7d671b110c1f17d3a9e368",
+      "bytes": 15081
+    },
+    {
+      "source": "missing-access-diagnosis-final.json",
+      "sha256": "29122a885cc75d75f96a91a9444986db18008d5c9dabdb31dd8dd6db39349e1a",
+      "bytes": 117214
+    },
+    {
+      "source": "README.md",
+      "sha256": "075301dae40c9dea2a851fc464546fd6feed3eb6135e43fcfaab5d9ca2eec829",
+      "bytes": 3432
+    }
+  ]
+}

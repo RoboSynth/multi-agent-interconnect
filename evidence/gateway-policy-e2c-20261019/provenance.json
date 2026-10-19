@@ -1,0 +1,80 @@
+{
+  "base_commit": "634c46d7404dc2f8cb7f57964367d5997bf8adb3",
+  "source_ready_sha256": "c47a0af7415abb1acb75aa8d937aa7f0636600a1b4115316a69079a910840852",
+  "new_source_sha256": {
+    "eval/gateway_policy_experiment.py": "181a4eca5e779688f36b557cbeaabbeee4d90e04be1c9a5f1b80252cbd0c8072",
+    "tests/test_gateway_policy_experiment.py": "bd7cf7f64fd8bb62e338f7f0bebaca3f7caee6dba59cfbddd90bd6278efdf42b"
+  },
+  "validator_checks": {
+    "distinct_methods": 4,
+    "actual_exit_code": 0,
+    "completion_chunk": "450a23",
+    "result": "e2c/validator-tests-attempt-2/result.json",
+    "behavior": "Wrong signed actor/action/target/result/trace/correlation/executor or reference; absent/duplicate/tampered/unsigned read-back; actual silent-write failure and signing downgrade all reject evidence."
+  },
+  "actual_experiment": {
+    "actual_exit_code": 0,
+    "completion_chunk": "7da6ad",
+    "result": "e2c/run-attempt-1/results.json",
+    "required_groups": {
+      "unauthorized_caller": {
+        "cases": 1,
+        "passed": true
+      },
+      "non_allowlisted_sql": {
+        "cases": 2,
+        "passed": true
+      },
+      "high_without_approval": {
+        "cases": 1,
+        "passed": true
+      },
+      "stale_fence": {
+        "cases": 1,
+        "passed": true
+      }
+    },
+    "cases": 15,
+    "refusals": 14,
+    "refusals_with_exactly_one_verified_signed_audit": 14,
+    "positive_controls_passed": 1,
+    "rejected_forwarded_mcp_calls": 0,
+    "positive_forwarded_mcp_calls": 3,
+    "positive_fixture_modifications": 1,
+    "independent_health_probes": 16,
+    "persisted_audit_records": 15,
+    "temporary_private_material_cleaned": true
+  },
+  "retained_failures": [
+    {
+      "status": "environment_initialization_failed_retained",
+      "initial_test_child_actual_exit_code": 4294967295,
+      "initial_wrapper_actual_exit_code": 1,
+      "initial_completion_chunk": "134fd5",
+      "diagnostic_actual_exit_code": 1,
+      "diagnostic_completion_chunk": "3268a3",
+      "diagnostic_timeout_seconds": 15,
+      "stage": "Windows asyncio event-loop creation, socket._fallback_socketpair accept, before test setUp",
+      "owned_terminated_process_id": 37012,
+      "ownership_inspection_chunk": "11aa3e",
+      "owned_stop_completion_chunk": "d53e7b",
+      "production_or_assertion_verdict": null,
+      "resolution": "Same unchanged source passed with elevated sandbox permitting the internal Windows asyncio loopback socketpair. No proxy or network configuration changed."
+    }
+  ],
+  "limits": [
+    "Only temporary fixture Policy/Bridge/MCP/ledger and self-signed certificate audit were exercised. No platform, Docker/WSL, real business, paid API or production certificate used.",
+    "A successful self-signed fixture audit is not Monitor ingestion or platform CA validation.",
+    "Original platform 22 cases, failed cases, T05 and historic scientific results remain unchanged."
+  ],
+  "source_payload_sha256": {
+    "evidence/gateway-policy-e2c-20261019/run-attempt-1/results.json": "fa11906e8bc847d13973355c7c7784d0d85d4f218bd70aae05fc1cfb4e0415ba",
+    "evidence/gateway-policy-e2c-20261019/run-attempt-1/cases.jsonl": "825aadb8799f87060128f967bdd750189ce5c402bd8772af5aeec7ca7a61e857",
+    "evidence/gateway-policy-e2c-20261019/run-attempt-1/amp-audit.jsonl": "94c0d21e85765373708cd759d4da0f89ee517916b5d9436bf287c4f7dda06e60",
+    "evidence/gateway-policy-e2c-20261019/run-attempt-1/audit-certificate.json": "04f25768bf85ba08de9c6c981aae77b218effbafeabc28e0bc1075bc9c020dca",
+    "evidence/gateway-policy-e2c-20261019/validator-tests-attempt-2/result.json": "cce11ab53920288387fe46ecd9c5fae40208c62da040982349786af369a88004",
+    "evidence/gateway-policy-e2c-20261019/validator-tests-attempt-2/stderr.log": "804e3b09d3aefb75cb0ac3f6dc33c2022f86f9e814b5afa1ee6b35b0a4f09288",
+    "evidence/gateway-policy-e2c-20261019/execution-attempt-1/result.json": "d61eec528cb86cd324647d1881483386766f96b31c32253b45165a1c004fdf6e",
+    "evidence/gateway-policy-e2c-20261019/environment-initialization-failure.json": "19d11537b2bcb0c20221e423de5b2cd7f2b7a36367f0a5c4199836e576a82838"
+  }
+}

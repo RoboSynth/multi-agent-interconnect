@@ -1,0 +1,146 @@
+{
+  "schema_version": "report-content-review/1",
+  "status": "PASS_NO_MATERIAL_FACT_ERROR_FOUND",
+  "reviewed_at_utc": "2026-10-19T03:46:40.437602+00:00",
+  "scope": "Read-only review of the new content/evidence JSON against closed634c repository sources; existing render/12checks/root visual review reused, not rerun.",
+  "source_commit": "634c46d7404dc2f8cb7f57964367d5997bf8adb3",
+  "facts": {
+    "formal_cases": 22,
+    "passed": 18,
+    "failed": 4,
+    "groups": {
+      "E1-a": {
+        "cases": 9,
+        "passed": 8,
+        "failed": 1
+      },
+      "E1-b": {
+        "cases": 9,
+        "passed": 6,
+        "failed": 3
+      },
+      "E1-c": {
+        "cases": 3,
+        "passed": 3,
+        "failed": 0
+      },
+      "F12/E5": {
+        "cases": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "E3_confirmed": 37,
+    "E3_total": 45,
+    "E3_model_calls": 277,
+    "E3_reported_tokens": 648020,
+    "access_totals": {
+      "captured_start_tasks": 289,
+      "expected_access_records": 578,
+      "actual_access_records": 560,
+      "missing_records": 18
+    },
+    "e1c3_and_f12_endpoint_match_true": true,
+    "cases_with_incomplete_lifecycle": 21,
+    "F12_lifecycle_complete": true,
+    "credential_files": 214,
+    "known_distinct": 68,
+    "T62_passed": true,
+    "T05_passed": false,
+    "old_E3_malformed_rows": 11,
+    "old_E3_unresolved_stages": 7,
+    "fix_distinct_offline_methods": 39,
+    "fix_formal_platform_revalidated": false
+  },
+  "checks": {
+    "content_numbers_match_closed_inputs": true,
+    "all8_evidence_source_hashes_match": true,
+    "seven_chapters_across8pages": true,
+    "failed_cases_and_budget_refusals_retained": true,
+    "full_IFC_and_handover_subobject_separate": true,
+    "package_double_representation_not_savings": true,
+    "T05_endpoint_findings_distinct_from_lifecycle": true,
+    "old_E3_findings_not_erased_by_new_T62": true,
+    "unknown_orders_not_cleared_by_new_H00": true,
+    "offline_fix39_not_claimed_as_platform_retest": true,
+    "new_machine_Kafka_Monitor_longterm_remain_pending": true,
+    "development_draft_not_final_T90_or_all_P0": true,
+    "PPTX_not_added": true
+  },
+  "notes": [
+    "The full_history table says no acknowledgement in the sense of no successful handover-digest confirmation; its failure is not described as no transmitted resume.",
+    "The later E2-c CLI result is explicitly excluded by the report README cutoff and is not claimed here."
+  ],
+  "reused_render_evidence": {
+    "pdf_sha256": "47d2cb83d590bfbc4fa93fac07271fb7ed51f2648a104df27bf65e7852ae6d9e",
+    "pdf_bytes": 375456,
+    "pages": 8,
+    "automatic_check_count": 12,
+    "actual_check_exit_code_reported_by_root": 0,
+    "completion_chunk": "8ca3c2",
+    "root_visual_review_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "this_reviewer_rerendered": false,
+    "this_reviewer_repeated_visual_review": false
+  },
+  "inputs": {
+    "deliverables/development-report-20261019/content.json": {
+      "sha256": "9353fec8f44f07e19a3497d3454ce126a829c2bc269565acdb321ff199ec7790",
+      "bytes": 18426
+    },
+    "deliverables/development-report-20261019/evidence.json": {
+      "sha256": "6c616588592ddaa3294131207517267cc5bd27f1b6de96af025028a30aea053a",
+      "bytes": 1863
+    },
+    "deliverables/development-report-20261019/validation.json": {
+      "sha256": "e0b2ac34646ca9c64b37a83f91d6a61c59c3051dba64bfa907fd3914eb418fb5",
+      "bytes": 4083
+    },
+    "evidence/platform-acceptance-20261019/summary.json": {
+      "sha256": "02d8550cecdb2d4fe7a93918802487686d0809757c9d56e28b100c521ce8a60a",
+      "bytes": 199139
+    },
+    "evidence/platform-acceptance-20261019/batch-terminal.json": {
+      "sha256": "b7d3da68984c926f590161bee29c6e8ae2c60c9a44e07e510b8d1c2b906e64d2",
+      "bytes": 1969
+    },
+    "evidence/platform-acceptance-20261019/closed-access-credentials.json": {
+      "sha256": "078730d35dab252cda8e52722741e6bc5068dd16ce56530aa760ac4efe0df75d",
+      "bytes": 165569
+    },
+    "evidence/handover-wire-fix-20261019/verification-summary.json": {
+      "sha256": "84b5141d372b2cb5edf1347edf3c035db25df9cc159108236361217799190ae4",
+      "bytes": 6295
+    },
+    "evidence/new7-e3-45-20261018-first/results.json": {
+      "sha256": "9481984c9c41d5f24d8b7e0c01284f5d3d0f07110ced8c9b678a521dd5f9c2b8",
+      "bytes": 48279
+    },
+    "evidence/new7-e3-45-20261018-first/credential-scan.json": {
+      "sha256": "79745a8dd4e65b140b2b2cc3b7e532f2cb89007b0d636a96502e69815beefedb",
+      "bytes": 4904
+    },
+    "evidence/upstream-public-submission-20261018/submission.json": {
+      "sha256": "50005ffb436302d8188a526e3190888a2a571250b963b53af1e6b713c2e339a1",
+      "bytes": 24280
+    },
+    "evidence/upstream-public-submission-20261018/followup.json": {
+      "sha256": "562f2f6a532e8e8d8c636de8a3f609eda2c11661c3561b61bccc3a7e52d402f6",
+      "bytes": 1971
+    },
+    "evidence/new7-e3-45-20261018-first/README.md": {
+      "sha256": "ff9ae2fb1f4c9b363d39cdde86316433ff8dbd248872604f4959cca12cf9f202",
+      "bytes": 3593
+    }
+  },
+  "production_or_document_changes": false,
+  "tests_or_resource_or_network_calls": 0
+}
