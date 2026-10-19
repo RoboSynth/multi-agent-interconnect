@@ -1,0 +1,26 @@
+test_own_base_python_handles_wait_for_real_exit_and_reject_other_command (test_local_shutdown.HandleFixtureTests.test_own_base_python_handles_wait_for_real_exit_and_reject_other_command) ... ok
+test_entry_calls_project_helper_with_timeout_and_propagates_failure (test_local_shutdown.PowerShellEntryTests.test_entry_calls_project_helper_with_timeout_and_propagates_failure) ... ok
+test_empty_checkout_is_noop_and_preserves_report (test_local_shutdown.ShutdownTests.test_empty_checkout_is_noop_and_preserves_report) ... ok
+test_native_exact_entry_exit_failure_and_registration_retained (test_local_shutdown.ShutdownTests.test_native_exact_entry_exit_failure_and_registration_retained) ... ok
+test_native_other_checkout_or_external_paths_prevent_any_stop (test_local_shutdown.ShutdownTests.test_native_other_checkout_or_external_paths_prevent_any_stop) ... ok
+test_registration_change_refuses_native_entry_and_preserves_failure (test_local_shutdown.ShutdownTests.test_registration_change_refuses_native_entry_and_preserves_failure) ... ok
+test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent) ... ok
+test_workbench_mismatch_and_failed_finished_never_request_stop (test_local_shutdown.ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop) ... ok
+test_workbench_normal_close_waits_for_handle_and_receipt (test_local_shutdown.ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt) ... ok
+test_workbench_timeout_preserves_request_and_stops_dependency_shutdown (test_local_shutdown.ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown) ... ok
+test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal (test_local_shutdown.SupervisorHttpTests.test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal) ... ok
+test_registered_supervisor_binds_health_and_waits_actual_exit (test_local_shutdown.SupervisorHttpTests.test_registered_supervisor_binds_health_and_waits_actual_exit) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 2.292s
+
+OK
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-6srqz2jr/runtime/local-down\\20261019T073424-a311123f33584287953bb5ffef6f242c.json", "failed_stage": null}
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-zl23pp0t/runtime/local-down\\20261019T073424-85a40d2987ba460bb6c4b767df50dee4.json", "failed_stage": null}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-c8mz_zby/runtime/local-down\\20261019T073424-54440f755a944bdca3fc0db803f6beaa.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-ijd4rraw/runtime/local-down\\20261019T073424-ca72000353ee47efb64fe5a9995c741b.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-nijses02/runtime/local-down\\20261019T073424-0ecade3785f542e383a31afa1064e2c1.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-_27ezeu5/runtime/local-down\\20261019T073424-284ade6187c34fd7bf5d8c5585af6a4e.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-sheusan0/runtime/local-down\\20261019T073424-1288f855b7314dde9f4fb62ba08d4005.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-qww24ipw/runtime/local-down\\20261019T073424-afddbe2a24bb4888a7d1322231b7f9b7.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-cemfyron/runtime/local-down\\20261019T073424-b50834ed54be4ffab252afb0ffb96952.json", "failed_stage": "workbench"}

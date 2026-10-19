@@ -1,0 +1,52 @@
+test_finished_workbench_receipt_still_waits_for_live_process_exit (test_local_shutdown.ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit) ... 
+  test_finished_workbench_receipt_still_waits_for_live_process_exit (test_local_shutdown.ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit) (timeout=False) ... ERROR
+  test_finished_workbench_receipt_still_waits_for_live_process_exit (test_local_shutdown.ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit) (timeout=True) ... ERROR
+test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent) ... ERROR
+test_workbench_mismatch_and_failed_finished_never_request_stop (test_local_shutdown.ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop) ... ok
+test_workbench_normal_close_waits_for_handle_and_receipt (test_local_shutdown.ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt) ... ok
+test_workbench_timeout_preserves_request_and_stops_dependency_shutdown (test_local_shutdown.ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown) ... ok
+test_accepted_shutdown_is_scheduled_when_response_write_fails (test_local_shutdown.SupervisorHttpTests.test_accepted_shutdown_is_scheduled_when_response_write_fails) ... ERROR
+test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal (test_local_shutdown.SupervisorHttpTests.test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal) ... ok
+test_registered_supervisor_binds_health_and_waits_actual_exit (test_local_shutdown.SupervisorHttpTests.test_registered_supervisor_binds_health_and_waits_actual_exit) ... ok
+
+======================================================================
+ERROR: test_finished_workbench_receipt_still_waits_for_live_process_exit (test_local_shutdown.ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit) (timeout=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_local_shutdown.py", line 155, in test_finished_workbench_receipt_still_waits_for_live_process_exit
+    family.wait = Mock(side_effect=TimeoutError("still exiting") if timeout else None,
+                  ^^^^
+NameError: name 'Mock' is not defined
+
+======================================================================
+ERROR: test_finished_workbench_receipt_still_waits_for_live_process_exit (test_local_shutdown.ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit) (timeout=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_local_shutdown.py", line 155, in test_finished_workbench_receipt_still_waits_for_live_process_exit
+    family.wait = Mock(side_effect=TimeoutError("still exiting") if timeout else None,
+                  ^^^^
+NameError: name 'Mock' is not defined
+
+======================================================================
+ERROR: test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_local_shutdown.py", line 142, in test_workbench_existing_correct_request_reused_and_normal_finish_idempotent
+    exited.wait = Mock(return_value=[])
+                  ^^^^
+NameError: name 'Mock' is not defined
+
+======================================================================
+ERROR: test_accepted_shutdown_is_scheduled_when_response_write_fails (test_local_shutdown.SupervisorHttpTests.test_accepted_shutdown_is_scheduled_when_response_write_fails)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_local_shutdown.py", line 203, in test_accepted_shutdown_is_scheduled_when_response_write_fails
+    handler.rfile = io.BytesIO(b"{}")
+                    ^^
+NameError: name 'io' is not defined. Did you forget to import 'io'
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.727s
+
+FAILED (errors=4)
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-5lxg7bzy/runtime/local-down\\20261019T074641-6b0da2b762b04270b41fd96e41500633.json", "failed_stage": "workbench"}

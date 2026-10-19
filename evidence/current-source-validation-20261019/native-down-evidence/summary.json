@@ -1,0 +1,165 @@
+{
+  "created_at_utc": "2026-10-19T07:47:30.502621+00:00",
+  "base_commit": "613ecbfc6e7500a30264bfec3c702d17152f0b6a",
+  "source_sha256": {
+    "deploy/local-down.ps1": "4efa028ea5618fd442ccb99e01ee84a1889c98607dbd23bdd443818fe56b69a7",
+    "tools/local_shutdown.py": "fb1f007cc456d0e301c3bd34cca14ddb6cae669c19ebf8efdc8985ac84087c82",
+    "domains/ops/native_supervisor.py": "62a715b1d1bf4fdd1343be332704c734adeefa4a99ee0b577995bccb70597623",
+    "tests/test_local_shutdown.py": "7b2e8b04ff0d88790e17c3dc672f9efbbbc4c6464db90b95b00f7475e58e5fa5",
+    "docs/windows_local_shutdown_20261019.md": "d4baae2d884dfad74a1afe195b7fa6087896505e3393f206f7678e46fb7ba929"
+  },
+  "tests": {
+    "distinct_methods_passed": 15,
+    "methods": [
+      "ShutdownTests.test_empty_checkout_is_noop_and_preserves_report",
+      "ShutdownTests.test_native_other_checkout_or_external_paths_prevent_any_stop",
+      "ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt",
+      "ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown",
+      "ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop",
+      "ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent",
+      "ShutdownTests.test_finished_workbench_receipt_still_waits_for_live_process_exit",
+      "ShutdownTests.test_registration_change_refuses_native_entry_and_preserves_failure",
+      "ShutdownTests.test_native_exact_entry_exit_failure_and_registration_retained",
+      "SupervisorHttpTests.test_accepted_shutdown_is_scheduled_when_response_write_fails",
+      "SupervisorHttpTests.test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal",
+      "SupervisorHttpTests.test_registered_supervisor_binds_health_and_waits_actual_exit",
+      "FamilyPreflightTests.test_incomplete_or_reused_family_is_refused_and_all_open_handles_close",
+      "HandleFixtureTests.test_own_base_and_venv_handles_wait_for_real_exit_and_reject_other_command",
+      "PowerShellEntryTests.test_entry_calls_project_helper_with_timeout_and_propagates_failure"
+    ],
+    "runs": [
+      {
+        "log": "tests-final.log.txt",
+        "exit_code": 0,
+        "terminal_chunk": "dacc92",
+        "methods_passed": 12,
+        "scope": "base/venv real own sleeper handles, HTTP own random-port server, entry/orchestration fixtures"
+      },
+      {
+        "log": "family-preflight.log.txt",
+        "exit_code": 0,
+        "terminal_chunk": "e340b7",
+        "methods_passed": 1,
+        "scope": "new family identity/creation-time refusal and handle-close method"
+      },
+      {
+        "log": "supervisor-restart-regression.log.txt",
+        "exit_code": 0,
+        "terminal_chunk": "6f8a0b",
+        "methods_passed": 1,
+        "scope": "updated HTTP method additionally checks original restart response using a business-function double"
+      },
+      {
+        "log": "registration-guards.log.txt",
+        "exit_code": 0,
+        "terminal_chunk": "d6ea44",
+        "methods_passed": 8,
+        "scope": "affected orchestrator methods rerun after registration guards; no real server or project resources"
+      },
+      {
+        "log": "review-fixes-final.log.txt",
+        "exit_code": 0,
+        "terminal_chunk": "809246",
+        "methods_passed": 3,
+        "scope": "new finished-but-live/timeout method, updated already-closed method, and accepted shutdown despite response-write failure"
+      }
+    ],
+    "reuse": "unchanged method bodies and inputs reuse earlier passing runs; runs are not independent experiments"
+  },
+  "real_owned_fixture_processes": [
+    {
+      "fixture": "owned_sleeping_python_normal_exit",
+      "processes": [
+        {
+          "pid": 36508,
+          "launcher": false,
+          "created": 134368689281999090,
+          "parent_pid": 31292,
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "fixture": "owned_sleeping_python_normal_exit",
+      "processes": [
+        {
+          "pid": 16832,
+          "launcher": true,
+          "created": 134368689283625926,
+          "parent_pid": 31292,
+          "exit_code": 0
+        },
+        {
+          "pid": 23216,
+          "launcher": false,
+          "created": 134368689283998369,
+          "parent_pid": 16832,
+          "exit_code": 0
+        }
+      ]
+    }
+  ],
+  "preserved_attempts": [
+    {
+      "log": "tests-attempt1.log.txt",
+      "exit_code": 1,
+      "terminal_chunk": "2bd274",
+      "reason": "test helper treated venv executable as base Python; Windows text capture used GBK; fixtures exited in finally"
+    },
+    {
+      "log": "tests-attempt2.log.txt",
+      "exit_code": 0,
+      "terminal_chunk": "4a488b",
+      "scope": "prior 12-method pass, superseded for the expanded base+venv actual exit-code method"
+    },
+    {
+      "log": "review-fixes.log.txt",
+      "exit_code": 1,
+      "terminal_chunk": "cbd2dc",
+      "reason": "three new/changed test methods had missing Mock/io imports (four subcase errors); corrected imports and reran exactly those three. The other five methods, including isolated HTTP shutdown/restart, passed in this retained run."
+    }
+  ],
+  "logs": {
+    "family-preflight.log.txt": {
+      "sha256": "145c41693122006fe4a76104075d4e11eecc14a92821aebaa6e1f081a899520a",
+      "bytes": 295
+    },
+    "registration-guards.log.txt": {
+      "sha256": "43920a1da0d396bdcdd66fff38a03129b8f156f5add98ab612cd6129a353c303",
+      "bytes": 3825
+    },
+    "review-fixes-final.log.txt": {
+      "sha256": "43c0288415d0cf66c6093b4581cb911789bc14f21884966629c5b0b3bbbb9d35",
+      "bytes": 649
+    },
+    "review-fixes.log.txt": {
+      "sha256": "611f02f46d2d73d75ede59583ca2012232951a715fdae1c6e2754effedbcf57b",
+      "bytes": 5037
+    },
+    "supervisor-restart-regression.log.txt": {
+      "sha256": "e7e24102aab8cea6da4cd3bab2b3ff22e20436289a230ab64c2a49e3e3809321",
+      "bytes": 284
+    },
+    "tests-attempt1.log.txt": {
+      "sha256": "0d9bdd082e42dea96ff355c1ddcc62822e2edf6a9e20429829bbc1cc266afe21",
+      "bytes": 6133
+    },
+    "tests-attempt2.log.txt": {
+      "sha256": "f4f6456148875fd1c44ed735790a7154e00ff063d4800561e7a76b50505852bb",
+      "bytes": 4564
+    },
+    "tests-final.log.txt": {
+      "sha256": "dae9fd894817e12627ffcfc1f747b82729d24f268f115768ece3de00852a57ed",
+      "bytes": 5006
+    }
+  },
+  "limits": [
+    "No real workbench, platform identity, model, order service, PostgreSQL or Nginx was started or stopped.",
+    "Native control is delegated to existing native.ps1; its zero exit is the native stage gate.",
+    "Existing pg_ctl stop can fail when PostgreSQL is already stopped; registration and failure remain.",
+    "Missing registration is a no-action observation, not proof of whole-host absence.",
+    "Existing local-up has no shared global mutex; start and stop this checkout serially.",
+    "Full clean-machine startup/H00/shutdown and T11/T96 remain unverified."
+  ],
+  "process_cleanup": "Each own HTTP server was joined/closed and each own sleeper was waited through its original Popen handle with exit zero; temporary fixture directories were removed by their owning tests. No host-wide process stop or enumeration cleanup was performed."
+}

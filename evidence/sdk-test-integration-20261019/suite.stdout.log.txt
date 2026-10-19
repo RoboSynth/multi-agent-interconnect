@@ -1,0 +1,79 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.14, pytest-9.0.2, pluggy-1.6.0
+cachedir: [suite-run]\pytest-cache
+rootdir: [sdk-copy]\acps-sdk
+configfile: pyproject.toml
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 605 items
+
+tests\aip\test_aip_rpc_client_access.py ....                             [  0%]
+tests\aip\test_group_leader_message.py .......                           [  1%]
+tests\aip\test_group_partner_message.py ........                         [  3%]
+tests\aip\test_task_ordering.py ...                                      [  3%]
+tests\amp\alive_sync\test_adp_alive_map.py ..........                    [  5%]
+tests\amp\alive_sync\test_alive_sync_bootstrap.py ........               [  6%]
+tests\amp\alive_sync\test_alive_sync_engine.py ..........                [  8%]
+tests\amp\alive_sync\test_alive_sync_errors.py .......                   [  9%]
+tests\amp\alive_sync\test_alive_sync_snapshot_reader.py ...........      [ 11%]
+tests\amp\alive_sync\test_alive_view_models.py ....                      [ 11%]
+tests\amp\alive_sync\test_classify_delta.py .................            [ 14%]
+tests\amp\test_access_models.py .............                            [ 16%]
+tests\amp\test_amp_access_emitter.py ......                              [ 17%]
+tests\amp\test_amp_message_emitter.py ......                             [ 18%]
+tests\amp\test_amp_metrics_demo.py .........                             [ 20%]
+tests\amp\test_amp_metrics_emitter.py ......                             [ 21%]
+tests\amp\test_amp_system_emitter.py .........                           [ 22%]
+tests\amp\test_durable_access.py .................                       [ 25%]
+tests\amp\test_heartbeat_sync_models.py ................................ [ 30%]
+...                                                                      [ 31%]
+tests\amp\test_message_emitter_concurrency.py .....                      [ 32%]
+tests\amp\test_message_tap.py ......                                     [ 33%]
+tests\amp\test_metrics_catalog.py ...................................... [ 39%]
+............                                                             [ 41%]
+tests\amp\test_trace_context.py ....                                     [ 42%]
+tests\integration\test_aip_direct_mtls_identity.py ...                   [ 42%]
+tests\integration\test_aip_group_user_id_identity.py ...                 [ 43%]
+tests\integration\test_aip_httpx_response_cert.py ..                     [ 43%]
+tests\integration\test_aip_notification_mtls_identity.py ..              [ 43%]
+tests\integration\test_aip_stream_mtls_identity.py ...                   [ 44%]
+tests\oidc\test_device_client.py ................                        [ 46%]
+tests\oidc\test_fastapi_dependencies.py .....                            [ 47%]
+tests\oidc\test_keycloak_claims.py ......                                [ 48%]
+tests\oidc\test_package_exports.py .                                     [ 48%]
+tests\oidc\test_principal.py ....                                        [ 49%]
+tests\oidc\test_validator_jwks.py .......................                [ 53%]
+tests\resumable\test_coordinator_process.py ..                           [ 53%]
+tests\resumable\test_resumable.py .........................              [ 57%]
+tests\test_acs_models.py .                                               [ 58%]
+tests\test_aic.py ..........                                             [ 59%]
+tests\test_aip_exports.py ...........                                    [ 61%]
+tests\test_aip_group_identity.py ................                        [ 64%]
+tests\test_aip_group_models_identity.py ......                           [ 65%]
+tests\test_aip_identity.py ......................                        [ 68%]
+tests\test_aip_notification_identity.py ..........                       [ 70%]
+tests\test_aip_peer_cert.py ......                                       [ 71%]
+tests\test_aip_rpc_identity.py ...............                           [ 73%]
+tests\test_aip_stream_identity.py ............                           [ 75%]
+tests\test_amp_emitter.py ....................                           [ 79%]
+tests\test_amp_heartbeat_emitter.py ...........                          [ 80%]
+tests\test_group_invitation.py .............                             [ 83%]
+tests\test_group_leader.py ...........                                   [ 84%]
+tests\test_group_runtime.py ...                                          [ 85%]
+tests\test_notification_client.py ..........                             [ 87%]
+tests\test_notification_model.py ..........                              [ 88%]
+tests\test_notification_service.py ..........                            [ 90%]
+tests\test_notification_store.py ............                            [ 92%]
+tests\test_stream_channel.py ............                                [ 94%]
+tests\test_stream_client.py .............                                [ 96%]
+tests\test_stream_model.py .........                                     [ 98%]
+tests\test_stream_server.py ............                                 [100%]
+
+============================== warnings summary ===============================
+..\..\..\..\upstream-full-suite-20261018\locked-dependencies\_pytest\config\__init__.py:831
+  [locked-dependencies]\_pytest\config\__init__.py:831: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; pytest_asyncio.plugin
+    self.import_plugin(arg, consider_entry_points=True)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: [suite-run]\junit.xml -
+======================= 605 passed, 1 warning in 39.44s =======================
+{"status": "CURRENT_SDK_COMPLETE_SUITE_TERMINAL", "pytest_exit_code": 0, "collected": 605, "call_outcomes": {"passed": 605}, "elapsed_seconds": 39.907}

@@ -1,0 +1,28 @@
+test_own_base_and_venv_handles_wait_for_real_exit_and_reject_other_command (test_local_shutdown.HandleFixtureTests.test_own_base_and_venv_handles_wait_for_real_exit_and_reject_other_command) ... ok
+test_entry_calls_project_helper_with_timeout_and_propagates_failure (test_local_shutdown.PowerShellEntryTests.test_entry_calls_project_helper_with_timeout_and_propagates_failure) ... ok
+test_empty_checkout_is_noop_and_preserves_report (test_local_shutdown.ShutdownTests.test_empty_checkout_is_noop_and_preserves_report) ... ok
+test_native_exact_entry_exit_failure_and_registration_retained (test_local_shutdown.ShutdownTests.test_native_exact_entry_exit_failure_and_registration_retained) ... ok
+test_native_other_checkout_or_external_paths_prevent_any_stop (test_local_shutdown.ShutdownTests.test_native_other_checkout_or_external_paths_prevent_any_stop) ... ok
+test_registration_change_refuses_native_entry_and_preserves_failure (test_local_shutdown.ShutdownTests.test_registration_change_refuses_native_entry_and_preserves_failure) ... ok
+test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent) ... ok
+test_workbench_mismatch_and_failed_finished_never_request_stop (test_local_shutdown.ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop) ... ok
+test_workbench_normal_close_waits_for_handle_and_receipt (test_local_shutdown.ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt) ... ok
+test_workbench_timeout_preserves_request_and_stops_dependency_shutdown (test_local_shutdown.ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown) ... ok
+test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal (test_local_shutdown.SupervisorHttpTests.test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal) ... ok
+test_registered_supervisor_binds_health_and_waits_actual_exit (test_local_shutdown.SupervisorHttpTests.test_registered_supervisor_binds_health_and_waits_actual_exit) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 2.617s
+
+OK
+{"fixture": "owned_sleeping_python_normal_exit", "processes": [{"pid": 36508, "launcher": false, "created": 134368689281999090, "parent_pid": 31292, "exit_code": 0}]}
+{"fixture": "owned_sleeping_python_normal_exit", "processes": [{"pid": 16832, "launcher": true, "created": 134368689283625926, "parent_pid": 31292, "exit_code": 0}, {"pid": 23216, "launcher": false, "created": 134368689283998369, "parent_pid": 16832, "exit_code": 0}]}
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-36pfsic5/runtime/local-down\\20261019T073529-aa96424aedb6436096fceacf5ccd4cfc.json", "failed_stage": null}
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-3ci5gkih/runtime/local-down\\20261019T073529-a8e5742d89be4935a54c35adbb5c24f7.json", "failed_stage": null}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-r5sbs39r/runtime/local-down\\20261019T073530-680bc951a476483b81e0d90ec00e03a1.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-643qtkjx/runtime/local-down\\20261019T073530-fb9e70855caa450d89187190a0284fe5.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-fmv5y34c/runtime/local-down\\20261019T073530-5edbeecaaed4476a994422b079ad2631.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-3954m849/runtime/local-down\\20261019T073530-8f0cfdf0f201496bbc18f53c449ebf92.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-xun0xvrp/runtime/local-down\\20261019T073530-13dc282de36143aab0c7534cefea3a58.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-r27frt2n/runtime/local-down\\20261019T073530-4512aa75cdb249ffbb78020caf2c405c.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-175xapaa/runtime/local-down\\20261019T073530-ea5fb07a11a2478a8048512aa04c927a.json", "failed_stage": "workbench"}

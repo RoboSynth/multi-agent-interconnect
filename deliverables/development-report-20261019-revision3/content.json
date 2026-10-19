@@ -1,0 +1,957 @@
+{
+  "title": "凭据不出域的跨组织故障协同",
+  "version": "development-draft-20261019-revision3-cutoff-613ecbf",
+  "date": "2026-10-19",
+  "pages": [
+    {
+      "eyebrow": "一 / 作品概述",
+      "title": "凭据不出域的<br/>跨组织故障协同",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "本系统面向由应用、数据库和入口运维共同维护的订单业务。协调入口组织任务、汇总证据并取得人工审批；资源方独立持有凭据、校验调用和执行操作；业务验证方沿公共入口核验订单流程与原请求回执。"
+        },
+        {
+          "type": "callout",
+          "title": "技术报告开发稿",
+          "text": "本稿按官方七章组织，证据截止仓库 613ecbf。原正式 22 例为 18 通过、4 失败；独立复验 12 例为 11 通过、1 失败，两批分母与失败均保留。新增 E1-b 分批图与本地持久化、进程恢复及停机检查。后者尚未部署到平台镜像；官方日志入库、新机器和长期运行仍待验证。",
+          "warning": true
+        },
+        {
+          "type": "h",
+          "text": "三项实现"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "实现",
+            "作用"
+          ],
+          "rows": [
+            [
+              "可接续群组任务",
+              "持久任务、操作账本和隔离令牌，区分已应用、未执行和效果未知。"
+            ],
+            [
+              "MCP 到 AIP 网关",
+              "把本域工具接到统一身份与任务协议；工具白名单、审批和资源约束留在本域。"
+            ],
+            [
+              "证据驱动协调",
+              "按局部事实调整探测与修复顺序；模型假设受结构化校验与预算约束。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            128,
+            371
+          ]
+        },
+        {
+          "type": "small",
+          "text": "实验结论按各自冻结版本呈现。当前代码中的独立修复，不追溯改判原实验；新健康流程也不消除旧未知订单。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "二 / 需求分析",
+      "title": "互联需要共享事实，也需要保留权限边界",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "跨组织排障常把多个资源凭据集中交给一个执行者，或依赖群聊逐步转述。前者扩大权限暴露，后者缺少可执行的任务契约和可核验的操作记录。异构工具还缺少统一的身份、发现和协作语义。"
+        },
+        {
+          "type": "p",
+          "text": "订单创建、查询、取消构成可验证业务。请求键与回执在同一事务保存；失去响应时沿原键查证，无法确认则保留人工核对，避免把服务恢复等同于原业务完成。"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "需求",
+            "验收方式",
+            "当前证据"
+          ],
+          "rows": [
+            [
+              "功能",
+              "发现、描述确认、跨域任务、修复及订单验证",
+              "七个新版身份与正式 AMQPS 案例；逐例结果分列。"
+            ],
+            [
+              "性能",
+              "同场景、同模型、同工具和预算比较",
+              "NEW7 E3 45 格，含 8 格未确认和模型成本。"
+            ],
+            [
+              "兼容",
+              "复用官方模型、身份断言、AMP 签名",
+              "SDK 改造和官方本地 suite；平台入库另验。"
+            ],
+            [
+              "部署",
+              "脚本、固定镜像、隔离目标和恢复记录",
+              "本机多次部署已测；新机器 15 分钟尚未验证。"
+            ],
+            [
+              "安全",
+              "拒绝越权、审批绑定、旧令牌与凭据扫描",
+              "E2-c 本地组件 14 拒绝与 1 正控；平台认证与 Monitor 待验。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            66,
+            190,
+            243
+          ]
+        },
+        {
+          "type": "small",
+          "text": "调研依据为项目平台适配记录、官方附件与开源教程。本稿没有新增访谈、用户试点或社会效益测量，不把预期受益写成已发生的效果。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "三 / 技术选型与方案设计",
+      "title": "五类角色分担协作与执行责任",
+      "blocks": [
+        {
+          "type": "architecture"
+        },
+        {
+          "type": "p",
+          "text": "官方 SDK 提供身份、能力发现、AIP 群组和 AMP 基础模块。项目新增群组 access 钩子、接续模块和 MCP 网关；应用与验证模块实现订单数据契约。公开能力描述用于候选筛选，随后按实际资源范围进行 describe 确认。"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "边界",
+            "执行规则"
+          ],
+          "rows": [
+            [
+              "远程工具",
+              "远端只提交注册别名和受 schema 限制的参数，不提交资源口令或任意 SQL。"
+            ],
+            [
+              "资源修改",
+              "write/high 必须携带操作标识与 fence；high 还需精确绑定调用方和动作的审批证明。"
+            ],
+            [
+              "证据",
+              "局部事实包含来源和观测时间；过期事实不因接续重新变新。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            83,
+            416
+          ]
+        }
+      ]
+    },
+    {
+      "eyebrow": "三 / 技术选型与方案设计 · 信任域与来源",
+      "title": "凭据在资源域，任务与事实跨域",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "下表是当前实现的逻辑权限边界。正式实验通过梧桐 AMQPS 通信，资源方分别校验身份和资源范围；同机容器运行尚不能代替独立机器或生产隔离验收。",
+          "size": 9.5,
+          "leading": 16
+        },
+        {
+          "type": "table",
+          "headers": [
+            "信任域",
+            "域内持有",
+            "跨域交换与边界"
+          ],
+          "rows": [
+            [
+              "协调 / 审批",
+              "本域身份、任务日志、审批签发能力",
+              "发送 IFC 任务和审批证明；不加载数据库、应用或 Docker 管理凭据。"
+            ],
+            [
+              "应用",
+              "应用管理凭据、连接池状态",
+              "公开状态事实；仅执行已登记的受控重建，核对 revision。"
+            ],
+            [
+              "数据库主 / 备",
+              "最小权限数据库凭据、共享操作账本",
+              "返回只读状态及操作结果；检查参数摘要、operation_id 和 fence。"
+            ],
+            [
+              "运维",
+              "本域容器 / 固定路由管理权限",
+              "受标签、资源和工具白名单约束，不接受任意命令。"
+            ],
+            [
+              "业务验证 / 体检",
+              "各自身份；验证方无管理凭据",
+              "经公共业务入口核对新流程和原键；体检结果不代替故障修复。"
+            ],
+            [
+              "平台互联",
+              "官方注册、发现、证书和 MQ 服务",
+              "传递身份、能力及群组消息；后台统计与日志入库仍待独立证据。"
+            ]
+          ],
+          "widths": [
+            95,
+            167,
+            237
+          ],
+          "size": 8.1
+        },
+        {
+          "type": "table",
+          "headers": [
+            "既有 SDK 来源审计截面",
+            "文件 / 物理行",
+            "相对官方实际增删"
+          ],
+          "rows": [
+            [
+              "原生复用",
+              "57 / 12073",
+              "+0 / -0"
+            ],
+            [
+              "修改官方",
+              "3 / 4220",
+              "+71 / -12"
+            ],
+            [
+              "新增模块",
+              "7 / 845",
+              "+845 / -0"
+            ],
+            [
+              "合计运行时增量",
+              "只统计代码，不含测试 / 文档",
+              "+916 / -12"
+            ]
+          ],
+          "widths": [
+            131,
+            202,
+            166
+          ],
+          "size": 8.1
+        },
+        {
+          "type": "small",
+          "text": "该来源审计截止 afb46e1：物理行含空行与注释；4220 行修改文件不全是自研，运行时增量 +916 / -12。另有新增测试 405 行、25 方法。该截面跟踪 140 份文件；613ecbf 的新持久化代码另列，不沿用此表当作当前完整行数。"
+        },
+        {
+          "type": "small",
+          "text": "T01 尚未完成：当前为普通 vendor 快照；AtomGit、最终 fork 依赖绑定及官方上游 CI 待补。来源与原许可证已保留，项目整体许可证尚未选择。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "四 / 项目实施",
+      "title": "先保存状态，再决定能否继续修改",
+      "blocks": [
+        {
+          "type": "ledger_flow"
+        },
+        {
+          "type": "p",
+          "text": "同一资源域的主备共享操作账本。已应用操作返回已有结果；尚未执行的 received 操作可在新 fence 下继续；效果未知时先查真实状态，不能证明安全则保持未知。旧主恢复后，新隔离令牌阻止它继续使用原请求修改资源。"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "实施环节",
+            "具体实现与验证"
+          ],
+          "rows": [
+            [
+              "MCP 接入",
+              "复用 stdio 客户端与工具目录；网关完成别名映射、数据规范化、超时和审计。"
+            ],
+            [
+              "调度与审批",
+              "事实驱动任务图；同资源修改串行，人工审批记录随任务下发；工作台展示证据、动作和接续。"
+            ],
+            [
+              "正式验收",
+              "固定源码、镜像、计划和隔离端口；串行故障与恢复，保存真实退出码并检查独立 H00。"
+            ],
+            [
+              "兼容修复",
+              "full_history 接受合法的可选 session 元数据；拒绝响应 operation=null 时保留原因。39 个不同离线方法通过。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            88,
+            411
+          ]
+        },
+        {
+          "type": "small",
+          "text": "原 22 例冻结源码引用 c1c09e5，独立复验冻结提交 c75554d，两批分别保留。后续 Durable Access 等本地修复尚未部署；离线通过不等同于平台复验通过。本文不包含 613ecbf 之后的运行器或停机改动。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "四 / 项目实施 · 本地持久化与恢复",
+      "title": "保留未确认事实，恢复时不重执行业务",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "新的 Durable Access outbox 在进入回调前持久化真实请求元数据与稳定 logId，正常结果形成后冻结记录，再追加 JSONL、fsync 和确认。结果形成前硬退出，下一 owner 仅记 OutcomeUnconfirmed，不补造响应、耗时或业务成功。",
+          "size": 9.5,
+          "leading": 16
+        },
+        {
+          "type": "table",
+          "headers": [
+            "本地验证组",
+            "实际检查",
+            "证据范围"
+          ],
+          "rows": [
+            [
+              "Durable Access",
+              "17 项通过，exit0",
+              "覆盖 handler、ready、append、确认前、fsync 窗口及跨进程 owner；旧失败保留。"
+            ],
+            [
+              "原群组模块",
+              "8 项通过，exit0",
+              "原群组集成回归；不与 17 项合并计数。"
+            ],
+            [
+              "AMP 项目接入",
+              "20 个不同方法通过",
+              "18 项复跑，2 项因输入未变复用；临时证书与 broker/resource double。"
+            ],
+            [
+              "T30 协调者恢复",
+              "新增 2 项 + 原相关 1 项通过",
+              "真实 SDK wrapper/journal；临时 writer 退出与新 reader，传输为离线 double。"
+            ],
+            [
+              "native 停止入口",
+              "修前 6 项中 2 失败；修后 6/6",
+              "Nginx/pg_ctl 停止失败传播并保留状态；命令 fixture，不是真实全栈停机。"
+            ]
+          ],
+          "size": 8.3,
+          "widths": [
+            107,
+            133,
+            259
+          ]
+        },
+        {
+          "type": "p",
+          "text": "T30 两个新方法各恢复 5 次尝试、3 项在途、13 条事件，任期 1→2，重发任务 0；不证明真实平台群组重连、整机断电或完整事故续跑。已形成的 access 记录同 ID 原样重放；缺失和冲突日志保留并拒绝继续。",
+          "size": 9.2,
+          "leading": 16
+        },
+        {
+          "type": "callout",
+          "title": "离线修复已验证，尚未部署",
+          "text": "本页补证不产生新的正式平台结果，不改变原 22 例或新 12 例、历史缺行及 T05=false。完整 native 业务启动 / H00 / 正常停止、独立新机器 T11/T96 与 24 小时窗口仍待验。",
+          "warning": true
+        },
+        {
+          "type": "small",
+          "text": "来源：evidence/access-durability-20261019/。17 项最终日志有一次约 0.11 秒 asyncio 慢回调提示，本轮不作性能提升结论。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "四 / 项目实施 · 创新一",
+      "title": "接续保留原操作，不盲目重放副作用",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "新增 TaskJournal 关联逻辑任务与真实 AIP 尝试；OperationLedger 在资源域保存参数摘要、执行状态和隔离令牌。旧主失联后，协调者选定替代者并提高 fence；替代者仍围绕同一 operation_id 判断能否继续。",
+          "size": 9.5,
+          "leading": 16
+        },
+        {
+          "type": "table",
+          "headers": [
+            "核心代码原文节选 / vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py:220"
+          ],
+          "rows": [
+            [
+              "<font face='ReportMono' size='8'>if&#160;row&#160;and&#160;row[&quot;state&quot;]&#160;==&#160;&quot;applied&quot;:<br/>&#160;&#160;&#160;&#160;conn.commit()<br/>&#160;&#160;&#160;&#160;return&#160;self._outcome(row,&#160;&quot;skipped_already_applied&quot;)<br/>before&#160;=&#160;None<br/>if&#160;row&#160;and&#160;row[&quot;state&quot;]&#160;in&#160;(&quot;executing&quot;,&#160;&quot;unknown&quot;,&#160;&quot;failed&quot;):<br/>&#160;&#160;&#160;&#160;if&#160;inspect&#160;is&#160;None:<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;conn.commit()<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;return&#160;self._outcome(row,&#160;&quot;reconciliation_required&quot;)<br/>&#160;&#160;&#160;&#160;before&#160;=&#160;await&#160;_call(inspect)</font>"
+            ]
+          ],
+          "widths": [
+            499
+          ],
+          "size": 8
+        },
+        {
+          "type": "table",
+          "headers": [
+            "局部交互时序",
+            "持久事实与判定"
+          ],
+          "rows": [
+            [
+              "协调者 → 主库：act(op, fence0)",
+              "进入修改前先提交 executing；具体资源效果另核验。"
+            ],
+            [
+              "主库应用后中断 → 协调者超时",
+              "回报丢失不等于未执行，原尝试保留未确认。"
+            ],
+            [
+              "协调者 → 备用：resume(op, fence1)",
+              "提高 fence 并核查共享账本；已应用则跳过重复修改。"
+            ],
+            [
+              "备用 → 协调者 → 验证域",
+              "提交真实结果，继续剩余修复；独立验证订单与原请求。"
+            ]
+          ],
+          "widths": [
+            232,
+            267
+          ],
+          "size": 8.6
+        },
+        {
+          "type": "callout",
+          "title": "未知效果必须留在判定里",
+          "text": "executing / unknown / failed 先检查真实状态。证明后置条件才可 reconciled_applied；明确前置条件及旧效果不可能再到达，才允许显式 retry_if_unchanged。新 fence 本身不证明旧动作未发生。",
+          "warning": true
+        },
+        {
+          "type": "small",
+          "text": "原平台 E1-a 为 8/9、E1-b 为 6/9、E1-c 为 3/3。独立新批仅复验 E1-a 的 after_observation 断点 3/3，以及 E1-b 三方法 8/9，不与原三断点分母合并。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "四 / 项目实施 · 创新二",
+      "title": "把工具接入互联协议，也保留本域授权",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "MCP→AIP 网关复用 MCP stdio 工具目录，生成 ACS 技能并把已注册别名映射到本地工具。身份、schema、风险、审批、资源范围和审计都在资源域验证，远端调用不直接携带 SQL 或系统命令。",
+          "size": 9.5,
+          "leading": 16
+        },
+        {
+          "type": "table",
+          "headers": [
+            "核心代码原文节选 / acps_mcp_bridge/policy.py:87"
+          ],
+          "rows": [
+            [
+              "<font face='ReportMono' size='8'>if&#160;risk&#160;==&#160;&quot;high&quot;&#160;and&#160;(not&#160;self.approval_verifier&#160;or&#160;not&#160;self.approval_verifier(payload,&#160;caller_aic)):<br/>&#160;&#160;&#160;&#160;raise&#160;PolicyRejected(&quot;high&#160;risk&#160;tool&#160;requires&#160;a&#160;valid&#160;independent&#160;approval&#160;proof&quot;)</font>"
+            ]
+          ],
+          "widths": [
+            499
+          ],
+          "size": 8
+        },
+        {
+          "type": "table",
+          "headers": [
+            "核心代码原文节选 / acps_mcp_bridge/policy.py:100"
+          ],
+          "rows": [
+            [
+              "<font face='ReportMono' size='8'>if&#160;&quot;sql_template&quot;&#160;in&#160;spec:<br/>&#160;&#160;&#160;&#160;#&#160;Only&#160;server-owned&#160;templates&#160;are&#160;formatted;&#160;remote&#160;arguments&#160;never&#160;supply&#160;SQL.<br/>&#160;&#160;&#160;&#160;arguments&#160;=&#160;{&quot;sql&quot;:&#160;spec[&quot;sql_template&quot;].format(**args)}</font>"
+            ]
+          ],
+          "widths": [
+            499
+          ],
+          "size": 8
+        },
+        {
+          "type": "table",
+          "headers": [
+            "局部交互时序",
+            "实际校验"
+          ],
+          "rows": [
+            [
+              "注册 / 发现 → describe",
+              "以 ACS 筛候选，再确认工具目录与实际资源范围。"
+            ],
+            [
+              "工作台批准 → 协调者发 act",
+              "证明绑定 caller、incident、operation、参数摘要和时间。"
+            ],
+            [
+              "资源网关接收 → Policy",
+              "校验 caller、工具别名、schema、risk、fence、审批与速率。"
+            ],
+            [
+              "Policy 通过 → MCP → audit",
+              "只转发登记工具，写入实际结果及可关联签名审计。"
+            ]
+          ],
+          "widths": [
+            215,
+            284
+          ],
+          "size": 8.6
+        },
+        {
+          "type": "callout",
+          "title": "E2-c 本地组件结果",
+          "text": "14 次拒绝逐条落盘验签，拒绝转发 0；1 个合法正控转发 3 次 MCP 并发生 1 次 fixture 修改。另计 16 次健康探测。证书为本地自签，工具是项目 stdio fixture，平台 CA、真实资源和 Monitor 均待各自验证。",
+          "warning": false
+        },
+        {
+          "type": "small",
+          "text": "核心片段是策略边界的原文节选，其余校验见完整 Policy.authorize；代码片段不代替整条路径的运行证据。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "四 / 项目实施 · 创新三与部署",
+      "title": "模型提出假设，资源事实决定动作",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "协调器保留事实来源与观测时间，参与者可以提供局部假设。模型输出接受结构化校验与预算限制，探测排序逐步收敛；只有已确认事实才生成修复动作，高风险动作再等待人工审批。",
+          "size": 9.5,
+          "leading": 16
+        },
+        {
+          "type": "table",
+          "headers": [
+            "核心代码原文节选 / incident/coordinator/engine.py:294"
+          ],
+          "rows": [
+            [
+              "<font face='ReportMono' size='8'>actions&#160;=&#160;planner.actions()<br/>remaining_probes&#160;=&#160;[p&#160;for&#160;p&#160;in&#160;PROBES&#160;if&#160;p.tool&#160;in&#160;available&#160;and&#160;p.tool&#160;not&#160;in&#160;planner.observed]<br/>if&#160;actions&#160;and&#160;(self.eager_actions&#160;or&#160;not&#160;remaining_probes):<br/>&#160;&#160;&#160;&#160;state[&quot;plan&quot;]&#160;=&#160;[asdict(n)&#160;for&#160;n&#160;in&#160;actions]<br/>&#160;&#160;&#160;&#160;for&#160;node&#160;in&#160;actions:<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;self.event(state,&#160;&quot;plan_adjusted&quot;,&#160;reason=node.reason,&#160;node=asdict(node))<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;await&#160;self._call(state,&#160;node.tool,&#160;kind=&quot;act&quot;,&#160;args=node.args,&#160;node=node)<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;planner.action_completed(node)</font>"
+            ]
+          ],
+          "widths": [
+            499
+          ],
+          "size": 8
+        },
+        {
+          "type": "table",
+          "headers": [
+            "局部交互时序",
+            "证据与操作"
+          ],
+          "rows": [
+            [
+              "参与者 → 协调者",
+              "事实附来源 / 时间；局部假设作为输入，不直接授权修改。"
+            ],
+            [
+              "协调者与模型 / 探测域",
+              "筛选假设并选下一探测；结果更新事实和任务图。"
+            ],
+            [
+              "协调者与工作台 → 资源方",
+              "形成已证实的动作；审批证明随具体任务发送。"
+            ],
+            [
+              "业务验证 → 结案或人工核对",
+              "新流程健康与原键结果分别判断，旧未知不会被新健康清除。"
+            ]
+          ],
+          "widths": [
+            215,
+            284
+          ],
+          "size": 8.6
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Windows 同机补证",
+            "实际结果与范围"
+          ],
+          "rows": [
+            [
+              "数据库 MCP 新环境",
+              "CPython 3.12.14 AMD64，pglast 7.2、postgres-mcp 0.3.0、mcp 1.30.0；69 个解析包，安装 / pip check / 导入 / SQL 解析 / CLI 帮助通过。"
+            ],
+            [
+              "一键入口",
+              "7 个 PowerShell launcher fixture 方法通过，验证顺序、--launch 路由及失败传播；没有据此声称真实全栈已启动。"
+            ]
+          ],
+          "widths": [
+            131,
+            368
+          ],
+          "size": 8.4
+        },
+        {
+          "type": "small",
+          "text": "Windows 安装使用部分缓存且为同机新环境；不是独立新机器 15 分钟 T11/T96。首次检查器导入失败原记录保留。完整一键停机尚未实现；原生底座和 supervisor 需按文档分别停止。M2 当前也没有整体速度优势。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "五 / 应用成效 · 实验结果",
+      "title": "45 格模型对照与两批正式验收分开统计",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "NEW7 E3 方法",
+            "确认持续恢复",
+            "结果解释"
+          ],
+          "rows": [
+            [
+              "M0 固定流程",
+              "15 / 15",
+              "无模型调用；作为当前冻结版本的参照。"
+            ],
+            [
+              "M1 自由工具",
+              "7 / 15",
+              "8 格未确认均涉及 POST 前预算拒绝，失败完整保留。"
+            ],
+            [
+              "M2 完整方案",
+              "15 / 15",
+              "五场景总协调耗时中位数均高于 M0，不宣称全面更快。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            100,
+            95,
+            304
+          ]
+        },
+        {
+          "type": "p",
+          "text": "E3 共记录 277 次模型调用、648020 tokens，usage 完整。旧 workload 仍有 7 个未完成意图阶段，独立原键 GET 全部返回 404，不能据此证明未执行。最终新 H00 的健康结果不能解除这些旧阶段。"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "冻结批次",
+            "验收范围",
+            "通过 / 例数",
+            "失败"
+          ],
+          "rows": [
+            [
+              "原 22 例",
+              "E1-a 三断点退出接续",
+              "8 / 9",
+              "1"
+            ],
+            [
+              "原 22 例",
+              "E1-b 三种交接方式",
+              "6 / 9",
+              "3"
+            ],
+            [
+              "原 22 例",
+              "E1-c 旧主同进程复活",
+              "3 / 3",
+              "0"
+            ],
+            [
+              "原 22 例",
+              "F12/E5 原请求回执",
+              "1 / 1",
+              "0"
+            ],
+            [
+              "新 12 例",
+              "E1-a 仅 after_observation",
+              "3 / 3",
+              "0"
+            ],
+            [
+              "新 12 例",
+              "E1-b 三种交接方式",
+              "8 / 9",
+              "1"
+            ]
+          ],
+          "size": 8.2,
+          "widths": [
+            72,
+            227,
+            117,
+            83
+          ]
+        },
+        {
+          "type": "callout",
+          "title": "原 22 例 18/4；新 12 例 11/1",
+          "text": "原批 4 例失败不改判。新批 full_history-r1 在 ADP 重新发现时出现 ConnectError，最终 TimeoutError，未发送备用 resume；现有证据不能确定网络根因。12 例最终恢复、独立 H00 与六项关组检查均通过，不能据此改判该失败。",
+          "warning": true
+        },
+        {
+          "type": "small",
+          "text": "来源：evidence/new7-e3-45-20261018-first/、platform-acceptance-20261019/、platform-revalidation-20261019/。新批两个阶段实际 exit1/exit0 和首轮审阅 gate 分别保留；不以外层退出码代替逐例结论。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "五 / 应用成效 · E1-b 分批图",
+      "title": "原批 E1-b：发送不等于确认",
+      "orientation": "landscape",
+      "blocks": [
+        {
+          "type": "figure",
+          "path": "evidence/e1b-comparison-20261019/e1b-original22.png"
+        },
+        {
+          "type": "p",
+          "text": "原批 E1-b 每方法 3 次，from_scratch / full_history / resume_package 为 3/3、0/3、3/3。full_history 三次均捕获发送，但确认及剩余流程时间缺失；缺值未补 0。当前 package 双重表示，不能从子对象大小声称传输压缩。",
+          "size": 9.1,
+          "leading": 15
+        },
+        {
+          "type": "small",
+          "text": "来源：evidence/e1b-comparison-20261019/。完整 IFC UTF-8 字节不含外层 AIP/MQ/TLS 开销；两批源码 / 镜像不同，不合并成功率。E1-b 的 model_calls / tokens 为 0，不声称节省 token；数据库 wrapper 计数不等于物理修改次数。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "五 / 应用成效 · E1-b 分批图",
+      "title": "复验 E1-b：保留首例失败与各自分母",
+      "orientation": "landscape",
+      "blocks": [
+        {
+          "type": "figure",
+          "path": "evidence/e1b-comparison-20261019/e1b-new12.png"
+        },
+        {
+          "type": "p",
+          "text": "新批 E1-b 每方法 3 次，通过数为 3/3、2/3、3/3。full_history-r1 未发送 resume，发送字节仍为缺失；其余点按实际捕获和确认绘制。时间只从确认接管之后起计，含约 30 秒业务验证，不是故障到接管总耗时。",
+          "size": 9.1,
+          "leading": 15
+        },
+        {
+          "type": "small",
+          "text": "来源：evidence/e1b-comparison-20261019/。完整 IFC UTF-8 字节不含外层 AIP/MQ/TLS 开销；两批源码 / 镜像不同，不合并成功率。E1-b 的 model_calls / tokens 为 0，不声称节省 token；数据库 wrapper 计数不等于物理修改次数。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "五 / 应用成效 · 平台与审计",
+      "title": "访问缺端与凭据零命中分别判断",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "冻结批次 / 检查",
+            "实际结果",
+            "覆盖边界"
+          ],
+          "rows": [
+            [
+              "原 22 例 · T05",
+              "289 Start；预期 578、实际 560；缺 18 条",
+              "严格闭合 false。缺接收端：14 条确证硬退出跳过 finally，4 条原因未定。"
+            ],
+            [
+              "新 12 例 · T05",
+              "158 Start；预期 316、实际 304；缺 12 条",
+              "每例缺 1 条，双端匹配 false；12 个不完整生命周期独立保留。"
+            ],
+            [
+              "原 22 例 · T62",
+              "214 文件 / 68 已知值；raw、decoded 命中及解析错误均 0",
+              "T62=true；不代替所有 broker 或管理消息检查。"
+            ],
+            [
+              "新 12 例 · T62",
+              "133 文件 / 73 已知值；raw、decoded 命中及解析错误均 0",
+              "本批 T62=true，捕获覆盖完整；闭合 overall=false。"
+            ],
+            [
+              "新 12 例 · 收尾",
+              "自有项目运行容器 0；stop/keeper 实际 exit0",
+              "逐例恢复与 H00 不消除旧失败；范围限本批所有权。"
+            ]
+          ],
+          "size": 8.4,
+          "widths": [
+            106,
+            190,
+            203
+          ]
+        },
+        {
+          "type": "p",
+          "text": "Durable Access 目前仅本地实现与离线验证，不回填旧 18 条或新 12 条缺失，也不把未完成响应补成成功。部署后须绑定新镜像和计划，并恢复实验所属域的原日志路径与原 journal；正常 worker 的另一目录不会替实验 worker 补日志。",
+          "size": 9.2,
+          "leading": 16
+        },
+        {
+          "type": "p",
+          "text": "E2-c 本地组件仍为 14 次拒绝、1 个合法正控及逐条落盘验签；拒绝转发 MCP 为 0，正控转发 3 次、fixture 修改 1 次，另计 16 次健康探测。使用本地自签证书与 stdio fixture，平台身份、生产 CA 和 Monitor 入库另验。",
+          "size": 9.2,
+          "leading": 16
+        },
+        {
+          "type": "small",
+          "text": "旧 E3 的 T62 曾有 11 条坏行，原 overall=false 不由新批零错误改判。Kafka/TLS、Monitor 验签与查询、后台访问量及长期在线仍需各自平台证据。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "六 / 总结与展望",
+      "title": "已验证互联路径，继续补齐失效与交付闭环",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "真实运行证明：各域可以在本域保留工具与凭据，经正式通信组织订单恢复；接续、旧主隔离和原键业务核对已有独立案例。同时，完整历史契约错误、模型预算拒绝、旧未知意图与缺端日志暴露了系统边界，仍需按各自证据解决。"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "下一项",
+            "完成判据"
+          ],
+          "rows": [
+            [
+              "持久化部署后验证",
+              "本地 Durable / AMP 接入通过后，重新绑定源码、镜像与计划，再验证退出恢复；当前尚未部署。"
+            ],
+            [
+              "访问记录缺端",
+              "原批缺 18、新批缺 12 条，T05 仍 false；保留未知恢复语义，不提前记录成功或改判旧实验。"
+            ],
+            [
+              "策略平台补证",
+              "E2-c 本地策略与落盘验签已完成；正式身份、生产 CA 与 Monitor 仍分别待验。"
+            ],
+            [
+              "来源与依赖绑定",
+              "T01 的 AtomGit、vendor 到最终 fork 的绑定与官方上游 CI 尚未完成。"
+            ],
+            [
+              "新机器部署",
+              "独立机器按公开步骤 15 分钟部署并一次跑通 F10。"
+            ],
+            [
+              "平台入库与稳定性",
+              "取得真实 Kafka/TLS 与 Monitor 权限，验证入库及连续 24 小时无人工干预。"
+            ],
+            [
+              "正式演示与材料",
+              "录制注册、发现、互联和后台数据；按最终事实更新报告、佐证和匿名检查。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            111,
+            388
+          ]
+        },
+        {
+          "type": "p",
+          "text": "标准化建议包括：明确接管的未知效果语义与 fence、工具能力的资源范围、可关联的调用审计，以及任务进入处理后突然中断时的可观察性。这些建议来自当前工程与失败证据，不作为新的标准条款。"
+        },
+        {
+          "type": "small",
+          "text": "本稿不包含新的 PPTX、正式视频或未取得的用户反馈。平台访问排行、长期在线率和落地收益尚无相应终态数据。"
+        }
+      ]
+    },
+    {
+      "eyebrow": "七 / 附录",
+      "title": "复现入口与证据版本",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "材料",
+            "位置或状态"
+          ],
+          "rows": [
+            [
+              "完整代码与团队开发",
+              "GitHub: RoboSynth/multi-agent-interconnect；本稿证据截止 613ecbf。"
+            ],
+            [
+              "平台 22 例",
+              "evidence/platform-acceptance-20261019/summary.json、batch-terminal.json、reviews.json"
+            ],
+            [
+              "独立交接修复",
+              "evidence/handover-wire-fix-20261019/verification-summary.json、peer-review.json"
+            ],
+            [
+              "新 12 例与日志闭合",
+              "evidence/platform-revalidation-20261019/summary.json、closed-access-credentials.json"
+            ],
+            [
+              "E1-b 逐例与分组图",
+              "evidence/e1b-comparison-20261019/；发送 / 确认分列，剩余流程计时。"
+            ],
+            [
+              "本地持久化与进程补证",
+              "evidence/access-durability-20261019/；17、8、20、新 2 / 旧 1、native 6 分组记录。"
+            ],
+            [
+              "NEW7 E3 45 格",
+              "evidence/new7-e3-45-20261018-first/，含模型调用、旧意图及坏行限制。"
+            ],
+            [
+              "本稿补充证据",
+              "SDK 来源、Windows 安装与启动入口、E2-c 及缺端诊断；精确输入见 evidence.json。"
+            ],
+            [
+              "环境与操作",
+              "docs/本地开发环境与操作_20261018.md；docs/开发者接手指南_20261018.md"
+            ],
+            [
+              "官方基础与教程",
+              "vendor/ACPs-community/ORIGIN.md；docs/sdk_attribution_20261019.md；THIRD_PARTY.md"
+            ],
+            [
+              "正式报告大纲",
+              "research/other-tracks/官方附件/附件2AIC·智能体互联技术报告参考大纲.pdf"
+            ],
+            [
+              "公开贡献快照",
+              "2 个 draft PR、4 条 Issue；以各自已保存状态快照时间为准，不推断外部后续状态。"
+            ],
+            [
+              "本稿生成与来源",
+              "同目录 build.py、content.json、evidence.json；来源 SHA 与渲染检查另存。"
+            ]
+          ],
+          "size": 8.5,
+          "widths": [
+            121,
+            378
+          ]
+        },
+        {
+          "type": "callout",
+          "title": "使用范围",
+          "text": "这是随当前证据更新的开发稿。缺少的新机器、平台后台、长期窗口和正式材料仍列为待完成，不能据本 PDF 宣布完整 P0 或赛事必要验证全部完成。",
+          "warning": true
+        },
+        {
+          "type": "small",
+          "text": "参考内容使用仓库已保存的官方附件、教程、项目源码和闭合运行资料。引用路径均为项目相对路径；私钥、真实 env、审批证明和未审原消息不进入本稿。"
+        }
+      ]
+    }
+  ]
+}

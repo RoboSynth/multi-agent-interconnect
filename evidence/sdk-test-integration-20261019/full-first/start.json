@@ -1,0 +1,32 @@
+{
+  "status": "CURRENT_SDK_COMPLETE_SUITE_STARTED",
+  "source_manifest_sha256": "371c17b2ec7cc073dc069e6c29ba88d4c9cd012790601690339d2dba77db251d",
+  "preparation_sha256": "7e71299166a6a5a9fffd34e8e4efb9e82d9e824ee85391847e6d501a0c6718c2",
+  "runner_sha256": "1d90a24ae4020b27829c9dcb2caee6b669d1be4a2cc6a02230c53d26d17422e7",
+  "actual_interpreter": "[sdk-test-venv]/Scripts/python.exe",
+  "sdk_tree": "[sdk-copy]/acps-sdk",
+  "dependencies": "[locked-dependencies]",
+  "arguments": [
+    "-c",
+    "[sdk-copy]/acps-sdk/pyproject.toml",
+    "--rootdir=[sdk-copy]/acps-sdk",
+    "--confcutdir=[sdk-copy]/acps-sdk",
+    "-p",
+    "pytest_asyncio.plugin",
+    "-p",
+    "anyio.pytest_plugin",
+    "-ra",
+    "--basetemp=[suite-run]/pytest-temporary",
+    "-o",
+    "cache_dir=[suite-run]/pytest-cache",
+    "--junitxml=[suite-run]/junit.xml",
+    "[sdk-copy]/acps-sdk/tests"
+  ],
+  "backend": [
+    "asyncio"
+  ],
+  "all_tests_included": true,
+  "test_filter_used": false,
+  "platform_or_model_started": false,
+  "started_at_utc": "2026-10-19T07:35:50.523666+00:00"
+}

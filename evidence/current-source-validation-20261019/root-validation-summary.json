@@ -1,0 +1,79 @@
+{
+  "status": "LOCAL_IMPLEMENTED_VALIDATED_NOT_FORMALLY_DEPLOYED",
+  "created_at_utc": "2026-10-19T08:06:50.403894+00:00",
+  "base_commit": "613ecbfc6e7500a30264bfec3c702d17152f0b6a",
+  "groups": {
+    "sdk": {
+      "collected": 605,
+      "passed": 605,
+      "pytest_actual_exit": 0,
+      "tool_completion": "699e75",
+      "summary_sha256": "a7d50a26b29c56edbd394c72f7a6f3aa11c53bf6b248dedafc96b5071dd96eb0"
+    },
+    "local_shutdown": {
+      "distinct_methods_passed": 15,
+      "summary_sha256": "2fde39428a7a7e010d57891dfd2597193976b05964cf933b31d903d342fc41ba"
+    },
+    "original_domain_recovery": {
+      "methods_passed": 6,
+      "actual_exit": 0,
+      "tool_completion": "c35618"
+    },
+    "recovery_controller": {
+      "methods_passed": 5,
+      "actual_exit": 0,
+      "tool_completion": "07cc1e"
+    },
+    "recovery_case_outcome": {
+      "methods_passed": 2,
+      "actual_exit": 0,
+      "tool_completion": "80b31f"
+    },
+    "legacy_e1": {
+      "distinct_methods_passed": 65,
+      "from_initial_unchanged": 17,
+      "from_environment_fixed_rerun": 48,
+      "first_attempt_errors": 52,
+      "all_52_selected_rerun_passed": true,
+      "scope": "legacy plan paths do not enable recover_access; later exact-volume change affects new recovery branch only"
+    },
+    "source_image_gates": {
+      "methods_passed": 2,
+      "actual_exit": 0,
+      "tool_completion": "a6c03e",
+      "initial_restricted_temp_failure_retained": true
+    },
+    "offline_image": {
+      "source_files_matched": 19,
+      "actual_exit": 0,
+      "tool_completion": "df08e4",
+      "summary_sha256": "3de0e1d1e529ac8ae6ba260d67dbd237abcac97f8313bf6623e5c1d7a5f9b93e"
+    }
+  },
+  "image_id": "sha256:f91a92463cc29b39c55425e42115c81976183604911ee148e1f3a4ec7ab9ab3c",
+  "platform_identity_consumers_started": 0,
+  "formal_fault_cases_executed": 0,
+  "model_calls": 0,
+  "sources": {
+    "incident/recover_access.py": "b363111af8f35c2e8ee6bf9b009dac0eee70447bab9fb1f5003ac57019e589e4",
+    "eval/platform_resume_experiment.py": "1c682bd45000108569e50a824891f82ad6be9be64ef7ad6bcac5033dbde5842e",
+    "eval/targets.py": "33133b738adf50eadf482c411482b629f642b1dc084782465b9735695b8ca21d",
+    "tests/test_access_recovery.py": "f01684b09ac08f27bfdb0ba78a9dcfb6b78a17958a45b3a131d23541f2d2b683",
+    "deploy/local-down.ps1": "4efa028ea5618fd442ccb99e01ee84a1889c98607dbd23bdd443818fe56b69a7",
+    "tools/local_shutdown.py": "fb1f007cc456d0e301c3bd34cca14ddb6cae669c19ebf8efdc8985ac84087c82",
+    "domains/ops/native_supervisor.py": "62a715b1d1bf4fdd1343be332704c734adeefa4a99ee0b577995bccb70597623",
+    "tests/test_local_shutdown.py": "7b2e8b04ff0d88790e17c3dc672f9efbbbc4c6464db90b95b00f7475e58e5fa5"
+  },
+  "preserved_failures": [
+    "run-1 missing checkout artifacts test parent",
+    "restricted temp source-gate failure",
+    "offline image probe initially lacked /srv in its own module search path",
+    "native fixture base/venv assumption and later missing test imports"
+  ],
+  "limits": [
+    "synthetic offline processes do not prove new real platform T05",
+    "local shutdown has no current independent-machine or complete native lifecycle result",
+    "original formal22=18/4 and revalidation12=11/1, missing access18/12 remain unchanged",
+    "new four-case plan is not executed or authorized by its preparation"
+  ]
+}

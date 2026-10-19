@@ -1,0 +1,32 @@
+{
+  "schema_version": "coordinator-restart-test/1",
+  "exit_mode": "wait-for-parent",
+  "status": "passed",
+  "platform_or_business_started": false,
+  "task_attempts": 5,
+  "in_flight_attempts": 3,
+  "persisted_events": 13,
+  "recovered_term": 2,
+  "cleanup_finally_ran": false,
+  "replayed_transport_calls": 0,
+  "process_receipts": [
+    {
+      "phase": "writer",
+      "pid": 37420,
+      "actual_returncode": 1,
+      "terminated_after_durable_ready": true,
+      "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\nfixture: starting asyncio\nfixture: tasks committed\n",
+      "stderr": ""
+    },
+    {
+      "phase": "reader",
+      "pid": 36504,
+      "actual_returncode": 0,
+      "stdout": "fixture: importing SDK\nfixture: SDK ready\nfixture: opening journal\nfixture: journal opened\nfixture: term allocated\n",
+      "stderr": ""
+    }
+  ],
+  "source_sha256": {
+    "tests/resumable/test_coordinator_process.py": "37833a0f132a9006f04bbc0274061fd0fe0a769cc482beaf1e7609e4847b5b91"
+  }
+}

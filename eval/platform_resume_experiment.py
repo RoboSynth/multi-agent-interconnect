@@ -13,7 +13,7 @@ import hashlib
 import json
 import logging
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import subprocess
 import sys
@@ -38,7 +38,7 @@ POINTS = {
 METHODS = ("from_scratch", "full_history", "resume_package")
 
 
-def effects(point, case="E1-a", method=None):
+def effects(point, case="E1-a", method=None, *, recover_access=False):
     result = list(EFFECTS)
     result[2] = f"one primary {point} exit{POINTS[point]['exit_code']}"
     if case == "E1-b":
@@ -47,6 +47,8 @@ def effects(point, case="E1-a", method=None):
         result[2] = "one primary before_modification SIGSTOP and SIGCONT of the same Linux PID/start ticks"
         result.append("one resumed original stale-fence request; primary MCP modifications zero, backup one")
         result.append("retain the stopped primary group member until stale rejection evidence, then normal SDK removal")
+    if recover_access:
+        result.append("after owned database workers stop, replay each original domain access journal in an offline network-disabled container before normal worker restoration")
     return result
 
 
@@ -162,16 +164,21 @@ def prepare(args):
     output = local(args.output)
     if not output.is_relative_to(ROOT / "eval/results/platform") or output.exists():
         raise ValueError("E1 output must be a new eval/results/platform directory")
+    recover_access = getattr(args, "recover_access", False)
+    if type(recover_access) is not bool:
+        raise ValueError("recover_access must be an explicit boolean")
     plan = dict(schema_version="platform-e1-plan/3" if case == "E1-c" else "platform-e1-plan/2", case=case, crash_point=point,
         experiment_id=experiment, incident_id=incident, operation_id=incident + ":db-restore-writes",
         target_config=local(args.target_config).relative_to(ROOT).as_posix(),
         config=config_path.relative_to(ROOT).as_posix(), domain_profile=profile.relative_to(ROOT).as_posix(),
         bundle=bundle.relative_to(ROOT).as_posix(), output=output.relative_to(ROOT).as_posix(),
         project=target.project, identities=expected, image_id=args.image_id,
-        file_sha256=files, model_calls=0, approve_high_required=True, effects=effects(point, case, method),
+        file_sha256=files, model_calls=0, approve_high_required=True, effects=effects(point, case, method, recover_access=recover_access),
         evidence_limits=["MCP invocations are not physical side effects", "process-local ownership lock cannot exclude another host",
                          "normal close evidence is SDK return/local state/warnings, not a broker ACL inventory",
                          "one case only; no cross-method effectiveness claim"])
+    if recover_access:
+        plan["recover_access"] = True
     if case == "E1-c":
         plan.update(interruption_mode="suspend", replay_attempts=1)
         plan["evidence_limits"].append("one resumed pending original request, not additional AIP replay messages or physical effect counts")
@@ -202,7 +209,9 @@ def validate_plan(path=None, *, document=None):
             raise ValueError("E1-c binds one suspended original request on the same process")
     elif "interruption_mode" in plan or "replay_attempts" in plan:
         raise ValueError("Legacy exit cases cannot acquire revival effects")
-    if plan.get("effects") != effects(point, case, method) or plan.get("model_calls") != 0 or plan.get("approve_high_required") is not True:
+    if "recover_access" in plan and type(plan["recover_access"]) is not bool:
+        raise ValueError("recover_access must be a boolean")
+    if plan.get("effects") != effects(point, case, method, recover_access=plan.get("recover_access", False)) or plan.get("model_calls") != 0 or plan.get("approve_high_required") is not True:
         raise ValueError("E1 effect/model/approval contract changed")
     if not plan.get("file_sha256"):
         raise ValueError("Complete frozen E1 inputs are required")
@@ -283,7 +292,11 @@ def authorize(plan, plan_path, authorization_path, approve_high):
         expected["method"] = plan["method"]
     elif plan["case"] == "E1-c":
         expected.update(interruption_mode=plan["interruption_mode"], replay_attempts=plan["replay_attempts"])
+    if plan.get("recover_access"):
+        expected["recover_access"] = True
     boolean_fields = ("authorized", "exclusive_coordinator", "no_other_identity_consumers", "no_active_or_unknown_operations")
+    if plan.get("recover_access"):
+        boolean_fields += ("recover_access",)
     if (auth != expected or any(type(auth.get(key)) is not bool for key in boolean_fields)
             or plan["case"] == "E1-c" and type(auth.get("replay_attempts")) is not int):
         raise ValueError("Authorization must exactly bind this plan, one case and ownership preconditions")
@@ -334,6 +347,7 @@ class Controller:
         self.switched = False
         self.ownership_confirmed = False
         self.serial = 0
+        self.access_recovery = []
 
     def command(self, argv):
         env = clean_environment()
@@ -588,6 +602,47 @@ class Controller:
         save(self.output / "mcp-operation-counts.json", counts)
         return {"expected_exit_code": contract["exit_code"], "actual_exit_code": primary["State"]["ExitCode"], "counts": counts}
 
+    def recover_access(self, records):
+        """Replay original journals without network or opening resource tools/credential files."""
+        for service in DB_SERVICES:
+            role = "database" if service == DB_SERVICES[0] else "database-backup"
+            try:
+                item = records[service]
+                if item["State"]["Running"]:
+                    raise ValueError("Access recovery requires stopped domain workers")
+                domain = local(self.plan["domain_profile"]) / "domains" / role
+                config = load(domain / "bridge.json")
+                platform = config["platform"]
+                directory = PurePosixPath(platform["amp_directory"])
+                if (config["executor_aic"] != self.plan["identities"][role]
+                        or platform["name"] != role or not directory.is_relative_to("/state")
+                        or ".." in directory.parts):
+                    raise ValueError("Recovery domain identity or original AMP directory differs")
+                states = [m for m in item["Mounts"] if m["Destination"] == "/state" and m["Type"] == "volume"]
+                originals = [m.get("Name") for m in self.original[service]["Mounts"]
+                             if m["Destination"] == "/state" and m["Type"] == "volume"]
+                if (len(states) != 1 or [states[0]["Name"]] != originals
+                        or not states[0]["Name"].startswith(self.plan["project"] + "_")):
+                    raise ValueError("Recovery state volume ownership differs")
+                command = self.target.docker + ["run", "--rm", "--network", "none", "--read-only",
+                    "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
+                    "--label", "incident-pilot=true", "--label", "incident-pilot.recovery=" + self.plan["experiment_id"],
+                    "--mount", "type=volume,src=" + states[0]["Name"] + ",dst=/state",
+                    "--mount", "type=bind,src=" + self.target.docker_path(domain) + ",dst=/domain,readonly",
+                    "--entrypoint", "python", self.plan["image_id"], "-m", "incident.recover_access",
+                    "--config", "/domain/bridge.json", "--expected-aic", config["executor_aic"],
+                    "--expected-name", role, "--expected-directory", platform["amp_directory"]]
+                receipt = json.loads(self.command(command))
+                if (receipt.get("schema_version") != "domain-access-recovery/1" or receipt.get("status") != "recovered"
+                        or receipt.get("aic") != self.plan["identities"][role] or receipt.get("name") != role
+                        or receipt.get("config_sha256") != digest(domain / "bridge.json")
+                        or receipt.get("business_or_platform_actions") != 0):
+                    raise ValueError("Access recovery receipt differs from the original domain")
+                self.access_recovery.append(dict(service=service, **receipt))
+            except Exception as error:
+                self.access_recovery.append(dict(service=service, status="failed", error_class=type(error).__name__))
+        save(self.output / "access-recovery.json", self.access_recovery)
+
     def restore(self):
         if not self.switched:
             return
@@ -605,6 +660,12 @@ class Controller:
             self.owned_worker(records[service], service,
                               experiment=records[service]["Id"] != self.original[service]["Id"], running=False)
         self.command(self.target.docker + ["stop", "--time", "20", *[records[s]["Id"] for s in DB_SERVICES]])
+        if self.plan.get("recover_access"):
+            stopped = self.inspect(); self.assert_stable_others(stopped)
+            for service in DB_SERVICES:
+                if stopped[service]["Id"] != records[service]["Id"] or stopped[service]["State"]["Running"]:
+                    raise ValueError("Database worker did not stop or was replaced before access recovery")
+            self.recover_access(stopped)
         self.command(self.normal + ["up", "-d", "--no-deps", "--force-recreate", "--no-build", "--pull", "never", *DB_SERVICES])
         records = self.inspect(); self.assert_stable_others(records); self.owned_database(records)
         if any(any(m["Destination"] == "/experiment" for m in records[s]["Mounts"]) for s in DB_SERVICES):
@@ -840,6 +901,10 @@ async def run_case(plan, *, controller_factory=None, transport_factory=None, fin
             try:
                 await asyncio.to_thread(controller.restore)
                 report["resource_and_worker_restore"] = "completed"
+                if plan.get("recover_access"):
+                    report["access_recovery"] = controller.access_recovery
+                    if (len(controller.access_recovery) != 2 or any(row.get("status") != "recovered" for row in controller.access_recovery)):
+                        report["access_recovery_error_class"] = "AccessRecoveryIncomplete"
                 if final_health is None:
                     from business.load import OrderObserver
                     summary = await OrderObserver(controller.target.order_url, run_id=plan["experiment_id"] + "-final-H00",
@@ -870,6 +935,7 @@ def main(argv=None):
         parser.add_argument("--" + name)
     parser.add_argument("--authorization-file", type=Path)
     parser.add_argument("--approve-high", action="store_true")
+    parser.add_argument("--recover-access", action="store_true", help="Bind explicit offline recovery of original domain journals after worker stop")
     args = parser.parse_args(argv)
     if args.prepare and args.execute:
         raise ValueError("Preparation and execution are separate commands")

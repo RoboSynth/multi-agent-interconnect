@@ -1,0 +1,22 @@
+test_empty_checkout_is_noop_and_preserves_report (test_local_shutdown.ShutdownTests.test_empty_checkout_is_noop_and_preserves_report) ... ok
+test_native_exact_entry_exit_failure_and_registration_retained (test_local_shutdown.ShutdownTests.test_native_exact_entry_exit_failure_and_registration_retained) ... ok
+test_native_other_checkout_or_external_paths_prevent_any_stop (test_local_shutdown.ShutdownTests.test_native_other_checkout_or_external_paths_prevent_any_stop) ... ok
+test_registration_change_refuses_native_entry_and_preserves_failure (test_local_shutdown.ShutdownTests.test_registration_change_refuses_native_entry_and_preserves_failure) ... ok
+test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent) ... ok
+test_workbench_mismatch_and_failed_finished_never_request_stop (test_local_shutdown.ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop) ... ok
+test_workbench_normal_close_waits_for_handle_and_receipt (test_local_shutdown.ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt) ... ok
+test_workbench_timeout_preserves_request_and_stops_dependency_shutdown (test_local_shutdown.ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.229s
+
+OK
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-6lp2jn9w/runtime/local-down\\20261019T073914-6fda816e484c4a1eb08059a167b59a74.json", "failed_stage": null}
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-j_vqanur/runtime/local-down\\20261019T073914-857e33d5bab24e15a30a888bfde7593d.json", "failed_stage": null}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-9229p_97/runtime/local-down\\20261019T073914-7980760e7076421aa35275e62e7d7259.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-ijwzd5w3/runtime/local-down\\20261019T073914-4036c56fdf6a4208b23a630d41e7f900.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-iz6ebqlh/runtime/local-down\\20261019T073914-b631bd8dd01443da84231ff306e8373c.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-t230ld97/runtime/local-down\\20261019T073914-7d018705ecea4f5fb663cefdbc7435f0.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-85asxkk3/runtime/local-down\\20261019T073914-1f47c29ff4024a2e9b28723e9746c9fc.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-8nfz6ut_/runtime/local-down\\20261019T073914-503e1e86021648759f1818a9795b154f.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-8q_4eb3b/runtime/local-down\\20261019T073914-dd448aa78ea940be9d13a496fdb281da.json", "failed_stage": "workbench"}

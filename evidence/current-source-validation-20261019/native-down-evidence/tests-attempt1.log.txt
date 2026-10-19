@@ -1,0 +1,51 @@
+test_own_base_python_handles_wait_for_real_exit_and_reject_other_command (test_local_shutdown.HandleFixtureTests.test_own_base_python_handles_wait_for_real_exit_and_reject_other_command) ... FAIL
+test_entry_calls_project_helper_with_timeout_and_propagates_failure (test_local_shutdown.PowerShellEntryTests.test_entry_calls_project_helper_with_timeout_and_propagates_failure) ... Exception in thread Thread-4 (_readerthread):
+Traceback (most recent call last):
+  File "[python-runtime]/Lib/threading.py", line 1075, in _bootstrap_inner
+    self.run()
+  File "[python-runtime]/Lib/threading.py", line 1012, in run
+    self._target(*self._args, **self._kwargs)
+  File "[python-runtime]/Lib/subprocess.py", line 1599, in _readerthread
+    buffer.append(fh.read())
+                  ^^^^^^^^^
+UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 21: illegal multibyte sequence
+ok
+test_empty_checkout_is_noop_and_preserves_report (test_local_shutdown.ShutdownTests.test_empty_checkout_is_noop_and_preserves_report) ... ok
+test_native_exact_entry_exit_failure_and_registration_retained (test_local_shutdown.ShutdownTests.test_native_exact_entry_exit_failure_and_registration_retained) ... ok
+test_native_other_checkout_or_external_paths_prevent_any_stop (test_local_shutdown.ShutdownTests.test_native_other_checkout_or_external_paths_prevent_any_stop) ... ok
+test_registration_change_refuses_native_entry_and_preserves_failure (test_local_shutdown.ShutdownTests.test_registration_change_refuses_native_entry_and_preserves_failure) ... ok
+test_workbench_existing_correct_request_reused_and_normal_finish_idempotent (test_local_shutdown.ShutdownTests.test_workbench_existing_correct_request_reused_and_normal_finish_idempotent) ... ok
+test_workbench_mismatch_and_failed_finished_never_request_stop (test_local_shutdown.ShutdownTests.test_workbench_mismatch_and_failed_finished_never_request_stop) ... ok
+test_workbench_normal_close_waits_for_handle_and_receipt (test_local_shutdown.ShutdownTests.test_workbench_normal_close_waits_for_handle_and_receipt) ... ok
+test_workbench_timeout_preserves_request_and_stops_dependency_shutdown (test_local_shutdown.ShutdownTests.test_workbench_timeout_preserves_request_and_stops_dependency_shutdown) ... ok
+test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal (test_local_shutdown.SupervisorHttpTests.test_authenticated_idle_shutdown_and_unauthorized_or_busy_refusal) ... ok
+test_registered_supervisor_binds_health_and_waits_actual_exit (test_local_shutdown.SupervisorHttpTests.test_registered_supervisor_binds_health_and_waits_actual_exit) ... ok
+
+======================================================================
+FAIL: test_own_base_python_handles_wait_for_real_exit_and_reject_other_command (test_local_shutdown.HandleFixtureTests.test_own_base_python_handles_wait_for_real_exit_and_reject_other_command)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "[project]/tests/test_local_shutdown.py", line 253, in test_own_base_python_handles_wait_for_real_exit_and_reject_other_command
+    self.assertEqual([r["pid"] for r in family.records], [process.pid])
+AssertionError: Lists differ: [32888, 37788] != [32888]
+
+First list contains 1 additional elements.
+First extra element 1:
+37788
+
+- [32888, 37788]
++ [32888]
+
+----------------------------------------------------------------------
+Ran 12 tests in 2.318s
+
+FAILED (failures=1)
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-i7vn235h/runtime/local-down\\20261019T073353-76f2afb2606845c791f33911dd23c3cd.json", "failed_stage": null}
+{"status": "REGISTERED_LOCAL_SHUTDOWN_COMPLETED", "receipt": "[batch]/fixtures/local-down-0rurjnfc/runtime/local-down\\20261019T073353-9a2818c110e2403a95620be3f9ca5799.json", "failed_stage": null}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-pcckg8ss/runtime/local-down\\20261019T073353-ae9e7d657e8247788510af7726dbfaac.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-1lj95g6j/runtime/local-down\\20261019T073353-39fa36f0f6ff4435975dab39810b2b4c.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-rkal7038/runtime/local-down\\20261019T073353-ff53fb15b1fc428b8ca51277317a0b59.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-xeqa4_zc/runtime/local-down\\20261019T073353-71bfd7a94ac84b55b02e9d10385c1005.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-o55f_shd/runtime/local-down\\20261019T073353-5203071896cd4853b46074836dfed520.json", "failed_stage": "preflight"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-vlmj65lo/runtime/local-down\\20261019T073353-46be9a39ca5a4f8db6bbce6094083ea6.json", "failed_stage": "native"}
+{"status": "INCOMPLETE", "receipt": "[batch]/fixtures/local-down-00wzojzi/runtime/local-down\\20261019T073353-81231cfb3abf4da39dd687080f444140.json", "failed_stage": "workbench"}
