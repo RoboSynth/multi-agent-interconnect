@@ -1,0 +1,236 @@
+{
+  "schema_version": "formal-full-history-review/1.0",
+  "reviewed_at": "2026-10-19T05:50:38.091321+00:00",
+  "case_key": "e1b-full_history-r2",
+  "experiment_id": "revalidation-20261019-e1b-full_history-r2",
+  "scope": "One closed formal repeat; does not claim 3/3 or change full_history-r1 failure.",
+  "verdict": "completed; formal full-history metadata accepted by backup",
+  "runner_actual_exit_code": 0,
+  "cleanup_and_recovery_verified": true,
+  "method_consistency": {
+    "plan": "full_history",
+    "result": "full_history",
+    "actual_wire_strategy": "full_history",
+    "standalone_payload_equals_actual_wire": true
+  },
+  "formal_wire": {
+    "transport": "wutong-amqps",
+    "messages_send_line": 58,
+    "messages_ack_product_line": 61,
+    "messages_completed_line": 63,
+    "resume_task_id": "aip-33b8c42ce352497f941ad297ad42394a",
+    "session_id": "incident-efce328d668d4210af8eee69424a6aca",
+    "bytes": 18413,
+    "sha256": "d0f6db016a7309d9fe4b88ee5a39e8e11814f30d8efad20fb5e4121204ad7f39",
+    "handover_sha256": "681055903af4abd0bc964e93fa8a2b17d88e14c6c29236a00607f5924dc25c6b",
+    "replacement_ack_matches_recomputed_fingerprint": true,
+    "ack_status": "ok",
+    "ack_executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+    "conversation_entries": 7,
+    "valid_aip_session_id_entries": 7,
+    "historical_entries_matching_earlier_captured_wire": 7
+  },
+  "deployment": {
+    "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+    "bridge_sha256": "548896b9ac0149fefc6cd1931a401108eaa0003f0203c6e6ef9fb05f4dd99ee3",
+    "primary_and_backup_source_attested": true,
+    "source_digest_reused": false,
+    "bundle_manifest_sha256": "483eba302d33b582c080fb5d47069c1d17dd72cb12ab41aaa6fac45fd30c837f",
+    "both_trace_start_records_bound_to_bundle": true
+  },
+  "worker_and_effects": {
+    "formal_collector_actual_exit_code": 83,
+    "primary_crash_hook_ledger_state": "applied",
+    "AIP_product_submitted_before_crash": false,
+    "primary_mcp_modifying_invocations": 1,
+    "primary_mcp_nonerror_returns": 1,
+    "backup_mcp_modifying_invocations": 0,
+    "counting": "Actual MCP attempts/returns, not a physical side-effect count.",
+    "inspect_receipt_line": 27,
+    "inspect_receipt_exit_code": 0,
+    "inspect_stdout_sha256": "c88564747d4869347b0fb200cb02bfdecabdef432cedc1b5204ca5149dc09b8e",
+    "actual_exit_source": "Frozen collect() reads exact owned non-recreated/non-restarted primary Docker State.ExitCode; raw inspect stdout is represented by saved digest, not a separate raw-state file."
+  },
+  "ledger_and_journal": {
+    "backup_operation": {
+      "operation_id": "revalidation-20261019-e1b-full_history-r2:db-restore-writes",
+      "state": "skipped_already_applied",
+      "active_fence": {
+        "coordinator_term": 7,
+        "takeover_version": 1
+      }
+    },
+    "attempts": [
+      {
+        "logical_task_id": "revalidation-20261019-e1b-full_history-r2:4",
+        "task_id": "aip-f80c57746d87409c8422409045d2abb9",
+        "partner_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+        "command": "start",
+        "state": "working",
+        "coordinator_term": 7
+      },
+      {
+        "logical_task_id": "revalidation-20261019-e1b-full_history-r2:4",
+        "task_id": "aip-33b8c42ce352497f941ad297ad42394a",
+        "partner_aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+        "command": "start",
+        "state": "awaiting-completion",
+        "coordinator_term": 7
+      },
+      {
+        "logical_task_id": "revalidation-20261019-e1b-full_history-r2:4",
+        "task_id": "aip-33b8c42ce352497f941ad297ad42394a",
+        "partner_aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+        "command": "complete",
+        "state": "completed",
+        "coordinator_term": 7
+      }
+    ],
+    "takeover_states": [
+      "started",
+      "fenced",
+      "resumed"
+    ],
+    "journal_resolution": {
+      "raw_in_flight_count": 1,
+      "expected_unacknowledged_primary_attempts": 1,
+      "unexpected_in_flight_count": 0,
+      "completed_backup_resume_task_id": "aip-33b8c42ce352497f941ad297ad42394a",
+      "raw_journal_modified": false,
+      "completed_backup_replay_task_id": null,
+      "basis": "Primary after_applied/exit83 and exact MCP counts were independently verified; backup continuation completed."
+    },
+    "standalone_domain_ledger_dump": "Not present; applied state is evidenced by durable primary trace and backup shared-ledger resume product."
+  },
+  "business_windows": {
+    "business_verification": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "passed": true
+    },
+    "independent_final_H00": {
+      "duration_seconds": 30.016,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "passed": true
+    }
+  },
+  "close_checks": {
+    "no_group_sessions": true,
+    "no_inbound_groups": true,
+    "inbox_cancelled": true,
+    "connection_closed": true,
+    "owned_group_disconnected": true,
+    "no_cleanup_warnings": true
+  },
+  "cleanup_warning_count": 0,
+  "resource_and_worker_restore": "completed",
+  "control_subprocess_count": 37,
+  "nonzero_control_subprocess_count": 0,
+  "conclusion": "The deployed formal path sent seven legitimate aip_session_id history entries and the backup returned an exact matching handover acknowledgment with skipped_already_applied, then completed. This case confirms that the prior metadata rejection is resolved for this payload in the formally deployed image.",
+  "original_evidence_unchanged": true,
+  "evidence": [
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/results.json",
+      "bytes": 102413,
+      "sha256": "522532e5faf2628e358a59ea14ab18fe9c8bb8be468570f1924e679f987fb292"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/handover-payload.json",
+      "bytes": 30404,
+      "sha256": "d30fbf501a2ac6f72b4464ceb67b2cea2ba55cd96da921a3b7103a6124b71342"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/handover-metrics.json",
+      "bytes": 1109,
+      "sha256": "f23bbddf51480fd785469b0e46d34b0c8867920650264ba4d98317943bbe79ca"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/prior-business-conversation.json",
+      "bytes": 25417,
+      "sha256": "39ea7a5780ed4807415a0c8d0ca8cf72b8c3ab9d5012f832f51161ecc7ae2242"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/mcp-operation-counts.json",
+      "bytes": 573,
+      "sha256": "8fdae3ae452d75b70a586ab04b538385baace98085bb2d95677824687b29b311"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/primary-trace.jsonl",
+      "bytes": 1982,
+      "sha256": "8248d8a7d8fb2599c3cdcdd62f51ad0eabf67e50ed8b2d563c5a8afdd9feb87d"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/backup-trace.jsonl",
+      "bytes": 430,
+      "sha256": "110b58d96d8bfb7c3f25ab56594f94deddc0d67882497fb301f6f501f66d1d09"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/experimental-domains.json",
+      "bytes": 13298,
+      "sha256": "2509c91160293884cb868bb70bdc563c5542f08f2f75ba30bb736fe079a79d1c"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/subprocess-exits.jsonl",
+      "bytes": 66229,
+      "sha256": "0f41a552c65597a6993f8b443a6e72d3424ebe46956749682d54adffe7454fdd"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/coordinator/messages.jsonl",
+      "bytes": 107984,
+      "sha256": "31946d069b8bbf90ee1a43d1d1cb6809336a74b0240a76dd61d0530bb72c66c7"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/coordinator/events.jsonl",
+      "bytes": 32371,
+      "sha256": "47f044832a017ef3806f3eb859c579933ee0b49c6cdfa63f9a804e31dbbea797"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/coordinator/journal.sqlite",
+      "bytes": 147456,
+      "sha256": "018dc3a553e0a97d076b5b8d92f3dc8fc0f27b29526138703ea9f87ed68bb568"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/source/acps_mcp_bridge/bridge.py",
+      "bytes": 29209,
+      "sha256": "548896b9ac0149fefc6cd1931a401108eaa0003f0203c6e6ef9fb05f4dd99ee3"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/source/eval/platform_resume_experiment.py",
+      "bytes": 59721,
+      "sha256": "263cd43430f62d865d7ea449a24fa02c3d2bb4c9b811b41ac870dae311f104ef"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r2/source/eval/platform_handover.py",
+      "bytes": 5911,
+      "sha256": "00259a38a281def36f496608bffbfacfa5db36a8061c05554ff55be7ea376ca1"
+    },
+    {
+      "path": "p0-revalidation-20261019/execution/e1b-full_history-r2/receipt.json",
+      "bytes": 340,
+      "sha256": "e89306db034267dfcb40cbf913f3c27a570e854e595cfa27d80c760db250549e"
+    },
+    {
+      "path": "p0-revalidation-20261019/execution/e1b-full_history-r2/runner.exit.json",
+      "bytes": 315,
+      "sha256": "a84d0f640c6b98989a366a0fb1c83606fb4f7c16d360314db4216f8574667514"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/runtime/private/revalidation-plans-20261019/e1b-full_history-r2/plan.json",
+      "bytes": 28086,
+      "sha256": "13032005484a64cbbe5922680e94d9300e28c183448fa56a304ca888e8bf0e7a"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/runtime/private/revalidation-plans-20261019/e1b-full_history-r2/bundle/worker-source-manifest.json",
+      "bytes": 843,
+      "sha256": "483eba302d33b582c080fb5d47069c1d17dd72cb12ab41aaa6fac45fd30c837f"
+    }
+  ]
+}

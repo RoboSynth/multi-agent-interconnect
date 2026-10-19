@@ -1,0 +1,69 @@
+{
+  "batch_process": {
+    "status": "terminal",
+    "actual_wait_observed": true,
+    "recorded_at_utc": "2026-10-19T06:05:59.574066+00:00"
+  },
+  "phase_sessions": [
+    {
+      "session_id": 39454,
+      "actual_os_exit_code": 1,
+      "terminal": true,
+      "completion_chunk": "a95f4f"
+    },
+    {
+      "session_id": 10154,
+      "actual_os_exit_code": 0,
+      "terminal": true,
+      "completion_chunk": "3f0505"
+    }
+  ],
+  "final_owned_stop_receipt": {
+    "path": "execution-rest/stop/result.json",
+    "sha256": "80d2874d4c922f76f3a7b03f2e07f800e1e87faf68342f40d539a4eab9ddd831"
+  },
+  "final_owned_keeper_exit_receipt": {
+    "path": "execution-rest/keeper.exit.json",
+    "sha256": "c376a9be35a20a3ea15b57fcba497c169a2df12f07a3999cccac98acc5a9fafc"
+  },
+  "stop": {
+    "status": "stopped",
+    "remaining_running_owned": 0,
+    "volumes_retained": true,
+    "completed_at": "2026-10-19T06:05:31.785826+00:00"
+  },
+  "compose_stop_process": {
+    "terminal": true,
+    "actual_exit_code": 0,
+    "completed_at": "2026-10-19T06:05:29.076628+00:00",
+    "duration_seconds": 3.969
+  },
+  "keeper_process": {
+    "terminal": true,
+    "actual_exit_code": 0,
+    "finished_at": "2026-10-19T06:05:32.010635+00:00"
+  },
+  "phase_exit_interpretation": "Phase OS exits are preserved individually; an outer first-round review gate exit1 does not replace any per-case verdict.",
+  "retained_prior_phase_closure": {
+    "stop_source": "execution/stop/result.json",
+    "keeper_source": "execution/keeper.exit.json",
+    "stop": {
+      "status": "stopped",
+      "remaining_running_owned": 0,
+      "volumes_retained": true,
+      "completed_at": "2026-10-19T05:32:35.424427+00:00"
+    },
+    "compose_stop_process": {
+      "terminal": true,
+      "actual_exit_code": 0,
+      "completed_at": "2026-10-19T05:32:34.635086+00:00",
+      "duration_seconds": 2.578
+    },
+    "keeper_process": {
+      "terminal": true,
+      "actual_exit_code": 0,
+      "finished_at": "2026-10-19T05:32:35.597080+00:00"
+    },
+    "original_receipts_retained": true
+  }
+}

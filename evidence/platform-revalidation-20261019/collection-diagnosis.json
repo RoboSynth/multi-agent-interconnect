@@ -1,0 +1,444 @@
+{
+  "container_mutations": 0,
+  "cp_operations": 0,
+  "findings": [
+    {
+      "changed_projection_fields": [],
+      "id": "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38",
+      "mount_array_order_only": false,
+      "name": "/incident-pilot-revalidation-20261019-application-agent-1"
+    },
+    {
+      "changed_projection_fields": [],
+      "id": "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98",
+      "mount_array_order_only": false,
+      "name": "/incident-pilot-revalidation-20261019-verification-agent-1"
+    },
+    {
+      "changed_projection_fields": [],
+      "id": "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99",
+      "mount_array_order_only": false,
+      "name": "/incident-pilot-revalidation-20261019-database-agent-1"
+    },
+    {
+      "changed_projection_fields": [],
+      "id": "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72",
+      "mount_array_order_only": false,
+      "name": "/incident-pilot-revalidation-20261019-database-backup-agent-1"
+    },
+    {
+      "changed_projection_fields": [
+        "mount_array_sha256",
+        "mounts_in_returned_order"
+      ],
+      "id": "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83",
+      "mount_array_order_only": true,
+      "name": "/incident-pilot-revalidation-20261019-ops-agent-1"
+    },
+    {
+      "changed_projection_fields": [],
+      "id": "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857",
+      "mount_array_order_only": false,
+      "name": "/incident-pilot-revalidation-20261019-onboarding-agent-1"
+    }
+  ],
+  "limits": "Original failed collection retained only stdout hashes, so these fresh observations do not reconstruct its unretained original inspect arrays.",
+  "mount_order_difference_observed": true,
+  "observations": [
+    {
+      "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857": {
+        "id": "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "3f5062d8a13ffe99335627717311ed91f1ce8c4a917fbab4c0305fd12c0f68fa",
+        "mount_array_sha256": "b29d3a1d063a6dd7a5711b34fd8193a4bb24e4b24e20bb66fd97d2214c953ee4",
+        "mounts_by_destination_sha256": "b29d3a1d063a6dd7a5711b34fd8193a4bb24e4b24e20bb66fd97d2214c953ee4",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "39186ec82104d2f36219bd3a5fa40f71e3c2d92942fd8a470e7263362ef4ac6c",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_onboarding-agent-state",
+            "rw": true,
+            "source_sha256": "f34c638aa2b3ba9f64465443fd6de73a18de55465e8d17dc2e50daf5eec51cbb",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-onboarding-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.269255279Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:34:48.91075059Z",
+          "Status": "exited"
+        }
+      },
+      "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83": {
+        "id": "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "c9f9083fb5cb93f3613484aa525174948ed734e5dec4370ab3ed2b68eb920308",
+        "mount_array_sha256": "5cea703a98b8a94a18d3bfcf42e2431414b7dc9f2712dbdcd1baa146c3a1d702",
+        "mounts_by_destination_sha256": "10d6a0604ae7d504cd9cbe30e0b77ebae4ec4d4a1f943c2d804d55ce85f28d6b",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/route",
+            "name": null,
+            "rw": true,
+            "source_sha256": "c1b8d249da0a7581631b625bcac196f052c800de262abaa382a6ade4f9777e2d",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_ops-agent-state",
+            "rw": true,
+            "source_sha256": "d9ebaa8c9f34ebd921940310accbc87a0a293e38274c19bce8ee65bdcfafaceb",
+            "type": "volume"
+          },
+          {
+            "destination": "/var/run/docker.sock",
+            "name": null,
+            "rw": true,
+            "source_sha256": "71329c4cc6e32171553fa81d044eb31d1a3aac52ba9376c4a99f4505c494cf5b",
+            "type": "bind"
+          },
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "b51a5ffd7af556bcced3c1d90233c6b6e86ae6e7ffabe95810012538f1442bae",
+            "type": "bind"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-ops-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.271231147Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.57387642Z",
+          "Status": "exited"
+        }
+      },
+      "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99": {
+        "id": "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "bdb45c2685ae8ab2acc9dab6ae36acbaedfd421b5d2122b18eafdab235c4bda2",
+        "mount_array_sha256": "9e426937374f1d16d03ac89136434b74b061ce2c0d2d0557566800cb284ed11c",
+        "mounts_by_destination_sha256": "9e426937374f1d16d03ac89136434b74b061ce2c0d2d0557566800cb284ed11c",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "8f8d998e42aabee4f06245c1edce240e095f7f7282f806f05bfc7ad0628d6af3",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_database-agent-state",
+            "rw": true,
+            "source_sha256": "812dfda2a72fb08ccc07f15d3cfdca5f3278eeff4b6d611b4c2d2286df8aa545",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-database-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.27173019Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T06:04:32.366514702Z",
+          "Status": "exited"
+        }
+      },
+      "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98": {
+        "id": "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "3a522360a87a82f67e43beadd742bb143e2b8990fa223c5a8bffd196ab222d1a",
+        "mount_array_sha256": "f790baace18a0df10a813e09d97694de0faf575d81ee5184baa8fd50df3f84a8",
+        "mounts_by_destination_sha256": "f790baace18a0df10a813e09d97694de0faf575d81ee5184baa8fd50df3f84a8",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "0ce0ec0e6c33902d236c56ca6f0b98b41e656c7c42c7d5a7f89278a4fc525dec",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_verification-agent-state",
+            "rw": true,
+            "source_sha256": "e05c2af82032036a67b666d1d36dc5e55af2602846bcc3cf1f6045723ae7799b",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-verification-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.270070962Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.579740359Z",
+          "Status": "exited"
+        }
+      },
+      "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38": {
+        "id": "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "1dac81088c7692076aca5659cf6fde1728ad502bb05ddb318202703c2826a06a",
+        "mount_array_sha256": "a8d92ef8e03b90b21621a74b8461fa40ec179fbfb53b9152f9057da3446188d9",
+        "mounts_by_destination_sha256": "a8d92ef8e03b90b21621a74b8461fa40ec179fbfb53b9152f9057da3446188d9",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "58b5ba90efbc9cce328d50d06e355269845b95829a6455876b11fd37b86392b0",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_application-agent-state",
+            "rw": true,
+            "source_sha256": "b6cc668ad665cfbad1ee605635da98cee86b09cc29707c01231ffa0556419102",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-application-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.269446122Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.339510736Z",
+          "Status": "exited"
+        }
+      },
+      "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72": {
+        "id": "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "b5204437085ff1464f613fc8cef6b4f94caea958eed3829d44fae8b314a3130b",
+        "mount_array_sha256": "2e3a69022c56ba8921cd02b5147de2b3c646cfa1e1fe62c73956ccd8fa4d8ca1",
+        "mounts_by_destination_sha256": "2e3a69022c56ba8921cd02b5147de2b3c646cfa1e1fe62c73956ccd8fa4d8ca1",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "4363f5ee527aa23a96fcd5c8aef9b2dedbae96f172475c2e49677f7df1fede70",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_database-agent-state",
+            "rw": true,
+            "source_sha256": "812dfda2a72fb08ccc07f15d3cfdca5f3278eeff4b6d611b4c2d2286df8aa545",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-database-backup-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.272836333Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T06:04:32.370877498Z",
+          "Status": "exited"
+        }
+      }
+    },
+    {
+      "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857": {
+        "id": "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "3f5062d8a13ffe99335627717311ed91f1ce8c4a917fbab4c0305fd12c0f68fa",
+        "mount_array_sha256": "b29d3a1d063a6dd7a5711b34fd8193a4bb24e4b24e20bb66fd97d2214c953ee4",
+        "mounts_by_destination_sha256": "b29d3a1d063a6dd7a5711b34fd8193a4bb24e4b24e20bb66fd97d2214c953ee4",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "39186ec82104d2f36219bd3a5fa40f71e3c2d92942fd8a470e7263362ef4ac6c",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_onboarding-agent-state",
+            "rw": true,
+            "source_sha256": "f34c638aa2b3ba9f64465443fd6de73a18de55465e8d17dc2e50daf5eec51cbb",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-onboarding-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.269255279Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:34:48.91075059Z",
+          "Status": "exited"
+        }
+      },
+      "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83": {
+        "id": "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "c9f9083fb5cb93f3613484aa525174948ed734e5dec4370ab3ed2b68eb920308",
+        "mount_array_sha256": "10d6a0604ae7d504cd9cbe30e0b77ebae4ec4d4a1f943c2d804d55ce85f28d6b",
+        "mounts_by_destination_sha256": "10d6a0604ae7d504cd9cbe30e0b77ebae4ec4d4a1f943c2d804d55ce85f28d6b",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "b51a5ffd7af556bcced3c1d90233c6b6e86ae6e7ffabe95810012538f1442bae",
+            "type": "bind"
+          },
+          {
+            "destination": "/route",
+            "name": null,
+            "rw": true,
+            "source_sha256": "c1b8d249da0a7581631b625bcac196f052c800de262abaa382a6ade4f9777e2d",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_ops-agent-state",
+            "rw": true,
+            "source_sha256": "d9ebaa8c9f34ebd921940310accbc87a0a293e38274c19bce8ee65bdcfafaceb",
+            "type": "volume"
+          },
+          {
+            "destination": "/var/run/docker.sock",
+            "name": null,
+            "rw": true,
+            "source_sha256": "71329c4cc6e32171553fa81d044eb31d1a3aac52ba9376c4a99f4505c494cf5b",
+            "type": "bind"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-ops-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.271231147Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.57387642Z",
+          "Status": "exited"
+        }
+      },
+      "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99": {
+        "id": "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "bdb45c2685ae8ab2acc9dab6ae36acbaedfd421b5d2122b18eafdab235c4bda2",
+        "mount_array_sha256": "9e426937374f1d16d03ac89136434b74b061ce2c0d2d0557566800cb284ed11c",
+        "mounts_by_destination_sha256": "9e426937374f1d16d03ac89136434b74b061ce2c0d2d0557566800cb284ed11c",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "8f8d998e42aabee4f06245c1edce240e095f7f7282f806f05bfc7ad0628d6af3",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_database-agent-state",
+            "rw": true,
+            "source_sha256": "812dfda2a72fb08ccc07f15d3cfdca5f3278eeff4b6d611b4c2d2286df8aa545",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-database-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.27173019Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T06:04:32.366514702Z",
+          "Status": "exited"
+        }
+      },
+      "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98": {
+        "id": "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "3a522360a87a82f67e43beadd742bb143e2b8990fa223c5a8bffd196ab222d1a",
+        "mount_array_sha256": "f790baace18a0df10a813e09d97694de0faf575d81ee5184baa8fd50df3f84a8",
+        "mounts_by_destination_sha256": "f790baace18a0df10a813e09d97694de0faf575d81ee5184baa8fd50df3f84a8",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "0ce0ec0e6c33902d236c56ca6f0b98b41e656c7c42c7d5a7f89278a4fc525dec",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_verification-agent-state",
+            "rw": true,
+            "source_sha256": "e05c2af82032036a67b666d1d36dc5e55af2602846bcc3cf1f6045723ae7799b",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-verification-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.270070962Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.579740359Z",
+          "Status": "exited"
+        }
+      },
+      "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38": {
+        "id": "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "1dac81088c7692076aca5659cf6fde1728ad502bb05ddb318202703c2826a06a",
+        "mount_array_sha256": "a8d92ef8e03b90b21621a74b8461fa40ec179fbfb53b9152f9057da3446188d9",
+        "mounts_by_destination_sha256": "a8d92ef8e03b90b21621a74b8461fa40ec179fbfb53b9152f9057da3446188d9",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "58b5ba90efbc9cce328d50d06e355269845b95829a6455876b11fd37b86392b0",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_application-agent-state",
+            "rw": true,
+            "source_sha256": "b6cc668ad665cfbad1ee605635da98cee86b09cc29707c01231ffa0556419102",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-application-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.269446122Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T05:35:05.339510736Z",
+          "Status": "exited"
+        }
+      },
+      "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72": {
+        "id": "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72",
+        "image": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+        "labels_sha256": "b5204437085ff1464f613fc8cef6b4f94caea958eed3829d44fae8b314a3130b",
+        "mount_array_sha256": "2e3a69022c56ba8921cd02b5147de2b3c646cfa1e1fe62c73956ccd8fa4d8ca1",
+        "mounts_by_destination_sha256": "2e3a69022c56ba8921cd02b5147de2b3c646cfa1e1fe62c73956ccd8fa4d8ca1",
+        "mounts_in_returned_order": [
+          {
+            "destination": "/domain",
+            "name": null,
+            "rw": false,
+            "source_sha256": "4363f5ee527aa23a96fcd5c8aef9b2dedbae96f172475c2e49677f7df1fede70",
+            "type": "bind"
+          },
+          {
+            "destination": "/state",
+            "name": "incident-pilot-revalidation-20261019_database-agent-state",
+            "rw": true,
+            "source_sha256": "812dfda2a72fb08ccc07f15d3cfdca5f3278eeff4b6d611b4c2d2286df8aa545",
+            "type": "volume"
+          }
+        ],
+        "name": "/incident-pilot-revalidation-20261019-database-backup-agent-1",
+        "state": {
+          "FinishedAt": "2026-10-19T06:05:27.272836333Z",
+          "Running": false,
+          "StartedAt": "2026-10-19T06:04:32.370877498Z",
+          "Status": "exited"
+        }
+      }
+    }
+  ],
+  "other_identity_difference_observed": false,
+  "platform_calls": 0,
+  "status": "readonly_inspect_completed"
+}

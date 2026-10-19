@@ -1,0 +1,283 @@
+{
+  "schema": "acceptance-domain-amp-snapshots/1",
+  "project": "incident-pilot-revalidation-20261019",
+  "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+  "domains": [
+    {
+      "service": "application-agent",
+      "role": "application",
+      "container_id": "9c4eb781fe016b9a5bf7d18b58835e811a048b1a33ea7eb62fd06b2ffe096d38",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T05:35:05.339510736Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/application-agent",
+      "files": [
+        {
+          "name": "amp_access_application.jsonl",
+          "sha256": "d7651a341cbf4f7b61d785a87bc9d83a9c95c2a02057445b493ec6df7fe4698b",
+          "bytes": 22298
+        },
+        {
+          "name": "amp_audit_application.jsonl",
+          "sha256": "8dfdef993f95c8cca10803d59e6271ab7fd2ccc6f88a979541df172d412c6752",
+          "bytes": 30527
+        },
+        {
+          "name": "amp_heartbeat_application.jsonl",
+          "sha256": "dd9f9688654e99cc322fc4ba17591e4b34ccffe3f2680c642056698450279ea0",
+          "bytes": 44551
+        },
+        {
+          "name": "amp_message_application.jsonl",
+          "sha256": "f03256a160faad3181b9b8a7f58918ceedc4d816658d84abbcfb20d5c9176489",
+          "bytes": 751825
+        },
+        {
+          "name": "amp_metrics_application.jsonl",
+          "sha256": "f2a8ba6268437e64c2311c8f1c9ced1c03bf7a50255f4b9586db9400070b63f3",
+          "bytes": 44320
+        },
+        {
+          "name": "amp_system_application.jsonl",
+          "sha256": "caf396c4aa8bb1a976705b2fb4dd1609f11915d64e01022404b97547b89f4014",
+          "bytes": 6488
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "58b5ba90efbc9cce328d50d06e355269845b95829a6455876b11fd37b86392b0",
+      "state_volume_name": "incident-pilot-revalidation-20261019_application-agent-state",
+      "state_volume_ownership_verified": true
+    },
+    {
+      "service": "verification-agent",
+      "role": "verification",
+      "container_id": "8607c8ef1dfb7d6863fd39c67906b168307b7c4af68bcf52455a9ff5059f3d98",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T05:35:05.579740359Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/verification-agent",
+      "files": [
+        {
+          "name": "amp_access_verification.jsonl",
+          "sha256": "098641b0e797727a6d8f3dd1872679482f41651f52f2ff6b00f1cd5ff8c60d44",
+          "bytes": 20538
+        },
+        {
+          "name": "amp_audit_verification.jsonl",
+          "sha256": "b6e06c78dfa2e9bfa431fafe1a41070f90670c54abd0609835eb91833d14b84c",
+          "bytes": 28025
+        },
+        {
+          "name": "amp_heartbeat_verification.jsonl",
+          "sha256": "44febe3880109956312a6b724e24930d4d28272ff8c7f022a31ae2fe0fc5fc23",
+          "bytes": 44543
+        },
+        {
+          "name": "amp_message_verification.jsonl",
+          "sha256": "8b55abe9932a3bf98e71109559c89cc8cd1dc922101da003148de95352402168",
+          "bytes": 595253
+        },
+        {
+          "name": "amp_metrics_verification.jsonl",
+          "sha256": "8e84998a18ce5c6080d9438447be1b5aa43080951809ed6001d1c577bb9122b3",
+          "bytes": 44355
+        },
+        {
+          "name": "amp_system_verification.jsonl",
+          "sha256": "eec2f04ab1333aa3943fdb692b2cba84431594fd60e4f36f87b6b35a89cbc4a6",
+          "bytes": 6492
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "0ce0ec0e6c33902d236c56ca6f0b98b41e656c7c42c7d5a7f89278a4fc525dec",
+      "state_volume_name": "incident-pilot-revalidation-20261019_verification-agent-state",
+      "state_volume_ownership_verified": true
+    },
+    {
+      "service": "database-agent",
+      "role": "database",
+      "container_id": "57fe42d34c262d43d250e4fe55f55538e304155e8f3bb05864b57caa13187e99",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T06:04:32.366514702Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/database-agent",
+      "files": [
+        {
+          "name": "amp_access_database.jsonl",
+          "sha256": "5f422d11e98a8b09f2e483e5d9f021b238d168d2819099e9afd293970d108090",
+          "bytes": 12240
+        },
+        {
+          "name": "amp_audit_database.jsonl",
+          "sha256": "2a15ba2b3d1c85600c254a1d83729165af3b1ca269df715a8af9e4c06bd0f4f2",
+          "bytes": 24552
+        },
+        {
+          "name": "amp_heartbeat_database.jsonl",
+          "sha256": "1594864e8215acf25f1be1e02f36433d954379503eb9d152bb26c86035a06474",
+          "bytes": 32730
+        },
+        {
+          "name": "amp_message_database.jsonl",
+          "sha256": "5b5e9e87dbbefe1c470bc1e5976e031355667fd1053f56c0e70c42b78e98b89e",
+          "bytes": 425772
+        },
+        {
+          "name": "amp_metrics_database.jsonl",
+          "sha256": "8bd49e2667728de4728fd1c53daf42df332f21982220fc9d3f5c3f9df21d9852",
+          "bytes": 27503
+        },
+        {
+          "name": "amp_system_database.jsonl",
+          "sha256": "1e044e2baa78474a68450c31da1b23c387ef0b716e5dc8b41ef67a1bf4f586bd",
+          "bytes": 20731
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "8f8d998e42aabee4f06245c1edce240e095f7f7282f806f05bfc7ad0628d6af3",
+      "state_volume_name": "incident-pilot-revalidation-20261019_database-agent-state",
+      "state_volume_ownership_verified": true
+    },
+    {
+      "service": "database-backup-agent",
+      "role": "database-backup",
+      "container_id": "e18280785e7af41fc0bef1a4ffebf43356a2ec57031de5ea08794663cb4cff72",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T06:04:32.370877498Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/database-backup-agent",
+      "files": [
+        {
+          "name": "amp_access_database-backup.jsonl",
+          "sha256": "d623ea47e30fd885f2cb5eab65612925abf44f7f0f42731a9a4df93bb41ce031",
+          "bytes": 16513
+        },
+        {
+          "name": "amp_audit_database-backup.jsonl",
+          "sha256": "0b5e0ac4ccf2831c07bd5e47221443c9fc3b0174074364522862ecd4521773fc",
+          "bytes": 21326
+        },
+        {
+          "name": "amp_heartbeat_database-backup.jsonl",
+          "sha256": "4b4a935d2ad59d2c426181f5f4504bc0585a34af762b4d35055bbd83df7f2cbe",
+          "bytes": 46018
+        },
+        {
+          "name": "amp_message_database-backup.jsonl",
+          "sha256": "1e869f8a64e85ccd3008e660a28cabeb0212f67221275a6eb7f9d1361a88aff3",
+          "bytes": 327062
+        },
+        {
+          "name": "amp_metrics_database-backup.jsonl",
+          "sha256": "3d036615f3daef115fe2ccf6f7007c80a32e00d935325d7cadddb1762dca738a",
+          "bytes": 35918
+        },
+        {
+          "name": "amp_system_database-backup.jsonl",
+          "sha256": "bf2c823fecc8a6b1e0bd834da7fced8902240bfbaa996842d66e039a623e9248",
+          "bytes": 12015
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "4363f5ee527aa23a96fcd5c8aef9b2dedbae96f172475c2e49677f7df1fede70",
+      "state_volume_name": "incident-pilot-revalidation-20261019_database-agent-state",
+      "state_volume_ownership_verified": true
+    },
+    {
+      "service": "ops-agent",
+      "role": "ops",
+      "container_id": "577af0852e502cdad6f71e6c53368b143304cfc85b5ca0b4e126761e6cacca83",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T05:35:05.57387642Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/ops-agent",
+      "files": [
+        {
+          "name": "amp_access_ops.jsonl",
+          "sha256": "16a93d3b50013496ec4d6879c687e5e440ca11870a0ffb92deabce9c96bf5954",
+          "bytes": 6936
+        },
+        {
+          "name": "amp_audit_ops.jsonl",
+          "sha256": "02a92d50ee66e2a72bdbd69c9c7968c13d589899caad4f0e48fc68be4a5ead64",
+          "bytes": 8496
+        },
+        {
+          "name": "amp_heartbeat_ops.jsonl",
+          "sha256": "4ea2666ca7fb5764fe6073fcac28caaa9b240978bfc27401a46bb7fd270e98e2",
+          "bytes": 44547
+        },
+        {
+          "name": "amp_message_ops.jsonl",
+          "sha256": "e078db79ad3e0ef94fea7b078342726d157397503c6a3f5f507795c87355a030",
+          "bytes": 561599
+        },
+        {
+          "name": "amp_metrics_ops.jsonl",
+          "sha256": "a68167221758ce69f95c42f25f78380671cd12d41ff7eb7650430a64c47824f6",
+          "bytes": 44216
+        },
+        {
+          "name": "amp_system_ops.jsonl",
+          "sha256": "1e8c43a32a4ad49bef710b3d50d65929cf15c43b86acd10619aabb5be26f8e58",
+          "bytes": 546
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "b51a5ffd7af556bcced3c1d90233c6b6e86ae6e7ffabe95810012538f1442bae",
+      "state_volume_name": "incident-pilot-revalidation-20261019_ops-agent-state",
+      "state_volume_ownership_verified": true
+    },
+    {
+      "service": "onboarding-agent",
+      "role": "onboarding",
+      "container_id": "246df1a3c53069dd8a31f7e8108199ba582e57dbc53ba74f9e7e1ff164de3857",
+      "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+      "started_at": "2026-10-19T05:34:48.91075059Z",
+      "directory": "[batch]/publication/runtime-amp-capture-v2/private-domain-amp/onboarding-agent",
+      "files": [
+        {
+          "name": "amp_access_onboarding.jsonl",
+          "sha256": "f3972da8f1afe62ed34db9e737adf27d966a5ffa28b7fea09c94f1ed956fa428",
+          "bytes": 6936
+        },
+        {
+          "name": "amp_audit_onboarding.jsonl",
+          "sha256": "ced14890f03d2c8b53317841596e7efa667e7518174d53ad3fad942b66c7ea09",
+          "bytes": 10042
+        },
+        {
+          "name": "amp_heartbeat_onboarding.jsonl",
+          "sha256": "601ddf68068db5bcda6f1ab351983de43a6d92662b4d1689c0dff668fbce1819",
+          "bytes": 45026
+        },
+        {
+          "name": "amp_message_onboarding.jsonl",
+          "sha256": "87c44b3cfb431f9633d2effaaca2bdbaec8a032392046047bba3d77d5794a8fd",
+          "bytes": 464348
+        },
+        {
+          "name": "amp_metrics_onboarding.jsonl",
+          "sha256": "7bf8b5ff058062a97f408e45bd61845ab2f6d9b6c5374ba01de1a640cb0ca4c5",
+          "bytes": 44805
+        },
+        {
+          "name": "amp_system_onboarding.jsonl",
+          "sha256": "0c05342613dd21d2f1b69c41930b8b3b1ca9199ac87f8c94f145c69472dc1fd6",
+          "bytes": 6484
+        }
+      ],
+      "stopped_before_copy": true,
+      "domain_readonly_bind_verified": true,
+      "domain_mount_source_sha256": "39186ec82104d2f36219bd3a5fa40f71e3c2d92942fd8a470e7263362ef4ac6c",
+      "state_volume_name": "incident-pilot-revalidation-20261019_onboarding-agent-state",
+      "state_volume_ownership_verified": true
+    }
+  ],
+  "collection": "exact-container-id docker cp only",
+  "source_container_identity_unchanged": true,
+  "all_six_stopped_before_copy": true,
+  "all_domain_readonly_mounts_verified": true,
+  "all_state_volume_ownership_verified": true,
+  "shared_state_volume_contract": "database and database-backup share the owned database-agent-state volume; role-specific AMP directories are copied separately"
+}

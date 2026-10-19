@@ -1,0 +1,211 @@
+{
+  "schema": "bounded-official-config-review/1",
+  "recorded_at_utc": "2026-10-19T05:57:03.467532+00:00",
+  "request_groups_used": 3,
+  "scope": "Anonymous read-only official documentation; no broker or Monitor connection attempted",
+  "web_tool_first_group": "docs.html and /amp inaccessible; pinned GitHub raw fetch DisabledError",
+  "http_fetches": [
+    {
+      "url": "https://wt.ioa.pub/docs.html",
+      "requested_at_utc": "2026-10-19T05:57:03.402565+00:00",
+      "authenticated": false,
+      "method": "GET",
+      "error_class": "URLError"
+    },
+    {
+      "url": "https://wt.ioa.pub/amp",
+      "requested_at_utc": "2026-10-19T05:57:03.403563+00:00",
+      "authenticated": false,
+      "method": "GET",
+      "error_class": "URLError"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AIP-PUB/ACPs-community/94077d10b336bfdb9a7d68e4859390bf44a67a27/monitor-server/config/fluent-bit/fluent-bit.conf",
+      "requested_at_utc": "2026-10-19T05:57:03.403563+00:00",
+      "authenticated": false,
+      "method": "GET",
+      "error_class": "URLError"
+    }
+  ],
+  "platform_write_actions": 0,
+  "kafka_connections": 0,
+  "third_request_group": {
+    "official_domains": [
+      "wt.ioa.pub",
+      "github.com"
+    ],
+    "queries": [
+      "\"wt.ioa.pub:19092\"",
+      "\"AIP-PUB/ACPs-community\" \"monitor\" \"allowed_aics\"",
+      "\"AIP-PUB/ACPs-community\" \"rdkafka.security.protocol\""
+    ],
+    "result": "No search results returned",
+    "observed_at_utc": "2026-10-19T05:57:51+00:00"
+  },
+  "local_sources": [
+    {
+      "path": "docs/赛方确认.md",
+      "sha256": "3199891ce2c9faa90c94a4739b88f3f05ed96d5769152007854c8bbf810c8f00",
+      "bytes": 1339
+    },
+    {
+      "path": "docs/kafka_monitor_20261018.md",
+      "sha256": "f06c3479432cd486771b55f9b724577df271bf1c657231b21c50e13fc3499859",
+      "bytes": 2256
+    },
+    {
+      "path": "deploy/fluent-bit/kafka-settings.example.json",
+      "sha256": "94ed534a2467988b5acedeb4b0c052fe78221f184f64770166c39f80a36de702",
+      "bytes": 600
+    },
+    {
+      "path": "deploy/fluent-bit/README.md",
+      "sha256": "4cb964fcdd2b1b420c5d6755cb41a453b2f05c15b4f34b21ce0d43720c1cb1c6",
+      "bytes": 8584
+    },
+    {
+      "path": "deploy/fluent-bit/render.py",
+      "sha256": "662974a75ddc23b380ffbb628b99abaa6b551f1061d453992ec08f4e69c8eef1",
+      "bytes": 18462
+    },
+    {
+      "path": "vendor/ACPs-community/acps-docs/references/cli-reference.md",
+      "sha256": "75b139680481e528da372fed6e7f6ae78dfd85ed6773894bbdfab14e7163cc64",
+      "bytes": 38332
+    },
+    {
+      "path": "vendor/ACPs-community/acps-docs/tutorials/oidc-acps-cli-device-login.md",
+      "sha256": "99cd95e0ed9eb6d5c5938bb74cf22bef64d33110042ad11e9952bac42458a26f",
+      "bytes": 14644
+    },
+    {
+      "path": "vendor/ACPs-community/acps-docs/tutorials/amp-agent-observability.md",
+      "sha256": "7cee6841badc69565acbaad1e2281b47fb9014a46a7554d60aa6ce1ef31e72d0",
+      "bytes": 22522
+    }
+  ],
+  "official_config_snapshot": {
+    "path": "monitor-server/config/fluent-bit/fluent-bit.conf",
+    "sha256": "e7e024c750623f7a60f3a31c743b647d7cebcc39c9eb98edec8e16a95bb05bdf",
+    "bytes": 11901,
+    "git_blob_verification": [
+      {
+        "commit": "3985c1330209f075c124669cc9d31f0e75448140",
+        "git_read_exit_code": 0,
+        "blob_sha256": "d3e5587e0288fa5f030bb9132e96caea9ce180cdef6d777f71680828448c7435",
+        "worktree_matches_blob": false
+      },
+      {
+        "commit": "94077d10b336bfdb9a7d68e4859390bf44a67a27",
+        "git_read_exit_code": 128,
+        "blob_sha256": null,
+        "worktree_matches_blob": false
+      }
+    ],
+    "public_url": "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/monitor-server/config/fluent-bit/fluent-bit.conf",
+    "safe_observed_properties": {
+      "brokers": [
+        "localhost:19092"
+      ],
+      "topics": [
+        "amp.access",
+        "amp.audit",
+        "amp.heartbeat",
+        "amp.message",
+        "amp.metrics",
+        "amp.system"
+      ],
+      "tls_or_sasl_properties_present": false
+    },
+    "authoritative_source": "Official 3985 Git blob read locally; not a successful fresh network fetch",
+    "selected_official_commit": "3985c1330209f075c124669cc9d31f0e75448140",
+    "selected_blob_sha256": "d3e5587e0288fa5f030bb9132e96caea9ce180cdef6d777f71680828448c7435",
+    "selected_blob_bytes": 11675,
+    "worktree_matches_selected_blob_after_CRLF_normalization": true
+  },
+  "checked_repository_commit": "94c701846dffe664be1f893ed0850ef53e234236",
+  "finished_read_only_check_at_utc": "2026-10-19T05:59:14.395558+00:00",
+  "facts": [
+    {
+      "id": "purpose",
+      "status": "documented_design",
+      "finding": "AMP emitters write local NDJSON; a Forwarder sends records to the platform bus and Monitor writers persist/query them. This differs from AIP AMQPS task communication.",
+      "sources": [
+        "vendor/ACPs-community/acps-docs/tutorials/amp-agent-observability.md:454-468"
+      ]
+    },
+    {
+      "id": "kafka_sample",
+      "status": "official_local_example_only",
+      "finding": "The pinned official Fluent Bit config uses localhost:19092 and six amp.* topics. No rdkafka TLS/SASL properties are configured in that example.",
+      "source_url": "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/monitor-server/config/fluent-bit/fluent-bit.conf"
+    },
+    {
+      "id": "platform_broker",
+      "status": "unconfirmed_current",
+      "finding": "Project note from 2026-10-18 records wt.ioa.pub:19092 as a planned external Kafka/TLS endpoint. This run failed to fetch the platform docs, so it does not verify the address is active or production-ready.",
+      "sources": [
+        "docs/kafka_monitor_20261018.md"
+      ],
+      "source_urls": [
+        "https://wt.ioa.pub/docs.html",
+        "https://wt.ioa.pub/amp"
+      ]
+    },
+    {
+      "id": "kafka_fields",
+      "status": "project_interface_not_official_access_profile",
+      "finding": "Project renderer supports explicit brokers and rdkafka security.protocol, ssl.ca.location, paired ssl.certificate.location/ssl.key.location, and SASL mechanism/username/password. The template still has null brokers/security.protocol. These accepted field names do not identify the platform security policy.",
+      "sources": [
+        "deploy/fluent-bit/kafka-settings.example.json",
+        "deploy/fluent-bit/render.py"
+      ]
+    },
+    {
+      "id": "certificate_reuse",
+      "status": "not_confirmed_in_this_scope",
+      "finding": "No retrieved source in this bounded review confirms that an AIC agent certificate is accepted for Kafka client authentication, or supplies the actual server CA and ACL mapping. Do not infer reuse from existing agent communication or local audit signing."
+    },
+    {
+      "id": "monitor_sample",
+      "status": "official_local_example_only",
+      "finding": "Official CLI reference defines monitor.base_url, api_prefix and timeout_seconds. Its local sample is http://localhost:9009 with /acps-amp-v1 and 15 seconds; these are not a verified Wutong Monitor endpoint.",
+      "source_url": "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/acps-docs/references/cli-reference.md#7-monitor-用户侧命令"
+    },
+    {
+      "id": "monitor_auth",
+      "status": "documented_configuration_contract_not_current_account_access",
+      "finding": "Official OIDC tutorial configures a separate monitor.auth section and Monitor token. Monitor business queries use Bearer auth and role/scope/AIC restrictions, including resource_access.monitor-api.roles, tenant_id and allowed_aics. Its example identity-provider URLs and accounts are local examples and are not included here.",
+      "source_url": "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/acps-docs/tutorials/oidc-acps-cli-device-login.md"
+    },
+    {
+      "id": "monitor_address_permission",
+      "status": "not_found_in_this_scope",
+      "finding": "The actual Wutong Monitor base URL, external API prefix and account/query access grant were not established in this review. Registry browser login does not establish that the separately documented Monitor claims are granted."
+    }
+  ],
+  "official_source_urls": [
+    "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/monitor-server/config/fluent-bit/fluent-bit.conf",
+    "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/acps-docs/tutorials/amp-agent-observability.md",
+    "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/acps-docs/references/cli-reference.md",
+    "https://github.com/AIP-PUB/ACPs-community/blob/3985c1330209f075c124669cc9d31f0e75448140/acps-docs/tutorials/oidc-acps-cli-device-login.md",
+    "https://wt.ioa.pub/docs.html",
+    "https://wt.ioa.pub/amp"
+  ],
+  "minimum_missing_materials": [
+    "Confirmed external broker/advertised addresses and current service availability",
+    "Actual TLS/security protocol and server CA/hostname policy",
+    "If mTLS: accepted client identity/certificate chain and per-topic ACL; if SASL: mechanism and separate access provisioning",
+    "Six-topic permission, pre-creation, metadata access and timestamp/dedup/history-replay rules",
+    "Actual Monitor base URL/API prefix and a separately authorized query principal with tenant/AIC scope"
+  ],
+  "limits": [
+    "Three request groups only; no further internet search after official-domain search returned no results",
+    "Network fetch failure does not prove service outage or lack of public documentation elsewhere",
+    "Local upstream Git blob is an immutable example, not proof of current production configuration",
+    "No private environment, browser session, password, token or certificate material was read",
+    "No Kafka connection, Monitor API query, login, platform task, service restart or external write occurred"
+  ],
+  "completed_at_utc": "2026-10-19T06:01:03.568835+00:00",
+  "browser_session_or_private_credential_reads": 0
+}

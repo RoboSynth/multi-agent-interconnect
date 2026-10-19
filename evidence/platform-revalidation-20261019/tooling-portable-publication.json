@@ -1,0 +1,129 @@
+{
+  "status": "PUBLISHED_TOOLING_PATH_PORTABILITY_CHECKED",
+  "files": [
+    {
+      "runtime_source": "publication/collect_six_revalidation_domains.py",
+      "published": "tooling/collect_six_revalidation_domains.py",
+      "raw_sha256": "1c11ac809778bac21bd2fac5f73ef0d8f317761b6b76302d8246c323c96b69de",
+      "published_sha256": "8c84e48b25c7056b741fddcb01f3754eefa824a6bfebb99b6563ab32d9e8ce48",
+      "byte_identical": false,
+      "change": "Update HELPER_SHA to the published checker bytes"
+    },
+    {
+      "runtime_source": "publication/check_closed_revalidation_access_credentials.py",
+      "published": "tooling/check_closed_revalidation_access_credentials.py",
+      "raw_sha256": "2b91078d80ce1cc7f3bf459355aa47c7818d21aef481bde29fe00e1d2c74a5e2",
+      "published_sha256": "1de26566f411e7d2a92efe8856c54d6bb67872c80e1178b28e5f80c046d14158",
+      "byte_identical": false,
+      "change": "Replace drive-path regex and slash literal with PureWindowsPath and Path joinpath; preserve absolute ASCII drive eligibility"
+    },
+    {
+      "runtime_source": "publication/collect_six_revalidation_domains_v2.py",
+      "published": "tooling/collect_six_revalidation_domains_v2.py",
+      "raw_sha256": "a5742e8c8869ec0a47a5641699f8243613dc1a589f583aed481ac8612d793c00",
+      "published_sha256": "e12a40997de041d163a8d7a5ad6917dd0efaac23d4b44539220d936c1ad50181",
+      "byte_identical": false,
+      "change": "Update HELPER_SHA to the published checker bytes"
+    },
+    {
+      "runtime_source": "publication/check_closed_revalidation_access_credentials_v2.py",
+      "published": "tooling/check_closed_revalidation_access_credentials_v2.py",
+      "raw_sha256": "eb598b462a91b04597093ae04f68e0f0cd353155ee93ea62d56bb54308f20634",
+      "published_sha256": "da0e4b2b6fe265b6c6099a5299cc7469626b8aad34653defe0351f8399fc7c94",
+      "byte_identical": false,
+      "change": "Replace drive-path regex and slash literal with PureWindowsPath and Path joinpath; preserve absolute ASCII drive eligibility"
+    },
+    {
+      "runtime_source": "publication/revalidation-analysis-tools.json",
+      "published": "tooling/revalidation-analysis-tools.json",
+      "raw_sha256": "f753a4882be0f5e16e44652a20a9878cd1cbc4c9548d13d68da69db81fa9687d",
+      "published_sha256": "314066f935c2ff29613e9d7a7230447fc436d615896afb982f21ab2af07b0f7d",
+      "byte_identical": false,
+      "change": "Update helper_sha256 to the published checker bytes"
+    },
+    {
+      "runtime_source": "publication/revalidation-analysis-tools-v2.json",
+      "published": "tooling/revalidation-analysis-tools-v2.json",
+      "raw_sha256": "9e712b0abef50f302ff14c876cd32afef4ccbeda76cd664edda18b81c8bf2068",
+      "published_sha256": "fea3be22977c74ec8463fd00e60817f99892f72bb8b83627cfddbf5734c792bd",
+      "byte_identical": false,
+      "change": "Update helper_sha256 to the published checker bytes"
+    },
+    {
+      "runtime_source": "publication/README-six-domain-revalidation.md",
+      "published": "tooling/README-six-domain-revalidation.md",
+      "raw_sha256": "cf066e09cd5fc55402a19c44db39dfb4124dd89597be974ad452ce3e70bd51d4",
+      "published_sha256": "cf066e09cd5fc55402a19c44db39dfb4124dd89597be974ad452ce3e70bd51d4",
+      "byte_identical": true,
+      "change": "Unchanged original documentation"
+    },
+    {
+      "runtime_source": "publication/README-six-domain-revalidation-v2.md",
+      "published": "tooling/README-six-domain-revalidation-v2.md",
+      "raw_sha256": "c533cd04c58d34b01f90d14b122ce2dbc1972c830f8dc94dd982344c534eb457",
+      "published_sha256": "c533cd04c58d34b01f90d14b122ce2dbc1972c830f8dc94dd982344c534eb457",
+      "byte_identical": true,
+      "change": "Unchanged original documentation"
+    }
+  ],
+  "path_checks": [
+    {
+      "casekind": "drive_backslash_spaces",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "drive_forward_slash",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "drive_root",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "drive_relative",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "unc_absolute",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "root_relative",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "posix_absolute",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "existing_wsl_path",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "non_ascii_drive",
+      "v1_passed": true,
+      "v2_passed": true
+    },
+    {
+      "casekind": "extended_drive_namespace",
+      "v1_passed": true,
+      "v2_passed": true
+    }
+  ],
+  "all_path_checks_passed": true,
+  "published_internal_hash_bindings_consistent": true,
+  "original_runtime_sources_modified": false,
+  "resource_or_fault_operations": 0,
+  "helper_imports_or_runtime_execution": 0,
+  "verification_scope": "Isolated pure path function only; parser and SHA binding checks; no runtime or container calls",
+  "root_log_publication_inputs_updated": false,
+  "root_release_scan_required": true
+}

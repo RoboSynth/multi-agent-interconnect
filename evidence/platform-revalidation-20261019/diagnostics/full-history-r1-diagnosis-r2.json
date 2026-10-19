@@ -1,0 +1,222 @@
+{
+  "schema_version": "formal-case-diagnosis/1.1",
+  "revision": 2,
+  "reviewed_at": "2026-10-19T05:41:42.862671+00:00",
+  "case_key": "e1b-full_history-r1",
+  "experiment_id": "revalidation-20261019-e1b-full_history-r1",
+  "previous_revision": "p0-revalidation-20261019/publication/full-history-r1-diagnosis.json",
+  "case_status_retained": "failed",
+  "case_error_class_retained": "TimeoutError",
+  "actual_runner_exit_code": 1,
+  "summary": "The copied primary trace confirms one modifying MCP invocation and non-error return, followed by a durable after_applied crash-hook record with ledger_state=applied and AIP_product_submitted=false. The backup trace contains only startup. A case-scoped daemon die-event query returned no cached event, so the container's actual exit code is unknown. Takeover still stopped at fresh ADP discovery with ConnectError before any resume transmission.",
+  "capture_scope": {
+    "directory": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture",
+    "backup_container_id": "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4",
+    "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+    "shared_state_volume": "incident-pilot-revalidation-20261019_database-agent-state",
+    "volume_project_label": "incident-pilot-revalidation-20261019",
+    "shared_volume_source": "frozen deploy/agents.yml primary and backup both mount database-agent-state:/state",
+    "exact_old_experiment_directory_only": true,
+    "copied_file_count": 2,
+    "container_commands": "ps by exact project/service, projected inspect by exact ID, exact volume inspect, two docker cp reads, die-event read by exact original primary ID and exact case window",
+    "capture_exit_code": 0,
+    "source_bundle_manifest_sha256": "588ed6d01ceceb8e501b3056b3a5947be1c5582b21a2105c317f43a929accb75",
+    "both_start_records_match_exact_prepared_bundle": true,
+    "frozen_case_experiment_source_equals_prepared_bundle": true
+  },
+  "trace_evidence": {
+    "primary_rows": 4,
+    "backup_rows": 1,
+    "primary_event_counts": {
+      "experiment_worker_start": 1,
+      "mcp_modify_invocation": 1,
+      "mcp_modify_returned": 1,
+      "experiment_worker_crash": 1
+    },
+    "backup_event_counts": {
+      "experiment_worker_start": 1
+    },
+    "primary_process_identity": {
+      "pid": 7,
+      "linux_start_ticks": 133125
+    },
+    "backup_process_identity": {
+      "pid": 8,
+      "linux_start_ticks": 133127
+    },
+    "modifying_mcp": {
+      "primary_invocations": 1,
+      "primary_returned": 1,
+      "primary_returned_errors": 0,
+      "primary_without_return": 0,
+      "backup_invocations": 0,
+      "backup_returned": 0,
+      "invocation_id": "7af9303161f04ca5a9d18aff068f4117",
+      "tool": "db.restore_writes",
+      "server": "postgres",
+      "upstream_tool": "execute_sql",
+      "logical_task_id": "revalidation-20261019-e1b-full_history-r1:4",
+      "operation_id": "revalidation-20261019-e1b-full_history-r1:db-restore-writes",
+      "counting": "Actual modifying MCP attempts and observed returns, not a physical side-effect count."
+    },
+    "crash_hook": {
+      "source": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/primary.jsonl",
+      "line": 4,
+      "record": {
+        "event": "experiment_worker_crash",
+        "crash_point": "after_applied",
+        "exit_code": 83,
+        "incident_id": "revalidation-20261019-e1b-full_history-r1",
+        "logical_task_id": "revalidation-20261019-e1b-full_history-r1:4",
+        "operation_id": "revalidation-20261019-e1b-full_history-r1:db-restore-writes",
+        "tool": "db.restore_writes",
+        "ledger_state": "applied",
+        "AIP_product_submitted": false,
+        "experiment_id": "revalidation-20261019-e1b-full_history-r1",
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+        "transport": "wutong-amqps"
+      },
+      "interpretation": "The worker durably recorded the armed after_applied crash hook. Frozen source appends/fsyncs this record immediately before invoking its default os._exit(83) callback. This trace is not an independent Docker process-exit receipt."
+    },
+    "daemon_die_event": {
+      "original_primary_container_id": "860ae4d752c3caf674087f20319be879c036c23ead24ccf3fbeb1fa847c719c7",
+      "since": "2026-10-19T05:25:09.107548Z",
+      "until": "2026-10-19T05:28:37.655780Z",
+      "exit_code": 0,
+      "rows": 0,
+      "observed_exit_codes": [],
+      "status": "unknown; no cached matching daemon event returned"
+    }
+  },
+  "takeover_conclusion_retained": {
+    "phase": "fresh official ADP discovery",
+    "error_class": "ConnectError",
+    "resume_start_requests": 0,
+    "backup_message_rows": 0,
+    "backup_journal_attempts": 0,
+    "backup_bridge_accepted_or_rejected": "no evidence; no resume was sent",
+    "wire_fix_platform_status_for_this_case": "not reached; neither proved nor disproved"
+  },
+  "prior_vs_current": {
+    "old_acceptance_case": "Resume was sent and backup rejected invalid handover conversation entry.",
+    "this_revalidation": "A real primary trace now shows the planned after_applied hook was reached, while takeover stopped earlier in ADP discovery before resume."
+  },
+  "cleanup_and_recovery_retained": {
+    "resource_and_worker_restore": "completed",
+    "independent_final_H00_passed": true,
+    "requests": 30,
+    "completed_workflows": 10,
+    "retained_failed_takeover_verdict": true
+  },
+  "limits": [
+    "The exact Docker die-event query succeeded with zero rows; absence from retained daemon events cannot prove that the primary stayed alive or exited with code 83.",
+    "Trace entries contain no timestamps, so their ordering is shown by durable file order; no exact wall-clock crash time is inferred.",
+    "One non-error modifying MCP return and ledger_state=applied do not independently count physical side effects.",
+    "The backup trace only records startup; coordinator evidence, rather than lack of arbitrary trace events, establishes zero resume transmission.",
+    "ConnectError still does not identify a network root cause.",
+    "Capture used no experiment retry, container exec, restart, stop, fault, MQ, or business request."
+  ],
+  "original_evidence_unchanged": true,
+  "evidence": [
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-diagnosis.json",
+      "bytes": 10950,
+      "sha256": "20cc66d9da527749c3f9b8d5463fb31eff77544638e1aae8fd55d83964e6bc23"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-diagnosis.md",
+      "bytes": 2068,
+      "sha256": "7156c840ca7996f77ea9be9a66acfcebce5d9dbcca7f2268092e64f010b7b025"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/experimental-domains.json",
+      "bytes": 13299,
+      "sha256": "4df0d948b2df520e70545ad43729f80f3acdbd495dc9cee39f0390b2145ceb9e"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/source/acps_mcp_bridge/experiment.py",
+      "bytes": 13730,
+      "sha256": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/runtime/private/revalidation-plans-20261019/e1b-full_history-r1/bundle/worker-source-manifest.json",
+      "bytes": 843,
+      "sha256": "588ed6d01ceceb8e501b3056b3a5947be1c5582b21a2105c317f43a929accb75"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/backup-identity.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/backup-identity.stdout.log",
+      "bytes": 1007,
+      "sha256": "33fd1ef54bc90922a8458fee13f21dc742c3cd1bea44c95a968a55db56ab0dba"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/backup-ids.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/backup-ids.stdout.log",
+      "bytes": 65,
+      "sha256": "f466ab81999ef1e4e72a59190f277d0dc9a48a3d7f3e1c06a543e2f3644e1743"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/backup.jsonl",
+      "bytes": 429,
+      "sha256": "70e9feb1a28549632fb3b7b1fa527f126ffa08362e09f5ccfbeb4f20bba7c2a1"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/capture.json",
+      "bytes": 6473,
+      "sha256": "2354f8e2724857cf189330d6418295f2c656f53276f47f8600ad0b8cb69a3d04"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/copy-backup.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/copy-backup.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/copy-primary.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/copy-primary.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/primary-die-events.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/primary-die-events.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/primary.jsonl",
+      "bytes": 1978,
+      "sha256": "390de2753784c5b85dcfe0552bf5f351f6cae5d1937926c5ebb9f054d4e8fbf7"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/state-volume-identity.stderr.log",
+      "bytes": 132,
+      "sha256": "b280c454d6f559e56eb3f5ed39f3ba084b8d1744a3ff7fe016b21ff86dea1aca"
+    },
+    {
+      "path": "p0-revalidation-20261019/publication/full-history-r1-runtime-capture/state-volume-identity.stdout.log",
+      "bytes": 158,
+      "sha256": "f34ea2285aa0d15de2e6624620d7116f02320ea037b32727d616bf3a78218fb7"
+    }
+  ]
+}

@@ -1,0 +1,2000 @@
+{
+  "schema_version": "revalidation-public-snapshot/1",
+  "created_at": "2026-10-19T06:06:33.674518+00:00",
+  "project": "incident-pilot-revalidation-20261019",
+  "frozen_source_commit": "c75554d6b6de3bdaba53677e678a6fd35e4fef80",
+  "ports": {
+    "app_v1": 58081,
+    "app_v2": 58082,
+    "order": 58088,
+    "reply_drop": 58090
+  },
+  "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+  "prepared_summary_sha256": "23552f95af1e86a33c6f4e3c923df471ab69edf7acad07f3acadfe4d85c353ac",
+  "prepared_source_file_count": 163,
+  "prepared_source_map_sha256": "83bfad2552de20e524f26885570813246d5a036dd6c6f80fa2040c5031b15302",
+  "counts": {
+    "prepared": 12,
+    "passed": 11,
+    "failed": 1,
+    "not_attempted": 0,
+    "running_or_unconfirmed": 0,
+    "unknown_awaiting_terminal_receipt": 0
+  },
+  "cases": [
+    {
+      "key": "e1a-after_observation-r1",
+      "case": "E1-a",
+      "point": "after_observation",
+      "method": null,
+      "repeat": 1,
+      "prepared_order": 1,
+      "prepared_plan_sha256": "b8f9469abcd65dc66005b3005c46194c0819ab86bbc714d26ccaf5dd3022f65b",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:17:08.490732+00:00",
+        "finished_at": "2026-10-19T05:21:02.026021+00:00",
+        "plan_sha256": "b8f9469abcd65dc66005b3005c46194c0819ab86bbc714d26ccaf5dd3022f65b",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:17:10.865990+00:00",
+        "finished_at": "2026-10-19T05:21:01.939675+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": null,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 81,
+          "actual_exit_code": 81,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database-backup",
+                "operation_id_sha256": "675af04368165b331ce6b7281a8685d005d50fc0484252ee90b244604b802e4d",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database-backup",
+              "operation_id_sha256": "675af04368165b331ce6b7281a8685d005d50fc0484252ee90b244604b802e4d",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": null,
+        "additional_post_handover_observations": null,
+        "remaining_workflow_including_verification_seconds": null,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-from_scratch-r1",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "from_scratch",
+      "repeat": 1,
+      "prepared_order": 2,
+      "prepared_plan_sha256": "10e651a92d0f2469adb0971653394664b1dc386f209eab6f3b144b36a3f38048",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:21:02.285208+00:00",
+        "finished_at": "2026-10-19T05:25:06.706980+00:00",
+        "plan_sha256": "10e651a92d0f2469adb0971653394664b1dc386f209eab6f3b144b36a3f38048",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:21:04.229783+00:00",
+        "finished_at": "2026-10-19T05:25:06.624049+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "da7a4b9c7961e4cc3f34436ed53570c7a90d6c5fb230bae75b5e71b125531122",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "da7a4b9c7961e4cc3f34436ed53570c7a90d6c5fb230bae75b5e71b125531122",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1174,
+          "native_transmitted_ifc_text_sha256": "06849fed8edd85016707e65d0775e670b3c81df436eab7eeed7d4ffe49048f5b",
+          "replacement_acknowledged_handover_sha256": "42a5fda593cad0b0bbe081a2dfbcf35801423fd14cb565b2b38f6f1bc20f3bfb",
+          "history_bytes_before_takeover": 55016,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 1174,
+              "resume_ifc_text_sha256": "06849fed8edd85016707e65d0775e670b3c81df436eab7eeed7d4ffe49048f5b",
+              "handover_information_utf8_bytes": 340,
+              "handover_sha256": "42a5fda593cad0b0bbe081a2dfbcf35801423fd14cb565b2b38f6f1bc20f3bfb",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": false,
+              "duplicated_package_values_equal": null
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1174,
+          "native_transmitted_ifc_text_sha256": "06849fed8edd85016707e65d0775e670b3c81df436eab7eeed7d4ffe49048f5b",
+          "replacement_acknowledged_handover_sha256": "42a5fda593cad0b0bbe081a2dfbcf35801423fd14cb565b2b38f6f1bc20f3bfb",
+          "history_bytes_before_takeover": 55016,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 1,
+        "remaining_workflow_including_verification_seconds": 34.35900000000038,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-full_history-r1",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "full_history",
+      "repeat": 1,
+      "prepared_order": 3,
+      "prepared_plan_sha256": "675f1266afe21bca44029ad42ebf95eb15d7573cf043c8b02b161f23e4eb7db1",
+      "state": "failed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 1,
+      "receipt": {
+        "status": "failed",
+        "started_at": "2026-10-19T05:25:07.000456+00:00",
+        "finished_at": "2026-10-19T05:28:37.753177+00:00",
+        "plan_sha256": "675f1266afe21bca44029ad42ebf95eb15d7573cf043c8b02b161f23e4eb7db1",
+        "actual_exit_code": 1,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": "RuntimeError"
+      },
+      "pass_checks": {
+        "runner_exit_zero": false,
+        "reported_completed": false,
+        "task_phase_completed": false,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": false,
+        "no_error_class": false,
+        "journal_unexpected_inflight_zero": false,
+        "one_captured_and_acknowledged_resume": false
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "failed",
+        "task_phase_status": null,
+        "passed": null,
+        "started_at": "2026-10-19T05:25:09.107548+00:00",
+        "finished_at": "2026-10-19T05:28:37.655780+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {
+          "error_class": "TimeoutError"
+        },
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": null,
+        "worker_exit_and_mcp": null,
+        "mcp_operation_counts": null,
+        "worker_revival_and_mcp": null,
+        "handover": null,
+        "prepared_handover_metrics": null,
+        "captured_resume_send": {
+          "matching_resume_sends": 0,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success"
+        },
+        "acknowledged_handover_metrics": null,
+        "additional_post_handover_observations": null,
+        "remaining_workflow_including_verification_seconds": null,
+        "journal_resolution": null
+      }
+    },
+    {
+      "key": "e1b-resume_package-r1",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "resume_package",
+      "repeat": 1,
+      "prepared_order": 4,
+      "prepared_plan_sha256": "67fafc5b3efd0627e0bf758da9498433a44517f1ce8114cdc937ec398344016a",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:28:38.059671+00:00",
+        "finished_at": "2026-10-19T05:32:30.957814+00:00",
+        "plan_sha256": "67fafc5b3efd0627e0bf758da9498433a44517f1ce8114cdc937ec398344016a",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:28:40.148610+00:00",
+        "finished_at": "2026-10-19T05:32:30.859288+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.015,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.003,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "b6f721e37fc0c23e9148d64ae48319c82136d1e47dc0d4eefbcbfd2e2a4d2703",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "b6f721e37fc0c23e9148d64ae48319c82136d1e47dc0d4eefbcbfd2e2a4d2703",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31017,
+          "native_transmitted_ifc_text_sha256": "e2720ceb245152e75414c3c7f2d52495459aaa2dd1ff3978b3ada56f54bb7683",
+          "replacement_acknowledged_handover_sha256": "a69fc6f5e3cfe9ee0bbac01a04850585467cb420c7f7619f73e2b921d12d7165",
+          "history_bytes_before_takeover": 55254,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 31017,
+              "resume_ifc_text_sha256": "e2720ceb245152e75414c3c7f2d52495459aaa2dd1ff3978b3ada56f54bb7683",
+              "handover_information_utf8_bytes": 15255,
+              "handover_sha256": "a69fc6f5e3cfe9ee0bbac01a04850585467cb420c7f7619f73e2b921d12d7165",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": true,
+              "duplicated_package_values_equal": true
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31017,
+          "native_transmitted_ifc_text_sha256": "e2720ceb245152e75414c3c7f2d52495459aaa2dd1ff3978b3ada56f54bb7683",
+          "replacement_acknowledged_handover_sha256": "a69fc6f5e3cfe9ee0bbac01a04850585467cb420c7f7619f73e2b921d12d7165",
+          "history_bytes_before_takeover": 55254,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 0,
+        "remaining_workflow_including_verification_seconds": 31.15599999999904,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1a-after_observation-r2",
+      "case": "E1-a",
+      "point": "after_observation",
+      "method": null,
+      "repeat": 2,
+      "prepared_order": 5,
+      "prepared_plan_sha256": "af79bdc6773b9cc418b20c624a2ffa7f1d7a2d3f818870ffe8db2532e2b09023",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:35:08.199358+00:00",
+        "finished_at": "2026-10-19T05:38:37.045534+00:00",
+        "plan_sha256": "af79bdc6773b9cc418b20c624a2ffa7f1d7a2d3f818870ffe8db2532e2b09023",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:35:10.311508+00:00",
+        "finished_at": "2026-10-19T05:38:36.954380+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": null,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.003,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 81,
+          "actual_exit_code": 81,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database-backup",
+                "operation_id_sha256": "fa3660884d003905d7273a9102e2d73659b125e61a9d882bfecac2757b756e87",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database-backup",
+              "operation_id_sha256": "fa3660884d003905d7273a9102e2d73659b125e61a9d882bfecac2757b756e87",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": null,
+        "additional_post_handover_observations": null,
+        "remaining_workflow_including_verification_seconds": null,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-from_scratch-r2",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "from_scratch",
+      "repeat": 2,
+      "prepared_order": 6,
+      "prepared_plan_sha256": "a95aa9e1545a2d29ba09a9bea7ed927564409f32b7eedc7490312cc61836823c",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:38:37.345079+00:00",
+        "finished_at": "2026-10-19T05:42:20.677779+00:00",
+        "plan_sha256": "a95aa9e1545a2d29ba09a9bea7ed927564409f32b7eedc7490312cc61836823c",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:38:39.399126+00:00",
+        "finished_at": "2026-10-19T05:42:20.597105+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "30ac7dc3e24e57e04b4de57722c527c8102efeaa72f4a8136eef1137da110abe",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "30ac7dc3e24e57e04b4de57722c527c8102efeaa72f4a8136eef1137da110abe",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1174,
+          "native_transmitted_ifc_text_sha256": "20c08b9604a8d1be6d373c62cd5d9efef99415461eb7d56e092111b55fc59635",
+          "replacement_acknowledged_handover_sha256": "d0a6a78332abef40556c28eb8b1c51d9cd42391faf7ca7e8ce963215f5bd21dd",
+          "history_bytes_before_takeover": 55012,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 1174,
+              "resume_ifc_text_sha256": "20c08b9604a8d1be6d373c62cd5d9efef99415461eb7d56e092111b55fc59635",
+              "handover_information_utf8_bytes": 340,
+              "handover_sha256": "d0a6a78332abef40556c28eb8b1c51d9cd42391faf7ca7e8ce963215f5bd21dd",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": false,
+              "duplicated_package_values_equal": null
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1174,
+          "handover_information_utf8_bytes": 340,
+          "handover_information_estimated_tokens_bytes_div_4": 85.0,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1174,
+          "native_transmitted_ifc_text_sha256": "20c08b9604a8d1be6d373c62cd5d9efef99415461eb7d56e092111b55fc59635",
+          "replacement_acknowledged_handover_sha256": "d0a6a78332abef40556c28eb8b1c51d9cd42391faf7ca7e8ce963215f5bd21dd",
+          "history_bytes_before_takeover": 55012,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 1,
+        "remaining_workflow_including_verification_seconds": 31.687999999998283,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-full_history-r2",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "full_history",
+      "repeat": 2,
+      "prepared_order": 7,
+      "prepared_plan_sha256": "13032005484a64cbbe5922680e94d9300e28c183448fa56a304ca888e8bf0e7a",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:42:20.967568+00:00",
+        "finished_at": "2026-10-19T05:45:57.346538+00:00",
+        "plan_sha256": "13032005484a64cbbe5922680e94d9300e28c183448fa56a304ca888e8bf0e7a",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:42:23.067497+00:00",
+        "finished_at": "2026-10-19T05:45:57.247727+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "a2db0ba73639f0cd97bbac367fe0b3902dd5330195608b0aff3153cc16eb5563",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "a2db0ba73639f0cd97bbac367fe0b3902dd5330195608b0aff3153cc16eb5563",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 18413,
+          "handover_information_utf8_bytes": 17579,
+          "handover_information_estimated_tokens_bytes_div_4": 4394.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 18413,
+          "native_transmitted_ifc_text_sha256": "d0f6db016a7309d9fe4b88ee5a39e8e11814f30d8efad20fb5e4121204ad7f39",
+          "replacement_acknowledged_handover_sha256": "681055903af4abd0bc964e93fa8a2b17d88e14c6c29236a00607f5924dc25c6b",
+          "history_bytes_before_takeover": 55016,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 18413,
+          "handover_information_utf8_bytes": 17579,
+          "handover_information_estimated_tokens_bytes_div_4": 4394.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 18413,
+              "resume_ifc_text_sha256": "d0f6db016a7309d9fe4b88ee5a39e8e11814f30d8efad20fb5e4121204ad7f39",
+              "handover_information_utf8_bytes": 17579,
+              "handover_sha256": "681055903af4abd0bc964e93fa8a2b17d88e14c6c29236a00607f5924dc25c6b",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": false,
+              "duplicated_package_values_equal": null
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 18413,
+          "handover_information_utf8_bytes": 17579,
+          "handover_information_estimated_tokens_bytes_div_4": 4394.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 18413,
+          "native_transmitted_ifc_text_sha256": "d0f6db016a7309d9fe4b88ee5a39e8e11814f30d8efad20fb5e4121204ad7f39",
+          "replacement_acknowledged_handover_sha256": "681055903af4abd0bc964e93fa8a2b17d88e14c6c29236a00607f5924dc25c6b",
+          "history_bytes_before_takeover": 55016,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 0,
+        "remaining_workflow_including_verification_seconds": 31.264999999999418,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-resume_package-r2",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "resume_package",
+      "repeat": 2,
+      "prepared_order": 8,
+      "prepared_plan_sha256": "b7bede5ee4fe0825a3cfc71d724a990356223a8778119a5c9731c728a1533636",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:45:57.661562+00:00",
+        "finished_at": "2026-10-19T05:49:44.201768+00:00",
+        "plan_sha256": "b7bede5ee4fe0825a3cfc71d724a990356223a8778119a5c9731c728a1533636",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:45:59.874212+00:00",
+        "finished_at": "2026-10-19T05:49:44.123148+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "99e6b8e4a87c3aff4257bfe4bb9262573648ee9ab6ec1e3a3b3bc3f8fb3b26d3",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "99e6b8e4a87c3aff4257bfe4bb9262573648ee9ab6ec1e3a3b3bc3f8fb3b26d3",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31017,
+          "native_transmitted_ifc_text_sha256": "e23f430cb648ca35a8dad7c683309d3c8c6a3bd9c855d9ee5a3a3dc30070183f",
+          "replacement_acknowledged_handover_sha256": "3490b7b5a93c4b25a5406df40bffe9440e2bda0f8284f297c4d2f626e4bf7119",
+          "history_bytes_before_takeover": 55255,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 31017,
+              "resume_ifc_text_sha256": "e23f430cb648ca35a8dad7c683309d3c8c6a3bd9c855d9ee5a3a3dc30070183f",
+              "handover_information_utf8_bytes": 15255,
+              "handover_sha256": "3490b7b5a93c4b25a5406df40bffe9440e2bda0f8284f297c4d2f626e4bf7119",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": true,
+              "duplicated_package_values_equal": true
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31017,
+          "handover_information_utf8_bytes": 15255,
+          "handover_information_estimated_tokens_bytes_div_4": 3813.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31017,
+          "native_transmitted_ifc_text_sha256": "e23f430cb648ca35a8dad7c683309d3c8c6a3bd9c855d9ee5a3a3dc30070183f",
+          "replacement_acknowledged_handover_sha256": "3490b7b5a93c4b25a5406df40bffe9440e2bda0f8284f297c4d2f626e4bf7119",
+          "history_bytes_before_takeover": 55255,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 0,
+        "remaining_workflow_including_verification_seconds": 31.170999999998457,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1a-after_observation-r3",
+      "case": "E1-a",
+      "point": "after_observation",
+      "method": null,
+      "repeat": 3,
+      "prepared_order": 9,
+      "prepared_plan_sha256": "0d1a0c8fd4c6fe0bd59493d4be6e3282d15d862b9dbfee748175377b9639818a",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:49:44.499711+00:00",
+        "finished_at": "2026-10-19T05:53:55.622717+00:00",
+        "plan_sha256": "0d1a0c8fd4c6fe0bd59493d4be6e3282d15d862b9dbfee748175377b9639818a",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:49:46.575538+00:00",
+        "finished_at": "2026-10-19T05:53:55.534988+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": null,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 81,
+          "actual_exit_code": 81,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database-backup",
+                "operation_id_sha256": "c3ab46b4c1fae404f8b8fb9b5138df7f1a10216f0f8145487d9100f1bc8ffde7",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database-backup",
+              "operation_id_sha256": "c3ab46b4c1fae404f8b8fb9b5138df7f1a10216f0f8145487d9100f1bc8ffde7",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": null,
+        "additional_post_handover_observations": null,
+        "remaining_workflow_including_verification_seconds": null,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-from_scratch-r3",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "from_scratch",
+      "repeat": 3,
+      "prepared_order": 10,
+      "prepared_plan_sha256": "d0291b8daf0c106765689cf8e15ed1c5d9b4788801ce1431d0ae730c617d6f95",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:53:55.958476+00:00",
+        "finished_at": "2026-10-19T05:57:45.059431+00:00",
+        "plan_sha256": "d0291b8daf0c106765689cf8e15ed1c5d9b4788801ce1431d0ae730c617d6f95",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:53:58.165302+00:00",
+        "finished_at": "2026-10-19T05:57:44.970677+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "db3434e02d663c157733f6a46d8be01fe32712871832b652a0ea2a15993bbc59",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "db3434e02d663c157733f6a46d8be01fe32712871832b652a0ea2a15993bbc59",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 1177,
+          "handover_information_utf8_bytes": 342,
+          "handover_information_estimated_tokens_bytes_div_4": 85.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1177,
+          "native_transmitted_ifc_text_sha256": "a5de21b66d4f7d0736332e70acfa472e9a89700d08900eec6c54ddda2769f494",
+          "replacement_acknowledged_handover_sha256": "c7ac33d380e4e066c93fb4e426f7ea73a140d9324b62332f5dcc9fb875f7d78e",
+          "history_bytes_before_takeover": 55018,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1177,
+          "handover_information_utf8_bytes": 342,
+          "handover_information_estimated_tokens_bytes_div_4": 85.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 1177,
+              "resume_ifc_text_sha256": "a5de21b66d4f7d0736332e70acfa472e9a89700d08900eec6c54ddda2769f494",
+              "handover_information_utf8_bytes": 342,
+              "handover_sha256": "c7ac33d380e4e066c93fb4e426f7ea73a140d9324b62332f5dcc9fb875f7d78e",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": false,
+              "duplicated_package_values_equal": null
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 1177,
+          "handover_information_utf8_bytes": 342,
+          "handover_information_estimated_tokens_bytes_div_4": 85.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 1177,
+          "native_transmitted_ifc_text_sha256": "a5de21b66d4f7d0736332e70acfa472e9a89700d08900eec6c54ddda2769f494",
+          "replacement_acknowledged_handover_sha256": "c7ac33d380e4e066c93fb4e426f7ea73a140d9324b62332f5dcc9fb875f7d78e",
+          "history_bytes_before_takeover": 55018,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 1,
+        "remaining_workflow_including_verification_seconds": 32.25,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-full_history-r3",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "full_history",
+      "repeat": 3,
+      "prepared_order": 11,
+      "prepared_plan_sha256": "78d6aeb0131c0273aab42ac660fd3bf010a3a7c3ecba2dd632433190233a9997",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T05:57:45.352581+00:00",
+        "finished_at": "2026-10-19T06:01:30.683952+00:00",
+        "plan_sha256": "78d6aeb0131c0273aab42ac660fd3bf010a3a7c3ecba2dd632433190233a9997",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T05:57:47.502521+00:00",
+        "finished_at": "2026-10-19T06:01:30.601536+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.0,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.002,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "5ebf7e564efecbc253d3bea33493377cf5bacc3e8998846d7da608a614b0a6e7",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "5ebf7e564efecbc253d3bea33493377cf5bacc3e8998846d7da608a614b0a6e7",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 18418,
+          "handover_information_utf8_bytes": 17583,
+          "handover_information_estimated_tokens_bytes_div_4": 4395.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 18418,
+          "native_transmitted_ifc_text_sha256": "702619c338a1de87e943fbfe7a62b1fed7a03fa2c8e06faba44ba63b0f3ee01e",
+          "replacement_acknowledged_handover_sha256": "7776d5fe86f33277486c00e0f76f9cb9366d218f6e2aedee1593cc5794859d9e",
+          "history_bytes_before_takeover": 55018,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 18418,
+          "handover_information_utf8_bytes": 17583,
+          "handover_information_estimated_tokens_bytes_div_4": 4395.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 18418,
+              "resume_ifc_text_sha256": "702619c338a1de87e943fbfe7a62b1fed7a03fa2c8e06faba44ba63b0f3ee01e",
+              "handover_information_utf8_bytes": 17583,
+              "handover_sha256": "7776d5fe86f33277486c00e0f76f9cb9366d218f6e2aedee1593cc5794859d9e",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": false,
+              "duplicated_package_values_equal": null
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 18418,
+          "handover_information_utf8_bytes": 17583,
+          "handover_information_estimated_tokens_bytes_div_4": 4395.75,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 18418,
+          "native_transmitted_ifc_text_sha256": "702619c338a1de87e943fbfe7a62b1fed7a03fa2c8e06faba44ba63b0f3ee01e",
+          "replacement_acknowledged_handover_sha256": "7776d5fe86f33277486c00e0f76f9cb9366d218f6e2aedee1593cc5794859d9e",
+          "history_bytes_before_takeover": 55018,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 0,
+        "remaining_workflow_including_verification_seconds": 31.468000000000757,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    },
+    {
+      "key": "e1b-resume_package-r3",
+      "case": "E1-b",
+      "point": "after_applied",
+      "method": "resume_package",
+      "repeat": 3,
+      "prepared_order": 12,
+      "prepared_plan_sha256": "329f193a374a19f4007b99d568d189f317a02029a3af1201af8bd7ddeda83f44",
+      "state": "passed",
+      "actual_case_process_terminal": true,
+      "actual_case_exit_code": 0,
+      "receipt": {
+        "status": "completed",
+        "started_at": "2026-10-19T06:01:30.973454+00:00",
+        "finished_at": "2026-10-19T06:05:22.903772+00:00",
+        "plan_sha256": "329f193a374a19f4007b99d568d189f317a02029a3af1201af8bd7ddeda83f44",
+        "actual_exit_code": 0,
+        "cleanup_and_recovery_verified": true,
+        "launcher_error_class": null
+      },
+      "pass_checks": {
+        "runner_exit_zero": true,
+        "reported_completed": true,
+        "task_phase_completed": true,
+        "six_close_checks_true": true,
+        "no_cleanup_warnings": true,
+        "restoration_and_independent_H00": true,
+        "business_verification_healthy": true,
+        "no_error_class": true,
+        "journal_unexpected_inflight_zero": true,
+        "one_captured_and_acknowledged_resume": true
+      },
+      "result": {
+        "schema_version": "platform-e1-result/2",
+        "status": "completed",
+        "task_phase_status": "completed",
+        "passed": null,
+        "started_at": "2026-10-19T06:01:33.059077+00:00",
+        "finished_at": "2026-10-19T06:05:22.817167+00:00",
+        "completed_at": null,
+        "model_calls": 0,
+        "model_tokens": 0,
+        "resource_and_worker_restore": "completed",
+        "independent_final_H00_status": null,
+        "transport_closed": null,
+        "restored": null,
+        "h00_status": null,
+        "errors": {},
+        "phase_errors": [],
+        "close_checks": {
+          "no_group_sessions": true,
+          "no_inbound_groups": true,
+          "inbox_cancelled": true,
+          "connection_closed": true,
+          "owned_group_disconnected": true,
+          "no_cleanup_warnings": true
+        },
+        "cleanup_warning_events": [],
+        "independent_final_H00": {
+          "status": null,
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "business_verification": {
+          "status": null,
+          "duration_seconds": 30.003,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "pending_intents": 0
+        },
+        "worker_exit_and_mcp": {
+          "expected_exit_code": 83,
+          "actual_exit_code": 83,
+          "counts": {
+            "transport": "wutong-amqps",
+            "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+            "operations": [
+              {
+                "worker_role": "database",
+                "operation_id_sha256": "ef7902543831153841cd9efea1395605932e24234833b7e1ab336023030e154f",
+                "invocations": 1,
+                "returned": 1,
+                "returned_errors": 0,
+                "without_return": 0
+              }
+            ],
+            "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+          }
+        },
+        "mcp_operation_counts": {
+          "transport": "wutong-amqps",
+          "counting": "Actual modifying MCP invocation attempts and observed returns, not physical side effects.",
+          "operations": [
+            {
+              "worker_role": "database",
+              "operation_id_sha256": "ef7902543831153841cd9efea1395605932e24234833b7e1ab336023030e154f",
+              "invocations": 1,
+              "returned": 1,
+              "returned_errors": 0,
+              "without_return": 0
+            }
+          ],
+          "limit": "Wrapper invocation/return counts do not establish physical modifications; without_return alone does not prove dispatch."
+        },
+        "worker_revival_and_mcp": null,
+        "handover": {
+          "resume_ifc_payload_utf8_bytes": 31022,
+          "handover_information_utf8_bytes": 15258,
+          "handover_information_estimated_tokens_bytes_div_4": 3814.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31022,
+          "native_transmitted_ifc_text_sha256": "c482cedb294374041fd0f38b8d80b93e2f8e3e8ecc2115ae25684df61c91846e",
+          "replacement_acknowledged_handover_sha256": "6ab0ade9050f100391e94aec51e82bd1b91846110d2f4d6757149e704bcff84b",
+          "history_bytes_before_takeover": 55254,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "prepared_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31022,
+          "handover_information_utf8_bytes": 15258,
+          "handover_information_estimated_tokens_bytes_div_4": 3814.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "captured_resume_send": {
+          "matching_resume_sends": 1,
+          "capture_parse_errors": 0,
+          "capture_ends_with_newline": true,
+          "sends": [
+            {
+              "resume_ifc_text_utf8_bytes": 31022,
+              "resume_ifc_text_sha256": "c482cedb294374041fd0f38b8d80b93e2f8e3e8ecc2115ae25684df61c91846e",
+              "handover_information_utf8_bytes": 15258,
+              "handover_sha256": "6ab0ade9050f100391e94aec51e82bd1b91846110d2f4d6757149e704bcff84b",
+              "case_and_operation_match": true,
+              "backup_target_match": true,
+              "transport": "wutong-amqps",
+              "package_in_args_resume_package_and_handover_package": true,
+              "duplicated_package_values_equal": true
+            }
+          ],
+          "stage": "send capture written after publisher returns; does not establish replacement acknowledgement or success",
+          "prepared_ifc_bytes_match": true,
+          "prepared_handover_bytes_match": true,
+          "acknowledged_metrics_match": true
+        },
+        "acknowledged_handover_metrics": {
+          "resume_ifc_payload_utf8_bytes": 31022,
+          "handover_information_utf8_bytes": 15258,
+          "handover_information_estimated_tokens_bytes_div_4": 3814.5,
+          "token_estimate_method": "UTF-8 bytes / 4; not a tokenizer count or model usage",
+          "native_transmitted_ifc_text_bytes": 31022,
+          "native_transmitted_ifc_text_sha256": "c482cedb294374041fd0f38b8d80b93e2f8e3e8ecc2115ae25684df61c91846e",
+          "replacement_acknowledged_handover_sha256": "6ab0ade9050f100391e94aec51e82bd1b91846110d2f4d6757149e704bcff84b",
+          "history_bytes_before_takeover": 55254,
+          "transport": "wutong-amqps",
+          "model_calls": 0,
+          "model_tokens": 0
+        },
+        "additional_post_handover_observations": 0,
+        "remaining_workflow_including_verification_seconds": 32.93800000000192,
+        "journal_resolution": {
+          "raw_in_flight_count": 1,
+          "expected_unacknowledged_primary_attempts": 1,
+          "unexpected_in_flight_count": 0,
+          "raw_journal_modified": false
+        }
+      }
+    }
+  ],
+  "original22": {
+    "unchanged": true,
+    "prepared": 22,
+    "passed": 18,
+    "failed": 4,
+    "evidence": "evidence/platform-acceptance-20261019/",
+    "combined_success_rate_claimed": false,
+    "original_summary_sha256": "02d8550cecdb2d4fe7a93918802487686d0809757c9d56e28b100c521ce8a60a"
+  },
+  "limits": [
+    "This new 12-case batch is separate from the original frozen 22-case batch; no original verdict is replaced.",
+    "Pass requires underlying results, six normal-close gates, restoration, independent 30s/10-workflow H00, business verification and journal checks; exit0 alone is insufficient.",
+    "The unchanged original unknown business intents, T05, Kafka/Monitor, independent-machine and long-term gates remain separate.",
+    "Prepared, captured and acknowledged handover sizes remain separate; duplicated resume-package representations are not byte savings."
+  ]
+}

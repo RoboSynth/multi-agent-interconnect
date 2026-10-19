@@ -1,0 +1,166 @@
+{
+  "schema_version": "case-runtime-capture/1.0",
+  "started_at": "2026-10-19T05:39:17.242506+00:00",
+  "case_key": "e1b-full_history-r1",
+  "experiment_id": "revalidation-20261019-e1b-full_history-r1",
+  "project": "incident-pilot-revalidation-20261019",
+  "status": "completed",
+  "commands": [
+    {
+      "stem": "backup-ids",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=com.docker.compose.project=incident-pilot-revalidation-20261019",
+        "--filter",
+        "label=com.docker.compose.service=database-backup-agent"
+      ],
+      "started_at": "2026-10-19T05:39:17.247504+00:00",
+      "finished_at": "2026-10-19T05:39:18.355898+00:00",
+      "exit_code": 0
+    },
+    {
+      "stem": "backup-identity",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "inspect",
+        "--format",
+        "{\"id\":{{json .Id}},\"project\":{{json (index .Config.Labels \"com.docker.compose.project\")}},\"service\":{{json (index .Config.Labels \"com.docker.compose.service\")}},\"image_id\":{{json .Image}},\"mounts\":{{json .Mounts}}}",
+        "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4"
+      ],
+      "started_at": "2026-10-19T05:39:18.355898+00:00",
+      "finished_at": "2026-10-19T05:39:19.389429+00:00",
+      "exit_code": 0
+    },
+    {
+      "stem": "state-volume-identity",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "volume",
+        "inspect",
+        "--format",
+        "{\"name\":{{json .Name}},\"project\":{{json (index .Labels \"com.docker.compose.project\")}},\"compose_volume\":{{json (index .Labels \"com.docker.compose.volume\")}}}",
+        "incident-pilot-revalidation-20261019_database-agent-state"
+      ],
+      "started_at": "2026-10-19T05:39:19.389429+00:00",
+      "finished_at": "2026-10-19T05:39:20.067600+00:00",
+      "exit_code": 0
+    },
+    {
+      "stem": "copy-primary",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "cp",
+        "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4:/state/experiments/revalidation-20261019-e1b-full_history-r1/primary.jsonl",
+        "[batch]/publication/full-history-r1-runtime-capture/primary.jsonl"
+      ],
+      "started_at": "2026-10-19T05:39:20.067600+00:00",
+      "finished_at": "2026-10-19T05:39:21.015008+00:00",
+      "exit_code": 0
+    },
+    {
+      "stem": "copy-backup",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "cp",
+        "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4:/state/experiments/revalidation-20261019-e1b-full_history-r1/backup.jsonl",
+        "[batch]/publication/full-history-r1-runtime-capture/backup.jsonl"
+      ],
+      "started_at": "2026-10-19T05:39:21.017006+00:00",
+      "finished_at": "2026-10-19T05:39:21.808269+00:00",
+      "exit_code": 0
+    },
+    {
+      "stem": "primary-die-events",
+      "command": [
+        "wsl.exe",
+        "-d",
+        "Ubuntu-22.04",
+        "--exec",
+        "docker",
+        "events",
+        "--since",
+        "2026-10-19T05:25:09.107548Z",
+        "--until",
+        "2026-10-19T05:28:37.655780Z",
+        "--filter",
+        "container=860ae4d752c3caf674087f20319be879c036c23ead24ccf3fbeb1fa847c719c7",
+        "--filter",
+        "event=die",
+        "--format",
+        "{{json .}}"
+      ],
+      "started_at": "2026-10-19T05:39:21.809262+00:00",
+      "finished_at": "2026-10-19T05:39:22.440865+00:00",
+      "exit_code": 0
+    }
+  ],
+  "original_sha256": {
+    "checkout\\eval\\results\\platform\\revalidation-20261019\\e1b-full_history-r1\\results.json": "dfa5f6c69c468ab29e9227587f40e59f7942979523f908d344dd9352bc2022ee",
+    "checkout\\eval\\results\\platform\\revalidation-20261019\\e1b-full_history-r1\\experimental-domains.json": "4df0d948b2df520e70545ad43729f80f3acdbd495dc9cee39f0390b2145ceb9e",
+    "publication\\full-history-r1-diagnosis.json": "20cc66d9da527749c3f9b8d5463fb31eff77544638e1aae8fd55d83964e6bc23",
+    "publication\\full-history-r1-diagnosis.md": "7156c840ca7996f77ea9be9a66acfcebce5d9dbcca7f2268092e64f010b7b025"
+  },
+  "initial_sandbox_attempt": {
+    "exit_code": 1,
+    "error": "Wsl/E_ACCESSDENIED",
+    "operation": "exact-project/exact-backup-service docker ps; no Docker result returned"
+  },
+  "verified_source": {
+    "backup_container_id": "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4",
+    "image_id": "sha256:f7e91b059a7b50b52294a6a3ab09dfb1d072841817480bbc2ad2b870f440f6ea",
+    "shared_state_volume": "incident-pilot-revalidation-20261019_database-agent-state",
+    "volume_project_label": "incident-pilot-revalidation-20261019",
+    "shared_volume_source": "frozen deploy/agents.yml primary and backup both mount database-agent-state:/state"
+  },
+  "copies": [
+    {
+      "role": "primary",
+      "source": "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4:/state/experiments/revalidation-20261019-e1b-full_history-r1/primary.jsonl",
+      "exit_code": 0,
+      "bytes": 1978,
+      "sha256": "390de2753784c5b85dcfe0552bf5f351f6cae5d1937926c5ebb9f054d4e8fbf7"
+    },
+    {
+      "role": "backup",
+      "source": "abc01db369e57d472189173028be26a9592fae7f2544b4c867fef8cf55ff8eb4:/state/experiments/revalidation-20261019-e1b-full_history-r1/backup.jsonl",
+      "exit_code": 0,
+      "bytes": 429,
+      "sha256": "70e9feb1a28549632fb3b7b1fa527f126ffa08362e09f5ccfbeb4f20bba7c2a1"
+    }
+  ],
+  "die_event_request": {
+    "original_primary_container_id": "860ae4d752c3caf674087f20319be879c036c23ead24ccf3fbeb1fa847c719c7",
+    "since": "2026-10-19T05:25:09.107548Z",
+    "until": "2026-10-19T05:28:37.655780Z",
+    "exit_code": 0,
+    "rows": 0,
+    "observed_exit_codes": [],
+    "status": "unknown; no cached matching daemon event returned"
+  },
+  "original_evidence_unchanged": true,
+  "finished_at": "2026-10-19T05:39:22.441825+00:00"
+}

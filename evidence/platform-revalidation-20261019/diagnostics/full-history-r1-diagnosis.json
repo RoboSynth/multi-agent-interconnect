@@ -1,0 +1,257 @@
+{
+  "schema_version": "formal-case-diagnosis/1.0",
+  "reviewed_at": "2026-10-19T05:35:00.215797+00:00",
+  "case_key": "e1b-full_history-r1",
+  "experiment_id": "revalidation-20261019-e1b-full_history-r1",
+  "method": "full_history",
+  "case_status_retained": "failed",
+  "case_error_class_retained": "TimeoutError",
+  "actual_runner_exit_code": 1,
+  "summary": "The original primary db.restore_writes action reached accepted/working but no AwaitingCompletion product arrived. Takeover stopped during fresh official ADP discovery with ConnectError, before any replacement selection or resume transmission. The wrapper retained the original TimeoutError. The underlying primary and connection causes remain unresolved in the saved local scope.",
+  "observed_failure_stage": {
+    "original_wait": "AwaitingCompletion for primary db.restore_writes",
+    "task_id": "aip-2f1737729fac451e99f3a877cd92b1f5",
+    "logical_task_id": "revalidation-20261019-e1b-full_history-r1:4",
+    "payload_budget_deadline_ms": 15000,
+    "implemented_wait_seconds": 20,
+    "remaining_primary_state_in_journal": "working",
+    "takeover_stage": "fresh official ADP discovery",
+    "takeover_error_class": "ConnectError",
+    "replacement_selected": false,
+    "resume_sent": false,
+    "backup_bridge_accepted_or_rejected": "no evidence; the resume stage was not reached"
+  },
+  "original_task_timeline": [
+    {
+      "source": "coordinator/messages.jsonl",
+      "line": 49,
+      "timestamp_utc": "2026-10-19T05:27:02.398691+00:00",
+      "direction": "send",
+      "type": "task-command",
+      "command": "start",
+      "state": null
+    },
+    {
+      "source": "coordinator/messages.jsonl",
+      "line": 50,
+      "timestamp_utc": "2026-10-19T05:27:02.423636+00:00",
+      "direction": "receive",
+      "type": "task-result",
+      "command": null,
+      "state": "accepted"
+    },
+    {
+      "source": "coordinator/messages.jsonl",
+      "line": 51,
+      "timestamp_utc": "2026-10-19T05:27:02.448268+00:00",
+      "direction": "receive",
+      "type": "task-result",
+      "command": null,
+      "state": "working"
+    }
+  ],
+  "critical_coordinator_events": [
+    {
+      "source": "coordinator/amp/amp_system_coordinator.jsonl",
+      "line": 17,
+      "timestamp_utc": "2026-10-19T05:27:22.637782Z",
+      "event": "takeover_started",
+      "incident_id": "revalidation-20261019-e1b-full_history-r1",
+      "logical_task_id": "revalidation-20261019-e1b-full_history-r1:4",
+      "failed_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "reason": "TimeoutError",
+      "discovery": "official-adp",
+      "history_bytes_before_takeover": 55016
+    },
+    {
+      "source": "coordinator/amp/amp_system_coordinator.jsonl",
+      "line": 18,
+      "timestamp_utc": "2026-10-19T05:27:33.848881Z",
+      "event": "official_discovery_failed",
+      "role": "database",
+      "phase": "official-adp",
+      "error_class": "ConnectError"
+    },
+    {
+      "source": "coordinator/amp/amp_system_coordinator.jsonl",
+      "line": 19,
+      "timestamp_utc": "2026-10-19T05:27:33.850873Z",
+      "event": "takeover_unavailable",
+      "failed_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+      "error_class": "ConnectError"
+    },
+    {
+      "source": "coordinator/amp/amp_system_coordinator.jsonl",
+      "line": 21,
+      "timestamp_utc": "2026-10-19T05:27:39.118964Z",
+      "event": "group_session_close_completed",
+      "session_id": "incident-3f2762ee2a304229b3c8b0865a67cd2b",
+      "group_id": "group-incident-3f2762ee2a304229b3c8b0865a67cd2b"
+    }
+  ],
+  "captured_counts": {
+    "message_rows": 51,
+    "message_directions": {
+      "send": 17,
+      "receive": 34
+    },
+    "start_requests": 9,
+    "resume_start_requests": 0,
+    "task_message_rows_to_or_from_backup": 0,
+    "backup_journal_attempts": 0,
+    "takeover_journal_events": 1,
+    "control_subprocesses": 33,
+    "nonzero_control_subprocesses": 0
+  },
+  "journal": {
+    "interrupted_attempts": [
+      {
+        "logical_task_id": "revalidation-20261019-e1b-full_history-r1:4",
+        "task_id": "aip-2f1737729fac451e99f3a877cd92b1f5",
+        "partner_aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+        "command": "start",
+        "state": "working",
+        "coordinator_term": 3,
+        "created_at": 1792387622.3866918,
+        "updated_at": 1792387622.4816437
+      }
+    ],
+    "takeover_events": [
+      {
+        "event_id": 1,
+        "session_id": "revalidation-20261019-e1b-full_history-r1",
+        "failed_partner": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+        "replacement": null,
+        "reason": "TimeoutError",
+        "fence": null,
+        "state": "started",
+        "recorded_at": 1792387642.6398685
+      }
+    ]
+  },
+  "completed_products": [
+    {
+      "logical_task_id": "revalidation-20261019-e1b-full_history-r1:1",
+      "tool": "incident.verification",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "revalidation-20261019-e1b-full_history-r1:2",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "revalidation-20261019-e1b-full_history-r1:3",
+      "tool": "db.read_only_status",
+      "status": "ok"
+    }
+  ],
+  "source_explanation": {
+    "path": "source/incident/wutong_transport.py",
+    "dispatch_wait_line": 192,
+    "takeover_discovery_line": 343,
+    "resume_send_line": 366,
+    "outer_original_error_rethrow_line": 241,
+    "interpretation": "ADP discovery precedes replacement describe, payload factory, and resume send. Its failure is chained to the retained original TimeoutError; no stack trace or lower-level connection detail is saved here."
+  },
+  "comparison_with_prior_failed_case": {
+    "source_artifact": "p0-acceptance-prep-20261019/publication/e1b-full-history-r1-failure-review.json",
+    "prior_case_status_retained": "failed",
+    "prior_resume_sent": true,
+    "prior_backup_product_received": true,
+    "prior_backup_rejection_reason": "invalid handover conversation entry",
+    "prior_contract_difference": "Formal history included aip_session_id, which the old Bridge entry whitelist rejected; a secondary operation=None AttributeError masked the rejection.",
+    "current_difference": "Current case has zero recorded resume requests and no replacement journal attempt; it does not reach that contract validation stage and neither proves nor disproves the wire fix on the platform."
+  },
+  "cleanup_and_recovery": {
+    "close_checks": {
+      "no_group_sessions": true,
+      "no_inbound_groups": true,
+      "inbox_cancelled": true,
+      "connection_closed": true,
+      "owned_group_disconnected": true,
+      "no_cleanup_warnings": true
+    },
+    "cleanup_warning_events": [],
+    "resource_and_worker_restore": "completed",
+    "independent_final_H00": {
+      "run_id": "revalidation-20261019-e1b-full_history-r1-final-H00",
+      "duration_seconds": 30.0,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 0,
+      "passed": true
+    },
+    "receipt_cleanup_and_recovery_verified": true
+  },
+  "limits": [
+    "No local primary/backup trace or saved worker exit/MCP-count artifact was available during this read-only review. Their planned after_applied crash is not promoted to an observed exit or physical effect.",
+    "No backup Bridge acceptance/rejection was observed because no resume was sent.",
+    "ConnectError does not identify a network root cause; no live network, Docker, MQ, platform, retry, injection, or resource operation was performed.",
+    "Final H00 follows evaluator cleanup and does not turn this case into a successful takeover.",
+    "Any later worker capture should be assessed as a separate evidence revision; original case results stay failed."
+  ],
+  "evidence_root": "incident-pilot/artifacts",
+  "evidence": [
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/results.json",
+      "bytes": 58242,
+      "sha256": "dfa5f6c69c468ab29e9227587f40e59f7942979523f908d344dd9352bc2022ee"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/coordinator/events.jsonl",
+      "bytes": 26681,
+      "sha256": "61628fa40f7669b0c5226e5c6842555ff06f01a1cc82e8aba7f33c57473623fe"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/coordinator/messages.jsonl",
+      "bytes": 55016,
+      "sha256": "71bfbc9e63f82c94319b835c22438bbc3e9c188df7fd9171d744776cab4479e9"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/coordinator/journal.sqlite",
+      "bytes": 94208,
+      "sha256": "e32966d44c36a36d30fa22e24cc7824415a4a36e4b27750c389a50acd3759507"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/coordinator/amp/amp_system_coordinator.jsonl",
+      "bytes": 32191,
+      "sha256": "279206616e19f5b04a3e3b44cb0cbbc6656be1044460affcf3776b85d03faad1"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/coordinator/amp/amp_access_coordinator.jsonl",
+      "bytes": 5245,
+      "sha256": "35bda4896d8df08f70b3cb9302d9add0d301f5685e48447c53abfd0643587591"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/subprocess-exits.jsonl",
+      "bytes": 63345,
+      "sha256": "536176bd186456ebf2972cb61c53de2504ce12d146d5d6d972475aca9a008096"
+    },
+    {
+      "path": "p0-revalidation-20261019/execution/e1b-full_history-r1/receipt.json",
+      "bytes": 380,
+      "sha256": "879da0095cef9e9dac84c32964a1dcf375c4420480a06c509a07e2a9a8573353"
+    },
+    {
+      "path": "p0-revalidation-20261019/execution/e1b-full_history-r1/runner.exit.json",
+      "bytes": 315,
+      "sha256": "d36ff449afc3a500ac461d0d1816d5a6599628a3b91fa2a1f602b0986209fef0"
+    },
+    {
+      "path": "p0-revalidation-20261019/checkout/eval/results/platform/revalidation-20261019/e1b-full_history-r1/source/incident/wutong_transport.py",
+      "bytes": 28701,
+      "sha256": "a9a93f3e4e084d17148a4445a956a540e80a8eec27ac1e258b75985128e330e8"
+    },
+    {
+      "path": "p0-acceptance-prep-20261019/publication/e1b-full-history-r1-failure-review.json",
+      "bytes": 10453,
+      "sha256": "c19a63167dd36d916666255ebbc469be6d6057988bc4d1cdf5e6633ee4094db6"
+    }
+  ],
+  "original_evidence_unchanged_during_review": true
+}

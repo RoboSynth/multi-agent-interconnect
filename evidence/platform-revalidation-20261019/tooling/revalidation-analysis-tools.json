@@ -1,0 +1,43 @@
+{
+  "status": "PREPARED_ONLY_NO_RUNTIME_COLLECTION_OR_ANALYSIS",
+  "prepared_summary_sha256": "23552f95af1e86a33c6f4e3c923df471ab69edf7acad07f3acadfe4d85c353ac",
+  "helper_sha256": "1de26566f411e7d2a92efe8856c54d6bb67872c80e1178b28e5f80c046d14158",
+  "derived_from": {
+    "path": "artifacts/p0-acceptance-prep-20261019/publication/check_closed_access_credentials.py",
+    "sha256": "1186826d5392a86a7673ca7ca1db31ad3d35ca555089535222439b1ddd1a353b",
+    "six_domain_collector_sha256": "2e85652768a7654a2d8815dbbdaff05fa88047bc5c3063bc20c436c7c553c275"
+  },
+  "modules": {
+    "reconciler": {
+      "path": "artifacts/p0-acceptance-prep-20261019/checkout/eval/reconcile_access.py",
+      "sha256": "327b4d9dca9748a770e5f320a5c5816e026da5909ff13fc49cb3426d50bdf389"
+    },
+    "patterns": {
+      "path": "artifacts/p0-acceptance-prep-20261019/checkout/eval/secret_scan.py",
+      "sha256": "e598f93f6e1eb10d918bf6ab47998f5dbb0ad250227c2c5db0194cdd71c8972d"
+    },
+    "scanner": {
+      "path": "artifacts/new7-e3-credential-analysis-20261018/scan_closed_run.py",
+      "sha256": "2694e376bc2f2e33f8e255d8834a7f40b9c4309d05b9549c8144d1db841ac869"
+    },
+    "inventory": {
+      "path": "artifacts/team-upload-new7-runtime-20261018/prepare_increment.py",
+      "sha256": "39a20085c3a239e9094313a00e19138b187609ef9c672a2d962fc433ee89bb12"
+    }
+  },
+  "additional_known_secret_env": [
+    "artifacts/p0-acceptance-prep-20261019/checkout/runtime/private/acceptance-20261019/compose.env",
+    "artifacts/p0-acceptance-prep-20261019/checkout/runtime/private/acceptance-20261019/domains/coordinator/approval.env"
+  ],
+  "changes": [
+    "12-case project/output/terminal bindings and same-stage final stop/keeper",
+    "stopped exact container/domain/image, readonly /domain bind and project-owned /state volume verification",
+    "native Windows Docker-cp destination converted to WSL /mnt path",
+    "one captured session per case and disjoint sessions across case outputs",
+    "legacy inventory plus retained acceptance and current revalidation env values; no secret values serialized",
+    "unchanged scanner/pattern/reconciler algorithms; original22 results remain untouched"
+  ],
+  "new_runtime_collection": false,
+  "new_runtime_analysis": false,
+  "new_tests": false
+}

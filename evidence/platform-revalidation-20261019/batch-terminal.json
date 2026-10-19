@@ -1,0 +1,51 @@
+{
+  "status": "terminal",
+  "actual_wait_observed": true,
+  "expected_plans": 12,
+  "recorded_at_utc": "2026-10-19T06:05:59.574066+00:00",
+  "phase_sessions": [
+    {
+      "session_id": 39454,
+      "terminal": true,
+      "actual_os_exit_code": 1,
+      "completion_chunk": "a95f4f"
+    },
+    {
+      "session_id": 10154,
+      "terminal": true,
+      "actual_os_exit_code": 0,
+      "completion_chunk": "3f0505"
+    }
+  ],
+  "attempted_count": 12,
+  "unattempted_count": 0,
+  "passed_count": 11,
+  "failed_count": 1,
+  "prepared_summary_sha256": "23552f95af1e86a33c6f4e3c923df471ab69edf7acad07f3acadfe4d85c353ac",
+  "plan_dispositions": {
+    "e1a-after_observation-r1": "passed",
+    "e1b-from_scratch-r1": "passed",
+    "e1b-full_history-r1": "failed",
+    "e1b-resume_package-r1": "passed",
+    "e1a-after_observation-r2": "passed",
+    "e1b-from_scratch-r2": "passed",
+    "e1b-full_history-r2": "passed",
+    "e1b-resume_package-r2": "passed",
+    "e1a-after_observation-r3": "passed",
+    "e1b-from_scratch-r3": "passed",
+    "e1b-full_history-r3": "passed",
+    "e1b-resume_package-r3": "passed"
+  },
+  "owned_project_stop_receipt": {
+    "path": "execution-rest/stop/result.json",
+    "sha256": "80d2874d4c922f76f3a7b03f2e07f800e1e87faf68342f40d539a4eab9ddd831"
+  },
+  "owned_keeper_exit_receipt": {
+    "path": "execution-rest/keeper.exit.json",
+    "sha256": "c376a9be35a20a3ea15b57fcba497c169a2df12f07a3999cccac98acc5a9fafc"
+  },
+  "launcher_inputs_sha256": {
+    "run_authorized.py": "c62e43c204866c3f3d9d380b835c7b614e7520e1ff8e49692f84201ef39f501a",
+    "run_remaining_authorized.py": "816284cb25cc80960dec8241a744ad3d32d2ac4a66ba2d60e9a28df9e86c3b1c"
+  }
+}
