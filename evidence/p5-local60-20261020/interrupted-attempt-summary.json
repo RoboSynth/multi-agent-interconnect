@@ -1,0 +1,57 @@
+{
+  "cell": [
+    "F06",
+    "M1",
+    2
+  ],
+  "classification": "EXECUTOR_INTERRUPTED",
+  "algorithm_failure": false,
+  "id": "inc-f37914601a4341f6",
+  "original_status": "running",
+  "started_at": "2026-10-20T03:16:53.942259+00:00",
+  "tasks": [
+    {
+      "logical_task_id": "lt-796f35541ad9",
+      "kind": "observe",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "lt-646a268d1f0d",
+      "kind": "act",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "logical_task_id": "lt-16d01d6b10ae",
+      "kind": "act",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "lt-5816b0ef6cb2",
+      "kind": "verify",
+      "tool": "incident.verification",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "lt-9c183704308e",
+      "kind": "verify",
+      "tool": "incident.verification",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "lt-90d23871e039",
+      "kind": "act",
+      "tool": "ops.restart",
+      "status": "ok"
+    },
+    {
+      "logical_task_id": "lt-3b66304185ec",
+      "kind": "verify",
+      "tool": "incident.verification",
+      "status": "pending"
+    }
+  ],
+  "source_sha256": "cb59d2a6c6c18c0b4cc4593812c20035fc21df1f552b4baba92b8c64d8bcca53"
+}

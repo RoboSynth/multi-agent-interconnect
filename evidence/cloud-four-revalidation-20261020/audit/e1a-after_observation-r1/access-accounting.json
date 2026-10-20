@@ -1,0 +1,67 @@
+{
+  "captured_start_tasks": 6,
+  "transport": "wutong-amqps",
+  "expected_access_records": 12,
+  "actual_access_records": 12,
+  "missing_records": 0,
+  "extra_records": 0,
+  "incomplete_task_lifecycles": [],
+  "unrelated_access_records_excluded": 0,
+  "platform_pairing": {
+    "task_count": 6,
+    "paired_task_count": 6,
+    "pairing_rate": 1.0,
+    "paired_task_ids": [
+      "aip-12a16414798f44a1a5dcfa8e1917b715",
+      "aip-4618007dfa704f19b1728c7bc26a24eb",
+      "aip-7ca9059ee45d44d78bbec1b2d3155b7e",
+      "aip-92eadbe221df41fca21f59b3345a27aa",
+      "aip-d6a414a9e75a4ad484f030b080c7944f",
+      "aip-ded4884b71e240de9bda2ada31c61158"
+    ],
+    "missing_endpoint_task_ids": [],
+    "duplicate_endpoint_task_ids": [],
+    "conflicting_task_ids": [],
+    "invalid_access_records": 0,
+    "unrelated_access_records_excluded": 0,
+    "passed": true,
+    "platform_ingestion_confirmed": null,
+    "scope": "Local access records only: exactly one caller and one callee Start per taskId, with matching participant AICs. Duplicates/conflicts are excluded; pairing does not establish task success or Monitor ingestion."
+  },
+  "passed": true,
+  "scope": "Exact captured starts versus both endpoints' AMP access records. Shared long-running domain logs are filtered by captured taskId only for wutong-amqps; no Monitor statistics inferred.",
+  "snapshot_sources": [
+    {
+      "source": "/opt/incident-pilot/eval/results/platform/cloud-four-20261020-7c082190d0/e1a-after_observation-r1/coordinator/amp/amp_access_coordinator.jsonl",
+      "selected_records": 6,
+      "snapshot": "amp_access_0.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_application-agent-state/_data/amp-application/amp_access_application.jsonl",
+      "selected_records": 1,
+      "snapshot": "amp_access_1.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database/amp_access_database.jsonl",
+      "selected_records": 1,
+      "snapshot": "amp_access_2.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_onboarding-agent-state/_data/amp-onboarding/amp_access_onboarding.jsonl",
+      "selected_records": 1,
+      "snapshot": "amp_access_4.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_ops-agent-state/_data/amp-ops/amp_access_ops.jsonl",
+      "selected_records": 1,
+      "snapshot": "amp_access_5.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_verification-agent-state/_data/amp-verification/amp_access_verification.jsonl",
+      "selected_records": 2,
+      "snapshot": "amp_access_6.jsonl"
+    }
+  ],
+  "access_counting_passed": true,
+  "lifecycle_scope": "Original interrupted tasks may lack terminal lifecycle; access pairing is judged separately from task success and platform ingestion."
+}

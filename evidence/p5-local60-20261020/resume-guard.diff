@@ -1,0 +1,11 @@
+--- frozen eval.run.run
++++ external continuation orchestration
+@@ -116,6 +116,8 @@
+             for repeat in range(args.repeats):
+                 ordered_methods = methods[repeat % len(methods):] + methods[:repeat % len(methods)]
+                 for method in ordered_methods:
++                    if (scenario, method, repeat + 1) in completed_cell_keys:
++                        continue
+                     check_sources(manifest["source_sha256"])
+                     if target and hashlib.sha256(args.target_config.read_bytes()).hexdigest() != manifest["target_config_sha256"]:
+                         raise RuntimeError("Explicit target changed before another fault injection")

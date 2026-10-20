@@ -1,0 +1,29 @@
+{
+  "schema_version": "observer-key-offline-validation/1",
+  "commit": "67a22d8599c8a9c74027b732ffc720826477e978",
+  "base_commit": "751cf465222839db7bd87ec31a2ad0c52317359a",
+  "branch": "codex/observer-long-keys-20261020",
+  "runtime_file": "business/load.py",
+  "runtime_file_sha256": "a15e87a1222906271d4ab39d68f213887f5775a856911a7dc3daa23947f9890c",
+  "platform": "Windows / Python 3.12",
+  "new_tests": {
+    "module": "tests/test_observer_key_bounds.py",
+    "tests_run": 6,
+    "passed": true,
+    "seconds": 0.433,
+    "scope": "Actual VerificationPartner and OrderObserver; actual CreateOrder/CancelOrder Pydantic validation inside MockTransport; virtual clock; both captured cloud run IDs each complete 30 requests and ten workflows. Short IDs, the exact API boundary, stable distinct long combinations and indices, original unknown receipt resolution, and unchanged overlong pending state are checked."
+  },
+  "existing_regressions": {
+    "modules": [
+      "test_receipt_resolution",
+      "test_public_order_version",
+      "business_verification_test"
+    ],
+    "tests_run": 21,
+    "passed": true,
+    "seconds": 1.153
+  },
+  "git_diff_check_passed": true,
+  "worktree_clean_after_commit": true,
+  "limits": "Offline only. No cloud file or image changes, platform consumers, fault injection, real PostgreSQL acceptance, or real elapsed 30-second window was performed for this patch. Linux and cloud maintenance remain proposed."
+}

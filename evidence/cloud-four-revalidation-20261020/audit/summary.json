@@ -1,0 +1,453 @@
+{
+  "schema_version": "cloud-four-audit/1",
+  "batch_id": "cloud-four-20261020-7c082190d0",
+  "observed_at": "2026-10-20T03:22:21.336343+00:00",
+  "batch_status": "finished_with_failures",
+  "lease": {
+    "aics": [
+      "1.2.156.3088.1.BUPT.8N4WSS.3NST76.71N5T9.0HIQ",
+      "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "1.2.156.3088.1.BUPT.8N4WSS.BYYNSW.N2Z75J.0DY5",
+      "1.2.156.3088.1.BUPT.8N4WSS.C5CSM6.2MXPZ1.19CW",
+      "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+      "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+      "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V"
+    ],
+    "purpose": "cloud-four-20261020-7c082190d0",
+    "inspection_handoff": true,
+    "lease_id": "6a466baeec1a45d08f8cf1ea4a2ec14d",
+    "identities_returned": true,
+    "after_batch": "resume_inspection"
+  },
+  "cases": [
+    {
+      "key": "f10-m0-r1",
+      "status": "completed",
+      "safe_to_continue": true,
+      "errors": {},
+      "resource_and_worker_restore": "completed",
+      "independent_final_H00": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "business_verification": {
+        "duration_seconds": null,
+        "requests": null,
+        "success": null,
+        "failed": null,
+        "unknown": null,
+        "completed_workflows": null,
+        "unresolved_intents": null,
+        "passed": null
+      },
+      "close_checks": {
+        "no_group_sessions": true,
+        "no_inbound_groups": true,
+        "inbox_cancelled": true,
+        "connection_closed": true,
+        "owned_group_disconnected": true,
+        "no_cleanup_warnings": true
+      },
+      "batch_consumer_cleanup": "six_consumers_closed",
+      "access_recovery": null,
+      "access_accounting": {
+        "captured_start_tasks": 17,
+        "expected_access_records": 34,
+        "actual_access_records": 34,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": [],
+        "access_counting_passed": true
+      },
+      "platform_pairing": {
+        "task_count": 17,
+        "paired_task_count": 17,
+        "pairing_rate": 1.0,
+        "missing_endpoint_task_ids": [],
+        "duplicate_endpoint_task_ids": [],
+        "conflicting_task_ids": [],
+        "passed": true
+      }
+    },
+    {
+      "key": "e1a-after_observation-r1",
+      "status": "failed",
+      "safe_to_continue": true,
+      "errors": {
+        "error_class": "ValueError"
+      },
+      "resource_and_worker_restore": "completed",
+      "independent_final_H00": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "business_verification": {
+        "duration_seconds": null,
+        "requests": null,
+        "success": null,
+        "failed": null,
+        "unknown": null,
+        "completed_workflows": null,
+        "unresolved_intents": null,
+        "passed": null
+      },
+      "close_checks": {
+        "no_group_sessions": true,
+        "no_inbound_groups": true,
+        "inbox_cancelled": true,
+        "connection_closed": true,
+        "owned_group_disconnected": true,
+        "no_cleanup_warnings": true
+      },
+      "batch_consumer_cleanup": "six_consumers_closed",
+      "access_recovery": [
+        {
+          "service": "database-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+          "name": "database",
+          "config_sha256": "326048997e7a40fe824ab9326f6259acff8dbccc218b51d8bffd3096ab886786",
+          "log_before": {
+            "exists": true,
+            "bytes": 28448,
+            "sha256": "580430458aa62a6f166e4539e53cd917c3c24d1af34892b8a6b543dd29c17b0f"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 28448,
+            "sha256": "580430458aa62a6f166e4539e53cd917c3c24d1af34892b8a6b543dd29c17b0f"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 98304,
+            "sha256": "90e58ba7840a78488c6ba0ef6b1b3a4d346ac3c70271744ab67297a4149d4a16"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 98304,
+            "sha256": "90e58ba7840a78488c6ba0ef6b1b3a4d346ac3c70271744ab67297a4149d4a16"
+          },
+          "unique_access_ids": 51,
+          "access_rows": 51,
+          "unconfirmed_outcomes": 0,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        },
+        {
+          "service": "database-backup-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+          "name": "database-backup",
+          "config_sha256": "06e8c15a00f95ec453ace76212d1eadc1c8cc8cb488cdf498970c80024b75f8f",
+          "log_before": {
+            "exists": true,
+            "bytes": 2215,
+            "sha256": "a98b0348832a8dfca85e9312d6529169f8d5fbf63e98d73cadc36299332f33fb"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 2215,
+            "sha256": "a98b0348832a8dfca85e9312d6529169f8d5fbf63e98d73cadc36299332f33fb"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "c183068343bfcf15f7437cee44039818f671068b7c2c21d0a6221f4eef75c105"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "c183068343bfcf15f7437cee44039818f671068b7c2c21d0a6221f4eef75c105"
+          },
+          "unique_access_ids": 4,
+          "access_rows": 4,
+          "unconfirmed_outcomes": 0,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        }
+      ],
+      "access_accounting": {
+        "captured_start_tasks": 6,
+        "expected_access_records": 12,
+        "actual_access_records": 12,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": [],
+        "access_counting_passed": true
+      },
+      "platform_pairing": {
+        "task_count": 6,
+        "paired_task_count": 6,
+        "pairing_rate": 1.0,
+        "missing_endpoint_task_ids": [],
+        "duplicate_endpoint_task_ids": [],
+        "conflicting_task_ids": [],
+        "passed": true
+      }
+    },
+    {
+      "key": "e1a-before_modification-r1",
+      "status": "failed",
+      "safe_to_continue": true,
+      "errors": {
+        "error_class": "ValueError"
+      },
+      "resource_and_worker_restore": "completed",
+      "independent_final_H00": {
+        "duration_seconds": 30.003,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "business_verification": {
+        "duration_seconds": null,
+        "requests": null,
+        "success": null,
+        "failed": null,
+        "unknown": null,
+        "completed_workflows": null,
+        "unresolved_intents": null,
+        "passed": null
+      },
+      "close_checks": {
+        "no_group_sessions": true,
+        "no_inbound_groups": true,
+        "inbox_cancelled": true,
+        "connection_closed": true,
+        "owned_group_disconnected": true,
+        "no_cleanup_warnings": true
+      },
+      "batch_consumer_cleanup": "six_consumers_closed",
+      "access_recovery": [
+        {
+          "service": "database-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+          "name": "database",
+          "config_sha256": "326048997e7a40fe824ab9326f6259acff8dbccc218b51d8bffd3096ab886786",
+          "log_before": {
+            "exists": true,
+            "bytes": 28996,
+            "sha256": "ae3b3eaa1bdbbf3a487aee32eef318c0d31d521d5bca98ace65f4f9ebec1dd9a"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 28996,
+            "sha256": "ae3b3eaa1bdbbf3a487aee32eef318c0d31d521d5bca98ace65f4f9ebec1dd9a"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 102400,
+            "sha256": "1b0f7b4344dbc62bfc3cecd780dcf14d8cef066256fa4a2f1ad7186f611b65a6"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 102400,
+            "sha256": "1b0f7b4344dbc62bfc3cecd780dcf14d8cef066256fa4a2f1ad7186f611b65a6"
+          },
+          "unique_access_ids": 52,
+          "access_rows": 52,
+          "unconfirmed_outcomes": 0,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        },
+        {
+          "service": "database-backup-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+          "name": "database-backup",
+          "config_sha256": "06e8c15a00f95ec453ace76212d1eadc1c8cc8cb488cdf498970c80024b75f8f",
+          "log_before": {
+            "exists": true,
+            "bytes": 2215,
+            "sha256": "a98b0348832a8dfca85e9312d6529169f8d5fbf63e98d73cadc36299332f33fb"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 2215,
+            "sha256": "a98b0348832a8dfca85e9312d6529169f8d5fbf63e98d73cadc36299332f33fb"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "c183068343bfcf15f7437cee44039818f671068b7c2c21d0a6221f4eef75c105"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "c183068343bfcf15f7437cee44039818f671068b7c2c21d0a6221f4eef75c105"
+          },
+          "unique_access_ids": 4,
+          "access_rows": 4,
+          "unconfirmed_outcomes": 0,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        }
+      ],
+      "access_accounting": {
+        "captured_start_tasks": 6,
+        "expected_access_records": 12,
+        "actual_access_records": 12,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": [],
+        "access_counting_passed": true
+      },
+      "platform_pairing": {
+        "task_count": 6,
+        "paired_task_count": 6,
+        "pairing_rate": 1.0,
+        "missing_endpoint_task_ids": [],
+        "duplicate_endpoint_task_ids": [],
+        "conflicting_task_ids": [],
+        "passed": true
+      }
+    },
+    {
+      "key": "e1a-after_applied-r1",
+      "status": "completed",
+      "safe_to_continue": true,
+      "errors": {},
+      "resource_and_worker_restore": "completed",
+      "independent_final_H00": {
+        "duration_seconds": 30.003,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "business_verification": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "close_checks": {
+        "no_group_sessions": true,
+        "no_inbound_groups": true,
+        "inbox_cancelled": true,
+        "connection_closed": true,
+        "owned_group_disconnected": true,
+        "no_cleanup_warnings": true
+      },
+      "batch_consumer_cleanup": "six_consumers_closed",
+      "access_recovery": [
+        {
+          "service": "database-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.OJQHYH.99FS19.116V",
+          "name": "database",
+          "config_sha256": "326048997e7a40fe824ab9326f6259acff8dbccc218b51d8bffd3096ab886786",
+          "log_before": {
+            "exists": true,
+            "bytes": 30104,
+            "sha256": "97eec2a173271e607120474f15ea566ff4f58b59cd33eea43b8bb89ff5ffbf67"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 30711,
+            "sha256": "5ea325f8bbba1ffd90a129d9d053eb256103304c3d22cdcb4e1bc49d323e5aa0"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 102400,
+            "sha256": "68202142469350a59a78f7b94ab66173a69993772d567db425480735e7ea7031"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 106496,
+            "sha256": "529c8dffa533bd519e9fac1b9f401979fb1e2a3459b72baf2d9401c3e044d338"
+          },
+          "unique_access_ids": 55,
+          "access_rows": 55,
+          "unconfirmed_outcomes": 1,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        },
+        {
+          "service": "database-backup-agent",
+          "schema_version": "domain-access-recovery/1",
+          "status": "recovered",
+          "aic": "1.2.156.3088.1.BUPT.8N4WSS.FZXFJS.FQF0W2.0UTK",
+          "name": "database-backup",
+          "config_sha256": "06e8c15a00f95ec453ace76212d1eadc1c8cc8cb488cdf498970c80024b75f8f",
+          "log_before": {
+            "exists": true,
+            "bytes": 3322,
+            "sha256": "0c55b9eefe852711985383032d3e40d168f4680d561728d1556e11704231a56d"
+          },
+          "log_after": {
+            "exists": true,
+            "bytes": 3322,
+            "sha256": "0c55b9eefe852711985383032d3e40d168f4680d561728d1556e11704231a56d"
+          },
+          "journal_before": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "67d657097a15e674da9d676352856d76a17b96729289aec3b535bc1e710483d8"
+          },
+          "journal_after": {
+            "exists": true,
+            "bytes": 28672,
+            "sha256": "67d657097a15e674da9d676352856d76a17b96729289aec3b535bc1e710483d8"
+          },
+          "unique_access_ids": 6,
+          "access_rows": 6,
+          "unconfirmed_outcomes": 0,
+          "business_or_platform_actions": 0,
+          "scope": "original domain journal only; existing immutable records replayed, unknown outcomes retained"
+        }
+      ],
+      "access_accounting": {
+        "captured_start_tasks": 13,
+        "expected_access_records": 26,
+        "actual_access_records": 26,
+        "missing_records": 0,
+        "extra_records": 0,
+        "incomplete_task_lifecycles": [
+          "aip-b79ba129d0cb463caacbbdf9629223a5"
+        ],
+        "access_counting_passed": true
+      },
+      "platform_pairing": {
+        "task_count": 13,
+        "paired_task_count": 13,
+        "pairing_rate": 1.0,
+        "missing_endpoint_task_ids": [],
+        "duplicate_endpoint_task_ids": [],
+        "conflicting_task_ids": [],
+        "passed": true
+      }
+    }
+  ],
+  "model_calls": 0,
+  "scope": "Read-only audit of the consumed four cases. Source logs are filtered by their captured taskId; no historical unrelated rows or Monitor ingestion inferred."
+}

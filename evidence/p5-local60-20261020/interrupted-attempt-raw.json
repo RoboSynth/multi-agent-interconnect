@@ -1,0 +1,2739 @@
+{
+  "id": "inc-f37914601a4341f6",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "running",
+  "started_at": "2026-10-20T03:16:53.942259+00:00",
+  "facts": [],
+  "hypotheses": [],
+  "plan": [
+    {
+      "id": "free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "kind": "act",
+      "resource": "application",
+      "reason": "M1 模型选择下一次资源操作",
+      "args": {},
+      "depends_on": [],
+      "risk": "high"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T03:16:54.865532+00:00",
+      "event": "tool_selected",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.containers",
+        "kind": "observe",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:16:54.868952+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-796f35541ad9",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T03:16:55.044418+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-796f35541ad9",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T03:16:55.642942+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "args": {
+          "expected_revision": 1
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:16:55.645947+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-646a268d1f0d",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T03:16:55.801511+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-646a268d1f0d",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "at": "2026-10-20T03:16:55.803163+00:00",
+      "event": "tool_feedback",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected",
+      "result": null
+    },
+    {
+      "at": "2026-10-20T03:16:56.221177+00:00",
+      "event": "tool_selected",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "db.restore_writes",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:16:56.223957+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-bc5cef917599",
+      "tool": "db.restore_writes",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T03:16:56.237538+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-bc5cef917599"
+    },
+    {
+      "at": "2026-10-20T03:16:56.238540+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-16d01d6b10ae",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T03:16:56.514027+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-16d01d6b10ae",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T03:16:56.931310+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "incident.verification",
+        "kind": "verify",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:16:56.936312+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-5816b0ef6cb2",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T03:17:43.932606+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-5816b0ef6cb2",
+      "tool": "incident.verification",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T03:17:43.937152+00:00",
+      "event": "tool_feedback",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "status": "ok",
+      "result": {
+        "business_recovered": false,
+        "service_recovered": false,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-f37914601a4341f6-lt-5816b0ef6cb2",
+          "duration_seconds": 46.875,
+          "requests": 30,
+          "success": 0,
+          "failed": 0,
+          "unknown": 30,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "passed": false,
+          "events": [
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 3.11,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.11,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 6.188,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.204,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 9.313,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.329,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 12.422,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.438,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 15.532,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.563,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 18.797,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.813,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 21.922,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 21.954,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 25.047,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 25.063,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 28.125,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 28.157,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 31.235,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 31.266,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 34.375,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 34.391,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 37.485,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 37.5,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 40.594,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 40.61,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 43.719,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 43.766,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 46.86,
+              "http_status": 404,
+              "outcome": "unknown"
+            }
+          ],
+          "state": {
+            "pending": [
+              {
+                "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                "operation_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "create",
+                "was_unknown": true,
+                "resume_phase": "create",
+                "unknown_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000"
+              }
+            ],
+            "completed": [],
+            "next_index": 1
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:17:45.997516+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "incident.verification",
+        "kind": "verify",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:17:46.004022+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-9c183704308e",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T03:18:33.130841+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-9c183704308e",
+      "tool": "incident.verification",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T03:18:33.133836+00:00",
+      "event": "tool_feedback",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "status": "ok",
+      "result": {
+        "business_recovered": false,
+        "service_recovered": false,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-f37914601a4341f6-lt-9c183704308e",
+          "duration_seconds": 47.047,
+          "requests": 30,
+          "success": 0,
+          "failed": 0,
+          "unknown": 30,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "passed": false,
+          "events": [
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.016,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 3.141,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.172,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 6.281,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.312,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 9.406,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.437,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 12.562,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.594,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 15.672,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.703,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 18.875,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.891,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 21.984,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 22.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 25.094,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 25.109,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 28.187,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 28.203,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 31.297,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 31.344,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 34.453,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 34.469,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 37.594,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 37.625,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 40.828,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 40.859,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 43.953,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 43.984,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 47.031,
+              "http_status": 404,
+              "outcome": "unknown"
+            }
+          ],
+          "state": {
+            "pending": [
+              {
+                "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                "operation_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "create",
+                "was_unknown": true,
+                "resume_phase": "create",
+                "unknown_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000"
+              }
+            ],
+            "completed": [],
+            "next_index": 1
+          }
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T03:18:35.810111+00:00",
+      "event": "tool_selected",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.restart",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:18:35.816121+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-a860292f7be7",
+      "tool": "ops.restart",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T03:18:35.897933+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-a860292f7be7"
+    },
+    {
+      "at": "2026-10-20T03:18:35.904418+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-90d23871e039",
+      "tool": "ops.restart"
+    },
+    {
+      "at": "2026-10-20T03:18:37.434731+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-90d23871e039",
+      "tool": "ops.restart",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T03:18:42.554188+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "incident.verification",
+        "kind": "verify",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T03:18:42.559952+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-3b66304185ec",
+      "tool": "incident.verification"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-796f35541ad9",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T03:16:54.868952+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-796f35541ad9",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T03:16:54.938551+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:b16101f8-4e5b-4dbf-94eb-3577a6f83462"
+      },
+      "elapsed_ms": 172.0
+    },
+    {
+      "logical_task_id": "lt-646a268d1f0d",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "status": "rejected",
+      "started_at": "2026-10-20T03:16:55.645947+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-646a268d1f0d",
+        "executor_aic": "local-application",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-f37914601a4341f6:free-14cd980ec708d9a3022e",
+          "state": "rejected_precondition"
+        }
+      },
+      "elapsed_ms": 156.0
+    },
+    {
+      "logical_task_id": "lt-16d01d6b10ae",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T03:16:56.223957+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-16d01d6b10ae",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T03:16:56.382910+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-f37914601a4341f6:free-bada0e271de7f35d71f1",
+          "state": "applied",
+          "before": {
+            "value": false
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:b4fcaf83-0e45-4bc6-9f04-99b9c3581fbc"
+      },
+      "elapsed_ms": 297.0
+    },
+    {
+      "logical_task_id": "lt-5816b0ef6cb2",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T03:16:56.936312+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-5816b0ef6cb2",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-f37914601a4341f6-lt-5816b0ef6cb2",
+              "duration_seconds": 46.875,
+              "requests": 30,
+              "success": 0,
+              "failed": 0,
+              "unknown": 30,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 3.11,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 3.11,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 6.188,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.204,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 9.313,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 9.329,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 12.422,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.438,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 15.532,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 15.563,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 18.797,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.813,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 21.922,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 21.954,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 25.047,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 25.063,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 28.125,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 28.157,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 31.235,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 31.266,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 34.375,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 34.391,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 37.485,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 37.5,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 40.594,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 40.61,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 43.719,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 43.766,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                  "elapsed_seconds": 46.86,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                    "operation_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "create",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:17:43.864022+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 47000.0
+    },
+    {
+      "logical_task_id": "lt-9c183704308e",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T03:17:46.004022+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-9c183704308e",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-f37914601a4341f6-lt-9c183704308e",
+              "duration_seconds": 47.047,
+              "requests": 30,
+              "success": 0,
+              "failed": 0,
+              "unknown": 30,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 3.141,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 3.172,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 6.281,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.312,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 9.406,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 9.437,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 12.562,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.594,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 15.672,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 15.703,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 18.875,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.891,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 21.984,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 22.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 25.094,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 25.109,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 28.187,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 28.203,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 31.297,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 31.344,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 34.453,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 34.469,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 37.594,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 37.625,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 40.828,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 40.859,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 43.953,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 43.984,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                  "elapsed_seconds": 47.031,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                    "operation_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "create",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T03:18:33.085015+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 47125.0
+    },
+    {
+      "logical_task_id": "lt-90d23871e039",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T03:18:35.816121+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-f37914601a4341f6",
+        "logical_task_id": "lt-90d23871e039",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.restart",
+            "observed_at": "2026-10-20T03:18:37.363327+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-f37914601a4341f6:free-449f3a08acf80f4fe073",
+          "state": "applied",
+          "before": {
+            "value": null
+          },
+          "after": {
+            "value": null
+          }
+        },
+        "evidence_ref": "amp:audit:caa39b6b-dd82-4c8c-9e62-13b843719b5f"
+      },
+      "elapsed_ms": 1625.0
+    },
+    {
+      "logical_task_id": "lt-3b66304185ec",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "pending",
+      "started_at": "2026-10-20T03:18:42.559952+00:00"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-bc5cef917599",
+      "incident_id": "inc-f37914601a4341f6",
+      "operation_id": "inc-f37914601a4341f6:free-bada0e271de7f35d71f1",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T03:16:56.223957+00:00",
+      "decided_at": "2026-10-20T03:16:56.237538+00:00"
+    },
+    {
+      "id": "approval-a860292f7be7",
+      "incident_id": "inc-f37914601a4341f6",
+      "operation_id": "inc-f37914601a4341f6:free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T03:18:35.816121+00:00",
+      "decided_at": "2026-10-20T03:18:35.897933+00:00"
+    }
+  ],
+  "result": {
+    "business_recovered": false,
+    "service_recovered": false,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false,
+    "order_observation": {
+      "run_id": "inc-f37914601a4341f6-lt-9c183704308e",
+      "duration_seconds": 47.047,
+      "requests": 30,
+      "success": 0,
+      "failed": 0,
+      "unknown": 30,
+      "completed_workflows": 0,
+      "unresolved_intents": 1,
+      "resolved_unknown_intents": 0,
+      "passed": false,
+      "events": [
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.016,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 3.141,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 3.172,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 6.281,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.312,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 9.406,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 9.437,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 12.562,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.594,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 15.672,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 15.703,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 18.875,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.891,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 21.984,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 22.0,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 25.094,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 25.109,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 28.187,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 28.203,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 31.297,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 31.344,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 34.453,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 34.469,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 37.594,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 37.625,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 40.828,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 40.859,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 43.953,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 43.984,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+          "elapsed_seconds": 47.031,
+          "http_status": 404,
+          "outcome": "unknown"
+        }
+      ],
+      "state": {
+        "pending": [
+          {
+            "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+            "operation_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "create",
+            "was_unknown": true,
+            "resume_phase": "create",
+            "unknown_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000"
+          }
+        ],
+        "completed": [],
+        "next_index": 1
+      }
+    }
+  },
+  "model_source": "llm",
+  "tokens": 30571,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      }
+    },
+    {
+      "reason": "参与者拒绝或只读工具错误，反馈给下一次选择",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {}
+    },
+    {
+      "reason": "接收业务验证结果",
+      "tool": "incident.verification",
+      "result": {
+        "business_recovered": false,
+        "service_recovered": false,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-f37914601a4341f6-lt-5816b0ef6cb2",
+          "duration_seconds": 46.875,
+          "requests": 30,
+          "success": 0,
+          "failed": 0,
+          "unknown": 30,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "passed": false,
+          "events": [
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 3.11,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.11,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 6.188,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.204,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 9.313,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.329,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 12.422,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.438,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 15.532,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.563,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 18.797,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.813,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 21.922,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 21.954,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 25.047,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 25.063,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 28.125,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 28.157,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 31.235,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 31.266,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 34.375,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 34.391,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 37.485,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 37.5,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 40.594,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 40.61,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 43.719,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 43.766,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+              "elapsed_seconds": 46.86,
+              "http_status": 404,
+              "outcome": "unknown"
+            }
+          ],
+          "state": {
+            "pending": [
+              {
+                "request_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000",
+                "operation_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "create",
+                "was_unknown": true,
+                "resume_phase": "create",
+                "unknown_key": "load-inc-f37914601a4341f6-lt-5816b0ef6cb2-000000"
+              }
+            ],
+            "completed": [],
+            "next_index": 1
+          }
+        }
+      },
+      "status": "ok"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {}
+    },
+    {
+      "reason": "接收业务验证结果",
+      "tool": "incident.verification",
+      "result": {
+        "business_recovered": false,
+        "service_recovered": false,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-f37914601a4341f6-lt-9c183704308e",
+          "duration_seconds": 47.047,
+          "requests": 30,
+          "success": 0,
+          "failed": 0,
+          "unknown": 30,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "passed": false,
+          "events": [
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.016,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 3.141,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.172,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 6.281,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.312,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 9.406,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.437,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 12.562,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.594,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 15.672,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.703,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 18.875,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.891,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 21.984,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 22.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 25.094,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 25.109,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 28.187,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 28.203,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 31.297,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 31.344,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 34.453,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 34.469,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 37.594,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 37.625,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 40.828,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 40.859,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 43.953,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 43.984,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+              "elapsed_seconds": 47.031,
+              "http_status": 404,
+              "outcome": "unknown"
+            }
+          ],
+          "state": {
+            "pending": [
+              {
+                "request_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000",
+                "operation_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "create",
+                "was_unknown": true,
+                "resume_phase": "create",
+                "unknown_key": "load-inc-f37914601a4341f6-lt-9c183704308e-000000"
+              }
+            ],
+            "completed": [],
+            "next_index": 1
+          }
+        }
+      },
+      "status": "ok"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "ops.restart"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {}
+    }
+  ]
+}

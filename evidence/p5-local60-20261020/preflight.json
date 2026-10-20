@@ -1,0 +1,218 @@
+{
+  "status": "PASSED",
+  "supervisor": {
+    "ok": true,
+    "service": "incident-pilot-native-ops",
+    "pid": 19116,
+    "project_root": "D:\\AI + 开源\\team-repository-multi-agent-interconnect"
+  },
+  "local_aip_actual_roundtrip": {
+    "tools": [
+      "application.config_rollback",
+      "application.pool_rebuild",
+      "application.status",
+      "db.blocking_sessions",
+      "db.health",
+      "db.read_only_status",
+      "db.restore_writes",
+      "db.terminate_blocker",
+      "incident.symptom_check",
+      "incident.verification",
+      "ops.containers",
+      "ops.restart",
+      "ops.route_rollback",
+      "ops.route_status"
+    ],
+    "product": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "p5-readonly-preflight",
+      "logical_task_id": "symptom",
+      "executor_aic": "local-verification",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "symptom_check_passed",
+          "value": true,
+          "source": "order-symptom-check",
+          "observed_at": "2026-10-20T02:46:15.616843+00:00"
+        },
+        {
+          "key": "symptom_category",
+          "value": "healthy",
+          "source": "order-symptom-check",
+          "observed_at": "2026-10-20T02:46:15.616843+00:00"
+        },
+        {
+          "key": "symptom_observation",
+          "value": {
+            "run_id": "quick-p5-readonly-preflight-symptom",
+            "duration_seconds": 3.016,
+            "requests": 3,
+            "success": 3,
+            "failed": 0,
+            "unknown": 0,
+            "completed_workflows": 1,
+            "unresolved_intents": 0,
+            "resolved_unknown_intents": 0,
+            "passed": false,
+            "events": [
+              {
+                "request_key": "load-quick-p5-readonly-preflight-symptom-000000",
+                "phase": "create",
+                "method": "POST",
+                "path": "/orders",
+                "elapsed_seconds": 0.125,
+                "http_status": 200,
+                "outcome": "success"
+              },
+              {
+                "request_key": "load-quick-p5-readonly-preflight-symptom-000000",
+                "phase": "query",
+                "method": "GET",
+                "path": "/orders/5c226227-9f9a-4689-8875-9903f82f95b5",
+                "elapsed_seconds": 1.0,
+                "http_status": 200,
+                "outcome": "success"
+              },
+              {
+                "request_key": "load-quick-p5-readonly-preflight-symptom-000000",
+                "phase": "cancel",
+                "method": "POST",
+                "path": "/orders/5c226227-9f9a-4689-8875-9903f82f95b5/cancel",
+                "elapsed_seconds": 2.016,
+                "http_status": 200,
+                "outcome": "success"
+              }
+            ],
+            "state": {
+              "pending": [],
+              "completed": [
+                {
+                  "request_key": "load-quick-p5-readonly-preflight-symptom-000000",
+                  "operation_key": "load-quick-p5-readonly-preflight-symptom-000000-cancel",
+                  "item": "keyboard",
+                  "quantity": 2,
+                  "phase": "cancel",
+                  "was_unknown": false,
+                  "order_id": "5c226227-9f9a-4689-8875-9903f82f95b5"
+                }
+              ],
+              "next_index": 1
+            }
+          },
+          "source": "order-symptom-check",
+          "observed_at": "2026-10-20T02:46:15.616843+00:00"
+        }
+      ],
+      "local_hypotheses": []
+    },
+    "participants": [
+      {
+        "name": "应用团队",
+        "role": "application",
+        "aic": "local-application",
+        "pid": 33852,
+        "status": "ready",
+        "tools": [
+          "application.status",
+          "application.pool_rebuild",
+          "application.config_rollback"
+        ],
+        "transport": "local-aip-stdio",
+        "standby": false,
+        "resource_scope": [
+          "orders"
+        ],
+        "identity_binding": "local-process-channel"
+      },
+      {
+        "name": "数据库主",
+        "role": "database",
+        "aic": "local-database-primary",
+        "pid": 38432,
+        "status": "ready",
+        "tools": [
+          "db.health",
+          "db.read_only_status",
+          "db.blocking_sessions",
+          "db.restore_writes",
+          "db.terminate_blocker"
+        ],
+        "transport": "local-aip-stdio",
+        "standby": false,
+        "resource_scope": {
+          "database": "orders",
+          "application_role": "orders_app"
+        },
+        "identity_binding": "local-process-channel"
+      },
+      {
+        "name": "数据库备",
+        "role": "database",
+        "aic": "local-database-backup",
+        "pid": 33620,
+        "status": "ready",
+        "tools": [
+          "db.health",
+          "db.read_only_status",
+          "db.blocking_sessions",
+          "db.restore_writes",
+          "db.terminate_blocker"
+        ],
+        "transport": "local-aip-stdio",
+        "standby": true,
+        "resource_scope": {
+          "database": "orders",
+          "application_role": "orders_app"
+        },
+        "identity_binding": "local-process-channel"
+      },
+      {
+        "name": "运维团队",
+        "role": "ops",
+        "aic": "local-ops",
+        "pid": 38768,
+        "status": "ready",
+        "tools": [
+          "ops.containers",
+          "ops.restart",
+          "ops.route_status",
+          "ops.route_rollback"
+        ],
+        "transport": "local-aip-stdio",
+        "standby": false,
+        "resource_scope": {
+          "backend": "native",
+          "process": "app-v2",
+          "routes": [
+            "v1",
+            "v2"
+          ],
+          "application": "orders"
+        },
+        "identity_binding": "local-process-channel"
+      },
+      {
+        "name": "业务验证",
+        "role": "verification",
+        "aic": "local-verification",
+        "pid": 36904,
+        "status": "ready",
+        "tools": [
+          "incident.verification",
+          "incident.symptom_check"
+        ],
+        "transport": "local-aip-stdio",
+        "standby": false,
+        "resource_scope": [
+          "orders"
+        ],
+        "identity_binding": "local-process-channel"
+      }
+    ]
+  },
+  "platform_calls": 0,
+  "model_calls": 0,
+  "resource_mutations": 0,
+  "completed_at": "2026-10-20T02:46:16.320464+00:00"
+}

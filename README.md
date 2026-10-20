@@ -1,3 +1,7 @@
+> **2026-10-20 最新进展（优先阅读）：** [当前完整审查入口](docs/当前进度审查入口_20261020.md)。七身份已在云服务器部署，十分钟巡检和新日志上报运行，操作见[服务器手册](deploy/SERVER.md)。[公开体检](evidence/public-onboarding-20261020/README.md)已支持普通文本、中文结果和有上限的多群组接入，三项非白名单真实往返通过；公开 ACS 文本声明和叮当完整调用仍待平台侧补齐。
+>
+> [本轮云端四例](evidence/cloud-four-revalidation-20261020/README.md)为2通过、2在初始业务基线失败而未进入接管；四例恢复清理均通过，42/42任务的84条access完整配对。[订单长编号修复](evidence/observer-key-maintenance-20261020/README.md)已部署，真实长编号H00、恢复后首轮定时巡检与11项运行检查均通过。[本地60格](evidence/p5-local60-20261020/README.md)已闭合，严格验收M0/M1/M2v2/MR分别15/6/6/3项，原结果和1次中断尝试保留；[后续调度修复](evidence/p5-followup-fixes-20261020/README.md)已合入且组合47项离线检查通过，新版真实收益仍待验证。以下10-19及更早段落均为历史截面，当前状态以本段及链接为准。
+
 > **2026-10-19 当前审查入口：** [完整进度、真实结果与高分缺口](docs/当前进度审查入口_20261019.md)。SDK最终公开提交与147文件vendor来源已[精确绑定](evidence/sdk-final-binding-20261019/README.md)；原605套件源码字节未变。[Windows同机完整启停](evidence/native-lifecycle-20261019/README.md)通过，57个观察进程实际退出；[稳定性汇总与图表](evidence/t63-stability-report-20261019/README.md)已实现，31个不同相关方法有通过记录。
 > [最新四例批次](evidence/access-validation-results-20261019/README.md)已获授权，实际尝试3项：1通过、2因平台连接失败，最后1项未执行；两个E1未到预设中断点，三次最终H00通过，自有10容器已停止。[后续清理收据](evidence/access-validation-results-20261019/group-cleanup/README.md)确认队列和交换机不存在，ACL仍未确认。旧22例18通过/4失败、修复12例11通过/1失败及历史访问缺口保持原判。[15页报告修订3](deliverables/development-report-20261019-revision3/technical-report-development.pdf)仍截止613ecbf；新机器、Kafka/Monitor与长期验收未闭合。下文为历次截面。
 > [上游贡献状态](evidence/upstream-status-20261019/recheck-1651/README.md)于北京时间16:51核验：PR13/14仍为开放草稿，无审阅、评论或自动检查记录；Issue15–18仍开放、无评论。

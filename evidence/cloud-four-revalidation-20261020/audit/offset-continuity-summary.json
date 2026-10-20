@@ -1,0 +1,45 @@
+{
+  "schema_version": "cloud-four-offset-continuity/1",
+  "status": "passed",
+  "checks": {
+    "same_collector_id": true,
+    "restart_count_zero": true,
+    "same_offset_volume": true,
+    "same_42_offset_rows_and_inodes": true,
+    "no_offset_decrease": true,
+    "all_rows_created_before_batch": true,
+    "seven_original_sources_read_only": true,
+    "post_resume_inspection_completed": true,
+    "same_current_started_at_predates_batch": true
+  },
+  "observed_between": [
+    "2026-10-20T03:31:36.081185+00:00",
+    "2026-10-20T03:32:46.496331+00:00"
+  ],
+  "offset_rows": 42,
+  "advanced_rows": 14,
+  "bytes_advanced": 12076,
+  "inspection_resumed_at": "2026-10-20T03:09:29.955122+00:00",
+  "completed_inspections_after_resume": [
+    {
+      "at": "2026-10-20T03:14:39.403823+00:00",
+      "event": "job_finished",
+      "run_id": "schedule-5e7c79cc66d843a78d12df39381df46c",
+      "kind": "inspect",
+      "incident_id": "inc-a690f83d13f5494f",
+      "status": "completed",
+      "seconds": 32.942
+    },
+    {
+      "at": "2026-10-20T03:25:14.623841+00:00",
+      "event": "job_finished",
+      "run_id": "schedule-0e9edf103e86468fb08c2b8c425d200c",
+      "kind": "inspect",
+      "incident_id": "inc-181ef13a93464bec",
+      "status": "completed",
+      "seconds": 32.715
+    }
+  ],
+  "scope": "Two read-only post-batch SQLite snapshots confirm original container/volume/row continuity and advancing offsets. Collector acknowledgements and local access pairing do not independently prove platform ingestion for experiment coordinator logs.",
+  "held_receipt_note": "The held-all-six receipt start time predates the previously recorded planned server reboot. Its container ID is retained; the current StartedAt is unchanged between post-batch snapshots and predates this batch. The pre-reboot receipt StartedAt is not a current-boot restart baseline."
+}

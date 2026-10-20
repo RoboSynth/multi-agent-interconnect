@@ -1,0 +1,153 @@
+{
+  "schema_version": "cloud-four-key-diagnosis/1",
+  "scope": "Offline validation of exact captured baseline request bodies using the same order API Pydantic models; no HTTP or resource mutation",
+  "api_key_max_length": 128,
+  "rows": [
+    {
+      "key": "e1a-after_observation-r1",
+      "recorded_error_class": "ValueError",
+      "recorded_error_message": null,
+      "recorded_traceback": null,
+      "baseline": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "success": 2,
+        "failed": 28,
+        "unknown": 0,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "passed": false
+      },
+      "HTTP_phase_status_counts": {
+        "create:200": 1,
+        "query:200": 1,
+        "cancel:422": 28
+      },
+      "observation_id": "cloud-four-20261020-7c082190d0-e1a-after_observation-r1-cloud-four-20261020-7c082190d0-e1a-after_observation-r1:1",
+      "observation_id_length": 113,
+      "request_key": "load-cloud-four-20261020-7c082190d0-e1a-after_observation-r1-cloud-four-20261020-7c082190d0-e1a-after_observation-r1:1-000000",
+      "request_key_length": 125,
+      "operation_key": "load-cloud-four-20261020-7c082190d0-e1a-after_observation-r1-cloud-four-20261020-7c082190d0-e1a-after_observation-r1:1-000000-cancel",
+      "operation_key_length": 132,
+      "original_order_schema_validation": {
+        "create": {
+          "valid": true
+        },
+        "cancel": {
+          "valid": false,
+          "errors": [
+            {
+              "type": "string_too_long",
+              "loc": [
+                "operation_key"
+              ],
+              "msg": "String should have at most 128 characters",
+              "ctx": {
+                "max_length": 128
+              }
+            }
+          ]
+        }
+      },
+      "products_before_failure": 1,
+      "worker_exit_and_mcp_observed": false
+    },
+    {
+      "key": "e1a-before_modification-r1",
+      "recorded_error_class": "ValueError",
+      "recorded_error_message": null,
+      "recorded_traceback": null,
+      "baseline": {
+        "duration_seconds": 30.003,
+        "requests": 30,
+        "success": 0,
+        "failed": 30,
+        "unknown": 0,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "passed": false
+      },
+      "HTTP_phase_status_counts": {
+        "create:422": 30
+      },
+      "observation_id": "cloud-four-20261020-7c082190d0-e1a-before_modification-r1-cloud-four-20261020-7c082190d0-e1a-before_modification-r1:1",
+      "observation_id_length": 117,
+      "request_key": "load-cloud-four-20261020-7c082190d0-e1a-before_modification-r1-cloud-four-20261020-7c082190d0-e1a-before_modification-r1:1-000000",
+      "request_key_length": 129,
+      "operation_key": "load-cloud-four-20261020-7c082190d0-e1a-before_modification-r1-cloud-four-20261020-7c082190d0-e1a-before_modification-r1:1-000000-cancel",
+      "operation_key_length": 136,
+      "original_order_schema_validation": {
+        "create": {
+          "valid": false,
+          "errors": [
+            {
+              "type": "string_too_long",
+              "loc": [
+                "request_key"
+              ],
+              "msg": "String should have at most 128 characters",
+              "ctx": {
+                "max_length": 128
+              }
+            }
+          ]
+        },
+        "cancel": {
+          "valid": false,
+          "errors": [
+            {
+              "type": "string_too_long",
+              "loc": [
+                "operation_key"
+              ],
+              "msg": "String should have at most 128 characters",
+              "ctx": {
+                "max_length": 128
+              }
+            }
+          ]
+        }
+      },
+      "products_before_failure": 1,
+      "worker_exit_and_mcp_observed": false
+    },
+    {
+      "key": "e1a-after_applied-r1",
+      "recorded_error_class": null,
+      "recorded_error_message": null,
+      "recorded_traceback": null,
+      "baseline": {
+        "duration_seconds": 30.002,
+        "requests": 30,
+        "success": 30,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 10,
+        "unresolved_intents": 0,
+        "passed": true
+      },
+      "HTTP_phase_status_counts": {
+        "create:200": 10,
+        "query:200": 10,
+        "cancel:200": 10
+      },
+      "observation_id": "cloud-four-20261020-7c082190d0-e1a-after_applied-r1-cloud-four-20261020-7c082190d0-e1a-after_applied-r1:1",
+      "observation_id_length": 105,
+      "request_key": "load-cloud-four-20261020-7c082190d0-e1a-after_applied-r1-cloud-four-20261020-7c082190d0-e1a-after_applied-r1:1-000000",
+      "request_key_length": 117,
+      "operation_key": "load-cloud-four-20261020-7c082190d0-e1a-after_applied-r1-cloud-four-20261020-7c082190d0-e1a-after_applied-r1:1-000000-cancel",
+      "operation_key_length": 124,
+      "original_order_schema_validation": {
+        "create": {
+          "valid": true
+        },
+        "cancel": {
+          "valid": true
+        }
+      },
+      "products_before_failure": 6,
+      "worker_exit_and_mcp_observed": true
+    }
+  ],
+  "inferred_raise_site": "eval/platform_resume_experiment.py:831 baseline healthy check; precise error message/traceback were not recorded by the runner"
+}

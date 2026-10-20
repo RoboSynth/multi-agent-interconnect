@@ -1,0 +1,73 @@
+{
+  "captured_start_tasks": 17,
+  "transport": "wutong-amqps",
+  "expected_access_records": 34,
+  "actual_access_records": 34,
+  "missing_records": 0,
+  "extra_records": 0,
+  "incomplete_task_lifecycles": [],
+  "unrelated_access_records_excluded": 0,
+  "platform_pairing": {
+    "task_count": 17,
+    "paired_task_count": 17,
+    "pairing_rate": 1.0,
+    "paired_task_ids": [
+      "aip-198d215f00704bbf9e0dfd4f93a8da1b",
+      "aip-1b21896d60304f57a28dbb9ade7397ef",
+      "aip-266b72de78b84e43b037afa9d99c3e2c",
+      "aip-2ecb8810a1954f189509f596ca9daaec",
+      "aip-43e1ad0cd5a440f49d1accb8d6d13c96",
+      "aip-453546c51f3a4f3f854001be0c094058",
+      "aip-45d3bdffa8694684b9da2c9aaf600f56",
+      "aip-4f2d32c339f240f9ac916244468b105c",
+      "aip-626c3ddc71134a16ae3da9301e950a19",
+      "aip-78f32f2627364233be23547dfe12b520",
+      "aip-92d2b2b5ddb34454baa738c522bc5693",
+      "aip-c328791470c14ca79d420b0b38cd4714",
+      "aip-c47b8eda74d3409285d9afbb10471101",
+      "aip-cd7940bf222f4d72950a9988f351a278",
+      "aip-f254b4e5595d4f7ebaab201ab46598df",
+      "aip-f61b4c2c5158455babf992fdb6bf937c",
+      "aip-fb0418f339904652bfab49839ae2d68d"
+    ],
+    "missing_endpoint_task_ids": [],
+    "duplicate_endpoint_task_ids": [],
+    "conflicting_task_ids": [],
+    "invalid_access_records": 0,
+    "unrelated_access_records_excluded": 0,
+    "passed": true,
+    "platform_ingestion_confirmed": null,
+    "scope": "Local access records only: exactly one caller and one callee Start per taskId, with matching participant AICs. Duplicates/conflicts are excluded; pairing does not establish task success or Monitor ingestion."
+  },
+  "passed": true,
+  "scope": "Exact captured starts versus both endpoints' AMP access records. Shared long-running domain logs are filtered by captured taskId only for wutong-amqps; no Monitor statistics inferred.",
+  "snapshot_sources": [
+    {
+      "source": "/opt/incident-pilot/eval/results/platform/cloud-four-20261020-7c082190d0/f10-m0-r1/transport/amp/amp_access_coordinator.jsonl",
+      "selected_records": 17,
+      "snapshot": "amp_access_0.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_application-agent-state/_data/amp-application/amp_access_application.jsonl",
+      "selected_records": 4,
+      "snapshot": "amp_access_1.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database/amp_access_database.jsonl",
+      "selected_records": 6,
+      "snapshot": "amp_access_2.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_ops-agent-state/_data/amp-ops/amp_access_ops.jsonl",
+      "selected_records": 5,
+      "snapshot": "amp_access_5.jsonl"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_verification-agent-state/_data/amp-verification/amp_access_verification.jsonl",
+      "selected_records": 2,
+      "snapshot": "amp_access_6.jsonl"
+    }
+  ],
+  "access_counting_passed": true,
+  "lifecycle_scope": "Original interrupted tasks may lack terminal lifecycle; access pairing is judged separately from task success and platform ingestion."
+}

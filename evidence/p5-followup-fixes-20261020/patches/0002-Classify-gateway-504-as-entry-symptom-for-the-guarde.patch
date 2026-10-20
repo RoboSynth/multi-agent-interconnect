@@ -1,0 +1,174 @@
+From 17704b831ea8a4dff31d0c40957693e53a4296f2 Mon Sep 17 00:00:00 2001
+From: Binah-Dev123 <340623129+Binah-Dev123@users.noreply.github.com>
+Date: Mon, 19 Oct 2026 20:39:28 -0700
+Subject: [PATCH 2/2] Classify gateway 504 as entry symptom for the guarded MR
+ baseline
+
+---
+ eval/run.py                          |  4 +-
+ incident/partners.py                 |  2 +-
+ tests/fixtures/p5_mr_f01_504.json    | 64 ++++++++++++++++++++++++++++
+ tests/test_p5_incident_scheduling.py | 38 +++++++++++++++++
+ 4 files changed, 105 insertions(+), 3 deletions(-)
+ create mode 100644 tests/fixtures/p5_mr_f01_504.json
+
+diff --git a/eval/run.py b/eval/run.py
+index 8cddf90..9dfe20b 100644
+--- a/eval/run.py
++++ b/eval/run.py
+@@ -150,11 +150,11 @@ async def run(args):
+         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+         "M0": "frozen observation order, then confirmed repairs; no model calls",
+         "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1",
+-            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v1"},
++            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v2"},
+         "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
+         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
+         "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; when discrimination is zero, confirm one explicit unresolved prediction at a time by cost; 3-request symptom checks followed by unchanged final verification",
+-        "MR": "public-symptom fixed runbook; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
++        "MR": "public-symptom fixed runbook; gateway 502/504 use the entry branch, failed create without an entry error uses the write branch; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
+         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
+     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
+     if model_manifest.exists():
+diff --git a/incident/partners.py b/incident/partners.py
+index 22f58db..058f5b4 100644
+--- a/incident/partners.py
++++ b/incident/partners.py
+@@ -137,7 +137,7 @@ class VerificationPartner:
+                       and summary["failed"] == 0 and summary["unknown"] == 0)
+             events = summary.get("events", [])
+             category = "healthy" if passed else (
+-                "entry_error" if any(event.get("http_status") == 502 or event.get("public_contract_error") is True
++                "entry_error" if any(event.get("http_status") in {502, 504} or event.get("public_contract_error") is True
+                                      for event in events) else
+                 "write_error" if any(event.get("phase") == "create" and event.get("outcome") != "success"
+                                      for event in events) else "unknown")
+diff --git a/tests/fixtures/p5_mr_f01_504.json b/tests/fixtures/p5_mr_f01_504.json
+new file mode 100644
+index 0000000..d741c6d
+--- /dev/null
++++ b/tests/fixtures/p5_mr_f01_504.json
+@@ -0,0 +1,64 @@
++{
++  "provenance": {
++    "source": "p5-local60-20261020/matrix-r1/incidents/inc-3c9541e9e9594ac6.json",
++    "case": "F01/MR/repeat1",
++    "scope": "Recorded public symptom summary only; offline fixture, not a new runtime result"
++  },
++  "summary": {
++    "run_id": "quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57",
++    "duration_seconds": 6.219,
++    "requests": 3,
++    "success": 0,
++    "failed": 0,
++    "unknown": 3,
++    "completed_workflows": 0,
++    "unresolved_intents": 1,
++    "resolved_unknown_intents": 0,
++    "passed": false,
++    "events": [
++      {
++        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
++        "phase": "create",
++        "method": "POST",
++        "path": "/orders",
++        "elapsed_seconds": 0.11,
++        "http_status": 504,
++        "outcome": "unknown"
++      },
++      {
++        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
++        "phase": "resolve",
++        "method": "GET",
++        "path": "/receipts/load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
++        "elapsed_seconds": 2.156,
++        "http_status": 504,
++        "outcome": "unknown"
++      },
++      {
++        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
++        "phase": "create",
++        "method": "POST",
++        "path": "/orders",
++        "elapsed_seconds": 4.188,
++        "http_status": 504,
++        "outcome": "unknown"
++      }
++    ],
++    "state": {
++      "pending": [
++        {
++          "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
++          "operation_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000-cancel",
++          "item": "keyboard",
++          "quantity": 2,
++          "phase": "resolve",
++          "was_unknown": true,
++          "resume_phase": "create",
++          "unknown_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000"
++        }
++      ],
++      "completed": [],
++      "next_index": 1
++    }
++  }
++}
+diff --git a/tests/test_p5_incident_scheduling.py b/tests/test_p5_incident_scheduling.py
+index a7669b4..15a3eb0 100644
+--- a/tests/test_p5_incident_scheduling.py
++++ b/tests/test_p5_incident_scheduling.py
+@@ -197,6 +197,28 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
+         self.assertNotIn("ops.containers", [row["tool"] for row in transport.calls])
+         self.assertEqual(model.calls, 0)
+ 
++    async def test_mr_recorded_504_symptoms_take_entry_script_without_database_actions(self):
++        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
++        failed = fixture["summary"]
++        healthy = {"requests": 3, "success": 3, "failed": 0, "unknown": 0, "completed_workflows": 1,
++                   "unresolved_intents": 0, "events": [], "state": {"pending": [], "completed": [], "next_index": 1}}
++        partner = VerificationPartner("verifier", allowed_callers=["coordinator-test"])
++        transport = SchedulingTransport("F01")
++        original_call = transport.call
++        async def call(payload):
++            if payload["tool"] == "incident.symptom_check":
++                transport.calls.append(deepcopy(payload))
++                return await partner.execute(payload, "coordinator-test")
++            return await original_call(payload)
++        transport.call = call
++        with patch("business.load.OrderObserver.observe", new=AsyncMock(side_effect=[failed, healthy])):
++            state, transport, model = await self.execute(transport=transport, runbook=True)
++        self.assertEqual(state["status"], "completed", state.get("error"))
++        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
++                         ["ops.restart", "ops.route_rollback"])
++        self.assertFalse(any(row["tool"].startswith("db.") for row in transport.calls))
++        self.assertEqual(model.calls, 0)
++
+     async def test_mr_no_blocker_pid_is_skipped_instead_of_invented(self):
+         state, transport, _ = await self.execute("F07", runbook=True)
+         self.assertEqual(state["status"], "completed", state.get("error"))
+@@ -252,6 +274,22 @@ class PlannerAndQuickCheckTests(unittest.IsolatedAsyncioTestCase):
+         self.assertTrue(facts["symptom_check_passed"])
+         self.assertNotIn("business_recovered", facts)
+ 
++    async def test_gateway_timeout_keeps_502_entry_and_503_write_semantics(self):
++        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
++        payload = {"incident_id": "inc", "logical_task_id": "task", "kind": "observe", "tool": "incident.symptom_check"}
++        for status, expected in ((502, "entry_error"), (504, "entry_error"), (503, "write_error")):
++            with self.subTest(http_status=status):
++                summary = deepcopy(fixture["summary"])
++                for event in summary["events"]:
++                    event["http_status"] = status
++                partner = VerificationPartner("verifier", allowed_callers=["leader"])
++                with patch("business.load.OrderObserver.observe", new=AsyncMock(return_value=summary)):
++                    result = await partner.execute(payload, "leader")
++                facts = {fact["key"]: fact["value"] for fact in result["facts"]}
++                self.assertEqual(facts["symptom_category"], expected)
++                self.assertFalse(facts["symptom_check_passed"])
++                self.assertEqual(facts["symptom_observation"]["unknown"], 3)
++
+     async def test_quick_unknown_request_state_is_carried_into_final_verification(self):
+         pending = {"pending": [{"request_key": "same-key", "phase": "resolve"}], "completed": [], "next_index": 1}
+         quick = {"requests": 3, "success": 0, "failed": 0, "unknown": 3, "completed_workflows": 0,
+-- 
+2.53.0.windows.3
+

@@ -1,0 +1,22 @@
+{
+  "schema_version": "cloud-four-preparation-validation/1",
+  "platform": "Windows",
+  "command": "python -B -m unittest discover -s evidence/cloud-four-revalidation-prep-20261020 -p test_cloud_batch.py -v",
+  "tests_run": 8,
+  "passed": true,
+  "seconds": 0.180,
+  "exit_code": 0,
+  "scope": "fake/offline",
+  "cloud_plan_prepared": false,
+  "inspection_handoff_requested": false,
+  "identity_consumers_started": 0,
+  "fault_cases_executed": 0,
+  "model_calls": 0,
+  "pending_runtime_checks": [
+    "actual cloud manifest/source/image binding",
+    "Compose render and original Cmd/entrypoint/mount verification",
+    "four bound cases and original-journal per-task access accounting",
+    "normal six-domain cleanup and exact container receipts",
+    "actual seven-identity and inspection restoration after lease return"
+  ]
+}

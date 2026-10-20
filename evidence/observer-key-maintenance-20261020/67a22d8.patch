@@ -1,0 +1,223 @@
+From 67a22d8599c8a9c74027b732ffc720826477e978 Mon Sep 17 00:00:00 2001
+From: Binah-Dev123 <340623129+Binah-Dev123@users.noreply.github.com>
+Date: Mon, 19 Oct 2026 20:40:58 -0700
+Subject: [PATCH] Keep long observer keys within order API bounds
+
+---
+ business/load.py                  |   5 +
+ tests/test_observer_key_bounds.py | 180 ++++++++++++++++++++++++++++++
+ 2 files changed, 185 insertions(+)
+ create mode 100644 tests/test_observer_key_bounds.py
+
+diff --git a/business/load.py b/business/load.py
+index 39105f7..352171f 100644
+--- a/business/load.py
++++ b/business/load.py
+@@ -5,6 +5,7 @@ workflows in the default 30-second healthy observation window.
+ """
+ import argparse
+ import asyncio
++import hashlib
+ import json
+ import random
+ import time
+@@ -46,6 +47,10 @@ class OrderObserver:
+         index = self.state["next_index"]
+         self.state["next_index"] += 1
+         key = f"load-{self.run_id}-{index:06d}"
++        # Both create and cancel keys must fit the order API's 128-character limit.
++        # Use a distinct prefix so an unchanged short run ID cannot alias a hash.
++        if len(key + "-cancel") > 128:
++            key = "loadh-" + hashlib.sha256(key.encode("utf-8")).hexdigest()
+         return {"request_key": key, "operation_key": key + "-cancel", "item": self.random.choice(["book", "pen", "keyboard"]),
+                 "quantity": self.random.randint(1, 3), "phase": "create", "was_unknown": False}
+ 
+diff --git a/tests/test_observer_key_bounds.py b/tests/test_observer_key_bounds.py
+new file mode 100644
+index 0000000..fbf8b3e
+--- /dev/null
++++ b/tests/test_observer_key_bounds.py
+@@ -0,0 +1,180 @@
++"""Real observer/API schemas over MockTransport and a virtual clock.
++
++The long IDs are the two cloud baseline failures. No PostgreSQL, network,
++platform identities, fault injection, or real elapsed-window result is claimed.
++"""
++import asyncio
++from copy import deepcopy
++import json
++from pathlib import Path
++import sys
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++import uuid
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path[:0] = [str(ROOT), str(ROOT / "vendor/ACPs-community/acps-sdk")]
++
++import httpx
++from pydantic import ValidationError
++import business.load as load
++from business.order_app.main import CancelOrder, CreateOrder
++import incident.partners as partners
++
++REAL_CLIENT = httpx.AsyncClient
++REAL_SLEEP = asyncio.sleep
++BATCH = "cloud-four-20261020-7c082190d0"
++INCIDENTS = tuple(BATCH + "-e1a-" + point + "-r1"
++                  for point in ("after_observation", "before_modification"))
++
++
++class Clock:
++    def __init__(self):
++        self.at = 1000.0
++
++    def monotonic(self):
++        return self.at
++
++    async def sleep(self, duration):
++        self.at += max(0, duration)
++        await REAL_SLEEP(0)
++
++
++class OrderAPI:
++    """Validate real HTTP request models before a small in-memory receipt store."""
++    def __init__(self, *, lose_first_create=False):
++        self.orders, self.receipts, self.calls = {}, {}, []
++        self.lose_first_create = lose_first_create
++
++    def __call__(self, request):
++        body = json.loads(request.content) if request.content else None
++        path = request.url.path
++        self.calls.append((request.method, path, body))
++        try:
++            if request.method == "POST" and path == "/orders":
++                value = CreateOrder.model_validate(body)
++                key = value.request_key
++                if key not in self.receipts:
++                    identity = str(uuid.uuid5(uuid.NAMESPACE_URL, key))
++                    order = dict(id=identity, request_key=key, item=value.item,
++                                 quantity=value.quantity, status="CREATED")
++                    self.orders[identity] = order
++                    self.receipts[key] = dict(order_api_version="v2", operation_key=key,
++                        operation_kind="create", outcome="committed", order_id=identity,
++                        changed=True, order=deepcopy(order))
++                if self.lose_first_create:
++                    self.lose_first_create = False
++                    raise httpx.ReadTimeout("mock response lost after commit", request=request)
++                return httpx.Response(200, json=self.receipts[key])
++            if path.startswith("/receipts/"):
++                return httpx.Response(200, json=self.receipts[path.removeprefix("/receipts/")])
++            identity = path.split("/")[2]
++            if request.method == "GET":
++                return httpx.Response(200, json=dict(order_api_version="v2", order=self.orders[identity]))
++            value = CancelOrder.model_validate(body)
++            self.orders[identity]["status"] = "CANCELLED"
++            self.receipts.setdefault(value.operation_key, dict(order_api_version="v2",
++                operation_key=value.operation_key, operation_kind="cancel", outcome="committed",
++                order_id=identity, changed=True, order=deepcopy(self.orders[identity])))
++            return httpx.Response(200, json=self.receipts[value.operation_key])
++        except ValidationError as error:
++            return httpx.Response(422, json={"detail": error.errors(include_url=False, include_input=False)})
++
++
++class ObserverKeyBoundsTests(unittest.IsolatedAsyncioTestCase):
++    async def observe(self, run_id, *, duration=30, state=None, api=None):
++        self.assertTrue(Path(load.__file__).resolve().is_relative_to(ROOT))
++        api, clock = api or OrderAPI(), Clock()
++        async with REAL_CLIENT(transport=httpx.MockTransport(api)) as client:
++            observer = load.OrderObserver("http://mock-order", run_id=run_id, state=state,
++                                          client=client, expected_api_version="v2")
++            with patch.object(load, "time", SimpleNamespace(monotonic=clock.monotonic)), \
++                    patch.object(load, "asyncio", SimpleNamespace(sleep=clock.sleep)):
++                result = await observer.observe(duration=duration, min_complete=10 if duration==30 else 1)
++        return result, api
++
++    async def test_real_cloud_failure_ids_complete_ten_workflows_through_real_partner_and_models(self):
++        self.assertTrue(Path(partners.__file__).resolve().is_relative_to(ROOT))
++        for incident, lengths in zip(INCIDENTS, ((125,132),(129,136))):
++            with self.subTest(incident=incident):
++                logical = incident + ":1"
++                old_create = f"load-{incident}-{logical}-000000"
++                self.assertEqual((len(old_create),len(old_create+"-cancel")),lengths)
++                with self.assertRaises(ValidationError):
++                    CancelOrder(operation_key=old_create+"-cancel")
++                api,clock = OrderAPI(),Clock()
++                factory = lambda *args, **kwargs: REAL_CLIENT(transport=httpx.MockTransport(api))
++                with patch.object(partners.httpx,"AsyncClient",side_effect=factory), \
++                        patch.object(load,"time",SimpleNamespace(monotonic=clock.monotonic)), \
++                        patch.object(load,"asyncio",SimpleNamespace(sleep=clock.sleep)):
++                    result = await partners.VerificationPartner("verifier",base_url="http://mock-order",
++                        allowed_callers=["coordinator"]).execute(dict(incident_id=incident,
++                        logical_task_id=logical,kind="verify",tool="incident.verification"),"coordinator")
++                facts = {item["key"]:item["value"] for item in result["facts"]}
++                observed = facts["order_observation"]
++                self.assertTrue(facts["business_recovered"])
++                self.assertEqual((observed["success"],observed["failed"],observed["unknown"],
++                    observed["completed_workflows"],observed["unresolved_intents"]),(30,0,0,10,0))
++                self.assertEqual(len(api.calls),30)
++                keys = [body.get("request_key",body.get("operation_key"))
++                        for method,path,body in api.calls if method=="POST"]
++                self.assertTrue(all(len(key)<=128 for key in keys))
++                self.assertEqual(len(set(keys)),20)
++
++    async def test_short_and_exact_boundary_ids_keep_original_request_keys(self):
++        for run_id in ("legacy-short","a"*109):
++            with self.subTest(length=len(run_id)):
++                result,api = await self.observe(run_id,duration=3)
++                key = f"load-{run_id}-000000"
++                self.assertEqual(api.calls[0][2]["request_key"],key)
++                self.assertEqual(api.calls[2][2]["operation_key"],key+"-cancel")
++                self.assertEqual(result["completed_workflows"],1)
++                self.assertLessEqual(len(key+"-cancel"),128)
++
++    async def test_beyond_boundary_id_completes_create_query_cancel(self):
++        result,api = await self.observe("a"*110,duration=3)
++        self.assertEqual((result["success"],result["failed"],result["completed_workflows"]),(3,0,1))
++        self.assertLessEqual(len(api.calls[2][2]["operation_key"]),128)
++
++    async def test_full_long_identity_and_sequence_are_stable_distinct_and_not_short_aliases(self):
++        first, _ = await self.observe("common-prefix-"*20+"first",duration=6)
++        repeat, _ = await self.observe("common-prefix-"*20+"first",duration=6)
++        second, _ = await self.observe("common-prefix-"*20+"second",duration=3)
++        first_keys = [item["request_key"] for item in first["state"]["completed"]]
++        self.assertEqual(first_keys,[item["request_key"] for item in repeat["state"]["completed"]])
++        self.assertEqual(len(set(first_keys)),2)
++        self.assertNotIn(second["state"]["completed"][0]["request_key"],first_keys)
++        self.assertTrue(all(key.startswith("loadh-") for key in first_keys))
++        self.assertTrue(all(not key.startswith("load-") for key in first_keys))
++
++    async def test_unknown_original_short_create_resolves_same_receipt_under_long_run_id(self):
++        key = "legacy-original-create"
++        state = dict(pending=[dict(request_key=key,operation_key=key+"-cancel",item="book",
++            quantity=1,phase="create",was_unknown=False)],completed=[],next_index=1)
++        result,api = await self.observe("long-run-"*40,duration=4,state=state,
++                                      api=OrderAPI(lose_first_create=True))
++        self.assertEqual([(method,path) for method,path,body in api.calls],[("POST","/orders"),
++            ("GET","/receipts/"+key),("GET","/orders/"+state["completed"][0]["order_id"]),
++            ("POST","/orders/"+state["completed"][0]["order_id"]+"/cancel")])
++        self.assertEqual(api.calls[0][2]["request_key"],key)
++        self.assertEqual(api.calls[3][2]["operation_key"],key+"-cancel")
++        self.assertEqual((result["unknown"],result["failed"],result["completed_workflows"]),(1,0,1))
++        self.assertEqual(state["next_index"],1)
++        self.assertTrue(state["completed"][0]["was_unknown"])
++
++    async def test_existing_overlong_pending_intent_is_retained_without_new_key_or_execution(self):
++        incident = INCIDENTS[0]
++        key = f"load-{incident}-{incident}:1-000000"
++        intent = dict(request_key=key,operation_key=key+"-cancel",item="keyboard",quantity=2,
++            phase="cancel",was_unknown=False,order_id="c094d433-3db3-4e29-aa74-7ca0583ed48c")
++        state = dict(pending=[deepcopy(intent)],completed=[],next_index=1)
++        result,api = await self.observe("long-run-"*40,duration=3,state=state)
++        self.assertEqual((result["failed"],result["completed_workflows"]),(3,0))
++        self.assertEqual(state,dict(pending=[intent],completed=[],next_index=1))
++        self.assertEqual([body for method,path,body in api.calls],[{"operation_key":key+"-cancel"}]*3)
++        self.assertEqual(api.receipts,{})
++
++
++if __name__=="__main__":
++    unittest.main()
+-- 
+2.53.0.windows.3
+

@@ -1,0 +1,18 @@
+{
+  "schema_version": "cloud-four-offline-validation/1",
+  "revision": "r2",
+  "scope": "fake/offline only; no platform identities, Docker mutations, or fault injection",
+  "test_file_sha256": "70c033a56df96c522f7b794d674c7c578c7ccb07d5e0ebe36e2f6776da552e05",
+  "windows": {
+    "tests_run": 9,
+    "passed": true,
+    "seconds": 0.255
+  },
+  "cloud_linux": {
+    "tests_run": 9,
+    "passed": true,
+    "seconds": 0.023,
+    "command": "/opt/incident-pilot/.venv/bin/python -B -m unittest discover -s /opt/incident-pilot/evidence/cloud-four-revalidation-prep-20261020 -p test_cloud_batch.py -v"
+  },
+  "regression": "The reused F10 execute wrapper completes resource restoration, independent H00, normal close checks, result loading and wrapper-result creation through the injected scope.load binding."
+}

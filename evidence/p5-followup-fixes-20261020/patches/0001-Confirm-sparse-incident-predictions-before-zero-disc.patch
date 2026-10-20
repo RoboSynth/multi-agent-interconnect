@@ -1,0 +1,164 @@
+From 3c148a84907927da2fe3305939df96d719724d2f Mon Sep 17 00:00:00 2001
+From: Binah-Dev123 <340623129+Binah-Dev123@users.noreply.github.com>
+Date: Mon, 19 Oct 2026 20:37:22 -0700
+Subject: [PATCH 1/2] Confirm sparse incident predictions before
+ zero-discrimination stop
+
+---
+ eval/run.py                              |  4 +-
+ incident/coordinator/incident_planner.py | 19 +++++++-
+ tests/test_p5_incident_scheduling.py     | 57 +++++++++++++++++++++++-
+ 3 files changed, 75 insertions(+), 5 deletions(-)
+
+diff --git a/eval/run.py b/eval/run.py
+index d571fb1..8cddf90 100644
+--- a/eval/run.py
++++ b/eval/run.py
+@@ -150,10 +150,10 @@ async def run(args):
+         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+         "M0": "frozen observation order, then confirmed repairs; no model calls",
+         "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1",
+-            "M2v2": "evidence-ranked-per-incident-v3", "MR": "symptom-runbook-guarded-v1"},
++            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v1"},
+         "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
+         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
+-        "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; 3-request symptom checks followed by unchanged final verification",
++        "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; when discrimination is zero, confirm one explicit unresolved prediction at a time by cost; 3-request symptom checks followed by unchanged final verification",
+         "MR": "public-symptom fixed runbook; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
+         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
+     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
+diff --git a/incident/coordinator/incident_planner.py b/incident/coordinator/incident_planner.py
+index 39a9e0d..c6b00c1 100644
+--- a/incident/coordinator/incident_planner.py
++++ b/incident/coordinator/incident_planner.py
+@@ -1,6 +1,7 @@
+ """Opt-in per-incident ranking. Historical EvidencePlanner stays unchanged."""
+ from dataclasses import replace
+ 
++from .hypothesis import OBSERVABLE_TOOLS
+ from .planner import EvidencePlanner, PROBES, category, rank_probes
+ 
+ 
+@@ -42,8 +43,9 @@ class IncidentPlanner(EvidencePlanner):
+             return [required]
+         probes = [probe for probe in self.probes if probe.tool not in self.observed
+                   and (available is None or probe.tool in available)]
+-        ranked = rank_probes(self.candidates(hypotheses), probes)
+-        self.history.append({"reason": "按跨域成本排序；无区分度且无前置观察时停止", "ranking": ranked})
++        candidates = self.candidates(hypotheses)
++        ranked = rank_probes(candidates, probes)
++        self.history.append({"reason": "按假设区分度与跨域成本排序", "ranking": ranked})
+         # One outstanding task per resource partner. Both transports select
+         # one active partner per prefix; never overlap two ops/db requests.
+         selected, domains = [], set()
+@@ -54,6 +56,19 @@ class IncidentPlanner(EvidencePlanner):
+                 domains.add(domain)
+             if len(selected) == maximum:
+                 break
++        if not selected:
++            # Sparse predictions cannot form a discriminating pair, but an
++            # explicit prediction still needs confirmation. Missing predictions
++            # remain unknown; do not expand this into a sweep of every tool.
++            confirmable = [probe for probe in probes if any(
++                probe.tool in hypothesis.predictions
++                and set(hypothesis.predictions[probe.tool]) < set(OBSERVABLE_TOOLS[probe.tool]["outcomes"])
++                for hypothesis in candidates)]
++            if confirmable:
++                probe = min(confirmable, key=lambda p: (p.cost + 0.2 * p.median_seconds, p.median_seconds, p.tool))
++                selected = [probe.tool]
++                self.history.append({"reason": "候选仍有未验证的明确预测，逐项按成本确认", "tool": probe.tool,
++                                     "selection": "hypothesis_confirmation"})
+         return selected
+ 
+     def next_probe(self, hypotheses, available=None):
+diff --git a/tests/test_p5_incident_scheduling.py b/tests/test_p5_incident_scheduling.py
+index 0ef009c..a7669b4 100644
+--- a/tests/test_p5_incident_scheduling.py
++++ b/tests/test_p5_incident_scheduling.py
+@@ -30,6 +30,14 @@ def model_body(hypotheses=None):
+         "hypotheses": [hypothesis.model_dump() for hypothesis in (hypotheses or rule_hypotheses())]})}}]}
+ 
+ 
++def sparse_hypotheses():
++    # The valid one-tool-per-candidate shape returned in the real F06 failure.
++    return [Hypothesis(cause=cause, predictions={tool: [outcome]}) for cause, tool, outcome in (
++        ("process", "ops.containers", "exited"), ("route", "ops.route_status", "v2"),
++        ("application", "application.status", "unreachable"),
++        ("read_only", "db.read_only_status", "ro"), ("blocker", "db.blocking_sessions", "blocked"))]
++
++
+ class SchedulingTransport(FakeIncidentTransport):
+     tools = FakeIncidentTransport.tools + ["incident.symptom_check"]
+ 
+@@ -122,6 +130,35 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
+         self.assertEqual(state["model_calls"], 1)
+         self.assertEqual(sum(row["kind"] == "verify" for row in transport.calls), 1)
+ 
++    async def sparse_execution(self, scenario):
++        model = HypothesisEngine(enabled=True, base_url="http://model.test/v1", model="fake",
++                                 client=FakeHttpClient([model_body(sparse_hypotheses())]))
++        state, transport, _ = await self.execute(scenario, model=model)
++        self.assertEqual(state["status"], "completed", state.get("error"))
++        self.assertEqual(state["model_calls"], 1)
++        self.assertEqual(sum(row["kind"] == "verify" for row in transport.calls), 1)
++        return state, transport
++
++    async def test_sparse_blocker_predictions_confirm_before_zero_discrimination_stop(self):
++        state, transport = await self.sparse_execution("F06")
++        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"], ["db.terminate_blocker"])
++        repair = next(row for row in transport.calls if row["kind"] == "act")
++        self.assertEqual(repair["args"], {"pid": 7301})
++        self.assertTrue(any(row.get("selection") == "hypothesis_confirmation" for row in state["planning_history"]))
++
++    async def test_sparse_read_only_predictions_repair_without_inspecting_blockers(self):
++        _, transport = await self.sparse_execution("F07")
++        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
++                         ["db.restore_writes", "application.pool_rebuild"])
++        self.assertNotIn("db.blocking_sessions", [row["tool"] for row in transport.calls])
++
++    async def test_sparse_compound_predictions_continue_after_failed_post_route_check(self):
++        state, transport = await self.sparse_execution("F10")
++        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
++                         ["ops.route_rollback", "db.restore_writes", "application.pool_rebuild"])
++        self.assertTrue(any(row["event"] == "quick_symptom_check" and not row["passed"] for row in state["events"]))
++        self.assertNotIn("db.blocking_sessions", [row["tool"] for row in transport.calls])
++
+     async def test_regeneration_only_after_all_candidates_contradicted_by_new_evidence(self):
+         client = FakeHttpClient([model_body([Hypothesis(cause="stale", predictions={"ops.route_status": ["v1"]})]), model_body()])
+         model = HypothesisEngine(enabled=True, base_url="http://model.test/v1", model="fake", client=client)
+@@ -168,13 +205,31 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
+ 
+ 
+ class PlannerAndQuickCheckTests(unittest.IsolatedAsyncioTestCase):
+-    def test_zero_discrimination_stops_but_required_revision_is_kept(self):
++    def test_confirmed_prediction_stops_but_required_revision_is_kept(self):
+         planner = IncidentPlanner()
+         hypotheses = [Hypothesis(cause="one", predictions={"ops.containers": ["running"]})]
++        self.assertEqual(planner.next_probes(hypotheses), ["ops.containers"])
++        planner.update("ops.containers", [{"key": "container_state", "value": "running"}])
+         self.assertIsNone(planner.next_probe(hypotheses))
+         planner.completed.add("db.restore_writes")
+         self.assertEqual(planner.next_probe(hypotheses), "application.status")
+ 
++    def test_sparse_confirmation_uses_only_explicit_available_predictions(self):
++        planner = IncidentPlanner()
++        hypotheses = [Hypothesis(cause="blocker", predictions={"db.blocking_sessions": ["blocked"]})]
++        planner.update("ops.containers", [{"key": "container_state", "value": "running"}])
++        self.assertEqual(planner.candidates(hypotheses), hypotheses)  # No container prediction means unknown.
++        self.assertEqual(planner.next_probes(hypotheses), ["db.blocking_sessions"])
++        self.assertEqual(planner.next_probes(hypotheses, available=["application.status"]), [])
++        planner.update("db.blocking_sessions", [{"key": "blocking_sessions", "value": []}])
++        self.assertEqual(planner.candidates(hypotheses), [])
++        self.assertEqual(planner.next_probes(hypotheses), [])
++
++    def test_all_outcome_prediction_has_no_confirmation_value(self):
++        planner = IncidentPlanner()
++        hypotheses = [Hypothesis(cause="unknown", predictions={"db.blocking_sessions": ["blocked", "clear"]})]
++        self.assertEqual(planner.next_probes(hypotheses), [])
++
+     def test_confirmed_fault_removes_only_healthy_and_unknown_evidence_cannot_disprove(self):
+         planner = IncidentPlanner()
+         planner.update("ops.containers", [{"key": "container_state", "value": "exited"}])
+-- 
+2.53.0.windows.3
+
