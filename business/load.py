@@ -5,6 +5,7 @@ workflows in the default 30-second healthy observation window.
 """
 import argparse
 import asyncio
+import hashlib
 import json
 import random
 import time
@@ -46,6 +47,10 @@ class OrderObserver:
         index = self.state["next_index"]
         self.state["next_index"] += 1
         key = f"load-{self.run_id}-{index:06d}"
+        # Both create and cancel keys must fit the order API's 128-character limit.
+        # Use a distinct prefix so an unchanged short run ID cannot alias a hash.
+        if len(key + "-cancel") > 128:
+            key = "loadh-" + hashlib.sha256(key.encode("utf-8")).hexdigest()
         return {"request_key": key, "operation_key": key + "-cancel", "item": self.random.choice(["book", "pen", "keyboard"]),
                 "quantity": self.random.randint(1, 3), "phase": "create", "was_unknown": False}
 
