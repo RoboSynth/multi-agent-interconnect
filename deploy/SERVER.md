@@ -27,7 +27,7 @@
 | `incident-collector.service` | 正常管理既有日志采集器，沿用采集源与 offset |
 | `incident-daily-report.service` | 一次性生成本地状态和本队排行榜记录 |
 | `incident-daily-report.timer` | 每天上海时间 00:15 触发报告，错过后补执行一次 |
-| `incident-stage8-check.service`、`incident-stage8-check.timer` | 本次部署的一次性两小时查榜验收；计划上海时间 2026-10-20 09:46:49 执行 |
+| `incident-stage8-check.service`、`incident-stage8-check.timer` | 本次部署的一次性两小时查榜验收；已于上海时间 2026-10-20 09:46:49 执行并通过 |
 
 三个常驻服务均设 `Restart=always`。四个业务容器使用 `unless-stopped`；六域身份容器使用 `restart: "no"`，由持有租约的工作台主管启动和关闭。不要给身份容器单独启用 Docker 自动重启，否则会绕过交接和隔离。
 
@@ -102,15 +102,15 @@ ssh -i "<SSH_KEY>" -N -L 8877:127.0.0.1:8877 <SSH_ACCOUNT>@<SERVER>
 
 ## 部署验收记录
 
-时间均为上海时间。原始部署记录在服务器 `evidence/cloud-stage5-*`、`evidence/cloud-stage8-20261020/` 和 `evidence/longrun-20261020/`；可共享副本将汇总到团队仓库 `evidence/cloud-deployment-20261020/`。
+时间均为上海时间。原始部署记录在服务器 `evidence/cloud-stage5-*`、`evidence/cloud-stage8-20261020/` 和 `evidence/longrun-20261020/`；可共享副本已汇总到团队仓库 [evidence/cloud-deployment-20261020](../evidence/cloud-deployment-20261020/README.md)。
 
 | 检查 | 实际时间与证据 |
 | --- | --- |
 | 六域健康任务、30 秒／10 完整订单流程与正常清理 | 已通过。30 次请求、10 个订单流程，failed/unknown/pending=0；SDK 清理修复后六域正常退出、远端群组关闭，复用原 H00；`cloud-stage5-finalize-20261020-r2/result.json` |
 | 新日志扫描通过、七身份 aliveMap 在线、六类转发启用 | 2026-10-20 07:51 已通过；零凭据命中/解析错误/读取错误；先 heartbeat+access，七身份在线后扩到全部六类，沿用 offset、不补历史 |
 | 三常驻服务及每日报告 timer 开机启用 | 2026-10-20 07:54 已通过；`cloud-stage7-handoff-20261020/runtime-before-reboot.json`；首轮真实巡检已完成 |
-| 真实重启后 10 分钟内七身份在线且巡检恢复 | 07:54:18 请求重启；07:56:23 已自动恢复七身份和三服务，boot_id 已改变；等待重启后首轮巡检完成 |
-| 上线两小时后“含内部调用”榜出现本队身份 | 待 2026-10-20 09:46:49 后核实；caller/callee 含内部榜至少一个本队身份 access>0，七身份在线由 aliveMap 单独核验，不要求备用库为入榜制造调用 |
+| 真实重启后 10 分钟内七身份在线且巡检恢复 | 已通过。07:54:18 请求重启，07:56:23 七身份和三服务自动恢复；08:04:01 首轮巡检自动完成，距请求 582.976 秒；`stage8-reboot-acceptance.json` |
+| 上线两小时后“含内部调用”榜出现本队身份 | 已通过。2026-10-20 09:46:49 查询，距日志上线 7201.082 秒；协调身份 caller 第 29 名，Access=76、Message=360，五个其他身份在 callee 榜；七身份全部在线；`stage8-two-hour-acceptance.json` |
 | 24 小时连续运行 | 待实际观察完成后记录 |
 
 两小时查榜结果保存在 `evidence/longrun-20261020/summary-*.json` 和 `leaderboard-team-*.json`，只含本队条目。可查看实际执行结果：
@@ -120,4 +120,6 @@ sudo systemctl show incident-stage8-check.service -p Result -p ExecMainStatus -p
 sudo journalctl -u incident-stage8-check.service --no-pager
 ```
 
-已设置定时器不代表查榜通过；以到期后的实际报告为准。正常停机时停止该一次性 timer；它不是日常巡检的一部分，无需随日常恢复重新启用。
+本次定时器已实际成功执行，退出码 0。只保存本队 caller/callee 的各自名次，不将两榜合并为虚构名次；备用库未被正常巡检调用，未为入榜制造任务。正常停机时停止该一次性 timer；它不是日常巡检的一部分，无需随日常恢复重新启用。
+
+验收窗口共 11 轮巡检全部完成，其中真实重启后 10 轮；没有故障演练。重启后三服务自动重启次数均为 0，内存采样约 38–40%。这些记录包含一次计划内真实重启，不能表述为连续两小时无中断；24 小时连续运行仍需实际观察。

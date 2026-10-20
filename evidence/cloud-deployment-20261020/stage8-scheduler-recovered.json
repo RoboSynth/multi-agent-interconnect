@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-10-20T00:04:17.824438+00:00",
+  "boot_id": "4a5bf126-4c8d-49de-a0bf-7b4f99436b91",
+  "reboot_requested_at": "2026-10-19T23:54:18.743833+00:00",
+  "post_reboot_events": [
+    {
+      "at": "2026-10-19T23:54:23.047448+00:00",
+      "event": "planned_pause_requested"
+    },
+    {
+      "at": "2026-10-19T23:54:27.849845+00:00",
+      "event": "planned_pause_started"
+    },
+    {
+      "at": "2026-10-20T00:03:21.262281+00:00",
+      "event": "job_started",
+      "kind": "inspect",
+      "run_id": "schedule-b72e2d4b61c241739b4619549747896a"
+    },
+    {
+      "at": "2026-10-20T00:04:01.719378+00:00",
+      "event": "job_finished",
+      "kind": "inspect",
+      "status": "completed",
+      "run_id": "schedule-b72e2d4b61c241739b4619549747896a",
+      "seconds": 38.63
+    }
+  ],
+  "completed_post_reboot_inspections": 1,
+  "scheduler_state": {
+    "next_due": {
+      "inspect": 1792455241.7207716,
+      "drill": 1792461161.49399
+    },
+    "active": null
+  },
+  "memory": {
+    "MemTotal_kib": 3809096,
+    "MemAvailable_kib": 2325812,
+    "SwapTotal_kib": 4194300,
+    "SwapFree_kib": 4194300
+  },
+  "containers": [
+    "incident-pilot-new7-cloud-20261019-ops-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-verification-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-database-backup-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-onboarding-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-application-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-database-agent-1\tUp 8 minutes",
+    "incident-pilot-new7-cloud-20261019-nginx-1\tUp 9 minutes",
+    "incident-pilot-new7-cloud-20261019-app-v2-1\tUp 9 minutes (healthy)",
+    "incident-pilot-new7-cloud-20261019-app-v1-1\tUp 9 minutes (healthy)",
+    "incident-pilot-new7-cloud-20261019-postgres-1\tUp 9 minutes (healthy)"
+  ]
+}
