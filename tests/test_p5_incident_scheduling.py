@@ -30,6 +30,14 @@ def model_body(hypotheses=None):
         "hypotheses": [hypothesis.model_dump() for hypothesis in (hypotheses or rule_hypotheses())]})}}]}
 
 
+def sparse_hypotheses():
+    # The valid one-tool-per-candidate shape returned in the real F06 failure.
+    return [Hypothesis(cause=cause, predictions={tool: [outcome]}) for cause, tool, outcome in (
+        ("process", "ops.containers", "exited"), ("route", "ops.route_status", "v2"),
+        ("application", "application.status", "unreachable"),
+        ("read_only", "db.read_only_status", "ro"), ("blocker", "db.blocking_sessions", "blocked"))]
+
+
 class SchedulingTransport(FakeIncidentTransport):
     tools = FakeIncidentTransport.tools + ["incident.symptom_check"]
 
@@ -122,6 +130,35 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(state["model_calls"], 1)
         self.assertEqual(sum(row["kind"] == "verify" for row in transport.calls), 1)
 
+    async def sparse_execution(self, scenario):
+        model = HypothesisEngine(enabled=True, base_url="http://model.test/v1", model="fake",
+                                 client=FakeHttpClient([model_body(sparse_hypotheses())]))
+        state, transport, _ = await self.execute(scenario, model=model)
+        self.assertEqual(state["status"], "completed", state.get("error"))
+        self.assertEqual(state["model_calls"], 1)
+        self.assertEqual(sum(row["kind"] == "verify" for row in transport.calls), 1)
+        return state, transport
+
+    async def test_sparse_blocker_predictions_confirm_before_zero_discrimination_stop(self):
+        state, transport = await self.sparse_execution("F06")
+        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"], ["db.terminate_blocker"])
+        repair = next(row for row in transport.calls if row["kind"] == "act")
+        self.assertEqual(repair["args"], {"pid": 7301})
+        self.assertTrue(any(row.get("selection") == "hypothesis_confirmation" for row in state["planning_history"]))
+
+    async def test_sparse_read_only_predictions_repair_without_inspecting_blockers(self):
+        _, transport = await self.sparse_execution("F07")
+        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
+                         ["db.restore_writes", "application.pool_rebuild"])
+        self.assertNotIn("db.blocking_sessions", [row["tool"] for row in transport.calls])
+
+    async def test_sparse_compound_predictions_continue_after_failed_post_route_check(self):
+        state, transport = await self.sparse_execution("F10")
+        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
+                         ["ops.route_rollback", "db.restore_writes", "application.pool_rebuild"])
+        self.assertTrue(any(row["event"] == "quick_symptom_check" and not row["passed"] for row in state["events"]))
+        self.assertNotIn("db.blocking_sessions", [row["tool"] for row in transport.calls])
+
     async def test_regeneration_only_after_all_candidates_contradicted_by_new_evidence(self):
         client = FakeHttpClient([model_body([Hypothesis(cause="stale", predictions={"ops.route_status": ["v1"]})]), model_body()])
         model = HypothesisEngine(enabled=True, base_url="http://model.test/v1", model="fake", client=client)
@@ -160,6 +197,28 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("ops.containers", [row["tool"] for row in transport.calls])
         self.assertEqual(model.calls, 0)
 
+    async def test_mr_recorded_504_symptoms_take_entry_script_without_database_actions(self):
+        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
+        failed = fixture["summary"]
+        healthy = {"requests": 3, "success": 3, "failed": 0, "unknown": 0, "completed_workflows": 1,
+                   "unresolved_intents": 0, "events": [], "state": {"pending": [], "completed": [], "next_index": 1}}
+        partner = VerificationPartner("verifier", allowed_callers=["coordinator-test"])
+        transport = SchedulingTransport("F01")
+        original_call = transport.call
+        async def call(payload):
+            if payload["tool"] == "incident.symptom_check":
+                transport.calls.append(deepcopy(payload))
+                return await partner.execute(payload, "coordinator-test")
+            return await original_call(payload)
+        transport.call = call
+        with patch("business.load.OrderObserver.observe", new=AsyncMock(side_effect=[failed, healthy])):
+            state, transport, model = await self.execute(transport=transport, runbook=True)
+        self.assertEqual(state["status"], "completed", state.get("error"))
+        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
+                         ["ops.restart", "ops.route_rollback"])
+        self.assertFalse(any(row["tool"].startswith("db.") for row in transport.calls))
+        self.assertEqual(model.calls, 0)
+
     async def test_mr_no_blocker_pid_is_skipped_instead_of_invented(self):
         state, transport, _ = await self.execute("F07", runbook=True)
         self.assertEqual(state["status"], "completed", state.get("error"))
@@ -168,12 +227,30 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
 
 
 class PlannerAndQuickCheckTests(unittest.IsolatedAsyncioTestCase):
-    def test_zero_discrimination_stops_but_required_revision_is_kept(self):
+    def test_confirmed_prediction_stops_but_required_revision_is_kept(self):
         planner = IncidentPlanner()
         hypotheses = [Hypothesis(cause="one", predictions={"ops.containers": ["running"]})]
+        self.assertEqual(planner.next_probes(hypotheses), ["ops.containers"])
+        planner.update("ops.containers", [{"key": "container_state", "value": "running"}])
         self.assertIsNone(planner.next_probe(hypotheses))
         planner.completed.add("db.restore_writes")
         self.assertEqual(planner.next_probe(hypotheses), "application.status")
+
+    def test_sparse_confirmation_uses_only_explicit_available_predictions(self):
+        planner = IncidentPlanner()
+        hypotheses = [Hypothesis(cause="blocker", predictions={"db.blocking_sessions": ["blocked"]})]
+        planner.update("ops.containers", [{"key": "container_state", "value": "running"}])
+        self.assertEqual(planner.candidates(hypotheses), hypotheses)  # No container prediction means unknown.
+        self.assertEqual(planner.next_probes(hypotheses), ["db.blocking_sessions"])
+        self.assertEqual(planner.next_probes(hypotheses, available=["application.status"]), [])
+        planner.update("db.blocking_sessions", [{"key": "blocking_sessions", "value": []}])
+        self.assertEqual(planner.candidates(hypotheses), [])
+        self.assertEqual(planner.next_probes(hypotheses), [])
+
+    def test_all_outcome_prediction_has_no_confirmation_value(self):
+        planner = IncidentPlanner()
+        hypotheses = [Hypothesis(cause="unknown", predictions={"db.blocking_sessions": ["blocked", "clear"]})]
+        self.assertEqual(planner.next_probes(hypotheses), [])
 
     def test_confirmed_fault_removes_only_healthy_and_unknown_evidence_cannot_disprove(self):
         planner = IncidentPlanner()
@@ -196,6 +273,22 @@ class PlannerAndQuickCheckTests(unittest.IsolatedAsyncioTestCase):
         facts = {fact["key"]: fact["value"] for fact in result["facts"]}
         self.assertTrue(facts["symptom_check_passed"])
         self.assertNotIn("business_recovered", facts)
+
+    async def test_gateway_timeout_keeps_502_entry_and_503_write_semantics(self):
+        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
+        payload = {"incident_id": "inc", "logical_task_id": "task", "kind": "observe", "tool": "incident.symptom_check"}
+        for status, expected in ((502, "entry_error"), (504, "entry_error"), (503, "write_error")):
+            with self.subTest(http_status=status):
+                summary = deepcopy(fixture["summary"])
+                for event in summary["events"]:
+                    event["http_status"] = status
+                partner = VerificationPartner("verifier", allowed_callers=["leader"])
+                with patch("business.load.OrderObserver.observe", new=AsyncMock(return_value=summary)):
+                    result = await partner.execute(payload, "leader")
+                facts = {fact["key"]: fact["value"] for fact in result["facts"]}
+                self.assertEqual(facts["symptom_category"], expected)
+                self.assertFalse(facts["symptom_check_passed"])
+                self.assertEqual(facts["symptom_observation"]["unknown"], 3)
 
     async def test_quick_unknown_request_state_is_carried_into_final_verification(self):
         pending = {"pending": [{"request_key": "same-key", "phase": "resolve"}], "completed": [], "next_index": 1}
