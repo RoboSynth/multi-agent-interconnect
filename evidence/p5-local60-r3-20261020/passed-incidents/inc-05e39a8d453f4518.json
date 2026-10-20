@@ -1,0 +1,2034 @@
+{
+  "id": "inc-05e39a8d453f4518",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "completed",
+  "started_at": "2026-10-20T10:13:44.244068+00:00",
+  "facts": [
+    {
+      "key": "symptom_check_passed",
+      "value": false,
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:13:51.596241+00:00"
+    },
+    {
+      "key": "symptom_category",
+      "value": "unknown",
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:13:51.596241+00:00"
+    },
+    {
+      "key": "symptom_observation",
+      "value": {
+        "run_id": "quick-inc-05e39a8d453f4518-lt-27c6a5c116a0",
+        "duration_seconds": 3.0,
+        "requests": 3,
+        "success": 2,
+        "failed": 0,
+        "unknown": 1,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "resolved_unknown_intents": 0,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+            "elapsed_seconds": 0.0,
+            "http_status": 404,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 1.015,
+            "http_status": 200,
+            "outcome": "success"
+          },
+          {
+            "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+            "phase": "query",
+            "method": "GET",
+            "path": "/orders/ce02ecf6-e1e4-4dcb-88d7-4b1c1b66f72a",
+            "elapsed_seconds": 2.015,
+            "http_status": 200,
+            "outcome": "success"
+          }
+        ],
+        "state": {
+          "pending": [
+            {
+              "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+              "operation_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "cancel",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+              "order_id": "ce02ecf6-e1e4-4dcb-88d7-4b1c1b66f72a"
+            }
+          ],
+          "completed": [],
+          "next_index": 1
+        }
+      },
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:13:51.596241+00:00"
+    },
+    {
+      "key": "blocking_sessions",
+      "value": [],
+      "source": "db.blocking_sessions",
+      "observed_at": "2026-10-20T10:13:47.835780+00:00"
+    },
+    {
+      "key": "application_error_codes",
+      "value": [
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006"
+      ],
+      "source": "application.status",
+      "observed_at": "2026-10-20T10:13:48.004267+00:00"
+    }
+  ],
+  "hypotheses": [],
+  "plan": [
+    {
+      "id": "free-0053c8806e527e7faf45",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "resource": "application",
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）",
+      "args": {
+        "expected_revision": 11
+      },
+      "depends_on": [],
+      "risk": "write"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T10:13:44.247065+00:00",
+      "event": "tool_selected",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 只按公共入口症状分支",
+        "tool": "incident.symptom_check"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:44.251055+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-0f201a3aa41f",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:13:47.364318+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-0f201a3aa41f",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:47.377818+00:00",
+      "event": "tool_selected",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "db.restore_writes",
+        "kind": "act"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:47.382111+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-5ac310db9d5d",
+      "tool": "db.restore_writes",
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）"
+    },
+    {
+      "at": "2026-10-20T10:13:47.420658+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-5ac310db9d5d"
+    },
+    {
+      "at": "2026-10-20T10:13:47.424437+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-c2f67ea17c0d",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T10:13:47.751871+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-c2f67ea17c0d",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:47.755871+00:00",
+      "event": "tool_selected",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "db.blocking_sessions",
+        "kind": "observe"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:47.759884+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-e4150c97fc82",
+      "tool": "db.blocking_sessions"
+    },
+    {
+      "at": "2026-10-20T10:13:47.912402+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-e4150c97fc82",
+      "tool": "db.blocking_sessions",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:47.918257+00:00",
+      "event": "tool_selected",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "application.status",
+        "kind": "observe"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:47.920259+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-9229f512a8e6",
+      "tool": "application.status"
+    },
+    {
+      "at": "2026-10-20T10:13:48.066598+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-9229f512a8e6",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:48.071599+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 11
+      },
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "application.pool_rebuild",
+        "kind": "act"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:48.075599+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-5293eb9fabce",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T10:13:48.521694+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-5293eb9fabce",
+      "tool": "application.pool_rebuild",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:48.535354+00:00",
+      "event": "tool_selected",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 只按公共入口症状分支",
+        "tool": "incident.symptom_check"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:48.541354+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-27c6a5c116a0",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:13:51.691828+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-27c6a5c116a0",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:13:51.694829+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "MR 剧本结束，完整30秒独立业务验证",
+        "tool": "incident.verification"
+      }
+    },
+    {
+      "at": "2026-10-20T10:13:51.696829+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-a00ea40d33c1",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T10:14:21.871210+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-a00ea40d33c1",
+      "tool": "incident.verification",
+      "status": "ok"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-0f201a3aa41f",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:44.251055+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-0f201a3aa41f",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:47.297095+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "write_error",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:47.297095+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-05e39a8d453f4518-lt-0f201a3aa41f",
+              "duration_seconds": 3.0,
+              "requests": 3,
+              "success": 0,
+              "failed": 0,
+              "unknown": 3,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "elapsed_seconds": 1.016,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 2.016,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                    "operation_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "resolve",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:47.297095+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3109.0
+    },
+    {
+      "logical_task_id": "lt-c2f67ea17c0d",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:47.381111+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-c2f67ea17c0d",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T10:13:47.627683+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-05e39a8d453f4518:free-bada0e271de7f35d71f1",
+          "state": "applied",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:8cb01647-f01b-4e04-b239-ee58e87bb50a"
+      },
+      "elapsed_ms": 375.0
+    },
+    {
+      "logical_task_id": "lt-e4150c97fc82",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:47.759884+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-e4150c97fc82",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "blocking_sessions",
+            "value": [],
+            "source": "db.blocking_sessions",
+            "observed_at": "2026-10-20T10:13:47.835780+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:57a66384-e8ed-45f7-9788-4f2b8cd26bfb"
+      },
+      "elapsed_ms": 140.0
+    },
+    {
+      "logical_task_id": "lt-9229f512a8e6",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:47.920259+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-9229f512a8e6",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_reachable",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:13:48.004267+00:00"
+          },
+          {
+            "key": "application_pool_revision",
+            "value": 11,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:13:48.004267+00:00"
+          },
+          {
+            "key": "application_read_only",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:13:48.004267+00:00"
+          },
+          {
+            "key": "application_error_codes",
+            "value": [
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006"
+            ],
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:13:48.004267+00:00"
+          }
+        ],
+        "local_hypotheses": [
+          {
+            "cause": "db_read_only",
+            "confidence": "high",
+            "because": [
+              "application_read_only"
+            ]
+          }
+        ]
+      },
+      "elapsed_ms": 141.0
+    },
+    {
+      "logical_task_id": "lt-5293eb9fabce",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 11
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:48.075599+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-5293eb9fabce",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_pool_revision",
+            "value": 12,
+            "source": "application.pool_rebuild",
+            "observed_at": "2026-10-20T10:13:48.325328+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-05e39a8d453f4518:free-0053c8806e527e7faf45",
+          "state": "applied"
+        }
+      },
+      "elapsed_ms": 438.0
+    },
+    {
+      "logical_task_id": "lt-27c6a5c116a0",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:48.541354+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-27c6a5c116a0",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:51.596241+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "unknown",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:51.596241+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-05e39a8d453f4518-lt-27c6a5c116a0",
+              "duration_seconds": 3.0,
+              "requests": 3,
+              "success": 2,
+              "failed": 0,
+              "unknown": 1,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "elapsed_seconds": 0.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 1.015,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/ce02ecf6-e1e4-4dcb-88d7-4b1c1b66f72a",
+                  "elapsed_seconds": 2.015,
+                  "http_status": 200,
+                  "outcome": "success"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                    "operation_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-05e39a8d453f4518-lt-0f201a3aa41f-000000",
+                    "order_id": "ce02ecf6-e1e4-4dcb-88d7-4b1c1b66f72a"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:13:51.596241+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3141.0
+    },
+    {
+      "logical_task_id": "lt-a00ea40d33c1",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:13:51.696829+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-05e39a8d453f4518",
+        "logical_task_id": "lt-a00ea40d33c1",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-05e39a8d453f4518-lt-a00ea40d33c1",
+              "duration_seconds": 30.031,
+              "requests": 30,
+              "success": 30,
+              "failed": 0,
+              "unknown": 0,
+              "completed_workflows": 10,
+              "unresolved_intents": 0,
+              "resolved_unknown_intents": 0,
+              "passed": true,
+              "events": [
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08",
+                  "elapsed_seconds": 1.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08/cancel",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 3.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859",
+                  "elapsed_seconds": 4.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859/cancel",
+                  "elapsed_seconds": 5.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f",
+                  "elapsed_seconds": 7.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f/cancel",
+                  "elapsed_seconds": 8.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 9.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c",
+                  "elapsed_seconds": 10.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c/cancel",
+                  "elapsed_seconds": 11.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a",
+                  "elapsed_seconds": 13.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a/cancel",
+                  "elapsed_seconds": 14.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 15.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b",
+                  "elapsed_seconds": 16.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b/cancel",
+                  "elapsed_seconds": 17.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf",
+                  "elapsed_seconds": 19.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf/cancel",
+                  "elapsed_seconds": 20.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 21.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc",
+                  "elapsed_seconds": 22.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc/cancel",
+                  "elapsed_seconds": 23.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 24.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f",
+                  "elapsed_seconds": 25.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f/cancel",
+                  "elapsed_seconds": 26.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 27.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3",
+                  "elapsed_seconds": 28.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3/cancel",
+                  "elapsed_seconds": 29.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                }
+              ],
+              "state": {
+                "pending": [],
+                "completed": [
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "b0c99190-2af9-47ec-ad43-b68476f46f08"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "332ebd3f-6ad9-4cb2-b09c-63dd4da89859"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "cfe7ce91-1303-45c4-b467-03181699f23f"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "6f2c5d3c-aa73-41d1-8011-dc27f506103a"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "9f9dd466-c633-4ec5-b6db-39456715224b"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006-cancel",
+                    "item": "book",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "66d347e4-f95e-45c4-a37f-d1b3ac880cbf"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007-cancel",
+                    "item": "pen",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "335091c6-2485-48de-98cf-8bb84d93afdc"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "cc345d7c-4a8b-46f1-86a5-14cb30f7066f"
+                  },
+                  {
+                    "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+                    "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "e66fd473-845a-4efc-8965-3a9491e33cd3"
+                  }
+                ],
+                "next_index": 10
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          },
+          {
+            "key": "carried_symptom_intents",
+            "value": {
+              "requests": 1,
+              "success": 1,
+              "failed": 0,
+              "unknown": 0,
+              "completed_workflows": 1,
+              "unresolved_intents": 0,
+              "resolved_unknown_intents": 1,
+              "duration_seconds": 0.063
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:14:21.821311+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 30172.0
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-5ac310db9d5d",
+      "incident_id": "inc-05e39a8d453f4518",
+      "operation_id": "inc-05e39a8d453f4518:free-bada0e271de7f35d71f1",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）",
+      "status": "approved",
+      "requested_at": "2026-10-20T10:13:47.382111+00:00",
+      "decided_at": "2026-10-20T10:13:47.420658+00:00"
+    }
+  ],
+  "result": {
+    "business_recovered": true,
+    "service_recovered": true,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false,
+    "order_observation": {
+      "run_id": "inc-05e39a8d453f4518-lt-a00ea40d33c1",
+      "duration_seconds": 30.031,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 0,
+      "passed": true,
+      "events": [
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08",
+          "elapsed_seconds": 1.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08/cancel",
+          "elapsed_seconds": 2.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 3.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859",
+          "elapsed_seconds": 4.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859/cancel",
+          "elapsed_seconds": 5.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f",
+          "elapsed_seconds": 7.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f/cancel",
+          "elapsed_seconds": 8.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 9.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c",
+          "elapsed_seconds": 10.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c/cancel",
+          "elapsed_seconds": 11.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a",
+          "elapsed_seconds": 13.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a/cancel",
+          "elapsed_seconds": 14.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 15.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b",
+          "elapsed_seconds": 16.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b/cancel",
+          "elapsed_seconds": 17.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf",
+          "elapsed_seconds": 19.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf/cancel",
+          "elapsed_seconds": 20.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 21.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc",
+          "elapsed_seconds": 22.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc/cancel",
+          "elapsed_seconds": 23.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 24.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f",
+          "elapsed_seconds": 25.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f/cancel",
+          "elapsed_seconds": 26.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 27.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3",
+          "elapsed_seconds": 28.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3/cancel",
+          "elapsed_seconds": 29.016,
+          "http_status": 200,
+          "outcome": "success"
+        }
+      ],
+      "state": {
+        "pending": [],
+        "completed": [
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "b0c99190-2af9-47ec-ad43-b68476f46f08"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "332ebd3f-6ad9-4cb2-b09c-63dd4da89859"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "cfe7ce91-1303-45c4-b467-03181699f23f"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "6f2c5d3c-aa73-41d1-8011-dc27f506103a"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "9f9dd466-c633-4ec5-b6db-39456715224b"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006-cancel",
+            "item": "book",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "66d347e4-f95e-45c4-a37f-d1b3ac880cbf"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007-cancel",
+            "item": "pen",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "335091c6-2485-48de-98cf-8bb84d93afdc"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "cc345d7c-4a8b-46f1-86a5-14cb30f7066f"
+          },
+          {
+            "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+            "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "e66fd473-845a-4efc-8965-3a9491e33cd3"
+          }
+        ],
+        "next_index": 10
+      }
+    },
+    "carried_symptom_intents": {
+      "requests": 1,
+      "success": 1,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 1,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 1,
+      "duration_seconds": 0.063
+    }
+  },
+  "model_source": "rules",
+  "tokens": 0,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "MR 只按公共入口症状分支",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "db.restore_writes",
+      "kind": "act"
+    },
+    {
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "db.blocking_sessions",
+      "kind": "observe"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "db.blocking_sessions",
+      "facts": [
+        "blocking_sessions"
+      ]
+    },
+    {
+      "reason": "MR 无可安全定位的阻塞PID，跳过结束会话",
+      "tool": "db.terminate_blocker",
+      "runbook_action_skipped": true
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "application.status",
+      "kind": "observe"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "application.status",
+      "facts": [
+        "application_reachable",
+        "application_pool_revision",
+        "application_read_only",
+        "application_error_codes"
+      ]
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "application.pool_rebuild",
+      "kind": "act"
+    },
+    {
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）；修改后重新观察相关状态",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "reason": "MR 只按公共入口症状分支",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "MR 剧本结束，完整30秒独立业务验证",
+      "tool": "incident.verification"
+    },
+    {
+      "reason": "接收业务验证结果",
+      "tool": "incident.verification",
+      "result": {
+        "business_recovered": true,
+        "service_recovered": true,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-05e39a8d453f4518-lt-a00ea40d33c1",
+          "duration_seconds": 30.031,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "events": [
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08",
+              "elapsed_seconds": 1.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/b0c99190-2af9-47ec-ad43-b68476f46f08/cancel",
+              "elapsed_seconds": 2.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859",
+              "elapsed_seconds": 4.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/332ebd3f-6ad9-4cb2-b09c-63dd4da89859/cancel",
+              "elapsed_seconds": 5.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f",
+              "elapsed_seconds": 7.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/cfe7ce91-1303-45c4-b467-03181699f23f/cancel",
+              "elapsed_seconds": 8.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c",
+              "elapsed_seconds": 10.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c/cancel",
+              "elapsed_seconds": 11.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a",
+              "elapsed_seconds": 13.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/6f2c5d3c-aa73-41d1-8011-dc27f506103a/cancel",
+              "elapsed_seconds": 14.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b",
+              "elapsed_seconds": 16.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/9f9dd466-c633-4ec5-b6db-39456715224b/cancel",
+              "elapsed_seconds": 17.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf",
+              "elapsed_seconds": 19.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/66d347e4-f95e-45c4-a37f-d1b3ac880cbf/cancel",
+              "elapsed_seconds": 20.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 21.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc",
+              "elapsed_seconds": 22.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/335091c6-2485-48de-98cf-8bb84d93afdc/cancel",
+              "elapsed_seconds": 23.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 24.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f",
+              "elapsed_seconds": 25.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/cc345d7c-4a8b-46f1-86a5-14cb30f7066f/cancel",
+              "elapsed_seconds": 26.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 27.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3",
+              "elapsed_seconds": 28.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/e66fd473-845a-4efc-8965-3a9491e33cd3/cancel",
+              "elapsed_seconds": 29.016,
+              "http_status": 200,
+              "outcome": "success"
+            }
+          ],
+          "state": {
+            "pending": [],
+            "completed": [
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "b0c99190-2af9-47ec-ad43-b68476f46f08"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000001-cancel",
+                "item": "pen",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "332ebd3f-6ad9-4cb2-b09c-63dd4da89859"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000002-cancel",
+                "item": "pen",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "cfe7ce91-1303-45c4-b467-03181699f23f"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000003-cancel",
+                "item": "keyboard",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "d4e5c86e-3ae7-4adc-9669-bae56e4c3d2c"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000004-cancel",
+                "item": "keyboard",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "6f2c5d3c-aa73-41d1-8011-dc27f506103a"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000005-cancel",
+                "item": "pen",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "9f9dd466-c633-4ec5-b6db-39456715224b"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000006-cancel",
+                "item": "book",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "66d347e4-f95e-45c4-a37f-d1b3ac880cbf"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000007-cancel",
+                "item": "pen",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "335091c6-2485-48de-98cf-8bb84d93afdc"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000008-cancel",
+                "item": "pen",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "cc345d7c-4a8b-46f1-86a5-14cb30f7066f"
+              },
+              {
+                "request_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009",
+                "operation_key": "load-inc-05e39a8d453f4518-lt-a00ea40d33c1-000009-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "e66fd473-845a-4efc-8965-3a9491e33cd3"
+              }
+            ],
+            "next_index": 10
+          }
+        },
+        "carried_symptom_intents": {
+          "requests": 1,
+          "success": 1,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 1,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 1,
+          "duration_seconds": 0.063
+        }
+      },
+      "status": "ok"
+    }
+  ],
+  "model_calls": 0,
+  "model_source_counts": {
+    "llm": 0,
+    "rules": 0
+  },
+  "model_error": null,
+  "model_requests": [],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 3,
+    "resource_organizations": [
+      "application",
+      "database",
+      "verification"
+    ],
+    "cross_organization_calls": 4,
+    "sensitive_observations": 1,
+    "weighted_probe_cost": 5,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T10:14:21.873210+00:00",
+  "elapsed_seconds": 37.625
+}

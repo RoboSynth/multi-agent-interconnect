@@ -1,0 +1,5252 @@
+{
+  "id": "inc-6869d5c0004c434a",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "completed",
+  "started_at": "2026-10-20T06:45:34.452331+00:00",
+  "facts": [],
+  "hypotheses": [],
+  "plan": [
+    {
+      "id": "free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "kind": "act",
+      "resource": "application",
+      "reason": "M1 模型选择下一次资源操作",
+      "args": {},
+      "depends_on": [],
+      "risk": "high"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T06:45:35.247595+00:00",
+      "event": "tool_selected",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.containers",
+        "kind": "observe",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:35.251595+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-a167aee1d78b",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T06:45:35.578599+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-a167aee1d78b",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T06:45:36.297607+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "args": {
+          "expected_revision": 1
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:36.299607+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-64f29510cf26",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T06:45:36.507280+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-64f29510cf26",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "at": "2026-10-20T06:45:36.509283+00:00",
+      "event": "tool_feedback",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected",
+      "result": null
+    },
+    {
+      "at": "2026-10-20T06:45:37.038465+00:00",
+      "event": "tool_selected",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.route_rollback",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:37.041465+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-11871000c4d5",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "at": "2026-10-20T06:45:37.893877+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-11871000c4d5",
+      "tool": "ops.route_rollback",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T06:45:38.500666+00:00",
+      "event": "tool_selected",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "db.restore_writes",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:38.503664+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-03b973c99d03",
+      "tool": "db.restore_writes",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T06:45:38.604554+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-03b973c99d03"
+    },
+    {
+      "at": "2026-10-20T06:45:38.607537+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-21697084b60c",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T06:45:39.218545+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-21697084b60c",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T06:45:40.065795+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "args": {
+          "expected_revision": 1
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:40.068795+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-fd013b038372",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T06:45:40.223076+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-fd013b038372",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "at": "2026-10-20T06:45:40.225076+00:00",
+      "event": "tool_feedback",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected",
+      "result": null
+    },
+    {
+      "at": "2026-10-20T06:45:40.731227+00:00",
+      "event": "tool_selected",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.restart",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:40.733230+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-c9ef6143c086",
+      "tool": "ops.restart",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T06:45:40.749152+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-c9ef6143c086"
+    },
+    {
+      "at": "2026-10-20T06:45:40.753163+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-7bd2692626ef",
+      "tool": "ops.restart"
+    },
+    {
+      "at": "2026-10-20T06:45:42.774867+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-7bd2692626ef",
+      "tool": "ops.restart",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T06:45:43.895343+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "incident.verification",
+        "kind": "verify",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T06:45:43.899350+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-24989bfd0ad3",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T06:46:14.047705+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-24989bfd0ad3",
+      "tool": "incident.verification",
+      "status": "ok"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-a167aee1d78b",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T06:45:35.251595+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-a167aee1d78b",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+      },
+      "elapsed_ms": 328.0
+    },
+    {
+      "logical_task_id": "lt-64f29510cf26",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "status": "rejected",
+      "started_at": "2026-10-20T06:45:36.299607+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-64f29510cf26",
+        "executor_aic": "local-application",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+          "state": "rejected_precondition"
+        }
+      },
+      "elapsed_ms": 219.0
+    },
+    {
+      "logical_task_id": "lt-11871000c4d5",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T06:45:37.041465+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-11871000c4d5",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v2",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T06:45:37.829903+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T06:45:37.829903+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-6869d5c0004c434a:free-bb453f1a23b38cadd3b8",
+          "state": "applied",
+          "before": {
+            "value": "v1"
+          },
+          "after": {
+            "value": "v2"
+          }
+        },
+        "evidence_ref": "amp:audit:7380bca6-e98c-4946-9529-4201435b4130"
+      },
+      "elapsed_ms": 844.0
+    },
+    {
+      "logical_task_id": "lt-21697084b60c",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T06:45:38.503664+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-21697084b60c",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T06:45:38.999549+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-6869d5c0004c434a:free-bada0e271de7f35d71f1",
+          "state": "applied",
+          "before": {
+            "value": false
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:e370b679-a76e-4e1a-8518-e9447db5bb4d"
+      },
+      "elapsed_ms": 719.0
+    },
+    {
+      "logical_task_id": "lt-fd013b038372",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "status": "rejected",
+      "started_at": "2026-10-20T06:45:40.068795+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-fd013b038372",
+        "executor_aic": "local-application",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+          "state": "rejected_precondition"
+        }
+      },
+      "elapsed_ms": 141.0
+    },
+    {
+      "logical_task_id": "lt-7bd2692626ef",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T06:45:40.733230+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-7bd2692626ef",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.restart",
+            "observed_at": "2026-10-20T06:45:42.669960+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-6869d5c0004c434a:free-449f3a08acf80f4fe073",
+          "state": "applied",
+          "before": {
+            "value": null
+          },
+          "after": {
+            "value": null
+          }
+        },
+        "evidence_ref": "amp:audit:7ce8685d-6b89-4f9b-ab07-4e66878dcb7f"
+      },
+      "elapsed_ms": 2047.0
+    },
+    {
+      "logical_task_id": "lt-24989bfd0ad3",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T06:45:43.899350+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-6869d5c0004c434a",
+        "logical_task_id": "lt-24989bfd0ad3",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-6869d5c0004c434a-lt-24989bfd0ad3",
+              "duration_seconds": 30.016,
+              "requests": 30,
+              "success": 30,
+              "failed": 0,
+              "unknown": 0,
+              "completed_workflows": 10,
+              "unresolved_intents": 0,
+              "resolved_unknown_intents": 0,
+              "passed": true,
+              "events": [
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859",
+                  "elapsed_seconds": 1.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859/cancel",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 3.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb",
+                  "elapsed_seconds": 4.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb/cancel",
+                  "elapsed_seconds": 5.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f",
+                  "elapsed_seconds": 7.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f/cancel",
+                  "elapsed_seconds": 8.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 9.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5",
+                  "elapsed_seconds": 10.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5/cancel",
+                  "elapsed_seconds": 11.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0",
+                  "elapsed_seconds": 13.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0/cancel",
+                  "elapsed_seconds": 14.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 15.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a",
+                  "elapsed_seconds": 16.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a/cancel",
+                  "elapsed_seconds": 17.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/5186a791-935c-466f-b45d-c01e02091009",
+                  "elapsed_seconds": 19.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/5186a791-935c-466f-b45d-c01e02091009/cancel",
+                  "elapsed_seconds": 20.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 21.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de",
+                  "elapsed_seconds": 22.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de/cancel",
+                  "elapsed_seconds": 23.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 24.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d",
+                  "elapsed_seconds": 25.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d/cancel",
+                  "elapsed_seconds": 26.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 27.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870",
+                  "elapsed_seconds": 28.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870/cancel",
+                  "elapsed_seconds": 29.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                }
+              ],
+              "state": {
+                "pending": [],
+                "completed": [
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "e5b88a08-04d4-4446-a89d-679326af6859"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "b6f9db6d-48c9-49d5-86aa-d8e6165317cb"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "1a84af5b-673f-43f2-a6f3-0da80e71ba9f"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "457d297d-ca79-4660-b31b-5ad07a0ef7b5"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "6a5d69c3-9015-4c3e-a037-888052b1a1b0"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "dd6abfb8-900b-446f-b18e-6e6fc4752a5a"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006-cancel",
+                    "item": "book",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "5186a791-935c-466f-b45d-c01e02091009"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007-cancel",
+                    "item": "pen",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "101f2773-0806-4d8b-87c5-d898ec1a81de"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "c8c4ad88-53e7-4802-b8bd-5fc12018d97d"
+                  },
+                  {
+                    "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+                    "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "27ae57ef-1e64-4d10-bb38-64b03a9f6870"
+                  }
+                ],
+                "next_index": 10
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T06:46:13.966434+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 30141.0
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-03b973c99d03",
+      "incident_id": "inc-6869d5c0004c434a",
+      "operation_id": "inc-6869d5c0004c434a:free-bada0e271de7f35d71f1",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T06:45:38.503664+00:00",
+      "decided_at": "2026-10-20T06:45:38.604554+00:00"
+    },
+    {
+      "id": "approval-c9ef6143c086",
+      "incident_id": "inc-6869d5c0004c434a",
+      "operation_id": "inc-6869d5c0004c434a:free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T06:45:40.733230+00:00",
+      "decided_at": "2026-10-20T06:45:40.749152+00:00"
+    }
+  ],
+  "result": {
+    "business_recovered": true,
+    "service_recovered": true,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false,
+    "order_observation": {
+      "run_id": "inc-6869d5c0004c434a-lt-24989bfd0ad3",
+      "duration_seconds": 30.016,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 0,
+      "passed": true,
+      "events": [
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859",
+          "elapsed_seconds": 1.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859/cancel",
+          "elapsed_seconds": 2.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 3.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb",
+          "elapsed_seconds": 4.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb/cancel",
+          "elapsed_seconds": 5.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f",
+          "elapsed_seconds": 7.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f/cancel",
+          "elapsed_seconds": 8.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 9.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5",
+          "elapsed_seconds": 10.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5/cancel",
+          "elapsed_seconds": 11.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0",
+          "elapsed_seconds": 13.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0/cancel",
+          "elapsed_seconds": 14.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 15.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a",
+          "elapsed_seconds": 16.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a/cancel",
+          "elapsed_seconds": 17.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/5186a791-935c-466f-b45d-c01e02091009",
+          "elapsed_seconds": 19.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/5186a791-935c-466f-b45d-c01e02091009/cancel",
+          "elapsed_seconds": 20.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 21.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de",
+          "elapsed_seconds": 22.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de/cancel",
+          "elapsed_seconds": 23.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 24.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d",
+          "elapsed_seconds": 25.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d/cancel",
+          "elapsed_seconds": 26.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 27.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870",
+          "elapsed_seconds": 28.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870/cancel",
+          "elapsed_seconds": 29.0,
+          "http_status": 200,
+          "outcome": "success"
+        }
+      ],
+      "state": {
+        "pending": [],
+        "completed": [
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "e5b88a08-04d4-4446-a89d-679326af6859"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "b6f9db6d-48c9-49d5-86aa-d8e6165317cb"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "1a84af5b-673f-43f2-a6f3-0da80e71ba9f"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "457d297d-ca79-4660-b31b-5ad07a0ef7b5"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "6a5d69c3-9015-4c3e-a037-888052b1a1b0"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "dd6abfb8-900b-446f-b18e-6e6fc4752a5a"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006-cancel",
+            "item": "book",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "5186a791-935c-466f-b45d-c01e02091009"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007-cancel",
+            "item": "pen",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "101f2773-0806-4d8b-87c5-d898ec1a81de"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "c8c4ad88-53e7-4802-b8bd-5fc12018d97d"
+          },
+          {
+            "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+            "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "27ae57ef-1e64-4d10-bb38-64b03a9f6870"
+          }
+        ],
+        "next_index": 10
+      }
+    }
+  },
+  "model_source": "llm",
+  "tokens": 12013,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      }
+    },
+    {
+      "reason": "参与者拒绝或只读工具错误，反馈给下一次选择",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      }
+    },
+    {
+      "reason": "参与者拒绝或只读工具错误，反馈给下一次选择",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "ops.restart"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {}
+    },
+    {
+      "reason": "接收业务验证结果",
+      "tool": "incident.verification",
+      "result": {
+        "business_recovered": true,
+        "service_recovered": true,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-6869d5c0004c434a-lt-24989bfd0ad3",
+          "duration_seconds": 30.016,
+          "requests": 30,
+          "success": 30,
+          "failed": 0,
+          "unknown": 0,
+          "completed_workflows": 10,
+          "unresolved_intents": 0,
+          "resolved_unknown_intents": 0,
+          "passed": true,
+          "events": [
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859",
+              "elapsed_seconds": 1.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/e5b88a08-04d4-4446-a89d-679326af6859/cancel",
+              "elapsed_seconds": 2.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 3.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb",
+              "elapsed_seconds": 4.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/b6f9db6d-48c9-49d5-86aa-d8e6165317cb/cancel",
+              "elapsed_seconds": 5.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f",
+              "elapsed_seconds": 7.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/1a84af5b-673f-43f2-a6f3-0da80e71ba9f/cancel",
+              "elapsed_seconds": 8.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 9.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5",
+              "elapsed_seconds": 10.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/457d297d-ca79-4660-b31b-5ad07a0ef7b5/cancel",
+              "elapsed_seconds": 11.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0",
+              "elapsed_seconds": 13.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/6a5d69c3-9015-4c3e-a037-888052b1a1b0/cancel",
+              "elapsed_seconds": 14.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 15.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a",
+              "elapsed_seconds": 16.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/dd6abfb8-900b-446f-b18e-6e6fc4752a5a/cancel",
+              "elapsed_seconds": 17.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/5186a791-935c-466f-b45d-c01e02091009",
+              "elapsed_seconds": 19.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/5186a791-935c-466f-b45d-c01e02091009/cancel",
+              "elapsed_seconds": 20.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 21.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de",
+              "elapsed_seconds": 22.0,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/101f2773-0806-4d8b-87c5-d898ec1a81de/cancel",
+              "elapsed_seconds": 23.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 24.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d",
+              "elapsed_seconds": 25.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/c8c4ad88-53e7-4802-b8bd-5fc12018d97d/cancel",
+              "elapsed_seconds": 26.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 27.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+              "phase": "query",
+              "method": "GET",
+              "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870",
+              "elapsed_seconds": 28.016,
+              "http_status": 200,
+              "outcome": "success"
+            },
+            {
+              "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+              "phase": "cancel",
+              "method": "POST",
+              "path": "/orders/27ae57ef-1e64-4d10-bb38-64b03a9f6870/cancel",
+              "elapsed_seconds": 29.0,
+              "http_status": 200,
+              "outcome": "success"
+            }
+          ],
+          "state": {
+            "pending": [],
+            "completed": [
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "e5b88a08-04d4-4446-a89d-679326af6859"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000001-cancel",
+                "item": "pen",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "b6f9db6d-48c9-49d5-86aa-d8e6165317cb"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000002-cancel",
+                "item": "pen",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "1a84af5b-673f-43f2-a6f3-0da80e71ba9f"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000003-cancel",
+                "item": "keyboard",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "457d297d-ca79-4660-b31b-5ad07a0ef7b5"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000004-cancel",
+                "item": "keyboard",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "6a5d69c3-9015-4c3e-a037-888052b1a1b0"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000005-cancel",
+                "item": "pen",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "dd6abfb8-900b-446f-b18e-6e6fc4752a5a"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000006-cancel",
+                "item": "book",
+                "quantity": 1,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "5186a791-935c-466f-b45d-c01e02091009"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000007-cancel",
+                "item": "pen",
+                "quantity": 3,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "101f2773-0806-4d8b-87c5-d898ec1a81de"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000008-cancel",
+                "item": "pen",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "c8c4ad88-53e7-4802-b8bd-5fc12018d97d"
+              },
+              {
+                "request_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009",
+                "operation_key": "load-inc-6869d5c0004c434a-lt-24989bfd0ad3-000009-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "cancel",
+                "was_unknown": false,
+                "order_id": "27ae57ef-1e64-4d10-bb38-64b03a9f6870"
+              }
+            ],
+            "next_index": 10
+          }
+        }
+      },
+      "status": "ok"
+    }
+  ],
+  "model_calls": 7,
+  "model_source_counts": {
+    "llm": 7,
+    "rules": 0
+  },
+  "model_error": null,
+  "model_requests": [
+    {
+      "call": 1,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [],
+        "local_hypotheses": [],
+        "history": []
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7224,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 900,
+        "total_tokens": 917,
+        "prompt_tokens_details": {
+          "cached_tokens": 3
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.containers\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.797
+    },
+    {
+      "call": 2,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7890,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1171,
+        "total_tokens": 1199,
+        "prompt_tokens_details": {
+          "cached_tokens": 878
+        }
+      },
+      "content": "{\n  \"tool\": \"application.pool_rebuild\",\n  \"args\": {\n    \"expected_revision\": 1\n  }\n}",
+      "finish_reason": "stop",
+      "seconds": 0.703
+    },
+    {
+      "call": 3,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-64f29510cf26",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 8381,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1345,
+        "total_tokens": 1363,
+        "prompt_tokens_details": {
+          "cached_tokens": 1160
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.route_rollback\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.515
+    },
+    {
+      "call": 4,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-64f29510cf26",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-11871000c4d5",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:7380bca6-e98c-4946-9529-4201435b4130"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 9282,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1758,
+        "total_tokens": 1776,
+        "prompt_tokens_details": {
+          "cached_tokens": 1334
+        }
+      },
+      "content": "{\n  \"tool\": \"db.restore_writes\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.594
+    },
+    {
+      "call": 5,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-64f29510cf26",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-11871000c4d5",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:7380bca6-e98c-4946-9529-4201435b4130"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-21697084b60c",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T06:45:38.999549+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": false
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:e370b679-a76e-4e1a-8518-e9447db5bb4d"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 9986,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 2043,
+        "total_tokens": 2071,
+        "prompt_tokens_details": {
+          "cached_tokens": 1747
+        }
+      },
+      "content": "{\n  \"tool\": \"application.pool_rebuild\",\n  \"args\": {\n    \"expected_revision\": 1\n  }\n}",
+      "finish_reason": "stop",
+      "seconds": 0.829
+    },
+    {
+      "call": 6,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T06:45:35.345741+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-64f29510cf26",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-11871000c4d5",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:7380bca6-e98c-4946-9529-4201435b4130"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-21697084b60c",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T06:45:38.999549+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": false
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:e370b679-a76e-4e1a-8518-e9447db5bb4d"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-fd013b038372",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 10477,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 2217,
+        "total_tokens": 2233,
+        "prompt_tokens_details": {
+          "cached_tokens": 2032
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.restart\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.5
+    },
+    {
+      "call": 7,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-a167aee1d78b",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T06:45:35.345741+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:8da5a067-93e5-413a-b5f9-e2a34c7a7ff2"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-64f29510cf26",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-11871000c4d5",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T06:45:37.829903+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:7380bca6-e98c-4946-9529-4201435b4130"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-21697084b60c",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T06:45:38.999549+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": false
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:e370b679-a76e-4e1a-8518-e9447db5bb4d"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-fd013b038372",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-6869d5c0004c434a",
+              "logical_task_id": "lt-7bd2692626ef",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.restart",
+                  "observed_at": "2026-10-20T06:45:42.669960+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-6869d5c0004c434a:free-449f3a08acf80f4fe073",
+                "state": "applied",
+                "before": {
+                  "value": null
+                },
+                "after": {
+                  "value": null
+                }
+              },
+              "evidence_ref": "amp:audit:7ce8685d-6b89-4f9b-ab07-4e66878dcb7f"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 11025,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 2437,
+        "total_tokens": 2454,
+        "prompt_tokens_details": {
+          "cached_tokens": 878
+        }
+      },
+      "content": "{\n  \"tool\": \"incident.verification\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 1.11
+    }
+  ],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 1,
+    "resource_organizations": [
+      "ops"
+    ],
+    "cross_organization_calls": 1,
+    "sensitive_observations": 0,
+    "weighted_probe_cost": 1,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T06:46:14.050709+00:00",
+  "elapsed_seconds": 39.594
+}

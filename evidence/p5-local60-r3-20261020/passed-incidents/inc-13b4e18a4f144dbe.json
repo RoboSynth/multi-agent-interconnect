@@ -1,0 +1,2433 @@
+{
+  "id": "inc-13b4e18a4f144dbe",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "completed",
+  "started_at": "2026-10-20T10:21:18.863456+00:00",
+  "facts": [
+    {
+      "key": "container_state",
+      "value": "running",
+      "source": "ops.containers",
+      "observed_at": "2026-10-20T10:21:18.962650+00:00"
+    },
+    {
+      "key": "symptom_check_passed",
+      "value": true,
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:21:31.948691+00:00"
+    },
+    {
+      "key": "symptom_category",
+      "value": "healthy",
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:21:31.948691+00:00"
+    },
+    {
+      "key": "symptom_observation",
+      "value": {
+        "run_id": "quick-inc-13b4e18a4f144dbe-lt-e42979a7e323",
+        "duration_seconds": 3.015,
+        "requests": 3,
+        "success": 3,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 1,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 1,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 0.015,
+            "http_status": 200,
+            "outcome": "success"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "query",
+            "method": "GET",
+            "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d",
+            "elapsed_seconds": 1.015,
+            "http_status": 200,
+            "outcome": "success"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "cancel",
+            "method": "POST",
+            "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d/cancel",
+            "elapsed_seconds": 2.0,
+            "http_status": 200,
+            "outcome": "success"
+          }
+        ],
+        "state": {
+          "pending": [],
+          "completed": [
+            {
+              "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "cancel",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "order_id": "36d1dc1f-625b-4042-bd03-32fa50be404d"
+            }
+          ],
+          "next_index": 1
+        }
+      },
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:21:31.948691+00:00"
+    },
+    {
+      "key": "application_error_codes",
+      "value": [
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006"
+      ],
+      "source": "application.status",
+      "observed_at": "2026-10-20T10:21:24.877699+00:00"
+    }
+  ],
+  "hypotheses": [
+    {
+      "cause": "路由版本不一致",
+      "because": [
+        "路由版本为 v2，可能与预期版本不一致，导致服务不可达或性能下降。"
+      ],
+      "predictions": {
+        "ops.route_status": [
+          "v2"
+        ]
+      }
+    },
+    {
+      "cause": "应用不可达",
+      "because": [
+        "应用直接可达性为 unreachable，表明应用服务可能已中断或存在网络问题。"
+      ],
+      "predictions": {
+        "application.status": [
+          "unreachable"
+        ]
+      }
+    },
+    {
+      "cause": "数据库读写分离",
+      "because": [
+        "数据库处于 read-only 模式，可能影响订单业务的写入操作，导致业务异常。"
+      ],
+      "predictions": {
+        "db.read_only_status": [
+          "ro"
+        ]
+      }
+    },
+    {
+      "cause": "数据库阻塞会话",
+      "because": [
+        "存在数据库阻塞会话，可能影响订单业务的并发处理能力，导致业务异常。"
+      ],
+      "predictions": {
+        "db.blocking_sessions": [
+          "blocked"
+        ]
+      }
+    }
+  ],
+  "plan": [
+    {
+      "id": "pool",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "resource": "application",
+      "reason": "数据库已恢复读写，应用需建立新连接",
+      "args": {
+        "expected_revision": 17
+      },
+      "depends_on": [
+        "restore-writes"
+      ],
+      "risk": "write"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T10:21:18.867456+00:00",
+      "event": "hypothesis_generation",
+      "reason": "incident_start",
+      "generation": 1
+    },
+    {
+      "at": "2026-10-20T10:21:18.903344+00:00",
+      "event": "probe_selected",
+      "tool": "ops.containers",
+      "reason": {}
+    },
+    {
+      "at": "2026-10-20T10:21:18.906336+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-def032d90fdc",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T10:21:19.161507+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-def032d90fdc",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:19.170506+00:00",
+      "event": "probe_selected",
+      "tool": "ops.route_status",
+      "reason": {
+        "reason": "接收参与者观察，更新证据",
+        "tool": "ops.containers",
+        "facts": [
+          "container_state"
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:19.173506+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-762d3b8491ea",
+      "tool": "ops.route_status"
+    },
+    {
+      "at": "2026-10-20T10:21:19.414084+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-762d3b8491ea",
+      "tool": "ops.route_status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:19.424085+00:00",
+      "event": "plan_adjusted",
+      "reason": "入口仍指向旧版本",
+      "node": {
+        "id": "route",
+        "tool": "ops.route_rollback",
+        "kind": "act",
+        "resource": "gateway",
+        "reason": "入口仍指向旧版本",
+        "args": {},
+        "depends_on": [],
+        "risk": "write"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:19.427085+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-544f7ca85c11",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "at": "2026-10-20T10:21:20.265337+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-544f7ca85c11",
+      "tool": "ops.route_rollback",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:20.268338+00:00",
+      "event": "probe_selected",
+      "tool": "incident.symptom_check",
+      "reason": {
+        "reason": "入口仍指向旧版本；修改后重新观察相关状态",
+        "tool": "ops.route_rollback"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:20.271346+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-da46ed34972c",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:21:23.376700+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-da46ed34972c",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:23.380701+00:00",
+      "event": "quick_symptom_check",
+      "passed": false,
+      "summary": {
+        "run_id": "quick-inc-13b4e18a4f144dbe-lt-da46ed34972c",
+        "duration_seconds": 3.015,
+        "requests": 3,
+        "success": 0,
+        "failed": 0,
+        "unknown": 3,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "resolved_unknown_intents": 0,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 0.015,
+            "http_status": 503,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "elapsed_seconds": 1.015,
+            "http_status": 404,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 2.0,
+            "http_status": 503,
+            "outcome": "unknown"
+          }
+        ],
+        "state": {
+          "pending": [
+            {
+              "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "resolve",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000"
+            }
+          ],
+          "completed": [],
+          "next_index": 1
+        }
+      },
+      "final_verification": false
+    },
+    {
+      "at": "2026-10-20T10:21:23.381701+00:00",
+      "event": "hypothesis_wait",
+      "reason": "ranking_needs_hypotheses"
+    },
+    {
+      "at": "2026-10-20T10:21:24.774479+00:00",
+      "event": "probe_selected",
+      "tool": "application.status",
+      "reason": {
+        "reason": "按假设区分度与跨域成本排序（未提及的检查按正常结果预测）",
+        "ranking": [
+          {
+            "tool": "application.status",
+            "score": 0.4166666666666667,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.read_only_status",
+            "score": 0.4166666666666667,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "score": 0.22727272727272727,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "ops.route_status",
+            "score": 0.0,
+            "discrimination": 0.0,
+            "median_seconds": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:24.776479+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-bbd56e01b0cd",
+      "tool": "application.status"
+    },
+    {
+      "at": "2026-10-20T10:21:24.804487+00:00",
+      "event": "probe_selected",
+      "tool": "db.read_only_status",
+      "reason": {
+        "reason": "按假设区分度与跨域成本排序（未提及的检查按正常结果预测）",
+        "ranking": [
+          {
+            "tool": "application.status",
+            "score": 0.4166666666666667,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.read_only_status",
+            "score": 0.4166666666666667,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "score": 0.22727272727272727,
+            "discrimination": 0.5,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "ops.route_status",
+            "score": 0.0,
+            "discrimination": 0.0,
+            "median_seconds": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:24.806481+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-8e15d99017d7",
+      "tool": "db.read_only_status"
+    },
+    {
+      "at": "2026-10-20T10:21:25.060136+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-bbd56e01b0cd",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:25.064137+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-8e15d99017d7",
+      "tool": "db.read_only_status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:25.071136+00:00",
+      "event": "plan_adjusted",
+      "reason": "数据库观察确认只读",
+      "node": {
+        "id": "restore-writes",
+        "tool": "db.restore_writes",
+        "kind": "act",
+        "resource": "database",
+        "reason": "数据库观察确认只读",
+        "args": {},
+        "depends_on": [],
+        "risk": "high"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:25.073137+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-bf60ab11868b",
+      "tool": "db.restore_writes",
+      "reason": "数据库观察确认只读"
+    },
+    {
+      "at": "2026-10-20T10:21:25.167931+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-bf60ab11868b"
+    },
+    {
+      "at": "2026-10-20T10:21:25.169932+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-2c8156a8ad65",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T10:21:25.451880+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-2c8156a8ad65",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:25.454881+00:00",
+      "event": "probe_selected",
+      "tool": "incident.symptom_check",
+      "reason": {
+        "reason": "数据库观察确认只读；修改后重新观察相关状态",
+        "tool": "db.restore_writes"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:25.459881+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-0b03c059695c",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:21:28.570309+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-0b03c059695c",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:28.575937+00:00",
+      "event": "quick_symptom_check",
+      "passed": false,
+      "summary": {
+        "run_id": "quick-inc-13b4e18a4f144dbe-lt-0b03c059695c",
+        "duration_seconds": 3.016,
+        "requests": 3,
+        "success": 0,
+        "failed": 0,
+        "unknown": 3,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "resolved_unknown_intents": 0,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "elapsed_seconds": 0.016,
+            "http_status": 404,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 1.0,
+            "http_status": 503,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "elapsed_seconds": 2.016,
+            "http_status": 404,
+            "outcome": "unknown"
+          }
+        ],
+        "state": {
+          "pending": [
+            {
+              "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "create",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000"
+            }
+          ],
+          "completed": [],
+          "next_index": 1
+        }
+      },
+      "final_verification": false
+    },
+    {
+      "at": "2026-10-20T10:21:28.581521+00:00",
+      "event": "plan_adjusted",
+      "reason": "数据库已恢复读写，应用需建立新连接",
+      "node": {
+        "id": "pool",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "resource": "application",
+        "reason": "数据库已恢复读写，应用需建立新连接",
+        "args": {
+          "expected_revision": 17
+        },
+        "depends_on": [
+          "restore-writes"
+        ],
+        "risk": "write"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:28.585523+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-cb32806e54ec",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T10:21:28.894552+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-cb32806e54ec",
+      "tool": "application.pool_rebuild",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:28.897554+00:00",
+      "event": "probe_selected",
+      "tool": "incident.symptom_check",
+      "reason": {
+        "reason": "数据库已恢复读写，应用需建立新连接；修改后重新观察相关状态",
+        "tool": "application.pool_rebuild"
+      }
+    },
+    {
+      "at": "2026-10-20T10:21:28.899555+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-e42979a7e323",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:21:32.003810+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-e42979a7e323",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:21:32.008811+00:00",
+      "event": "quick_symptom_check",
+      "passed": true,
+      "summary": {
+        "run_id": "quick-inc-13b4e18a4f144dbe-lt-e42979a7e323",
+        "duration_seconds": 3.015,
+        "requests": 3,
+        "success": 3,
+        "failed": 0,
+        "unknown": 0,
+        "completed_workflows": 1,
+        "unresolved_intents": 0,
+        "resolved_unknown_intents": 1,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 0.015,
+            "http_status": 200,
+            "outcome": "success"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "query",
+            "method": "GET",
+            "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d",
+            "elapsed_seconds": 1.015,
+            "http_status": 200,
+            "outcome": "success"
+          },
+          {
+            "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+            "phase": "cancel",
+            "method": "POST",
+            "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d/cancel",
+            "elapsed_seconds": 2.0,
+            "http_status": 200,
+            "outcome": "success"
+          }
+        ],
+        "state": {
+          "pending": [],
+          "completed": [
+            {
+              "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "cancel",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+              "order_id": "36d1dc1f-625b-4042-bd03-32fa50be404d"
+            }
+          ],
+          "next_index": 1
+        }
+      },
+      "final_verification": false
+    },
+    {
+      "at": "2026-10-20T10:21:32.010473+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-15871917e026",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T10:22:02.108837+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-15871917e026",
+      "tool": "incident.verification",
+      "status": "ok"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-def032d90fdc",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:18.906336+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-def032d90fdc",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T10:21:18.962650+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:009ae7d2-3613-45b8-b124-da78d11a2f1f"
+      },
+      "elapsed_ms": 250.0
+    },
+    {
+      "logical_task_id": "lt-762d3b8491ea",
+      "tool": "ops.route_status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:19.173506+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-762d3b8491ea",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v1",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T10:21:19.233140+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "37ba27c94cfaa200d03723158f87bed4192560632bf4a8e3024a3e3e8a7ec8f2",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T10:21:19.233140+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:a4bf0f00-4fed-492b-ad98-e77b7a909b17"
+      },
+      "elapsed_ms": 250.0
+    },
+    {
+      "logical_task_id": "lt-544f7ca85c11",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:19.427085+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-544f7ca85c11",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v2",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T10:21:20.175581+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T10:21:20.175581+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-13b4e18a4f144dbe:route",
+          "state": "applied",
+          "before": {
+            "value": "v1"
+          },
+          "after": {
+            "value": "v2"
+          }
+        },
+        "evidence_ref": "amp:audit:169701b2-b631-4ed3-b312-3127008658d1"
+      },
+      "elapsed_ms": 844.0
+    },
+    {
+      "logical_task_id": "lt-da46ed34972c",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:20.271346+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-da46ed34972c",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:23.330313+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "write_error",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:23.330313+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-13b4e18a4f144dbe-lt-da46ed34972c",
+              "duration_seconds": 3.015,
+              "requests": 3,
+              "success": 0,
+              "failed": 0,
+              "unknown": 3,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "elapsed_seconds": 1.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                    "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "resolve",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:23.330313+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3109.0
+    },
+    {
+      "logical_task_id": "lt-bbd56e01b0cd",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:24.776479+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-bbd56e01b0cd",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_reachable",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:21:24.877699+00:00"
+          },
+          {
+            "key": "application_pool_revision",
+            "value": 17,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:21:24.877699+00:00"
+          },
+          {
+            "key": "application_read_only",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:21:24.877699+00:00"
+          },
+          {
+            "key": "application_error_codes",
+            "value": [
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006"
+            ],
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:21:24.877699+00:00"
+          }
+        ],
+        "local_hypotheses": [
+          {
+            "cause": "db_read_only",
+            "confidence": "high",
+            "because": [
+              "application_read_only"
+            ]
+          }
+        ]
+      },
+      "elapsed_ms": 282.0
+    },
+    {
+      "logical_task_id": "lt-8e15d99017d7",
+      "tool": "db.read_only_status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:24.806481+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-8e15d99017d7",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": true,
+            "source": "db.read_only_status",
+            "observed_at": "2026-10-20T10:21:24.943461+00:00"
+          }
+        ],
+        "local_hypotheses": [
+          {
+            "cause": "db_read_only",
+            "confidence": "high",
+            "because": [
+              "fact:read_only"
+            ]
+          }
+        ],
+        "evidence_ref": "amp:audit:c1528b02-c221-4f21-9384-f50325cc1034"
+      },
+      "elapsed_ms": 250.0
+    },
+    {
+      "logical_task_id": "lt-2c8156a8ad65",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:25.073137+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-2c8156a8ad65",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T10:21:25.336781+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-13b4e18a4f144dbe:restore-writes",
+          "state": "applied",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:ec329695-5b78-4045-b837-a77c0494722c"
+      },
+      "elapsed_ms": 375.0
+    },
+    {
+      "logical_task_id": "lt-0b03c059695c",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:25.459881+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-0b03c059695c",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:28.517754+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "write_error",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:28.517754+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-13b4e18a4f144dbe-lt-0b03c059695c",
+              "duration_seconds": 3.016,
+              "requests": 3,
+              "success": 0,
+              "failed": 0,
+              "unknown": 3,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 1.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "elapsed_seconds": 2.016,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                    "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "create",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:28.517754+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3109.0
+    },
+    {
+      "logical_task_id": "lt-cb32806e54ec",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 17
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:28.585523+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-cb32806e54ec",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_pool_revision",
+            "value": 18,
+            "source": "application.pool_rebuild",
+            "observed_at": "2026-10-20T10:21:28.778537+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-13b4e18a4f144dbe:pool",
+          "state": "applied"
+        }
+      },
+      "elapsed_ms": 297.0
+    },
+    {
+      "logical_task_id": "lt-e42979a7e323",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:28.899555+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-e42979a7e323",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": true,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:31.948691+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "healthy",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:31.948691+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-13b4e18a4f144dbe-lt-e42979a7e323",
+              "duration_seconds": 3.015,
+              "requests": 3,
+              "success": 3,
+              "failed": 0,
+              "unknown": 0,
+              "completed_workflows": 1,
+              "unresolved_intents": 0,
+              "resolved_unknown_intents": 1,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.015,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d",
+                  "elapsed_seconds": 1.015,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/36d1dc1f-625b-4042-bd03-32fa50be404d/cancel",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                }
+              ],
+              "state": {
+                "pending": [],
+                "completed": [
+                  {
+                    "request_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                    "operation_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-13b4e18a4f144dbe-lt-da46ed34972c-000000",
+                    "order_id": "36d1dc1f-625b-4042-bd03-32fa50be404d"
+                  }
+                ],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:21:31.948691+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3094.0
+    },
+    {
+      "logical_task_id": "lt-15871917e026",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:21:32.010473+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-13b4e18a4f144dbe",
+        "logical_task_id": "lt-15871917e026",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-13b4e18a4f144dbe-lt-15871917e026",
+              "duration_seconds": 30.016,
+              "requests": 30,
+              "success": 30,
+              "failed": 0,
+              "unknown": 0,
+              "completed_workflows": 10,
+              "unresolved_intents": 0,
+              "resolved_unknown_intents": 0,
+              "passed": true,
+              "events": [
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/1592734d-3af0-44ea-9863-59d1754d5f24",
+                  "elapsed_seconds": 1.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/1592734d-3af0-44ea-9863-59d1754d5f24/cancel",
+                  "elapsed_seconds": 2.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 3.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/40ffd72f-2b01-4b46-8518-671cbfe24ac9",
+                  "elapsed_seconds": 4.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/40ffd72f-2b01-4b46-8518-671cbfe24ac9/cancel",
+                  "elapsed_seconds": 5.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/1cff7642-b708-409d-bf56-405067d9e114",
+                  "elapsed_seconds": 7.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/1cff7642-b708-409d-bf56-405067d9e114/cancel",
+                  "elapsed_seconds": 8.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 9.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/12057c51-58b1-41f8-a843-4da7b908d02f",
+                  "elapsed_seconds": 10.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/12057c51-58b1-41f8-a843-4da7b908d02f/cancel",
+                  "elapsed_seconds": 11.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/a97f4101-c18b-477d-b640-226d8c3c1a8d",
+                  "elapsed_seconds": 13.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/a97f4101-c18b-477d-b640-226d8c3c1a8d/cancel",
+                  "elapsed_seconds": 14.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 15.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/cc83d895-f06a-48f7-8248-6559e1c5cb3e",
+                  "elapsed_seconds": 16.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/cc83d895-f06a-48f7-8248-6559e1c5cb3e/cancel",
+                  "elapsed_seconds": 17.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/3d857d70-579d-4f8e-a53f-9fd76bd0a549",
+                  "elapsed_seconds": 19.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/3d857d70-579d-4f8e-a53f-9fd76bd0a549/cancel",
+                  "elapsed_seconds": 20.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 21.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/e60a6712-b9dd-4fc3-80e3-5acfba3a78a5",
+                  "elapsed_seconds": 22.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/e60a6712-b9dd-4fc3-80e3-5acfba3a78a5/cancel",
+                  "elapsed_seconds": 23.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 24.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/6c283f79-a4c2-4069-8508-82801f873512",
+                  "elapsed_seconds": 25.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/6c283f79-a4c2-4069-8508-82801f873512/cancel",
+                  "elapsed_seconds": 26.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 27.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+                  "phase": "query",
+                  "method": "GET",
+                  "path": "/orders/de309067-6494-4cab-ad94-2cddb8849dd7",
+                  "elapsed_seconds": 28.016,
+                  "http_status": 200,
+                  "outcome": "success"
+                },
+                {
+                  "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+                  "phase": "cancel",
+                  "method": "POST",
+                  "path": "/orders/de309067-6494-4cab-ad94-2cddb8849dd7/cancel",
+                  "elapsed_seconds": 29.0,
+                  "http_status": 200,
+                  "outcome": "success"
+                }
+              ],
+              "state": {
+                "pending": [],
+                "completed": [
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "1592734d-3af0-44ea-9863-59d1754d5f24"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "40ffd72f-2b01-4b46-8518-671cbfe24ac9"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "1cff7642-b708-409d-bf56-405067d9e114"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "12057c51-58b1-41f8-a843-4da7b908d02f"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004-cancel",
+                    "item": "keyboard",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "a97f4101-c18b-477d-b640-226d8c3c1a8d"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005-cancel",
+                    "item": "pen",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "cc83d895-f06a-48f7-8248-6559e1c5cb3e"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006-cancel",
+                    "item": "book",
+                    "quantity": 1,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "3d857d70-579d-4f8e-a53f-9fd76bd0a549"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007-cancel",
+                    "item": "pen",
+                    "quantity": 3,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "e60a6712-b9dd-4fc3-80e3-5acfba3a78a5"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008-cancel",
+                    "item": "pen",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "6c283f79-a4c2-4069-8508-82801f873512"
+                  },
+                  {
+                    "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+                    "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "cancel",
+                    "was_unknown": false,
+                    "order_id": "de309067-6494-4cab-ad94-2cddb8849dd7"
+                  }
+                ],
+                "next_index": 10
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:02.058737+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 30093.0
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-bf60ab11868b",
+      "incident_id": "inc-13b4e18a4f144dbe",
+      "operation_id": "inc-13b4e18a4f144dbe:restore-writes",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "数据库观察确认只读",
+      "status": "approved",
+      "requested_at": "2026-10-20T10:21:25.073137+00:00",
+      "decided_at": "2026-10-20T10:21:25.167931+00:00"
+    }
+  ],
+  "result": {
+    "business_recovered": true,
+    "service_recovered": true,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false,
+    "order_observation": {
+      "run_id": "inc-13b4e18a4f144dbe-lt-15871917e026",
+      "duration_seconds": 30.016,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 0,
+      "passed": true,
+      "events": [
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/1592734d-3af0-44ea-9863-59d1754d5f24",
+          "elapsed_seconds": 1.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/1592734d-3af0-44ea-9863-59d1754d5f24/cancel",
+          "elapsed_seconds": 2.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 3.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/40ffd72f-2b01-4b46-8518-671cbfe24ac9",
+          "elapsed_seconds": 4.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/40ffd72f-2b01-4b46-8518-671cbfe24ac9/cancel",
+          "elapsed_seconds": 5.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/1cff7642-b708-409d-bf56-405067d9e114",
+          "elapsed_seconds": 7.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/1cff7642-b708-409d-bf56-405067d9e114/cancel",
+          "elapsed_seconds": 8.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 9.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/12057c51-58b1-41f8-a843-4da7b908d02f",
+          "elapsed_seconds": 10.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/12057c51-58b1-41f8-a843-4da7b908d02f/cancel",
+          "elapsed_seconds": 11.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/a97f4101-c18b-477d-b640-226d8c3c1a8d",
+          "elapsed_seconds": 13.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/a97f4101-c18b-477d-b640-226d8c3c1a8d/cancel",
+          "elapsed_seconds": 14.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 15.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/cc83d895-f06a-48f7-8248-6559e1c5cb3e",
+          "elapsed_seconds": 16.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/cc83d895-f06a-48f7-8248-6559e1c5cb3e/cancel",
+          "elapsed_seconds": 17.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/3d857d70-579d-4f8e-a53f-9fd76bd0a549",
+          "elapsed_seconds": 19.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/3d857d70-579d-4f8e-a53f-9fd76bd0a549/cancel",
+          "elapsed_seconds": 20.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 21.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/e60a6712-b9dd-4fc3-80e3-5acfba3a78a5",
+          "elapsed_seconds": 22.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/e60a6712-b9dd-4fc3-80e3-5acfba3a78a5/cancel",
+          "elapsed_seconds": 23.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 24.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/6c283f79-a4c2-4069-8508-82801f873512",
+          "elapsed_seconds": 25.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/6c283f79-a4c2-4069-8508-82801f873512/cancel",
+          "elapsed_seconds": 26.0,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 27.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/de309067-6494-4cab-ad94-2cddb8849dd7",
+          "elapsed_seconds": 28.016,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/de309067-6494-4cab-ad94-2cddb8849dd7/cancel",
+          "elapsed_seconds": 29.0,
+          "http_status": 200,
+          "outcome": "success"
+        }
+      ],
+      "state": {
+        "pending": [],
+        "completed": [
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "1592734d-3af0-44ea-9863-59d1754d5f24"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000001-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "40ffd72f-2b01-4b46-8518-671cbfe24ac9"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000002-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "1cff7642-b708-409d-bf56-405067d9e114"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000003-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "12057c51-58b1-41f8-a843-4da7b908d02f"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000004-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "a97f4101-c18b-477d-b640-226d8c3c1a8d"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000005-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "cc83d895-f06a-48f7-8248-6559e1c5cb3e"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000006-cancel",
+            "item": "book",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "3d857d70-579d-4f8e-a53f-9fd76bd0a549"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000007-cancel",
+            "item": "pen",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "e60a6712-b9dd-4fc3-80e3-5acfba3a78a5"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000008-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "6c283f79-a4c2-4069-8508-82801f873512"
+          },
+          {
+            "request_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009",
+            "operation_key": "load-inc-13b4e18a4f144dbe-lt-15871917e026-000009-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "de309067-6494-4cab-ad94-2cddb8849dd7"
+          }
+        ],
+        "next_index": 10
+      }
+    }
+  },
+  "model_source": "llm",
+  "tokens": 823,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "hypothesis_generations": 1,
+  "diagnosed_causes": [
+    "database_read_only",
+    "stale_route"
+  ],
+  "planning_history": [
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.route_status",
+      "facts": [
+        "route_version",
+        "route_sha256"
+      ]
+    },
+    {
+      "reason": "入口仍指向旧版本；修改后重新观察相关状态",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "按假设区分度与跨域成本排序（未提及的检查按正常结果预测）",
+      "ranking": [
+        {
+          "tool": "application.status",
+          "score": 0.4166666666666667,
+          "discrimination": 0.5,
+          "median_seconds": 1.0
+        },
+        {
+          "tool": "db.read_only_status",
+          "score": 0.4166666666666667,
+          "discrimination": 0.5,
+          "median_seconds": 1.0
+        },
+        {
+          "tool": "db.blocking_sessions",
+          "score": 0.22727272727272727,
+          "discrimination": 0.5,
+          "median_seconds": 1.0
+        },
+        {
+          "tool": "ops.route_status",
+          "score": 0.0,
+          "discrimination": 0.0,
+          "median_seconds": 1.0
+        }
+      ]
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "application.status",
+      "facts": [
+        "application_reachable",
+        "application_pool_revision",
+        "application_read_only",
+        "application_error_codes"
+      ]
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "db.read_only_status",
+      "facts": [
+        "read_only"
+      ]
+    },
+    {
+      "reason": "数据库观察确认只读；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "数据库已恢复读写，应用需建立新连接；修改后重新观察相关状态",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    }
+  ],
+  "model_calls": 1,
+  "model_source_counts": {
+    "llm": 1,
+    "rules": 0
+  },
+  "model_error": null,
+  "model_requests": [
+    {
+      "call": 1,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "facts": [],
+        "tools": [
+          {
+            "tool": "ops.containers",
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running.",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "cost": 1,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "ops.route_status",
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version.",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "cost": 1,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "application.status",
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state.",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "cost": 1,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.read_only_status",
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection.",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "cost": 1,
+            "median_seconds": 1.0
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers.",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "cost": 2,
+            "median_seconds": 1.0
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "schema": {
+        "$defs": {
+          "Hypothesis": {
+            "additionalProperties": false,
+            "properties": {
+              "cause": {
+                "title": "Cause",
+                "type": "string"
+              },
+              "because": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Because",
+                "type": "array"
+              },
+              "predictions": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                  "ops.containers": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "exited",
+                        "running"
+                      ]
+                    }
+                  },
+                  "ops.route_status": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "v1",
+                        "v2"
+                      ]
+                    }
+                  },
+                  "application.status": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "reachable",
+                        "unreachable"
+                      ]
+                    }
+                  },
+                  "db.read_only_status": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ro",
+                        "rw"
+                      ]
+                    }
+                  },
+                  "db.blocking_sessions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "blocked",
+                        "clear"
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "cause",
+              "predictions"
+            ],
+            "title": "Hypothesis",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "properties": {
+          "hypotheses": {
+            "items": {
+              "$ref": "#/$defs/Hypothesis"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Hypotheses",
+            "type": "array"
+          }
+        },
+        "required": [
+          "hypotheses"
+        ],
+        "title": "HypothesisSet",
+        "type": "object"
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 4059,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 321,
+        "prompt_tokens": 502,
+        "total_tokens": 823,
+        "prompt_tokens_details": {
+          "cached_tokens": 501
+        }
+      },
+      "content": "{\n  \"hypotheses\": [\n    {\n      \"cause\": \"容器状态异常\",\n      \"predictions\": {\n        \"ops.containers\": [\"exited\"]\n      },\n      \"because\": [\n        \"容器状态为 exited，表明应用进程已终止，可能导致订单业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"路由版本不一致\",\n      \"predictions\": {\n        \"ops.route_status\": [\"v2\"]\n      },\n      \"because\": [\n        \"路由版本为 v2，可能与预期版本不一致，导致服务不可达或性能下降。\"\n      ]\n    },\n    {\n      \"cause\": \"应用不可达\",\n      \"predictions\": {\n        \"application.status\": [\"unreachable\"]\n      },\n      \"because\": [\n        \"应用直接可达性为 unreachable，表明应用服务可能已中断或存在网络问题。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库读写分离\",\n      \"predictions\": {\n        \"db.read_only_status\": [\"ro\"]\n      },\n      \"because\": [\n        \"数据库处于 read-only 模式，可能影响订单业务的写入操作，导致业务异常。\"\n      ]\n    },\n    {\n      \"cause\": \"数据库阻塞会话\",\n      \"predictions\": {\n        \"db.blocking_sessions\": [\"blocked\"]\n      },\n      \"because\": [\n        \"存在数据库阻塞会话，可能影响订单业务的并发处理能力，导致业务异常。\"\n      ]\n    }\n  ]\n}",
+      "finish_reason": "stop",
+      "seconds": 5.906
+    }
+  ],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 4,
+    "resource_organizations": [
+      "application",
+      "database",
+      "ops",
+      "verification"
+    ],
+    "cross_organization_calls": 7,
+    "sensitive_observations": 0,
+    "weighted_probe_cost": 7,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T10:22:02.111838+00:00",
+  "elapsed_seconds": 43.234
+}

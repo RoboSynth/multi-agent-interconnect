@@ -1,0 +1,96 @@
+{
+  "id": "inc-57686eb6d967418d",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "running",
+  "started_at": "2026-10-20T07:13:18.362410+00:00",
+  "facts": [
+    {
+      "key": "container_state",
+      "value": "running",
+      "source": "ops.containers",
+      "observed_at": "2026-10-20T07:13:19.353521+00:00"
+    }
+  ],
+  "hypotheses": [],
+  "plan": [],
+  "events": [
+    {
+      "at": "2026-10-20T07:13:19.308963+00:00",
+      "event": "tool_selected",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.containers",
+        "kind": "observe",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T07:13:19.310961+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-892a61f4fd50",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T07:13:19.486089+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-892a61f4fd50",
+      "tool": "ops.containers",
+      "status": "ok"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-892a61f4fd50",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T07:13:19.310961+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-57686eb6d967418d",
+        "logical_task_id": "lt-892a61f4fd50",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T07:13:19.353521+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:304b2e6f-f330-4bb0-b008-3985b75818bf"
+      },
+      "elapsed_ms": 171.0
+    }
+  ],
+  "approvals": [],
+  "result": null,
+  "model_source": "llm",
+  "tokens": 917,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    }
+  ]
+}

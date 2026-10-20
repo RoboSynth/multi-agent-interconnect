@@ -1,0 +1,1796 @@
+{
+  "id": "inc-fcb5f358d28445d5",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "needs_attention",
+  "started_at": "2026-10-20T10:22:15.717838+00:00",
+  "facts": [
+    {
+      "key": "symptom_check_passed",
+      "value": false,
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:22:23.068709+00:00"
+    },
+    {
+      "key": "symptom_category",
+      "value": "write_error",
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:22:23.068709+00:00"
+    },
+    {
+      "key": "symptom_observation",
+      "value": {
+        "run_id": "quick-inc-fcb5f358d28445d5-lt-d14a6215bc68",
+        "duration_seconds": 3.016,
+        "requests": 3,
+        "success": 0,
+        "failed": 0,
+        "unknown": 3,
+        "completed_workflows": 0,
+        "unresolved_intents": 1,
+        "resolved_unknown_intents": 0,
+        "passed": false,
+        "events": [
+          {
+            "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+            "elapsed_seconds": 0.016,
+            "http_status": 404,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+            "phase": "create",
+            "method": "POST",
+            "path": "/orders",
+            "elapsed_seconds": 1.0,
+            "http_status": 503,
+            "outcome": "unknown"
+          },
+          {
+            "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+            "phase": "resolve",
+            "method": "GET",
+            "path": "/receipts/load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+            "elapsed_seconds": 2.016,
+            "http_status": 404,
+            "outcome": "unknown"
+          }
+        ],
+        "state": {
+          "pending": [
+            {
+              "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+              "operation_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000-cancel",
+              "item": "keyboard",
+              "quantity": 2,
+              "phase": "create",
+              "was_unknown": true,
+              "resume_phase": "create",
+              "unknown_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000"
+            }
+          ],
+          "completed": [],
+          "next_index": 1
+        }
+      },
+      "source": "order-symptom-check",
+      "observed_at": "2026-10-20T10:22:23.068709+00:00"
+    },
+    {
+      "key": "blocking_sessions",
+      "value": [],
+      "source": "db.blocking_sessions",
+      "observed_at": "2026-10-20T10:22:19.462694+00:00"
+    },
+    {
+      "key": "application_error_codes",
+      "value": [
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006",
+        "25006"
+      ],
+      "source": "application.status",
+      "observed_at": "2026-10-20T10:22:19.603535+00:00"
+    }
+  ],
+  "hypotheses": [],
+  "plan": [
+    {
+      "id": "free-38fb56de5577ed1f5d66",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "resource": "application",
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）",
+      "args": {
+        "expected_revision": 22
+      },
+      "depends_on": [],
+      "risk": "write"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T10:22:15.721848+00:00",
+      "event": "tool_selected",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 只按公共入口症状分支",
+        "tool": "incident.symptom_check"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:15.724858+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-dd6d48c1e14f",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:22:18.855852+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-dd6d48c1e14f",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:18.863859+00:00",
+      "event": "tool_selected",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "db.restore_writes",
+        "kind": "act"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:18.866862+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-f41aa18fa218",
+      "tool": "db.restore_writes",
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）"
+    },
+    {
+      "at": "2026-10-20T10:22:18.928459+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-f41aa18fa218"
+    },
+    {
+      "at": "2026-10-20T10:22:18.931451+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-a3f5df565935",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T10:22:19.330284+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-a3f5df565935",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:19.338258+00:00",
+      "event": "tool_selected",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "db.blocking_sessions",
+        "kind": "observe"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:19.342258+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-90c37b6b0bc2",
+      "tool": "db.blocking_sessions"
+    },
+    {
+      "at": "2026-10-20T10:22:19.525687+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-90c37b6b0bc2",
+      "tool": "db.blocking_sessions",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:19.528688+00:00",
+      "event": "tool_selected",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "application.status",
+        "kind": "observe"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:19.530687+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-b9475d19c902",
+      "tool": "application.status"
+    },
+    {
+      "at": "2026-10-20T10:22:19.677670+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-b9475d19c902",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:19.681663+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 22
+      },
+      "reason": {
+        "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+        "tool": "application.pool_rebuild",
+        "kind": "act"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:19.683668+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-d4005068f41c",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T10:22:19.993556+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-d4005068f41c",
+      "tool": "application.pool_rebuild",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:20.001099+00:00",
+      "event": "tool_selected",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "MR 只按公共入口症状分支",
+        "tool": "incident.symptom_check"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:20.004610+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-d14a6215bc68",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "at": "2026-10-20T10:22:23.116525+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-d14a6215bc68",
+      "tool": "incident.symptom_check",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T10:22:23.120526+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "MR 剧本结束，完整30秒独立业务验证",
+        "tool": "incident.verification"
+      }
+    },
+    {
+      "at": "2026-10-20T10:22:23.122525+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-ef374b6c1643",
+      "tool": "incident.verification"
+    },
+    {
+      "at": "2026-10-20T10:22:58.255255+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-ef374b6c1643",
+      "tool": "incident.verification",
+      "status": "ok"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-dd6d48c1e14f",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:15.724858+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-dd6d48c1e14f",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:18.808823+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "write_error",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:18.808823+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f",
+              "duration_seconds": 3.016,
+              "requests": 3,
+              "success": 0,
+              "failed": 0,
+              "unknown": 3,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "elapsed_seconds": 1.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                    "operation_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "resolve",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:18.808823+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3140.0
+    },
+    {
+      "logical_task_id": "lt-a3f5df565935",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:18.866862+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-a3f5df565935",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T10:22:19.169005+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-fcb5f358d28445d5:free-bada0e271de7f35d71f1",
+          "state": "applied",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:2b5efe4b-4a7f-4702-b26c-2ce6c01b4902"
+      },
+      "elapsed_ms": 453.0
+    },
+    {
+      "logical_task_id": "lt-90c37b6b0bc2",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:19.342258+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-90c37b6b0bc2",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "blocking_sessions",
+            "value": [],
+            "source": "db.blocking_sessions",
+            "observed_at": "2026-10-20T10:22:19.462694+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:e6ff57cf-328e-47d7-87d6-69700669979e"
+      },
+      "elapsed_ms": 187.0
+    },
+    {
+      "logical_task_id": "lt-b9475d19c902",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:19.530687+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-b9475d19c902",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_reachable",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:22:19.603535+00:00"
+          },
+          {
+            "key": "application_pool_revision",
+            "value": 22,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:22:19.603535+00:00"
+          },
+          {
+            "key": "application_read_only",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:22:19.603535+00:00"
+          },
+          {
+            "key": "application_error_codes",
+            "value": [
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006",
+              "25006"
+            ],
+            "source": "application.status",
+            "observed_at": "2026-10-20T10:22:19.603535+00:00"
+          }
+        ],
+        "local_hypotheses": [
+          {
+            "cause": "db_read_only",
+            "confidence": "high",
+            "because": [
+              "application_read_only"
+            ]
+          }
+        ]
+      },
+      "elapsed_ms": 141.0
+    },
+    {
+      "logical_task_id": "lt-d4005068f41c",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 22
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:19.683668+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-d4005068f41c",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_pool_revision",
+            "value": 23,
+            "source": "application.pool_rebuild",
+            "observed_at": "2026-10-20T10:22:19.866839+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-fcb5f358d28445d5:free-38fb56de5577ed1f5d66",
+          "state": "applied"
+        }
+      },
+      "elapsed_ms": 312.0
+    },
+    {
+      "logical_task_id": "lt-d14a6215bc68",
+      "tool": "incident.symptom_check",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:20.004610+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-d14a6215bc68",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "symptom_check_passed",
+            "value": false,
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:23.068709+00:00"
+          },
+          {
+            "key": "symptom_category",
+            "value": "write_error",
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:23.068709+00:00"
+          },
+          {
+            "key": "symptom_observation",
+            "value": {
+              "run_id": "quick-inc-fcb5f358d28445d5-lt-d14a6215bc68",
+              "duration_seconds": 3.016,
+              "requests": 3,
+              "success": 0,
+              "failed": 0,
+              "unknown": 3,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "elapsed_seconds": 0.016,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 1.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                  "elapsed_seconds": 2.016,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000",
+                    "operation_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "create",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-quick-inc-fcb5f358d28445d5-lt-dd6d48c1e14f-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-symptom-check",
+            "observed_at": "2026-10-20T10:22:23.068709+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 3125.0
+    },
+    {
+      "logical_task_id": "lt-ef374b6c1643",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "ok",
+      "started_at": "2026-10-20T10:22:23.122525+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-fcb5f358d28445d5",
+        "logical_task_id": "lt-ef374b6c1643",
+        "executor_aic": "local-verification",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "business_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.207723+00:00"
+          },
+          {
+            "key": "service_recovered",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          },
+          {
+            "key": "original_request_resolved",
+            "value": true,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          },
+          {
+            "key": "original_request_resolution",
+            "value": "not_required",
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          },
+          {
+            "key": "manual_required",
+            "value": false,
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          },
+          {
+            "key": "order_observation",
+            "value": {
+              "run_id": "inc-fcb5f358d28445d5-lt-ef374b6c1643",
+              "duration_seconds": 30.015,
+              "requests": 30,
+              "success": 0,
+              "failed": 0,
+              "unknown": 30,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "passed": false,
+              "events": [
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 0.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 1.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 2.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 3.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 4.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 5.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 6.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 7.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 8.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 9.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 10.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 11.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 12.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 13.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 14.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 15.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 16.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 17.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 18.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 19.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 20.0,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 21.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 22.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 23.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 24.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 25.015,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 26.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 27.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "create",
+                  "method": "POST",
+                  "path": "/orders",
+                  "elapsed_seconds": 28.015,
+                  "http_status": 503,
+                  "outcome": "unknown"
+                },
+                {
+                  "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "phase": "resolve",
+                  "method": "GET",
+                  "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                  "elapsed_seconds": 29.0,
+                  "http_status": 404,
+                  "outcome": "unknown"
+                }
+              ],
+              "state": {
+                "pending": [
+                  {
+                    "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                    "operation_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000-cancel",
+                    "item": "keyboard",
+                    "quantity": 2,
+                    "phase": "create",
+                    "was_unknown": true,
+                    "resume_phase": "create",
+                    "unknown_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000"
+                  }
+                ],
+                "completed": [],
+                "next_index": 1
+              }
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          },
+          {
+            "key": "carried_symptom_intents",
+            "value": {
+              "requests": 6,
+              "success": 0,
+              "failed": 0,
+              "unknown": 6,
+              "completed_workflows": 0,
+              "unresolved_intents": 1,
+              "resolved_unknown_intents": 0,
+              "duration_seconds": 5.032
+            },
+            "source": "order-workflows",
+            "observed_at": "2026-10-20T10:22:58.208711+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 35125.0
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-f41aa18fa218",
+      "incident_id": "inc-fcb5f358d28445d5",
+      "operation_id": "inc-fcb5f358d28445d5:free-bada0e271de7f35d71f1",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）",
+      "status": "approved",
+      "requested_at": "2026-10-20T10:22:18.866862+00:00",
+      "decided_at": "2026-10-20T10:22:18.917775+00:00"
+    }
+  ],
+  "result": {
+    "business_recovered": false,
+    "service_recovered": false,
+    "original_request_resolved": true,
+    "original_request_resolution": "not_required",
+    "manual_required": false,
+    "order_observation": {
+      "run_id": "inc-fcb5f358d28445d5-lt-ef374b6c1643",
+      "duration_seconds": 30.015,
+      "requests": 30,
+      "success": 0,
+      "failed": 0,
+      "unknown": 30,
+      "completed_workflows": 0,
+      "unresolved_intents": 1,
+      "resolved_unknown_intents": 0,
+      "passed": false,
+      "events": [
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 1.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 2.0,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 3.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 4.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 5.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 7.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 8.0,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 9.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 10.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 11.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 13.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 14.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 15.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 16.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 17.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 19.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 20.0,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 21.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 22.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 23.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 24.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 25.015,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 26.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 27.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 28.015,
+          "http_status": 503,
+          "outcome": "unknown"
+        },
+        {
+          "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "phase": "resolve",
+          "method": "GET",
+          "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+          "elapsed_seconds": 29.0,
+          "http_status": 404,
+          "outcome": "unknown"
+        }
+      ],
+      "state": {
+        "pending": [
+          {
+            "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+            "operation_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "create",
+            "was_unknown": true,
+            "resume_phase": "create",
+            "unknown_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000"
+          }
+        ],
+        "completed": [],
+        "next_index": 1
+      }
+    },
+    "carried_symptom_intents": {
+      "requests": 6,
+      "success": 0,
+      "failed": 0,
+      "unknown": 6,
+      "completed_workflows": 0,
+      "unresolved_intents": 1,
+      "resolved_unknown_intents": 0,
+      "duration_seconds": 5.032
+    }
+  },
+  "model_source": "rules",
+  "tokens": 0,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": null,
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "MR 只按公共入口症状分支",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "db.restore_writes",
+      "kind": "act"
+    },
+    {
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "db.blocking_sessions",
+      "kind": "observe"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "db.blocking_sessions",
+      "facts": [
+        "blocking_sessions"
+      ]
+    },
+    {
+      "reason": "MR 无可安全定位的阻塞PID，跳过结束会话",
+      "tool": "db.terminate_blocker",
+      "runbook_action_skipped": true
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "application.status",
+      "kind": "observe"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "application.status",
+      "facts": [
+        "application_reachable",
+        "application_pool_revision",
+        "application_read_only",
+        "application_error_codes"
+      ]
+    },
+    {
+      "reason": "MR 固定剧本下一步；观察仅提供PID或revision前置参数",
+      "tool": "application.pool_rebuild",
+      "kind": "act"
+    },
+    {
+      "reason": "MR 按症状执行固定剧本（仍受资源域守卫约束）；修改后重新观察相关状态",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "reason": "MR 只按公共入口症状分支",
+      "tool": "incident.symptom_check"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "incident.symptom_check",
+      "facts": [
+        "symptom_check_passed",
+        "symptom_category",
+        "symptom_observation"
+      ]
+    },
+    {
+      "reason": "MR 剧本结束，完整30秒独立业务验证",
+      "tool": "incident.verification"
+    },
+    {
+      "reason": "接收业务验证结果",
+      "tool": "incident.verification",
+      "result": {
+        "business_recovered": false,
+        "service_recovered": false,
+        "original_request_resolved": true,
+        "original_request_resolution": "not_required",
+        "manual_required": false,
+        "order_observation": {
+          "run_id": "inc-fcb5f358d28445d5-lt-ef374b6c1643",
+          "duration_seconds": 30.015,
+          "requests": 30,
+          "success": 0,
+          "failed": 0,
+          "unknown": 30,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "passed": false,
+          "events": [
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 0.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 1.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 2.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 3.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 4.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 5.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 6.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 7.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 8.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 9.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 10.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 11.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 12.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 13.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 14.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 15.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 16.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 17.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 18.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 19.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 20.0,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 21.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 22.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 23.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 24.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 25.015,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 26.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 27.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "create",
+              "method": "POST",
+              "path": "/orders",
+              "elapsed_seconds": 28.015,
+              "http_status": 503,
+              "outcome": "unknown"
+            },
+            {
+              "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "phase": "resolve",
+              "method": "GET",
+              "path": "/receipts/load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+              "elapsed_seconds": 29.0,
+              "http_status": 404,
+              "outcome": "unknown"
+            }
+          ],
+          "state": {
+            "pending": [
+              {
+                "request_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000",
+                "operation_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000-cancel",
+                "item": "keyboard",
+                "quantity": 2,
+                "phase": "create",
+                "was_unknown": true,
+                "resume_phase": "create",
+                "unknown_key": "load-inc-fcb5f358d28445d5-lt-ef374b6c1643-000000"
+              }
+            ],
+            "completed": [],
+            "next_index": 1
+          }
+        },
+        "carried_symptom_intents": {
+          "requests": 6,
+          "success": 0,
+          "failed": 0,
+          "unknown": 6,
+          "completed_workflows": 0,
+          "unresolved_intents": 1,
+          "resolved_unknown_intents": 0,
+          "duration_seconds": 5.032
+        }
+      },
+      "status": "ok"
+    }
+  ],
+  "model_calls": 0,
+  "model_source_counts": {
+    "llm": 0,
+    "rules": 0
+  },
+  "model_error": null,
+  "model_requests": [],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 3,
+    "resource_organizations": [
+      "application",
+      "database",
+      "verification"
+    ],
+    "cross_organization_calls": 4,
+    "sensitive_observations": 1,
+    "weighted_probe_cost": 5,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T10:22:58.258300+00:00",
+  "elapsed_seconds": 42.547
+}
