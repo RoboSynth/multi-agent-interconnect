@@ -150,11 +150,13 @@ async def run(args):
         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
         "M0": "frozen observation order, then confirmed repairs; no model calls",
         "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1",
-            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v2"},
+            "M2v2": "evidence-ranked-per-incident-v5", "MR": "symptom-runbook-guarded-v3"},
+        "verification_definition_id": "carried-intents-then-fresh-window-v2",
+        "verification": "intents left unknown by 3-request symptom checks are first finished with their original keys outside the scored window; a fresh 30-second / 10-workflow window is then scored; both must pass",
         "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
-        "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; when discrimination is zero, confirm one explicit unresolved prediction at a time by cost; 3-request symptom checks followed by unchanged final verification",
-        "MR": "public-symptom fixed runbook; gateway 502/504 use the entry branch, failed create without an entry error uses the write branch; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
+        "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; ranking reads tools a candidate does not mention as their healthy outcome (elimination still uses explicit predictions only); when discrimination is still zero, confirm one explicit unresolved prediction at a time by cost; entry repairs run without waiting for the model, which is awaited only before ranking and before finishing; symptom checks contact only the public entry",
+        "MR": "public-symptom fixed runbook; gateway 502/504 use the entry branch, failed create without an entry error uses the write branch; observations only supply safe blocker PID/pool revision; the symptom is re-checked after either script and each script runs at most once; same approvals, domain guards and final verification; rejected and skipped actions retained",
         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
     if model_manifest.exists():

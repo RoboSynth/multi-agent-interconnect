@@ -54,7 +54,8 @@ class OrderObserver:
         return {"request_key": key, "operation_key": key + "-cancel", "item": self.random.choice(["book", "pen", "keyboard"]),
                 "quantity": self.random.randint(1, 3), "phase": "create", "was_unknown": False}
 
-    async def observe(self, *, duration=30, requests_per_second=1, min_complete=10, stop_after_completed=None):
+    async def observe(self, *, duration=30, requests_per_second=1, min_complete=10, stop_after_completed=None,
+                      pad_to_duration=True):
         if duration <= 0 or requests_per_second <= 0:
             raise ValueError("duration and requests_per_second must be positive")
         if stop_after_completed is not None and (type(stop_after_completed) is not int or stop_after_completed < 1):
@@ -127,7 +128,8 @@ class OrderObserver:
                 events.append(sample)
                 if stop_after_completed is not None and len(self.state["completed"]) - before >= stop_after_completed:
                     break
-            await asyncio.sleep(max(0, started + duration - time.monotonic()))
+            if pad_to_duration:
+                await asyncio.sleep(max(0, started + duration - time.monotonic()))
         finally:
             if owned:
                 await client.aclose()

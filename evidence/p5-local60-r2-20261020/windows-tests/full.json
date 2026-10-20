@@ -1,0 +1,46 @@
+{
+  "scope": "full",
+  "started_at_utc": "2026-10-20T05:02:30.857000+00:00",
+  "finished_at_utc": "2026-10-20T05:04:49.679600+00:00",
+  "elapsed_seconds": 138.82900000000154,
+  "command": [
+    "D:\\AI + 开源\\team-repository-multi-agent-interconnect\\.venv\\Scripts\\python.exe",
+    "D:\\AI + 开源\\team-repository-multi-agent-interconnect\\evidence\\p5-local60-r2-20261020\\windows-tests\\run_windows_tests.py",
+    "full"
+  ],
+  "working_directory": "D:\\AI + 开源\\team-repository-multi-agent-interconnect",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "patterns": [
+    "test*.py"
+  ],
+  "tests_run": 740,
+  "failures": 0,
+  "errors": 2,
+  "skipped": 2,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "failure_cases": [],
+  "error_cases": [
+    {
+      "test": "test_evaluation_report_integrity (unittest.loader._FailedTest.test_evaluation_report_integrity)",
+      "traceback": "ImportError: Failed to import test module: test_evaluation_report_integrity\nTraceback (most recent call last):\n  File \"C:\\Users\\16080\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\unittest\\loader.py\", line 396, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\16080\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\unittest\\loader.py\", line 339, in _get_module_from_name\n    __import__(name)\n  File \"D:\\AI + 开源\\team-repository-multi-agent-interconnect\\tests\\test_evaluation_report_integrity.py\", line 12, in <module>\n    from eval.plot_results import plot\n  File \"D:\\AI + 开源\\team-repository-multi-agent-interconnect\\eval\\plot_results.py\", line 14, in <module>\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n\n"
+    },
+    {
+      "test": "test_absent_inputs_and_empty_latency_export_unknown_and_do_not_overwrite (test_stability_bundle.StabilityBundleTests.test_absent_inputs_and_empty_latency_export_unknown_and_do_not_overwrite)",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\AI + 开源\\team-repository-multi-agent-interconnect\\tests\\test_stability_bundle.py\", line 128, in test_absent_inputs_and_empty_latency_export_unknown_and_do_not_overwrite\n    artifacts = write_bundle(result, output)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\AI + 开源\\team-repository-multi-agent-interconnect\\eval\\stability_bundle.py\", line 302, in write_bundle\n    _plot(bundle, output)\n  File \"D:\\AI + 开源\\team-repository-multi-agent-interconnect\\eval\\stability_bundle.py\", line 228, in _plot\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n"
+    }
+  ],
+  "skipped_cases": [
+    {
+      "test": "test_full_tool_scope_reaches_report_and_exported_figure (test_evaluation_reports.EvaluationReportTests.test_full_tool_scope_reaches_report_and_exported_figure)",
+      "reason": "figure checks require requirements-report.txt"
+    },
+    {
+      "test": "test_real_venv_launcher_and_child_close_without_service_or_network (test_native_app_stop.RealVenvChildTests.test_real_venv_launcher_and_child_close_without_service_or_network)",
+      "reason": "Explicit opt-in for a harmless fixture venv launcher and sleep child"
+    }
+  ],
+  "successful": false,
+  "exit_code": 1
+}

@@ -169,16 +169,29 @@ class VerificationPartner:
         # A repeated verification must exercise fresh writes, not replay receipts
         # from a previous healthy window under the same incident identifier.
         observation_id = f"{task.incident_id}-{task.logical_task_id}"
+        # Intents left unknown by intermediate symptom checks are first finished
+        # with their ORIGINAL keys, outside the scored window; a fresh 30-second
+        # window then measures service health. Both must pass, so no method is
+        # charged a scored request slot for an earlier check, and none is excused.
         pending_symptoms = self.symptom_states.get(task.incident_id, {})
-        continuation = {"state": pending_symptoms} if pending_symptoms.get("pending") else {}
-        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2", **continuation).observe(
+        carried = None
+        if pending_symptoms.get("pending"):
+            count = len(pending_symptoms["pending"])
+            carried = await OrderObserver(self.base_url, run_id=observation_id + "-carried", expected_api_version="v2",
+                state=pending_symptoms).observe(duration=4 * count + 2, min_complete=count,
+                                                stop_after_completed=count, pad_to_duration=False)
+            self.symptom_states[task.incident_id] = carried["state"]
+        carried_resolved = carried is None or carried["unresolved_intents"] == 0
+        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2").observe(
             duration=self.duration, min_complete=max(1, int(self.duration // 3)))
-        if continuation:
-            self.symptom_states[task.incident_id] = summary["state"]
-        service_recovered = summary["passed"] is True
+        service_recovered = summary["passed"] is True and carried_resolved
         result["facts"] = [{"key": key, "value": value, "source": "order-workflows", "observed_at": utc_now()}
             for key, value in {"business_recovered": service_recovered and original_resolved,
                 "service_recovered": service_recovered, "original_request_resolved": original_resolved,
                 "original_request_resolution": resolution, "manual_required": not original_resolved,
-                "order_observation": summary}.items()]
+                "order_observation": summary,
+                "carried_symptom_intents": None if carried is None else {
+                    key: carried[key] for key in ("requests", "success", "failed", "unknown", "completed_workflows",
+                                                  "unresolved_intents", "resolved_unknown_intents", "duration_seconds")}
+                }.items()]
         return result

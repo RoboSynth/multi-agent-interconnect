@@ -59,7 +59,9 @@ class BlindRunbookSelector:
                     # never invent a PID or bypass the domain's policy.
                     self.pending = ["db.restore_writes", "db.blocking_sessions", "db.terminate_blocker",
                                     "application.status", "application.pool_rebuild"]
-                    self.phase = "verify"
+                    # Re-check after either script, like a written runbook; each
+                    # script still runs at most once, so the loop is bounded.
+                    self.phase = "symptom"
                     continue
                 self.phase = "verify"
             planner.history.append({"reason": "MR 剧本结束，完整30秒独立业务验证", "tool": "incident.verification"})

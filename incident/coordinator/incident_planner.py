@@ -4,6 +4,13 @@ from dataclasses import replace
 from .hypothesis import OBSERVABLE_TOOLS
 from .planner import EvidencePlanner, PROBES, category, rank_probes
 
+# Probe selection reads each candidate as a single cause: a tool it says nothing
+# about is expected to show its healthy outcome. Only ranking uses this view;
+# elimination still uses explicit predictions, so coexisting faults are kept.
+HEALTHY_OUTCOMES = {"ops.containers": "running", "ops.route_status": "v2",
+                    "application.status": "reachable", "db.read_only_status": "rw",
+                    "db.blocking_sessions": "clear"}
+
 
 class IncidentPlanner(EvidencePlanner):
     # These are declared resource organizations, not verified legal entities.
@@ -37,6 +44,16 @@ class IncidentPlanner(EvidencePlanner):
                 result.append(hypothesis)
         return result
 
+    def ranking_view(self, candidates):
+        view = []
+        for hypothesis in candidates:
+            predictions = dict(hypothesis.predictions)
+            for probe in self.probes:
+                if probe.tool not in predictions and probe.tool in HEALTHY_OUTCOMES:
+                    predictions[probe.tool] = [HEALTHY_OUTCOMES[probe.tool]]
+            view.append(hypothesis.model_copy(update={"predictions": predictions}))
+        return view
+
     def next_probes(self, hypotheses, available=None, *, maximum=3):
         required = self.required_probe(available)
         if required is not None:
@@ -44,8 +61,9 @@ class IncidentPlanner(EvidencePlanner):
         probes = [probe for probe in self.probes if probe.tool not in self.observed
                   and (available is None or probe.tool in available)]
         candidates = self.candidates(hypotheses)
-        ranked = rank_probes(candidates, probes)
-        self.history.append({"reason": "按假设区分度与跨域成本排序", "ranking": ranked})
+        ranked = rank_probes(self.ranking_view(candidates), probes)
+        self.history.append({"reason": "按假设区分度与跨域成本排序（未提及的检查按正常结果预测）",
+                             "ranking": ranked})
         # One outstanding task per resource partner. Both transports select
         # one active partner per prefix; never overlap two ops/db requests.
         selected, domains = [], set()

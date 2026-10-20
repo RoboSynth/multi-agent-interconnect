@@ -298,9 +298,9 @@ class IncidentCoordinator:
             # An old deployment must not silently substitute a full verify or
             # claim that the new three-request check happened.
             raise RuntimeError("M2v2 requires incident.symptom_check on the verification partner")
-        tools = [tool for tool in ("application.status", "incident.symptom_check") if tool in available]
-        products = await self._observe_batch(state, planner, tools, local_hypotheses)
-        symptom = next(product for tool, product in zip(tools, products) if tool == "incident.symptom_check")
+        # Only the public entry is re-checked. Resource partners are contacted again
+        # only when the planner needs a fact, never as a side effect of the check.
+        symptom, = await self._observe_batch(state, planner, ["incident.symptom_check"], local_hypotheses)
         facts = {fact["key"]: fact["value"] for fact in symptom["facts"]}
         passed = facts.get("symptom_check_passed") is True
         self.event(state, "quick_symptom_check", passed=passed,
@@ -322,18 +322,25 @@ class IncidentCoordinator:
                 probe_costs={probe.tool: probe.cost for probe in planner.probes}) if self.generate_hypotheses else []
         # Initial context is captured before entry observations. Their ordering
         # remains fixed, and the same ops partner is never called concurrently.
+        # The model is off the critical path: entry faults are repaired from facts
+        # while it runs, and it is awaited only when a ranking decision needs it.
         model = asyncio.create_task(generate("incident_start"))
         entry = [tool for tool in ("ops.containers", "ops.route_status") if tool in available]
         try:
-            results = await asyncio.gather(model, self._observe_batch(state, planner, entry, local_hypotheses),
-                                           return_exceptions=True)
-            for result in results:
-                if isinstance(result, BaseException):
-                    raise result
+            await self._planning_loop(state, planner, available, local_hypotheses, model,
+                                      lambda: hypotheses, generate, lambda: (generations, generation_evidence),
+                                      entry)
+            # Usage must be complete even when no ranking was needed.
+            await model
         finally:
             if not model.done():
                 model.cancel()
                 await asyncio.gather(model, return_exceptions=True)
+        state["hypothesis_generations"] = generations
+
+    async def _planning_loop(self, state, planner, available, local_hypotheses, model, current, generate,
+                             generation_state, entry):
+        await self._observe_batch(state, planner, entry, local_hypotheses)
         quick_passed = False
         while True:
             diagnosed = set(state.get("diagnosed_causes", []))
@@ -358,11 +365,18 @@ class IncidentCoordinator:
             if quick_passed and required is None:
                 selected = []
             else:
+                if not required and not model.done():
+                    self.event(state, "hypothesis_wait", reason="ranking_needs_hypotheses")
+                    await model
+                hypotheses = current()
+                generations, generation_evidence = generation_state()
                 current_evidence = json.dumps(list(planner.facts.values()), sort_keys=True)
                 if (hypotheses and not planner.candidates(hypotheses) and generations < 2
                         and current_evidence != generation_evidence):
                     await generate("all_candidates_contradicted_by_new_evidence")
+                    hypotheses = current()
                 selected = [required] if required else planner.next_probes(hypotheses, available, maximum=3)
+            hypotheses = current()
             state["hypotheses"] = [hypothesis.model_dump() for hypothesis in planner.candidates(hypotheses)]
             state["planning_history"] = planner.history
             if not selected:
@@ -370,7 +384,6 @@ class IncidentCoordinator:
                 state["status"] = "completed" if facts.get("business_recovered") is True else "needs_attention"
                 break
             await self._observe_batch(state, planner, selected, local_hypotheses)
-        state["hypothesis_generations"] = generations
 
     async def run(self, state):
         planner = self.planner_factory()
