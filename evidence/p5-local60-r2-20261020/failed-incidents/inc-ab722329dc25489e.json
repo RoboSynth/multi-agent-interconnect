@@ -1,0 +1,4043 @@
+{
+  "id": "inc-ab722329dc25489e",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "needs_attention",
+  "started_at": "2026-10-20T05:27:21.197320+00:00",
+  "facts": [],
+  "hypotheses": [],
+  "plan": [
+    {
+      "id": "free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "kind": "act",
+      "resource": "application",
+      "reason": "M1 模型选择下一次资源操作",
+      "args": {},
+      "depends_on": [],
+      "risk": "high"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T05:27:21.818981+00:00",
+      "event": "tool_selected",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.containers",
+        "kind": "observe",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:21.819982+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-6d9272edf270",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T05:27:21.946643+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-6d9272edf270",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:27:22.520736+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "args": {
+          "expected_revision": 1
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:22.522737+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-99ecb7954853",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T05:27:22.659423+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-99ecb7954853",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "at": "2026-10-20T05:27:22.661427+00:00",
+      "event": "tool_feedback",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected",
+      "result": null
+    },
+    {
+      "at": "2026-10-20T05:27:23.064157+00:00",
+      "event": "tool_selected",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.route_rollback",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:23.066062+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-47b26f7403ca",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "at": "2026-10-20T05:27:23.760871+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-47b26f7403ca",
+      "tool": "ops.route_rollback",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:27:24.236751+00:00",
+      "event": "tool_selected",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "db.restore_writes",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:24.239672+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-4ab4c1b07b6f",
+      "tool": "db.restore_writes",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T05:27:24.296685+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-4ab4c1b07b6f"
+    },
+    {
+      "at": "2026-10-20T05:27:24.298685+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-fdd0e49420eb",
+      "tool": "db.restore_writes"
+    },
+    {
+      "at": "2026-10-20T05:27:24.491920+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-fdd0e49420eb",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:27:25.157107+00:00",
+      "event": "tool_selected",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "application.pool_rebuild",
+        "kind": "act",
+        "args": {
+          "expected_revision": 1
+        }
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:25.159108+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-c1a2c1af167b",
+      "tool": "application.pool_rebuild"
+    },
+    {
+      "at": "2026-10-20T05:27:25.295556+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-c1a2c1af167b",
+      "tool": "application.pool_rebuild",
+      "status": "rejected"
+    },
+    {
+      "at": "2026-10-20T05:27:25.297558+00:00",
+      "event": "tool_feedback",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected",
+      "result": null
+    },
+    {
+      "at": "2026-10-20T05:27:25.708646+00:00",
+      "event": "tool_selected",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "ops.restart",
+        "kind": "act",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:25.710646+00:00",
+      "event": "approval_requested",
+      "approval_id": "approval-3742da3e3d34",
+      "tool": "ops.restart",
+      "reason": "M1 模型选择下一次资源操作"
+    },
+    {
+      "at": "2026-10-20T05:27:25.790342+00:00",
+      "event": "approval_granted",
+      "approval_id": "approval-3742da3e3d34"
+    },
+    {
+      "at": "2026-10-20T05:27:25.792331+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-8f15b5139c9a",
+      "tool": "ops.restart"
+    },
+    {
+      "at": "2026-10-20T05:27:27.706458+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-8f15b5139c9a",
+      "tool": "ops.restart",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:27:28.679423+00:00",
+      "event": "tool_selected",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {},
+      "reason": {
+        "reason": "M1 模型自由选择观察、操作或验证",
+        "tool": "incident.verification",
+        "kind": "verify",
+        "args": {}
+      }
+    },
+    {
+      "at": "2026-10-20T05:27:28.681534+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-0510b8016d1c",
+      "tool": "incident.verification"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-6d9272edf270",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:27:21.819982+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-6d9272edf270",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-99ecb7954853",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "status": "rejected",
+      "started_at": "2026-10-20T05:27:22.522737+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-99ecb7954853",
+        "executor_aic": "local-application",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+          "state": "rejected_precondition"
+        }
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-47b26f7403ca",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:27:23.066062+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-47b26f7403ca",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v2",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T05:27:23.699040+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T05:27:23.699040+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-ab722329dc25489e:free-bb453f1a23b38cadd3b8",
+          "state": "applied",
+          "before": {
+            "value": "v1"
+          },
+          "after": {
+            "value": "v2"
+          }
+        },
+        "evidence_ref": "amp:audit:10f59451-04dd-43a4-a703-6b578d255263"
+      },
+      "elapsed_ms": 703.0
+    },
+    {
+      "logical_task_id": "lt-fdd0e49420eb",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:27:24.238672+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-fdd0e49420eb",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-20T05:27:24.407727+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-ab722329dc25489e:free-bada0e271de7f35d71f1",
+          "state": "applied",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:0ea0bd37-b61c-46d8-9190-1cb7440ab6f5"
+      },
+      "elapsed_ms": 266.0
+    },
+    {
+      "logical_task_id": "lt-c1a2c1af167b",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      },
+      "status": "rejected",
+      "started_at": "2026-10-20T05:27:25.159108+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-c1a2c1af167b",
+        "executor_aic": "local-application",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+          "state": "rejected_precondition"
+        }
+      },
+      "elapsed_ms": 141.0
+    },
+    {
+      "logical_task_id": "lt-8f15b5139c9a",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:27:25.710646+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-ab722329dc25489e",
+        "logical_task_id": "lt-8f15b5139c9a",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.restart",
+            "observed_at": "2026-10-20T05:27:27.646344+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-ab722329dc25489e:free-449f3a08acf80f4fe073",
+          "state": "applied",
+          "before": {
+            "value": null
+          },
+          "after": {
+            "value": null
+          }
+        },
+        "evidence_ref": "amp:audit:39a6b8f6-60f4-46c3-9757-a33c479f7d84"
+      },
+      "elapsed_ms": 1984.0
+    },
+    {
+      "logical_task_id": "lt-0510b8016d1c",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "failed",
+      "started_at": "2026-10-20T05:27:28.681534+00:00",
+      "error": "ConnectionError",
+      "elapsed_ms": 0.0
+    }
+  ],
+  "approvals": [
+    {
+      "id": "approval-4ab4c1b07b6f",
+      "incident_id": "inc-ab722329dc25489e",
+      "operation_id": "inc-ab722329dc25489e:free-bada0e271de7f35d71f1",
+      "tool": "db.restore_writes",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T05:27:24.238672+00:00",
+      "decided_at": "2026-10-20T05:27:24.296685+00:00"
+    },
+    {
+      "id": "approval-3742da3e3d34",
+      "incident_id": "inc-ab722329dc25489e",
+      "operation_id": "inc-ab722329dc25489e:free-449f3a08acf80f4fe073",
+      "tool": "ops.restart",
+      "args": {},
+      "reason": "M1 模型选择下一次资源操作",
+      "status": "approved",
+      "requested_at": "2026-10-20T05:27:25.710646+00:00",
+      "decided_at": "2026-10-20T05:27:25.790342+00:00"
+    }
+  ],
+  "result": null,
+  "model_source": "llm",
+  "tokens": 11895,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": "ConnectionError: selected local domain worker is unavailable",
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [],
+  "planning_history": [
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {}
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      }
+    },
+    {
+      "reason": "参与者拒绝或只读工具错误，反馈给下一次选择",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "db.restore_writes",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "db.restore_writes"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "args": {
+        "expected_revision": 1
+      }
+    },
+    {
+      "reason": "参与者拒绝或只读工具错误，反馈给下一次选择",
+      "tool": "application.pool_rebuild",
+      "kind": "act",
+      "status": "rejected"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "ops.restart",
+      "kind": "act",
+      "args": {}
+    },
+    {
+      "reason": "M1 模型选择下一次资源操作；修改后重新观察相关状态",
+      "tool": "ops.restart"
+    },
+    {
+      "reason": "M1 模型自由选择观察、操作或验证",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {}
+    }
+  ],
+  "model_calls": 7,
+  "model_source_counts": {
+    "llm": 7,
+    "rules": 0
+  },
+  "model_error": null,
+  "model_requests": [
+    {
+      "call": 1,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [],
+        "local_hypotheses": [],
+        "history": []
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7224,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 900,
+        "total_tokens": 917,
+        "prompt_tokens_details": {
+          "cached_tokens": 878
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.containers\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.625
+    },
+    {
+      "call": 2,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 7890,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1168,
+        "total_tokens": 1196,
+        "prompt_tokens_details": {
+          "cached_tokens": 878
+        }
+      },
+      "content": "{\n  \"tool\": \"application.pool_rebuild\",\n  \"args\": {\n    \"expected_revision\": 1\n  }\n}",
+      "finish_reason": "stop",
+      "seconds": 0.563
+    },
+    {
+      "call": 3,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-99ecb7954853",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 8381,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1336,
+        "total_tokens": 1354,
+        "prompt_tokens_details": {
+          "cached_tokens": 1157
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.route_rollback\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.407
+    },
+    {
+      "call": 4,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-99ecb7954853",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-47b26f7403ca",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:10f59451-04dd-43a4-a703-6b578d255263"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 9282,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 1742,
+        "total_tokens": 1760,
+        "prompt_tokens_details": {
+          "cached_tokens": 1325
+        }
+      },
+      "content": "{\n  \"tool\": \"db.restore_writes\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.468
+    },
+    {
+      "call": 5,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-99ecb7954853",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-47b26f7403ca",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:10f59451-04dd-43a4-a703-6b578d255263"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-fdd0e49420eb",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T05:27:24.407727+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": true
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:0ea0bd37-b61c-46d8-9190-1cb7440ab6f5"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 9985,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 2018,
+        "total_tokens": 2046,
+        "prompt_tokens_details": {
+          "cached_tokens": 1731
+        }
+      },
+      "content": "{\n  \"tool\": \"application.pool_rebuild\",\n  \"args\": {\n    \"expected_revision\": 1\n  }\n}",
+      "finish_reason": "stop",
+      "seconds": 0.656
+    },
+    {
+      "call": 6,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:27:21.863063+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-99ecb7954853",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-47b26f7403ca",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:10f59451-04dd-43a4-a703-6b578d255263"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-fdd0e49420eb",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T05:27:24.407727+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": true
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:0ea0bd37-b61c-46d8-9190-1cb7440ab6f5"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-c1a2c1af167b",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 10476,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 2185,
+        "total_tokens": 2201,
+        "prompt_tokens_details": {
+          "cached_tokens": 2007
+        }
+      },
+      "content": "{\n  \"tool\": \"ops.restart\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.406
+    },
+    {
+      "call": 7,
+      "model": "Qwen3-1.7B-Q8_0",
+      "sampling": {
+        "seed": 42,
+        "temperature": 0,
+        "top_p": 1,
+        "max_tokens": 768
+      },
+      "context": {
+        "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+        "available_tools": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "container_state",
+            "outcomes": [
+              "exited",
+              "running"
+            ],
+            "description": "Observe whether the managed application process is running."
+          },
+          {
+            "tool": "ops.route_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "route_version",
+            "outcomes": [
+              "v1",
+              "v2"
+            ],
+            "description": "Observe the public gateway upstream application version."
+          },
+          {
+            "tool": "application.status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "application_reachable",
+            "outcomes": [
+              "reachable",
+              "unreachable"
+            ],
+            "description": "Observe direct application reachability and connection-pool state."
+          },
+          {
+            "tool": "db.read_only_status",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "read_only",
+            "outcomes": [
+              "ro",
+              "rw"
+            ],
+            "description": "Observe actual database read-only mode on a fresh connection."
+          },
+          {
+            "tool": "db.blocking_sessions",
+            "kind": "observe",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "fact": "blocking_sessions",
+            "outcomes": [
+              "blocked",
+              "clear"
+            ],
+            "description": "Observe whether the application has database lock blockers."
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restart the managed application process. Requires approval; do not restart a healthy process without evidence."
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore the registered v2 gateway route."
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Restore database writes. Requires approval and resource-domain preconditions."
+          },
+          {
+            "tool": "db.terminate_blocker",
+            "kind": "act",
+            "risk": "high",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pid": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "pid"
+              ]
+            },
+            "description": "Terminate a diagnosed application blocking session, not its waiting session. Requires approval; use observed blocking_pids."
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "risk": "write",
+            "input_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "expected_revision": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "expected_revision"
+              ]
+            },
+            "description": "Rebuild application connections using the revision from application.status. A stale read-only pool can remain after the database recovers."
+          },
+          {
+            "tool": "incident.verification",
+            "kind": "verify",
+            "input_schema": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            },
+            "description": "Test fresh order workflows for 30 seconds and resolve any supplied original request. Select after evidence and repairs indicate recovery."
+          }
+        ],
+        "facts": [],
+        "local_hypotheses": [],
+        "history": [
+          {
+            "tool": "ops.containers",
+            "kind": "observe",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-6d9272edf270",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.containers",
+                  "observed_at": "2026-10-20T05:27:21.863063+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "evidence_ref": "amp:audit:977817f2-54d7-4943-bd20-0cb77fd2eedf"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-99ecb7954853",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.route_rollback",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-47b26f7403ca",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "route_version",
+                  "value": "v2",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                },
+                {
+                  "key": "route_sha256",
+                  "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+                  "source": "ops.route_rollback",
+                  "observed_at": "2026-10-20T05:27:23.699040+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bb453f1a23b38cadd3b8",
+                "state": "applied",
+                "before": {
+                  "value": "v1"
+                },
+                "after": {
+                  "value": "v2"
+                }
+              },
+              "evidence_ref": "amp:audit:10f59451-04dd-43a4-a703-6b578d255263"
+            }
+          },
+          {
+            "tool": "db.restore_writes",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-fdd0e49420eb",
+              "executor_aic": "local-database-primary",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "read_only",
+                  "value": false,
+                  "source": "db.restore_writes",
+                  "observed_at": "2026-10-20T05:27:24.407727+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-bada0e271de7f35d71f1",
+                "state": "applied",
+                "before": {
+                  "value": true
+                },
+                "after": {
+                  "value": false
+                }
+              },
+              "evidence_ref": "amp:audit:0ea0bd37-b61c-46d8-9190-1cb7440ab6f5"
+            }
+          },
+          {
+            "tool": "application.pool_rebuild",
+            "kind": "act",
+            "args": {
+              "expected_revision": 1
+            },
+            "status": "rejected",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-c1a2c1af167b",
+              "executor_aic": "local-application",
+              "status": "rejected",
+              "facts": [],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-14cd980ec708d9a3022e",
+                "state": "rejected_precondition"
+              }
+            }
+          },
+          {
+            "tool": "ops.restart",
+            "kind": "act",
+            "args": {},
+            "status": "ok",
+            "product": {
+              "schema_version": "ifc/1.0",
+              "incident_id": "inc-ab722329dc25489e",
+              "logical_task_id": "lt-8f15b5139c9a",
+              "executor_aic": "local-ops",
+              "status": "ok",
+              "facts": [
+                {
+                  "key": "container_state",
+                  "value": "running",
+                  "source": "ops.restart",
+                  "observed_at": "2026-10-20T05:27:27.646344+00:00"
+                }
+              ],
+              "local_hypotheses": [],
+              "operation": {
+                "operation_id": "inc-ab722329dc25489e:free-449f3a08acf80f4fe073",
+                "state": "applied",
+                "before": {
+                  "value": null
+                },
+                "after": {
+                  "value": null
+                }
+              },
+              "evidence_ref": "amp:audit:39a6b8f6-60f4-46c3-9757-a33c479f7d84"
+            }
+          }
+        ]
+      },
+      "schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.containers"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.read_only_status"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.blocking_sessions"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.restart"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "ops.route_rollback"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.restore_writes"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "db.terminate_blocker"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "pid": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "pid"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "application.pool_rebuild"
+              },
+              "args": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "expected_revision": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "expected_revision"
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tool",
+              "args"
+            ],
+            "properties": {
+              "tool": {
+                "const": "incident.verification"
+              },
+              "args": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        ]
+      },
+      "max_tokens_sent": 768,
+      "prompt_token_upper_bound": 11024,
+      "status": "validated",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 2404,
+        "total_tokens": 2421,
+        "prompt_tokens_details": {
+          "cached_tokens": 878
+        }
+      },
+      "content": "{\n  \"tool\": \"incident.verification\",\n  \"args\": {}\n}",
+      "finish_reason": "stop",
+      "seconds": 0.969
+    }
+  ],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 1,
+    "resource_organizations": [
+      "ops"
+    ],
+    "cross_organization_calls": 1,
+    "sensitive_observations": 0,
+    "weighted_probe_cost": 1,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T05:27:28.684633+00:00",
+  "elapsed_seconds": 7.485
+}

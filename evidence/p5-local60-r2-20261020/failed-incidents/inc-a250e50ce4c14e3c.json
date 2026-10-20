@@ -1,0 +1,614 @@
+{
+  "id": "inc-a250e50ce4c14e3c",
+  "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
+  "status": "needs_attention",
+  "started_at": "2026-10-20T05:20:20.926139+00:00",
+  "facts": [
+    {
+      "key": "container_state",
+      "value": "running",
+      "source": "ops.containers",
+      "observed_at": "2026-10-20T05:20:20.971757+00:00"
+    },
+    {
+      "key": "application_reachable",
+      "value": true,
+      "source": "application.status",
+      "observed_at": "2026-10-20T05:20:21.314421+00:00"
+    },
+    {
+      "key": "application_pool_revision",
+      "value": 13,
+      "source": "application.status",
+      "observed_at": "2026-10-20T05:20:21.314421+00:00"
+    },
+    {
+      "key": "application_read_only",
+      "value": false,
+      "source": "application.status",
+      "observed_at": "2026-10-20T05:20:21.314421+00:00"
+    },
+    {
+      "key": "application_error_codes",
+      "value": [],
+      "source": "application.status",
+      "observed_at": "2026-10-20T05:20:21.314421+00:00"
+    },
+    {
+      "key": "read_only",
+      "value": false,
+      "source": "db.read_only_status",
+      "observed_at": "2026-10-20T05:20:21.438682+00:00"
+    },
+    {
+      "key": "blocking_sessions",
+      "value": [],
+      "source": "db.blocking_sessions",
+      "observed_at": "2026-10-20T05:20:21.559430+00:00"
+    },
+    {
+      "key": "route_version",
+      "value": "v2",
+      "source": "ops.route_status",
+      "observed_at": "2026-10-20T05:20:22.366069+00:00"
+    },
+    {
+      "key": "route_sha256",
+      "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+      "source": "ops.route_status",
+      "observed_at": "2026-10-20T05:20:22.366069+00:00"
+    }
+  ],
+  "hypotheses": [
+    {
+      "cause": "healthy_or_other",
+      "because": [],
+      "predictions": {
+        "ops.containers": [
+          "running"
+        ],
+        "ops.route_status": [
+          "v2"
+        ],
+        "db.read_only_status": [
+          "rw"
+        ],
+        "db.blocking_sessions": [
+          "clear"
+        ]
+      }
+    }
+  ],
+  "plan": [
+    {
+      "id": "route",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "resource": "gateway",
+      "reason": "入口仍指向旧版本",
+      "args": {},
+      "depends_on": [],
+      "risk": "write"
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-20T05:20:20.928131+00:00",
+      "event": "probe_selected",
+      "tool": "ops.containers",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "ops.containers"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:20.929131+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-f2785bee19e5",
+      "tool": "ops.containers"
+    },
+    {
+      "at": "2026-10-20T05:20:21.053924+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-f2785bee19e5",
+      "tool": "ops.containers",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:21.056924+00:00",
+      "event": "probe_selected",
+      "tool": "ops.route_status",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "ops.route_status"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:21.058925+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-540f1a60fbac",
+      "tool": "ops.route_status"
+    },
+    {
+      "at": "2026-10-20T05:20:21.243732+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-540f1a60fbac",
+      "tool": "ops.route_status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:21.247731+00:00",
+      "event": "probe_selected",
+      "tool": "application.status",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "application.status"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:21.248732+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-58e183dac6bb",
+      "tool": "application.status"
+    },
+    {
+      "at": "2026-10-20T05:20:21.368714+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-58e183dac6bb",
+      "tool": "application.status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:21.372662+00:00",
+      "event": "probe_selected",
+      "tool": "db.read_only_status",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "db.read_only_status"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:21.373662+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-48d225a55f03",
+      "tool": "db.read_only_status"
+    },
+    {
+      "at": "2026-10-20T05:20:21.492468+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-48d225a55f03",
+      "tool": "db.read_only_status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:21.495468+00:00",
+      "event": "probe_selected",
+      "tool": "db.blocking_sessions",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "db.blocking_sessions"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:21.497468+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-6d05079f1bf5",
+      "tool": "db.blocking_sessions"
+    },
+    {
+      "at": "2026-10-20T05:20:21.611434+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-6d05079f1bf5",
+      "tool": "db.blocking_sessions",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:21.614447+00:00",
+      "event": "plan_adjusted",
+      "reason": "入口仍指向旧版本",
+      "node": {
+        "id": "route",
+        "tool": "ops.route_rollback",
+        "kind": "act",
+        "resource": "gateway",
+        "reason": "入口仍指向旧版本",
+        "args": {},
+        "depends_on": [],
+        "risk": "write"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:21.616434+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-9995aa250d61",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "at": "2026-10-20T05:20:22.321555+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-9995aa250d61",
+      "tool": "ops.route_rollback",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:22.324555+00:00",
+      "event": "probe_selected",
+      "tool": "ops.route_status",
+      "reason": {
+        "reason": "M0 按冻结顺序遍历观察",
+        "tool": "ops.route_status"
+      }
+    },
+    {
+      "at": "2026-10-20T05:20:22.325556+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-44a98797b79f",
+      "tool": "ops.route_status"
+    },
+    {
+      "at": "2026-10-20T05:20:22.445392+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-44a98797b79f",
+      "tool": "ops.route_status",
+      "status": "ok"
+    },
+    {
+      "at": "2026-10-20T05:20:22.449393+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-ec1031514c5d",
+      "tool": "incident.verification"
+    }
+  ],
+  "tasks": [
+    {
+      "logical_task_id": "lt-f2785bee19e5",
+      "tool": "ops.containers",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:20.929131+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-f2785bee19e5",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "container_state",
+            "value": "running",
+            "source": "ops.containers",
+            "observed_at": "2026-10-20T05:20:20.971757+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:da9c3fc4-8bfa-4f52-b896-dbe2ef322da9"
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-540f1a60fbac",
+      "tool": "ops.route_status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:21.058925+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-540f1a60fbac",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v1",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T05:20:21.099923+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "37ba27c94cfaa200d03723158f87bed4192560632bf4a8e3024a3e3e8a7ec8f2",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T05:20:21.099923+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:2023c9ed-4e43-42d0-8a5f-6d222fde2855"
+      },
+      "elapsed_ms": 187.0
+    },
+    {
+      "logical_task_id": "lt-58e183dac6bb",
+      "tool": "application.status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:21.248732+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-58e183dac6bb",
+        "executor_aic": "local-application",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "application_reachable",
+            "value": true,
+            "source": "application.status",
+            "observed_at": "2026-10-20T05:20:21.314421+00:00"
+          },
+          {
+            "key": "application_pool_revision",
+            "value": 13,
+            "source": "application.status",
+            "observed_at": "2026-10-20T05:20:21.314421+00:00"
+          },
+          {
+            "key": "application_read_only",
+            "value": false,
+            "source": "application.status",
+            "observed_at": "2026-10-20T05:20:21.314421+00:00"
+          },
+          {
+            "key": "application_error_codes",
+            "value": [],
+            "source": "application.status",
+            "observed_at": "2026-10-20T05:20:21.314421+00:00"
+          }
+        ],
+        "local_hypotheses": []
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-48d225a55f03",
+      "tool": "db.read_only_status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:21.373662+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-48d225a55f03",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.read_only_status",
+            "observed_at": "2026-10-20T05:20:21.438682+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:b792c9a2-d604-47b9-921a-9025df4b82de"
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-6d05079f1bf5",
+      "tool": "db.blocking_sessions",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:21.497468+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-6d05079f1bf5",
+        "executor_aic": "local-database-primary",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "blocking_sessions",
+            "value": [],
+            "source": "db.blocking_sessions",
+            "observed_at": "2026-10-20T05:20:21.559430+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:a4ba32e2-84c3-42ba-aa36-b9d02a70c5e5"
+      },
+      "elapsed_ms": 109.0
+    },
+    {
+      "logical_task_id": "lt-9995aa250d61",
+      "tool": "ops.route_rollback",
+      "kind": "act",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:21.616434+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-9995aa250d61",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v2",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T05:20:22.260980+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+            "source": "ops.route_rollback",
+            "observed_at": "2026-10-20T05:20:22.260980+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "inc-a250e50ce4c14e3c:route",
+          "state": "applied",
+          "before": {
+            "value": "v1"
+          },
+          "after": {
+            "value": "v2"
+          }
+        },
+        "evidence_ref": "amp:audit:9136021a-b867-4a6e-9548-585aff2a9db6"
+      },
+      "elapsed_ms": 703.0
+    },
+    {
+      "logical_task_id": "lt-44a98797b79f",
+      "tool": "ops.route_status",
+      "kind": "observe",
+      "args": {},
+      "status": "ok",
+      "started_at": "2026-10-20T05:20:22.325556+00:00",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "inc-a250e50ce4c14e3c",
+        "logical_task_id": "lt-44a98797b79f",
+        "executor_aic": "local-ops",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "route_version",
+            "value": "v2",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T05:20:22.366069+00:00"
+          },
+          {
+            "key": "route_sha256",
+            "value": "1690cc2e7c74d3c29bf6c750fa93da675bba79f732733de8710c47ec7b65cfe0",
+            "source": "ops.route_status",
+            "observed_at": "2026-10-20T05:20:22.366069+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "evidence_ref": "amp:audit:49cd3829-74ad-4108-86eb-eaea145f48d6"
+      },
+      "elapsed_ms": 125.0
+    },
+    {
+      "logical_task_id": "lt-ec1031514c5d",
+      "tool": "incident.verification",
+      "kind": "verify",
+      "args": {
+        "original_request_key": null,
+        "original_request_unknown": false
+      },
+      "status": "failed",
+      "started_at": "2026-10-20T05:20:22.449393+00:00",
+      "error": "ConnectionError",
+      "elapsed_ms": 0.0
+    }
+  ],
+  "approvals": [],
+  "result": null,
+  "model_source": "rules",
+  "tokens": 0,
+  "original_request_key": null,
+  "original_request_unknown": false,
+  "error": "ConnectionError: selected local domain worker is unavailable",
+  "transport": "local-aip-stdio",
+  "diagnosed_causes": [
+    "stale_route"
+  ],
+  "planning_history": [
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "ops.containers"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.containers",
+      "facts": [
+        "container_state"
+      ]
+    },
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "ops.route_status"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.route_status",
+      "facts": [
+        "route_version",
+        "route_sha256"
+      ]
+    },
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "application.status"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "application.status",
+      "facts": [
+        "application_reachable",
+        "application_pool_revision",
+        "application_read_only",
+        "application_error_codes"
+      ]
+    },
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "db.read_only_status"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "db.read_only_status",
+      "facts": [
+        "read_only"
+      ]
+    },
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "db.blocking_sessions"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "db.blocking_sessions",
+      "facts": [
+        "blocking_sessions"
+      ]
+    },
+    {
+      "reason": "入口仍指向旧版本；修改后重新观察相关状态",
+      "tool": "ops.route_rollback"
+    },
+    {
+      "reason": "M0 按冻结顺序遍历观察",
+      "tool": "ops.route_status"
+    },
+    {
+      "reason": "接收参与者观察，更新证据",
+      "tool": "ops.route_status",
+      "facts": [
+        "route_version",
+        "route_sha256"
+      ]
+    }
+  ],
+  "model_calls": 0,
+  "model_source_counts": {
+    "llm": 0,
+    "rules": 7
+  },
+  "model_error": null,
+  "model_requests": [],
+  "token_usage_complete": true,
+  "observation_cost": {
+    "resource_organizations_contacted": 3,
+    "resource_organizations": [
+      "application",
+      "database",
+      "ops"
+    ],
+    "cross_organization_calls": 6,
+    "sensitive_observations": 1,
+    "weighted_probe_cost": 7,
+    "scope": "declared resource-domain boundaries; attempted observations; distinct legal organizations unknown"
+  },
+  "finished_at": "2026-10-20T05:20:22.452396+00:00",
+  "elapsed_seconds": 1.515
+}

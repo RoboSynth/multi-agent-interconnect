@@ -91,6 +91,12 @@ def main():
             shutil.copy2(raw, target)
             if sha(target) != sha(raw):
                 raise ValueError("Raw failed incident copy mismatch")
+        else:
+            target = OUTPUT / "passed-incidents" / raw.name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(raw, target)
+            if sha(target) != sha(raw):
+                raise ValueError("Raw passed incident copy mismatch")
     save(OUTPUT / "incident-ledger.json", ledger)
     shutil.copy2(RUN / "experiment.json", OUTPUT / "experiment.json")
     receipts = {BATCH / name for name in ["execution-intent.json", "execution-result.json"]}
@@ -119,6 +125,7 @@ def main():
         "scope": "60 terminal cells, compact ledger, all unchanged failed incidents and verification receipts",
         "raw_artifact_directory": str(RUN), "source_fingerprint_count": len(experiment["source_sha256"]),
         "all_failure_rows_retained": True, "failed_incident_files": sum(not confirmed(r) for r in rows),
+        "passed_incident_files": sum(confirmed(r) for r in rows),
         "compact_ledger_omits": ["model input contexts and schemas", "task args", "per-order observation events and state"],
         "raw_failed_incidents": "Byte-for-byte original incidents retained, including planning_history and tasks",
         "publication_helpers": {name: sha(BATCH / name) for name in [

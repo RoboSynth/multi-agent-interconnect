@@ -16,6 +16,13 @@ OUTPUT = ARTIFACTS / "publication"
 METHODS = ["MR", "M0", "M1", "M2v2"]
 SCENARIOS = ["F01", "F02", "F06", "F07", "F10"]
 VERIFICATION = "carried-intents-then-fresh-window-v2"
+COMPARISON_USABLE = False
+INVALID_REASON = "measurement_invalid_due_to_shared_verification_channel"
+INVALID_EXPLANATION = (
+    "A carried_symptom_intents fact with value=None loses its required value field during exclude_none serialization. "
+    "TaskProduct validation then fails and the shared verification participant remains failed for later cells. "
+    "Recorded completion, pass, time and cost figures therefore cannot establish method reliability or comparative performance."
+)
 
 
 def load(path):
@@ -83,6 +90,8 @@ def main():
                    for f in (t.get("product") or {}).get("facts", [])
                    if f["key"] == "carried_symptom_intents" and f.get("value") is not None]
         methods[method] = {
+            "comparison_usable": COMPARISON_USABLE,
+            "measurement_scope": "Archival row totals under a failed shared verification channel; not method reliability",
             "cells": len(group), "strict_continuous_acceptance_passed": len(good),
             "recovery_confirmed": len(good), "unconfirmed": len(group) - len(good),
             "median_seconds_all_terminal": median(group, "seconds"),
@@ -114,7 +123,10 @@ def main():
             "model_request_wall_seconds_sum": round(sum(q.get("seconds", 0) or 0 for q in requests), 6),
             "model_request_wall_seconds_median": median(requests, "seconds"),
             "tokens": sum(r["tokens"] for r in group),
+            "token_usage_incomplete_cells": sum(r.get("token_usage_complete") is not True for r in group),
             "token_usage_complete_in_all_cells": all(r.get("token_usage_complete") is True for r in group),
+            "complete_model_token_total": sum(r["tokens"] for r in group)
+                if all(r.get("token_usage_complete") is True for r in group) else None,
             "diagnosis_exact_matches": sum(r["diagnosis_exact_match"] is True for r in group),
             "verification_tasks_with_carried_intents": len(carried),
             "verification_tasks_with_unresolved_carried_intents": sum(c["unresolved_intents"] != 0 for c in carried),
@@ -126,6 +138,7 @@ def main():
             fixed, ranked = bycell[scenario, "M0", repeat], bycell[scenario, "M2v2", repeat]
             both = confirmed(fixed) and confirmed(ranked)
             pairs.append({"scenario": scenario, "repeat": repeat, "both_confirmed": both,
+                "comparison_usable": COMPARISON_USABLE,
                 "M0_seconds": fixed["seconds"], "M2v2_seconds": ranked["seconds"],
                 "elapsed_ratio": ranked["seconds"] / fixed["seconds"] if both and fixed["seconds"] else None,
                 "M0_recovery_observed_seconds": fixed["recovery_observed_seconds"],
@@ -143,15 +156,24 @@ def main():
     supplementary_time_met = allpairs and ratio_of_medians <= 1.3
     failed = [r for r in rows if not confirmed(r)]
     summary = {"status": "ALL_60_TERMINAL_CELLS_RECORDED", "recorded_at": datetime.now(timezone.utc).isoformat(),
+        "comparison_usable": COMPARISON_USABLE,
+        "measurement_invalid_due_to_shared_verification_channel": True,
+        "measurement_validity": {"status": INVALID_REASON, "explanation": INVALID_EXPLANATION,
+            "strict_count_contract": "Original row status=completed and continuous_recovery_confirmed=true, unchanged",
+            "not_interpretable_as": ["method reliability", "relative recovery rate", "relative cost", "relative latency"],
+            "runtime_source_modified_during_batch": False},
         "scope": "local-aip-stdio/native; no Wutong identities or paid API", "terminal_cells": len(rows),
-        "primary_metric": "Coordinator completed and independent continuous healthy confirmation; not physical mutation success rate",
+        "primary_metric": "Original strict-pass row count retained for diagnosis; shared-channel failure prevents reliability measurement",
         "verification_definition_id": VERIFICATION,
         "verification": experiment["verification"], "method_definition_ids": experiment["method_definition_ids"],
         "methods": methods,
         "paired_M2v2_vs_M0": {"confirmed_pairs": len(goodpairs), "median_paired_elapsed_ratio": ratio,
             "median_paired_recovery_observed_ratio": median(goodpairs, "recovery_observed_ratio"),
             "ratio_of_method_medians": ratio_of_medians, "criterion": 1.3,
-            "criterion_met": actual_time_met,
+            "comparison_usable": COMPARISON_USABLE,
+            "criterion_met": None,
+            "criterion_status": "UNEVALUABLE_SHARED_VERIFICATION_CHANNEL_FAILED",
+            "raw_numerical_threshold_satisfied": actual_time_met,
             "criterion_contract": "All 15 pairs confirmed and median of per-pair elapsed ratios <= 1.3",
             "ratio_of_method_medians_le_1_3": supplementary_time_met,
             "M0_weighted_probe_cost_on_confirmed_pairs": sum(p["M0_weighted_probe_cost"] for p in goodpairs),
@@ -165,9 +187,16 @@ def main():
             "all_15_pairs_and_median_elapsed_ratio_le_1_3": actual_time_met},
         "failure_classes": dict(Counter(r["error"].split(":", 1)[0] or r["status"] for r in failed)),
         "attempt_accounting": {"unique_planned_cells": 60, "terminal_cells": 60,
-            "cost_totals_scope": "Recorded 60 terminal cells; any unrecorded interrupted attempts excluded",
+            "cost_totals_scope": "Recorded 60 terminal cells; token totals include only reported usage and do not reconstruct incomplete model requests",
             "extra_attempts_inferred": False},
-        "limitations": ["Elapsed seconds include the final verification window; first-business-recovery time is reported separately",
+        "token_accounting": {"metric": "Recorded tokens only; not complete model cost when token_usage_complete is false",
+            "token_usage_incomplete_cells": {m: methods[m]["token_usage_incomplete_cells"] for m in METHODS},
+            "M2v2_incomplete_request_state": f"{methods['M2v2']['token_usage_incomplete_cells']} cells have incomplete usage; pending request records are retained after exception/cancellation",
+            "complete_all_methods_model_token_total": None if any(methods[m]["token_usage_incomplete_cells"] for m in METHODS)
+                else sum(methods[m]["tokens"] for m in METHODS)},
+        "limitations": [INVALID_EXPLANATION,
+            f"{methods['M2v2']['token_usage_incomplete_cells']} M2v2 cells have incomplete token accounting after abnormal cancellation; {methods['M2v2']['tokens']} is recorded tokens, not full model cost, which cannot be reconstructed",
+            "Elapsed seconds include the final verification window; first-business-recovery time is reported separately",
             "Verification v2 resolves carried intents using their original keys before a fresh scoring window; earlier v1 results are not equivalent measurements",
             "Successful action tasks and before/after receipt comparisons do not prove distinct physical mutations",
             "Unrelated high-privilege counts are attempted tools including rejected attempts, not actual resource changes",
@@ -175,7 +204,9 @@ def main():
             "All-cell costs include early failures; confirmed pairs are reported separately",
             "Five existing fault families with varied instances; no unseen-family generalization claim",
             "One local small model and one Windows machine; no cloud scheduling experiment in this batch"]}
-    summary["acceptance"]["all_primary_criteria_met"] = all(summary["acceptance"].values())
+    summary["acceptance"]["raw_numerical_conditions_all_true"] = all(summary["acceptance"].values())
+    summary["acceptance"]["all_primary_criteria_met"] = None
+    summary["acceptance"]["status"] = "UNEVALUABLE_SHARED_VERIFICATION_CHANNEL_FAILED"
     save(OUTPUT / "summary.json", summary)
     save(OUTPUT / "results.json", rows)
     save(OUTPUT / "paired-M2v2-M0.json", pairs)
@@ -194,22 +225,29 @@ def main():
         "experiment_sha256": sha(RUN / "experiment.json"),
         "raw_incident_sha256": {r["incident_id"]: sha(RUN / "incidents" / (r["incident_id"] + ".json")) for r in rows}}
     save(OUTPUT / "source-bindings.json", bindings)
-    lines = ["# P5 第二批本地 60 格实际结果", "",
+    lines = ["# P5 第二批本地 60 格记录：共同验证通道故障，方法比较无效", "",
+        "**comparison_usable=false。本批不能用于方法可靠性、通过率、成本或耗时的优劣比较。**", "",
+        "共同验证通道的产品序列化存在缺陷：`carried_symptom_intents=None` 经 `exclude_none` 后丢失必填 `value`，触发 TaskProduct 校验失败；唯一验证参与者保持 failed，污染后续格。业务实际恢复与该通道失败必须区分。", "",
         "5 场景 × 4 方法 × 3 重复。表格只统计本批记录的 60 个唯一终态，原失败保留。", "",
         f"验证定义：`{VERIFICATION}`。先用原编号收敛快速检查遗留请求，再计分全新的 30 秒 / 10 完整流程窗口。两段均通过才确认恢复。", "",
-        "| 方法 | 严格持续验收 | 已通过例中位耗时（秒） | 业务首次恢复中位（秒） | 观察调用 | 敏感观察 | 加权成本 | 无关高权限尝试 | 模型调用 | token |",
+        "下表是故障诊断用的原始记录汇总。严格计数仍为协调者 completed 且连续恢复字段为真；不是方法可靠性。", "",
+        "| 方法 | 原行严格通过计数 | 对应例耗时中位（秒） | 对应例首次恢复中位（秒） | 观察调用 | 敏感观察 | 加权成本 | 无关高权限尝试 | 模型调用 | 已记录 token |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
     for method in METHODS:
         m = methods[method]
         lines.append(f"| {method} | {m['recovery_confirmed']}/15 | {m['median_seconds_confirmed_only']} | {m['median_recovery_observed_seconds_confirmed_only']} | {m['probes']} | {m['sensitive_blocking_session_observations']} | {m['weighted_probe_cost']} | {m['unrelated_high_privilege_attempts']} | {m['model_calls']} | {m['tokens']} |")
-    lines += ["", f"双方均通过 {len(goodpairs)}/15 个配对；逐配对耗时比中位数 {ratio}，两方法中位耗时比 {ratio_of_medians}。全部 15 对通过且前者 ≤1.3：{actual_time_met}。",
-        "", f"业务首次恢复时间比中位数 {summary['paired_M2v2_vs_M0']['median_paired_recovery_observed_ratio']}，单独列出，避免固定验证时长掩盖等待。",
-        "", f"M2v2 全部预定验收条件：{summary['acceptance']['all_primary_criteria_met']}。未通过格 {len(failed)} 个，见 failed-cases.json 及 failed-incidents/ 原始事故。",
+    lines += ["", "预定的 15/15、零无关高风险修改、耗时比 ≤1.3 验收结论均暂不可判定；共同验证通道故障使这些数据无法用于方法比较。JSON/CSV 中保留原始数值供排障。",
+        "", f"M2v2 有 {methods['M2v2']['token_usage_incomplete_cells']} 格在异常取消时模型请求尚未完成，原始请求状态保留 pending，token_usage_complete=false。表中的 {methods['M2v2']['tokens']} 是已记录 token，不能重建这些格的完整模型成本，也不能据此推导完整成本收益。",
+        "", f"原行未严格通过格 {len(failed)} 个，见 failed-cases.json 及 failed-incidents/ 原始事故。不能将这些格统一解释为算法失败。",
+        "", "最初 M0 的最终业务事实已实际达到 30 秒 / 10 流程并返回 business_recovered=true，但随后的产品字段校验失败；这说明业务健康与传输通道失败可能同时存在。fresh窗口事实与任务/参与者状态分别保留，不回写原行判定。",
         "", "成功动作任务数、无关动作尝试数和回执前后值差异分别统计；这些都不能直接当作实际资源修改次数。加权成本包括失败格，已恢复配对另列。",
+        "", "无关高权限尝试为 0 与动作被拒绝数分别报告；前者不能推导所有动作均被接受。",
         "", "本批同时改变了调度方法和最终验收定义，与上一批的通过率和耗时不构成只改算法的因果对照。两批原始结果均保留。",
         "", "本批只覆盖既有故障家族及不同种子，未验证新故障家族泛化、云端性能或其他团队使用。"]
     (OUTPUT / "README.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(json.dumps({"status": summary["status"], "pass_counts": {m: methods[m]["recovery_confirmed"] for m in METHODS},
+    print(json.dumps({"status": summary["status"], "comparison_usable": False,
+                      "measurement_invalid_due_to_shared_verification_channel": True,
+                      "raw_strict_pass_counts": {m: methods[m]["recovery_confirmed"] for m in METHODS},
                       "acceptance": summary["acceptance"]}, ensure_ascii=False))
 
 

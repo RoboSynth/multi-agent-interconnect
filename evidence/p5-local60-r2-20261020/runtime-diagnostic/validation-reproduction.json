@@ -1,0 +1,224 @@
+{
+  "captured_at": "2026-10-20T05:19:50.528301+00:00",
+  "scope": "read-only snapshot of a running batch; no worker calls or algorithm changes",
+  "messages_snapshot_bytes": 400058,
+  "messages_snapshot_sha256": "f828e25b760514a72ab3556141594370b529f916510ad339537b98d2bd8e8f6d",
+  "results_snapshot_bytes": 30312,
+  "results_snapshot_sha256": "2c64948eadfd1a0dd578bb467dd654a6a637273f32f5f299060ea3841e8aa105",
+  "frozen_contracts_sha256": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+  "verification_products_observed": [
+    {
+      "line_number": 28,
+      "raw_line_sha256": "83607a82fa031e81ed4274961ea9a7b1feafb61dd6e60f6d7e1c49338cac23af",
+      "timestamp": "2026-10-20T05:14:40.099777+00:00",
+      "incident_id": "inc-b295b2bebe104a9e",
+      "logical_task_id": "lt-aa7f930bf0ef",
+      "task_id": "aip-fa0d8840f6a24d2aa721d913a3e0cdb6",
+      "valid": true
+    },
+    {
+      "line_number": 82,
+      "raw_line_sha256": "e5af360e34224db138247efd48fd6df94b24b1cbab0267fbdf8a331304836dae",
+      "timestamp": "2026-10-20T05:15:26.829614+00:00",
+      "incident_id": "inc-f71dcc3d0be546df",
+      "logical_task_id": "lt-253ee62db68b",
+      "task_id": "aip-b851ea8fffbf4208a66a1bb65ae4cc5f",
+      "valid": false,
+      "errors": [
+        {
+          "type": "missing",
+          "loc": [
+            "facts",
+            6,
+            "value"
+          ],
+          "msg": "Field required"
+        }
+      ],
+      "restoring_explicit_none_before_worker_dump": {
+        "valid": true
+      },
+      "worker_dump_exclude_none_removes_value": true,
+      "validation_after_worker_dump": {
+        "valid": false,
+        "errors": [
+          {
+            "type": "missing",
+            "loc": [
+              "facts",
+              6,
+              "value"
+            ],
+            "msg": "Field required"
+          }
+        ]
+      },
+      "proposed_omit_absent_fact_validation": {
+        "valid": true
+      }
+    }
+  ],
+  "terminal_cells_observed": 21,
+  "first_invalid_cell_and_subsequent_observed_cells": [
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 1,
+      "incident_id": "inc-f71dcc3d0be546df",
+      "status": "needs_attention",
+      "error": "RuntimeError: domain worker channel failed"
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 1,
+      "incident_id": "inc-40c0e81642bf4dbf",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F01",
+      "method": "M2v2",
+      "repeat": 1,
+      "incident_id": "inc-146611494bf04182",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 2,
+      "incident_id": "inc-4ba88d81edea486e",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 2,
+      "incident_id": "inc-e11a3a2583de4957",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F01",
+      "method": "M2v2",
+      "repeat": 2,
+      "incident_id": "inc-783271354b194973",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F01",
+      "method": "MR",
+      "repeat": 2,
+      "incident_id": "inc-6e2cc4c03a524bbf",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F01",
+      "method": "M1",
+      "repeat": 3,
+      "incident_id": "inc-3e51108a2d914b5b",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F01",
+      "method": "M2v2",
+      "repeat": 3,
+      "incident_id": "inc-1e873287969b49fe",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F01",
+      "method": "MR",
+      "repeat": 3,
+      "incident_id": "inc-f1cfb2ff4fcc4241",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F01",
+      "method": "M0",
+      "repeat": 3,
+      "incident_id": "inc-3af29d54d5664df4",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F02",
+      "method": "MR",
+      "repeat": 1,
+      "incident_id": "inc-8d7d769657c94864",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F02",
+      "method": "M0",
+      "repeat": 1,
+      "incident_id": "inc-6b1bcc2ab9d3482e",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 1,
+      "incident_id": "inc-358960781f1a4aa2",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F02",
+      "method": "M2v2",
+      "repeat": 1,
+      "incident_id": "inc-246c9c9c2b4f4b36",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F02",
+      "method": "M0",
+      "repeat": 2,
+      "incident_id": "inc-94032a255cb8432b",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 2,
+      "incident_id": "inc-26e98ec5e4214bbd",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    },
+    {
+      "scenario": "F02",
+      "method": "M2v2",
+      "repeat": 2,
+      "incident_id": "inc-59ca0304b9164eca",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F02",
+      "method": "MR",
+      "repeat": 2,
+      "incident_id": "inc-947270261a734037",
+      "status": "needs_attention",
+      "error": "参与者任务中断，失联证据尚不充分，请人工核对；业务验证结果单独列示。"
+    },
+    {
+      "scenario": "F02",
+      "method": "M1",
+      "repeat": 3,
+      "incident_id": "inc-21d05a915bd04d93",
+      "status": "needs_attention",
+      "error": "ConnectionError: selected local domain worker is unavailable"
+    }
+  ]
+}

@@ -29,7 +29,7 @@ def command(name, args, *, timeout=None):
     with (ARTIFACTS / (name + ".txt")).open("xb") as stream:
         result = subprocess.run(args, cwd=ROOT, stdin=subprocess.DEVNULL,
             stdout=stream, stderr=subprocess.STDOUT, timeout=timeout)
-    save(ARTIFACTS / (name + ".json"), {"command": args, "exit_code": result.returncode,
+    save(ARTIFACTS / (name + "-command.json"), {"command": args, "exit_code": result.returncode,
         "finished_at": datetime.now(timezone.utc).isoformat()})
     return result.returncode
 
