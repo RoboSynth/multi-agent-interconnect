@@ -2,7 +2,7 @@
 
 ## 完整开发仓库
 
-`team-repository-multi-agent-interconnect` 是团队开发目录。`baseline/strong-20261020` 以 `3c539ac` 为代码参照，只整理文档和入口；当前能力和结果见[基线说明](BASELINE.md)。
+`team-repository-multi-agent-interconnect` 是本机的团队开发目录。GitHub 默认分支 `main` 是队友后续开发的共同起点，`baseline/strong-20261020` 保留本次强基线发布入口。该版本以 `3c539ac` 为代码参照，新增文档与入口整理；当前能力和结果见[基线说明](BASELINE.md)。
 
 源码、测试、部署脚本、公开配置样例、研究与实验记录保留在原路径。根目录中的 `workbench_server.py`、`run_pilot.py`、`verify_*.py` 与压力测试脚本存在调用依赖，不为表面整齐移动。
 
