@@ -1,0 +1,88 @@
+{
+  "observed_at": "2026-10-20T14:00:12.212032+00:00",
+  "scope": "Offline real SDK serializer/dispatcher with fake channels; no live Dingdang sender inspection.",
+  "network_calls": 0,
+  "identity_cases": [
+    {
+      "case": "sdk_default_binding",
+      "passed": true,
+      "events": [],
+      "invitation_handler_calls": 1,
+      "policy_results": [
+        {
+          "policy_error": null
+        }
+      ],
+      "normal_context_exit": true
+    },
+    {
+      "case": "sdk_binding_disabled",
+      "passed": true,
+      "events": [
+        {
+          "event": "inbox_invalid_message",
+          "aic": "1.2.156.3088.1.1.34C2.478BDF.3GF547.0JU5",
+          "error": "PeerAicMissingError: AMQP user_id is required for group identity binding"
+        }
+      ],
+      "invitation_handler_calls": 0,
+      "policy_results": [],
+      "normal_context_exit": true
+    },
+    {
+      "case": "header_is_not_property",
+      "passed": true,
+      "events": [
+        {
+          "event": "inbox_invalid_message",
+          "aic": "1.2.156.3088.1.1.34C2.478BDF.3GF547.0JU5",
+          "error": "PeerAicMissingError: AMQP user_id is required for group identity binding"
+        }
+      ],
+      "invitation_handler_calls": 0,
+      "policy_results": [],
+      "normal_context_exit": true
+    },
+    {
+      "case": "mismatched_sender",
+      "passed": true,
+      "events": [
+        {
+          "event": "inbox_invalid_message",
+          "aic": "1.2.156.3088.1.1.34C2.478BDF.3GF547.0JU5",
+          "error": "SenderIdentityMismatchError: senderId 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 does not match peer AIC 1.2.156.3088.1.1.34C2.478BDF.3GF546.0JU4"
+        }
+      ],
+      "invitation_handler_calls": 0,
+      "policy_results": [],
+      "normal_context_exit": true
+    },
+    {
+      "case": "private_allowlist",
+      "passed": true,
+      "events": [],
+      "invitation_handler_calls": 1,
+      "policy_results": [
+        {
+          "policy_error": "Leader is not authorized for this domain"
+        }
+      ],
+      "normal_context_exit": true
+    }
+  ],
+  "text_cases": [
+    {
+      "input": "请检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据",
+      "reason": null,
+      "tool": "aip.onboarding.check",
+      "passed": true
+    },
+    {
+      "input": "请检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据。不要修改资源，不要进行主动端点探测。",
+      "reason": "read_only_metadata_check_required",
+      "tool": "describe",
+      "passed": true
+    }
+  ],
+  "passed": 7
+}
