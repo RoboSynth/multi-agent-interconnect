@@ -2,7 +2,7 @@
 
 状态：2026-10-18源码审阅形成的实施方案，尚未应用patch或运行本方案的测试、AMQPS、模型、Docker或数据库实验。E3闭合后再按独立运行范围推进；本方案不扩大E3授权。
 
-[后续三项优先工作](post_e3_priorities_20261018.md) · [巡检启动边界](new7_inspect_preparation_20261018.md) · [协作任务清单](协作任务清单_20261018.md)
+[后续三项优先工作](post_e3_priorities_20261018.md) · [巡检启动边界](new7_inspect_preparation_20261018.md) · [协作任务清单](https://github.com/RoboSynth/multi-agent-interconnect/blob/3c539acc574ee99e35fe23d64776eb5a64bccfaf/docs/%E5%8D%8F%E4%BD%9C%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95_20261018.md)
 
 ## 结论与可复用部分
 

@@ -2,7 +2,7 @@
 
 状态：启动准备方案，未作为8877首周期、登录/重启或长期运行验收记录。以下命令是未来由运行所有者执行的入口；启动前以本批真实E3闭合证据复核。
 
-[后续三项优先工作](post_e3_priorities_20261018.md) · [正式E1适配](new7_e1_adaptation_20261018.md) · [协作任务清单](协作任务清单_20261018.md)
+[后续三项优先工作](post_e3_priorities_20261018.md) · [正式E1适配](new7_e1_adaptation_20261018.md) · [协作任务清单](https://github.com/RoboSynth/multi-agent-interconnect/blob/3c539acc574ee99e35fe23d64776eb5a64bccfaf/docs/%E5%8D%8F%E4%BD%9C%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95_20261018.md)
 
 ## 启动前必须确认
 

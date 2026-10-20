@@ -6,4 +6,4 @@
 
 [云端发布材料扫描](cloud-material-scan.json)覆盖所列77个JSON/日志/配置文本文件、130条JSON记录，凭据模式命中、解析错误、读取错误均为0。普通代码与文档另经差异和引用核对；叮当登录截图已实际查看。[P5发布核对](../p5-local60-20261020/integrity-verification.json)及同目录发布扫描单独记录本地实验包。
 
-结果索引：[本地60格](../p5-local60-20261020/README.md)、[云端4例](../cloud-four-revalidation-20261020/README.md)、[公开体检](../public-onboarding-20261020/README.md)、[云端长编号维护](../observer-key-maintenance-20261020/README.md)。完整本轮进度和仍需完成内容见[当前审查入口](../../docs/当前进度审查入口_20261020.md)。
+结果索引：[本地60格](../p5-local60-20261020/README.md)、[云端4例](../cloud-four-revalidation-20261020/README.md)、[公开体检](../public-onboarding-20261020/README.md)、[云端长编号维护](../observer-key-maintenance-20261020/README.md)。完整本轮进度和仍需完成内容见[当前审查入口](https://github.com/RoboSynth/multi-agent-interconnect/blob/3c539acc574ee99e35fe23d64776eb5a64bccfaf/docs/%E5%BD%93%E5%89%8D%E8%BF%9B%E5%BA%A6%E5%AE%A1%E6%9F%A5%E5%85%A5%E5%8F%A3_20261020.md)。

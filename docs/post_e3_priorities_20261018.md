@@ -2,7 +2,7 @@
 
 这是协作安排，不是完成报告。E3的实际退出、恢复表现与收尾以后续独立证据为准；旧初审表和历史专题的“尚未运行”文字不能代替当前事实，也不能直接推断缺代码。
 
-[开发者接手](开发者接手指南_20261018.md) · [协作任务清单](协作任务清单_20261018.md) · [巡检启动方案](new7_inspect_preparation_20261018.md) · [正式E1适配方案](new7_e1_adaptation_20261018.md)
+[开发者接手](开发者接手指南_20261018.md) · [协作任务清单](https://github.com/RoboSynth/multi-agent-interconnect/blob/3c539acc574ee99e35fe23d64776eb5a64bccfaf/docs/%E5%8D%8F%E4%BD%9C%E4%BB%BB%E5%8A%A1%E6%B8%85%E5%8D%95_20261018.md) · [巡检启动方案](new7_inspect_preparation_20261018.md) · [正式E1适配方案](new7_e1_adaptation_20261018.md)
 
 ## 1. 开始真实长期巡检，补AMP平台入库（T04—T07、T63）
 
@@ -22,7 +22,7 @@
 - **外部依赖：** 已有NEW7身份和本机容器可复用，同AIC独占排期；F15、参与者退出、pause/unpause与旧主重放须单列实际资源、次数、恢复边界并获得对应授权，不能沿用E3的45格范围。
 - **完成证据：** 正式AMQPS任务/产物/账本与实际MCP调用对账；副作用只发生一次、重复效果0、旧epoch修改实际被拒绝。按方法列接管耗时和usage，确定性续办的0模型调用不能包装成LLM token收益。每次独立复原后公共v2至少30秒/10完整流程，failed/unknown/pending/unresolved为0，正常关闭自有群组。
 
-参考：[原高分方案](高分方案_需求架构创新与任务_20261017.md)、[P0审计](P0完成审计_20261017.md)。
+参考：[原高分方案](高分方案_需求架构创新与任务_20261017.md)、[P0审计](https://github.com/RoboSynth/multi-agent-interconnect/blob/3c539acc574ee99e35fe23d64776eb5a64bccfaf/docs/P0%E5%AE%8C%E6%88%90%E5%AE%A1%E8%AE%A1_20261017.md)。
 
 ## 3. 由另一位开发者完成干净环境部署与F10（T11、T96）
 
