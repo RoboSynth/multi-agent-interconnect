@@ -18,7 +18,7 @@ import httpx
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from business.native_process import managed_process
+from business.native_process import managed_app_family, managed_process
 from eval.targets import DockerTarget, DOMAIN_SERVICES, DOMAIN_SOURCE_FILES
 SCENARIOS = {
     "H00": "healthy control; no mutation",
@@ -273,7 +273,11 @@ class Injector:
         pid = self.runtime.get("managed", {}).get(name)
         if not pid:
             return
-        managed_process(int(pid), script_name=marker, version=name if name in {"v1", "v2"} else None, terminate=True)
+        if name in {"v1", "v2"}:
+            managed_app_family(int(pid), version=name, port=self.runtime[f"app_{name}_port"],
+                               python_executable=self.runtime["app_python"], terminate=True)
+        else:
+            managed_process(int(pid), script_name=marker, terminate=True)
         self.runtime["managed"].pop(name, None)
         self._save()
 
@@ -281,8 +285,16 @@ class Injector:
         self._native_stop(name, script_name)
         logdir = ROOT / "runtime"
         logdir.mkdir(exist_ok=True)
+        executable = self.runtime["app_python"]
+        if name == "fault-locker" and os.name == "nt":
+            # Register the actual lock holder, avoiding the Windows venv shim
+            # whose child would otherwise survive a single-PID restore.
+            if not Path(executable).samefile(sys.executable):
+                raise ValueError("Native lock injection must use its registered Python environment")
+            env = {**(env or os.environ), "__PYVENV_LAUNCHER__": executable}
+            executable = sys._base_executable
         with (logdir / f"{name}.stdout.log").open("ab") as out, (logdir / f"{name}.stderr.log").open("ab") as err:
-            process = subprocess.Popen([self.runtime["app_python"], str(ROOT / "business" / script_name), *extra],
+            process = subprocess.Popen([executable, str(ROOT / "business" / script_name), *extra],
                                        cwd=ROOT, env=env, stdout=out, stderr=err,
                                        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
         self.runtime.setdefault("managed", {})[name] = process.pid

@@ -166,7 +166,7 @@ async def serve(args):
             else:
                 executor = VerificationPartner(args.aic, base_url=args.base_url or "http://127.0.0.1:8088",
                     allowed_callers=[args.coordinator_aic], duration=args.verification_duration)
-                tools = ["incident.verification"]
+                tools = ["incident.verification", "incident.symptom_check"]
 
         states = {}
         async def crash(point, payload):

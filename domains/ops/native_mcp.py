@@ -14,7 +14,7 @@ from mcp.server.fastmcp import FastMCP
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from business.native_process import managed_process
+from business.native_process import managed_app_family, managed_process
 RUNTIME = ROOT / "deploy/native-runtime.json"
 mcp = FastMCP("incident-pilot-native-ops")
 
@@ -60,7 +60,8 @@ def restart_registered_process() -> dict:
     config = configuration()
     pid = config.get("managed", {}).get("v2")
     if pid:
-        managed_process(pid, script_name="run_app.py", version="v2", terminate=True)
+        managed_app_family(pid, version="v2", port=config["app_v2_port"],
+                           python_executable=config["app_python"], terminate=True)
     secret_path = ROOT / "runtime/private/application.env"
     system_names = {"SYSTEMROOT", "WINDIR", "COMSPEC", "PATH", "PATHEXT", "TEMP", "TMP", "APPDATA",
                     "LOCALAPPDATA", "USERPROFILE", "PROGRAMFILES", "PROGRAMFILES(X86)", "PROGRAMDATA",
