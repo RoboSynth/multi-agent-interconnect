@@ -185,13 +185,16 @@ class VerificationPartner:
         summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version="v2").observe(
             duration=self.duration, min_complete=max(1, int(self.duration // 3)))
         service_recovered = summary["passed"] is True and carried_resolved
+        facts = {"business_recovered": service_recovered and original_resolved,
+                 "service_recovered": service_recovered, "original_request_resolved": original_resolved,
+                 "original_request_resolution": resolution, "manual_required": not original_resolved,
+                 "order_observation": summary}
+        # An inapplicable fact has no value to send. A None-valued Fact would
+        # lose its required value under the worker's exclude_none serialization.
+        if carried is not None:
+            facts["carried_symptom_intents"] = {
+                key: carried[key] for key in ("requests", "success", "failed", "unknown", "completed_workflows",
+                                              "unresolved_intents", "resolved_unknown_intents", "duration_seconds")}
         result["facts"] = [{"key": key, "value": value, "source": "order-workflows", "observed_at": utc_now()}
-            for key, value in {"business_recovered": service_recovered and original_resolved,
-                "service_recovered": service_recovered, "original_request_resolved": original_resolved,
-                "original_request_resolution": resolution, "manual_required": not original_resolved,
-                "order_observation": summary,
-                "carried_symptom_intents": None if carried is None else {
-                    key: carried[key] for key in ("requests", "success", "failed", "unknown", "completed_workflows",
-                                                  "unresolved_intents", "resolved_unknown_intents", "duration_seconds")}
-                }.items()]
+                           for key, value in facts.items()]
         return result

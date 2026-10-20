@@ -1,0 +1,65 @@
+test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) ... 
+  test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state=None) ... ERROR
+  test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state={}) ... ERROR
+  test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state={'pending': []}) ... ERROR
+test_repaired_service_passes_and_carried_key_has_exactly_one_order (test_carried_symptom_intents.CarriedIntentTests.test_repaired_service_passes_and_carried_key_has_exactly_one_order) ... ok
+test_unrecovered_service_leaves_intent_unresolved_and_fails (test_carried_symptom_intents.CarriedIntentTests.test_unrecovered_service_leaves_intent_unresolved_and_fails) ... ok
+
+======================================================================
+ERROR: test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 81, in test_final_without_pending_symptoms_survives_worker_serialization
+    facts = self.wire_roundtrip(result)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 59, in wire_roundtrip
+    received = TaskProduct.model_validate(json.loads(json.dumps(sent)))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\.venv\Lib\site-packages\pydantic\main.py", line 790, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for TaskProduct
+facts.6.value
+  Field required [type=missing, input_value={'key': 'carried_symptom_...T06:21:43.171542+00:00'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/missing
+
+======================================================================
+ERROR: test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 81, in test_final_without_pending_symptoms_survives_worker_serialization
+    facts = self.wire_roundtrip(result)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 59, in wire_roundtrip
+    received = TaskProduct.model_validate(json.loads(json.dumps(sent)))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\.venv\Lib\site-packages\pydantic\main.py", line 790, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for TaskProduct
+facts.6.value
+  Field required [type=missing, input_value={'key': 'carried_symptom_...T06:21:43.196903+00:00'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/missing
+
+======================================================================
+ERROR: test_final_without_pending_symptoms_survives_worker_serialization (test_carried_symptom_intents.CarriedIntentTests.test_final_without_pending_symptoms_survives_worker_serialization) (symptom_state={'pending': []})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 81, in test_final_without_pending_symptoms_survives_worker_serialization
+    facts = self.wire_roundtrip(result)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\team-repository-multi-agent-interconnect\tests\test_carried_symptom_intents.py", line 59, in wire_roundtrip
+    received = TaskProduct.model_validate(json.loads(json.dumps(sent)))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI + 开源\incident-pilot\.venv\Lib\site-packages\pydantic\main.py", line 790, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for TaskProduct
+facts.6.value
+  Field required [type=missing, input_value={'key': 'carried_symptom_...T06:21:43.202904+00:00'}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.14/v/missing
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.225s
+
+FAILED (errors=3)
