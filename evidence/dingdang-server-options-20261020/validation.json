@@ -1,0 +1,74 @@
+{
+  "observed_at": "2026-10-20T14:31:23.963733+00:00",
+  "live_registry": {
+    "url": "https://wt.ioa.pub/registry-server/openapi.json",
+    "client_update": {
+      "summary": "客户端更新 Agent 草稿",
+      "description": "更新 Agent，审核通过的不能再更新（仅限 CLIENT 角色）"
+    }
+  },
+  "live_acs": {
+    "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+    "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+    "endPoints": [
+      {
+        "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+        "security": [
+          {
+            "mtls": []
+          }
+        ],
+        "transport": "AMQP"
+      }
+    ],
+    "defaultInputModes": [
+      "application/json"
+    ],
+    "lastModifiedTime": "2026-10-17T18:32:51.202042+08:00"
+  },
+  "direct_tls": {
+    "network_scope": "loopback only; temporary synthetic CA and certificates",
+    "attempts": [
+      {
+        "attempt": 1,
+        "outcome": "pytest missing in project interpreter"
+      },
+      {
+        "attempt": 2,
+        "outcome": "collection failed: isolated test tree fixture layout incorrect"
+      },
+      {
+        "attempt": 3,
+        "outcome": "passed",
+        "test_count": 3
+      }
+    ],
+    "cases": [
+      {
+        "name": "test_direct_rpc_mtls_identity_binding_accepts_matching_sender",
+        "seconds": 0.415,
+        "passed": true
+      },
+      {
+        "name": "test_direct_rpc_mtls_identity_binding_rejects_forged_sender",
+        "seconds": 0.21,
+        "passed": true
+      },
+      {
+        "name": "test_direct_rpc_identity_binding_rejects_when_peer_certificate_is_unavailable",
+        "seconds": 0.249,
+        "passed": true
+      }
+    ],
+    "test_source_sha256": "844ceb2e2712a821224398ae51917cd700de4aab022bb11bcee7d09db38e8837"
+  },
+  "official_release": {
+    "tag": "v2.2.0",
+    "partner_default_identity_binding": true,
+    "leader_default_identity_binding": true,
+    "identity_module_matches_main": true
+  },
+  "runtime_changes": 0,
+  "new_dingdang_calls": 0,
+  "anonymous_compatibility_implemented": false
+}
