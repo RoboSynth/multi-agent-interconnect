@@ -1,0 +1,39 @@
+{
+  "schema_version": "dingdang-allowlist-retry/1",
+  "status": "same_error_after_explicit_allowlist",
+  "leader_aic": "1.2.156.3088.1.0001.00001.EZTK03.H5K0VP.07MC",
+  "service_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+  "conversation_id": "3101",
+  "run_id": "collab_7b86362966eb",
+  "actual_invocations_requested": 1,
+  "successful_external_calls": 0,
+  "http_status": 200,
+  "http_200_means": "SSE transport opened, not task success",
+  "result_events": [
+    {
+      "type": "agent_result_card",
+      "conversation_id": "3101",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "task_id": "",
+      "state": "failed",
+      "status": "error",
+      "content": "智能体 跨域接入体检智能体 调用失败: 群组邀请已进入智能体 inbox，但未收到入群确认；请检查智能体是否正在消费该队列",
+      "products": [],
+      "elapsed_time": 0,
+      "transport": "amqps_rpc",
+      "execution_origin": "dingdang-collaboration",
+      "run_id": "collab_7b86362966eb"
+    },
+    {
+      "type": "execution_error",
+      "conversation_id": "3101",
+      "message": "协作尚未完成，以下节点仍未成功完成：跨域接入体检智能体。请继续协作。",
+      "execution_origin": "dingdang-collaboration",
+      "run_id": "collab_7b86362966eb"
+    }
+  ],
+  "sse_original_sha256": "867196a03f43747fac26c3fbeb78522faf8ec45b9f3385ce51aed522038f3a27",
+  "input": "Re-executed the previously selected single onboarding agent with the existing instructions.",
+  "changes": "Added exactly the account dialog Leader AIC; same image and identity verification; no text parser patch deployed.",
+  "correlation": "Service/time correlation; server invalid-message record lacks original senderId/groupId."
+}
