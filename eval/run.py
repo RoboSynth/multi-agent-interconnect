@@ -150,11 +150,11 @@ async def run(args):
         "symptom": "订单业务异常，请通过各资源域观察确认并恢复。",
         "M0": "frozen observation order, then confirmed repairs; no model calls",
         "method_definition_ids": {"M0": "fixed-observations-v1", "M1": "free-tools-v1", "M2": "evidence-ranked-v1",
-            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v1"},
+            "M2v2": "evidence-ranked-per-incident-v4", "MR": "symptom-runbook-guarded-v2"},
         "M1": "model freely selects the next observation, guarded action with arguments, or verification; no ranking or rule fallback",
         "M2": "model hypotheses, deterministic discrimination ranking, entry dependencies, disclosed rule fallback",
         "M2v2": "one initial hypothesis generation overlapping serial entry probes; one additional generation only after new evidence contradicts all candidates; cross-domain positive-discrimination probes, maximum 3 in flight; when discrimination is zero, confirm one explicit unresolved prediction at a time by cost; 3-request symptom checks followed by unchanged final verification",
-        "MR": "public-symptom fixed runbook; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
+        "MR": "public-symptom fixed runbook; gateway 502/504 use the entry branch, failed create without an entry error uses the write branch; observations only supply safe blocker PID/pool revision; same approvals, domain guards and final verification; rejected and skipped actions retained",
         "shared_safety": "same tool inventory, domain policy, signed approvals, operation ledgers, and 30-second business verification"}
     model_manifest = ROOT / "tools/runtime/local-model/manifest.json"
     if model_manifest.exists():

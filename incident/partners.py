@@ -137,7 +137,7 @@ class VerificationPartner:
                       and summary["failed"] == 0 and summary["unknown"] == 0)
             events = summary.get("events", [])
             category = "healthy" if passed else (
-                "entry_error" if any(event.get("http_status") == 502 or event.get("public_contract_error") is True
+                "entry_error" if any(event.get("http_status") in {502, 504} or event.get("public_contract_error") is True
                                      for event in events) else
                 "write_error" if any(event.get("phase") == "create" and event.get("outcome") != "success"
                                      for event in events) else "unknown")

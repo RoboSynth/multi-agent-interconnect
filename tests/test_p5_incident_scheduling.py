@@ -197,6 +197,28 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("ops.containers", [row["tool"] for row in transport.calls])
         self.assertEqual(model.calls, 0)
 
+    async def test_mr_recorded_504_symptoms_take_entry_script_without_database_actions(self):
+        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
+        failed = fixture["summary"]
+        healthy = {"requests": 3, "success": 3, "failed": 0, "unknown": 0, "completed_workflows": 1,
+                   "unresolved_intents": 0, "events": [], "state": {"pending": [], "completed": [], "next_index": 1}}
+        partner = VerificationPartner("verifier", allowed_callers=["coordinator-test"])
+        transport = SchedulingTransport("F01")
+        original_call = transport.call
+        async def call(payload):
+            if payload["tool"] == "incident.symptom_check":
+                transport.calls.append(deepcopy(payload))
+                return await partner.execute(payload, "coordinator-test")
+            return await original_call(payload)
+        transport.call = call
+        with patch("business.load.OrderObserver.observe", new=AsyncMock(side_effect=[failed, healthy])):
+            state, transport, model = await self.execute(transport=transport, runbook=True)
+        self.assertEqual(state["status"], "completed", state.get("error"))
+        self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],
+                         ["ops.restart", "ops.route_rollback"])
+        self.assertFalse(any(row["tool"].startswith("db.") for row in transport.calls))
+        self.assertEqual(model.calls, 0)
+
     async def test_mr_no_blocker_pid_is_skipped_instead_of_invented(self):
         state, transport, _ = await self.execute("F07", runbook=True)
         self.assertEqual(state["status"], "completed", state.get("error"))
@@ -251,6 +273,22 @@ class PlannerAndQuickCheckTests(unittest.IsolatedAsyncioTestCase):
         facts = {fact["key"]: fact["value"] for fact in result["facts"]}
         self.assertTrue(facts["symptom_check_passed"])
         self.assertNotIn("business_recovered", facts)
+
+    async def test_gateway_timeout_keeps_502_entry_and_503_write_semantics(self):
+        fixture = json.loads((ROOT / "tests/fixtures/p5_mr_f01_504.json").read_text(encoding="utf-8-sig"))
+        payload = {"incident_id": "inc", "logical_task_id": "task", "kind": "observe", "tool": "incident.symptom_check"}
+        for status, expected in ((502, "entry_error"), (504, "entry_error"), (503, "write_error")):
+            with self.subTest(http_status=status):
+                summary = deepcopy(fixture["summary"])
+                for event in summary["events"]:
+                    event["http_status"] = status
+                partner = VerificationPartner("verifier", allowed_callers=["leader"])
+                with patch("business.load.OrderObserver.observe", new=AsyncMock(return_value=summary)):
+                    result = await partner.execute(payload, "leader")
+                facts = {fact["key"]: fact["value"] for fact in result["facts"]}
+                self.assertEqual(facts["symptom_category"], expected)
+                self.assertFalse(facts["symptom_check_passed"])
+                self.assertEqual(facts["symptom_observation"]["unknown"], 3)
 
     async def test_quick_unknown_request_state_is_carried_into_final_verification(self):
         pending = {"pending": [{"request_key": "same-key", "phase": "resolve"}], "completed": [], "next_index": 1}
