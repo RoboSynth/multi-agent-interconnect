@@ -223,6 +223,10 @@ async def run_session(directory, nonce):
         report["status"] = "LOCAL_CONTROLLED_WORKBENCH_NORMAL_CLOSE"
     except BaseException as error:
         report.update(status="LOCAL_CONTROLLED_WORKBENCH_FAILED_PRESERVED", error_class=type(error).__name__)
+        # The server keeps running after a transport start failure; keep the reason /api/state would have shown.
+        connection_error = getattr(app.state, "connection_error", None)
+        if connection_error:
+            report["connection_error"] = connection_error
     finally:
         try:
             if not task.done():
@@ -252,7 +256,12 @@ def launch():
     deadline = time.monotonic() + 135
     while time.monotonic() < deadline:
         if process.poll() is not None:
-            raise RuntimeError("Owned host exited before validated readiness; inspect its preserved logs")
+            try:
+                reason = load(directory / "finished.json").get("connection_error")
+            except (OSError, ValueError, AttributeError):
+                reason = None
+            raise RuntimeError("Owned host exited before validated readiness; inspect its preserved logs"
+                               + (f" (participant connection: {reason})" if reason else ""))
         if (directory / "started.json").exists():
             ready = load(directory / "started.json")
             if ready["session_nonce"] != nonce or ready["config_sha256"] != expected["config_sha256"]:

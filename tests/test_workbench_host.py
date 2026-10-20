@@ -138,6 +138,78 @@ class WorkbenchHostTests(unittest.TestCase):
             self.assertEqual(report["new_incidents_started_by_host"], 0)
             self.assertTrue(report["idle_stop_checks"]["idle"])
 
+    def test_transport_start_failure_keeps_connection_error(self):
+        import sys
+        reason = "RuntimeError: domain worker startup failed: PermissionError"
+        with tempfile.TemporaryDirectory(prefix=".workbench-host-test-", dir=ROOT) as temporary:
+            directory = Path(temporary)
+            expected = {"config_sha256": "fixed", "source_sha256": {}, "incident_sha256": {}, "llm_enabled": False}
+            host.save(directory / "launch.json", {"validation": expected})
+            app = SimpleNamespace(state=SimpleNamespace(transport=None, connection_error=reason),
+                                  middleware=lambda kind: lambda function: function)
+
+            class FakeServer:
+                def __init__(self, config):
+                    self.started = False
+                    self.should_exit = False
+
+                async def serve(self):
+                    self.started = True
+                    while not self.should_exit:
+                        await asyncio.sleep(0)
+
+            modules = {"uvicorn": SimpleNamespace(Server=FakeServer, Config=lambda *args, **kwargs: None),
+                       "workbench_server": SimpleNamespace(create_app=lambda *args: app),
+                       "fastapi.responses": SimpleNamespace(JSONResponse=lambda *args, **kwargs: None)}
+            with patch.dict(sys.modules, modules), patch.object(host, "validation", return_value=expected), \
+                    patch.object(host, "sha", return_value="fixed"), patch.object(host, "incident_hashes", return_value={}):
+                result = asyncio.run(host.run_session(directory, "c" * 32))
+            report = host.load(directory / "finished.json")
+            self.assertEqual(result, 1)
+            self.assertEqual(report["status"], "LOCAL_CONTROLLED_WORKBENCH_FAILED_PRESERVED")
+            self.assertEqual(report["error_class"], "RuntimeError")
+            self.assertEqual(report["connection_error"], reason)
+
+    def test_launch_failure_names_preserved_connection_error(self):
+        nonce = "d" * 32
+        reason = "RuntimeError: domain worker startup failed: PermissionError"
+        for finished in ({"status": "LOCAL_CONTROLLED_WORKBENCH_FAILED_PRESERVED", "connection_error": reason}, None):
+            with self.subTest(finished=finished is not None), \
+                    tempfile.TemporaryDirectory(prefix=".workbench-host-test-", dir=ROOT) as temporary:
+                control = Path(temporary)
+
+                class ExitedHost:
+                    def __init__(self, command, **kwargs):
+                        if finished is not None:
+                            host.save(control / command[-1] / "finished.json", finished)
+
+                    def poll(self):
+                        return 1
+
+                class FreePort:
+                    def __enter__(self):
+                        return self
+
+                    def __exit__(self, *args):
+                        return False
+
+                    def bind(self, address):
+                        pass
+
+                fake_subprocess = SimpleNamespace(Popen=ExitedHost, DEVNULL=None, CREATE_NO_WINDOW=0)
+                with patch.object(host, "CONTROL", control), patch.object(host, "validation", return_value={}), \
+                        patch.object(host, "socket", SimpleNamespace(socket=FreePort)), \
+                        patch.object(host, "uuid", SimpleNamespace(uuid4=lambda: SimpleNamespace(hex=nonce))), \
+                        patch.object(host, "subprocess", fake_subprocess):
+                    with self.assertRaises(RuntimeError) as raised:
+                        host.launch()
+                message = str(raised.exception)
+                self.assertTrue(message.startswith("Owned host exited before validated readiness"))
+                if finished is None:
+                    self.assertNotIn("participant connection", message)
+                else:
+                    self.assertTrue(message.endswith("(participant connection: " + reason + ")"))
+
 
 if __name__ == "__main__":
     unittest.main()
