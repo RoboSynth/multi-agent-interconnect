@@ -1,0 +1,11 @@
+[Unit]
+Description=Capture a fixed 24-hour NEW7 observation window once it finishes
+
+[Timer]
+OnCalendar=2026-10-21 13:44:53 UTC
+AccuracySec=1s
+Persistent=true
+Unit=incident-stability-24h-20261020.service
+
+[Install]
+WantedBy=timers.target

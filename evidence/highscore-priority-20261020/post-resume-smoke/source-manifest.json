@@ -1,0 +1,651 @@
+{
+  "schema_version": "cloud-stability-snapshot/1",
+  "captured_at": "2026-10-20T13:43:26.088016+00:00",
+  "window_start": "2026-10-20T13:37:06.112850+00:00",
+  "window_end": "2026-10-20T13:43:25.565187+00:00",
+  "window_seconds": 379.452337,
+  "full_24h_window": false,
+  "scheduler_other_events": [
+    {
+      "at": "2026-10-20T13:37:06.112850+00:00",
+      "event": "planned_pause_finished",
+      "host_session": "ac07184a92394a15bddc43bd7e14a0bb",
+      "request_id": "7593f485196c4d5395ffb244db65ba2a",
+      "reason": "resume"
+    }
+  ],
+  "invalid_scheduler_records": 0,
+  "scope": "Heartbeat sampling coverage and recorded jobs; not exact uptime. A full observation window is not a pass verdict. Examine gaps, failures and maintenance events. No external calls are initiated.",
+  "files": [
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/transport/amp/amp_access_coordinator.jsonl",
+      "destination": "inputs/amp/coordinator/amp_access_coordinator.jsonl",
+      "source_sha256": "0a7c34cc9537a05e42b229ce7c1689586c5ac7a6886d6b6572abfee1990c8420",
+      "saved_sha256": "0a7c34cc9537a05e42b229ce7c1689586c5ac7a6886d6b6572abfee1990c8420"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/transport/amp/amp_heartbeat_coordinator.jsonl",
+      "destination": "inputs/amp/coordinator/amp_heartbeat_coordinator.jsonl",
+      "source_sha256": "879317afe67e068a7ef34f7d31f90f968b5084e0973ba4af4bef0b01b9399708",
+      "saved_sha256": "879317afe67e068a7ef34f7d31f90f968b5084e0973ba4af4bef0b01b9399708"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_application-agent-state/_data/amp-application/amp_access_application.jsonl",
+      "destination": "inputs/amp/application/amp_access_application.jsonl",
+      "source_sha256": "a520bbba159a31e68f9e4989f42c8bb25098a35b4360dea82051cd5e3a268602",
+      "saved_sha256": "a520bbba159a31e68f9e4989f42c8bb25098a35b4360dea82051cd5e3a268602"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_application-agent-state/_data/amp-application/amp_heartbeat_application.jsonl",
+      "destination": "inputs/amp/application/amp_heartbeat_application.jsonl",
+      "source_sha256": "27b763aef76e21ae9cc4a9bff514f245b7658c623dedd327fc47a824a052af57",
+      "saved_sha256": "27b763aef76e21ae9cc4a9bff514f245b7658c623dedd327fc47a824a052af57"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database/amp_access_database.jsonl",
+      "destination": "inputs/amp/database/amp_access_database.jsonl",
+      "source_sha256": "5a9bd42f3595d57ccdc52b34c55f45dd014a6e8a062cb8d423b15d7f856d52cb",
+      "saved_sha256": "5a9bd42f3595d57ccdc52b34c55f45dd014a6e8a062cb8d423b15d7f856d52cb"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database/amp_heartbeat_database.jsonl",
+      "destination": "inputs/amp/database/amp_heartbeat_database.jsonl",
+      "source_sha256": "e9671a3ab799b1bce6a97a69462063aa114f7215e0554579838e8c33d5de79fc",
+      "saved_sha256": "e9671a3ab799b1bce6a97a69462063aa114f7215e0554579838e8c33d5de79fc"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database-backup/amp_access_database-backup.jsonl",
+      "destination": "inputs/amp/database-backup/amp_access_database-backup.jsonl",
+      "source_sha256": "a1c3a63be80c35aadd1ec7229302a6485fde26de26de5f0c46540a5d999c1a2b",
+      "saved_sha256": "a1c3a63be80c35aadd1ec7229302a6485fde26de26de5f0c46540a5d999c1a2b"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_database-agent-state/_data/amp-database-backup/amp_heartbeat_database-backup.jsonl",
+      "destination": "inputs/amp/database-backup/amp_heartbeat_database-backup.jsonl",
+      "source_sha256": "30d5a35c1c532011c50763fe75c737362122fd1019ac486b92320d3a1737eca8",
+      "saved_sha256": "30d5a35c1c532011c50763fe75c737362122fd1019ac486b92320d3a1737eca8"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_ops-agent-state/_data/amp-ops/amp_access_ops.jsonl",
+      "destination": "inputs/amp/ops/amp_access_ops.jsonl",
+      "source_sha256": "276c3faa4898c0b8e62ed7d63898fa405e7725ac845213567c238b8e779b630a",
+      "saved_sha256": "276c3faa4898c0b8e62ed7d63898fa405e7725ac845213567c238b8e779b630a"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_ops-agent-state/_data/amp-ops/amp_heartbeat_ops.jsonl",
+      "destination": "inputs/amp/ops/amp_heartbeat_ops.jsonl",
+      "source_sha256": "cb6731ba573f4210bf440069ac599a3efea63796a00fd142afcbb47b23cb8235",
+      "saved_sha256": "cb6731ba573f4210bf440069ac599a3efea63796a00fd142afcbb47b23cb8235"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_verification-agent-state/_data/amp-verification/amp_access_verification.jsonl",
+      "destination": "inputs/amp/verification/amp_access_verification.jsonl",
+      "source_sha256": "051a9ab7e1c903659365f14c263728e65fc61b37b59b243fbf2ca89e6d77cbcf",
+      "saved_sha256": "051a9ab7e1c903659365f14c263728e65fc61b37b59b243fbf2ca89e6d77cbcf"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_verification-agent-state/_data/amp-verification/amp_heartbeat_verification.jsonl",
+      "destination": "inputs/amp/verification/amp_heartbeat_verification.jsonl",
+      "source_sha256": "2b620739f4f1e5f138dd326ec9807b083db7fcba2c2a33d3d9300f006abeeb82",
+      "saved_sha256": "2b620739f4f1e5f138dd326ec9807b083db7fcba2c2a33d3d9300f006abeeb82"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_onboarding-agent-state/_data/amp-onboarding/amp_access_onboarding.jsonl",
+      "destination": "inputs/amp/onboarding/amp_access_onboarding.jsonl",
+      "source_sha256": "a9dd6f2d5101281b6667e4767b85964234ae71839f93ddaca70f1696c2e41c6e",
+      "saved_sha256": "a9dd6f2d5101281b6667e4767b85964234ae71839f93ddaca70f1696c2e41c6e"
+    },
+    {
+      "source": "/var/lib/docker/volumes/incident-pilot-new7-cloud-20261019_onboarding-agent-state/_data/amp-onboarding/amp_heartbeat_onboarding.jsonl",
+      "destination": "inputs/amp/onboarding/amp_heartbeat_onboarding.jsonl",
+      "source_sha256": "b71f97a83b30d53e02db7803f111931750c0d5c81218deb9d2e171d6e2f35108",
+      "saved_sha256": "b71f97a83b30d53e02db7803f111931750c0d5c81218deb9d2e171d6e2f35108"
+    },
+    {
+      "source": "/opt/incident-pilot/runtime/private/cloud-new7-schedule/events.jsonl",
+      "destination": "inputs/scheduler.jsonl",
+      "source_sha256": "7666ad88fabe3d5c908fcfe9d1a518ea578788fa0049da2ffb418573b8df0171",
+      "saved_sha256": "7666ad88fabe3d5c908fcfe9d1a518ea578788fa0049da2ffb418573b8df0171"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-032cbdd995bb43cc.json",
+      "destination": "inputs/incidents/inc-032cbdd995bb43cc.json",
+      "source_sha256": "7418d32f9041dcee111b5ec7515371a9ce2bc83485e671dffba1c04d53697311",
+      "saved_sha256": "48e90f46d9eed39802d9fe0a6d2da77bcd24bf936d65025e0b093323a1068aed"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-044b9e37b8374709.json",
+      "destination": "inputs/incidents/inc-044b9e37b8374709.json",
+      "source_sha256": "d4d3ab6c5ed4905fdd7aa33d30ee16cbfff205c63aa0975a6acda4b8d43afa2a",
+      "saved_sha256": "637cad255eaf76b509da89fc56ca64617239e517b4f52c7aee4727b41273e4cb"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-0c5baabe0ab9464b.json",
+      "destination": "inputs/incidents/inc-0c5baabe0ab9464b.json",
+      "source_sha256": "1435e29bf97a3047fa34f0e95be53c6878b4ca047040d4d1a1c51641a325ce1b",
+      "saved_sha256": "eb8a72d21db8d28ed0db4cc980e3eadaa8bb5d4a004ca8c33d9225a22398f3ee"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-0e74a34583264d1c.json",
+      "destination": "inputs/incidents/inc-0e74a34583264d1c.json",
+      "source_sha256": "350bb9cac92b919d3a5c5794d5b417edc212cb08bfb8566fb766ca7c1673528c",
+      "saved_sha256": "e69f93600eb7d8806754b33824af94b809a993009680131d3f76768c8c696338"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-160286dfaabc4ef4.json",
+      "destination": "inputs/incidents/inc-160286dfaabc4ef4.json",
+      "source_sha256": "f5750e66350d1e6ec5c59ef360947bd865919a9ed43a986ae7e53a37889a9040",
+      "saved_sha256": "497afe876d417fd890ccb1906f9e114d2022f94cc0070f7abc93bb6d62547e2e"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-161c7e3eed104dde.json",
+      "destination": "inputs/incidents/inc-161c7e3eed104dde.json",
+      "source_sha256": "14877c59b42da6e0072de138e2bd23c8060b9c715ef296a427f6f0f375daa497",
+      "saved_sha256": "ebf4cc69cb167ee4ebb00c3ccd1f23dbc743a09240d5def3afd391544753991e"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-172ec52a7d564ff9.json",
+      "destination": "inputs/incidents/inc-172ec52a7d564ff9.json",
+      "source_sha256": "da1ed4ced2e958e68d9fa03b80344354363e01484b90af06f4fe5daa25710752",
+      "saved_sha256": "803df342251ce621f1a0bd126feab485b5faebdf4c7ce2e92709729912647a4c"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-1744a67fe22f439e.json",
+      "destination": "inputs/incidents/inc-1744a67fe22f439e.json",
+      "source_sha256": "fe27e0c26dddaac076fe3857a32442802e34d47876df1301da3a600820fb6083",
+      "saved_sha256": "c18ba211389929cf5c6afed42815f6961cfee5922ebcec902084272e5d10a2ce"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-181ef13a93464bec.json",
+      "destination": "inputs/incidents/inc-181ef13a93464bec.json",
+      "source_sha256": "06d57365e3dbfe9e67e6f548cf27a22f7ca8b439000d80e57bedaf89abe3a76c",
+      "saved_sha256": "17bf84982c2369c7a964b9e6c9584c83afa2267177e3a6b4e766cd90e0a084cf"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-1a2a4ae29561424b.json",
+      "destination": "inputs/incidents/inc-1a2a4ae29561424b.json",
+      "source_sha256": "243a27b61793469666c75cd20ded88f50f09af8ff5c86d6292d0ff28f73c8659",
+      "saved_sha256": "623ddb243e19686e6d037d0aa98a2dd499424c9584658dce5321b4c9a7024b65"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-1e1ce6be06ae4644.json",
+      "destination": "inputs/incidents/inc-1e1ce6be06ae4644.json",
+      "source_sha256": "292f4fc18e177d6e84183d08d83dc65a4b19ac2df6cd0a6140fadeebcc2252a5",
+      "saved_sha256": "12cfaad69daae0e6fefec31cd32019f3c1c40fb845e8e6f5e9c649c40aa13694"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-20244a5bce3345e4.json",
+      "destination": "inputs/incidents/inc-20244a5bce3345e4.json",
+      "source_sha256": "e2b28ee4e87658d0928da2a17b6ffade70d091f4c3d1c1fa80e36421306aed40",
+      "saved_sha256": "b1dfc054de27607ca75f26f11468ab4c521042c0a43f64275a5154f50c71d999"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-26c08911355b49f6.json",
+      "destination": "inputs/incidents/inc-26c08911355b49f6.json",
+      "source_sha256": "e06513bec1035f475b52cd307bde8700fbfead9a6be8e15dff537a3be91d4936",
+      "saved_sha256": "46ac8453ff412e1900d7ef9278ad87dd0c0e83e2b7513adb10711355fa03ce8c"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-275c668d74e64893.json",
+      "destination": "inputs/incidents/inc-275c668d74e64893.json",
+      "source_sha256": "aadc0412f74d494ff2424c98aa06f99b7b9ecaae019151eb8d9b249c6907365f",
+      "saved_sha256": "3e3af5b86aefb9e7976da11c569f37c07cd613387d389ee6da979f3e68f999a9"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-398202559618442d.json",
+      "destination": "inputs/incidents/inc-398202559618442d.json",
+      "source_sha256": "a181ef6fdedade5c2989e54d56ea7007c4739f8d68a160e4079318378540d1f1",
+      "saved_sha256": "d3a875effae7bdcbf9a1bec4ba509d47935293fda6da22baae0abb585bdbf3b4"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-409779b67e0244c8.json",
+      "destination": "inputs/incidents/inc-409779b67e0244c8.json",
+      "source_sha256": "889e9eae0b29c4d67ddd2b66f6f23f65b2bc3ebe140959b77aea26e407834525",
+      "saved_sha256": "e89f089170c49a05ca5123cceb4cc56fa6b00f2e11ece05d4e8f8b925c9971d3"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-41fdbe302aef4354.json",
+      "destination": "inputs/incidents/inc-41fdbe302aef4354.json",
+      "source_sha256": "2a34d30e7f301e186989d32e1127eed7a442df6c538edcd58f3fcd24eb33e737",
+      "saved_sha256": "453bb76ea6d39db288cb02493ceee7fdb167c58e577a22f39d4151d84b2005cd"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-43010ee53b484d5c.json",
+      "destination": "inputs/incidents/inc-43010ee53b484d5c.json",
+      "source_sha256": "ecd426934cc4380fcf011514813b8351b0477d5a76f570fbd51d5022d8976b4d",
+      "saved_sha256": "12630e2846b15b47454abf898fe345206abacb88828069bf8963ee603fa12bd4"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-4746cc6aa6fd4eae.json",
+      "destination": "inputs/incidents/inc-4746cc6aa6fd4eae.json",
+      "source_sha256": "5b9c563792dde4830aa97d89671d17177ccd9dc9ea4ac2caf87fc01da034b811",
+      "saved_sha256": "73a51d3370b2fda10c258e1d6cf29d29d272e29980161e4f87a00fbdca8328a4"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-4c31daeb9acc4964.json",
+      "destination": "inputs/incidents/inc-4c31daeb9acc4964.json",
+      "source_sha256": "4baf6d59fbaac3c3f6aed3fa892f426f9eaf87ae11876b37eaba9d70fc266e05",
+      "saved_sha256": "fc2c852ff54526add5f5a4c8d67d8f1e0e574b98145e49b812118937121655ff"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-4f5e3d105bac4400.json",
+      "destination": "inputs/incidents/inc-4f5e3d105bac4400.json",
+      "source_sha256": "7b806b1080f9defff9808b4869e3ebe9d4ad5a9aef7e41dd1c68da5c4c4a3231",
+      "saved_sha256": "cf2a40fffbd8df06f4358ff8406622723e625ce08eaa7c1c9b394db269979028"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-5548969d14f745d1.json",
+      "destination": "inputs/incidents/inc-5548969d14f745d1.json",
+      "source_sha256": "8d2b275b838b13fe2a3d62706d7b15ea46861731623f1440fd68f906336efaee",
+      "saved_sha256": "0980a98e5b4b4dc1b00af65070b301d137609b613a5ef76bb87530fefc093409"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-57c6f75f5aa4462c.json",
+      "destination": "inputs/incidents/inc-57c6f75f5aa4462c.json",
+      "source_sha256": "e664ec5cfc5872f8e18d6090d2caa395033f8d0849b1e68747174997f243b153",
+      "saved_sha256": "58a555f8605fe8aa75ad1bdec0a4c77d11b448fa69dd208c70eca48f84b1d2fd"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-587404f0769d407d.json",
+      "destination": "inputs/incidents/inc-587404f0769d407d.json",
+      "source_sha256": "d2c53cf5657a572cd230a48991b6cf87100b2f40f88c4ee7dbc0b3148d9f813a",
+      "saved_sha256": "e1e997a537a3c4cfbd0a1776e536e3c4522a819d074cc2607318c3533a25d188"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-59395a0d0ae84448.json",
+      "destination": "inputs/incidents/inc-59395a0d0ae84448.json",
+      "source_sha256": "63ab040ef523183f5dacba0196df649911831f95eb089fc44103f672d68af55e",
+      "saved_sha256": "e064a06f1802e74ebe8a5805228343669f59861a59f28bd5d940c075d83db9ac"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-5d8967f5ec174fc9.json",
+      "destination": "inputs/incidents/inc-5d8967f5ec174fc9.json",
+      "source_sha256": "12c8efe095e25add3249de3bfd5aacc6f430290b10316e69a0bea404b1a3b111",
+      "saved_sha256": "8165f98f491affdf01af2c4cfd43d86c0503fb9c9e1fc718da33c549487907b4"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-5de888a739b74787.json",
+      "destination": "inputs/incidents/inc-5de888a739b74787.json",
+      "source_sha256": "a5f80e1da3f3bf4a1d66c2f0c5049c0dd13e40e908651fdc45c0881f93a9aea9",
+      "saved_sha256": "398bafe1bfb1696e7e71529edea8de0050c38934d19e8a58626e879d1e2fb889"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-61a05c307dbc4e08.json",
+      "destination": "inputs/incidents/inc-61a05c307dbc4e08.json",
+      "source_sha256": "0d1953c2881f91abb831941f8c4a769d5226bdbbf935ec898756e17d7980ada0",
+      "saved_sha256": "9cec11e9af1e94a0cc45daec40fe659ff5fc87f0221f807779de8e494a080302"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-6385072eb9124433.json",
+      "destination": "inputs/incidents/inc-6385072eb9124433.json",
+      "source_sha256": "f6e82a967abda2bd90a14f0f46edccafdd3da3326db1a9e3c30e7ffff18202df",
+      "saved_sha256": "f9e133f1323503b2647f7713cada95d051ee20b27884b14715b8282eea27057a"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-6489af3605494d52.json",
+      "destination": "inputs/incidents/inc-6489af3605494d52.json",
+      "source_sha256": "b5c85f21de118ddac0facd5475577949b14212579606c68bda995f93c5cd34d5",
+      "saved_sha256": "5e8cf13b6165f883f1120d0abba78c5bed1aac74f9b0d658005e1d9daa6c8ff2"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-6c54a0e55c0442f2.json",
+      "destination": "inputs/incidents/inc-6c54a0e55c0442f2.json",
+      "source_sha256": "a9aaf152b112f608047493f9b01f30f4f6252adb147b9af9bdc116ec39cf3a32",
+      "saved_sha256": "53d70b727045a11f131ad6c421a71535ab16e2ed08e817361418ecff552e9275"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-6e6ab70200b1490f.json",
+      "destination": "inputs/incidents/inc-6e6ab70200b1490f.json",
+      "source_sha256": "065b56dd5ad9924ebc3bafab85d444f5eaf7f80e748ee4b8000dbbf8e57a2772",
+      "saved_sha256": "6a5557b49abca20eee22cb7269f19c7991498af3c480a192f2194878353753bb"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-6ee2dfbdbed440ac.json",
+      "destination": "inputs/incidents/inc-6ee2dfbdbed440ac.json",
+      "source_sha256": "4125551df8d4206e5307c833bc06337e9f3ff1a3b866ed533dacbe55a296f37e",
+      "saved_sha256": "834a0f9b9aa81dcf6a3c70ce8d4319192ee1990aa37b41bf9ebcfb37704ac943"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-7300afe356d04058.json",
+      "destination": "inputs/incidents/inc-7300afe356d04058.json",
+      "source_sha256": "223f9c63c4a5e7fea82918e40bd5bbb0f8140ad2cc362490269bd617f6f2f5fd",
+      "saved_sha256": "a69b7ef104bbb43d51006c7f42c81533b7c2e5da306c378a9033b1c3e3a3cb7f"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-7cd9a9b6adf54278.json",
+      "destination": "inputs/incidents/inc-7cd9a9b6adf54278.json",
+      "source_sha256": "a450518fa803d93e6fdad6e1bfa914249f5c813b0f80a7d1b2b7ef1cb2a71582",
+      "saved_sha256": "c06c41a8ff918e2dd4b85fe122951ed3417f8e6c72d6b4da2393418f037ecb52"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-7d8c0fcd623d4e7a.json",
+      "destination": "inputs/incidents/inc-7d8c0fcd623d4e7a.json",
+      "source_sha256": "c90e5b585a59375bf6cfd3a8ca4ce7916990ee7fa6761ff71abf27fd1a43dcf1",
+      "saved_sha256": "440c813b8bfedfbe980321de277c7b222a9ff92d72bd4e98baf38f77895922f2"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-7e8bf7f6aec14ffd.json",
+      "destination": "inputs/incidents/inc-7e8bf7f6aec14ffd.json",
+      "source_sha256": "c1c68b39fd666043d8e39db28903b187a195838503a4f959a395c6793de4dff6",
+      "saved_sha256": "0065ba0cba07e0bf1c715ba8f6b7f33ebc9c33713c33a2e06b57dd737ac5c525"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-81a97c1886eb4aec.json",
+      "destination": "inputs/incidents/inc-81a97c1886eb4aec.json",
+      "source_sha256": "409c5c113ab6c229405cf16e0fae91161067b00dd783215aa5e83045ef6416e7",
+      "saved_sha256": "ca5fb3b48a1698ce4b75c2e5a66dda66bb998385b4c8502de034d4a5032fdd32"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-87ee02c7b9044226.json",
+      "destination": "inputs/incidents/inc-87ee02c7b9044226.json",
+      "source_sha256": "c07346a05b14fcb7c23ec504df00da0fad5c2197ed8751099b3403f6a814ef06",
+      "saved_sha256": "c4f612d7f43e4f80d3d9d64c4491ade2528318c88e23125f26f591ec09f76502"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-886a80f1c5e04506.json",
+      "destination": "inputs/incidents/inc-886a80f1c5e04506.json",
+      "source_sha256": "5f43ea2896b5870cb148242729b1321d65367fc309ed7c30386a581581db07dd",
+      "saved_sha256": "e8cf2ff1b5b7eede7b4b15a749595f419908191898341cc53f40e1eca1cbbb39"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-88d482d4e6e84e51.json",
+      "destination": "inputs/incidents/inc-88d482d4e6e84e51.json",
+      "source_sha256": "49ef4bd1ff314a34737f88defa2f8a0a2fded437915e9aaa801598bb6321b180",
+      "saved_sha256": "a312c6b84b46edf4ec00a4afb04efd74114865fe08d94e68ee0fe99cb298df4f"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-894d504b71544090.json",
+      "destination": "inputs/incidents/inc-894d504b71544090.json",
+      "source_sha256": "ed1ea85ac1f0fc33e062a92aab241ee64969ef7ee14b1bfb76494a478d466337",
+      "saved_sha256": "119e60b2e7c132e2ea36b2cb09de4306b1d9f781b65b9e64c03f8ab7936ecc1d"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-8f9e3fdca85a4763.json",
+      "destination": "inputs/incidents/inc-8f9e3fdca85a4763.json",
+      "source_sha256": "60bc5ab85bb4437161155aa4b639e51660c8401f1b7dbd894b95eaa3c3e064fa",
+      "saved_sha256": "cee413244a2af53a1c9aca1400364b609801991006d5d3a9ef7b3775e635359c"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-951e1d4775fa41a7.json",
+      "destination": "inputs/incidents/inc-951e1d4775fa41a7.json",
+      "source_sha256": "1c67b7837d4db0eccbe92961ce4b4e117aa20dd7d0e9cd546c2e54363d872999",
+      "saved_sha256": "a5a36837cdddd4c8b67f97cfdb9bf41e03cdb6932fda6c4b5b30d484869ade73"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-95a9c73388324e9b.json",
+      "destination": "inputs/incidents/inc-95a9c73388324e9b.json",
+      "source_sha256": "89743eea21266b6901087d00d430d6401044dac268b5cc6a0e7b2f13a8fcc09d",
+      "saved_sha256": "2f9fa7789909aa91540fa011534773611c822ee00eedf6266e7bd743798d6b7e"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-a2038abd4f8b4e7c.json",
+      "destination": "inputs/incidents/inc-a2038abd4f8b4e7c.json",
+      "source_sha256": "fc2dee090e2c8e47cc4ac09063e62ea7f93dd3c597a2d2af1f35a2ea7a9c7ab4",
+      "saved_sha256": "126e03cefaa51d993a529d0e47bb90ed696a4b8a24b1d43510b70d9a282e3519"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-a690f83d13f5494f.json",
+      "destination": "inputs/incidents/inc-a690f83d13f5494f.json",
+      "source_sha256": "079275afcd7f1bce0db44c655edfa51290fffdef7d27f47192d354346b433ec4",
+      "saved_sha256": "9082bd6676d31e0d141bf5d8da0a8cbbc12a688cad6e0b38ca4bd23bec45b68b"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-adbc1a6bbbbb41d7.json",
+      "destination": "inputs/incidents/inc-adbc1a6bbbbb41d7.json",
+      "source_sha256": "66a4b40ac56a3dfa788426a17942b3af851ecf1d1533ce63a8c57f902bb47b17",
+      "saved_sha256": "f7b692aec95ed437cef1d499f9bf5b01ef1ac93eac0e93594a6460c7f99fda02"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-ae1adbfd84db4ff8.json",
+      "destination": "inputs/incidents/inc-ae1adbfd84db4ff8.json",
+      "source_sha256": "8c865fe8c46c2e2fb56b5c320d956a8174b1a584fe4dca939ae8bc5b4f89f133",
+      "saved_sha256": "0b4508dacf21169af43fad0c508c5a7bc51cca8bd7b1f11879ea457a42233bad"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-afe249806a174828.json",
+      "destination": "inputs/incidents/inc-afe249806a174828.json",
+      "source_sha256": "0eea8c74cc9bba65e8ba45d9a1c339018b9fbd6a1eddc649dd49c16c45f8607e",
+      "saved_sha256": "b3e72cbb5d8579409133cd898b3efb359bec691ecd2f79e1b1826cda3a5f85f1"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-b08e96672d3643a7.json",
+      "destination": "inputs/incidents/inc-b08e96672d3643a7.json",
+      "source_sha256": "1eefd3b58435f9510aa45f157de9813b7011c50d045dd7c65c6756346fcc62c3",
+      "saved_sha256": "38d90819d47e930d27eaa93d44c7d0c9a775bd803b81f4db39d7cf2cc2ff4f46"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-b318ffae73284834.json",
+      "destination": "inputs/incidents/inc-b318ffae73284834.json",
+      "source_sha256": "ced080560978e7bdc95cfaf36f85dd220121206f896008994cdb341a8303bd77",
+      "saved_sha256": "8802bcb50be8587fd326eabee06438db6b614a8370582d5789f178934e1d8f94"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-b8328ca1b9354e3e.json",
+      "destination": "inputs/incidents/inc-b8328ca1b9354e3e.json",
+      "source_sha256": "4e083332e8a7791b33b773755a321eb127b809f1d77b16297ab59062f140e3de",
+      "saved_sha256": "b6f36af6873bb2060fdf51b1465d3927565bcef0c77d8181c2d4070d40df4641"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-bb7f2b68a03f4f47.json",
+      "destination": "inputs/incidents/inc-bb7f2b68a03f4f47.json",
+      "source_sha256": "4a4507e8afa5764d5b4bf068280582effac46c4e22496aa8ae8401f6fcd50b97",
+      "saved_sha256": "d564b49b35432e53451c776894cff2419bd5ab830b632ac47619eff64374cc54"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-beeaeb58a07f4f36.json",
+      "destination": "inputs/incidents/inc-beeaeb58a07f4f36.json",
+      "source_sha256": "f61baffcf2e38bff5334686962a00c0d617dc66c0934aec816317661df29cdbe",
+      "saved_sha256": "dd6c379c267de204649370d3d8c57609772bafe3a7a11ba8c8ff22dbe8da4836"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-c17b76eb88c34524.json",
+      "destination": "inputs/incidents/inc-c17b76eb88c34524.json",
+      "source_sha256": "4c0bdc1790b6492000a7bdb99afafc7bc024f3e7f7f318478193c3e223d09f00",
+      "saved_sha256": "0949622b4a3d6ca2d4cb45d416151850090890bdeb7b00bea14afa7e955326bd"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-c1a9c0e4bb024285.json",
+      "destination": "inputs/incidents/inc-c1a9c0e4bb024285.json",
+      "source_sha256": "c0b4e4a42a0e2ae1914d096ba3d3e643eeee678dd7f6fb313a845e4cd52fadaf",
+      "saved_sha256": "e55d4bf7db122d5222904863a8a152be088eb525fe3bbdc98988dd34038d7278"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-c8438054e0f24195.json",
+      "destination": "inputs/incidents/inc-c8438054e0f24195.json",
+      "source_sha256": "213027bcec36b5b83fa59a1096cf24375555476cebffd7ae536e793a28714f1e",
+      "saved_sha256": "257e7291e741d7e19f0c21db6b6143d2a2cce2c0017e50c8815cc65baa460b9e"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-cdcc958ce99e4476.json",
+      "destination": "inputs/incidents/inc-cdcc958ce99e4476.json",
+      "source_sha256": "c7cbea08081a5e415b66c57e4afcaa394f2037e8acdda8f7dbd8b5782f5869e4",
+      "saved_sha256": "62c9ec8d63527a1d18cdcde3e4f6b9ca6cdf2dbd6b08db0fbe9ce90290c3b4b7"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-ce29359fc3d84f11.json",
+      "destination": "inputs/incidents/inc-ce29359fc3d84f11.json",
+      "source_sha256": "ca5e18f23ce386f01a62d6bcbd8828c69820f34657cb6ccc18319cf9c2188246",
+      "saved_sha256": "7390e75a8c6a583f7429b823c340c16d0cd74b5caa0c463b2a4415126d0e626d"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-ced7e953c0a14702.json",
+      "destination": "inputs/incidents/inc-ced7e953c0a14702.json",
+      "source_sha256": "517c72f83a11ab714fd3d3e867aad7a5de6f9269bdd0ded26ec8a2b858924a06",
+      "saved_sha256": "7a5ec684288703977f6081681868a8558d0b2080bf1decfc4c88a9bc1a4ca016"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-d1e5d6a36bb043ba.json",
+      "destination": "inputs/incidents/inc-d1e5d6a36bb043ba.json",
+      "source_sha256": "b54ad96e530383b2c63f4390e107b1ad7754f692adf3ad9dfb1d1507eec1d020",
+      "saved_sha256": "4127ba8f4f0b3fae802bd5e2f1174434785701f22287c3b0df509673a919506a"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-d4b2a812cf8847ab.json",
+      "destination": "inputs/incidents/inc-d4b2a812cf8847ab.json",
+      "source_sha256": "25e1fbb2800d24b9e118fde44763671b68773aca45187e2357e2698ed732600b",
+      "saved_sha256": "f29bc51fb8979527736af4e8836ae83022e15d75e15743b30f14fcfd4e00aad4"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-d7dff35f12804d86.json",
+      "destination": "inputs/incidents/inc-d7dff35f12804d86.json",
+      "source_sha256": "29264e595f5096e9dcff7b40c26fd1907fa8e314ef3f09a7bb766ce2e4d95afd",
+      "saved_sha256": "5034385757f01b01e068b074c208b21b528010956eb2d9a0e144df5160a17677"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-da0de9349d814f15.json",
+      "destination": "inputs/incidents/inc-da0de9349d814f15.json",
+      "source_sha256": "c9454c7c14f061457f56027e6509c352ffcd78c54c115afb4eadc6858c3c7e97",
+      "saved_sha256": "eb8af1b1724e82f5117d37cdfe968c610aee6590fea7df90e81c573400679691"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-dc352acef34b4f89.json",
+      "destination": "inputs/incidents/inc-dc352acef34b4f89.json",
+      "source_sha256": "6a928f1776883db18a3188bc7cf5c33dd54995eda10d0fe6a5e27a5cdaf03256",
+      "saved_sha256": "112f825dbbc18f98f3e5daad0ea1b6472d852dc00fd475837fac079041eee474"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-de0b8e8224864612.json",
+      "destination": "inputs/incidents/inc-de0b8e8224864612.json",
+      "source_sha256": "01f8048e73234f92be33ce3743d6738e217067b86522e4327bd1b9579473dabc",
+      "saved_sha256": "e6dc5f82e3087178c33dbdf9fbf1c626f6a1713ff55471098fd5ef1b8a2f38d0"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-df4c5374d42643c0.json",
+      "destination": "inputs/incidents/inc-df4c5374d42643c0.json",
+      "source_sha256": "4146e6578d5468ba5c8b9174ebde240a6deda861610e7da2c1c8f2feb94abd23",
+      "saved_sha256": "54d36759cae9af7b28599a551f165972b50437502bc8bf51530e74f7d8fc70f5"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-e3ae3b62799a476f.json",
+      "destination": "inputs/incidents/inc-e3ae3b62799a476f.json",
+      "source_sha256": "1f57914852d0bb9f6bd06d1a378a9903aeb6807e9bcd400fe06a4db945d4e7b0",
+      "saved_sha256": "2ff2fe5691ccf7dd8c9f4c6668aa14a3c6e957345b3df0b630e931bea883c9c1"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-e7c8c085dfa44947.json",
+      "destination": "inputs/incidents/inc-e7c8c085dfa44947.json",
+      "source_sha256": "25181ef26797cee54a20e91157f03bd3893e1d48428e7fcc9b9eb266a92796ab",
+      "saved_sha256": "c4c9e0f6c1443bbb58611f3b5f1332b2e00dea509e83ad529ede8f9ef8d3436e"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-ec214b56c13b4d78.json",
+      "destination": "inputs/incidents/inc-ec214b56c13b4d78.json",
+      "source_sha256": "8e51d5c8e9c24eff5338a48600efde4b431586f72dc999c8b83fde129bdc4956",
+      "saved_sha256": "f93a39a1a11f3b72b13453f30611386ca2c0a75bb5285dd4c517acf10a885e93"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-eda02b29ff224961.json",
+      "destination": "inputs/incidents/inc-eda02b29ff224961.json",
+      "source_sha256": "4a5a30c988c1eb0fc565326bf3e0b41272b17be209a6a3251941bb1cac7d3dcb",
+      "saved_sha256": "0f2540aa828050890b0cba7a788bb70b9c8ff8215b584640e5c779ef9eb3a5f0"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-f09d8174ef124c88.json",
+      "destination": "inputs/incidents/inc-f09d8174ef124c88.json",
+      "source_sha256": "e5d9b820c0068e442130842edc98602eaa38c8754ab207f9c8b43e62f82c99c2",
+      "saved_sha256": "1ee0cb9f94bf5b2cdf769230e79931161973e11a38e337ba717ef88265697b9a"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-f4edb138fbf14432.json",
+      "destination": "inputs/incidents/inc-f4edb138fbf14432.json",
+      "source_sha256": "d6fbb8eb14530d6cfb2238b719c8fcf06e43a06a757f5c8387f7c809266d4853",
+      "saved_sha256": "605c99896bf1d96abfec547d2b8365fd4116477840057dedfe35b66e4f7e5127"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-f864290e33b24818.json",
+      "destination": "inputs/incidents/inc-f864290e33b24818.json",
+      "source_sha256": "e940519df55919d16bd915401343f32664e0bf8775561b41303eee60d5135471",
+      "saved_sha256": "2365f5e781ca7580ecc6f47e3454e82d9991a1c5d1a28ed63b3535f7cf8a5fd8"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-f8cdafbc6dd649e5.json",
+      "destination": "inputs/incidents/inc-f8cdafbc6dd649e5.json",
+      "source_sha256": "4f1ebf1c4c8d90f98dc15642363f81dfbfe89cccb290e8e5eb0beff672b92b9f",
+      "saved_sha256": "a6370412dab025712941fa55608650dbba465d22400eb843ef61a256e0769314"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-fba249c4ace84677.json",
+      "destination": "inputs/incidents/inc-fba249c4ace84677.json",
+      "source_sha256": "46bbb63ea6f5a0389390829fa50aa772b4b095fb2653b48a5ed251123e086658",
+      "saved_sha256": "204d3731587469a48bc795d7e6e4b5ab58d4b228683213b93bf64aa4dbb2ca94"
+    },
+    {
+      "source": "/opt/incident-pilot/artifacts/cloud-longrun-workbench/incidents/inc-fc1f9179a9b546f8.json",
+      "destination": "inputs/incidents/inc-fc1f9179a9b546f8.json",
+      "source_sha256": "41583ede76f0d37d4317054aa354d001f03b7ee90ffd4d7081a24d8ba1d16eb1",
+      "saved_sha256": "e066951b6c43efce7bea203d285375673a04064814045290cdc6a43a0549e94e"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/leaderboard-team-075242-394278.json",
+      "destination": "daily/leaderboard-team-075242-394278.json",
+      "source_sha256": "2ab626135bc26d7bcd9c9195d61c40e16609a8a5a5c9df391b55b5800c7c8a74",
+      "saved_sha256": "2ab626135bc26d7bcd9c9195d61c40e16609a8a5a5c9df391b55b5800c7c8a74"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/leaderboard-team-083236-011498.json",
+      "destination": "daily/leaderboard-team-083236-011498.json",
+      "source_sha256": "961cc71e9c8f0bbe814dabec4bf507ac35dc9170181ccd3a5b1bbbb60659ee38",
+      "saved_sha256": "961cc71e9c8f0bbe814dabec4bf507ac35dc9170181ccd3a5b1bbbb60659ee38"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/leaderboard-team-094649-614981.json",
+      "destination": "daily/leaderboard-team-094649-614981.json",
+      "source_sha256": "db169c97b20598c1411436465a9361bccf0c25b57b147f051a60634b4e25b5ef",
+      "saved_sha256": "db169c97b20598c1411436465a9361bccf0c25b57b147f051a60634b4e25b5ef"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/leaderboard-team-212332-314961.json",
+      "destination": "daily/leaderboard-team-212332-314961.json",
+      "source_sha256": "02788095f5f19f9eae5ab48a294e788fa8d766fb6e6cb0aa9e4516b387022dd6",
+      "saved_sha256": "02788095f5f19f9eae5ab48a294e788fa8d766fb6e6cb0aa9e4516b387022dd6"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/local-status-075242-394278.json",
+      "destination": "daily/local-status-075242-394278.json",
+      "source_sha256": "3d18fe894b7ad540b281f79a87f66de223feb75fe01c385f5b12a889f19cace1",
+      "saved_sha256": "3d18fe894b7ad540b281f79a87f66de223feb75fe01c385f5b12a889f19cace1"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/local-status-083236-011498.json",
+      "destination": "daily/local-status-083236-011498.json",
+      "source_sha256": "576d8efb15bd5cb5977bcb14e8a5fedf83f7f4d6d9c9eaf86f4cddf31b673564",
+      "saved_sha256": "576d8efb15bd5cb5977bcb14e8a5fedf83f7f4d6d9c9eaf86f4cddf31b673564"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/local-status-094649-614981.json",
+      "destination": "daily/local-status-094649-614981.json",
+      "source_sha256": "0f98ac8894bcdb82ef33ea490063ac1d0621c25c92c3113654245abe10eaabea",
+      "saved_sha256": "0f98ac8894bcdb82ef33ea490063ac1d0621c25c92c3113654245abe10eaabea"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/local-status-212332-314961.json",
+      "destination": "daily/local-status-212332-314961.json",
+      "source_sha256": "dc38a09799ec1c484c71f896731aaceb3b7ee176cb4096db4abefa1cdbb6c9a0",
+      "saved_sha256": "dc38a09799ec1c484c71f896731aaceb3b7ee176cb4096db4abefa1cdbb6c9a0"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/summary-075242-394278.json",
+      "destination": "daily/summary-075242-394278.json",
+      "source_sha256": "58eb5d48ea92f1edd969d79d389e4f600b6d82a1cf56d4696317fdf48d025832",
+      "saved_sha256": "58eb5d48ea92f1edd969d79d389e4f600b6d82a1cf56d4696317fdf48d025832"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/summary-083236-011498.json",
+      "destination": "daily/summary-083236-011498.json",
+      "source_sha256": "187c6caded32c3202b7d018a40dbf182d717e53ecdcfacea2f1b03716d9de5d6",
+      "saved_sha256": "187c6caded32c3202b7d018a40dbf182d717e53ecdcfacea2f1b03716d9de5d6"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/summary-094649-614981.json",
+      "destination": "daily/summary-094649-614981.json",
+      "source_sha256": "d06faf69faab1ed4e0e58e436e4729468f11f7e72dcfde38d28522cd9de4ba12",
+      "saved_sha256": "d06faf69faab1ed4e0e58e436e4729468f11f7e72dcfde38d28522cd9de4ba12"
+    },
+    {
+      "source": "/opt/incident-pilot/evidence/longrun-20261020/summary-212332-314961.json",
+      "destination": "daily/summary-212332-314961.json",
+      "source_sha256": "06c6188587ae15ebdbb68b41dc1ebf4058a4e152f1ea7e3c1fd5f838216d408a",
+      "saved_sha256": "06c6188587ae15ebdbb68b41dc1ebf4058a4e152f1ea7e3c1fd5f838216d408a"
+    }
+  ]
+}

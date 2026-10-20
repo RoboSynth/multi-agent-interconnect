@@ -1,0 +1,50 @@
+{
+  "schema_version": "dingdang-external-attempt/1",
+  "status": "blocked_before_task_creation",
+  "conversation_id": "3101",
+  "run_id": "collab_c85a6bb5307d",
+  "service_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+  "http_status": 200,
+  "http_200_means": "SSE transport opened, not task success",
+  "successful_external_calls": 0,
+  "result_events": [
+    {
+      "type": "agent_result_card",
+      "conversation_id": "3101",
+      "run_id": "collab_c85a6bb5307d",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "task_id": "",
+      "state": "failed",
+      "status": "error",
+      "content": "智能体 跨域接入体检智能体 调用失败: 群组邀请已进入智能体 inbox，但未收到入群确认；请检查智能体是否正在消费该队列",
+      "products": [],
+      "transport": "amqps_rpc",
+      "elapsed_time": 0,
+      "execution_origin": "dingdang-collaboration"
+    },
+    {
+      "type": "execution_error",
+      "conversation_id": "3101",
+      "run_id": "collab_c85a6bb5307d",
+      "message": "协作尚未完成，以下节点仍未成功完成：跨域接入体检智能体。请继续协作。",
+      "execution_origin": "dingdang-collaboration"
+    }
+  ],
+  "correlated_service_events": [
+    {
+      "schema_version": "1.0",
+      "timestamp": "2026-10-20T13:27:55.782593Z",
+      "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "log_type": "system",
+      "log_id": "d3393726-efdf-4b46-b1ec-0d812bf2290a",
+      "body": {
+        "event": "inbox_invalid_message",
+        "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+        "error": "PeerAicMissingError: AMQP user_id is required for group identity binding"
+      }
+    }
+  ],
+  "sse_original_sha256": "e612a2ff965f933fa6661adea0c4ce841e9c18bba38cacd5b61c45ee1cc05c8b",
+  "public_metadata_service": true,
+  "scope": "Real logged-in Dingdang UI attempt. Original SSE remains locally. Correlation uses target identity and time; missing taskId prevents task-level pairing."
+}

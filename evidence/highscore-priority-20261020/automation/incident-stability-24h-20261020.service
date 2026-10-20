@@ -1,0 +1,13 @@
+[Unit]
+Description=Incident Pilot completed 24-hour window evidence snapshot
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/incident-pilot
+Environment=PYTHONUTF8=1
+UMask=0077
+ExecStart=/opt/incident-pilot/.venv/bin/python /opt/incident-pilot/runtime/private/server-tools/capture_stability.py --repo-root /opt/incident-pilot --output /opt/incident-pilot/evidence/highscore-priority-20261020/post-batch-24h --start 2026-10-20T13:43:53.070762+00:00 --end 2026-10-21T13:43:53.070762+00:00
+TimeoutStartSec=180
+NoNewPrivileges=true
