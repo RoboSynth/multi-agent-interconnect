@@ -1,6 +1,7 @@
 """Opt-in per-incident ranking. Historical EvidencePlanner stays unchanged."""
 from dataclasses import replace
 
+from .hypothesis import OBSERVABLE_TOOLS
 from .planner import EvidencePlanner, PROBES, category, rank_probes
 
 
@@ -42,8 +43,9 @@ class IncidentPlanner(EvidencePlanner):
             return [required]
         probes = [probe for probe in self.probes if probe.tool not in self.observed
                   and (available is None or probe.tool in available)]
-        ranked = rank_probes(self.candidates(hypotheses), probes)
-        self.history.append({"reason": "按跨域成本排序；无区分度且无前置观察时停止", "ranking": ranked})
+        candidates = self.candidates(hypotheses)
+        ranked = rank_probes(candidates, probes)
+        self.history.append({"reason": "按假设区分度与跨域成本排序", "ranking": ranked})
         # One outstanding task per resource partner. Both transports select
         # one active partner per prefix; never overlap two ops/db requests.
         selected, domains = [], set()
@@ -54,6 +56,19 @@ class IncidentPlanner(EvidencePlanner):
                 domains.add(domain)
             if len(selected) == maximum:
                 break
+        if not selected:
+            # Sparse predictions cannot form a discriminating pair, but an
+            # explicit prediction still needs confirmation. Missing predictions
+            # remain unknown; do not expand this into a sweep of every tool.
+            confirmable = [probe for probe in probes if any(
+                probe.tool in hypothesis.predictions
+                and set(hypothesis.predictions[probe.tool]) < set(OBSERVABLE_TOOLS[probe.tool]["outcomes"])
+                for hypothesis in candidates)]
+            if confirmable:
+                probe = min(confirmable, key=lambda p: (p.cost + 0.2 * p.median_seconds, p.median_seconds, p.tool))
+                selected = [probe.tool]
+                self.history.append({"reason": "候选仍有未验证的明确预测，逐项按成本确认", "tool": probe.tool,
+                                     "selection": "hypothesis_confirmation"})
         return selected
 
     def next_probe(self, hypotheses, available=None):
