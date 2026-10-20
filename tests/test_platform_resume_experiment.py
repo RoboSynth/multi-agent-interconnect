@@ -27,6 +27,7 @@ class Fixture(unittest.TestCase):
     point = "after_applied"
 
     def setUp(self):
+        (ROOT / "artifacts").mkdir(exist_ok=True)
         self.temp = tempfile.TemporaryDirectory(dir=ROOT / "artifacts")
         self.root = Path(self.temp.name)
         self.root_patch = patch.object(e1, "ROOT", self.root); self.root_patch.start()

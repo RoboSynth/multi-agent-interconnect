@@ -1,15 +1,13 @@
 # Incident Pilot · 跨系统故障诊断与协同恢复
 
-让应用、数据库、运维智能体在各自权限范围内协作：收集证据、审批高风险操作、执行修复，并用完整订单流程确认业务恢复。
-
-**当前定位：强基线。** 后续改动以本版本为参照，保留同条件对照和原始结果。能力与实测口径见[基线说明](docs/BASELINE.md)，开发协作见[COLLABORATION.md](COLLABORATION.md)。
+让应用、数据库、运维智能体在各自权限范围内协作：收集证据、审批高风险操作、执行修复，并用完整订单流程验证恢复。
 
 ```mermaid
 flowchart LR
-    U[工作台] --> C[协调者：证据规划 / 审批 / 接续]
-    C <-->|AIP| A[应用智能体]
-    C <-->|AIP| D[数据库主 / 备智能体]
-    C <-->|AIP| O[运维智能体]
+    U[浏览器工作台] --> C[协调智能体：证据规划 / 审批 / 接续]
+    C <-->|AIP任务与结果| A[应用智能体]
+    C <-->|AIP任务与结果| D[数据库主 / 备智能体]
+    C <-->|AIP任务与结果| O[运维智能体]
     C --> V[业务验证智能体]
     D -->|MCP + 权限守卫| P[(PostgreSQL)]
     O -->|MCP + 权限守卫| N[Nginx / Docker]
@@ -17,39 +15,52 @@ flowchart LR
     V --> N --> S --> P
 ```
 
-## 开始使用
+## 一条命令启动
 
-| 目的 | 入口 |
-| --- | --- |
-| 队友用自己的账号接手 | [开发者指南](docs/开发者接手指南_20261018.md) |
-| 安装环境、启动、验证、停止 | [本地操作](docs/本地开发环境与操作_20261018.md) |
-| 独立 Docker 项目部署 | [部署清单与资源隔离](deploy/ISOLATED.md) |
-| 七身份梧桐接入 | [NEW7](deploy/NEW7.md) · [自己的平台配置](docs/自有账号平台配置_20261018.md) |
-| 云端运维 | [服务器手册](deploy/SERVER.md) |
-| 阅读设计与实验 | [文档索引](docs/README.md) · [实验记录索引](evidence/README.md) |
+要求：**Python 3.10+、Docker Engine / Docker Desktop（Linux 容器）及 Compose v2**；建议至少 2 核、4 GB 内存、10 GB 可用磁盘。首次构建需要联网下载镜像和依赖。Windows 使用 PowerShell 7；也支持已安装 Docker 的 WSL `Ubuntu-22.04`。
 
-Windows 原生开发模式要求 Python 3.12 x64、项目 `.venv` 和 PowerShell 7.4+。首次按[环境说明](docs/本地开发环境与操作_20261018.md)准备后，在仓库根目录运行：
+仅在 WSL 内安装 Docker 时，演示期间保持该发行版的终端打开；WSL 退出会使容器停止。使用 Docker Desktop 时保持其运行。
 
+在代码包根目录运行，任选当前系统的一行：
+
+```bash
+# Linux
+bash deploy/up.sh
+```
 ```powershell
-pwsh -NoProfile -File deploy/local-up.ps1 -Install
+# Windows
+pwsh -NoProfile -File deploy/up.ps1
 ```
 
-工作台地址：`http://127.0.0.1:8766`。后续启动省略 `-Install`。该命令会启动本地数据库、订单服务和参与者；停止与资源检查见[停机操作](docs/windows_local_shutdown_20261019.md)。模型为显式可选项，本地开发不需要共享平台身份。
+打开 **http://127.0.0.1:18766**。看到五个参与者已连接即启动完成；订单入口为 http://127.0.0.1:18088/ready。启动器自动生成本机随机密码，不需模型、API key 或梧桐证书。端口冲突时，首次启动前复制 [.env.example](.env.example) 为 `.env` 并改四个端口。
 
-## 当前对照结果
+## 注入故障，看自动修复
 
-完整 60 格本地实验：5 场景 × 4 方法 × 3 重复。严格通过数为 **M0 15/15、M2v2 15/15、MR 12/15、M1 9/15**。M2v2/M0 的逐配对总耗时比中位数为 **1.275452**，加权观察成本为 **90/126**，M2v2 无关高权限尝试为 **0**。
+保持工作台打开，在另一个终端运行：
 
-总耗时包含最终 30 秒验证窗口；结果限定于本机这五个故障家族，不能当作新故障泛化或云端性能结论。[完整报告与原始结果](evidence/p5-local60-r3-20261020/README.md)。
+```bash
+# Linux：把本项目订单入口切到旧版，然后自动诊断与恢复
+bash deploy/up.sh demo
+```
+```powershell
+# Windows：同一演示
+pwsh -NoProfile -File deploy/up.ps1 -Action demo
+```
 
-## 目录与开发
+终端先确认真实入口变成 `v1`，工作台随后显示观察证据、`ops.route_rollback` 与业务验证。最终应显示 `completed`，终端打印 **PASS：30 秒 / 10 个完整创建—查询—取消流程**。结果保存在 `artifacts/review/`；失败原样保留。高风险操作仍需工作台审批，本演示只做固定旧路由恢复。
 
-- `incident/`：协调、参与者、协议契约与传输。
-- `acps_mcp_bridge/`、`domains/`：MCP 桥接、权限和幂等操作。
-- `business/`、`demo-ui/`：订单业务与工作台界面。
-- `deploy/`、`ops/`、`tools/`：部署、巡检和开发工具。
-- `eval/`、`tests/`：实验执行器与测试；[测试环境说明](docs/test_environment_20261019.md)。
-- `docs/`：设计和操作；`evidence/`：原始实验记录；`deliverables/`：报告材料。
-- `vendor/`、`third-party/`：上游源码、来源及许可证；[第三方说明](THIRD_PARTY.md)。
+停止并保留数据：Linux `bash deploy/up.sh down`；Windows `pwsh -File deploy/up.ps1 -Action down`。排障把 `down` 换为 `logs`；不要用 Docker 的全局清理命令。
 
-运行目录、环境、真实证书与私钥由 `.gitignore` 排除。评审精简包与完整开发仓库分别维护，本机位置和版本关系见[仓库边界](docs/REPOSITORY.md)。
+## 接入梧桐平台
+
+默认演示使用真实业务和 **本地 AIP stdio 通信**，五个参与者以独立进程运行；它不连接梧桐、不上报访问量，也不是多主机隔离验收。演示工作台容器内的运维工具需要本机 Docker socket。
+
+正式接入时，在 [Registry](https://wt.ioa.pub/registry/) 登记自己的七个身份，取得客户端证书、私钥和信任链；复制 [身份样例](integration/seven-identities.example.json)，填写各角色 `aic`、`endpoint`、`cert`、`key` 与 `trust_bundle` 的本机绝对路径。按 [梧桐接入步骤](docs/WUTONG.md) 生成独立六域容器和协调者配置，同一个身份同一时间只运行一份消费者。
+
+## 强基线与开发
+
+当前强基线的 60 格本地对照中，M0 与 M2v2 均为 15/15；逐配对总耗时比中位数为 1.275452。总耗时含最终验证窗口，适用范围为该批五个故障家族。团队开发从 `main` 建分支，结果口径见 [基线说明](docs/BASELINE.md)。
+
+[开发、测试与目录说明](docs/DEVELOPMENT.md) · [第三方来源和许可证](THIRD_PARTY.md) · [MulanPSL-2.0](LICENSE)
+
+本仓库包含开发源码与原始证据；导出的评审代码包仅含源码、测试、部署脚本、配置样例和必要说明。实验原始记录、图表、云部署验收与过程文档独立存放在同批交付的“佐证”包中。默认演示采用证据规则调度；M2v2 模型实验能力保留在 `incident/coordinator/` 与 `eval/`，不把无模型演示当作模型效果证明。

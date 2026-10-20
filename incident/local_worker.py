@@ -161,7 +161,8 @@ async def serve(args):
             from incident.partners import ApplicationPartner, VerificationPartner
             if args.role == "application":
                 executor = ApplicationPartner(args.aic, OperationLedger(args.ledger_path, "application"),
-                    base_url=args.base_url, allowed_callers=[args.coordinator_aic])
+                    base_url=args.base_url, allowed_callers=[args.coordinator_aic],
+                    allowed_hosts=getattr(args, "allowed_application_hosts", ()))
                 tools = ["application.status", "application.pool_rebuild", "application.config_rollback"]
             else:
                 executor = VerificationPartner(args.aic, base_url=args.base_url or "http://127.0.0.1:8088",
@@ -282,6 +283,8 @@ def main():
     parser.add_argument("--ledger-path", required=True)
     parser.add_argument("--amp-directory", required=True)
     parser.add_argument("--base-url")
+    parser.add_argument("--allowed-application-host", dest="allowed_application_hosts",
+                        action="append", choices=["app-v1", "app-v2"], default=[])
     parser.add_argument("--verification-duration", type=float, default=30)
     parser.add_argument("--experiment-id")
     parser.add_argument("--crash-point", choices=["after_observation", "before_modification", "after_applied"])

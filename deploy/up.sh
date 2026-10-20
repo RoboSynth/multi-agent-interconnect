@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 DEPLOY_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -z "${INCIDENT_DEPLOYMENT_FILE:-}${INCIDENT_ENV_FILE:-}${INCIDENT_PROJECT_NAME:-}" ] && [ "${INCIDENT_AGENTS:-0}" = 0 ] && [ "${INCIDENT_VALIDATE_ONLY:-0}" = 0 ]; then
+    exec "${INCIDENT_PYTHON:-python3}" "$DEPLOY_DIR/review.py" "${1:-up}"
+fi
 if [ -n "${INCIDENT_DEPLOYMENT_FILE:-}" ]; then
     if [ -n "${INCIDENT_ENV_FILE:-}" ] || [ -n "${INCIDENT_PROJECT_NAME:-}" ] || [ "${INCIDENT_AGENTS:-0}" != 0 ]; then
         echo 'INCIDENT_DEPLOYMENT_FILE is the sole deployment scope; unset individual resource options.' >&2
@@ -32,4 +35,4 @@ if [ ! -e "$ROUTE_FILE" ]; then
 fi
 "$@" up -d --build --wait
 echo 'Business target started. Run business/load.py for H00 acceptance.'
-echo 'AIP participants require registered identities and domain configuration; follow deploy/README.md.'
+echo 'AIP participants require registered identities and domain configuration; follow docs/WUTONG.md.'

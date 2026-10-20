@@ -8,6 +8,7 @@
 - [本地环境、启动、验证与停止](本地开发环境与操作_20261018.md)
 - [测试依赖和运行方式](test_environment_20261019.md)
 - [仓库、评审版与本机运行文件的边界](REPOSITORY.md)
+- [匿名评审交付](REVIEW_DELIVERY.md)
 - [独立部署](../deploy/ISOLATED.md) · [NEW7 七身份](../deploy/NEW7.md) · [服务器手册](../deploy/SERVER.md)
 - [自有账号与平台配置](自有账号平台配置_20261018.md)
 

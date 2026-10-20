@@ -186,6 +186,8 @@ class LocalAipStdioTransport:
                     if spec.get(key) is not None:
                         value = local_path(spec[key]) if key in ("env_file", "bridge_config") else spec[key]
                         command.extend(["--" + key.replace("_", "-"), str(value)])
+                for host in spec.get("allowed_application_hosts", []):
+                    command.extend(["--allowed-application-host", host])
                 if spec.get("crash_point"):
                     if not self.config.get("experiment_id") or not self.config.get("allow_experiment_crash"):
                         raise ValueError("crash hooks require an explicit isolated experiment configuration")

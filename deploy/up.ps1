@@ -4,9 +4,25 @@ param(
     [string]$WslDistro = 'Ubuntu-22.04',
     [switch]$Agents,
     [switch]$ValidateOnly,
-    [string]$DeploymentFile
+    [string]$DeploymentFile,
+    [ValidateSet('up','down','demo','status','logs','prepare')]
+    [string]$Action = 'up'
 )
 $ErrorActionPreference = 'Stop'
+$LegacyOptions = @('EnvFile','ProjectName','WslDistro','Agents','ValidateOnly','DeploymentFile')
+if (-not ($LegacyOptions | Where-Object { $PSBoundParameters.ContainsKey($_) })) {
+    $Python = $env:INCIDENT_PYTHON
+    $PythonPrefix = @()
+    if (-not $Python) {
+        if (Get-Command py -ErrorAction SilentlyContinue) { $Python = 'py'; $PythonPrefix = @('-3') }
+        elseif (Get-Command python3 -ErrorAction SilentlyContinue) { $Python = 'python3' }
+        elseif (Get-Command python -ErrorAction SilentlyContinue) { $Python = 'python' }
+        else { throw 'Install Python 3.10 or later and Docker with Compose v2 first.' }
+    }
+    & $Python @PythonPrefix (Join-Path $PSScriptRoot 'review.py') $Action
+    if ($LASTEXITCODE) { throw "Review deployment failed ($LASTEXITCODE). See the preceding error." }
+    return
+}
 if ($DeploymentFile) {
     if ($PSBoundParameters.ContainsKey('EnvFile') -or $PSBoundParameters.ContainsKey('ProjectName') -or
         $PSBoundParameters.ContainsKey('WslDistro') -or $Agents) {

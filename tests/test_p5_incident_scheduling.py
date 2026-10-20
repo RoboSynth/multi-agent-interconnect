@@ -281,12 +281,19 @@ class IncidentSchedulingTests(unittest.IsolatedAsyncioTestCase):
     async def test_ranking_waits_for_the_model_when_entry_is_healthy(self):
         client = FakeHttpClient([model_body(sparse_hypotheses())])
         original_post = client.post
+        waiting = asyncio.Event()
+        original_event = IncidentCoordinator.event
+        def observe_event(engine, state, name, **data):
+            original_event(engine, state, name, **data)
+            if name == "hypothesis_wait":
+                waiting.set()
         async def slow_post(*args, **kwargs):
-            await asyncio.sleep(.05)  # Slower than the fake entry observations.
+            await waiting.wait()
             return await original_post(*args, **kwargs)
         client.post = slow_post
         model = HypothesisEngine(enabled=True, base_url="http://model.test/v1", model="fake", client=client)
-        state, transport, _ = await self.execute("F07", model=model)
+        with patch.object(IncidentCoordinator, "event", observe_event):
+            state, transport, _ = await self.execute("F07", model=model)
         self.assertEqual(state["status"], "completed", state.get("error"))
         self.assertTrue(any(event["event"] == "hypothesis_wait" for event in state["events"]))
         self.assertEqual([row["tool"] for row in transport.calls if row["kind"] == "act"],

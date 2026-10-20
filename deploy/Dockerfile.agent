@@ -21,6 +21,7 @@ COPY vendor/ACPs-community/registry-server/app/agent/acsSchema.json /srv/vendor/
 COPY vendor/ACPs-community/registry-server/LICENSE /srv/vendor/ACPs-community/registry-server/LICENSE
 COPY tools/configure_local_coordinator.py /srv/tools/configure_local_coordinator.py
 COPY workbench_server.py /srv/workbench_server.py
+COPY deploy/review_entry.py /srv/deploy/review_entry.py
 COPY demo-ui /srv/demo-ui
 RUN mkdir /state && chown 65534:65534 /state
 ENV PYTHONUNBUFFERED=1
