@@ -1177,7 +1177,7 @@ FAIL: test_wsl_target_and_launcher_use_identical_unicode_spaced_paths_and_distro
 Traceback (most recent call last):
   File "<R3_PROJECT>\tests\test_deployment_preparation.py", line 191, in test_wsl_target_and_launcher_use_identical_unicode_spaced_paths_and_distro
     self.assertIn("/mnt/d/", " ".join(command))
-AssertionError: '/mnt/d/' not found in 'wsl.exe -d Ubuntu-22.04 --exec docker compose -p isolated-fixture --env-file /mnt/c/Users/xiao/.codex/visualizations/2026/10/18/01a14cbc-96d9-7a52-85a1-8ab00a9eddc1/incident-pilot-r3/artifacts/deployment-gap-audit-20261018/fixtures/���� ���� hvkgb8ct/output/compose.env -f /mnt/c/Users/xiao/.codex/visualizations/2026/10/18/01a14cbc-96d9-7a52-85a1-8ab00a9eddc1/incident-pilot-r3/deploy/compose.yml -f /mnt/c/Users/xiao/.codex/visualizations/2026/10/18/01a14cbc-96d9-7a52-85a1-8ab00a9eddc1/incident-pilot-r3/deploy/agents.yml -f /mnt/c/Users/xiao/.codex/visualizations/2026/10/18/01a14cbc-96d9-7a52-85a1-8ab00a9eddc1/incident-pilot-r3/artifacts/deployment-gap-audit-20261018/fixtures/���� ���� hvkgb8ct/output/deployment.overlay.yml --profile isolated'
+AssertionError: '/mnt/d/' not found in 'wsl.exe -d Ubuntu-22.04 --exec docker compose -p isolated-fixture --env-file /mnt/c/<R3_PROJECT>/artifacts/deployment-gap-audit-20261018/fixtures/���� ���� hvkgb8ct/output/compose.env -f /mnt/c/<R3_PROJECT>/deploy/compose.yml -f /mnt/c/<R3_PROJECT>/deploy/agents.yml -f /mnt/c/<R3_PROJECT>/artifacts/deployment-gap-audit-20261018/fixtures/���� ���� hvkgb8ct/output/deployment.overlay.yml --profile isolated'
 
 ======================================================================
 FAIL: test_requires_explicit_pinned_image_and_kafka_mode (test_fluent_bit_linux_collector.LinuxCollectorPreparationTests.test_requires_explicit_pinned_image_and_kafka_mode)
@@ -1310,7 +1310,7 @@ Line |
 ```text
 initdb: error: could not create restricted token: error code 87
 initdb: error: could not re-execute with restricted token: error code 3
-The files belonging to this database system will be owned by user "xiao".
+The files belonging to this database system will be owned by user "<LOCAL_USER>".
 This user must also own the server process.
 
 ```
