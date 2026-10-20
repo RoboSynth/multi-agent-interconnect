@@ -34,6 +34,7 @@ from incident.contracts import TaskPayload, TaskProduct
 from incident.local_transport import environment_file
 from incident.partners import ApplicationPartner, VerificationPartner
 from domains.onboarding.check import OnboardingPartner
+from domains.onboarding.text import prepare_text_request, readable_result
 
 PATH_FIELDS = ("cert", "key", "trust_bundle", "env_file", "ledger_path", "amp_directory", "evidence_path")
 
@@ -176,11 +177,20 @@ class DomainExecutorAdapter:
                             return {"status": "rejected", "reason": "task_capacity_reached"}
                         tasks.pop(removable)
                         locks.pop(removable, None)
+                    text_request, immediate_output = False, None
                     try:
                         if len(command.dataItems or []) != 1:
                             raise ValueError("one IFC item required")
                         item = command.dataItems[0]
-                        value = item.data if isinstance(item, StructuredDataItem) else json.loads(item.text)
+                        try:
+                            value = item.data if isinstance(item, StructuredDataItem) else json.loads(item.text)
+                        except json.JSONDecodeError:
+                            if (not self.public_metadata_service or not isinstance(self.executor, OnboardingPartner)
+                                    or not isinstance(item, TextDataItem) or item.text.lstrip().startswith(("{", "["))):
+                                raise
+                            value, immediate_output = prepare_text_request(item.text, session_id=command.sessionId,
+                                task_id=task_id, executor_aic=self.executor_aic)
+                            text_request = True
                         payload = TaskPayload.model_validate(value).model_dump(exclude_none=True)
                     except (AttributeError, ValueError, TypeError):
                         self._audit(command, {}, "rejected", "invalid_ifc_schema")
@@ -189,7 +199,8 @@ class DomainExecutorAdapter:
                     await client.accept_task(task_id, command.sessionId)
                     await client.start_working(task_id, command.sessionId)
                     try:
-                        output = await asyncio.wait_for(self.executor.execute(payload, command.senderId), payload["budget"]["deadline_ms"]/1000)
+                        output = immediate_output if immediate_output is not None else await asyncio.wait_for(
+                            self.executor.execute(payload, command.senderId), payload["budget"]["deadline_ms"]/1000)
                         output = TaskProduct.model_validate(output).model_dump(exclude_none=True)
                         if (output["executor_aic"], output["incident_id"], output["logical_task_id"]) != (
                                 self.executor_aic, payload["incident_id"], payload["logical_task_id"]):
@@ -202,7 +213,10 @@ class DomainExecutorAdapter:
                             "status": "unknown" if payload["kind"] in ("act", "resume") else "tool_error",
                             "facts": [], "reason": type(exc).__name__}
                     output = sanitize(output, self.secret_values)
-                    products = [Product(id="domain-"+task_id, name=payload["tool"], dataItems=[StructuredDataItem(data=output)])]
+                    items = [StructuredDataItem(data=output)]
+                    if text_request:
+                        items.append(TextDataItem(text=readable_result(output)))
+                    products = [Product(id="domain-"+task_id, name=payload["tool"], dataItems=items)]
                     tasks[task_id] = {"session_id": command.sessionId, "state": TaskState.AwaitingCompletion,
                                       "products": products, "output": output}
                     self._audit(command, payload, output["status"], output.get("reason"))
@@ -234,7 +248,10 @@ class DomainGroupRuntime(BridgeGroupRuntime):
         self.public_metadata_service = public_metadata_service
         if not self.allowed_leaders:
             raise ValueError("a domain Leader allowlist is required")
-        super().__init__(allowed_peer_aic=sorted(self.allowed_leaders)[0], **kwargs)
+        # Public metadata requests have no resource credentials. Reserve room
+        # for external callers while the internal inspection group stays open.
+        super().__init__(allowed_peer_aic=sorted(self.allowed_leaders)[0],
+                         max_inbound_groups=4 if public_metadata_service else 1, **kwargs)
 
     def _invitation_policy(self, invitation):
         # Retain the baseline's exchange, member, expiry and lifecycle checks,

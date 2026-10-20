@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "started_at": "2026-10-20T02:54:54.951465+00:00",
+  "caller_aic": "1.2.156.3088.1.BUPT.8N4WSS.AKAA8C.7HEMBG.1B4B",
+  "service_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+  "target_aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+  "caller_in_service_allowlist": false,
+  "distinct_from_seven_running_identities": true,
+  "actual_other_team_usage": false,
+  "internal_host_session": "ac07184a92394a15bddc43bd7e14a0bb",
+  "model_calls": 0,
+  "cases": [
+    {
+      "kind": "existing_ifc",
+      "result": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "onboarding-460f4e6ce15c4fe3adf4a4e33b557f0e",
+        "logical_task_id": "onboarding-460f4e6ce15c4fe3adf4a4e33b557f0e:check",
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "onboarding_report",
+            "value": {
+              "target_aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+              "found": true,
+              "active_target_probe": false,
+              "passed": true,
+              "suggestions": [],
+              "official_registry_schema_valid": true,
+              "sdk_schema_valid": true,
+              "protocol_version_valid": true,
+              "inbox_endpoint_valid": true,
+              "skills_complete": true,
+              "runtime_blockers": []
+            },
+            "source": "aip.onboarding.check",
+            "observed_at": "2026-10-20T02:54:55.954545+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": null,
+        "evidence_ref": null
+      },
+      "completed": true
+    },
+    {
+      "kind": "plain_text",
+      "task_id": "aip-5e35d0ed7c01422f9338e14cdf6fec0a",
+      "status": "ok",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "text-534a25b9447db6e4a2c04f1d",
+        "logical_task_id": "text-352ddfff7ac40377097d7f87",
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "onboarding_report",
+            "value": {
+              "target_aic": "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5",
+              "found": true,
+              "active_target_probe": false,
+              "passed": true,
+              "suggestions": [],
+              "official_registry_schema_valid": true,
+              "sdk_schema_valid": true,
+              "protocol_version_valid": true,
+              "inbox_endpoint_valid": true,
+              "skills_complete": true,
+              "runtime_blockers": []
+            },
+            "source": "aip.onboarding.check",
+            "observed_at": "2026-10-20T02:54:56.405095+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": null,
+        "evidence_ref": null
+      },
+      "readable": "公开元数据体检：1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5\n结果：通过。\n官方 ACS 结构：通过。\nSDK 结构：通过。\n协议版本：通过。\nAMQPS Inbox 格式：通过。\n技能字段：通过。\n仅核对公开 ACS/ADP；不代表目标运行可达、证书或 mTLS 验证通过。",
+      "completed": true
+    },
+    {
+      "kind": "read_only_refusal",
+      "task_id": "aip-a2ae4f1e261f4e788d50aa51598cc25c",
+      "status": "rejected",
+      "product": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "text-534a25b9447db6e4a2c04f1d",
+        "logical_task_id": "text-2d616047bbb5300349b9db33",
+        "executor_aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": null,
+        "evidence_ref": null,
+        "reason": "read_only_metadata_check_required",
+        "help": "请提供一个目标 AIC，例如：检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据。每次只检查一个目标；仅查询官方 ACS/ADP，不连接目标端点或修改资源。"
+      },
+      "readable": "此服务只接受公开元数据检查。\n请提供一个目标 AIC，例如：检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据。每次只检查一个目标；仅查询官方 ACS/ADP，不连接目标端点或修改资源。",
+      "completed": true
+    }
+  ],
+  "group_id": "group-incident-62ef833ad9cb4090ae42998a7b3dded9",
+  "close_checks": {
+    "no_group_sessions": true,
+    "no_inbound_groups": true,
+    "inbox_cancelled": true,
+    "connection_closed": true,
+    "owned_group_disconnected": true,
+    "no_cleanup_warnings": true
+  },
+  "internal_host_after": {
+    "status": "running",
+    "session_id": "ac07184a92394a15bddc43bd7e14a0bb"
+  },
+  "cleanup_warning_events": [],
+  "finished_at": "2026-10-20T02:54:59.299658+00:00"
+}

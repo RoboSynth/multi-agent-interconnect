@@ -1,0 +1,69 @@
+{
+  "aic": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+  "name": "跨域接入体检智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "aip.onboarding.check",
+      "name": "AIP 接入只读体检",
+      "tags": [
+        "incident-pilot",
+        "onboarding",
+        "ADP",
+        "ACS"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\":\"ifc/1.0\",\"kind\":\"observe\",\"tool\":\"aip.onboarding.check\",\"args\":{\"target_aic\":\"<registered AIC>\",\"deep\":false}}"
+      ],
+      "inputModes": [
+        "application/json",
+        "text/plain"
+      ],
+      "description": "按目标 AIC 检查官方发现结果、官方 ACS schema、协议、AMQPS Inbox 端点与技能完整性，返回事实和接入建议；不向第三方目标发送主动探测。仅接受获准协调者发起的 ifc/1.0 只读体检请求。",
+      "outputModes": [
+        "application/json",
+        "text/plain"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "王骁逸"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "按目标 AIC 检查官方发现结果、官方 ACS schema、协议、AMQPS Inbox 端点与技能完整性，返回事实和接入建议；不向第三方目标发送主动探测。仅接受获准协调者发起的 ifc/1.0 只读体检请求。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:32:51.202042+08:00",
+  "defaultInputModes": [
+    "application/json",
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "application/json",
+    "text/plain"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "type": "filtered",
+  "limit": 50,
+  "filter": {
+    "logic": "and",
+    "conditions": [
+      {
+        "field": "aic",
+        "op": "eq",
+        "value": "1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF"
+      }
+    ]
+  },
+  "extFilter": {
+    "logic": "and",
+    "conditions": [
+      {
+        "field": "alive",
+        "op": "in",
+        "value": [
+          "online",
+          "offline",
+          "unknown"
+        ]
+      }
+    ]
+  }
+}

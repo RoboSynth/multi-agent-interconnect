@@ -57,7 +57,7 @@ def declared_inventory(policy):
     return inventory
 
 
-def native_skills(role):
+def native_skills(role, *, public_onboarding=False):
     descriptions = {
         "leader": ("incident.coordinate", "凭据不出域的跨资源域事故协调",
             "以 ifc/1.0 群组任务组织资源能力确认、证据探测、审批、幂等恢复与接续；协调方只持本身份和审批能力，不持应用或数据库凭据。"),
@@ -68,10 +68,16 @@ def native_skills(role):
         "onboarding": ("aip.onboarding.check", "公开互联元数据检查",
             "以 ifc/1.0 检查官方 ADP/ACS 的身份、协议、技能与收件箱元数据；不探测目标运行端点，不持资源管理凭据。")}
     skill_id, name, description = descriptions[role]
-    return [{"id": skill_id, "name": name, "version": "1.0.0", "description": description,
+    skill = {"id": skill_id, "name": name, "version": "1.0.0", "description": description,
         "tags": ["incident-pilot", "ifc/1.0", role], "inputModes": ["application/json"], "outputModes": ["application/json"],
         "examples": [json.dumps({"schema_version": "ifc/1.0", "incident_id": "inc-example", "logical_task_id": "lt-describe",
-                                 "kind": "describe", "tool": "describe", "args": {}}, ensure_ascii=False)]}]
+                                 "kind": "describe", "tool": "describe", "args": {}}, ensure_ascii=False)]}
+    if role == "onboarding" and public_onboarding:
+        skill["inputModes"].append("text/plain")
+        skill["outputModes"].append("text/plain")
+        skill["description"] += " 也接受包含一个合法 AIC 的自然语言，返回公开元数据检查及中文说明。"
+        skill["examples"].append("检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据")
+    return [skill]
 
 
 def prepare(source: dict, output: Path, *, public_onboarding=False):
@@ -167,7 +173,10 @@ def prepare(source: dict, output: Path, *, public_onboarding=False):
         if domain in {"application", "verification", "onboarding"}:
             names = {"application": "跨域订单应用智能体", "verification": "跨域业务验证智能体", "onboarding": "互联接入检查智能体"}
             draft = acs_base(names[domain], config["aic"], config["endpoint"])
-            draft["skills"] = native_skills(domain)
+            draft["skills"] = native_skills(domain, public_onboarding=public_onboarding)
+            if domain == "onboarding" and public_onboarding:
+                draft["defaultInputModes"].append("text/plain")
+                draft["defaultOutputModes"].append("text/plain")
             validation = validate_acs(draft)
             if validation["official_registry_schema_valid"] is not True or not validation["sdk_schema_valid"]:
                 raise ValueError("Native partner ACS draft failed official offline validation")

@@ -11,7 +11,10 @@ from integration import wutong_smoke as transport
 
 
 class BridgeGroupRuntime(transport.InboundProbeLeader):
-    def __init__(self, *, bridge, amp=None, **kwargs):
+    def __init__(self, *, bridge, amp=None, max_inbound_groups=1, **kwargs):
+        if type(max_inbound_groups) is not int or not 1 <= max_inbound_groups <= 4:
+            raise ValueError("max_inbound_groups must be an integer from 1 to 4")
+        self.max_inbound_groups = max_inbound_groups
         self.amp = amp
         if amp:
             kwargs.setdefault("message_emitter", amp.message)
@@ -65,10 +68,14 @@ class BridgeGroupRuntime(transport.InboundProbeLeader):
                 return
             existing = self._inbound_groups.get(invitation.groupId)
             if existing and existing.is_joined:
+                leader = getattr(getattr(getattr(existing, "_group_info", None), "leader", None), "aic", None)
+                if leader != invitation.group.leader.aic:
+                    await self._reject_invitation(invitation, "Group id belongs to another Leader")
+                    return
                 await existing.send_status_result(connected=True, muted=False)
                 return
-            if any(client.is_joined for client in self._inbound_groups.values()):
-                await self._reject_invitation(invitation, "One inbound group is already active")
+            if sum(client.is_joined for client in self._inbound_groups.values()) >= self.max_inbound_groups:
+                await self._reject_invitation(invitation, "Inbound group capacity reached")
                 return
             if existing:
                 await existing.close()
