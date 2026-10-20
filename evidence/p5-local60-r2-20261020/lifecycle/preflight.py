@@ -55,7 +55,8 @@ def main():
     result=asyncio.run(check_transport())
     (BATCH/'preflight.json').write_text(json.dumps({'status':'PASSED','supervisor':health,
         'local_aip_actual_roundtrip':result,'platform_calls':0,'model_calls':0,
-        'resource_mutations':0,'completed_at':datetime.now(timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
+        'fault_injections':0,'infrastructure_modifications':0,'healthy_business_workflows':1,
+        'completed_at':datetime.now(timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps({'status':'LOCAL_AIP_PREFLIGHT_PASSED','tools':len(result['tools']),'symptom_check_roundtrip':True}))
 
 if __name__=='__main__':

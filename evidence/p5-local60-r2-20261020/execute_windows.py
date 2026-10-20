@@ -76,6 +76,10 @@ def main():
     try:
         prepare()
         started_resources = True
+        # Match local-up.ps1: reuse/provision the registered cluster before
+        # native.ps1 starts applications. Existing matching secrets are kept.
+        if command("database-prepare", [sys.executable, str(ROOT / "tools/prepare_native_database.py")], timeout=150):
+            raise RuntimeError("Native database preparation failed")
         if command("native-start", [str(PWSH), "-NoProfile", "-File", str(ROOT / "deploy/native.ps1"),
                 "-Action", "start", "-RuntimeFile", str(ROOT / "deploy/native-runtime.json")], timeout=150):
             raise RuntimeError("Native business startup failed")
@@ -94,7 +98,7 @@ def main():
         if started_resources:
             try:
                 result["cleanup_exit_code"] = command("cleanup-output", [sys.executable,
-                    str(ARTIFACTS / "cleanup_local.py")], timeout=240)
+                    str(ARTIFACTS / "cleanup_local.py")], timeout=420)
             except BaseException as error:
                 traceback.print_exc()
                 result["cleanup_error"] = {"error_class": type(error).__name__, "error": str(error)}
