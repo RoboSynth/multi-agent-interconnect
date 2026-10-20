@@ -264,7 +264,7 @@ class DeploymentPreparationTests(unittest.TestCase):
         command = deployment.compose_command(manifest)
         self.assertEqual(command, target.compose + ["--profile", "isolated"])
         self.assertEqual(command[:5], ["wsl.exe", "-d", "Ubuntu-22.04", "--exec", "docker"])
-        self.assertIn("/mnt/d/", " ".join(command))
+        self.assertIn("/mnt/" + self.output.resolve().drive[0].lower() + "/", " ".join(command))
         self.assertNotIn(chr(92), " ".join(command))
         sanitized = deployment.compose_command(manifest, sanitized=True)
         for name in deployment.GENERATED_ENV_KEYS:
