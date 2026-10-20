@@ -73,7 +73,7 @@ class AliveTests(unittest.TestCase):
         self.assertIsNone(report["access_ingestion_confirmed"])
 
     def test_request_includes_all_liveness_states_and_default_never_queries(self):
-        self.assertEqual(request_for(["b", "a", "a"])["limit"], 2)
+        self.assertEqual(request_for(["b", "a", "a"])["limit"], 50)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "prepared.json"
             self.assertEqual(main(["--aic", "a", "--output", str(path)]), 0)

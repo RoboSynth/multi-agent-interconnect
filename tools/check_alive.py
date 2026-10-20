@@ -13,7 +13,9 @@ import httpx
 def request_for(aics):
     if not aics or any(not isinstance(aic, str) or not aic.strip() for aic in aics):
         raise ValueError("Provide nonempty AICs")
-    return {"type": "filtered", "limit": len(set(aics)),
+    # Discovery limits skill hits. One identity can occupy several results;
+    # use the platform's maximum 50 hits while retaining the exact AIC filter.
+    return {"type": "filtered", "limit": 50,
             "filter": {"logic": "and", "conditions": [{"field": "aic", "op": "in", "value": sorted(set(aics))}]},
             "extFilter": {"logic": "and", "conditions": [{"field": "alive", "op": "in", "value": ["online", "offline", "unknown"]}]}}
 

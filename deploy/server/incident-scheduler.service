@@ -1,0 +1,20 @@
+[Unit]
+Description=Incident Pilot ten-minute inspection scheduler
+After=incident-workbench.service
+Requires=incident-workbench.service
+Before=incident-collector.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/incident-pilot
+Environment=PYTHONUTF8=1
+ExecStart=/opt/incident-pilot/.venv/bin/python -B /opt/incident-pilot/ops/startup.py --config /opt/incident-pilot/runtime/private/cloud-longrun/host.json --stage scheduler
+Restart=always
+RestartSec=15
+KillMode=process
+TimeoutStopSec=30
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

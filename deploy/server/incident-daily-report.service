@@ -1,0 +1,15 @@
+[Unit]
+Description=Incident Pilot daily local status and team-only leaderboard evidence
+Wants=network-online.target
+After=network-online.target incident-scheduler.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+WorkingDirectory=/opt/incident-pilot
+Environment=PYTHONUTF8=1
+UMask=0077
+ExecStart=/opt/incident-pilot/.venv/bin/python /opt/incident-pilot/runtime/private/server-tools/daily_report.py --repo-root /opt/incident-pilot --config /opt/incident-pilot/runtime/private/server/daily-report.json
+TimeoutStartSec=120
+NoNewPrivileges=true
