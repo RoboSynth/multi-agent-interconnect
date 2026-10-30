@@ -1,0 +1,31 @@
+[
+  {
+    "number": 6,
+    "title": "【内测使用记录】Windows 首次启动与工作台体验（2026-10-30）",
+    "url": "https://github.com/RoboSynth/multi-agent-interconnect/discussions/6",
+    "body": "本帖记录一次按外部首次使用者路径开展的有限范围内测，由 Codex 代操作并整理，作为可追溯的使用反馈。\r\n\r\n测试版本：main @ c88b203ff417dca0b028784a569e741d62db2c02。\r\n\r\n已实际尝试 README 启动、配置生成与校验，并打开本地工作台检查未连接状态。具体操作、结果、阻塞及改进建议见下方评论。",
+    "createdAt": "2026-10-30T05:38:06Z",
+    "updatedAt": "2026-10-30T05:38:48Z",
+    "comments": {
+      "totalCount": 1,
+      "pageInfo": {
+        "hasNextPage": false
+      },
+      "nodes": [
+        {
+          "url": "https://github.com/RoboSynth/multi-agent-interconnect/discussions/6#discussioncomment-19285898",
+          "body": "## 本轮使用记录\r\n\r\n日期：2026-10-30（北京时间）。环境：Windows / PowerShell 7；宿主机可用 Python 3.13.3，另建 Python 3.12.13 项目虚拟环境；Docker CLI 29.6.2，Compose v5.3.1。版本：main @ c88b203ff417dca0b028784a569e741d62db2c02。由 Codex 实际操作，按外部首次使用者路径记录。\r\n\r\n### 尝试过程与实际结果\r\n\r\n1. 阅读 README 和 docs/DEVELOPMENT.md，在独立本地目录浅克隆仓库，未修改仓库源码。\r\n2. 直接执行 README 的 `pwsh -NoProfile -File deploy/up.ps1`。首次失败：本机 `py -3` 选择了已失效的 Python 3.14 路径，退出码 101；虽然 `python --version` 能正常返回 3.13.3，脚本仍优先采用 py。这个问题依赖本机解释器注册状态，不据此认定项目整体不可运行。\r\n3. 设置 `$env:INCIDENT_PYTHON = (Get-Command python).Source` 后重试，已越过解释器问题。初始 Docker daemon 未运行；尝试启动 Docker Desktop 后，Docker 的 `/v1.55/info` 和镜像查询仍返回 500，Compose up 最终退出 1。因此本轮没有进入容器内五参与者演示，未执行故障注入与自动回滚。\r\n4. `python deploy/review.py prepare` 成功；使用生成的 env 对 deploy/compose.yml + deploy/review.yml 执行 `docker compose ... config --quiet` 成功。生成的凭据仅留本地，未贴入反馈。\r\n5. 建立 Python 3.12.13 虚拟环境，通过 uv 安装 requirements-high-score.txt 和仓库自带 SDK 的 amp-sign extra，安装成功。选择性运行仓库已有测试：test_review_entry.py 的 **5 项通过**，test_workbench.py 的 **3 项通过**。后者最初在未安装依赖的宿主机 Python 下报缺 fastapi，切到已安装依赖的虚拟环境后通过。这里只代表这 8 项检查，不代表全量测试通过。\r\n6. 为观察失败状态，单独启动 workbench_server.py，使用不存在的配置路径及独立输出目录，浏览器访问本地 18767 端口。实际看到“参与者未连接”“等待连接各资源域”和“规则诊断”；“开始排查”被禁用。展开“运行资料”、切换到“操作与接续”均正常。另实际读取 /api/state，得到 connected=false、参与者 0 个；向 /api/incidents 提交测试症状返回 **503**，没有生成成功事故。\r\n\r\n### 使用感受与建议\r\n\r\n- **容易理解的部分**：README 给出了启动命令、访问地址和 demo 的预期结果；本地规则演示与模型实验、正式梧桐接入的适用范围写得清楚。工作台未连接时既有文字提示，也禁用开始按钮，状态表达一致。\r\n- **首个明显卡点**：一条命令启动默认相信 py launcher 可用。建议在执行前实际探测解释器能否运行并满足版本要求；py 不可用时尝试 python，或直接给出 INCIDENT_PYTHON 的 PowerShell 修复示例。这个例子放在 README 启动命令附近会更容易找到。\r\n- **环境失败的定位成本**：本轮 Docker 500 属于本机运行环境阻塞，根因尚未查清。建议在 Compose up 前加入有超时的 daemon / Linux 容器 / Compose 预检，将“CLI 已安装”和“Engine 可用”分开显示；避免用户先看到长串 Compose 异常后才判断是否进入项目构建。\r\n- **工作台可改进处**：未连接页面目前提示“按部署文档启动”，可以补一个直接的排障文档入口或可复制诊断命令。首次使用时，“存在结果未知的原请求”及“原请求键”的业务含义不够直观，建议按需展开一个简短例子，解释何时需要勾选、键从哪里取得。\r\n\r\n**本轮结论：**完成了首次启动尝试、配置准备与校验、8 项选定测试，以及未连接工作台的实际交互检查；完整端到端恢复、审批执行、接管、梧桐接入和模型效果均未验证。当前能确认的是启动与失败状态路径的体验，恢复效果需在 Docker Engine 正常的环境继续复测。",
+          "createdAt": "2026-10-30T05:38:47Z",
+          "updatedAt": "2026-10-30T05:38:47Z",
+          "replies": {
+            "totalCount": 0,
+            "pageInfo": {
+              "hasNextPage": false
+            },
+            "nodes": []
+          }
+        }
+      ]
+    }
+  }
+]
