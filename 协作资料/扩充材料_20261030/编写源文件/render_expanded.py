@@ -51,10 +51,14 @@ def render(item):
             draw.text((x,y-32),item['kind']+' '+path.stem,font=font,fill='#18354A')
             canvas.paste(image,(x,y))
         canvas.save(directory/f'overview-{start//4+1:02}.jpg',quality=90)
-    return {'kind':item['kind'],'pages':len(files),'directory':str(directory)}
+    return {'kind':item['kind'],'pages':len(files),'directory':directory.relative_to(ROOT).as_posix()}
 
 
 chosen=[x for x in items if not args.kinds or x['key'] in args.kinds or x['kind'] in args.kinds]
 with ThreadPoolExecutor(max_workers=3) as pool:results=list(pool.map(render,chosen))
-(ROOT/'核对记录'/'页面渲染.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+record=ROOT/'核对记录'/'页面渲染.json'
+previous=json.loads(record.read_text(encoding='utf-8')) if record.exists() else []
+merged={item['kind']:item for item in previous}
+merged.update({item['kind']:item for item in results})
+record.write_text(json.dumps(list(merged.values()),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(results,ensure_ascii=False,indent=2))

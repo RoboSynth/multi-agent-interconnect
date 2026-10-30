@@ -89,7 +89,7 @@ def chinese_word_split(word,maxWidths,fontName,fontSize,encoding='utf8'):
     prefix=[0.0]
     for width in widths:prefix.append(prefix[-1]+width)
     tokens={}
-    for match in re.finditer(r'[A-Za-z0-9_./:+#-]+',value):
+    for match in re.finditer(r'\d{1,3}(?:,\d{3})+(?:\.\d+)?|[A-Za-z0-9_./:+#-]+',value):
         for index in range(match.start(),match.end()):
             tokens[index]=(match.start(),match.end(),prefix[match.end()]-prefix[match.start()])
     result=[];start=0
@@ -181,10 +181,100 @@ class Diagram(Flowable):
         renderPDF.draw(d,self.canv,0,0)
 
 
+class StepTimeline(Flowable):
+    """以连续编号和连线展示实际步骤，文字仍可在PDF中检索。"""
+    def __init__(self,steps):
+        super().__init__()
+        self.width=WIDTH
+        self.rows=[]
+        for step in steps:
+            heading=para(step['title'],'section')
+            detail=para(step['text'],'body')
+            _,hh=heading.wrap(WIDTH-46,1000)
+            _,dh=detail.wrap(WIDTH-46,1000)
+            self.rows.append((heading,detail,hh,dh,max(58,hh+dh+14)))
+        self.height=sum(row[-1] for row in self.rows)+4
+    def draw(self):
+        c=self.canv
+        y=self.height-4
+        for i,(heading,detail,hh,dh,height) in enumerate(self.rows):
+            cy=y-12
+            if i+1<len(self.rows):
+                c.setStrokeColor(LINECOLOR);c.setLineWidth(1.2)
+                c.line(13,cy-11,13,y-height-1)
+            c.setFillColor(ACCENT);c.circle(13,cy,10,stroke=0,fill=1)
+            c.setFillColor(colors.white);c.setFont('Bold',9)
+            c.drawCentredString(13,cy-3,str(i+1))
+            heading.drawOn(c,39,y-hh)
+            detail.drawOn(c,39,y-hh-dh-3)
+            y-=height
+
+
+class SampleSummary(Flowable):
+    def __init__(self,block):
+        super().__init__()
+        self.block=block;self.width=WIDTH;self.height=192
+    def draw(self):
+        c=self.canv
+        total=self.block['all']['total']
+        green=colors.HexColor('#21766C')
+        amber=colors.HexColor('#C98B2B')
+        bar_width=WIDTH-126
+        for i,(key,title) in enumerate([('all','全部连续采样'),('after','其中：故障发生后')]):
+            row=self.block[key];y=159-i*57
+            c.setFillColor(INK);c.setFont('UI',9)
+            c.drawString(0,y+9,title)
+            x=117
+            segments=[(row['unknown'],'未知',amber),(self.block['after']['success'],'成功',green)]
+            if key=='all':
+                segments.insert(0,(self.block['baseline'],'成功',colors.HexColor('#679A92')))
+            for count,label,color in segments:
+                w=bar_width*count/total
+                c.setFillColor(color);c.rect(x,y,w,26,stroke=0,fill=1)
+                c.setFillColor(colors.white);c.setFont('Bold',9)
+                c.drawCentredString(x+w/2,y+9,f'{label} {count}')
+                x+=w
+            c.setFillColor(MUTED);c.setFont('UI',8)
+            c.drawString(117,y-15,f"共{row['total']}条")
+        c.setFillColor(PALE);c.roundRect(0,1,WIDTH,55,3,stroke=0,fill=1)
+        c.setFillColor(INK);c.setFont('Bold',10)
+        c.drawString(13,36,'恢复后的订单验证')
+        c.setFont('UI',10)
+        result=self.block['verification']
+        c.drawString(13,16,f"{result['seconds']}秒     {result['success']}次请求成功     {result['flows']}个完整流程")
+
+
+def finding(block):
+    rows=[[para(block['title'],'section')]]
+    if block.get('text'):rows.append([para(block['text'],'body')])
+    result=Table(rows,colWidths=[WIDTH],hAlign='LEFT',spaceBefore=5,spaceAfter=12)
+    result.setStyle(TableStyle([
+        ('BACKGROUND',(0,0),(-1,-1),PALE),
+        ('LINEBEFORE',(0,0),(0,-1),3,ACCENT),
+        ('LEFTPADDING',(0,0),(-1,-1),13),('RIGHTPADDING',(0,0),(-1,-1),13),
+        ('TOPPADDING',(0,0),(-1,-1),7),('BOTTOMPADDING',(0,0),(-1,-1),7),
+    ]))
+    return result
+
+
+def image_pair(block):
+    cells=[]
+    ratios=block.get('widths',[1,1])
+    widths=[(WIDTH-14)*v/sum(ratios) for v in ratios]
+    for item,width in zip(block['images'],widths):
+        path,_=copy_image(item)
+        cells.append([SourceImage(path,width,item.get('crop')),para(item['caption'],'caption')])
+    result=Table([cells],colWidths=widths,hAlign='CENTER',spaceBefore=5,spaceAfter=10)
+    result.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
+        ('LEFTPADDING',(0,0),(-1,-1),0),('RIGHTPADDING',(0,0),(-1,-1),7),
+        ('TOPPADDING',(0,0),(-1,-1),0),('BOTTOMPADDING',(0,0),(-1,-1),0)]))
+    return result
+
+
 class Document(BaseDocTemplate):
     def __init__(self,path,kind):
         super().__init__(str(path),pagesize=A4,leftMargin=50,rightMargin=50,topMargin=53,bottomMargin=48,
-                         title='联枢多智能体协同运维系统 '+kind+' 扩充协作稿',author='参赛团队',pageCompression=1)
+                         title='联枢多智能体协同运维系统 '+kind+('' if kind=='佐证材料' else ' 扩充协作稿'),author='参赛团队',pageCompression=1)
         self.kind=kind;self.heading_count=0
         frame=Frame(50,48,WIDTH,A4[1]-101,leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)
         self.addPageTemplates(PageTemplate(id='Main',frames=frame,onPage=self.paint_page))
@@ -201,11 +291,15 @@ class Document(BaseDocTemplate):
         canvas.saveState()
         if doc.page>1:
             canvas.setFillColor(MUTED);canvas.setFont('UI',8)
-            canvas.drawString(50,A4[1]-30,'联枢  /  '+self.kind)
-            canvas.drawRightString(A4[0]-50,A4[1]-30,'扩充协作稿 · 2026.10.30')
+            if self.kind=='佐证材料':
+                canvas.drawString(50,A4[1]-30,'联枢多智能体协同运维系统')
+                canvas.drawRightString(A4[0]-50,A4[1]-30,self.kind)
+            else:
+                canvas.drawString(50,A4[1]-30,'联枢  /  '+self.kind)
+                canvas.drawRightString(A4[0]-50,A4[1]-30,'扩充协作稿 · 2026.10.30')
             canvas.setStrokeColor(LINECOLOR);canvas.setLineWidth(.5);canvas.line(50,A4[1]-38,A4[0]-50,A4[1]-38)
         canvas.setFillColor(MUTED);canvas.setFont('UI',7.5)
-        canvas.drawString(50,27,'AIC-2026-23708513  ·  智能体互联')
+        if self.kind!='佐证材料':canvas.drawString(50,27,'AIC-2026-23708513  ·  智能体互联')
         canvas.drawRightString(A4[0]-50,27,str(doc.page))
         canvas.restoreState()
 
@@ -251,6 +345,10 @@ def block_flow(block):
     if kind=='image':
         path,_=copy_image(block)
         return [KeepTogether([Spacer(1,5),SourceImage(path,block.get('width',470),block.get('crop')),para(block['caption'],'caption')])]
+    if kind=='finding':return [KeepTogether([finding(block)])]
+    if kind=='steps':return [KeepTogether([StepTimeline(block['steps']),para(block['caption'],'caption')])]
+    if kind=='sample_summary':return [KeepTogether([SampleSummary(block),para(block['caption'],'caption')])]
+    if kind=='image_pair':return [KeepTogether([image_pair(block)])]
     raise ValueError(kind)
 
 
@@ -258,7 +356,7 @@ def chapter_flows(page):
     blocks=page['blocks']
     heading=para(page['title'],'chapter')
     first=0
-    flows=[]
+    flows=[PageBreak()] if page.get('page_break') else []
     lead=0
     while lead<len(blocks) and blocks[lead]['type']=='h':lead+=1
     if lead<len(blocks) and blocks[lead]['type'] in ['diagram','image','code']:
@@ -280,13 +378,17 @@ def chapter_flows(page):
 ABSTRACT = {
  'PLAN':'围绕订单应用、数据库和入口服务，说明七类智能体怎样通过梧桐协作，怎样在资源端检查权限，以及怎样在执行中断后继续任务。正文展开技术选择、模块衔接、恢复步骤、部署和验收安排。',
  'REPORT':'从业务问题、系统设计、开源改造和实施过程出发，结合代码说明发现、审批、资源操作与任务恢复。使用10月29日的故障修复、备用接管和平台记录，分析每个运行结果的来源与含义。',
- 'EVIDENCE':'按接入、执行、恢复和结果核对组织E01至E15证据，保存关键截图、字段、数值与原始文件入口。将平台访问、测试、订单采样和工具任务回执分别对应到具体记录。',
+ 'EVIDENCE':'展示七个智能体的接入记录、两次云端故障恢复过程，以及订单验证、权限测试和开源改造的实际结果。关键画面与原始文件逐项对应。',
 }
 
 
 def markdown(pages,kind):
-    lines=['# 联枢多智能体协同运维系统', '',f'## {kind} · 扩充协作稿','',
-           '团队编号：AIC-2026-23708513  ', '数据采集：2026年10月29日；正文扩充：2026年10月30日。','']
+    if kind=='佐证材料':
+        lines=['# 联枢多智能体协同运维系统', '',f'## {kind}','',
+               '参赛编号：AIC-2026-23708513','']
+    else:
+        lines=['# 联枢多智能体协同运维系统', '',f'## {kind} · 扩充协作稿','',
+               '团队编号：AIC-2026-23708513  ', '数据采集：2026年10月29日；正文扩充：2026年10月30日。','']
     for page in pages:
         lines += ['## '+page['title'],'']
         for block in page['blocks']:
@@ -304,6 +406,21 @@ def markdown(pages,kind):
                 _,relative=copy_image(block)
                 lines += [f"![{block['caption']}](../引用图像/{relative.as_posix()})",'',block['caption'],'']
             elif t=='diagram':lines += [block['caption']+'（矢量图见同名PDF）','']
+            elif t=='finding':
+                lines += ['**'+block['title']+'**','',block.get('text',''),'']
+            elif t=='steps':
+                for i,step in enumerate(block['steps'],1):lines += [f"{i}. {step['title']}：{step['text']}"]
+                lines += ['',block['caption'],'']
+            elif t=='sample_summary':
+                lines += ['| 统计范围 | 成功 | 未知 | 合计 |','| --- | --- | --- | --- |']
+                for key,title in [('all','全部连续采样'),('after','其中：故障发生后')]:
+                    row=block[key];lines.append(f"| {title} | {row['success']} | {row['unknown']} | {row['total']} |")
+                result=block['verification']
+                lines += ['',f"恢复后的订单验证：{result['seconds']}秒，{result['success']}次请求成功，{result['flows']}个完整流程。",'',block['caption'],'']
+            elif t=='image_pair':
+                for item in block['images']:
+                    _,relative=copy_image(item)
+                    lines += [f"![{item['caption']}](../引用图像/{relative.as_posix()})",'',item['caption'],'']
     return '\n'.join(lines)
 
 
@@ -313,11 +430,17 @@ def build(name,kind):
     destination=PDFDIR/(basename+'.pdf')
     story=[Spacer(1,16),para('2026 AIC  /  智能体互联','cover_kicker'),
            para('联枢多智能体协同运维系统','cover_title'),para(kind,'cover_kind'),
-           para('扩充协作稿  ·  AIC-2026-23708513<br/>数据采集 2026.10.29  /  正文扩充 2026.10.30'.replace('<br/>','\n'),'cover_meta'),
+           para('参赛编号  AIC-2026-23708513' if name=='EVIDENCE' else '扩充协作稿  ·  AIC-2026-23708513\n数据采集 2026.10.29  /  正文扩充 2026.10.30','cover_meta'),
            para(ABSTRACT[name],'cover_abstract')]
-    facts=Table([[para('7个协作角色','th'),para('2个云端恢复案例','th'),para('15组证据编号','th')]],colWidths=[WIDTH/3]*3)
-    facts.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),INK),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10),('LEFTPADDING',(0,0),(-1,-1),12)]))
-    story += [facts,Spacer(1,20),Diagram('architecture'),Spacer(1,14),
+    if name=='EVIDENCE':
+        story += [Spacer(1,8),finding({'title':'接入记录','text':'7个角色均有通过审核的记录，登记与发现接口均返回对应角色；其中5个执行角色完成工具能力查询。'}),
+                  finding({'title':'云端故障恢复','text':'两次案例分别验证复合故障修复，以及执行进程中断后的备用接管。每例恢复后均完成10个完整订单流程。'}),
+                  finding({'title':'本地验证结果','text':'核心测试143/146通过，3项报错；本地中断实验4次执行，3次成功、1次启动失败。'}),
+                  PageBreak(),para('目录','toc_title')]
+    else:
+        facts=Table([[para('7个协作角色','th'),para('2个云端恢复案例','th'),para('15组证据编号','th')]],colWidths=[WIDTH/3]*3)
+        facts.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),INK),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),10),('LEFTPADDING',(0,0),(-1,-1),12)]))
+        story += [facts,Spacer(1,20),Diagram('architecture'),Spacer(1,14),
               para('工程范围：订单应用、PostgreSQL、Nginx入口；平台注册、发现和任务传递由梧桐提供。','note'),PageBreak(),
               para('目录','toc_title')]
     toc=TableOfContents();toc.levelStyles=[ST['toc']];toc.dotsMinLevel=0
