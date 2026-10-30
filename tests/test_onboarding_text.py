@@ -72,6 +72,38 @@ class OnboardingTextTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("只接受公开元数据检查", self.result_items()[1].text)
         self.discover.assert_not_awaited()
 
+    async def test_explicit_negative_clauses_keep_public_metadata_only_request(self):
+        text = f"请检查 {self.target} 的公开元数据。不要修改资源，不要进行主动端点探测。"
+        result = await self.bind()(self.command(text), True)
+        self.discover.assert_awaited_once_with(self.target)
+        self.assertEqual(result["status"], "ok")
+        self.assertIsInstance(self.result_items()[1], TextDataItem)
+
+    def test_negative_clause_does_not_hide_positive_or_extended_instruction(self):
+        suffixes = (
+            "不要修改资源，重启服务",
+            "不要修改资源。请进行主动端点探测",
+            "不要修改资源权限，请检查",
+            "不要修改资源以外的数据库",
+            "并非不要修改资源",
+            "不要进行主动端点探测，但执行命令",
+            "不要修改资源，deep=false",
+        )
+        for suffix in suffixes:
+            with self.subTest(suffix=suffix):
+                _, result = prepare_text_request(
+                    f"检查 {TARGET}。{suffix}", session_id="s", task_id="t", executor_aic=SERVICE)
+                self.assertEqual(result["reason"], "read_only_metadata_check_required")
+
+    def test_disclaimers_do_not_supply_missing_or_unique_target(self):
+        for text, reason in (
+            ("不要修改资源，不要进行主动端点探测。", "target_aic_required"),
+            (f"检查 {TARGET} 和 {CALLER}。不要修改资源。", "single_target_aic_required"),
+        ):
+            with self.subTest(reason=reason):
+                _, result = prepare_text_request(text, session_id="s", task_id="t", executor_aic=SERVICE)
+                self.assertEqual(result["reason"], reason)
+
     async def test_original_json_text_and_structured_ifc_keep_one_item(self):
         for structured in (False, True):
             with self.subTest(structured=structured):

@@ -15,7 +15,7 @@ import subprocess
 
 
 ROOT = Path(__file__).resolve().parent
-GIT = Path(r"C:\Users\16080\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd\git.exe")
+GIT = Path(r"C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd\git.exe")
 BASE = "3760b21c8a1ed62e8119925da6f24ebd8b851d14"
 SOURCE_FILES = ["eval/stability_bundle.py", "tests/test_stability_bundle.py", "docs/stability_report.md"]
 TARGET = "evidence/t63-stability-report-20261019"

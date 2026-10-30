@@ -17,6 +17,12 @@ _UNSUPPORTED = re.compile(
     r"shell|bash|powershell|curl|wget|sql|ping|probe|scan|connect|connectivity|reachability|handshake|mtls|deep)\b",
     re.IGNORECASE,
 )
+# Accept only complete, explicitly negative clauses used in metadata requests.
+# Do not strip a keyword inside a longer instruction or infer general negation.
+_READ_ONLY_DISCLAIMERS = re.compile(
+    r"(?:^|(?<=[。！？；，\n]))\s*"
+    r"(?:不要修改资源|不要进行主动端点探测)\s*(?=$|[。！？；，\n])"
+)
 HELP = "请提供一个目标 AIC，例如：检查 1.2.156.3088.1.1.34C2.478BDF.3GF548.0JU6 的公开元数据。每次只检查一个目标；仅查询官方 ACS/ADP，不连接目标端点或修改资源。"
 
 
@@ -29,7 +35,7 @@ def prepare_text_request(text, *, session_id, task_id, executor_aic):
     reason = None
     if len(text) > 2000:
         reason = "text_too_long"
-    elif _UNSUPPORTED.search(text):
+    elif _UNSUPPORTED.search(_READ_ONLY_DISCLAIMERS.sub("", text)):
         reason = "read_only_metadata_check_required"
     else:
         candidates = set(match.group().upper() for match in _AIC.finditer(text))

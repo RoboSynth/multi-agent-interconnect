@@ -1,0 +1,36 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/after_applied/transport/amp/amp_access_primary.outbox.sqlite3",
+  "immutable_read": true,
+  "tables": {
+    "attempts": {
+      "create_sql": "CREATE TABLE attempts (event_key TEXT PRIMARY KEY, log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)",
+      "rows": [
+        {
+          "event_key": "[\"fresh-local-after_applied\",\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"receive\"]",
+          "log_id": "12f0f191-a122-4636-a4a0-03d7e62e1bcc",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.read_only_status\"}},\"received_at\":\"2026-10-29T08:20:41.503577+00:00\",\"trace\":{\"correlation_id\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"trace_id\":\"fresh-local-after_applied\"}}",
+          "record": "{\"aic\":\"test-database-primary\",\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":15.000000000100044,\"request\":{\"method\":\"start\",\"route\":\"db.read_only_status\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"log_id\":\"12f0f191-a122-4636-a4a0-03d7e62e1bcc\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:20:41.525726Z\",\"trace_id\":\"fresh-local-after_applied\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-after_applied\",\"aip-206d61cf5cd940eca196141bb7fb6a91\",\"receive\"]",
+          "log_id": "17d2ff26-4de9-4f41-b897-6e1b509c501f",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:20:41.628841+00:00\",\"trace\":{\"correlation_id\":\"aip-206d61cf5cd940eca196141bb7fb6a91\",\"trace_id\":\"fresh-local-after_applied\"}}",
+          "record": null,
+          "written": 0
+        }
+      ]
+    },
+    "owner": {
+      "create_sql": "CREATE TABLE owner (aic TEXT, log_path TEXT)",
+      "rows": [
+        {
+          "aic": "test-database-primary",
+          "log_path": "${RECORDS}\\local-process-cases\\after_applied\\transport\\amp\\amp_access_primary.jsonl"
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

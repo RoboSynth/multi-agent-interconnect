@@ -1,0 +1,4 @@
+FROM python:3.12-slim
+# The upstream server requires MCP SDK v2; never install it in the v1 gateway.
+RUN pip install --no-cache-dir mcp-server-docker==0.3.0
+ENTRYPOINT ["mcp-server-docker"]

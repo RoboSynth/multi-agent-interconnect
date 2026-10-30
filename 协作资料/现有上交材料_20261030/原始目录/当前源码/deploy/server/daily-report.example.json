@@ -1,0 +1,26 @@
+{
+  "schedule_directory": "runtime/private/cloud-new7-schedule",
+  "amp_directories": [
+    "REPLACE_COORDINATOR_EXACT_AMP_ROOT",
+    "REPLACE_APPLICATION_EXACT_AMP_ROOT",
+    "REPLACE_DATABASE_EXACT_AMP_ROOT",
+    "REPLACE_DATABASE_BACKUP_EXACT_AMP_ROOT",
+    "REPLACE_OPS_EXACT_AMP_ROOT",
+    "REPLACE_VERIFICATION_EXACT_AMP_ROOT",
+    "REPLACE_ONBOARDING_EXACT_AMP_ROOT"
+  ],
+  "evidence_root": "evidence",
+  "online_since": "REPLACE_WITH_ACTUAL_STAGE6_NEW_LOG_FORWARDING_START_TIME",
+  "expected_aics": ["REPLACE_COORDINATOR", "REPLACE_APPLICATION", "REPLACE_DATABASE", "REPLACE_DATABASE_BACKUP", "REPLACE_OPS", "REPLACE_VERIFICATION", "REPLACE_ONBOARDING"],
+  "leaderboard_schema": {
+    "includes_internal_calls": true,
+    "boards": {"caller": "/caller", "callee": "/callee"},
+    "aic_pointer": "/aic",
+    "rank_pointer": null,
+    "rank_from_list_order": true,
+    "count_descending_required": true,
+    "count_pointer": "/count",
+    "access_count_pointer": "/accessCount",
+    "message_count_pointer": "/messageCount"
+  }
+}

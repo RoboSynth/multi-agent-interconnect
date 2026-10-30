@@ -145,7 +145,7 @@ def create_app(config_path=None, output=None, transport=None):
                 model_endpoint = "[REDACTED]"
         except ValueError:
             model_endpoint = "[REDACTED]"
-        return {"connected": active_transport is not None, "mode": getattr(active_transport, "mode", "unconfigured"),
+        return {"connected": active_transport is not None and getattr(active_transport, "connection_ready", True), "mode": getattr(active_transport, "mode", "unconfigured"),
                 "pid": os.getpid(),
                 "resource_credential_count": sum(bool(os.environ.get(name)) for name in credential_names),
                 "connection_error": app.state.connection_error,
@@ -163,6 +163,8 @@ def create_app(config_path=None, output=None, transport=None):
     async def incident(body: IncidentRequest):
         if app.state.transport is None:
             raise HTTPException(503, "参与者尚未连接。先按部署文档启动本地业务和智能体。")
+        if not getattr(app.state.transport, "connection_ready", True):
+            raise HTTPException(503, "智能体通信通道不可用，需要恢复连接后再巡检。")
         if app.state.active and not app.state.active.done():
             raise HTTPException(409, "当前事故仍在处理")
         engine = app.state.engine

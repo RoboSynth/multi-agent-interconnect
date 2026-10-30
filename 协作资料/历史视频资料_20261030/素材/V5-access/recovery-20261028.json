@@ -1,0 +1,92 @@
+{
+  "observed_at": "2026-10-28T09:42:26.358140+08:00",
+  "connected": true,
+  "pid": 2039301,
+  "in_flight_attempts": 0,
+  "services": {
+    "incident-workbench": {
+      "MainPID": "2039301",
+      "ActiveState": "active",
+      "SubState": "running"
+    },
+    "incident-scheduler": {
+      "MainPID": "2041671",
+      "ActiveState": "active",
+      "SubState": "running"
+    },
+    "incident-collector": {
+      "MainPID": "2041751",
+      "ActiveState": "active",
+      "SubState": "running"
+    },
+    "incident-external-rotation.timer": {
+      "ActiveState": "active",
+      "SubState": "waiting"
+    }
+  },
+  "inspection": {
+    "id": "inc-368bd4d4a21d42f6",
+    "status": "completed",
+    "elapsed_seconds": 34.447,
+    "tasks": [
+      {
+        "kind": "observe",
+        "tool": "ops.containers",
+        "status": "ok",
+        "error": null
+      },
+      {
+        "kind": "observe",
+        "tool": "ops.route_status",
+        "status": "ok",
+        "error": null
+      },
+      {
+        "kind": "observe",
+        "tool": "db.read_only_status",
+        "status": "ok",
+        "error": null
+      },
+      {
+        "kind": "observe",
+        "tool": "db.blocking_sessions",
+        "status": "ok",
+        "error": null
+      },
+      {
+        "kind": "observe",
+        "tool": "application.status",
+        "status": "ok",
+        "error": null
+      },
+      {
+        "kind": "verify",
+        "tool": "incident.verification",
+        "status": "ok",
+        "error": null
+      }
+    ],
+    "business": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "passed": true
+    }
+  },
+  "external_last_run": {
+    "job_id": "continuous-20261028T014029041119Z",
+    "status": "completed",
+    "aic": "1.2.156.3088.1.BUPT.I9JB16.KATBXS.AHHHKT.1D9E",
+    "name": "笔试训练",
+    "started_at_utc": "2026-10-28T01:40:29.041119+00:00",
+    "finished_at_utc": "2026-10-28T01:40:36.126270+00:00",
+    "task_id": "external-71f4321aa99a447fad8797732ae64805",
+    "product_count": 1,
+    "result_file": "/opt/incident-pilot/evidence/external-rotation-20261026/continuous-20261028T014029041119Z/result.json"
+  },
+  "timers": "NEXT                        LEFT          LAST                        PASSED       UNIT                             ACTIVATES\nWed 2026-10-28 09:45:00 CST 2min 33s left Wed 2026-10-28 09:40:28 CST 1min 57s ago incident-external-rotation.timer incident-external-rotation.service\n\n1 timers listed.\n"
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Incident Pilot deployment acceptance two hours after real new-log reporting starts
+
+[Timer]
+OnCalendar=@DUE_UTC@
+Persistent=true
+AccuracySec=1s
+Unit=incident-stage8-check.service
+
+[Install]
+WantedBy=timers.target

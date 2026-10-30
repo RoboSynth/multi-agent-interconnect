@@ -1,0 +1,540 @@
+[
+  {
+    "source": "coordinator/messages.jsonl",
+    "line": 52,
+    "sent_at": "2026-10-29T09:42:05.097616+00:00",
+    "direction": "send",
+    "payload": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1",
+      "logical_task_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:3",
+      "kind": "resume",
+      "tool": "db.restore_writes",
+      "args": {
+        "advance_fence": true,
+        "resume_package": {
+          "logical_task_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:3",
+          "goal": "Continue the interrupted incident task",
+          "evidence_refs": [
+            {
+              "fact": {
+                "key": "business_recovered",
+                "value": true,
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282753+00:00"
+              },
+              "expires_at": 1793266962.282753
+            },
+            {
+              "fact": {
+                "key": "service_recovered",
+                "value": true,
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282768+00:00"
+              },
+              "expires_at": 1793266962.282768
+            },
+            {
+              "fact": {
+                "key": "original_request_resolved",
+                "value": true,
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282771+00:00"
+              },
+              "expires_at": 1793266962.282771
+            },
+            {
+              "fact": {
+                "key": "original_request_resolution",
+                "value": "not_required",
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282774+00:00"
+              },
+              "expires_at": 1793266962.282774
+            },
+            {
+              "fact": {
+                "key": "manual_required",
+                "value": false,
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282777+00:00"
+              },
+              "expires_at": 1793266962.282777
+            },
+            {
+              "fact": {
+                "key": "order_observation",
+                "value": {
+                  "run_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1",
+                  "duration_seconds": 30.002,
+                  "requests": 30,
+                  "success": 30,
+                  "failed": 0,
+                  "unknown": 0,
+                  "completed_workflows": 10,
+                  "unresolved_intents": 0,
+                  "resolved_unknown_intents": 0,
+                  "passed": true,
+                  "events": [
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000000",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 0.009,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000000",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/dc3700ed-a1da-4ccb-931f-1083b8bdc72c",
+                      "elapsed_seconds": 1.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000000",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/dc3700ed-a1da-4ccb-931f-1083b8bdc72c/cancel",
+                      "elapsed_seconds": 2.0,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000001",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 3.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000001",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/a6a0904b-360a-4093-b1bd-b14ea16e9cae",
+                      "elapsed_seconds": 4.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000001",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/a6a0904b-360a-4093-b1bd-b14ea16e9cae/cancel",
+                      "elapsed_seconds": 5.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000002",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 6.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000002",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/bb55467b-80cd-4d35-aeaa-778c8cd2a36a",
+                      "elapsed_seconds": 7.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000002",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/bb55467b-80cd-4d35-aeaa-778c8cd2a36a/cancel",
+                      "elapsed_seconds": 8.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000003",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 9.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000003",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/47ebfc4a-2c7f-45e1-995b-94f1ec18b96e",
+                      "elapsed_seconds": 10.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000003",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/47ebfc4a-2c7f-45e1-995b-94f1ec18b96e/cancel",
+                      "elapsed_seconds": 11.0,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000004",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 12.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000004",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/43ffde10-24d5-4dab-b15b-7e882031292d",
+                      "elapsed_seconds": 13.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000004",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/43ffde10-24d5-4dab-b15b-7e882031292d/cancel",
+                      "elapsed_seconds": 14.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000005",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 15.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000005",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/588ad77a-71ea-4bd0-9a80-487b4eece210",
+                      "elapsed_seconds": 16.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000005",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/588ad77a-71ea-4bd0-9a80-487b4eece210/cancel",
+                      "elapsed_seconds": 17.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000006",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 18.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000006",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/a931c488-c4f4-448c-a376-8a17f784c8b2",
+                      "elapsed_seconds": 19.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000006",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/a931c488-c4f4-448c-a376-8a17f784c8b2/cancel",
+                      "elapsed_seconds": 20.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000007",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 21.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000007",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/60cf4ad3-70f3-4ef0-a701-4340c34ab084",
+                      "elapsed_seconds": 22.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000007",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/60cf4ad3-70f3-4ef0-a701-4340c34ab084/cancel",
+                      "elapsed_seconds": 23.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000008",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 24.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000008",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/0c59f62c-f730-403a-b026-67a595e8618e",
+                      "elapsed_seconds": 25.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000008",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/0c59f62c-f730-403a-b026-67a595e8618e/cancel",
+                      "elapsed_seconds": 26.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000009",
+                      "phase": "create",
+                      "method": "POST",
+                      "path": "/orders",
+                      "elapsed_seconds": 27.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000009",
+                      "phase": "query",
+                      "method": "GET",
+                      "path": "/orders/496dfe90-e7cd-4783-b053-2531ea9d65cb",
+                      "elapsed_seconds": 28.002,
+                      "http_status": 200,
+                      "outcome": "success"
+                    },
+                    {
+                      "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000009",
+                      "phase": "cancel",
+                      "method": "POST",
+                      "path": "/orders/496dfe90-e7cd-4783-b053-2531ea9d65cb/cancel",
+                      "elapsed_seconds": 29.001,
+                      "http_status": 200,
+                      "outcome": "success"
+                    }
+                  ],
+                  "state": {
+                    "pending": [],
+                    "completed": [
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000000",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000000-cancel",
+                        "item": "keyboard",
+                        "quantity": 2,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "dc3700ed-a1da-4ccb-931f-1083b8bdc72c"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000001",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000001-cancel",
+                        "item": "pen",
+                        "quantity": 2,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "a6a0904b-360a-4093-b1bd-b14ea16e9cae"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000002",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000002-cancel",
+                        "item": "pen",
+                        "quantity": 1,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "bb55467b-80cd-4d35-aeaa-778c8cd2a36a"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000003",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000003-cancel",
+                        "item": "keyboard",
+                        "quantity": 3,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "47ebfc4a-2c7f-45e1-995b-94f1ec18b96e"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000004",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000004-cancel",
+                        "item": "keyboard",
+                        "quantity": 3,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "43ffde10-24d5-4dab-b15b-7e882031292d"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000005",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000005-cancel",
+                        "item": "pen",
+                        "quantity": 1,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "588ad77a-71ea-4bd0-9a80-487b4eece210"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000006",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000006-cancel",
+                        "item": "book",
+                        "quantity": 1,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "a931c488-c4f4-448c-a376-8a17f784c8b2"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000007",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000007-cancel",
+                        "item": "pen",
+                        "quantity": 3,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "60cf4ad3-70f3-4ef0-a701-4340c34ab084"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000008",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000008-cancel",
+                        "item": "pen",
+                        "quantity": 2,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "0c59f62c-f730-403a-b026-67a595e8618e"
+                      },
+                      {
+                        "request_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000009",
+                        "operation_key": "load-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1-video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:1-000009-cancel",
+                        "item": "keyboard",
+                        "quantity": 2,
+                        "phase": "cancel",
+                        "was_unknown": false,
+                        "order_id": "496dfe90-e7cd-4783-b053-2531ea9d65cb"
+                      }
+                    ],
+                    "next_index": 10
+                  }
+                },
+                "source": "order-workflows",
+                "observed_at": "2026-10-29T09:41:42.282779+00:00"
+              },
+              "expires_at": 1793266962.282779
+            },
+            {
+              "fact": {
+                "key": "read_only",
+                "value": true,
+                "source": "db.read_only_status",
+                "observed_at": "2026-10-29T09:41:43.993070+00:00"
+              },
+              "expires_at": 1793266963.99307
+            }
+          ],
+          "hypotheses": [],
+          "remaining_tasks": [
+            {
+              "tool": "db.restore_writes",
+              "kind": "act",
+              "args": {}
+            }
+          ],
+          "operations": [
+            {
+              "operation_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:db-restore-writes",
+              "status": "delivery_unknown"
+            }
+          ],
+          "fence": {
+            "coordinator_term": 19,
+            "takeover_version": 1
+          },
+          "created_at": 1793266925.0898395,
+          "schema_version": "1.0"
+        }
+      },
+      "operation_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:db-restore-writes",
+      "fence": {
+        "coordinator_term": 19,
+        "takeover_version": 1
+      },
+      "budget": {
+        "deadline_ms": 15000
+      },
+      "approval": {
+        "incident_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1",
+        "operation_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:db-restore-writes",
+        "tool": "db.restore_writes",
+        "args": {},
+        "caller_aic": "A01",
+        "approved_by": "workbench",
+        "approved_at": 1793266904,
+        "expires_at": 1793267204,
+        "proof": "[removed]"
+      }
+    }
+  },
+  {
+    "source": "coordinator/messages.jsonl",
+    "line": 55,
+    "sent_at": "2026-10-29T09:42:05.137750+00:00",
+    "direction": "receive",
+    "payload": {
+      "schema_version": "ifc/1.0",
+      "incident_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1",
+      "logical_task_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:3",
+      "executor_aic": "A04",
+      "status": "ok",
+      "facts": [
+        {
+          "key": "read_only",
+          "observed_at": "2026-10-29T09:41:44.552390+00:00",
+          "source": "db.restore_writes",
+          "value": false
+        }
+      ],
+      "local_hypotheses": [],
+      "active_fence": {
+        "coordinator_term": 19,
+        "takeover_version": 1
+      },
+      "operation": {
+        "operation_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1:db-restore-writes",
+        "state": "skipped_already_applied",
+        "active_fence": {
+          "coordinator_term": 19,
+          "takeover_version": 1
+        }
+      },
+      "evidence_ref": "amp:audit:3cc3ce41-2946-4ed6-8d88-5c9f3aa71ca2"
+    }
+  }
+]

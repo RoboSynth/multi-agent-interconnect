@@ -1,0 +1,8 @@
+# Install in the database domain. Invoked as a separate stdio process.
+# Original 7.2 wheel remains on the official CDN after its release index vanished.
+# Keep postgres-mcp's exact parser dependency on the supported CPython 3.12 host.
+pglast @ https://files.pythonhosted.org/packages/58/e6/bf739bd61518c4a90ff05dbd456c973b21ca2a7b664d1f9910c1fe4f3088/pglast-7.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl#sha256=e2613ad4228165125047706c26925230202d63adc4d5a10cbe8a8896af024ced ; python_version == "3.12" and sys_platform == "linux" and platform_machine == "x86_64"
+pglast @ https://files.pythonhosted.org/packages/be/4b/a4d244211dd3dcfd99c704bb6195d9c5c564da175531b0fb8c844f311b8d/pglast-7.2-cp312-cp312-win_amd64.whl#sha256=06a5b2d3dd63c44ca71e29fcc0fe162f959708bd348754e420ac1b9332d1d340 ; python_version == "3.12" and sys_platform == "win32" and platform_machine == "AMD64"
+postgres-mcp==0.3.0
+# Upstream leaves mcp unbounded but still imports v1 FastMCP.
+mcp==1.30.0

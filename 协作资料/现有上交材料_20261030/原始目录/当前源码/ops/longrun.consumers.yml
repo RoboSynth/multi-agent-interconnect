@@ -1,0 +1,27 @@
+# Only the managed host may restart Inbox consumers after acquiring all AICs.
+# Business services keep deploy/compose.yml's unless-stopped policy.
+x-managed: &managed
+  restart: "no"
+  environment:
+    INCIDENT_MANAGED_SESSION: ${INCIDENT_MANAGED_SESSION:?Managed host session required}
+  volumes:
+    - ../ops/domain_entry.py:/srv/ops/domain_entry.py:ro
+services:
+  application-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, platform, --config, /domain/config.json, --role, application]
+  verification-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, platform, --config, /domain/config.json, --role, verification]
+  onboarding-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, platform, --config, /domain/config.json, --role, onboarding]
+  database-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, bridge, --config, /domain/bridge.json, --role, database]
+  database-backup-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, bridge, --config, /domain/bridge.json, --role, database-backup]
+  ops-agent:
+    <<: *managed
+    command: [python, /srv/ops/domain_entry.py, --kind, bridge, --config, /domain/bridge.json, --role, ops]

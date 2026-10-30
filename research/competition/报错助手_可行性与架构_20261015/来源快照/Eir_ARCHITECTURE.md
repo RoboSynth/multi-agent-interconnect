@@ -1004,7 +1004,7 @@ The persisted/default method token order remains `winget, choco, scoop, msstore`
 
 - **winget** (`winget.rs`): resolves the trusted `winget.exe` through `detect::winget_path` (PATH alias, WindowsApps MSIX, or `Get-AppxPackage -AllUsers`), lists and verifies with the active desktop user's primary token from LocalSystem (directly in interactive/dev runs) so per-user registrations stay visible, captures and cleans its output (`clean_winget_output`, ported verbatim with tests for spinner/OEM-mojibake/byte-counter stripping), auto-retries once with `--force` for the portable-modified case, verifies by id. Each upgrade runs in the context its scope needs (`run_upgrade`): the service first asks `winget list --id <id> --exact --scope machine` (as the user, who sees every scope); a machine-wide package is upgraded by the LocalSystem service itself with `--scope machine`, a per-user one with the user's token. Started from the user's filtered token, machine-wide installers raised UAC prompts (Chrome, PowerShell 7, the Visual Studio installer's `setup.exe`); per-user installers need no elevation. If the service's winget cannot start (`-1`) or cannot see the package, the upgrade falls back to the user's context as before. The user's elevated (linked) token is deliberately never used: its installers would run as administrator from the user-writable Temp folder, a silent route to admin rights for anything running as the user.
 - **choco** (`choco.rs`): `choco outdated -r` (pipe-delimited, pinned packages skipped), `choco upgrade <id> -y`, success codes 0/3010/1641, cross-checks the new version via winget's ARP read.
-- **scoop** (`scoop.rs`): disabled in the SYSTEM service. Listing returns an explicit unavailable error and update attempts return `Blocked`; no `C:\Users\*\scoop\shims\scoop.cmd` path is selected or launched.
+- **scoop** (`scoop.rs`): disabled in the SYSTEM service. Listing returns an explicit unavailable error and update attempts return `Blocked`; no `C:\Users\shared-user\scoop\shims\scoop.cmd` path is selected or launched.
 - **msstore** (`msstore.rs`): `winget ... --source msstore`; per-user, may need the user's Store entitlement.
 - **native** (`native.rs`): the AI-found installer path (below).
 
@@ -1158,7 +1158,7 @@ not the Explorer-bound `Shell.Application`), one-shot **RunOnce** keys, **`Polic
 Run`** keys, **Winlogon Shell/Userinit anomalies** (emitted only when non-default — a clean
 machine adds no noise), **logon-triggered scheduled tasks** outside `\Microsoft\`, and
 **auto-start services** whose binary lives outside `<drive>:\Windows\` (regex anchored at the
-drive root, optionally quoted, so `C:\Users\Public\Windows\evil.exe` can't masquerade its way
+drive root, optionally quoted, so `C:\Users\shared-user\Windows\evil.exe` can't masquerade its way
 out of the listing). Because LocalSystem's `HKCU` is the SYSTEM hive, per-user data is read
 only from the SID attached to the active WTS session under `HKEY_USERS`, never from every
 loaded user's hive.

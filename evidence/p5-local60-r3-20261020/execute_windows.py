@@ -17,7 +17,7 @@ import traceback
 ROOT = Path(__file__).resolve().parents[2]
 EVIDENCE = Path(__file__).resolve().parent
 ARTIFACTS = ROOT.parent / "incident-pilot/artifacts/p5-local60-r3-20261020"
-PWSH = Path("C:/Users/16080/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe")
+PWSH = Path("C:/Users/shared-user/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe")
 
 
 def save(path, value):

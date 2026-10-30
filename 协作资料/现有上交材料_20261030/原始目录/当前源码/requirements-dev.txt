@@ -1,0 +1,8 @@
+# Project unittest environment, including optional report/figure imports.
+# Run pip from this checkout root; do not reuse another checkout's editable SDK.
+-r requirements-high-score.txt
+-r requirements-report.txt
+./vendor/ACPs-community/acps-sdk[amp-sign]
+# Match the existing local signing dependencies; satisfy the vendored SDK extra.
+cryptography==50.0.2
+jcs==0.2.1

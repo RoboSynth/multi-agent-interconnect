@@ -1,0 +1,154 @@
+{
+  "schema": "capture-session/1",
+  "video": "status-video.webm",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "deviceScaleFactor": 2,
+  "videoSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "screenshotScale": "device",
+  "coordinates": "1920x1080 CSS pixels; boxes clipped to viewport",
+  "videoProbe": {
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 30.28,
+    "frameRate": "25/1"
+  },
+  "timing": {
+    "videoT0Utc": "2026-10-29T13:08:46.159Z",
+    "videoT0EpochMs": 1793279326159.159,
+    "method": "first trace screencast frameSwapWallTime minus encoded first packet PTS",
+    "creationTimeUtc": "2026-10-29T13:08:45.848Z",
+    "firstTraceFrameWallTimeMs": 1793279326159.159,
+    "firstPacketPtsSeconds": 0,
+    "creationToFirstTraceFrameMs": 311.158935546875,
+    "traceFrameCount": 250,
+    "clockCalibration": {
+      "roundTripMs": 5,
+      "browserMinusNodeMidpointMs": 1.5,
+      "performanceMinusBrowserDateMs": 0.300048828125,
+      "note": "Same-host wall-clock comparison; transport round trip bounds this one sample, not all later clock drift."
+    },
+    "approximationIntervalEpochMs": null,
+    "nominalFrameQuantumMs": 40,
+    "limitation": "Estimated visual alignment: 25 fps quantization (~40 ms), first traced/encoded frame correspondence and browser/host clock sampling. No sub-frame accuracy is claimed.",
+    "sourceBasis": "Playwright 1.64.1 coreBundle.js: VideoRecorder passes frameSwapWallTime; FfmpegVideoRecorder emits timestamp minus creationTimeMs and writes creation_time metadata."
+  },
+  "actions": [
+    {
+      "id": 1,
+      "kind": "navigate",
+      "label": "Official Wutong public page",
+      "atSeconds": -0.242158935546875,
+      "startSeconds": -0.242158935546875,
+      "endSeconds": 6.564841064453125,
+      "eventTimeSource": "host Date.now before page.goto",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "point": null
+    },
+    {
+      "id": 2,
+      "kind": "click",
+      "label": "Open platform status and access statistics",
+      "atSeconds": 8.177740966796875,
+      "startSeconds": 8.108841064453125,
+      "endSeconds": 8.187841064453124,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 1360.40625,
+        "y": 23.75,
+        "width": 249.921875,
+        "height": 47.5
+      },
+      "point": {
+        "x": 1485,
+        "y": 47
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 3,
+      "kind": "click",
+      "label": "Query A01 (identity field masked)",
+      "atSeconds": 8.46014111328125,
+      "startSeconds": 8.201841064453125,
+      "endSeconds": 8.468841064453125,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 742.25,
+        "y": 354,
+        "width": 435.5,
+        "height": 46.25
+      },
+      "point": {
+        "x": 960,
+        "y": 377
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 4,
+      "kind": "holdScreenshot",
+      "label": "status-A01.png",
+      "atSeconds": 17.833841064453125,
+      "startSeconds": 10.826841064453125,
+      "endSeconds": 19.058841064453127,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "status-A01.png",
+      "requestedHoldSeconds": 7
+    },
+    {
+      "id": 5,
+      "kind": "click",
+      "label": "Query A03 (identity field masked)",
+      "atSeconds": 19.167541015625,
+      "startSeconds": 19.082841064453124,
+      "endSeconds": 19.202841064453125,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 742.25,
+        "y": 354,
+        "width": 435.5,
+        "height": 46.25
+      },
+      "point": {
+        "x": 960,
+        "y": 377
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 6,
+      "kind": "holdScreenshot",
+      "label": "status-A03.png",
+      "atSeconds": 26.554841064453125,
+      "startSeconds": 19.545841064453125,
+      "endSeconds": 27.809841064453124,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "status-A03.png",
+      "requestedHoldSeconds": 7
+    }
+  ],
+  "captureErrors": [],
+  "extra": {
+    "scope": "Official public query access-data supplement",
+    "capture_kind": "live_public_UI",
+    "success": true
+  }
+}

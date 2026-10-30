@@ -1,0 +1,340 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/after_applied/transport/tasks.sqlite",
+  "immutable_read": true,
+  "tables": {
+    "coordinator_terms": {
+      "create_sql": "CREATE TABLE coordinator_terms (name TEXT PRIMARY KEY, term INTEGER NOT NULL)",
+      "rows": []
+    },
+    "sqlite_sequence": {
+      "create_sql": "CREATE TABLE sqlite_sequence(name,seq)",
+      "rows": [
+        {
+          "name": "task_events",
+          "seq": 25
+        },
+        {
+          "name": "takeover_events",
+          "seq": 3
+        }
+      ]
+    },
+    "takeover_events": {
+      "create_sql": "CREATE TABLE takeover_events (\n                    event_id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT NOT NULL,\n                    failed_partner TEXT NOT NULL, replacement TEXT, reason TEXT NOT NULL,\n                    fence TEXT, state TEXT NOT NULL, recorded_at REAL NOT NULL)",
+      "rows": [
+        {
+          "event_id": 1,
+          "session_id": "fresh-local-after_applied",
+          "failed_partner": "test-database-primary",
+          "replacement": null,
+          "reason": "local_process_eof",
+          "fence": null,
+          "state": "started",
+          "recorded_at": 1793262041.7544787
+        },
+        {
+          "event_id": 2,
+          "session_id": "fresh-local-after_applied",
+          "failed_partner": "test-database-primary",
+          "replacement": "test-database-backup",
+          "reason": "local_process_eof",
+          "fence": "{\"coordinator_term\":1,\"takeover_version\":1}",
+          "state": "fenced",
+          "recorded_at": 1793262042.2193007
+        },
+        {
+          "event_id": 3,
+          "session_id": "fresh-local-after_applied",
+          "failed_partner": "test-database-primary",
+          "replacement": "test-database-backup",
+          "reason": "local_process_eof",
+          "fence": "{\"coordinator_term\":1,\"takeover_version\":1}",
+          "state": "resumed",
+          "recorded_at": 1793262042.2330954
+        }
+      ]
+    },
+    "task_attempts": {
+      "create_sql": "CREATE TABLE task_attempts (\n                    attempt_id TEXT PRIMARY KEY, logical_task_id TEXT NOT NULL,\n                    group_id TEXT, session_id TEXT NOT NULL, task_id TEXT NOT NULL,\n                    partner_aic TEXT NOT NULL, command TEXT NOT NULL, state TEXT NOT NULL,\n                    coordinator_term INTEGER NOT NULL, content TEXT, created_at REAL NOT NULL,\n                    updated_at REAL NOT NULL)",
+      "rows": [
+        {
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "logical_task_id": "logical-observation",
+          "group_id": "local-incident-group",
+          "session_id": "fresh-local-after_applied",
+          "task_id": "aip-bfaaafbe2001445e91f9fc0c43478ffe",
+          "partner_aic": "test-database-primary",
+          "command": "start",
+          "state": "completed",
+          "coordinator_term": 1,
+          "content": "{\"schema_version\":\"ifc/1.0\",\"incident_id\":\"fresh-local-after_applied\",\"logical_task_id\":\"logical-observation\",\"kind\":\"observe\",\"tool\":\"db.read_only_status\",\"args\":{},\"budget\":{\"deadline_ms\":15000}}",
+          "created_at": 1793262041.4790733,
+          "updated_at": 1793262041.5961268
+        },
+        {
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "logical_task_id": "logical-action",
+          "group_id": "local-incident-group",
+          "session_id": "fresh-local-after_applied",
+          "task_id": "aip-206d61cf5cd940eca196141bb7fb6a91",
+          "partner_aic": "test-database-primary",
+          "command": "start",
+          "state": "canceled",
+          "coordinator_term": 1,
+          "content": "{\"schema_version\":\"ifc/1.0\",\"incident_id\":\"fresh-local-after_applied\",\"logical_task_id\":\"logical-action\",\"kind\":\"act\",\"tool\":\"db.restore_writes\",\"args\":{},\"operation_id\":\"fresh-local-after_applied:repair\",\"fence\":{\"coordinator_term\":1,\"takeover_version\":0},\"approval\":{\"incident_id\":\"fresh-local-after_applied\",\"operation_id\":\"fresh-local-after_applied:repair\",\"tool\":\"db.restore_writes\",\"args\":{},\"caller_aic\":\"test-coordinator\",\"approved_by\":\"local-workbench-operator\",\"approved_at\":1793262041,\"expires_at\":1793262341,\"proof\":\"[REDACTED_AUTH]\"},\"budget\":{\"deadline_ms\":15000}}",
+          "created_at": 1793262041.6066778,
+          "updated_at": 1793262042.2460265
+        },
+        {
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "logical_task_id": "logical-action:describe:backup",
+          "group_id": "local-incident-group",
+          "session_id": "fresh-local-after_applied",
+          "task_id": "aip-058420deafd649b8ab669b393f590bfb",
+          "partner_aic": "test-database-backup",
+          "command": "start",
+          "state": "completed",
+          "coordinator_term": 1,
+          "content": "{\"schema_version\":\"ifc/1.0\",\"incident_id\":\"fresh-local-after_applied\",\"logical_task_id\":\"logical-action:describe:backup\",\"kind\":\"describe\",\"tool\":\"db.restore_writes\",\"args\":{},\"budget\":{\"deadline_ms\":15000}}",
+          "created_at": 1793262041.7648785,
+          "updated_at": 1793262041.9617689
+        },
+        {
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "logical_task_id": "logical-action",
+          "group_id": "local-incident-group",
+          "session_id": "fresh-local-after_applied",
+          "task_id": "aip-bf4c4501b7b6466783a3c1e7045630d1",
+          "partner_aic": "test-database-backup",
+          "command": "start",
+          "state": "completed",
+          "coordinator_term": 1,
+          "content": "{\"schema_version\":\"ifc/1.0\",\"incident_id\":\"fresh-local-after_applied\",\"logical_task_id\":\"logical-action\",\"kind\":\"resume\",\"tool\":\"db.restore_writes\",\"args\":{\"advance_fence\":true,\"resume_package\":{\"logical_task_id\":\"logical-action\",\"goal\":\"Continue the original incident task after local participant failure\",\"evidence_refs\":[{\"fact\":{\"key\":\"read_only\",\"value\":true,\"source\":\"db.read_only_status\",\"observed_at\":\"2026-10-29T08:20:41.521718+00:00\"},\"expires_at\":1793262101.521718}],\"hypotheses\":[],\"remaining_tasks\":[{\"tool\":\"db.restore_writes\",\"kind\":\"act\",\"args\":{}}],\"operations\":[{\"operation_id\":\"fresh-local-after_applied:repair\",\"status\":\"delivery_unknown\"}],\"fence\":{\"coordinator_term\":1,\"takeover_version\":1},\"created_at\":1793262041.9985313,\"schema_version\":\"1.0\"}},\"operation_id\":\"fresh-local-after_applied:repair\",\"fence\":{\"coordinator_term\":1,\"takeover_version\":1},\"approval\":{\"incident_id\":\"fresh-local-after_applied\",\"operation_id\":\"fresh-local-after_applied:repair\",\"tool\":\"db.restore_writes\",\"args\":{},\"caller_aic\":\"test-coordinator\",\"approved_by\":\"local-workbench-operator\",\"approved_at\":1793262041,\"expires_at\":1793262341,\"proof\":\"[REDACTED_AUTH]\"},\"budget\":{\"deadline_ms\":15000}}",
+          "created_at": 1793262041.9985313,
+          "updated_at": 1793262042.208938
+        },
+        {
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "logical_task_id": "logical-action",
+          "group_id": "local-incident-group",
+          "session_id": "fresh-local-after_applied",
+          "task_id": "aip-1183eb873b3741ebacc366e850a0ce56",
+          "partner_aic": "test-database-backup",
+          "command": "start",
+          "state": "completed",
+          "coordinator_term": 1,
+          "content": "{\"schema_version\":\"ifc/1.0\",\"incident_id\":\"fresh-local-after_applied\",\"logical_task_id\":\"logical-action\",\"kind\":\"act\",\"tool\":\"db.restore_writes\",\"args\":{},\"operation_id\":\"fresh-local-after_applied:repair\",\"fence\":{\"coordinator_term\":1,\"takeover_version\":0},\"approval\":{\"incident_id\":\"fresh-local-after_applied\",\"operation_id\":\"fresh-local-after_applied:repair\",\"tool\":\"db.restore_writes\",\"args\":{},\"caller_aic\":\"test-coordinator\",\"approved_by\":\"local-workbench-operator\",\"approved_at\":1793262041,\"expires_at\":1793262341,\"proof\":\"[REDACTED_AUTH]\"},\"budget\":{\"deadline_ms\":15000}}",
+          "created_at": 1793262042.2703245,
+          "updated_at": 1793262042.4296277
+        }
+      ]
+    },
+    "task_events": {
+      "create_sql": "CREATE TABLE task_events (\n                    event_id INTEGER PRIMARY KEY AUTOINCREMENT, attempt_id TEXT NOT NULL,\n                    state TEXT NOT NULL, artifact_digest TEXT, artifact TEXT, recorded_at REAL NOT NULL)",
+      "rows": [
+        {
+          "event_id": 1,
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "state": "dispatching",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262041.4790733
+        },
+        {
+          "event_id": 2,
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "state": "accepted",
+          "artifact_digest": "fe6b9d27d6bf6ceee61d91b49e290453e3ab396c1806e382a479af332ec5a070",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-eb983e71-a0a0-4c2c-b51d-0ced6b56e63b\",\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.516162+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"accepted\",\"stateChangedAt\":\"2026-10-29T08:20:41.516162+00:00\"},\"taskId\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.5437932
+        },
+        {
+          "event_id": 3,
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "state": "working",
+          "artifact_digest": "d96cf234764d2e89c85b1bf0eab6a4385e4cc0db925b52c3c6aeff4f55fa647b",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-6d892d9f-7d1b-407e-8056-cebd385f810a\",\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.517669+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"working\",\"stateChangedAt\":\"2026-10-29T08:20:41.517669+00:00\"},\"taskId\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.563235
+        },
+        {
+          "event_id": 4,
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "state": "awaiting-completion",
+          "artifact_digest": "6e075c1f51e11b460f5629bb6ff3169dceb6acee5ed21890678320f701fa12b8",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-f169c1e0-7546-42b1-b52d-15f4374e14c7\",\"products\":[{\"dataItems\":[{\"data\":{\"evidence_ref\":\"amp:audit:af3c608b-062e-4112-9087-7838ce75c71b\",\"executor_aic\":\"test-database-primary\",\"facts\":[{\"key\":\"read_only\",\"observed_at\":\"2026-10-29T08:20:41.521718+00:00\",\"source\":\"db.read_only_status\",\"value\":true}],\"incident_id\":\"fresh-local-after_applied\",\"local_hypotheses\":[{\"because\":[\"fact:read_only\"],\"cause\":\"db_read_only\",\"confidence\":\"high\"}],\"logical_task_id\":\"logical-observation\",\"schema_version\":\"ifc/1.0\",\"status\":\"ok\"},\"type\":\"data\"}],\"id\":\"product-aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"name\":\"db.read_only_status\"}],\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.523727+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"awaiting-completion\",\"stateChangedAt\":\"2026-10-29T08:20:41.523727+00:00\"},\"taskId\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.5779018
+        },
+        {
+          "event_id": 5,
+          "attempt_id": "4997125e-88c9-4d8b-a71e-84181b614e91",
+          "state": "completed",
+          "artifact_digest": "755f7ec8192df69f2a4fde40c5fa42b7bc09ff77f2e7abceab5a35df35993274",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-0c487374-574e-4560-8ddb-13c9c450ba05\",\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.588783+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"completed\",\"stateChangedAt\":\"2026-10-29T08:20:41.588783+00:00\"},\"taskId\":\"aip-bfaaafbe2001445e91f9fc0c43478ffe\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.5961268
+        },
+        {
+          "event_id": 6,
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "state": "dispatching",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262041.6066778
+        },
+        {
+          "event_id": 7,
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "state": "accepted",
+          "artifact_digest": "cea52ea22f25e08c99a05429ff72d32d49df474bb026ffa938e8e48eb4d7d6e5",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-4503e3da-9428-41f7-834a-5f1f925c5114\",\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.642476+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"accepted\",\"stateChangedAt\":\"2026-10-29T08:20:41.642476+00:00\"},\"taskId\":\"aip-206d61cf5cd940eca196141bb7fb6a91\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.6818533
+        },
+        {
+          "event_id": 8,
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "state": "working",
+          "artifact_digest": "09c2758f47baf691f903a2ef8e8b17b7276d3f04e4916f1293c2c67d6739e149",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-65bf4241-6140-462e-877f-93aa973a1f4c\",\"senderId\":\"test-database-primary\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.644545+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"working\",\"stateChangedAt\":\"2026-10-29T08:20:41.644545+00:00\"},\"taskId\":\"aip-206d61cf5cd940eca196141bb7fb6a91\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.6991851
+        },
+        {
+          "event_id": 9,
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "state": "delivery_unknown",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262041.7441413
+        },
+        {
+          "event_id": 10,
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "state": "dispatching",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262041.7648785
+        },
+        {
+          "event_id": 11,
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "state": "accepted",
+          "artifact_digest": "c7944abba487f58dc139589c469a440092f0ddc62225e0e207d4cf357b857f7c",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-4611f7c4-fec6-4afb-aee6-d97cb9daaa1b\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.800946+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"accepted\",\"stateChangedAt\":\"2026-10-29T08:20:41.800946+00:00\"},\"taskId\":\"aip-058420deafd649b8ab669b393f590bfb\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.8361843
+        },
+        {
+          "event_id": 12,
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "state": "working",
+          "artifact_digest": "3270a0e60e2348b7ea678828b67849cb7ed09725dc58e7c07c5b5ca516052f3b",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-8ceb56cb-77b3-49ed-a5c4-3280735a28a6\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.804466+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"working\",\"stateChangedAt\":\"2026-10-29T08:20:41.804466+00:00\"},\"taskId\":\"aip-058420deafd649b8ab669b393f590bfb\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.8919156
+        },
+        {
+          "event_id": 13,
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "state": "awaiting-completion",
+          "artifact_digest": "e80a58d6d057b7c2deae2e27709db8c47dd1508b4d4fb7463506f4c9503f89ad",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-000c1c91-4ba4-4d1f-9818-d56d21b6b306\",\"products\":[{\"dataItems\":[{\"data\":{\"description\":{\"domain\":\"db\",\"executor_aic\":\"test-database-backup\",\"interface_version\":\"1.0\",\"resource_scope\":{\"database\":\"temporary-unittest-resource\"},\"resources\":[\"temporary-unittest-resource\"],\"schema_version\":\"ifc/1.0\",\"skills\":[\"db.observe\",\"db.act\"],\"tools\":[{\"description\":\"Read only the isolated fixture state\",\"inputSchema\":{\"additionalProperties\":false,\"properties\":{},\"type\":\"object\"},\"mcp_tool\":\"execute_sql\",\"name\":\"db.read_only_status\",\"risk\":\"read\"},{\"description\":\"Modify only the isolated fixture state\",\"inputSchema\":{\"additionalProperties\":false,\"properties\":{},\"type\":\"object\"},\"mcp_tool\":\"execute_sql\",\"name\":\"db.restore_writes\",\"risk\":\"high\"}]},\"evidence_ref\":\"amp:audit:1031d2db-3864-422c-99dc-978cb4c751fc\",\"executor_aic\":\"test-database-backup\",\"facts\":[],\"incident_id\":\"fresh-local-after_applied\",\"local_hypotheses\":[],\"logical_task_id\":\"logical-action:describe:backup\",\"schema_version\":\"ifc/1.0\",\"status\":\"ok\"},\"type\":\"data\"}],\"id\":\"product-aip-058420deafd649b8ab669b393f590bfb\",\"name\":\"db.restore_writes\"}],\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.809494+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"awaiting-completion\",\"stateChangedAt\":\"2026-10-29T08:20:41.809494+00:00\"},\"taskId\":\"aip-058420deafd649b8ab669b393f590bfb\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.9216979
+        },
+        {
+          "event_id": 14,
+          "attempt_id": "ae429288-916c-4964-a47d-0f41af1c611e",
+          "state": "completed",
+          "artifact_digest": "32335bc0e788f7275ad1b22de66452892dc685e78c3ee176559eca7a413a87a7",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-076bdbea-7c7e-4956-85fb-13a0bdb8a0be\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:41.946349+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"completed\",\"stateChangedAt\":\"2026-10-29T08:20:41.946349+00:00\"},\"taskId\":\"aip-058420deafd649b8ab669b393f590bfb\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262041.9617689
+        },
+        {
+          "event_id": 15,
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "state": "dispatching",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262041.9985313
+        },
+        {
+          "event_id": 16,
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "state": "accepted",
+          "artifact_digest": "b2d8c5622e1106a5bce4c5b2bd6f942d8dca200b97f89ed5b7adbd9a31ed9fdb",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-1217b603-39db-42a6-9a1f-2298de91311d\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.060592+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"accepted\",\"stateChangedAt\":\"2026-10-29T08:20:42.060592+00:00\"},\"taskId\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.096033
+        },
+        {
+          "event_id": 17,
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "state": "working",
+          "artifact_digest": "aaec4a1a0b43eff4cee42afa9e7899b4d9358f392c12b75d2081f56702d3d8af",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-0744743c-2927-4e0b-bb8a-dfd4d9a54418\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.063592+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"working\",\"stateChangedAt\":\"2026-10-29T08:20:42.063592+00:00\"},\"taskId\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.1398208
+        },
+        {
+          "event_id": 18,
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "state": "awaiting-completion",
+          "artifact_digest": "83c038febf13da59de0ec93f621305f63b30658d7ba60219b027507761f4be7d",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-f8f8688e-1d1c-4bb2-98ac-56ac364f2c3f\",\"products\":[{\"dataItems\":[{\"data\":{\"active_fence\":{\"coordinator_term\":1,\"takeover_version\":1},\"evidence_ref\":\"amp:audit:fac0ea5a-6e02-4c8c-ac5e-04268435e5e3\",\"executor_aic\":\"test-database-backup\",\"facts\":[{\"key\":\"read_only\",\"observed_at\":\"2026-10-29T08:20:41.691537+00:00\",\"source\":\"db.restore_writes\",\"value\":false}],\"incident_id\":\"fresh-local-after_applied\",\"local_hypotheses\":[],\"logical_task_id\":\"logical-action\",\"operation\":{\"active_fence\":{\"coordinator_term\":1,\"takeover_version\":1},\"operation_id\":\"fresh-local-after_applied:repair\",\"state\":\"skipped_already_applied\"},\"schema_version\":\"ifc/1.0\",\"status\":\"ok\"},\"type\":\"data\"}],\"id\":\"product-aip-bf4c4501b7b6466783a3c1e7045630d1\",\"name\":\"db.restore_writes\"}],\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.103724+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"awaiting-completion\",\"stateChangedAt\":\"2026-10-29T08:20:42.103724+00:00\"},\"taskId\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.17143
+        },
+        {
+          "event_id": 19,
+          "attempt_id": "035ec81c-7bde-4f4f-9f86-a716e95f6c63",
+          "state": "completed",
+          "artifact_digest": "59c8b8b1663b55f4a1b4377ae03d3ed949a311648d9dae4d3a4f4e9b68fadcc7",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-5d5bb358-38e5-4e10-973f-5a1ab3a80f58\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.191137+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"completed\",\"stateChangedAt\":\"2026-10-29T08:20:42.191137+00:00\"},\"taskId\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.208938
+        },
+        {
+          "event_id": 20,
+          "attempt_id": "504e1f3c-21ca-4054-89ea-5c501f368d41",
+          "state": "canceled",
+          "artifact_digest": "bcc9de2f7a80c55eb5445cdb655e989d18123f0d47799c26767dfa06d7812175",
+          "artifact": "{\"reason\":\"superseded_by_confirmed_takeover\",\"replacement_aic\":\"test-database-backup\"}",
+          "recorded_at": 1793262042.2460265
+        },
+        {
+          "event_id": 21,
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "state": "dispatching",
+          "artifact_digest": null,
+          "artifact": null,
+          "recorded_at": 1793262042.2703245
+        },
+        {
+          "event_id": 22,
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "state": "accepted",
+          "artifact_digest": "cbfbf0108d4d7fb9e0fb0e3eb4f01749da4d2553736f54c95fa86a2a046f0d46",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-7b94af41-bcd3-429e-ae93-8da555705e45\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.305393+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"accepted\",\"stateChangedAt\":\"2026-10-29T08:20:42.305393+00:00\"},\"taskId\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.332182
+        },
+        {
+          "event_id": 23,
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "state": "working",
+          "artifact_digest": "57ac66b82c302620b69766c742934a17e563e819142980c75522fe1c1126cea3",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-84c67359-c381-4cde-bb59-f5c085c9fd84\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.306394+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"working\",\"stateChangedAt\":\"2026-10-29T08:20:42.306394+00:00\"},\"taskId\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.3589041
+        },
+        {
+          "event_id": 24,
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "state": "awaiting-completion",
+          "artifact_digest": "7802a64731a84c42ef14edf0e251171a9d51735b720f81b8df3a50c125f3e93b",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-e0f331ea-1f82-4843-8bfc-bd0da278f944\",\"products\":[{\"dataItems\":[{\"data\":{\"evidence_ref\":\"amp:audit:e7726485-7971-4cb8-9cc8-6371e7612ba6\",\"executor_aic\":\"test-database-backup\",\"facts\":[],\"incident_id\":\"fresh-local-after_applied\",\"local_hypotheses\":[],\"logical_task_id\":\"logical-action\",\"operation\":{\"after\":{\"value\":false},\"before\":{\"value\":true},\"operation_id\":\"fresh-local-after_applied:repair\",\"state\":\"rejected_stale_fence\"},\"schema_version\":\"ifc/1.0\",\"status\":\"rejected\"},\"type\":\"data\"}],\"id\":\"product-aip-1183eb873b3741ebacc366e850a0ce56\",\"name\":\"db.restore_writes\"}],\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.326152+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"awaiting-completion\",\"stateChangedAt\":\"2026-10-29T08:20:42.326152+00:00\"},\"taskId\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.4009938
+        },
+        {
+          "event_id": 25,
+          "attempt_id": "fba46db8-030c-4a46-857c-3c5cdcde4337",
+          "state": "completed",
+          "artifact_digest": "b59b75e455c44de51723c92f3ef7d970d53fd3ba55fc95433d7447aaa9e2d27c",
+          "artifact": "{\"groupId\":\"local-incident-group\",\"id\":\"result-dae7b69d-4023-4772-a22b-684348c61b56\",\"senderId\":\"test-database-backup\",\"senderRole\":\"partner\",\"sentAt\":\"2026-10-29T08:20:42.424129+00:00\",\"sessionId\":\"fresh-local-after_applied\",\"status\":{\"state\":\"completed\",\"stateChangedAt\":\"2026-10-29T08:20:42.424129+00:00\"},\"taskId\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"type\":\"task-result\"}",
+          "recorded_at": 1793262042.4296277
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

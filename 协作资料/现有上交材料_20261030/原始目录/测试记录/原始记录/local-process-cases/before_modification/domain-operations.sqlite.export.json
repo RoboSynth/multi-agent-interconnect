@@ -1,0 +1,16 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/before_modification/domain-operations.sqlite",
+  "immutable_read": true,
+  "tables": {
+    "operation_fences": {
+      "create_sql": "CREATE TABLE operation_fences (\n                    resource_domain TEXT PRIMARY KEY, coordinator_term INTEGER NOT NULL,\n                    takeover_version INTEGER NOT NULL)",
+      "rows": []
+    },
+    "operations": {
+      "create_sql": "CREATE TABLE operations (\n                    resource_domain TEXT NOT NULL, operation_id TEXT NOT NULL,\n                    parameters_digest TEXT NOT NULL, parameters TEXT NOT NULL,\n                    state TEXT NOT NULL, result TEXT, before_state TEXT, after_state TEXT,\n                    coordinator_term INTEGER NOT NULL, takeover_version INTEGER NOT NULL,\n                    owner TEXT, error TEXT, updated_at REAL NOT NULL,\n                    PRIMARY KEY(resource_domain, operation_id))",
+      "rows": []
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

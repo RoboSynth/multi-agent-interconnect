@@ -1,0 +1,64 @@
+{
+  "aic": "A06",
+  "name": "跨域业务验证智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "incident.verification",
+      "name": "订单请求解析与业务恢复验证",
+      "tags": [
+        "incident-pilot",
+        "ifc/1.0",
+        "verification"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "以 ifc/1.0 核验订单创建、查询、取消与同键回执；解析事故原请求并运行恢复观察窗口，报告成功、失败和未知请求，不持资源管理凭据。",
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "项目团队"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_A06",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:32:54.851244+08:00",
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ]
+}

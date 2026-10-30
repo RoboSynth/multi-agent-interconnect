@@ -1,0 +1,142 @@
+{
+  "schema": "f10-editorial-record-excerpts/1",
+  "capture_kind": "visualization_from_existing_same_run_records",
+  "new_experiment_performed": false,
+  "is_platform_screenshot": false,
+  "incident_id": "inc-dc0038dbe98948e9",
+  "case_key": "f10-m0-r1",
+  "cross_end": {
+    "image": "cross-end-request-response.png",
+    "source_files": [
+      "access/pairing-summary.json",
+      "access/coordinator.jsonl",
+      "access/domain.jsonl",
+      "incident-state.json",
+      "events.jsonl",
+      "evaluation-result.json"
+    ],
+    "pair": {
+      "correlation_id": "aip-edcc3c129d674d9d82c9229dba5dcc4b",
+      "trace_id": "incident-ec8fceb224414a72b567f49b47f478be",
+      "route": "db.restore_writes",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A03"
+      },
+      "coordinator_timestamp": "2026-10-29T09:39:21.986224Z",
+      "domain_timestamp": "2026-10-29T09:39:22.406644Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    "task_selector": {
+      "tool": "db.restore_writes",
+      "logical_task_id": "lt-eb09993e4f49"
+    },
+    "selected_request_args": {},
+    "selected_product": {
+      "logical_task_id": "lt-eb09993e4f49",
+      "executor_aic": "A03",
+      "status": "ok",
+      "operation": {
+        "operation_id": "inc-dc0038dbe98948e9:restore-writes",
+        "state": "applied",
+        "before": {
+          "value": true
+        },
+        "after": {
+          "value": false
+        }
+      },
+      "facts": [
+        {
+          "key": "read_only",
+          "value": false,
+          "source": "db.restore_writes",
+          "observed_at": "2026-10-29T09:39:22.318511+00:00"
+        }
+      ]
+    },
+    "task_started_event": {
+      "source": "IncidentCoordinator persisted events",
+      "time_basis": "native UTC event timestamp",
+      "at": "2026-10-29T09:39:21.960589+00:00",
+      "event": "task_started",
+      "logical_task_id": "lt-eb09993e4f49",
+      "tool": "db.restore_writes"
+    },
+    "task_returned_event": {
+      "source": "IncidentCoordinator persisted events",
+      "time_basis": "native UTC event timestamp",
+      "at": "2026-10-29T09:39:22.641633+00:00",
+      "event": "task_returned",
+      "logical_task_id": "lt-eb09993e4f49",
+      "tool": "db.restore_writes",
+      "status": "ok"
+    },
+    "matching": "Both access records match the exact correlation_id; the one restore_writes task in the same case supplies the product. AMP statuses are not interpreted as business success.",
+    "time_display": "Original UTC converted to Asia/Shanghai UTC+08:00; displayed to millisecond precision, not a measurement of clock accuracy."
+  },
+  "business_access": {
+    "image": "business-access-workflow.png",
+    "final_window_source": "incident-state.json#/result/order_observation",
+    "selected_event_indices": [
+      0,
+      1,
+      2
+    ],
+    "selected_events": [
+      {
+        "request_key": "load-inc-dc0038dbe98948e9-lt-301729b52693-000000",
+        "phase": "create",
+        "method": "POST",
+        "path": "/orders",
+        "elapsed_seconds": 0.009,
+        "http_status": 200,
+        "outcome": "success"
+      },
+      {
+        "request_key": "load-inc-dc0038dbe98948e9-lt-301729b52693-000000",
+        "phase": "query",
+        "method": "GET",
+        "path": "/orders/eefd3411-99a9-4751-8666-1fac7c34fa74",
+        "elapsed_seconds": 1.002,
+        "http_status": 200,
+        "outcome": "success"
+      },
+      {
+        "request_key": "load-inc-dc0038dbe98948e9-lt-301729b52693-000000",
+        "phase": "cancel",
+        "method": "POST",
+        "path": "/orders/eefd3411-99a9-4751-8666-1fac7c34fa74/cancel",
+        "elapsed_seconds": 2.002,
+        "http_status": 200,
+        "outcome": "success"
+      }
+    ],
+    "path_display": "The same order ID in paths is displayed as [order-id]; method, elapsed time, HTTP status and outcome are unchanged.",
+    "final_window_summary": {
+      "duration_seconds": 30.002,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10
+    },
+    "continuous_source": "order-samples.json#/samples",
+    "continuous_summary": {
+      "records": 52,
+      "success": 36,
+      "unknown": 16,
+      "includes_pre_fault_baseline_records": 5
+    }
+  },
+  "dimensions": [
+    3840,
+    2160
+  ],
+  "privacy": "Only existing anonymized role labels and selected non-secret fields are used. No approval proof, identity URL, provider name or credential is included."
+}

@@ -1,0 +1,25 @@
+[Unit]
+Description=Incident Pilot owned six-kind fresh-log Kafka collector
+Requires=docker.service incident-workbench.service
+After=docker.service incident-workbench.service incident-scheduler.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/incident-pilot
+Environment=PYTHONUTF8=1
+Environment=NO_PROXY=wt.ioa.pub,127.0.0.1,localhost
+# Type=simple only orders process startup. Wait for the real seven-identity
+# workbench before the collector re-attests its existing source/offset mapping.
+ExecStartPre=/opt/incident-pilot/.venv/bin/python -B /etc/incident-pilot/wait_cloud_workbench.py --project-root /opt/incident-pilot --host-config /opt/incident-pilot/runtime/private/cloud-longrun/host.json --execute
+ExecStart=/opt/incident-pilot/.venv/bin/python -B /opt/incident-pilot/evidence/cloud-deployment-20261019/prepared-collector/cloud_collector.py supervise-all --execute
+Restart=always
+RestartSec=15
+TimeoutStartSec=330
+TimeoutStopSec=65
+KillMode=process
+SendSIGKILL=no
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

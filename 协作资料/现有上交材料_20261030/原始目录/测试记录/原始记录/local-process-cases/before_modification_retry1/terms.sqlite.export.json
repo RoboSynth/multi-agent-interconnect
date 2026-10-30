@@ -1,0 +1,33 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/before_modification_retry1/terms.sqlite",
+  "immutable_read": true,
+  "tables": {
+    "coordinator_terms": {
+      "create_sql": "CREATE TABLE coordinator_terms (name TEXT PRIMARY KEY, term INTEGER NOT NULL)",
+      "rows": [
+        {
+          "name": "local-coordinator",
+          "term": 1
+        }
+      ]
+    },
+    "sqlite_sequence": {
+      "create_sql": "CREATE TABLE sqlite_sequence(name,seq)",
+      "rows": []
+    },
+    "takeover_events": {
+      "create_sql": "CREATE TABLE takeover_events (\n                    event_id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT NOT NULL,\n                    failed_partner TEXT NOT NULL, replacement TEXT, reason TEXT NOT NULL,\n                    fence TEXT, state TEXT NOT NULL, recorded_at REAL NOT NULL)",
+      "rows": []
+    },
+    "task_attempts": {
+      "create_sql": "CREATE TABLE task_attempts (\n                    attempt_id TEXT PRIMARY KEY, logical_task_id TEXT NOT NULL,\n                    group_id TEXT, session_id TEXT NOT NULL, task_id TEXT NOT NULL,\n                    partner_aic TEXT NOT NULL, command TEXT NOT NULL, state TEXT NOT NULL,\n                    coordinator_term INTEGER NOT NULL, content TEXT, created_at REAL NOT NULL,\n                    updated_at REAL NOT NULL)",
+      "rows": []
+    },
+    "task_events": {
+      "create_sql": "CREATE TABLE task_events (\n                    event_id INTEGER PRIMARY KEY AUTOINCREMENT, attempt_id TEXT NOT NULL,\n                    state TEXT NOT NULL, artifact_digest TEXT, artifact TEXT, recorded_at REAL NOT NULL)",
+      "rows": []
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

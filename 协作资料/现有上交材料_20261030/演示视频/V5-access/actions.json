@@ -1,0 +1,282 @@
+{
+  "schema": "capture-session/1",
+  "video": "video.webm",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "deviceScaleFactor": 2,
+  "videoSize": {
+    "width": 1920,
+    "height": 1080
+  },
+  "screenshotScale": "device",
+  "coordinates": "1920x1080 CSS pixels; boxes clipped to viewport",
+  "videoProbe": {
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 24.52,
+    "frameRate": "25/1"
+  },
+  "timing": {
+    "videoT0Utc": "2026-10-29T09:24:13.820Z",
+    "videoT0EpochMs": 1793265853820.5,
+    "method": "first trace screencast frameSwapWallTime minus encoded first packet PTS",
+    "creationTimeUtc": "2026-10-29T09:24:13.384Z",
+    "firstTraceFrameWallTimeMs": 1793265853820.5,
+    "firstPacketPtsSeconds": 0,
+    "creationToFirstTraceFrameMs": 436.5,
+    "traceFrameCount": 77,
+    "clockCalibration": {
+      "roundTripMs": 5,
+      "browserMinusNodeMidpointMs": 2.5,
+      "performanceMinusBrowserDateMs": 0.199951171875,
+      "note": "Same-host wall-clock comparison; transport round trip bounds this one sample, not all later clock drift."
+    },
+    "approximationIntervalEpochMs": null,
+    "nominalFrameQuantumMs": 40,
+    "limitation": "Estimated visual alignment: 25 fps quantization (~40 ms), first traced/encoded frame correspondence and browser/host clock sampling. No sub-frame accuracy is claimed.",
+    "sourceBasis": "Playwright 1.64.1 coreBundle.js: VideoRecorder passes frameSwapWallTime; FfmpegVideoRecorder emits timestamp minus creationTimeMs and writes creation_time metadata."
+  },
+  "actions": [
+    {
+      "id": 1,
+      "kind": "navigate",
+      "label": "platform_home",
+      "atSeconds": -0.3715,
+      "startSeconds": -0.3715,
+      "endSeconds": 2.0985,
+      "eventTimeSource": "host Date.now before page.goto",
+      "box": null,
+      "point": null
+    },
+    {
+      "id": 2,
+      "kind": "click",
+      "label": "open_rankings",
+      "atSeconds": 2.25310009765625,
+      "startSeconds": 2.0985,
+      "endSeconds": 2.2835,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 830.578125,
+        "y": 22.5,
+        "width": 249.921875,
+        "height": 50
+      },
+      "point": {
+        "x": 955,
+        "y": 47
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 3,
+      "kind": "click",
+      "label": "sort_caller_descending",
+      "atSeconds": 7.509300048828125,
+      "startSeconds": 7.4785,
+      "endSeconds": 7.5585,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 321.359375,
+        "y": 300.125,
+        "width": 156.90625,
+        "height": 82.5
+      },
+      "point": {
+        "x": 399,
+        "y": 341
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 4,
+      "kind": "scroll",
+      "label": "show_A01_caller",
+      "atSeconds": 8.0225,
+      "startSeconds": 8.0225,
+      "endSeconds": 8.0365,
+      "eventTimeSource": "host Date.now before scrollIntoViewIfNeeded",
+      "box": {
+        "x": 26,
+        "y": 442.75,
+        "width": 923,
+        "height": 59.125
+      },
+      "point": null
+    },
+    {
+      "id": 5,
+      "kind": "holdScreenshot",
+      "label": "caller.png",
+      "atSeconds": 11.0605,
+      "startSeconds": 8.0445,
+      "endSeconds": 11.2685,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "caller.png",
+      "requestedHoldSeconds": 3
+    },
+    {
+      "id": 6,
+      "kind": "click",
+      "label": "sort_callee_descending",
+      "atSeconds": 11.303199951171875,
+      "startSeconds": 11.2785,
+      "endSeconds": 11.3415,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 478.265625,
+        "y": 300.125,
+        "width": 156.90625,
+        "height": 82.5
+      },
+      "point": {
+        "x": 556,
+        "y": 341
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 7,
+      "kind": "scroll",
+      "label": "show_A05_callee",
+      "atSeconds": 11.7975,
+      "startSeconds": 11.7975,
+      "endSeconds": 11.8075,
+      "eventTimeSource": "host Date.now before scrollIntoViewIfNeeded",
+      "box": {
+        "x": 26,
+        "y": 915.75,
+        "width": 923,
+        "height": 59.125
+      },
+      "point": null
+    },
+    {
+      "id": 8,
+      "kind": "holdScreenshot",
+      "label": "callee.png",
+      "atSeconds": 14.8215,
+      "startSeconds": 11.8165,
+      "endSeconds": 15.0685,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "callee.png",
+      "requestedHoldSeconds": 3
+    },
+    {
+      "id": 9,
+      "kind": "click",
+      "label": "sort_callerNonInternal_descending",
+      "atSeconds": 15.107300048828124,
+      "startSeconds": 15.0765,
+      "endSeconds": 15.1475,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 635.171875,
+        "y": 300.125,
+        "width": 156.90625,
+        "height": 82.5
+      },
+      "point": {
+        "x": 713,
+        "y": 341
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 10,
+      "kind": "scroll",
+      "label": "show_A01_callerNonInternal",
+      "atSeconds": 15.6165,
+      "startSeconds": 15.6165,
+      "endSeconds": 15.6255,
+      "eventTimeSource": "host Date.now before scrollIntoViewIfNeeded",
+      "box": {
+        "x": 26,
+        "y": 973.875,
+        "width": 923,
+        "height": 59.125
+      },
+      "point": null
+    },
+    {
+      "id": 11,
+      "kind": "holdScreenshot",
+      "label": "callerNonInternal.png",
+      "atSeconds": 18.6405,
+      "startSeconds": 15.6365,
+      "endSeconds": 18.7955,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "callerNonInternal.png",
+      "requestedHoldSeconds": 3
+    },
+    {
+      "id": 12,
+      "kind": "click",
+      "label": "sort_calleeNonInternal_descending",
+      "atSeconds": 18.830900146484375,
+      "startSeconds": 18.8065,
+      "endSeconds": 18.8795,
+      "eventTimeSource": "browser performance.timeOrigin + click.timeStamp",
+      "box": {
+        "x": 792.078125,
+        "y": 300.125,
+        "width": 156.921875,
+        "height": 82.5
+      },
+      "point": {
+        "x": 870,
+        "y": 341
+      },
+      "browserClickObserved": true,
+      "browserEventTrusted": true
+    },
+    {
+      "id": 13,
+      "kind": "scroll",
+      "label": "show_A06_calleeNonInternal",
+      "atSeconds": 19.3385,
+      "startSeconds": 19.3385,
+      "endSeconds": 19.3505,
+      "eventTimeSource": "host Date.now before scrollIntoViewIfNeeded",
+      "box": {
+        "x": 26,
+        "y": 728.25,
+        "width": 923,
+        "height": 59.125
+      },
+      "point": null
+    },
+    {
+      "id": 14,
+      "kind": "holdScreenshot",
+      "label": "calleeNonInternal.png",
+      "atSeconds": 22.3745,
+      "startSeconds": 19.3685,
+      "endSeconds": 22.5395,
+      "eventTimeSource": "host Date.now immediately before screenshot",
+      "box": null,
+      "point": null,
+      "screenshot": "calleeNonInternal.png",
+      "requestedHoldSeconds": 3
+    }
+  ],
+  "captureErrors": [],
+  "extra": {
+    "category": "V5",
+    "status": "captured",
+    "ui": "four_sortable_columns",
+    "data_window": "actual_page_default_not_historical_query_window"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "capture_date": "2026-10-29",
+  "prepared_date": "2026-10-30",
+  "kind": "editorial_diagrams_and_record_excerpts",
+  "new_experiment_performed": false,
+  "platform_screenshots": false,
+  "main_case": {
+    "scenario": "F10",
+    "method": "M0",
+    "model_calls": 0
+  },
+  "cards": [
+    {
+      "name": "01_订单为什么失败",
+      "png": "图卡/01_订单为什么失败.png",
+      "svg": "图卡/01_订单为什么失败.svg",
+      "sources": [
+        "V3-f10/incident-state.json#/diagnosed_causes",
+        "V3-f10/incident-state.json#/planning_history"
+      ]
+    },
+    {
+      "name": "02_谁负责哪一步",
+      "png": "图卡/02_谁负责哪一步.png",
+      "svg": "图卡/02_谁负责哪一步.svg",
+      "sources": [
+        "V3-f10/incident-state.json#/tasks",
+        "V2-discovery/describe-A02.json",
+        "V2-discovery/describe-A03.json",
+        "V2-discovery/describe-A05.json",
+        "V2-discovery/describe-A06.json"
+      ]
+    },
+    {
+      "name": "03_三步恢复怎么衔接",
+      "png": "图卡/03_三步恢复怎么衔接.png",
+      "svg": "图卡/03_三步恢复怎么衔接.svg",
+      "sources": [
+        "V3-f10/incident-state.json#/tasks",
+        "V3-f10/incident-state.json#/planning_history",
+        "V3-f10/approvals.json"
+      ]
+    },
+    {
+      "name": "04_用订单确认恢复",
+      "png": "图卡/04_用订单确认恢复.png",
+      "svg": "图卡/04_用订单确认恢复.svg",
+      "sources": [
+        "V3-f10/incident-state.json#/result/order_observation"
+      ]
+    },
+    {
+      "name": "05_为什么不能直接重试",
+      "png": "图卡/05_为什么不能直接重试.png",
+      "svg": "图卡/05_为什么不能直接重试.svg",
+      "sources": [
+        "V4-takeover/primary-trace.jsonl",
+        "V4-takeover/result.json#/journal_resolution"
+      ]
+    },
+    {
+      "name": "06_备用怎样接着完成",
+      "png": "图卡/06_备用怎样接着完成.png",
+      "svg": "图卡/06_备用怎样接着完成.svg",
+      "sources": [
+        "V4-takeover/backup-trace.jsonl",
+        "V4-takeover/result.json",
+        "V4-takeover/takeover-timeline.json"
+      ]
+    },
+    {
+      "name": "07_平台怎样支撑协作",
+      "png": "图卡/07_平台怎样支撑协作.png",
+      "svg": "图卡/07_平台怎样支撑协作.svg",
+      "sources": [
+        "V1-registry/registry-observation.json",
+        "V2-discovery/capture.json",
+        "V3-f10/access/pairing-summary.json",
+        "V3-f10/incident-state.json#/result/order_observation"
+      ]
+    },
+    {
+      "name": "08_从订单异常到业务恢复",
+      "png": "图卡/08_从订单异常到业务恢复.png",
+      "svg": "图卡/08_从订单异常到业务恢复.svg",
+      "sources": [
+        "V3-f10/order-samples.json#/samples",
+        "V3-f10/incident-state.json#/result/order_observation"
+      ]
+    }
+  ]
+}

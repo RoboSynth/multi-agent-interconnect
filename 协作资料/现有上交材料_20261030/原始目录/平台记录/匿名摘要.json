@@ -1,0 +1,356 @@
+{
+  "observed_on": "2026-10-29T16:19:41.153435+08:00",
+  "source_policy": "All HTTP bodies in this batch were requested now. Existing local configuration is used only to select seven expected identifiers.",
+  "rankings": {
+    "observed_at_utc": "2026-10-29T08:19:44.704616+00:00",
+    "http_status": "HTTP/1.1 200 OK",
+    "requested_start": "2026-09-24T00:00:00+08:00",
+    "requested_end": "2026-10-29T17:00:00+08:00",
+    "cache": {
+      "x-ranking-cache": "MISS",
+      "x-ranking-cached-at": "2026-10-29T08:19:45.303275+00:00",
+      "x-ranking-age": "0",
+      "x-ranking-fresh-for": "59",
+      "x-ranking-stale-for": "599"
+    },
+    "timeRange": {
+      "startAt": "2026-09-24T00:00:00+08:00",
+      "endAt": "2026-10-29T17:00:00+08:00"
+    },
+    "boards": {
+      "caller": {
+        "returned_entries": 200,
+        "team_entries": [
+          {
+            "role": "A01",
+            "rank": 2,
+            "count": 31607,
+            "accessCount": 5514,
+            "messageCount": 26093
+          }
+        ]
+      },
+      "callee": {
+        "returned_entries": 200,
+        "team_entries": [
+          {
+            "role": "A05",
+            "rank": 10,
+            "count": 7886,
+            "accessCount": 1660,
+            "messageCount": 6226
+          },
+          {
+            "role": "A03",
+            "rank": 11,
+            "count": 7886,
+            "accessCount": 1653,
+            "messageCount": 6233
+          },
+          {
+            "role": "A02",
+            "rank": 13,
+            "count": 7079,
+            "accessCount": 837,
+            "messageCount": 6242
+          },
+          {
+            "role": "A06",
+            "rank": 14,
+            "count": 7020,
+            "accessCount": 801,
+            "messageCount": 6219
+          },
+          {
+            "role": "A07",
+            "rank": 34,
+            "count": 1181,
+            "accessCount": 8,
+            "messageCount": 1173
+          }
+        ]
+      },
+      "callerNonInternal": {
+        "returned_entries": 134,
+        "team_entries": [
+          {
+            "role": "A01",
+            "rank": 10,
+            "count": 555,
+            "accessCount": 555,
+            "messageCount": 0
+          }
+        ]
+      },
+      "calleeNonInternal": {
+        "returned_entries": 160,
+        "team_entries": []
+      }
+    },
+    "source_sha256": "7cf104e00b0a25ab7c1808e74ebe161513f726ae145091c0e7ef4a52cb9974cd"
+  },
+  "registration_acs": [
+    {
+      "role": "A01",
+      "retrieved_at_utc": "2026-10-29T08:19:42.467411+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域故障协调智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "incident.coordinate",
+          "name": "凭据不出域的跨资源域事故协调"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "5c0ee6a4aca36d8e430e59c68130791f361c480f5ac8844ae8969de0e5a9b24c"
+    },
+    {
+      "role": "A02",
+      "retrieved_at_utc": "2026-10-29T08:19:42.210788+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域订单应用智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "incident.application",
+          "name": "PostgreSQL 订单应用诊断与受控恢复"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "3f491e168f87d9dd65605db74a86667092799818ee61d266da35f9a0a0fda597"
+    },
+    {
+      "role": "A06",
+      "retrieved_at_utc": "2026-10-29T08:19:46.556086+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域业务验证智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "incident.verification",
+          "name": "订单请求解析与业务恢复验证"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "122ab84cee278e6a11feff7e2fc4621b0e0d1df5a316e485c40ae0efc2a4b234"
+    },
+    {
+      "role": "A03",
+      "retrieved_at_utc": "2026-10-29T08:19:44.538328+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域数据库协同智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "db.observe",
+          "name": "db observe"
+        },
+        {
+          "id": "db.act",
+          "name": "db act"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "7b06403884ee13d9092da7d9557e9ee19712b6a7c121af2e4cbb950f0b4c9184"
+    },
+    {
+      "role": "A04",
+      "retrieved_at_utc": "2026-10-29T08:19:43.599002+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域数据库备智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "db.observe",
+          "name": "db observe"
+        },
+        {
+          "id": "db.act",
+          "name": "db act"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "84ba1b0f88a1952d580e1a2fac322ecd69fe30cc29fd2c91ac5b2ccd7fd4aaea"
+    },
+    {
+      "role": "A05",
+      "retrieved_at_utc": "2026-10-29T08:19:44.887733+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域入口运维智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "ops.observe",
+          "name": "ops observe"
+        },
+        {
+          "id": "ops.act",
+          "name": "ops act"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "abff18b19af7d93a73a4b93cd2597dbb11a30b122ac32d001179abc42e9575c6"
+    },
+    {
+      "role": "A07",
+      "retrieved_at_utc": "2026-10-29T08:19:45.739797+00:00",
+      "http_status": "HTTP/1.1 200 OK",
+      "aic_matches_expected": true,
+      "name": "跨域接入体检智能体",
+      "version": "1.0.0",
+      "skills": [
+        {
+          "id": "aip.onboarding.check",
+          "name": "AIP 接入只读体检"
+        }
+      ],
+      "endpoint_transports": [
+        "AMQP"
+      ],
+      "source_sha256": "2fc2a1867adca131255efdfb74f6777052b628fecfb032d253005ae8264e5418"
+    }
+  ],
+  "discovery": {
+    "observed_at_utc": "2026-10-29T08:20:45.544279+00:00",
+    "http_status": "HTTP/1.1 200 OK",
+    "requested_agents": 7,
+    "discovered_agents": 7,
+    "active_agents": 7,
+    "online_agents": 7,
+    "agents": [
+      {
+        "role": "A01",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:27.870Z",
+        "skills": [
+          {
+            "id": "incident.coordinate",
+            "name": "凭据不出域的跨资源域事故协调"
+          }
+        ]
+      },
+      {
+        "role": "A02",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:34.870Z",
+        "skills": [
+          {
+            "id": "incident.application",
+            "name": "PostgreSQL 订单应用诊断与受控恢复"
+          }
+        ]
+      },
+      {
+        "role": "A06",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:18.870Z",
+        "skills": [
+          {
+            "id": "incident.verification",
+            "name": "订单请求解析与业务恢复验证"
+          }
+        ]
+      },
+      {
+        "role": "A03",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:21.870Z",
+        "skills": [
+          {
+            "id": "db.observe",
+            "name": "db observe"
+          },
+          {
+            "id": "db.act",
+            "name": "db act"
+          }
+        ]
+      },
+      {
+        "role": "A04",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:37.870Z",
+        "skills": [
+          {
+            "id": "db.observe",
+            "name": "db observe"
+          },
+          {
+            "id": "db.act",
+            "name": "db act"
+          }
+        ]
+      },
+      {
+        "role": "A05",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:37.870Z",
+        "skills": [
+          {
+            "id": "ops.observe",
+            "name": "ops observe"
+          },
+          {
+            "id": "ops.act",
+            "name": "ops act"
+          }
+        ]
+      },
+      {
+        "role": "A07",
+        "discovered": true,
+        "active": true,
+        "alive": true,
+        "last_seen_at_utc": "2026-10-29T08:20:19.870Z",
+        "skills": [
+          {
+            "id": "aip.onboarding.check",
+            "name": "AIP 接入只读体检"
+          }
+        ]
+      }
+    ],
+    "source_sha256": "cd84b5414d2297abef35ac2771a56ae92df724e7ef4aebabb669093f6c9a007e"
+  },
+  "limits": [
+    "Public registry retrieval proves published ACS records, not an authenticated approval-page screenshot.",
+    "Official ranking access/message totals are not successful business-task counts.",
+    "No returned external-callee entry means not present in the returned ranking; it does not establish zero calls.",
+    "Cloud runtime and current task logs require SSH; TCP port 22 initially timed out."
+  ],
+  "anonymization": {
+    "method": "Whitelist projection and role aliases. No complete AIC, provider, server address, username, key path or registration identity is included.",
+    "identity_mapping": "Retained only in the internal collection folder."
+  }
+}

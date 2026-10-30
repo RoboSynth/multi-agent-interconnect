@@ -1,0 +1,643 @@
+{
+  "validation": {
+    "checked_at_utc": "2026-10-29T09:31:03.320272+00:00",
+    "endpoint": "https://wt.ioa.pub/api/rankings/top",
+    "probe_endpoints": [
+      "2026-10-20T07:00:00+08:00",
+      "2026-10-29T17:00:00+08:00"
+    ],
+    "both_ranges_match": true,
+    "both_requests_succeeded": true,
+    "results_differ": true,
+    "interpretation": "Different historical endAt values return the requested ranges and different cumulative results; this supports querying retrospective hourly windows.",
+    "passed": true
+  },
+  "probes": [
+    {
+      "request_url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-09-24T00%3A00%3A00%2B08%3A00&endAt=2026-10-20T07%3A00%3A00%2B08%3A00&n=200",
+      "requested_start_at": "2026-09-24T00:00:00+08:00",
+      "requested_end_at": "2026-10-20T07:00:00+08:00",
+      "queried_at_utc": "2026-10-29T09:09:14.119994+00:00",
+      "received_at_utc": "2026-10-29T09:09:17.330617+00:00",
+      "curl_exit_code": 0,
+      "http_status": "HTTP/1.1 200 OK",
+      "response_headers": {
+        "server": "nginx/1.24.0 (Ubuntu)",
+        "date": "Thu, 29 Oct 2026 09:09:17 GMT",
+        "content-type": "application/json",
+        "content-length": "61048",
+        "connection": "keep-alive",
+        "cache-control": "no-cache",
+        "x-ranking-cache": "MISS",
+        "x-ranking-cached-at": "2026-10-29T09:09:17.429542+00:00",
+        "x-ranking-age": "0",
+        "x-ranking-fresh-for": "59",
+        "x-ranking-stale-for": "599"
+      },
+      "error": null,
+      "original_body_sha256": "719518eb8850b7f80497320d5fff8577e40fe3cd6939179c76340f232007c4b8",
+      "source_mode": "queried_historical_windows",
+      "boards": {
+        "caller": {
+          "returned_entries": 153,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-6DF70D21079E",
+            "rank": 1,
+            "count": 6130,
+            "accessCount": 6130,
+            "messageCount": 0
+          }
+        },
+        "callee": {
+          "returned_entries": 200,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-B27843DDC471",
+            "rank": 1,
+            "count": 6047,
+            "accessCount": 6047,
+            "messageCount": 0
+          }
+        },
+        "callerNonInternal": {
+          "returned_entries": 114,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-6DF70D21079E",
+            "rank": 1,
+            "count": 6130,
+            "accessCount": 6130,
+            "messageCount": 0
+          }
+        },
+        "calleeNonInternal": {
+          "returned_entries": 132,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-B27843DDC471",
+            "rank": 1,
+            "count": 6047,
+            "accessCount": 6047,
+            "messageCount": 0
+          }
+        }
+      },
+      "returned_time_range": {
+        "startAt": "2026-09-24T00:00:00+08:00",
+        "endAt": "2026-10-20T07:00:00+08:00"
+      },
+      "range_matches_request": true,
+      "meta": {
+        "currentHourOpen": false,
+        "accessComputedAt": "2026-09-24T04:13:47.482000+00:00",
+        "messageComputedAt": "2026-09-24T03:48:24.342000+00:00",
+        "accessMissingHours": [],
+        "messageMissingHours": []
+      },
+      "success": true,
+      "response_error": null
+    },
+    {
+      "request_url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-09-24T00%3A00%3A00%2B08%3A00&endAt=2026-10-29T17%3A00%3A00%2B08%3A00&n=200",
+      "requested_start_at": "2026-09-24T00:00:00+08:00",
+      "requested_end_at": "2026-10-29T17:00:00+08:00",
+      "queried_at_utc": "2026-10-29T09:09:18.142353+00:00",
+      "received_at_utc": "2026-10-29T09:09:21.892580+00:00",
+      "curl_exit_code": 0,
+      "http_status": "HTTP/1.1 200 OK",
+      "response_headers": {
+        "server": "nginx/1.24.0 (Ubuntu)",
+        "date": "Thu, 29 Oct 2026 09:09:20 GMT",
+        "content-type": "application/json",
+        "content-length": "71164",
+        "connection": "keep-alive",
+        "cache-control": "no-cache",
+        "x-ranking-cache": "MISS",
+        "x-ranking-cached-at": "2026-10-29T09:09:20.505949+00:00",
+        "x-ranking-age": "0",
+        "x-ranking-fresh-for": "59",
+        "x-ranking-stale-for": "599"
+      },
+      "error": null,
+      "original_body_sha256": "5d93e01d1f0c7868e0520052772c60833b0902f931de9c44dc1bf0e7a6727166",
+      "source_mode": "queried_historical_windows",
+      "boards": {
+        "caller": {
+          "returned_entries": 200,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "returned",
+              "rank": 2,
+              "count": 31759,
+              "accessCount": 5546,
+              "messageCount": 26213
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-8D81F3E4BA38",
+            "rank": 1,
+            "count": 38316,
+            "accessCount": 38316,
+            "messageCount": 0
+          }
+        },
+        "callee": {
+          "returned_entries": 200,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "returned",
+              "rank": 13,
+              "count": 7107,
+              "accessCount": 841,
+              "messageCount": 6266
+            },
+            {
+              "agent": "A03",
+              "presence": "returned",
+              "rank": 11,
+              "count": 7918,
+              "accessCount": 1661,
+              "messageCount": 6257
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "returned",
+              "rank": 10,
+              "count": 7918,
+              "accessCount": 1668,
+              "messageCount": 6250
+            },
+            {
+              "agent": "A06",
+              "presence": "returned",
+              "rank": 14,
+              "count": 7048,
+              "accessCount": 805,
+              "messageCount": 6243
+            },
+            {
+              "agent": "A07",
+              "presence": "returned",
+              "rank": 34,
+              "count": 1205,
+              "accessCount": 8,
+              "messageCount": 1197
+            }
+          ],
+          "leader": {
+            "agent": "EXT-B27843DDC471",
+            "rank": 1,
+            "count": 48292,
+            "accessCount": 48291,
+            "messageCount": 1
+          }
+        },
+        "callerNonInternal": {
+          "returned_entries": 136,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "returned",
+              "rank": 10,
+              "count": 563,
+              "accessCount": 563,
+              "messageCount": 0
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-8D81F3E4BA38",
+            "rank": 1,
+            "count": 38316,
+            "accessCount": 38316,
+            "messageCount": 0
+          }
+        },
+        "calleeNonInternal": {
+          "returned_entries": 160,
+          "team": [
+            {
+              "agent": "A01",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A02",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A03",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A04",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A05",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A06",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            },
+            {
+              "agent": "A07",
+              "presence": "not_in_returned_top_n",
+              "rank": null,
+              "count": null,
+              "accessCount": null,
+              "messageCount": null
+            }
+          ],
+          "leader": {
+            "agent": "EXT-B27843DDC471",
+            "rank": 1,
+            "count": 27257,
+            "accessCount": 27256,
+            "messageCount": 1
+          }
+        }
+      },
+      "returned_time_range": {
+        "startAt": "2026-09-24T00:00:00+08:00",
+        "endAt": "2026-10-29T17:00:00+08:00"
+      },
+      "range_matches_request": true,
+      "meta": {
+        "currentHourOpen": false,
+        "accessComputedAt": "2026-09-24T04:13:47.482000+00:00",
+        "messageComputedAt": "2026-09-24T03:48:24.342000+00:00",
+        "accessMissingHours": [],
+        "messageMissingHours": []
+      },
+      "success": true,
+      "response_error": null
+    }
+  ]
+}

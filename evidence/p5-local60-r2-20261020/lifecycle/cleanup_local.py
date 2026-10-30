@@ -60,7 +60,7 @@ def main():
     except Exception as error:
         report['stages']['supervisor']={'status':'FAILED','error_class':type(error).__name__,'error':str(error)}
     try:
-        command=['C:/Users/16080/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe',
+        command=['C:/Users/shared-user/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe',
             '-NoProfile','-File',str(ROOT/'deploy/native.ps1'),'-Action','stop','-RuntimeFile',str(ROOT/'deploy/native-runtime.json')]
         with (BATCH/'native-stop-output.txt').open('wb') as stream:
             process=subprocess.run(command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,timeout=120)

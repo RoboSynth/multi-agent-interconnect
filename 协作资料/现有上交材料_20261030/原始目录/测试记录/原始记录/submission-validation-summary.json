@@ -1,0 +1,211 @@
+{
+  "evidence_id": "CV-20261029",
+  "created_utc": "2026-10-29T08:23:18.008361+00:00",
+  "code_head": "c88b203ff417dca0b028784a569e741d62db2c02",
+  "working_tree_dirty": true,
+  "source_files_hashed": 155,
+  "source_changed_during_original_run": [],
+  "fresh_collection": true,
+  "reuses_previous_measurements": false,
+  "original_suite": {
+    "started_utc": "2026-10-29T08:18:35.641804+00:00",
+    "finished_utc": "2026-10-29T08:19:25.400488+00:00",
+    "totals": {
+      "tests_run": 146,
+      "passed": 143,
+      "failures": 0,
+      "errors": 3,
+      "skipped": 0
+    },
+    "groups": {
+      "protocol_and_discovery": {
+        "tests_run": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 24,
+        "duration_seconds": 6.156
+      },
+      "takeover_and_identity": {
+        "tests_run": 36,
+        "failures": 0,
+        "errors": 3,
+        "skipped": 0,
+        "passed": 33,
+        "duration_seconds": 29.032
+      },
+      "tool_policy_and_audit": {
+        "tests_run": 37,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 37,
+        "duration_seconds": 9.671
+      },
+      "business_receipt_resolution": {
+        "tests_run": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 18,
+        "duration_seconds": 1.454
+      },
+      "workbench_state_and_evidence": {
+        "tests_run": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 14,
+        "duration_seconds": 2.312
+      },
+      "onboarding_and_rotation": {
+        "tests_run": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 17,
+        "duration_seconds": 0.844
+      }
+    },
+    "source": "validation-results.json",
+    "log": "validation.log",
+    "level": "离线单元与组件验证 含隔离本地进程测试"
+  },
+  "fixture_diagnostic": {
+    "passed": 3,
+    "count": 3,
+    "errors": 0,
+    "source": "fixture-diagnostic.json",
+    "production_code_modified": false,
+    "explanation": "原有恢复回执解析测试没有提供新增健康通道检查所需的会话字段；仅在补充诊断脚本中构造健康通道后3项通过。原始143/146结果不改写。",
+    "harness_note": "补充诊断首次调用因嵌套事件循环失败，已保留fixture-diagnostic-harness-error.log；修正诊断执行入口后独立运行。"
+  },
+  "fresh_process_cases": {
+    "execution_count": 4,
+    "passed": 3,
+    "failed": 1,
+    "distinct_checkpoints_with_success": 3,
+    "level": "真实本地AIP stdio和MCP子进程 隔离JSON文件资源",
+    "cases": [
+      {
+        "case": "after_observation",
+        "label": "观察结果返回后主执行体退出",
+        "passed": true,
+        "started_utc": "2026-10-29T08:20:29.972914+00:00",
+        "evidence_file": "local-process-cases/after_observation/case-result.json",
+        "checks": {
+          "observation_succeeded": true,
+          "action_succeeded": true,
+          "resource_changed_once": true,
+          "modification_event_once": true,
+          "takeover_completed_once": true,
+          "correct_backup": true,
+          "stale_fence_rejected": true,
+          "replay_did_not_modify_again": true,
+          "no_in_flight_tasks": true
+        },
+        "tool_modifications": 1,
+        "operation_state": "applied",
+        "stale_fence_result": "rejected_stale_fence",
+        "fixture_resource_after": {
+          "read_only": false,
+          "modifying_calls": 1
+        },
+        "takeover_seconds": 0.562,
+        "executor": "备用执行体",
+        "failure": null,
+        "duration_seconds": 4.625
+      },
+      {
+        "case": "before_modification",
+        "label": "实际修改前主执行体退出",
+        "passed": false,
+        "started_utc": "2026-10-29T08:20:34.692301+00:00",
+        "evidence_file": "local-process-cases/before_modification/case-result.json",
+        "checks": {},
+        "tool_modifications": null,
+        "operation_state": null,
+        "stale_fence_result": null,
+        "fixture_resource_after": null,
+        "takeover_seconds": null,
+        "executor": null,
+        "failure": {
+          "class": "RuntimeError",
+          "message": "domain worker failed: RuntimeError"
+        },
+        "duration_seconds": 3.437
+      },
+      {
+        "case": "after_applied",
+        "label": "修改已完成后主执行体退出",
+        "passed": true,
+        "started_utc": "2026-10-29T08:20:38.215731+00:00",
+        "evidence_file": "local-process-cases/after_applied/case-result.json",
+        "checks": {
+          "observation_succeeded": true,
+          "action_succeeded": true,
+          "resource_changed_once": true,
+          "modification_event_once": true,
+          "takeover_completed_once": true,
+          "correct_backup": true,
+          "stale_fence_rejected": true,
+          "replay_did_not_modify_again": true,
+          "no_in_flight_tasks": true,
+          "applied_operation_not_reexecuted": true
+        },
+        "tool_modifications": 1,
+        "operation_state": "skipped_already_applied",
+        "stale_fence_result": "rejected_stale_fence",
+        "fixture_resource_after": {
+          "read_only": false,
+          "modifying_calls": 1
+        },
+        "takeover_seconds": 0.5,
+        "executor": "备用执行体",
+        "failure": null,
+        "duration_seconds": 4.469
+      },
+      {
+        "case": "before_modification_retry1",
+        "label": "实际修改前主执行体退出 独立重试",
+        "passed": true,
+        "started_utc": "2026-10-29T08:21:44.840731+00:00",
+        "evidence_file": "local-process-cases/before_modification_retry1/case-result.json",
+        "checks": {
+          "observation_succeeded": true,
+          "action_succeeded": true,
+          "resource_changed_once": true,
+          "modification_event_once": true,
+          "takeover_completed_once": true,
+          "correct_backup": true,
+          "stale_fence_rejected": true,
+          "replay_did_not_modify_again": true,
+          "no_in_flight_tasks": true
+        },
+        "tool_modifications": 1,
+        "operation_state": "applied",
+        "stale_fence_result": "rejected_stale_fence",
+        "fixture_resource_after": {
+          "read_only": false,
+          "modifying_calls": 1
+        },
+        "takeover_seconds": 0.532,
+        "executor": "备用执行体",
+        "failure": null,
+        "duration_seconds": 4.765
+      }
+    ],
+    "conclusion": "3种中断点均取得一次成功验证；成功案例中修改计数为1，旧fence重放被拒绝。修改前中断场景首次因工作进程启动异常失败，原件保留，独立重试成功。",
+    "limitation": "此结果不能证明真实PostgreSQL故障恢复、梧桐网络传输、生产平台安全或高并发可靠性；单次耗时仅供追溯，不作为性能优势结论。"
+  },
+  "privacy": {
+    "summary_has_absolute_paths": false,
+    "summary_has_real_credentials": false,
+    "role_labels": [
+      "协调体",
+      "主执行体",
+      "备用执行体"
+    ],
+    "raw_files": "仅内部核验，不直接并入公开材料；配置与日志可能含本机路径及测试用审批值。"
+  }
+}

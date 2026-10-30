@@ -1,0 +1,36 @@
+{
+  "type": "filtered",
+  "limit": 50,
+  "filter": {
+    "logic": "and",
+    "conditions": [
+      {
+        "field": "aic",
+        "op": "in",
+        "value": [
+          "A01",
+          "A02",
+          "A06",
+          "A03",
+          "A04",
+          "A05",
+          "A07"
+        ]
+      }
+    ]
+  },
+  "extFilter": {
+    "logic": "and",
+    "conditions": [
+      {
+        "field": "alive",
+        "op": "in",
+        "value": [
+          "online",
+          "offline",
+          "unknown"
+        ]
+      }
+    ]
+  }
+}

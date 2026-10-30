@@ -1,0 +1,21 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/before_modification/transport/amp/amp_access_backup.outbox.sqlite3",
+  "immutable_read": true,
+  "tables": {
+    "attempts": {
+      "create_sql": "CREATE TABLE attempts (event_key TEXT PRIMARY KEY, log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)",
+      "rows": []
+    },
+    "owner": {
+      "create_sql": "CREATE TABLE owner (aic TEXT, log_path TEXT)",
+      "rows": [
+        {
+          "aic": "test-database-backup",
+          "log_path": "${RECORDS}\\local-process-cases\\before_modification\\transport\\amp\\amp_access_backup.jsonl"
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

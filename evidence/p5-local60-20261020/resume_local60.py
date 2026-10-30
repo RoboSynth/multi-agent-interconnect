@@ -75,7 +75,7 @@ def plan():
 async def restore_and_check():
     restore=await evaluator.inject('F06','restore',ROOT/'deploy/native-runtime.json',BATCH/'continuation-private/injections.jsonl',backend='native')
     save(BATCH/'continuation-restore-F06.json',restore)
-    command=['C:/Users/16080/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe',
+    command=['C:/Users/shared-user/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe',
         '-NoProfile','-File',str(ROOT/'deploy/native.ps1'),'-Action','start','-RuntimeFile',str(ROOT/'deploy/native-runtime.json')]
     with (BATCH/'continuation-native-start.txt').open('wb') as stream:
         process=await asyncio.create_subprocess_exec(*command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT)

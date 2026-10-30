@@ -1,0 +1,19 @@
+2026-10-26 叮当外部调用实测
+
+结论：未跑通。本次外部成功调用数为 0。
+
+12:37 在用户已登录的 Edge 叮当中发起服务发现；发现并推荐了跨域接入体检智能体。
+12:38:24 选择这一项服务并执行。
+12:38:27.072896 云端接收端记录：PeerAicMissingError: AMQP user_id is required for group identity binding。
+随后叮当返回失败终态：邀请进入 Inbox，但未收到入群确认。未观察到 taskId 或 Product。
+
+现有服务能被发现，邀请也能到达。当前阻塞发生在邀请身份绑定阶段，早于体检业务，不是旧 ACS 说明造成的。这复现了 10 月 20 日的问题。需发布端通过平台支持的方式携带经过 Broker 认证的 AMQP user_id；也可由使用正确 SDK 身份绑定的队外调用方直接接入。
+
+文件：
+attempt.json：结果摘要。
+ui-attempt.json：执行中界面文本。
+ui-final.json：最终失败和详情界面文本。
+dingdang-final.png：Edge 失败详情截图。
+cloud-receipt.json：同刻云端接收日志摘要。
+
+当前证据按目标与时间关联，没有任务级配对。现有 AIC、公开 ACS 和云端运行配置均未改动。

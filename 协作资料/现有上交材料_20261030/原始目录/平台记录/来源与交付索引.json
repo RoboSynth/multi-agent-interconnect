@@ -1,0 +1,410 @@
+{
+  "created_at_utc": "2026-10-29T08:45:41.469928+00:00",
+  "purpose": "本轮真实HTTP响应的脱敏副本；保留原结构、统计、时间和错误。仅供本地协作。",
+  "role_aliases": {
+    "A01": "协调",
+    "A02": "应用",
+    "A03": "数据库主",
+    "A04": "数据库备",
+    "A05": "运维",
+    "A06": "业务验证",
+    "A07": "接入体检"
+  },
+  "external_alias_rule": "其他身份使用EXT-加原身份SHA256前12位；所有文件一致。不附原身份反查表。",
+  "source_paths": "source_file相对于本目录，指向本机04内部原件；分享时不携带这些原件。",
+  "hash_usage": "source_sha256校验内部原件，delivery_sha256校验此目录脱敏副本；两者通常不同。",
+  "redactions": [
+    "完整智能体身份",
+    "provider个人名称",
+    "真实IP地址",
+    "个人用户路径"
+  ],
+  "preserved": [
+    "JSON层级及条目顺序",
+    "所有数值与真假值",
+    "HTTP状态和时间",
+    "平台公共域名",
+    "技能与传输声明",
+    "ADP首次301错误"
+  ],
+  "files": [
+    {
+      "file": "ACS_A01.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-coordinator.json",
+      "source_sha256": "5c0ee6a4aca36d8e430e59c68130791f361c480f5ac8844ae8969de0e5a9b24c",
+      "delivery_sha256": "76042bbc4ac9fc90821ca3a8b2308eca7d16b87b812991547ed50f4e74064d45",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:41.155234+00:00",
+        "finished_at_utc": "2026-10-29T08:19:42.467411+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A01",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:43 GMT",
+          "content-type": "application/json",
+          "content-length": "1381",
+          "connection": "keep-alive",
+          "x-request-id": "16622698-55bd-4a0b-848f-a3a4227afecb",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A01.json",
+        "source_body_sha256": "5c0ee6a4aca36d8e430e59c68130791f361c480f5ac8844ae8969de0e5a9b24c",
+        "delivery_body_sha256": "76042bbc4ac9fc90821ca3a8b2308eca7d16b87b812991547ed50f4e74064d45"
+      }
+    },
+    {
+      "file": "ACS_A01_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-coordinator.headers.txt",
+      "source_sha256": "575d89f4dd3594d93cffec42a220755f68ce58c265e6c301ce23e3237507f0d9",
+      "delivery_sha256": "3bde6a70d63b7c856e749f0960d8f480cf8c66334f567a4039ccffe3fb482d74"
+    },
+    {
+      "file": "ACS_A02.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-application.json",
+      "source_sha256": "3f491e168f87d9dd65605db74a86667092799818ee61d266da35f9a0a0fda597",
+      "delivery_sha256": "6296d3ccc9e9de00d58900b1235ef6347ddfaa71ee226d120c0ceb5da58df576",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:41.155234+00:00",
+        "finished_at_utc": "2026-10-29T08:19:42.210788+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A02",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:43 GMT",
+          "content-type": "application/json",
+          "content-length": "1395",
+          "connection": "keep-alive",
+          "x-request-id": "19d7e632-6fbe-432e-a6df-d6e282c40827",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A02.json",
+        "source_body_sha256": "3f491e168f87d9dd65605db74a86667092799818ee61d266da35f9a0a0fda597",
+        "delivery_body_sha256": "6296d3ccc9e9de00d58900b1235ef6347ddfaa71ee226d120c0ceb5da58df576"
+      }
+    },
+    {
+      "file": "ACS_A02_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-application.headers.txt",
+      "source_sha256": "5ca92656a7d2e2552a802c18d56f38ea36e3c82cdb40ea87c6b0dba8e8bd0d28",
+      "delivery_sha256": "87cdb244d6310e76bad6f5661c1f27d9b7d2c00f4b457e11bc57bb96929c935d"
+    },
+    {
+      "file": "ACS_A03.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-database.json",
+      "source_sha256": "7b06403884ee13d9092da7d9557e9ee19712b6a7c121af2e4cbb950f0b4c9184",
+      "delivery_sha256": "114ebfbb9480afd8d3000e2cfe81f64ae6db3f0b9f9a621c12ab1ac9402ea4b1",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:42.215788+00:00",
+        "finished_at_utc": "2026-10-29T08:19:44.538328+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A03",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:44 GMT",
+          "content-type": "application/json",
+          "content-length": "2068",
+          "connection": "keep-alive",
+          "x-request-id": "98e28cc5-1deb-4eb1-bda2-5ee60a3ee155",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A03.json",
+        "source_body_sha256": "7b06403884ee13d9092da7d9557e9ee19712b6a7c121af2e4cbb950f0b4c9184",
+        "delivery_body_sha256": "114ebfbb9480afd8d3000e2cfe81f64ae6db3f0b9f9a621c12ab1ac9402ea4b1"
+      }
+    },
+    {
+      "file": "ACS_A03_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-database.headers.txt",
+      "source_sha256": "a717967b68e4daa10344ca08fbc182428cfc347351c64b48d91dbec059c3519f",
+      "delivery_sha256": "aaf792575438246d2c5b09067253baf39067332b076b3fbd520fb76b1decc5c7"
+    },
+    {
+      "file": "ACS_A04.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-database-backup.json",
+      "source_sha256": "84ba1b0f88a1952d580e1a2fac322ecd69fe30cc29fd2c91ac5b2ccd7fd4aaea",
+      "delivery_sha256": "c7b55b0f8a245cd235534266baf4f79824c315c62ffcf47ffc44ae9e099dc430",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:42.468411+00:00",
+        "finished_at_utc": "2026-10-29T08:19:43.599002+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A04",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:44 GMT",
+          "content-type": "application/json",
+          "content-length": "2065",
+          "connection": "keep-alive",
+          "x-request-id": "ec4ef493-d102-4525-bdb2-ac0bdbba0745",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A04.json",
+        "source_body_sha256": "84ba1b0f88a1952d580e1a2fac322ecd69fe30cc29fd2c91ac5b2ccd7fd4aaea",
+        "delivery_body_sha256": "c7b55b0f8a245cd235534266baf4f79824c315c62ffcf47ffc44ae9e099dc430"
+      }
+    },
+    {
+      "file": "ACS_A04_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-database-backup.headers.txt",
+      "source_sha256": "7d51119b609228538e78873f2e8f245afdbdd16bfcbe985ddd9977f7edea54a1",
+      "delivery_sha256": "ad2e3b649c95fc58b313ec857b3eb5763eb41a35fae885d2052ec4bf128951e6"
+    },
+    {
+      "file": "ACS_A05.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-ops.json",
+      "source_sha256": "abff18b19af7d93a73a4b93cd2597dbb11a30b122ac32d001179abc42e9575c6",
+      "delivery_sha256": "320cdcc396a17e6f3dd4beea4d1ddf66e92c52a5863da5b6f9b2d3000fdaab63",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:43.606515+00:00",
+        "finished_at_utc": "2026-10-29T08:19:44.887733+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A05",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:45 GMT",
+          "content-type": "application/json",
+          "content-length": "2264",
+          "connection": "keep-alive",
+          "x-request-id": "c0394c85-4a15-4123-91a8-58da67d53078",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A05.json",
+        "source_body_sha256": "abff18b19af7d93a73a4b93cd2597dbb11a30b122ac32d001179abc42e9575c6",
+        "delivery_body_sha256": "320cdcc396a17e6f3dd4beea4d1ddf66e92c52a5863da5b6f9b2d3000fdaab63"
+      }
+    },
+    {
+      "file": "ACS_A05_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-ops.headers.txt",
+      "source_sha256": "f33f12409d33f14eb9008efd199d675b9a9ffcd8e1fdda4859190ca11f06fc8b",
+      "delivery_sha256": "d8a3351dd41537a8392347073a6f2c2220580b1efef938c9ecc4a3273f4f7b08"
+    },
+    {
+      "file": "ACS_A06.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-verification.json",
+      "source_sha256": "122ab84cee278e6a11feff7e2fc4621b0e0d1df5a316e485c40ae0efc2a4b234",
+      "delivery_sha256": "08ca5e97682b79174aacca4ba2918b966f4428d8e75f040cfb763d4db7d743e6",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:42.210788+00:00",
+        "finished_at_utc": "2026-10-29T08:19:46.556086+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A06",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:47 GMT",
+          "content-type": "application/json",
+          "content-length": "1395",
+          "connection": "keep-alive",
+          "x-request-id": "6ebb0415-67a6-4d83-83b1-db7c82fb6402",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A06.json",
+        "source_body_sha256": "122ab84cee278e6a11feff7e2fc4621b0e0d1df5a316e485c40ae0efc2a4b234",
+        "delivery_body_sha256": "08ca5e97682b79174aacca4ba2918b966f4428d8e75f040cfb763d4db7d743e6"
+      }
+    },
+    {
+      "file": "ACS_A06_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-verification.headers.txt",
+      "source_sha256": "bf453c638ba07b8a1932fe808a1c3f0a6e8a10ff9d12675fe8cd23765d521eb3",
+      "delivery_sha256": "81bcb43d287c682192034f89a32257c585a3e98320a209e32c5e2bef85c2dfcb"
+    },
+    {
+      "file": "ACS_A07.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-onboarding.json",
+      "source_sha256": "2fc2a1867adca131255efdfb74f6777052b628fecfb032d253005ae8264e5418",
+      "delivery_sha256": "49d715b63b939e441247aa9dcd3be2268af62637b37db9e53fde2c0a00d8f4e3",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:44.545833+00:00",
+        "finished_at_utc": "2026-10-29T08:19:45.739797+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/registry-server/acps-atr-v2/acs/A07",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:46 GMT",
+          "content-type": "application/json",
+          "content-length": "1565",
+          "connection": "keep-alive",
+          "x-request-id": "cb32d61a-8fe8-41ba-88cf-0755cdb839d5",
+          "x-content-type-options": "nosniff",
+          "x-frame-options": "DENY",
+          "referrer-policy": "strict-origin-when-cross-origin",
+          "content-security-policy": "default-src 'none'; frame-ancestors 'none'",
+          "strict-transport-security": "max-age=31536000"
+        },
+        "error": null,
+        "body_file": "ACS_A07.json",
+        "source_body_sha256": "2fc2a1867adca131255efdfb74f6777052b628fecfb032d253005ae8264e5418",
+        "delivery_body_sha256": "49d715b63b939e441247aa9dcd3be2268af62637b37db9e53fde2c0a00d8f4e3"
+      }
+    },
+    {
+      "file": "ACS_A07_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/acs-onboarding.headers.txt",
+      "source_sha256": "02749c7611414bb1754bcb0909a1a3a5619ac745de8f4595165d923948355ea0",
+      "delivery_sha256": "e448cd28b63925a34a3e6362f9ae340da62d11ebf5f70bb6a4d4db00dbd48050"
+    },
+    {
+      "file": "ADP_发现响应.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/discovery-final.json",
+      "source_sha256": "cd84b5414d2297abef35ac2771a56ae92df724e7ef4aebabb669093f6c9a007e",
+      "delivery_sha256": "efb4069592835fcdc26627a009a2a9e061cabd49d859d5eff9a9fb9873aa81a9",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:20:44.245430+00:00",
+        "finished_at_utc": "2026-10-29T08:20:45.544279+00:00",
+        "method": "POST",
+        "url": "https://wt.ioa.pub/discovery/acps-adp-v2/discover",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "error": null,
+        "source_body_sha256": "cd84b5414d2297abef35ac2771a56ae92df724e7ef4aebabb669093f6c9a007e",
+        "delivery_body_sha256": "efb4069592835fcdc26627a009a2a9e061cabd49d859d5eff9a9fb9873aa81a9"
+      }
+    },
+    {
+      "file": "ADP_发现响应_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/discovery-final.headers.txt",
+      "source_sha256": "17c818b9193cb6caccf4f143db8d6d4d2686aa66dfccaff141b60a6527a81ed5",
+      "delivery_sha256": "3cc71aa950a1125cf8cc4a6113fe66c4c861c33d90a4abd6be8586808fa8eaaa"
+    },
+    {
+      "file": "官方四榜_响应.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/rankings-current.json",
+      "source_sha256": "7cf104e00b0a25ab7c1808e74ebe161513f726ae145091c0e7ef4a52cb9974cd",
+      "delivery_sha256": "86e3a4042a9ecd2afc04ef830142811b3ab14ea2b7644d689d92142b31c9d88b",
+      "numeric_and_boolean_values_preserved": true,
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:41.154434+00:00",
+        "finished_at_utc": "2026-10-29T08:19:44.704616+00:00",
+        "method": "GET",
+        "url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-09-24T00%3A00%3A00%2B08%3A00&endAt=2026-10-29T17%3A00%3A00%2B08%3A00&n=200",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 200 OK",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:45 GMT",
+          "content-type": "application/json",
+          "content-length": "70955",
+          "connection": "keep-alive",
+          "cache-control": "no-cache",
+          "x-ranking-cache": "MISS",
+          "x-ranking-cached-at": "2026-10-29T08:19:45.303275+00:00",
+          "x-ranking-age": "0",
+          "x-ranking-fresh-for": "59",
+          "x-ranking-stale-for": "599"
+        },
+        "error": null,
+        "body_file": "官方四榜_响应.json",
+        "source_body_sha256": "7cf104e00b0a25ab7c1808e74ebe161513f726ae145091c0e7ef4a52cb9974cd",
+        "delivery_body_sha256": "86e3a4042a9ecd2afc04ef830142811b3ab14ea2b7644d689d92142b31c9d88b"
+      }
+    },
+    {
+      "file": "官方四榜_响应_响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/rankings-current.headers.txt",
+      "source_sha256": "e9a92f7834d9b28c9a5f361d7812f933f9881cbe8418fede14d4cd2bcf20c120",
+      "delivery_sha256": "853f9a2a753355fa63d1c9e2b830d5e28201b3b0bd27d046bf938a0fe47b06cd"
+    },
+    {
+      "file": "ADP_请求.json",
+      "source_file": "../../04_采集与核验/current-platform/internal/discovery-current.request.json",
+      "source_sha256": "e29720341a4395d9cad4cf05fd4267d3a8963b0363049b6be8aeeb34731509a1",
+      "delivery_sha256": "76d8815c1855aa712ccc4971950b38814b85d95277288ae14bab1af5f35b1f36",
+      "numeric_and_boolean_values_preserved": true
+    },
+    {
+      "file": "匿名摘要.json",
+      "source_file": "../../04_采集与核验/current-platform/public-platform-summary.json",
+      "source_sha256": "86bcb925a2f4ebc33fdbf1a9bda037aad861aac37b28b8276d90f1b333a6f000",
+      "delivery_sha256": "6b7a48939f2fbfefa2a99bf194eb8745e200d4f5cf5b95ccdf9afe58db374be9",
+      "numeric_and_boolean_values_preserved": true
+    },
+    {
+      "file": "ADP_首次301响应.html",
+      "source_file": "../../04_采集与核验/current-platform/internal/discovery-current.json",
+      "source_sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+      "delivery_sha256": "0fe54eafa385d811fe98fb2cfb84fd5b0aae55a037aa99f88bc263426963aca4",
+      "http_receipt": {
+        "started_at_utc": "2026-10-29T08:19:41.154434+00:00",
+        "finished_at_utc": "2026-10-29T08:19:42.202447+00:00",
+        "method": "POST",
+        "url": "https://wt.ioa.pub/discovery",
+        "curl_exit_code": 0,
+        "http_status": "HTTP/1.1 301 Moved Permanently",
+        "response_headers": {
+          "server": "nginx/1.24.0 (Ubuntu)",
+          "date": "Thu, 29 Oct 2026 08:19:43 GMT",
+          "content-type": "text/html",
+          "content-length": "178",
+          "location": "https://wt.ioa.pub/discovery/",
+          "connection": "keep-alive"
+        },
+        "error": null,
+        "body_file": "ADP_首次301响应.html",
+        "source_body_sha256": "7cb59ce037656d9a4e8ee9194bc31dfc540cbc8fd5b19c64439a89631cde3715",
+        "delivery_body_sha256": "0fe54eafa385d811fe98fb2cfb84fd5b0aae55a037aa99f88bc263426963aca4"
+      }
+    },
+    {
+      "file": "ADP_首次301响应头.txt",
+      "source_file": "../../04_采集与核验/current-platform/internal/discovery-current.headers.txt",
+      "source_sha256": "7fc8dff26e60cf84ca8500b0e8732b9e9babee9a0fbb2ecb23db99a49bb8f59a",
+      "delivery_sha256": "649e8fdf30829a13ae961513a70b08c5cfd854872c58ba83d05681b610ccf7e1"
+    }
+  ],
+  "source_evidence_index": {
+    "file": "../../04_采集与核验/current-platform/evidence-index.json",
+    "sha256": "cf3bbb93368b695748af5b254d9cc0f187235b53a33fc2f30d719fd8c2c286cb"
+  }
+}

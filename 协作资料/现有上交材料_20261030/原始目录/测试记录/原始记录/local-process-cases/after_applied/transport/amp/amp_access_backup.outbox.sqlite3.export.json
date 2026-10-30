@@ -1,0 +1,43 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/after_applied/transport/amp/amp_access_backup.outbox.sqlite3",
+  "immutable_read": true,
+  "tables": {
+    "attempts": {
+      "create_sql": "CREATE TABLE attempts (event_key TEXT PRIMARY KEY, log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)",
+      "rows": [
+        {
+          "event_key": "[\"fresh-local-after_applied\",\"aip-058420deafd649b8ab669b393f590bfb\",\"receive\"]",
+          "log_id": "47181409-6f89-4fa2-a40f-d4a75ba50961",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:20:41.786914+00:00\",\"trace\":{\"correlation_id\":\"aip-058420deafd649b8ab669b393f590bfb\",\"trace_id\":\"fresh-local-after_applied\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":16.000000000076398,\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-058420deafd649b8ab669b393f590bfb\",\"log_id\":\"47181409-6f89-4fa2-a40f-d4a75ba50961\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:20:41.812495Z\",\"trace_id\":\"fresh-local-after_applied\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-after_applied\",\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"receive\"]",
+          "log_id": "f765c5cb-f0c0-4545-95f1-8831e5899cf1",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:20:42.045292+00:00\",\"trace\":{\"correlation_id\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"trace_id\":\"fresh-local-after_applied\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":46.00000000004911,\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-bf4c4501b7b6466783a3c1e7045630d1\",\"log_id\":\"f765c5cb-f0c0-4545-95f1-8831e5899cf1\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:20:42.105722Z\",\"trace_id\":\"fresh-local-after_applied\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-after_applied\",\"aip-1183eb873b3741ebacc366e850a0ce56\",\"receive\"]",
+          "log_id": "05e5584a-2e85-42a4-8113-cc3ac8a38d07",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:20:42.290529+00:00\",\"trace\":{\"correlation_id\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"trace_id\":\"fresh-local-after_applied\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":15.000000000100044,\"error\":{\"code\":\"rejected\",\"message\":\"rejected\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":500}},\"correlation_id\":\"aip-1183eb873b3741ebacc366e850a0ce56\",\"log_id\":\"05e5584a-2e85-42a4-8113-cc3ac8a38d07\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:20:42.331176Z\",\"trace_id\":\"fresh-local-after_applied\"}",
+          "written": 1
+        }
+      ]
+    },
+    "owner": {
+      "create_sql": "CREATE TABLE owner (aic TEXT, log_path TEXT)",
+      "rows": [
+        {
+          "aic": "test-database-backup",
+          "log_path": "${RECORDS}\\local-process-cases\\after_applied\\transport\\amp\\amp_access_backup.jsonl"
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

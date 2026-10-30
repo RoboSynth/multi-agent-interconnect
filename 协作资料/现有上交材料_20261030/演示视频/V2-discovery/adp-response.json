@@ -1,0 +1,1174 @@
+{
+  "source": "fresh cloud ADP requests in this run",
+  "responses": [
+    {
+      "received_at_utc": "2026-10-29T09:38:55.671363+00:00",
+      "event": "official_discovery",
+      "skill_id": "incident.application",
+      "request": {
+        "type": "filtered",
+        "limit": 50,
+        "filter": {
+          "conditions": [
+            {
+              "field": "active",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "skills.id",
+              "op": "eq",
+              "value": "incident.application"
+            }
+          ],
+          "logic": "and"
+        },
+        "extFilter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "result": {
+          "acsMap": {
+            "EXT-648E1DED7FC6": {
+              "aic": "EXT-648E1DED7FC6",
+              "name": "故障协作应用智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "incident.application",
+                  "name": "应用智能体",
+                  "tags": [
+                    "incident-pilot",
+                    "故障协作",
+                    "application"
+                  ],
+                  "version": "0.2.0",
+                  "examples": [
+                    "{\"action\": \"inspect\"}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "读取实验订单服务的访问结果和连接配置；根据数据库智能体返回的地址修正本实验应用连接配置，返回修改后的配置与版本。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "0.2.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "读取实验订单服务的访问结果和连接配置；根据数据库智能体返回的地址修正本实验应用连接配置，返回修改后的配置与版本。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "使用 AIC clientAuth 证书建立 AMQPS 连接，接收收件箱邀请并参与协作群组。"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T12:35:43.192520+08:00",
+              "defaultInputModes": [
+                "application/json",
+                "text/plain"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            },
+            "A02": {
+              "aic": "A02",
+              "name": "跨域订单应用智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "incident.application",
+                  "name": "PostgreSQL 订单应用诊断与受控恢复",
+                  "tags": [
+                    "incident-pilot",
+                    "ifc/1.0",
+                    "application"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "以 ifc/1.0 返回订单应用版本、错误和连接池证据；执行登记配置回退及连接池重建；资源凭据只在应用域，修改经操作账本与隔离令牌。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:32:58.282892+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            }
+          },
+          "agents": [
+            {
+              "group": "filtered",
+              "agentSkills": [
+                {
+                  "aic": "EXT-648E1DED7FC6",
+                  "skillId": "incident.application",
+                  "ranking": 1,
+                  "memo": "Filtered query result"
+                },
+                {
+                  "aic": "A02",
+                  "skillId": "incident.application",
+                  "ranking": 2,
+                  "memo": "Filtered query result"
+                }
+              ]
+            }
+          ],
+          "routes": [
+            {
+              "forwardChain": [
+                "AIC-DS-A"
+              ],
+              "agentGroups": [
+                {
+                  "group": "filtered",
+                  "agentSkills": [
+                    {
+                      "aic": "EXT-648E1DED7FC6",
+                      "skillId": "incident.application",
+                      "ranking": 1,
+                      "memo": "Filtered query result"
+                    },
+                    {
+                      "aic": "A02",
+                      "skillId": "incident.application",
+                      "ranking": 2,
+                      "memo": "Filtered query result"
+                    }
+                  ]
+                }
+              ],
+              "status": "ok",
+              "durationMs": 4
+            }
+          ],
+          "aliveMap": {
+            "A02": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:52.870Z"
+            }
+          }
+        }
+      }
+    },
+    {
+      "received_at_utc": "2026-10-29T09:38:56.492075+00:00",
+      "event": "official_discovery",
+      "skill_id": "db.observe",
+      "request": {
+        "type": "filtered",
+        "limit": 50,
+        "filter": {
+          "conditions": [
+            {
+              "field": "active",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "skills.id",
+              "op": "eq",
+              "value": "db.observe"
+            }
+          ],
+          "logic": "and"
+        },
+        "extFilter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "result": {
+          "acsMap": {
+            "A04": {
+              "aic": "A04",
+              "name": "跨域数据库备智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "db.observe",
+                  "name": "db observe",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "observe"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"db.health\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "检查订单库连接健康，不接收任意 SQL。；检查 orders 数据库或 orders_app 角色是否配置默认只读。；观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                },
+                {
+                  "id": "db.act",
+                  "name": "db act",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "act"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"db.restore_writes\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。；经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:33:07.966555+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            },
+            "A03": {
+              "aic": "A03",
+              "name": "跨域数据库协同智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "db.observe",
+                  "name": "db observe",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "observe"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"db.health\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "检查订单库连接健康，不接收任意 SQL。；检查 orders 数据库或 orders_app 角色是否配置默认只读。；观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                },
+                {
+                  "id": "db.act",
+                  "name": "db act",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "act"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"db.restore_writes\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。；经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:33:05.319665+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            }
+          },
+          "agents": [
+            {
+              "group": "filtered",
+              "agentSkills": [
+                {
+                  "aic": "A04",
+                  "skillId": "db.observe",
+                  "ranking": 1,
+                  "memo": "Filtered query result"
+                },
+                {
+                  "aic": "A03",
+                  "skillId": "db.observe",
+                  "ranking": 2,
+                  "memo": "Filtered query result"
+                }
+              ]
+            }
+          ],
+          "routes": [
+            {
+              "forwardChain": [
+                "AIC-DS-A"
+              ],
+              "agentGroups": [
+                {
+                  "group": "filtered",
+                  "agentSkills": [
+                    {
+                      "aic": "A04",
+                      "skillId": "db.observe",
+                      "ranking": 1,
+                      "memo": "Filtered query result"
+                    },
+                    {
+                      "aic": "A03",
+                      "skillId": "db.observe",
+                      "ranking": 2,
+                      "memo": "Filtered query result"
+                    }
+                  ]
+                }
+              ],
+              "status": "ok",
+              "durationMs": 4
+            }
+          ],
+          "aliveMap": {
+            "A04": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:08.870Z"
+            },
+            "A03": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:37:53.869Z"
+            }
+          }
+        }
+      }
+    },
+    {
+      "received_at_utc": "2026-10-29T09:38:58.532290+00:00",
+      "event": "official_discovery",
+      "skill_id": "ops.observe",
+      "request": {
+        "type": "filtered",
+        "limit": 50,
+        "filter": {
+          "conditions": [
+            {
+              "field": "active",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "skills.id",
+              "op": "eq",
+              "value": "ops.observe"
+            }
+          ],
+          "logic": "and"
+        },
+        "extFilter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "result": {
+          "acsMap": {
+            "A05": {
+              "aic": "A05",
+              "name": "跨域入口运维智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "ops.observe",
+                  "name": "ops observe",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "ops",
+                    "observe"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"ops.containers\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "观察本轮实验登记的 app-v2 进程命令行身份和运行状态，后端为本地 Windows 进程。；观察当前本地 Nginx 订单上游版本 v1/v2。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                },
+                {
+                  "id": "ops.act",
+                  "name": "ops act",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "ops",
+                    "act"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"ops.restart\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "经审批重启本项目 runtime 中登记且命令行核验通过的 app-v2；不接受任意 PID。；将本地订单入口回退到已登记的 v2 端口并校验重载本项目 Nginx。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "为用户自有订单实验环境提供入口运维域能力。通过ifc/1.0任务观察应用运行状态与Nginx上游版本；仅对已登记项目资源执行重启或回退v2。使用独立AIC和客户端证书通过梧桐AMQPS群组收发任务，资源凭据留在运维域；高风险动作校验审批、操作账本和fence，协调者不能传入任意PID或容器。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:33:10.667953+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            }
+          },
+          "agents": [
+            {
+              "group": "filtered",
+              "agentSkills": [
+                {
+                  "aic": "A05",
+                  "skillId": "ops.observe",
+                  "ranking": 1,
+                  "memo": "Filtered query result"
+                }
+              ]
+            }
+          ],
+          "routes": [
+            {
+              "forwardChain": [
+                "AIC-DS-A"
+              ],
+              "agentGroups": [
+                {
+                  "group": "filtered",
+                  "agentSkills": [
+                    {
+                      "aic": "A05",
+                      "skillId": "ops.observe",
+                      "ranking": 1,
+                      "memo": "Filtered query result"
+                    }
+                  ]
+                }
+              ],
+              "status": "ok",
+              "durationMs": 3
+            }
+          ],
+          "aliveMap": {
+            "A05": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:55.870Z"
+            }
+          }
+        }
+      }
+    },
+    {
+      "received_at_utc": "2026-10-29T09:38:59.724038+00:00",
+      "event": "official_discovery",
+      "skill_id": "incident.verification",
+      "request": {
+        "type": "filtered",
+        "limit": 50,
+        "filter": {
+          "conditions": [
+            {
+              "field": "active",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "skills.id",
+              "op": "eq",
+              "value": "incident.verification"
+            }
+          ],
+          "logic": "and"
+        },
+        "extFilter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "result": {
+          "acsMap": {
+            "A06": {
+              "aic": "A06",
+              "name": "跨域业务验证智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "incident.verification",
+                  "name": "订单请求解析与业务恢复验证",
+                  "tags": [
+                    "incident-pilot",
+                    "ifc/1.0",
+                    "verification"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "以 ifc/1.0 核验订单创建、查询、取消与同键回执；解析事故原请求并运行恢复观察窗口，报告成功、失败和未知请求，不持资源管理凭据。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:32:54.851244+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            },
+            "EXT-3636522CE6C5": {
+              "aic": "EXT-3636522CE6C5",
+              "name": "故障协作恢复分析智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "incident.verification",
+                  "name": "恢复分析智能体",
+                  "tags": [
+                    "incident-pilot",
+                    "故障协作",
+                    "verification"
+                  ],
+                  "version": "0.2.0",
+                  "examples": [
+                    "{\"action\": \"verify\"}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "通过实验订单网站查询真实SQLite订单，返回HTTP状态、订单内容以及恢复结果。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "0.2.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "通过实验订单网站查询真实SQLite订单，返回HTTP状态、订单内容以及恢复结果。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "使用 AIC clientAuth 证书建立 AMQPS 连接，接收收件箱邀请并参与协作群组。"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T12:35:31.739913+08:00",
+              "defaultInputModes": [
+                "application/json",
+                "text/plain"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            }
+          },
+          "agents": [
+            {
+              "group": "filtered",
+              "agentSkills": [
+                {
+                  "aic": "A06",
+                  "skillId": "incident.verification",
+                  "ranking": 1,
+                  "memo": "Filtered query result"
+                },
+                {
+                  "aic": "EXT-3636522CE6C5",
+                  "skillId": "incident.verification",
+                  "ranking": 2,
+                  "memo": "Filtered query result"
+                }
+              ]
+            }
+          ],
+          "routes": [
+            {
+              "forwardChain": [
+                "AIC-DS-A"
+              ],
+              "agentGroups": [
+                {
+                  "group": "filtered",
+                  "agentSkills": [
+                    {
+                      "aic": "A06",
+                      "skillId": "incident.verification",
+                      "ranking": 1,
+                      "memo": "Filtered query result"
+                    },
+                    {
+                      "aic": "EXT-3636522CE6C5",
+                      "skillId": "incident.verification",
+                      "ranking": 2,
+                      "memo": "Filtered query result"
+                    }
+                  ]
+                }
+              ],
+              "status": "ok",
+              "durationMs": 4
+            }
+          ],
+          "aliveMap": {
+            "A06": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:52.870Z"
+            }
+          }
+        }
+      }
+    },
+    {
+      "received_at_utc": "2026-10-29T09:39:00.351115+00:00",
+      "event": "official_discovery",
+      "skill_id": "db.observe",
+      "request": {
+        "type": "filtered",
+        "limit": 50,
+        "filter": {
+          "conditions": [
+            {
+              "field": "active",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "skills.id",
+              "op": "eq",
+              "value": "db.observe"
+            }
+          ],
+          "logic": "and"
+        },
+        "extFilter": {
+          "logic": "and",
+          "conditions": [
+            {
+              "field": "alive",
+              "op": "in",
+              "value": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "result": {
+          "acsMap": {
+            "A04": {
+              "aic": "A04",
+              "name": "跨域数据库备智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "db.observe",
+                  "name": "db observe",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "observe"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"db.health\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "检查订单库连接健康，不接收任意 SQL。；检查 orders 数据库或 orders_app 角色是否配置默认只读。；观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                },
+                {
+                  "id": "db.act",
+                  "name": "db act",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "act"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"db.restore_writes\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。；经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:33:07.966555+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            },
+            "A03": {
+              "aic": "A03",
+              "name": "跨域数据库协同智能体",
+              "active": true,
+              "skills": [
+                {
+                  "id": "db.observe",
+                  "name": "db observe",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "observe"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"db.health\", \"args\": {}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "检查订单库连接健康，不接收任意 SQL。；检查 orders 数据库或 orders_app 角色是否配置默认只读。；观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                },
+                {
+                  "id": "db.act",
+                  "name": "db act",
+                  "tags": [
+                    "incident-pilot",
+                    "MCP",
+                    "db",
+                    "act"
+                  ],
+                  "version": "1.0.0",
+                  "examples": [
+                    "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"db.restore_writes\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+                  ],
+                  "inputModes": [
+                    "application/json"
+                  ],
+                  "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。；经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+                  "outputModes": [
+                    "application/json"
+                  ]
+                }
+              ],
+              "version": "1.0.0",
+              "provider": {
+                "name": "项目团队"
+              },
+              "endPoints": [
+                {
+                  "url": "amqp[local path removed]",
+                  "security": [
+                    {
+                      "mtls": []
+                    }
+                  ],
+                  "transport": "AMQP"
+                }
+              ],
+              "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+              "capabilities": {
+                "streaming": false,
+                "messageQueue": [
+                  "amqp:0.9.1"
+                ],
+                "notification": false
+              },
+              "protocolVersion": "02.02",
+              "securitySchemes": {
+                "mtls": {
+                  "type": "mutualTLS",
+                  "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+                }
+              },
+              "lastModifiedTime": "2026-10-17T18:33:05.319665+08:00",
+              "defaultInputModes": [
+                "application/json"
+              ],
+              "defaultOutputModes": [
+                "application/json"
+              ]
+            }
+          },
+          "agents": [
+            {
+              "group": "filtered",
+              "agentSkills": [
+                {
+                  "aic": "A04",
+                  "skillId": "db.observe",
+                  "ranking": 1,
+                  "memo": "Filtered query result"
+                },
+                {
+                  "aic": "A03",
+                  "skillId": "db.observe",
+                  "ranking": 2,
+                  "memo": "Filtered query result"
+                }
+              ]
+            }
+          ],
+          "routes": [
+            {
+              "forwardChain": [
+                "AIC-DS-A"
+              ],
+              "agentGroups": [
+                {
+                  "group": "filtered",
+                  "agentSkills": [
+                    {
+                      "aic": "A04",
+                      "skillId": "db.observe",
+                      "ranking": 1,
+                      "memo": "Filtered query result"
+                    },
+                    {
+                      "aic": "A03",
+                      "skillId": "db.observe",
+                      "ranking": 2,
+                      "memo": "Filtered query result"
+                    }
+                  ]
+                }
+              ],
+              "status": "ok",
+              "durationMs": 4
+            }
+          ],
+          "aliveMap": {
+            "A04": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:57.869Z"
+            },
+            "A03": {
+              "alive": true,
+              "aliveLastSeenAt": "2026-10-29T09:38:57.869Z"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

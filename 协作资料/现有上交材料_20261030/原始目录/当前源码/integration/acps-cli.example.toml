@@ -1,0 +1,30 @@
+# Public endpoints read from the live official https://wt.ioa.pub/docs.html
+# on 2026-10-17. No credentials, tokens, EAB material or private keys here.
+# Pinned client implementation: ACPs-community v2.2.0.
+
+[registry]
+base_url = "https://wt.ioa.pub/registry-server"
+timeout_seconds = 15
+# mtls_base_url is not confirmed; do not use entity derive yet.
+
+[auth]
+# Resolved relative to this file: integration/.acps-cli/tokens/...
+user_token_file = "./.acps-cli/tokens/registry-user.json"
+admin_token_file = "./.acps-cli/tokens/registry-admin.json"
+
+[ca]
+base_url = "https://wt.ioa.pub/ca-server"
+account_keys_dir = "./private/accounts"
+private_keys_dir = "./private/keys"
+certs_dir = "./private/certs"
+csr_dir = "./private/csr"
+trust_bundle_path = "./private/trust-bundle.pem"
+
+[discovery]
+base_url = "https://wt.ioa.pub/discovery"
+
+# AMQPS broker: wt.ioa.pub:5671, vhost acps.
+# Group service returned {status: ok, port: 9007} using the Leader certificate.
+[mq]
+group_api_url = "https://wt.ioa.pub:9007"
+ca_cert_file = "./private/two-agent/trust-bundle.pem"

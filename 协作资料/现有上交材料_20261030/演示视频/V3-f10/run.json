@@ -1,0 +1,1922 @@
+{
+  "schema": "fresh-cloud-video-run/1",
+  "batch_id": "video-two-20261029-f3e6ef0bc1",
+  "case_key": "f10-m0-r1",
+  "incident_id": "inc-dc0038dbe98948e9",
+  "started_at_utc": "2026-10-29T09:38:42.507768+00:00",
+  "finished_at_utc": "2026-10-29T09:40:49.633863+00:00",
+  "status": "completed",
+  "source_commit": "c39038626ba7981a6ccbb3d55643c116b5cadc8c",
+  "source_state": "cloud current working tree; commit alone is not the full source. Bound source SHA256 is retained.",
+  "source_sha256": {
+    "acps_mcp_bridge/__init__.py": "1235fe3a18538997af92c0370e66ee78612fbcf6aaf8deb0c00f86caf02eb05b",
+    "acps_mcp_bridge/__main__.py": "e8fc8ab77c325c86d77641c534da7e69e1986cbebda8799f422eecfe0bf41f28",
+    "acps_mcp_bridge/acs_mapper.py": "1d7f2f021e47533c8e155cfe8c517b3c8eacf3198213493af44715c3f9fd93f3",
+    "acps_mcp_bridge/approval.py": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+    "acps_mcp_bridge/audit.py": "b0e6916f96910582b8295cce7948251b76a431973fcce5930561f5507c269deb",
+    "acps_mcp_bridge/bridge.py": "2fdcbfcf20763031274ca3682660bc350bd24a07f9bc0d610e922233ad8dfa00",
+    "acps_mcp_bridge/client.py": "5faca959a28633c5177f04099a625667f7d923798768dce791276630f4684f62",
+    "acps_mcp_bridge/experiment.py": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b",
+    "acps_mcp_bridge/handover.py": "2d4df6c85e55df52fd77c2a914138e69b1ab046b00669b9d337748f6c2d1d46a",
+    "acps_mcp_bridge/platform.py": "df5802c0ded3c5f65e054e9c4c120a3632f7e5e00d163517eeb21973616a0f87",
+    "acps_mcp_bridge/policy.py": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+    "business/__init__.py": "591e06c019c863e3f2adb120edc0ac5d51bd4a56b9586250ee5533eb4f148d0e",
+    "business/fault_lock.py": "4fa12856d2c4c7f1c067806f936bab93050be9e55e1c7d6e8a9183d638b3d05c",
+    "business/fault_reply_proxy.py": "c518cb786746a7f67ba824e4852d1b6eebf974e88301f634f0098dd57bc8ba9c",
+    "business/load.py": "a15e87a1222906271d4ab39d68f213887f5775a856911a7dc3daa23947f9890c",
+    "business/native_postgres.py": "bd1d53445b2bb7f0ed6f3703f5351d775c76e788df1932fc5a6473b092310a8f",
+    "business/native_process.py": "1bf8b38ba9ca4e11f2464331355771634c319ad1b853e3ac88e6c92b8f9b3887",
+    "business/order_app/Dockerfile": "8b7ff001fe148c1b2fddee50e573f7bce690d4171bdd3803bdabadd37b978765",
+    "business/order_app/__init__.py": "a61af4e97a3881f74a6488abf83dbd6136ff2d5080c907d9cd8be44f7d857e71",
+    "business/order_app/main.py": "51e2fe243c5b2a62289e10da63b9b73ec6e1042d5245a60d66a569d40d076f5d",
+    "business/order_app/schema.sql": "0eb146a0399a4714317867e0a88eeb249a110239c4cbad8413ce084331eb3c44",
+    "business/order_app/store.py": "dd046738d899e9afb8a6acc6dafa597bf8efb3e39cd6b19b26dc7f9d244d30a4",
+    "business/receipts.py": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255",
+    "business/run_app.py": "dbe016fc62c622513ebbbb97c78b2cc306c4cbca239eb7353d51541c468e37a2",
+    "deploy/Dockerfile.agent": "991aea147d62465c4d7f8fae94df54140a3de9b81ee29db85ae8b024ea327ef5",
+    "deploy/Dockerfile.docker-mcp": "5c27c98f8f6df477f0ae50559c48e4039a07f7bd2b1043ab158f836ef946abdb",
+    "deploy/agents.yml": "0b0f8b61c8e4c174977b4e75a0cd570b6553cbcef299d0d92c1be6812eb86842",
+    "deploy/compose.yml": "b9c417ff3b1d69a88d0940603f6f4d0b942047fec10318d6ed72bc639110f2af",
+    "deploy/new7.yml": "1bb409da2417dce3796250646e11723b08ad1c376be6054a556c7bdd32ff0399",
+    "domains/database/bootstrap.sql": "62ca11bbee7f73fd6a7e3924e2fea88c16487021e8fcfb5c3f038cff32421549",
+    "domains/database/policy.yaml": "14aa84a47c2747479ca4998d61d06436634f97883c5bd7279c3e7fe8e7dfd99b",
+    "domains/database/provision_local.py": "e6796640d4d5d102481d14453fdb0b1ae2658d187669f17d7839cd9a6632c155",
+    "domains/database/requirements.txt": "1bc30f5a8dd2007e1641f4da3bb1dde101200f557e9a675ceba76bd9145ebf7c",
+    "domains/database/verify_blocker.py": "60195c33eb9dbc7cb7d5e05b7448e90b9db749ee148e24e793ee0194e901e6a9",
+    "domains/database/verify_local.py": "c331ea972dbdcb09b2eff3d6df4b5204d754a064b2f334b773f662a718fa7126",
+    "domains/onboarding/__init__.py": "3b356aa9327a394c39eed60c6fa62412ff69c05248a99cf40a3d6e7b25c79310",
+    "domains/onboarding/check.py": "0dbec2a8883294c2e42fed617a1dc8e3ec96ff5444f908e6990bc53102a7f4e4",
+    "domains/onboarding/text.py": "c6299f86327baab5c8da844413c2757cd22e13d78cf079ae122fa5e7e58e16ae",
+    "domains/ops/guard.py": "f4c8675e99052a5ff32f32852b0daac4d87999ce805efdd5f2228612cb99dfb5",
+    "domains/ops/native_mcp.py": "44bf45972a033e245a20c5e479616bb6302a50e2510a3e748c7a95e15b3f0c5b",
+    "domains/ops/native_supervisor.py": "62a715b1d1bf4fdd1343be332704c734adeefa4a99ee0b577995bccb70597623",
+    "domains/ops/policy.native.yaml": "b43db8e06ff46cf0ffeef82316e62efe1603c87e854452d68b18e35c160d5fb7",
+    "domains/ops/policy.yaml": "b14036c5191436afd1e82bad3496d81f1d70c47d94e0d9960b92e1b6715af52f",
+    "domains/ops/requirements.txt": "1198d49e943f0588f5032bc266c32d1c653d0d1c3d057e8cd2a96f1dc5b25f8f",
+    "domains/ops/route_mcp.py": "424103524cc3b28eeb0c963561ae2c6e3c2da7999818e8e06a26b543719f99f8",
+    "domains/ops/verify_docker.py": "ffdd06c45d78a0897414449d8afdb02ce0c10d415b08c3ae4c9ec8406c0952ca",
+    "domains/ops/verify_docker_label.py": "45141b7930fe4d7c6fe47c68cfa91160d91842b8de3548d429aad60c9f641cb0",
+    "domains/ops/verify_local.py": "bc2aed39618a42ae4770a287ec43d3c9126eea32f0a71be36e5d90e54fb3d16b",
+    "domains/setup_local.py": "5f101d616accd68258b5a78fdb014aaa51d03957a4d074a427df751b8e610e49",
+    "domains/setup_platform.py": "faacfe899f12b478d0c1afb3c7e8b1bb2ea3c8e21b817ad6d112bf66889e1ead",
+    "eval/__init__.py": "1cd26c3b359879a523746e4560e2eedf449bb48b07484c7d7426c8db350587f4",
+    "eval/container_control.py": "2d6c3af476a6dae9ef6859f8483300201bb159c241c2e4dbdc8e0d2d37fad0f6",
+    "eval/gateway_policy_experiment.py": "181a4eca5e779688f36b557cbeaabbeee4d90e04be1c9a5f1b80252cbd0c8072",
+    "eval/handover_experiment.py": "91bf9cab27c945f75677e6d321b8860415ebec1d97f994dfe571da0edbbfed7c",
+    "eval/inject.py": "4726c8985130239e9fb2b121fa73337ad91a59b047f889a661184d3ff7af4d01",
+    "eval/leased_batch.py": "ec628eab5a64dab1f53a5d6d24e402bbc9f1fd04303b424ff8c01e46135c9c39",
+    "eval/material_scan.py": "14522780adb1256de2cc24b309fcf851459e62e1d8738f0b58741a00427873f5",
+    "eval/methods/__init__.py": "cd0152c3c590a4147315747226d4e1c77d0eb9a9f11bb582189e70a789aec6fe",
+    "eval/methods/free_tools.py": "422768e8f867bbf1d5ddcfb2f0486db5c9b757b1571c85a2171af0f09843a429",
+    "eval/methods/runbook.py": "135d33552d0fc0f8d996a8c3efe532ba249e57e2845e394cd6bbfd45ee555ef4",
+    "eval/observation.py": "7dfa0de206281bf8209c70dfda59723c901eb2d574ef395e1591ba0c8d4939ee",
+    "eval/old_primary_replay_experiment.py": "c07ad224c6df3cc9f94f61725fc3319a49277fe2aa001f6b860606869887e0f5",
+    "eval/old_primary_report.py": "21012d139151f8d32d2095701a904b741c7a9b884e28721e4a1465314639252e",
+    "eval/participant_failure_experiment.py": "92e052366c6b4837798e121bb43c0b3532045cbeedca861fc49906fbe3d8b180",
+    "eval/platform_batch.py": "5442bc3fab57bebc9deb2792631c4c215dac2b564593ab03735e8a51af35d9e3",
+    "eval/platform_database_worker.py": "5ee504b0e600f6504faf1972d955e65cd29cc3b1e4c12451213f9159888e61bd",
+    "eval/platform_e1c_controller.py": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+    "eval/platform_e1c_transport.py": "5b16d82778de881f3028465455b3de17048f028ae357299d1c1a77ec61b59650",
+    "eval/platform_handover.py": "00259a38a281def36f496608bffbfacfa5db36a8061c05554ff55be7ea376ca1",
+    "eval/platform_resume_experiment.py": "24bd57adef09aed169ce429d6cf95b8b12d2e4df66c3f035b5b73c204ebf8578",
+    "eval/platform_smoke.py": "9f536e4d98db811684bf70e4d04818106af7f9f27c5836be0840eff806747fc2",
+    "eval/plot_results.py": "51a3005d35a34000ed283c59088ec6740305b91ff9d73c55a4106b22de3286fa",
+    "eval/prepare_platform_e1_worker.py": "4eec29fa6440989490352da184ad6499344ecb84a207b1e2c9723358ff5943df",
+    "eval/receipt_reconciliation.py": "912d1ce13963721f952696da22f00aead7ef2e5756e4b1aca45615a6e0bc4baf",
+    "eval/reconcile_access.py": "b9ab021b3c74f2702dba9db7caf55dad54b9820b2540f4af7e68a24429fabdc2",
+    "eval/resume_experiment.py": "592c43c8e4886381ab568156bddf9284ed3ce0be88e6bbc0e7e363f52f0e898d",
+    "eval/resume_support.py": "543eea4373e120a7fbcc2144e4d4e7265f4eaf5adfc6cd21478d5d958dab5faf",
+    "eval/run.py": "613746f716dc79c22a4bd557424076b235a0fe9e96c2b8f38fe35473100239d1",
+    "eval/scheduling_audit.py": "b970dbb98b6cae3e156be8f9b9fd7c96684d94f45f74bf96c05dcb56c6123412",
+    "eval/scheduling_comparison.py": "b2f3e94872e4bf1a408fa936f195ba8e8d0d1549de3f6adf13afce77c3f04c76",
+    "eval/scheduling_report.py": "e2fb1a5474d0f1ebf9f1699713a9e77d33a765d28f60267e36ba03017a207861",
+    "eval/secret_scan.py": "[removed]",
+    "eval/stability_bundle.py": "a6d2dff072b89395c734ffb723ce9c3bc04c774c85a3229611f103c1f160cc31",
+    "eval/stability_report.py": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f",
+    "eval/targets.py": "282dcb8d0bb266ed5bee9f1299d5e0afb30959ddb47f692d8ced9d24cc4e8acc",
+    "eval/unknown_receipt_experiment.py": "7a3268c43bf725bd09b389b65807117affe35e173830e3a3339f49aef281f423",
+    "incident/__init__.py": "b24071539daede4fb001b05b17e786a37800ad5bfdfddc3e1594463210f19aed",
+    "incident/amp_setup.py": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd",
+    "incident/contracts.py": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+    "incident/coordinator/__init__.py": "07840c19d5c9ca7b6646be0413813a64693cf4cf078978771783ee020f0bc2db",
+    "incident/coordinator/amp_facts.py": "b9cb4fd7d6111312e2a68883b16e6fca07a9325df8ff35576c6a6abbb5773eb3",
+    "incident/coordinator/engine.py": "037a8786e1fb6b4dd6b4ca3c4bee7ff9b503cb5ac08f6ba6d12f8a69d84ca3b6",
+    "incident/coordinator/hypothesis.py": "04deee01e5003ef6830d4c4b3c032c85bb3642b7aab2dfcc6edc2bc53bf77aed",
+    "incident/coordinator/incident_planner.py": "7ee9fe8695a8b99c0f1980cffe7003968727ec9300d67b819b74777ce2f085b4",
+    "incident/coordinator/planner.py": "8948bab9d9ff322dd1a5b510f79c02de4bce9133219c9edc2ecf9237a2ad38e6",
+    "incident/local_transport.py": "86159185c6bb98d76ab5fd5a204ab805a79d47474959335c3927e351cde2b73a",
+    "incident/local_worker.py": "20194e39d364f7dbd2d8329366d6f84b33766d632c5e774c6e0094b1f27d136b",
+    "incident/partners.py": "82ddc7261e6729dbb8eef754ad54352463395189a1cdc1427c86e0576e9a4759",
+    "incident/platform_worker.py": "f117bd6e3412faf3597f56d347cd31bb6cd243a098ce1171e36fcbc7159b83ab",
+    "incident/recover_access.py": "b363111af8f35c2e8ee6bf9b009dac0eee70447bab9fb1f5003ac57019e589e4",
+    "incident/selection.py": "ceadb4191e650a64cc5fed6573c1d4d533dea6c9ef15093cba23b6d3fe7ad7b8",
+    "incident/workbench_access.py": "2afb5574b4817f3fed3011cabb61417909a97d02e4fe64801cd897c8ea8d6dd3",
+    "incident/wutong_transport.py": "c7cd2cf7f7a8edd26468e54a291fbff3dbfd284d00d531dfbc8659c42f589448",
+    "requirements-high-score.txt": "7f06d2aa868c947370b1a8042fcb50adacc4adc9de9ac63543a5449d9cdc5cf0",
+    "requirements-lock.txt": "9e3e604705c32c346b15dea7f057fce980edafc0a1fdb2f33fa072cc667a19b3",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/__init__.py": "0aec28dae6729200a7711082329e978341e558508b1994c019418b62d601ace8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/acs/__init__.py": "2696c8609ae8a7e0141c3ee9573caa11a168468ce3f4698e82df86f3c9b43747",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/acs/models.py": "dd9145bd67bf04038dff2560b77f005530d732e4018d42517d52234bc5985675",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/adp/__init__.py": "177515ae8a911517309b183061c95d4f5b93347697c41d594db34e8d14bf61a8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/adp/constants.py": "eefcd6565fba4541dc867b0ece5be90431c4aea64410fb678098aa72f1db0c31",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/adp/errors.py": "f8b3f0e42c2aa1b5854279cb1770e3dc60aa17a81fbc4a398b2faae46bb9a9eb",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/adp/models.py": "d4868349bf0b8413a89271858c6b0d01fd60aa97659d2fb287d45b35e26942ab",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/adp/validators.py": "40febd6ba871bc2c0321642bb4452f0c15727059aa91baec60022ed506dfe3fe",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aic/__init__.py": "fd98fbfda12afdb6bfcbee5413d7a25ac2ef4d2a653a9139e0c80d8b8f49e6bf",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/__init__.py": "ac9852f05e4b4cf767862ae2b7f017fa4e6aed3018f21310f70b7b320a359c34",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/access_status.py": "c520a8215ba42d75007402d3aa4bcdc2dc8185c0c7105a90f44e544a6f266132",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_base_model.py": "ab7f700d6841eeb7355e8d2ed58334422cdfcb6a5237ba5d649160d210a721bc",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py": "974109431e3eee3fc3639a8f435a452a84e5be3416803d7b7f6f0b6369fd4996",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_identity.py": "412eb6ce27bee8c00e893af39ea9e3b905786946fa6ae0bee4ef45d668667840",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py": "b710eaab6ddab4fbf7390ac744ea57450b477350b73601c183d53881c176b10b",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_model.py": "bbd1edb7881d1829f49889bd9cde6560cf21f7fe75aac8b396e95a007fa5b74f",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py": "7e38725068c3d0ad47ca61ae841dceaf8ffa63ba997dd4aca69ba66717c747e2",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_runtime.py": "1920f23b78dfd59b60a2b46cca8bc3a0507f2d166cab97d2d04d8d342608d056",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_identity.py": "b8748abcd802d35cd625e2a611c0ad1b6db402c559c17ddc436715ebcab819b8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_client.py": "d1e0f48d9d676c2331ed558cce1f4dd2b59c4e1fa2f239b93414a1cbc5c6abfb",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_model.py": "2065f84cd2adfde1b5d53a7b4f283a0dba846de5856894764d2f9b8ac74cec44",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_server.py": "0fe98e074f8ce48fcd14f449ddc54b3bfd5ae47ea17193f83e798b2cda6689df",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_peer_cert.py": "173262a6ca72fc5095ded8d540f67da18f8a1d0734a9e1989df9b5d2520af326",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_client.py": "be2ba338d37da586c1dd9aeeb4494c1dbc6633ec1803946e01e74af160dad51e",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_model.py": "53a55bac835562ac3c180881cbb654d5bc544cd078b0e362fca7f193a1f0ce0f",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_server.py": "871ee8b2ea5b54f97c4c91c475426f3e7a3b180da4eec926604dca69407c8aca",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_client.py": "98fbb7ba11258337979c2eed950ba670af0c3738088634671b0fd1e4a92c3d7c",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_model.py": "2fa17eb6817e99009e39bbafdb9af30697b6736442689a84fad35856262d51f8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_server.py": "9e839f028e43a2211f87239e206a61a8952df9ac47d06143895538d81e03caf8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/__init__.py": "448f1225e8dacd7c3112ee1da8106a4bf6ac15402d51cef056689b41aff3d85b",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/partner.py": "8f9d13c8fef94288edcafca59ed59d5db41e5fdee8a725146e0593128409a6cd",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/takeover.py": "6827d843e286f95b246d85d619cf9254f91cf6ae07a9037a24de8586a50a2580",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/__init__.py": "bf0a524474bcf2df493db341d61c200fa022e9c66a1134766fe3215afdc248b1",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py": "a06f9c6dd0514506d056b9b9698d887a2e351d27d835e7f8f5a4a876ec3031a9",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/access_emitter.py": "79faa279e78c0d3adc00bc3a12a79d5269fabee7bbbd1f6e9b569f5e21c85158",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/__init__.py": "f9661af53c666de74ff8c6f3a0b816e54b4a139c75c9ee50be0cc3dae5db038d",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/bootstrap.py": "ab00a51149177527a2676bb810bc1648410c6c89f8f387079a3ba433fa046940",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/engine.py": "7d34f32b2a795f21ca16ec536f953d55320d9e6babbaf19f1faa35678dd8259d",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/errors.py": "81f8c65ab90acde835a511f2f94d119a0c22dc9e77a0f243e2bf099a91add953",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/models.py": "c96e837e55f98273641c12f888d64f350faa3a940c731470e7df2b7e6d6ba97b",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/snapshot.py": "c08e94ec7ae603f89dd17317e47e8150a5075025cb48739978bc67c26d26adee",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/store.py": "5eb11cb8f8113c0442036141e1aecabeb5b1ba7fb2a1545e099707e1e96d3a50",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/emitter.py": "c4f87b4325d00d5657e0b6ff83487e789e0974d3493956a4acbe72d657aaf447",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py": "a7de5a9b52c53210b13ea57fc5a156c285a32819d64b999a38e32b7a91d8337e",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/heartbeat_emitter.py": "49ebbcb34a2b26bde46f66c8492481e3f07c2bd52712cda55873ec68989853d9",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/heartbeat_sync.py": "11248094d164db8f31bbf788665ced1fbddcb24f8ff944aa158e374c8c5776cd",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_catalog.py": "78133c82a46a761f62e863b78005f1a0198b89b2d7ee8e29654f3291a633ab69",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_demo.py": "48979af37b773452af7c81666515157bfce07c9daec1434596094612232f89f4",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_emitter.py": "99cc5c40e362b6a11a5985b776f911481a6b948b5fbff4d33f8d9c3ce0c29e00",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/models.py": "b32d9766d1df46ee156f3150107f7ede34ce24a9d705c4f3c569b4b3d8651840",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/signer.py": "11cdf45482f0f5a0fee55f8d6911f5927b91450ce61f7f93497f0a8e5be08c33",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/system_emitter.py": "045027eda63130a2e8d2432e291c7241b19b32f940d39d141f4cb9c8a7dc7b04",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/amp/trace_context.py": "945b3cd1b86faf5ccc7419fe7d6e71ad0e95a5f99e9b5b0452ea116ed74627c8",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/__init__.py": "b581c51b86e42321bcbdf1e169ff146f8314c46786aa328073cb59e231a45da5",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/client.py": "269fdc0e5c24c46e255a12688df69ee6eac3044549ba8f0e8d3702018665db97",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/config.py": "05938bfd6c5b3e89086e6e18ad4bf568621de9f4a38b8d1f162801bf5ee5d307",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/discovery.py": "011d98426240e602afa61dd7efc4184ba3aa122c066abbe1059a22d2a0415ad6",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/errors.py": "1d86b48eef24037cf97a73aa8c5da6602c63638eefb7ed35325058ce6dc2cc47",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/fastapi.py": "c6097bc4f51ac5a5acb97ff63888861704c604cc0ff14f65905c078b89286ab9",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/jwks.py": "15114fecb012c24fc9eb51183f29d3f3ce433e251ebfd24b420850d7d84682fd",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/keycloak.py": "b4d9de66a72c25e386860b6ccdb3d88ca8457a6d404b52d321bfe5e69b85e0d2",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/principal.py": "087e084c7bcc2260d49db8a8a463e044533f542f6fd7ead5560f8efaa09ba5b4",
+    "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/validator.py": "6e91ad0ca4623e64995fbf38a02a61e3371b19e486360b89c879c158af6f9c58",
+    "vendor/ACPs-community/acps-sdk/pyproject.toml": "d71a0e245bb084beb204896ff2bdd9b7fd12a5e68e9cdd8c4247ef2efc7203c8"
+  },
+  "model_calls": 0,
+  "video": "video.webm",
+  "video_timing": {
+    "videoT0Utc": "2026-10-29T09:38:43.121Z",
+    "videoT0EpochMs": 1793266723121.312,
+    "method": "first trace screencast frameSwapWallTime minus encoded first packet PTS",
+    "creationTimeUtc": "2026-10-29T09:38:42.694Z",
+    "firstTraceFrameWallTimeMs": 1793266723121.312,
+    "firstPacketPtsSeconds": 0,
+    "creationToFirstTraceFrameMs": 427.31201171875,
+    "traceFrameCount": 263,
+    "clockCalibration": {
+      "roundTripMs": 5,
+      "browserMinusNodeMidpointMs": 1.5,
+      "performanceMinusBrowserDateMs": 0.10009765625,
+      "note": "Same-host wall-clock comparison; transport round trip bounds this one sample, not all later clock drift."
+    },
+    "approximationIntervalEpochMs": null,
+    "nominalFrameQuantumMs": 40,
+    "limitation": "Estimated visual alignment: 25 fps quantization (~40 ms), first traced/encoded frame correspondence and browser/host clock sampling. No sub-frame accuracy is claimed.",
+    "sourceBasis": "Playwright 1.64.1 coreBundle.js: VideoRecorder passes frameSwapWallTime; FfmpegVideoRecorder emits timestamp minus creationTimeMs and writes creation_time metadata."
+  },
+  "server_case_start_utc": "2026-10-29T09:38:45.492500+00:00",
+  "video_t0_to_server_case_start_seconds": 1.07518798828125,
+  "clock_samples": [
+    {
+      "local_before_utc": "2026-10-29T09:38:41.772Z",
+      "local_after_utc": "2026-10-29T09:38:41.886Z",
+      "server_observed_at_utc": "2026-10-29T09:38:43.090884+00:00",
+      "round_trip_ms": 114,
+      "estimated_server_minus_browser_host_ms": 1261,
+      "uncertainty_half_rtt_ms": 57
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:44.327Z",
+      "local_after_utc": "2026-10-29T09:38:44.437Z",
+      "server_observed_at_utc": "2026-10-29T09:38:45.708827+00:00",
+      "round_trip_ms": 110,
+      "estimated_server_minus_browser_host_ms": 1326,
+      "uncertainty_half_rtt_ms": 55
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:45.094Z",
+      "local_after_utc": "2026-10-29T09:38:45.209Z",
+      "server_observed_at_utc": "2026-10-29T09:38:46.410295+00:00",
+      "round_trip_ms": 115,
+      "estimated_server_minus_browser_host_ms": 1258.5,
+      "uncertainty_half_rtt_ms": 57.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:45.873Z",
+      "local_after_utc": "2026-10-29T09:38:45.991Z",
+      "server_observed_at_utc": "2026-10-29T09:38:47.192874+00:00",
+      "round_trip_ms": 118,
+      "estimated_server_minus_browser_host_ms": 1260,
+      "uncertainty_half_rtt_ms": 59
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:46.659Z",
+      "local_after_utc": "2026-10-29T09:38:46.853Z",
+      "server_observed_at_utc": "2026-10-29T09:38:48.056779+00:00",
+      "round_trip_ms": 194,
+      "estimated_server_minus_browser_host_ms": 1300,
+      "uncertainty_half_rtt_ms": 97
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:47.516Z",
+      "local_after_utc": "2026-10-29T09:38:47.632Z",
+      "server_observed_at_utc": "2026-10-29T09:38:48.832960+00:00",
+      "round_trip_ms": 116,
+      "estimated_server_minus_browser_host_ms": 1258,
+      "uncertainty_half_rtt_ms": 58
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:48.294Z",
+      "local_after_utc": "2026-10-29T09:38:48.409Z",
+      "server_observed_at_utc": "2026-10-29T09:38:49.612424+00:00",
+      "round_trip_ms": 115,
+      "estimated_server_minus_browser_host_ms": 1260.5,
+      "uncertainty_half_rtt_ms": 57.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:49.071Z",
+      "local_after_utc": "2026-10-29T09:38:49.203Z",
+      "server_observed_at_utc": "2026-10-29T09:38:50.410138+00:00",
+      "round_trip_ms": 132,
+      "estimated_server_minus_browser_host_ms": 1273,
+      "uncertainty_half_rtt_ms": 66
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:49.857Z",
+      "local_after_utc": "2026-10-29T09:38:50.028Z",
+      "server_observed_at_utc": "2026-10-29T09:38:51.174816+00:00",
+      "round_trip_ms": 171,
+      "estimated_server_minus_browser_host_ms": 1231.5,
+      "uncertainty_half_rtt_ms": 85.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:50.686Z",
+      "local_after_utc": "2026-10-29T09:38:50.800Z",
+      "server_observed_at_utc": "2026-10-29T09:38:52.006817+00:00",
+      "round_trip_ms": 114,
+      "estimated_server_minus_browser_host_ms": 1263,
+      "uncertainty_half_rtt_ms": 57
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:51.454Z",
+      "local_after_utc": "2026-10-29T09:38:51.598Z",
+      "server_observed_at_utc": "2026-10-29T09:38:52.810970+00:00",
+      "round_trip_ms": 144,
+      "estimated_server_minus_browser_host_ms": 1284,
+      "uncertainty_half_rtt_ms": 72
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:52.264Z",
+      "local_after_utc": "2026-10-29T09:38:52.381Z",
+      "server_observed_at_utc": "2026-10-29T09:38:53.582801+00:00",
+      "round_trip_ms": 117,
+      "estimated_server_minus_browser_host_ms": 1259.5,
+      "uncertainty_half_rtt_ms": 58.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:53.044Z",
+      "local_after_utc": "2026-10-29T09:38:53.089Z",
+      "server_observed_at_utc": "2026-10-29T09:38:54.362037+00:00",
+      "round_trip_ms": 45,
+      "estimated_server_minus_browser_host_ms": 1295.5,
+      "uncertainty_half_rtt_ms": 22.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:53.747Z",
+      "local_after_utc": "2026-10-29T09:38:53.888Z",
+      "server_observed_at_utc": "2026-10-29T09:38:55.141313+00:00",
+      "round_trip_ms": 141,
+      "estimated_server_minus_browser_host_ms": 1323.5,
+      "uncertainty_half_rtt_ms": 70.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:54.544Z",
+      "local_after_utc": "2026-10-29T09:38:54.610Z",
+      "server_observed_at_utc": "2026-10-29T09:38:55.859782+00:00",
+      "round_trip_ms": 66,
+      "estimated_server_minus_browser_host_ms": 1282,
+      "uncertainty_half_rtt_ms": 33
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:55.324Z",
+      "local_after_utc": "2026-10-29T09:38:55.371Z",
+      "server_observed_at_utc": "2026-10-29T09:38:56.640645+00:00",
+      "round_trip_ms": 47,
+      "estimated_server_minus_browser_host_ms": 1292.5,
+      "uncertainty_half_rtt_ms": 23.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:56.025Z",
+      "local_after_utc": "2026-10-29T09:38:56.072Z",
+      "server_observed_at_utc": "2026-10-29T09:38:57.341782+00:00",
+      "round_trip_ms": 47,
+      "estimated_server_minus_browser_host_ms": 1292.5,
+      "uncertainty_half_rtt_ms": 23.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:56.740Z",
+      "local_after_utc": "2026-10-29T09:38:56.793Z",
+      "server_observed_at_utc": "2026-10-29T09:38:58.057138+00:00",
+      "round_trip_ms": 53,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 26.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:57.448Z",
+      "local_after_utc": "2026-10-29T09:38:57.528Z",
+      "server_observed_at_utc": "2026-10-29T09:38:58.778899+00:00",
+      "round_trip_ms": 80,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 40
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:58.193Z",
+      "local_after_utc": "2026-10-29T09:38:58.266Z",
+      "server_observed_at_utc": "2026-10-29T09:38:59.514731+00:00",
+      "round_trip_ms": 73,
+      "estimated_server_minus_browser_host_ms": 1284.5,
+      "uncertainty_half_rtt_ms": 36.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:58.928Z",
+      "local_after_utc": "2026-10-29T09:38:58.982Z",
+      "server_observed_at_utc": "2026-10-29T09:39:00.244797+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:38:59.642Z",
+      "local_after_utc": "2026-10-29T09:38:59.722Z",
+      "server_observed_at_utc": "2026-10-29T09:39:00.960627+00:00",
+      "round_trip_ms": 80,
+      "estimated_server_minus_browser_host_ms": 1278,
+      "uncertainty_half_rtt_ms": 40
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:00.385Z",
+      "local_after_utc": "2026-10-29T09:39:00.458Z",
+      "server_observed_at_utc": "2026-10-29T09:39:01.702510+00:00",
+      "round_trip_ms": 73,
+      "estimated_server_minus_browser_host_ms": 1280.5,
+      "uncertainty_half_rtt_ms": 36.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:01.118Z",
+      "local_after_utc": "2026-10-29T09:39:01.235Z",
+      "server_observed_at_utc": "2026-10-29T09:39:02.498076+00:00",
+      "round_trip_ms": 117,
+      "estimated_server_minus_browser_host_ms": 1321.5,
+      "uncertainty_half_rtt_ms": 58.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:01.888Z",
+      "local_after_utc": "2026-10-29T09:39:01.943Z",
+      "server_observed_at_utc": "2026-10-29T09:39:03.204095+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1288.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:02.595Z",
+      "local_after_utc": "2026-10-29T09:39:02.648Z",
+      "server_observed_at_utc": "2026-10-29T09:39:03.911999+00:00",
+      "round_trip_ms": 53,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 26.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:03.305Z",
+      "local_after_utc": "2026-10-29T09:39:03.361Z",
+      "server_observed_at_utc": "2026-10-29T09:39:04.622077+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:04.019Z",
+      "local_after_utc": "2026-10-29T09:39:04.080Z",
+      "server_observed_at_utc": "2026-10-29T09:39:05.340081+00:00",
+      "round_trip_ms": 61,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 30.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:04.741Z",
+      "local_after_utc": "2026-10-29T09:39:04.858Z",
+      "server_observed_at_utc": "2026-10-29T09:39:06.119809+00:00",
+      "round_trip_ms": 117,
+      "estimated_server_minus_browser_host_ms": 1319.5,
+      "uncertainty_half_rtt_ms": 58.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:05.542Z",
+      "local_after_utc": "2026-10-29T09:39:05.617Z",
+      "server_observed_at_utc": "2026-10-29T09:39:06.859883+00:00",
+      "round_trip_ms": 75,
+      "estimated_server_minus_browser_host_ms": 1279.5,
+      "uncertainty_half_rtt_ms": 37.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:06.280Z",
+      "local_after_utc": "2026-10-29T09:39:06.338Z",
+      "server_observed_at_utc": "2026-10-29T09:39:07.600702+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:06.998Z",
+      "local_after_utc": "2026-10-29T09:39:07.080Z",
+      "server_observed_at_utc": "2026-10-29T09:39:08.323290+00:00",
+      "round_trip_ms": 82,
+      "estimated_server_minus_browser_host_ms": 1284,
+      "uncertainty_half_rtt_ms": 41
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:07.733Z",
+      "local_after_utc": "2026-10-29T09:39:07.827Z",
+      "server_observed_at_utc": "2026-10-29T09:39:09.052630+00:00",
+      "round_trip_ms": 94,
+      "estimated_server_minus_browser_host_ms": 1272,
+      "uncertainty_half_rtt_ms": 47
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:08.482Z",
+      "local_after_utc": "2026-10-29T09:39:08.537Z",
+      "server_observed_at_utc": "2026-10-29T09:39:09.800982+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:09.201Z",
+      "local_after_utc": "2026-10-29T09:39:09.264Z",
+      "server_observed_at_utc": "2026-10-29T09:39:10.522819+00:00",
+      "round_trip_ms": 63,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 31.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:09.926Z",
+      "local_after_utc": "2026-10-29T09:39:09.982Z",
+      "server_observed_at_utc": "2026-10-29T09:39:11.244770+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:10.635Z",
+      "local_after_utc": "2026-10-29T09:39:10.730Z",
+      "server_observed_at_utc": "2026-10-29T09:39:11.972601+00:00",
+      "round_trip_ms": 95,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 47.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:11.392Z",
+      "local_after_utc": "2026-10-29T09:39:11.449Z",
+      "server_observed_at_utc": "2026-10-29T09:39:12.712556+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:12.102Z",
+      "local_after_utc": "2026-10-29T09:39:12.179Z",
+      "server_observed_at_utc": "2026-10-29T09:39:13.421982+00:00",
+      "round_trip_ms": 77,
+      "estimated_server_minus_browser_host_ms": 1280.5,
+      "uncertainty_half_rtt_ms": 38.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:12.834Z",
+      "local_after_utc": "2026-10-29T09:39:12.892Z",
+      "server_observed_at_utc": "2026-10-29T09:39:14.155064+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1292,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:13.555Z",
+      "local_after_utc": "2026-10-29T09:39:13.637Z",
+      "server_observed_at_utc": "2026-10-29T09:39:14.875495+00:00",
+      "round_trip_ms": 82,
+      "estimated_server_minus_browser_host_ms": 1279,
+      "uncertainty_half_rtt_ms": 41
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:14.293Z",
+      "local_after_utc": "2026-10-29T09:39:14.437Z",
+      "server_observed_at_utc": "2026-10-29T09:39:15.677393+00:00",
+      "round_trip_ms": 144,
+      "estimated_server_minus_browser_host_ms": 1312,
+      "uncertainty_half_rtt_ms": 72
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:15.098Z",
+      "local_after_utc": "2026-10-29T09:39:15.160Z",
+      "server_observed_at_utc": "2026-10-29T09:39:16.417123+00:00",
+      "round_trip_ms": 62,
+      "estimated_server_minus_browser_host_ms": 1288,
+      "uncertainty_half_rtt_ms": 31
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:15.851Z",
+      "local_after_utc": "2026-10-29T09:39:15.948Z",
+      "server_observed_at_utc": "2026-10-29T09:39:17.186755+00:00",
+      "round_trip_ms": 97,
+      "estimated_server_minus_browser_host_ms": 1286.5,
+      "uncertainty_half_rtt_ms": 48.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:16.609Z",
+      "local_after_utc": "2026-10-29T09:39:16.678Z",
+      "server_observed_at_utc": "2026-10-29T09:39:17.932854+00:00",
+      "round_trip_ms": 69,
+      "estimated_server_minus_browser_host_ms": 1288.5,
+      "uncertainty_half_rtt_ms": 34.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:17.343Z",
+      "local_after_utc": "2026-10-29T09:39:17.397Z",
+      "server_observed_at_utc": "2026-10-29T09:39:18.660350+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:18.050Z",
+      "local_after_utc": "2026-10-29T09:39:18.104Z",
+      "server_observed_at_utc": "2026-10-29T09:39:19.368184+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:21.809Z",
+      "local_after_utc": "2026-10-29T09:39:21.896Z",
+      "server_observed_at_utc": "2026-10-29T09:39:23.134023+00:00",
+      "round_trip_ms": 87,
+      "estimated_server_minus_browser_host_ms": 1281.5,
+      "uncertainty_half_rtt_ms": 43.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:22.560Z",
+      "local_after_utc": "2026-10-29T09:39:22.637Z",
+      "server_observed_at_utc": "2026-10-29T09:39:23.878320+00:00",
+      "round_trip_ms": 77,
+      "estimated_server_minus_browser_host_ms": 1279.5,
+      "uncertainty_half_rtt_ms": 38.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:23.293Z",
+      "local_after_utc": "2026-10-29T09:39:23.348Z",
+      "server_observed_at_utc": "2026-10-29T09:39:24.610741+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:24.009Z",
+      "local_after_utc": "2026-10-29T09:39:24.063Z",
+      "server_observed_at_utc": "2026-10-29T09:39:25.326273+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:24.725Z",
+      "local_after_utc": "2026-10-29T09:39:24.779Z",
+      "server_observed_at_utc": "2026-10-29T09:39:26.042946+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:25.442Z",
+      "local_after_utc": "2026-10-29T09:39:25.530Z",
+      "server_observed_at_utc": "2026-10-29T09:39:26.772731+00:00",
+      "round_trip_ms": 88,
+      "estimated_server_minus_browser_host_ms": 1286,
+      "uncertainty_half_rtt_ms": 44
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:26.223Z",
+      "local_after_utc": "2026-10-29T09:39:26.300Z",
+      "server_observed_at_utc": "2026-10-29T09:39:27.552987+00:00",
+      "round_trip_ms": 77,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 38.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:26.961Z",
+      "local_after_utc": "2026-10-29T09:39:27.017Z",
+      "server_observed_at_utc": "2026-10-29T09:39:28.279388+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:27.684Z",
+      "local_after_utc": "2026-10-29T09:39:27.741Z",
+      "server_observed_at_utc": "2026-10-29T09:39:29.002070+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:28.402Z",
+      "local_after_utc": "2026-10-29T09:39:28.459Z",
+      "server_observed_at_utc": "2026-10-29T09:39:29.721161+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:29.123Z",
+      "local_after_utc": "2026-10-29T09:39:29.182Z",
+      "server_observed_at_utc": "2026-10-29T09:39:30.444005+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:29.846Z",
+      "local_after_utc": "2026-10-29T09:39:29.966Z",
+      "server_observed_at_utc": "2026-10-29T09:39:31.227515+00:00",
+      "round_trip_ms": 120,
+      "estimated_server_minus_browser_host_ms": 1321,
+      "uncertainty_half_rtt_ms": 60
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:30.631Z",
+      "local_after_utc": "2026-10-29T09:39:30.688Z",
+      "server_observed_at_utc": "2026-10-29T09:39:31.950211+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:31.354Z",
+      "local_after_utc": "2026-10-29T09:39:31.409Z",
+      "server_observed_at_utc": "2026-10-29T09:39:32.673014+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:32.076Z",
+      "local_after_utc": "2026-10-29T09:39:32.131Z",
+      "server_observed_at_utc": "2026-10-29T09:39:33.394490+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:32.799Z",
+      "local_after_utc": "2026-10-29T09:39:32.857Z",
+      "server_observed_at_utc": "2026-10-29T09:39:34.120302+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1292,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:33.516Z",
+      "local_after_utc": "2026-10-29T09:39:33.639Z",
+      "server_observed_at_utc": "2026-10-29T09:39:34.900974+00:00",
+      "round_trip_ms": 123,
+      "estimated_server_minus_browser_host_ms": 1322.5,
+      "uncertainty_half_rtt_ms": 61.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:34.304Z",
+      "local_after_utc": "2026-10-29T09:39:34.360Z",
+      "server_observed_at_utc": "2026-10-29T09:39:35.622663+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:35.014Z",
+      "local_after_utc": "2026-10-29T09:39:35.119Z",
+      "server_observed_at_utc": "2026-10-29T09:39:36.357695+00:00",
+      "round_trip_ms": 105,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 52.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:35.780Z",
+      "local_after_utc": "2026-10-29T09:39:35.851Z",
+      "server_observed_at_utc": "2026-10-29T09:39:37.100302+00:00",
+      "round_trip_ms": 71,
+      "estimated_server_minus_browser_host_ms": 1284.5,
+      "uncertainty_half_rtt_ms": 35.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:36.547Z",
+      "local_after_utc": "2026-10-29T09:39:36.613Z",
+      "server_observed_at_utc": "2026-10-29T09:39:37.871115+00:00",
+      "round_trip_ms": 66,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 33
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:37.269Z",
+      "local_after_utc": "2026-10-29T09:39:37.328Z",
+      "server_observed_at_utc": "2026-10-29T09:39:38.587659+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1288.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:37.986Z",
+      "local_after_utc": "2026-10-29T09:39:38.040Z",
+      "server_observed_at_utc": "2026-10-29T09:39:39.304180+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:38.706Z",
+      "local_after_utc": "2026-10-29T09:39:38.760Z",
+      "server_observed_at_utc": "2026-10-29T09:39:40.024499+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:39.427Z",
+      "local_after_utc": "2026-10-29T09:39:39.492Z",
+      "server_observed_at_utc": "2026-10-29T09:39:40.748351+00:00",
+      "round_trip_ms": 65,
+      "estimated_server_minus_browser_host_ms": 1288.5,
+      "uncertainty_half_rtt_ms": 32.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:40.147Z",
+      "local_after_utc": "2026-10-29T09:39:40.201Z",
+      "server_observed_at_utc": "2026-10-29T09:39:41.465147+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:40.866Z",
+      "local_after_utc": "2026-10-29T09:39:40.923Z",
+      "server_observed_at_utc": "2026-10-29T09:39:42.185135+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:41.588Z",
+      "local_after_utc": "2026-10-29T09:39:41.647Z",
+      "server_observed_at_utc": "2026-10-29T09:39:42.907272+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:42.307Z",
+      "local_after_utc": "2026-10-29T09:39:42.399Z",
+      "server_observed_at_utc": "2026-10-29T09:39:43.626521+00:00",
+      "round_trip_ms": 92,
+      "estimated_server_minus_browser_host_ms": 1273,
+      "uncertainty_half_rtt_ms": 46
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:43.056Z",
+      "local_after_utc": "2026-10-29T09:39:43.161Z",
+      "server_observed_at_utc": "2026-10-29T09:39:44.403332+00:00",
+      "round_trip_ms": 105,
+      "estimated_server_minus_browser_host_ms": 1294.5,
+      "uncertainty_half_rtt_ms": 52.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:43.825Z",
+      "local_after_utc": "2026-10-29T09:39:43.889Z",
+      "server_observed_at_utc": "2026-10-29T09:39:45.143602+00:00",
+      "round_trip_ms": 64,
+      "estimated_server_minus_browser_host_ms": 1286,
+      "uncertainty_half_rtt_ms": 32
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:44.544Z",
+      "local_after_utc": "2026-10-29T09:39:44.599Z",
+      "server_observed_at_utc": "2026-10-29T09:39:45.862321+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:45.261Z",
+      "local_after_utc": "2026-10-29T09:39:45.319Z",
+      "server_observed_at_utc": "2026-10-29T09:39:46.580213+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:45.980Z",
+      "local_after_utc": "2026-10-29T09:39:46.036Z",
+      "server_observed_at_utc": "2026-10-29T09:39:47.300298+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1292,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:46.722Z",
+      "local_after_utc": "2026-10-29T09:39:46.776Z",
+      "server_observed_at_utc": "2026-10-29T09:39:48.040219+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:47.445Z",
+      "local_after_utc": "2026-10-29T09:39:47.523Z",
+      "server_observed_at_utc": "2026-10-29T09:39:48.763821+00:00",
+      "round_trip_ms": 78,
+      "estimated_server_minus_browser_host_ms": 1279,
+      "uncertainty_half_rtt_ms": 39
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:48.184Z",
+      "local_after_utc": "2026-10-29T09:39:48.239Z",
+      "server_observed_at_utc": "2026-10-29T09:39:49.502517+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:48.906Z",
+      "local_after_utc": "2026-10-29T09:39:48.961Z",
+      "server_observed_at_utc": "2026-10-29T09:39:50.224883+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:49.619Z",
+      "local_after_utc": "2026-10-29T09:39:49.694Z",
+      "server_observed_at_utc": "2026-10-29T09:39:50.939034+00:00",
+      "round_trip_ms": 75,
+      "estimated_server_minus_browser_host_ms": 1282.5,
+      "uncertainty_half_rtt_ms": 37.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:50.360Z",
+      "local_after_utc": "2026-10-29T09:39:50.467Z",
+      "server_observed_at_utc": "2026-10-29T09:39:51.727553+00:00",
+      "round_trip_ms": 107,
+      "estimated_server_minus_browser_host_ms": 1313.5,
+      "uncertainty_half_rtt_ms": 53.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:51.125Z",
+      "local_after_utc": "2026-10-29T09:39:51.201Z",
+      "server_observed_at_utc": "2026-10-29T09:39:52.444417+00:00",
+      "round_trip_ms": 76,
+      "estimated_server_minus_browser_host_ms": 1281,
+      "uncertainty_half_rtt_ms": 38
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:51.861Z",
+      "local_after_utc": "2026-10-29T09:39:51.979Z",
+      "server_observed_at_utc": "2026-10-29T09:39:53.241098+00:00",
+      "round_trip_ms": 118,
+      "estimated_server_minus_browser_host_ms": 1321,
+      "uncertainty_half_rtt_ms": 59
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:52.640Z",
+      "local_after_utc": "2026-10-29T09:39:52.722Z",
+      "server_observed_at_utc": "2026-10-29T09:39:53.977589+00:00",
+      "round_trip_ms": 82,
+      "estimated_server_minus_browser_host_ms": 1296,
+      "uncertainty_half_rtt_ms": 41
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:53.391Z",
+      "local_after_utc": "2026-10-29T09:39:53.459Z",
+      "server_observed_at_utc": "2026-10-29T09:39:54.709381+00:00",
+      "round_trip_ms": 68,
+      "estimated_server_minus_browser_host_ms": 1284,
+      "uncertainty_half_rtt_ms": 34
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:54.113Z",
+      "local_after_utc": "2026-10-29T09:39:54.186Z",
+      "server_observed_at_utc": "2026-10-29T09:39:55.431776+00:00",
+      "round_trip_ms": 73,
+      "estimated_server_minus_browser_host_ms": 1281.5,
+      "uncertainty_half_rtt_ms": 36.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:54.850Z",
+      "local_after_utc": "2026-10-29T09:39:54.912Z",
+      "server_observed_at_utc": "2026-10-29T09:39:56.172731+00:00",
+      "round_trip_ms": 62,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 31
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:55.578Z",
+      "local_after_utc": "2026-10-29T09:39:55.638Z",
+      "server_observed_at_utc": "2026-10-29T09:39:56.902095+00:00",
+      "round_trip_ms": 60,
+      "estimated_server_minus_browser_host_ms": 1294,
+      "uncertainty_half_rtt_ms": 30
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:56.301Z",
+      "local_after_utc": "2026-10-29T09:39:56.379Z",
+      "server_observed_at_utc": "2026-10-29T09:39:57.620840+00:00",
+      "round_trip_ms": 78,
+      "estimated_server_minus_browser_host_ms": 1280,
+      "uncertainty_half_rtt_ms": 39
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:57.068Z",
+      "local_after_utc": "2026-10-29T09:39:57.127Z",
+      "server_observed_at_utc": "2026-10-29T09:39:58.389877+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:57.791Z",
+      "local_after_utc": "2026-10-29T09:39:57.848Z",
+      "server_observed_at_utc": "2026-10-29T09:39:59.110703+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:58.501Z",
+      "local_after_utc": "2026-10-29T09:39:58.563Z",
+      "server_observed_at_utc": "2026-10-29T09:39:59.820793+00:00",
+      "round_trip_ms": 62,
+      "estimated_server_minus_browser_host_ms": 1288,
+      "uncertainty_half_rtt_ms": 31
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:59.224Z",
+      "local_after_utc": "2026-10-29T09:39:59.281Z",
+      "server_observed_at_utc": "2026-10-29T09:40:00.542950+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:39:59.942Z",
+      "local_after_utc": "2026-10-29T09:40:00.080Z",
+      "server_observed_at_utc": "2026-10-29T09:40:01.335460+00:00",
+      "round_trip_ms": 138,
+      "estimated_server_minus_browser_host_ms": 1324,
+      "uncertainty_half_rtt_ms": 69
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:00.743Z",
+      "local_after_utc": "2026-10-29T09:40:00.806Z",
+      "server_observed_at_utc": "2026-10-29T09:40:02.067058+00:00",
+      "round_trip_ms": 63,
+      "estimated_server_minus_browser_host_ms": 1292.5,
+      "uncertainty_half_rtt_ms": 31.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:01.465Z",
+      "local_after_utc": "2026-10-29T09:40:01.527Z",
+      "server_observed_at_utc": "2026-10-29T09:40:02.785636+00:00",
+      "round_trip_ms": 62,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 31
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:02.188Z",
+      "local_after_utc": "2026-10-29T09:40:02.256Z",
+      "server_observed_at_utc": "2026-10-29T09:40:03.507568+00:00",
+      "round_trip_ms": 68,
+      "estimated_server_minus_browser_host_ms": 1285,
+      "uncertainty_half_rtt_ms": 34
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:02.924Z",
+      "local_after_utc": "2026-10-29T09:40:03.003Z",
+      "server_observed_at_utc": "2026-10-29T09:40:04.242788+00:00",
+      "round_trip_ms": 79,
+      "estimated_server_minus_browser_host_ms": 1278.5,
+      "uncertainty_half_rtt_ms": 39.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:03.657Z",
+      "local_after_utc": "2026-10-29T09:40:03.712Z",
+      "server_observed_at_utc": "2026-10-29T09:40:04.975032+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:04.375Z",
+      "local_after_utc": "2026-10-29T09:40:04.436Z",
+      "server_observed_at_utc": "2026-10-29T09:40:05.693942+00:00",
+      "round_trip_ms": 61,
+      "estimated_server_minus_browser_host_ms": 1287.5,
+      "uncertainty_half_rtt_ms": 30.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:05.096Z",
+      "local_after_utc": "2026-10-29T09:40:05.153Z",
+      "server_observed_at_utc": "2026-10-29T09:40:06.416850+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:05.817Z",
+      "local_after_utc": "2026-10-29T09:40:05.894Z",
+      "server_observed_at_utc": "2026-10-29T09:40:07.135197+00:00",
+      "round_trip_ms": 77,
+      "estimated_server_minus_browser_host_ms": 1279.5,
+      "uncertainty_half_rtt_ms": 38.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:06.554Z",
+      "local_after_utc": "2026-10-29T09:40:06.633Z",
+      "server_observed_at_utc": "2026-10-29T09:40:07.873128+00:00",
+      "round_trip_ms": 79,
+      "estimated_server_minus_browser_host_ms": 1279.5,
+      "uncertainty_half_rtt_ms": 39.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:07.325Z",
+      "local_after_utc": "2026-10-29T09:40:07.381Z",
+      "server_observed_at_utc": "2026-10-29T09:40:08.645301+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1292,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:08.047Z",
+      "local_after_utc": "2026-10-29T09:40:08.121Z",
+      "server_observed_at_utc": "2026-10-29T09:40:09.365649+00:00",
+      "round_trip_ms": 74,
+      "estimated_server_minus_browser_host_ms": 1281,
+      "uncertainty_half_rtt_ms": 37
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:08.778Z",
+      "local_after_utc": "2026-10-29T09:40:08.836Z",
+      "server_observed_at_utc": "2026-10-29T09:40:10.096917+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:09.495Z",
+      "local_after_utc": "2026-10-29T09:40:09.615Z",
+      "server_observed_at_utc": "2026-10-29T09:40:10.874659+00:00",
+      "round_trip_ms": 120,
+      "estimated_server_minus_browser_host_ms": 1319,
+      "uncertainty_half_rtt_ms": 60
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:10.267Z",
+      "local_after_utc": "2026-10-29T09:40:10.384Z",
+      "server_observed_at_utc": "2026-10-29T09:40:11.638550+00:00",
+      "round_trip_ms": 117,
+      "estimated_server_minus_browser_host_ms": 1312.5,
+      "uncertainty_half_rtt_ms": 58.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:11.043Z",
+      "local_after_utc": "2026-10-29T09:40:11.114Z",
+      "server_observed_at_utc": "2026-10-29T09:40:12.367444+00:00",
+      "round_trip_ms": 71,
+      "estimated_server_minus_browser_host_ms": 1288.5,
+      "uncertainty_half_rtt_ms": 35.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:11.781Z",
+      "local_after_utc": "2026-10-29T09:40:11.846Z",
+      "server_observed_at_utc": "2026-10-29T09:40:13.100569+00:00",
+      "round_trip_ms": 65,
+      "estimated_server_minus_browser_host_ms": 1286.5,
+      "uncertainty_half_rtt_ms": 32.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:12.506Z",
+      "local_after_utc": "2026-10-29T09:40:12.565Z",
+      "server_observed_at_utc": "2026-10-29T09:40:13.826969+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:13.225Z",
+      "local_after_utc": "2026-10-29T09:40:13.308Z",
+      "server_observed_at_utc": "2026-10-29T09:40:14.545675+00:00",
+      "round_trip_ms": 83,
+      "estimated_server_minus_browser_host_ms": 1278.5,
+      "uncertainty_half_rtt_ms": 41.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:13.975Z",
+      "local_after_utc": "2026-10-29T09:40:14.031Z",
+      "server_observed_at_utc": "2026-10-29T09:40:15.292855+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:14.693Z",
+      "local_after_utc": "2026-10-29T09:40:14.750Z",
+      "server_observed_at_utc": "2026-10-29T09:40:16.012178+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:15.418Z",
+      "local_after_utc": "2026-10-29T09:40:15.504Z",
+      "server_observed_at_utc": "2026-10-29T09:40:16.742315+00:00",
+      "round_trip_ms": 86,
+      "estimated_server_minus_browser_host_ms": 1281,
+      "uncertainty_half_rtt_ms": 43
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:16.157Z",
+      "local_after_utc": "2026-10-29T09:40:16.218Z",
+      "server_observed_at_utc": "2026-10-29T09:40:17.478441+00:00",
+      "round_trip_ms": 61,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 30.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:16.881Z",
+      "local_after_utc": "2026-10-29T09:40:16.959Z",
+      "server_observed_at_utc": "2026-10-29T09:40:18.200095+00:00",
+      "round_trip_ms": 78,
+      "estimated_server_minus_browser_host_ms": 1280,
+      "uncertainty_half_rtt_ms": 39
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:17.648Z",
+      "local_after_utc": "2026-10-29T09:40:17.706Z",
+      "server_observed_at_utc": "2026-10-29T09:40:18.967028+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:18.369Z",
+      "local_after_utc": "2026-10-29T09:40:18.429Z",
+      "server_observed_at_utc": "2026-10-29T09:40:19.689657+00:00",
+      "round_trip_ms": 60,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 30
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:19.085Z",
+      "local_after_utc": "2026-10-29T09:40:19.212Z",
+      "server_observed_at_utc": "2026-10-29T09:40:20.470255+00:00",
+      "round_trip_ms": 127,
+      "estimated_server_minus_browser_host_ms": 1321.5,
+      "uncertainty_half_rtt_ms": 63.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:19.870Z",
+      "local_after_utc": "2026-10-29T09:40:19.933Z",
+      "server_observed_at_utc": "2026-10-29T09:40:21.191817+00:00",
+      "round_trip_ms": 63,
+      "estimated_server_minus_browser_host_ms": 1289.5,
+      "uncertainty_half_rtt_ms": 31.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:20.593Z",
+      "local_after_utc": "2026-10-29T09:40:20.661Z",
+      "server_observed_at_utc": "2026-10-29T09:40:21.913451+00:00",
+      "round_trip_ms": 68,
+      "estimated_server_minus_browser_host_ms": 1286,
+      "uncertainty_half_rtt_ms": 34
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:21.329Z",
+      "local_after_utc": "2026-10-29T09:40:21.388Z",
+      "server_observed_at_utc": "2026-10-29T09:40:22.649761+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:22.049Z",
+      "local_after_utc": "2026-10-29T09:40:22.105Z",
+      "server_observed_at_utc": "2026-10-29T09:40:23.368031+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:22.758Z",
+      "local_after_utc": "2026-10-29T09:40:22.814Z",
+      "server_observed_at_utc": "2026-10-29T09:40:24.076916+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:23.478Z",
+      "local_after_utc": "2026-10-29T09:40:23.532Z",
+      "server_observed_at_utc": "2026-10-29T09:40:24.796025+00:00",
+      "round_trip_ms": 54,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 27
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:24.195Z",
+      "local_after_utc": "2026-10-29T09:40:24.255Z",
+      "server_observed_at_utc": "2026-10-29T09:40:25.514900+00:00",
+      "round_trip_ms": 60,
+      "estimated_server_minus_browser_host_ms": 1289,
+      "uncertainty_half_rtt_ms": 30
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:24.914Z",
+      "local_after_utc": "2026-10-29T09:40:24.973Z",
+      "server_observed_at_utc": "2026-10-29T09:40:26.231885+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1287.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:25.632Z",
+      "local_after_utc": "2026-10-29T09:40:25.690Z",
+      "server_observed_at_utc": "2026-10-29T09:40:26.951320+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:26.352Z",
+      "local_after_utc": "2026-10-29T09:40:26.473Z",
+      "server_observed_at_utc": "2026-10-29T09:40:27.734982+00:00",
+      "round_trip_ms": 121,
+      "estimated_server_minus_browser_host_ms": 1321.5,
+      "uncertainty_half_rtt_ms": 60.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:27.138Z",
+      "local_after_utc": "2026-10-29T09:40:27.196Z",
+      "server_observed_at_utc": "2026-10-29T09:40:28.457901+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:27.875Z",
+      "local_after_utc": "2026-10-29T09:40:27.933Z",
+      "server_observed_at_utc": "2026-10-29T09:40:29.194790+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1290,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:28.598Z",
+      "local_after_utc": "2026-10-29T09:40:28.679Z",
+      "server_observed_at_utc": "2026-10-29T09:40:29.923565+00:00",
+      "round_trip_ms": 81,
+      "estimated_server_minus_browser_host_ms": 1284.5,
+      "uncertainty_half_rtt_ms": 40.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:29.342Z",
+      "local_after_utc": "2026-10-29T09:40:29.401Z",
+      "server_observed_at_utc": "2026-10-29T09:40:30.663195+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:30.066Z",
+      "local_after_utc": "2026-10-29T09:40:30.121Z",
+      "server_observed_at_utc": "2026-10-29T09:40:31.385350+00:00",
+      "round_trip_ms": 55,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 27.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:30.789Z",
+      "local_after_utc": "2026-10-29T09:40:30.848Z",
+      "server_observed_at_utc": "2026-10-29T09:40:32.109743+00:00",
+      "round_trip_ms": 59,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 29.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:31.509Z",
+      "local_after_utc": "2026-10-29T09:40:31.566Z",
+      "server_observed_at_utc": "2026-10-29T09:40:32.828176+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1290.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:32.218Z",
+      "local_after_utc": "2026-10-29T09:40:32.294Z",
+      "server_observed_at_utc": "2026-10-29T09:40:33.537537+00:00",
+      "round_trip_ms": 76,
+      "estimated_server_minus_browser_host_ms": 1281,
+      "uncertainty_half_rtt_ms": 38
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:32.955Z",
+      "local_after_utc": "2026-10-29T09:40:33.011Z",
+      "server_observed_at_utc": "2026-10-29T09:40:34.274944+00:00",
+      "round_trip_ms": 56,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 28
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:33.674Z",
+      "local_after_utc": "2026-10-29T09:40:33.731Z",
+      "server_observed_at_utc": "2026-10-29T09:40:34.994425+00:00",
+      "round_trip_ms": 57,
+      "estimated_server_minus_browser_host_ms": 1291.5,
+      "uncertainty_half_rtt_ms": 28.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:34.395Z",
+      "local_after_utc": "2026-10-29T09:40:34.476Z",
+      "server_observed_at_utc": "2026-10-29T09:40:35.716128+00:00",
+      "round_trip_ms": 81,
+      "estimated_server_minus_browser_host_ms": 1280.5,
+      "uncertainty_half_rtt_ms": 40.5
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:35.132Z",
+      "local_after_utc": "2026-10-29T09:40:35.190Z",
+      "server_observed_at_utc": "2026-10-29T09:40:36.452682+00:00",
+      "round_trip_ms": 58,
+      "estimated_server_minus_browser_host_ms": 1291,
+      "uncertainty_half_rtt_ms": 29
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:35.855Z",
+      "local_after_utc": "2026-10-29T09:40:35.939Z",
+      "server_observed_at_utc": "2026-10-29T09:40:37.192099+00:00",
+      "round_trip_ms": 84,
+      "estimated_server_minus_browser_host_ms": 1295,
+      "uncertainty_half_rtt_ms": 42
+    },
+    {
+      "local_before_utc": "2026-10-29T09:40:36.596Z",
+      "local_after_utc": "2026-10-29T09:40:36.669Z",
+      "server_observed_at_utc": "2026-10-29T09:40:37.914786+00:00",
+      "round_trip_ms": 73,
+      "estimated_server_minus_browser_host_ms": 1281.5,
+      "uncertainty_half_rtt_ms": 36.5
+    }
+  ],
+  "synchronization_note": "Estimated cross-host alignment using the shortest measured HTTP round trip and server observed_at_utc; preserve RTT and 25 fps frame quantization uncertainty.",
+  "view": "Existing workbench frontend connected to this run through isolated capture adapter on loopback; not the original longrun server.",
+  "identity_projection": "AICs mapped to A01-A07; provider identity, credentials, endpoints and machine paths removed. Numeric business results retained.",
+  "cleanup": {
+    "close_checks": {
+      "no_group_sessions": true,
+      "no_inbound_groups": true,
+      "inbox_cancelled": true,
+      "connection_closed": true,
+      "owned_group_disconnected": true,
+      "no_cleanup_warnings": true
+    },
+    "resource_restore": "completed",
+    "independent_final_H00": {
+      "run_id": "access-validation-f10-final-H00",
+      "duration_seconds": 30.003,
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "unresolved_intents": 0,
+      "resolved_unknown_intents": 0,
+      "passed": true,
+      "events": [
+        {
+          "request_key": "load-access-validation-f10-final-H00-000000",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 0.007,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000000",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/99c53dd0-102f-47f5-b990-650e5ffd5fc4",
+          "elapsed_seconds": 1.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000000",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/99c53dd0-102f-47f5-b990-650e5ffd5fc4/cancel",
+          "elapsed_seconds": 2.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000001",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 3.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000001",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/beb75dd4-83b4-4796-aad6-766f9c9b57af",
+          "elapsed_seconds": 4.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000001",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/beb75dd4-83b4-4796-aad6-766f9c9b57af/cancel",
+          "elapsed_seconds": 5.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000002",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 6.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000002",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/c35f3ca9-fc19-4359-b0b3-8b473877a5b8",
+          "elapsed_seconds": 7.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000002",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/c35f3ca9-fc19-4359-b0b3-8b473877a5b8/cancel",
+          "elapsed_seconds": 8.012,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000003",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 9.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000003",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/1266faeb-f8f1-4e13-8970-d6723ade05f7",
+          "elapsed_seconds": 10.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000003",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/1266faeb-f8f1-4e13-8970-d6723ade05f7/cancel",
+          "elapsed_seconds": 11.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000004",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 12.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000004",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/542f78d4-be6f-4bd7-b4f6-23e9b57cf411",
+          "elapsed_seconds": 13.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000004",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/542f78d4-be6f-4bd7-b4f6-23e9b57cf411/cancel",
+          "elapsed_seconds": 14.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000005",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 15.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000005",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/388e4bd2-366c-4306-a5e4-0637f55147a4",
+          "elapsed_seconds": 16.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000005",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/388e4bd2-366c-4306-a5e4-0637f55147a4/cancel",
+          "elapsed_seconds": 17.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000006",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 18.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000006",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/d56a94bb-d4d0-444c-ac1c-60dbccbb2285",
+          "elapsed_seconds": 19.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000006",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/d56a94bb-d4d0-444c-ac1c-60dbccbb2285/cancel",
+          "elapsed_seconds": 20.006,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000007",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 21.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000007",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/e0076012-8f7d-4954-b2a7-972eb9fe561d",
+          "elapsed_seconds": 22.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000007",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/e0076012-8f7d-4954-b2a7-972eb9fe561d/cancel",
+          "elapsed_seconds": 23.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000008",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 24.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000008",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/c9a25c88-0545-4626-a448-7f458e652644",
+          "elapsed_seconds": 25.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000008",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/c9a25c88-0545-4626-a448-7f458e652644/cancel",
+          "elapsed_seconds": 26.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000009",
+          "phase": "create",
+          "method": "POST",
+          "path": "/orders",
+          "elapsed_seconds": 27.002,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000009",
+          "phase": "query",
+          "method": "GET",
+          "path": "/orders/0d1a21d8-ca0f-48b8-83c6-8beb15ef4e14",
+          "elapsed_seconds": 28.001,
+          "http_status": 200,
+          "outcome": "success"
+        },
+        {
+          "request_key": "load-access-validation-f10-final-H00-000009",
+          "phase": "cancel",
+          "method": "POST",
+          "path": "/orders/0d1a21d8-ca0f-48b8-83c6-8beb15ef4e14/cancel",
+          "elapsed_seconds": 29.002,
+          "http_status": 200,
+          "outcome": "success"
+        }
+      ],
+      "state": {
+        "pending": [],
+        "completed": [
+          {
+            "request_key": "load-access-validation-f10-final-H00-000000",
+            "operation_key": "load-access-validation-f10-final-H00-000000-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "99c53dd0-102f-47f5-b990-650e5ffd5fc4"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000001",
+            "operation_key": "load-access-validation-f10-final-H00-000001-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "beb75dd4-83b4-4796-aad6-766f9c9b57af"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000002",
+            "operation_key": "load-access-validation-f10-final-H00-000002-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "c35f3ca9-fc19-4359-b0b3-8b473877a5b8"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000003",
+            "operation_key": "load-access-validation-f10-final-H00-000003-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "1266faeb-f8f1-4e13-8970-d6723ade05f7"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000004",
+            "operation_key": "load-access-validation-f10-final-H00-000004-cancel",
+            "item": "keyboard",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "542f78d4-be6f-4bd7-b4f6-23e9b57cf411"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000005",
+            "operation_key": "load-access-validation-f10-final-H00-000005-cancel",
+            "item": "pen",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "388e4bd2-366c-4306-a5e4-0637f55147a4"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000006",
+            "operation_key": "load-access-validation-f10-final-H00-000006-cancel",
+            "item": "book",
+            "quantity": 1,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "d56a94bb-d4d0-444c-ac1c-60dbccbb2285"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000007",
+            "operation_key": "load-access-validation-f10-final-H00-000007-cancel",
+            "item": "pen",
+            "quantity": 3,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "e0076012-8f7d-4954-b2a7-972eb9fe561d"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000008",
+            "operation_key": "load-access-validation-f10-final-H00-000008-cancel",
+            "item": "pen",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "c9a25c88-0545-4626-a448-7f458e652644"
+          },
+          {
+            "request_key": "load-access-validation-f10-final-H00-000009",
+            "operation_key": "load-access-validation-f10-final-H00-000009-cancel",
+            "item": "keyboard",
+            "quantity": 2,
+            "phase": "cancel",
+            "was_unknown": false,
+            "order_id": "0d1a21d8-ca0f-48b8-83c6-8beb15ef4e14"
+          }
+        ],
+        "next_index": 10
+      }
+    },
+    "batch_consumers": {
+      "status": "six_consumers_closed",
+      "receipts": [
+        {
+          "service": "application-agent",
+          "id": "482cac763b4e4b8aad81ece5bee71471d5223e90267df52a577d71245c907dd9",
+          "role": "application",
+          "sdk_cleanup_completed": true
+        },
+        {
+          "service": "database-agent",
+          "id": "5121a179d4b89e8766cf8aeae3b14636754a471a0bec2cdf5069ed4aa5f17369",
+          "role": "database",
+          "sdk_cleanup_completed": true
+        },
+        {
+          "service": "database-backup-agent",
+          "id": "e0e89f091d5a56291e71e8a95e97883e31c790bc5d7dd7c65653cb5c4d415e4b",
+          "role": "database-backup",
+          "sdk_cleanup_completed": true
+        },
+        {
+          "service": "ops-agent",
+          "id": "469b349a4811d6bed311bb0e9a32271306bff1905b5e1946af6e263ba41fa827",
+          "role": "ops",
+          "sdk_cleanup_completed": true
+        },
+        {
+          "service": "verification-agent",
+          "id": "0d4fd3c8da48c7144208f00ca52f8a661d4ad975a690f658949188733f2b1653",
+          "role": "verification",
+          "sdk_cleanup_completed": true
+        },
+        {
+          "service": "onboarding-agent",
+          "id": "307062f431562449b700423920e5a45f14b0cd6ab7c6b200d81d6b1987eec105",
+          "role": "onboarding",
+          "sdk_cleanup_completed": true
+        }
+      ],
+      "volumes_retained": true
+    },
+    "safe_to_continue": true
+  },
+  "lease_return": {
+    "aics": [
+      "A06",
+      "A07",
+      "A05",
+      "A01",
+      "A04",
+      "A02",
+      "A03"
+    ],
+    "purpose": "video-two-20261029-f3e6ef0bc1",
+    "inspection_handoff": true,
+    "lease_id": "5ebd80b404874a54a0246d591548a69a",
+    "identities_returned": true,
+    "after_batch": "resume_inspection"
+  },
+  "inspection_restoration_observed": {
+    "observed_at_utc": "2026-10-29T09:44:57.561456+00:00",
+    "host": {
+      "status": "running",
+      "session_id": "94e3b86ca00b48afa278dd8ff4c9e1f9",
+      "pid": 2734327,
+      "aics": [
+        "A06",
+        "A07",
+        "A05",
+        "A01",
+        "A04",
+        "A02",
+        "A03"
+      ],
+      "updated_at": "2026-10-29T09:44:56.101475+00:00"
+    },
+    "handoff": {
+      "request_id": "a4c91c31544840c2a3d12d1736859359",
+      "host_session": "94e3b86ca00b48afa278dd8ff4c9e1f9",
+      "action": "resume",
+      "cleanup_receipt": {
+        "resource_restored": true,
+        "h00_passed": true,
+        "consumers_closed": true,
+        "remote_groups_closed": true,
+        "evidence": "platform_batch summary.json",
+        "cases": [
+          "f10-m0-r1",
+          "e1a-after_applied-r1"
+        ]
+      },
+      "finished_at": "2026-10-29T09:43:34.508483+00:00"
+    },
+    "workbench": {
+      "connected": true,
+      "status": "completed"
+    }
+  },
+  "capture_clock_anchor": {
+    "utc": "2026-10-29T09:37:54.762672+00:00",
+    "epoch_seconds": 1793266674.7626884,
+    "monotonic_seconds": 812573.900984914
+  },
+  "capture_events": 24,
+  "method": "M0",
+  "workload_seed": 101,
+  "repeats": 1,
+  "transport": "wutong-amqps",
+  "backend": "docker",
+  "comparison_to_20261020": "Same F10/M0/seed101/repeat1 selection. This capture replaces evaluator 0.1-second pre-authorization with the actual approval channel held >=2 seconds. Therefore approval timing is a declared demonstration variation.",
+  "incident_started_at_utc": "2026-10-29T09:39:13.349062+00:00",
+  "incident_finished_at_utc": "2026-10-29T09:39:56.097179+00:00",
+  "raw_transport_event_count": 20,
+  "exported_transport_event_count": 20,
+  "incident_event_count": 40
+}

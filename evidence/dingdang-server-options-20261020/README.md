@@ -57,7 +57,7 @@
 - [官方 v2.2.0 群组 Partner](https://github.com/AIP-PUB/ACPs-community/blob/v2.2.0/acps-sdk/acps_sdk/aip/aip_group_partner.py)及[身份模块](https://github.com/AIP-PUB/ACPs-community/blob/v2.2.0/acps-sdk/acps_sdk/aip/aip_group_identity.py)。
 - [官方 MQ 授权源码](https://github.com/AIP-PUB/ACPs-community/blob/94077d10b336bfdb9a7d68e4859390bf44a67a27/mq-auth-server/app/services/authz.py)与[群组接口](https://github.com/AIP-PUB/ACPs-community/blob/94077d10b336bfdb9a7d68e4859390bf44a67a27/mq-auth-server/app/api/groups.py)。这是公开实现的代码证据，未取得线上 MQ 管理权限或核验线上具体版本。
 - [官方直接 mTLS 测试](https://github.com/AIP-PUB/ACPs-community/blob/94077d10b336bfdb9a7d68e4859390bf44a67a27/acps-sdk/tests/integration/test_aip_direct_mtls_identity.py)。
-- [Registry OpenAPI](https://wt.ioa.pub/registry-server/openapi.json)、[当前体检 ACS](https://wt.ioa.pub/registry-server/acps-atr-v2/acs/1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF)、[平台指南](https://wt.ioa.pub/docs.html)。
+- [Registry OpenAPI](https://wt.ioa.pub/registry-server/openapi.json)、[当前体检 ACS](https://wt.ioa.pub/registry-server/acps-atr-v2/acs/1.2.156.3088.1.0000.000000.000000.000000.0007)、[平台指南](https://wt.ioa.pub/docs.html)。
 - [RabbitMQ Validated User-ID](https://www.rabbitmq.com/docs/validated-user-id)：发送方不设置该属性时，接收端不会因此获知发布者身份。
 
 本轮仅访问官方公开资料和执行本地测试；云端只用来读取公开 HTTP 接口，未修改云端文件、配置或运行服务。

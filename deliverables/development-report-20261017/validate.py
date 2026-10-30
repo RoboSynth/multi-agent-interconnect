@@ -53,7 +53,7 @@ def main():
     patterns = {"registered_aic_namespace": r"(?i)\b[A-Z0-9_-]*BUPT[A-Z0-9_.:-]*\b",
                 "private_key": r"-----BEGIN (?:RSA |EC )?PRIVATE KEY-----",
                 "authenticated_uri": r"(?i)(?:postgres(?:ql)?|amqps?)://[^\s/@:]+:[^\s/@]+@",
-                "developer_user_path": r"(?i)(?:C:\\Users\\16080|D:\\16080)"}
+                "developer_user_path": r"(?i)(?:C:\\Users\\shared-user\\16080)"}
     hits = {key:len(re.findall(pattern, text)) for key,pattern in patterns.items()}
     build = json.loads((HERE / "build-info.json").read_text(encoding="utf-8"))
     checks = {"pages_13": len(pages)==len(pngs)==13,

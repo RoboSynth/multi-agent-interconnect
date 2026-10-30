@@ -1,0 +1,22 @@
+const fs=require('fs'),path=require('path');
+const {registryMask}=require('./browser-masks.cjs');
+const cache=process.env.VIDEO_PRIVATE_DIR;
+if(!cache)throw new Error('VIDEO_PRIVATE_DIR required');
+const tools=JSON.parse(fs.readFileSync('D:/Tools/ClaudeToolchain/config/tools.json','utf8'));
+const {chromium}=require(process.env.PLAYWRIGHT_PACKAGE||'D:/Tools/ClaudeToolchain/browser/node_modules/playwright');
+(async()=>{
+ const browser=await chromium.launch({channel:'chrome',headless:true});
+ const context=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:2,storageState:path.join(cache,'registry-auth.json')});
+ await context.addInitScript(registryMask);const page=await context.newPage();
+ await page.goto('https://wt.ioa.pub/registry/#/my-agents/index');
+ const row=page.getByRole('row').filter({has:page.getByRole('cell',{name:'跨域故障协调智能体',exact:true})});await row.waitFor();
+ await page.screenshot({path:path.join(cache,'registry-list-preview.png')});
+ await row.getByRole('button',{name:'详情',exact:true}).click();
+ await page.getByRole('heading',{name:'审批信息',exact:true}).waitFor();
+ await page.screenshot({path:path.join(cache,'registry-detail-preview.png')});
+ const area=page.getByRole('textbox',{name:'ACS',exact:true});
+ await area.scrollIntoViewIfNeeded();await page.evaluate(()=>window.__refreshPrivacyMasks?.());
+ await page.screenshot({path:path.join(cache,'registry-acs-preview.png')});
+ console.log(JSON.stringify({list:true,detail:true,acs:true,area:await area.boundingBox(),maskCount:await page.locator('[data-video-mask-box]').count()}));
+ await browser.close();
+})().catch(e=>{console.error(e.message);process.exitCode=1});

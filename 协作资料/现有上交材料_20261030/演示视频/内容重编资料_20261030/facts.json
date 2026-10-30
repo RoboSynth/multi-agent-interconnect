@@ -1,0 +1,125 @@
+{
+  "schema": "content-reedit-facts/1",
+  "prepared_at": "2026-10-30",
+  "source_date": "2026-10-29",
+  "source_base": "..",
+  "main_case": {
+    "case": "F10",
+    "method": "M0",
+    "model_calls": 0,
+    "faults": [
+      {
+        "name": "入口仍指向旧版本",
+        "evidence_tool": "ops.route_status",
+        "before": "v1",
+        "after": "v2",
+        "source": "V3-f10/incident-state.json:tasks[1],tasks[5]"
+      },
+      {
+        "name": "数据库处于只读状态",
+        "evidence_tool": "db.read_only_status",
+        "before": true,
+        "after": false,
+        "source": "V3-f10/incident-state.json:tasks[3],tasks[6]"
+      }
+    ],
+    "actual_modification_order": [
+      {
+        "step": 1,
+        "label": "恢复正确入口",
+        "tool": "ops.route_rollback",
+        "reason": "入口仍指向旧版本",
+        "started_beijing": "2026-10-29T17:39:15.746068+08:00",
+        "source": "V3-f10/incident-state.json:events[15..17],tasks[5]"
+      },
+      {
+        "step": 2,
+        "label": "审批后恢复数据库写入",
+        "tool": "db.restore_writes",
+        "reason": "数据库观察确认只读",
+        "approval_requested_beijing": "2026-10-29T17:39:18.638716+08:00",
+        "approval_granted_beijing": "2026-10-29T17:39:21.958909+08:00",
+        "started_beijing": "2026-10-29T17:39:21.960589+08:00",
+        "source": "V3-f10/incident-state.json:approvals[0],events[18..22],tasks[6]"
+      },
+      {
+        "step": 3,
+        "label": "重建应用连接池",
+        "tool": "application.pool_rebuild",
+        "reason": "数据库已恢复读写，应用需建立新连接",
+        "started_beijing": "2026-10-29T17:39:24.126237+08:00",
+        "pool_revision_before": 18,
+        "pool_revision_after": 19,
+        "source": "V3-f10/incident-state.json:planning_history[18],events[32..34],tasks[10]"
+      }
+    ],
+    "final_verification": {
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "workflow_phases": [
+        "创建",
+        "查询",
+        "取消"
+      ],
+      "duration_seconds": 30.002,
+      "source": "V3-f10/incident-state.json:result.order_observation"
+    },
+    "continuous_observation": {
+      "samples": 52,
+      "success": 36,
+      "unknown_at_sample_time": 16,
+      "baseline_samples": 5,
+      "post_injection_summary_requests": 47,
+      "post_injection_summary_success": 31,
+      "recovery_confirmed": true,
+      "source": "V3-f10/order-samples.json:samples,summary;V3-f10/scope.md"
+    },
+    "method_display": "按预设规则检查"
+  },
+  "takeover_case": {
+    "case": "E1-a",
+    "crash_point": "after_applied",
+    "model_calls": 0,
+    "interrupted_object": "数据库主执行智能体的工作进程",
+    "exit_code": 83,
+    "ledger_state_at_exit": "applied",
+    "task_result_submitted_before_exit": false,
+    "trigger": "TimeoutError",
+    "backup_operation_state": "skipped_already_applied",
+    "backup_display_label": "读取操作记录，跳过已完成修改",
+    "backup_read_only_result": false,
+    "backup_result_is_reused": true,
+    "modifying_mcp_invocations_for_restore_writes": 1,
+    "primary_original_receipt": "未确认",
+    "source": [
+      "V4-takeover/primary-trace.jsonl:line4",
+      "V4-takeover/handover-message-excerpts.json:[0],[1]",
+      "V4-takeover/result.json:worker_exit_and_mcp,journal_resolution"
+    ],
+    "final_verification": {
+      "requests": 30,
+      "success": 30,
+      "failed": 0,
+      "unknown": 0,
+      "completed_workflows": 10,
+      "duration_seconds": 30.002,
+      "source": "V4-takeover/result.json:business_verification"
+    },
+    "diagram_sequence": [
+      "修改工具返回",
+      "共用操作记录保存结果",
+      "主执行智能体退出，尚未回复",
+      "协调者等待超时",
+      "查找备用并交接任务",
+      "备用读取记录，跳过已完成修改",
+      "重建应用连接池",
+      "创建、查询并取消订单"
+    ],
+    "primary_original_receipt_display": "主执行智能体工具任务回执未确认"
+  },
+  "result_card_scope": "每个案例各自的最终30秒订单验证",
+  "technical_scope_reference": "01_内容事实与证据.md:7. 运行方法与版本"
+}

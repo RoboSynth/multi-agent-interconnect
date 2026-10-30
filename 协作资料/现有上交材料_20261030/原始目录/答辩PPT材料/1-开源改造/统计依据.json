@@ -1,0 +1,2488 @@
+{
+  "observed_at_utc": "2026-10-29T14:00:54.473969+00:00",
+  "source_base_commit": "c88b203ff417dca0b028784a569e741d62db2c02",
+  "source_includes_working_tree": true,
+  "upstream_commit": "3985c1330209f075c124669cc9d31f0e75448140",
+  "upstream_archive_url": "https://codeload.github.com/AIP-PUB/ACPs-community/zip/3985c1330209f075c124669cc9d31f0e75448140",
+  "upstream_archive_sha256": "7194a10fe597b2f0bd712196f9a8ee024f85cb68e7b733e83e464b75e1b1fc70",
+  "line_method": "physical lines including comments and blank lines; CRLF normalized to LF; generated artifacts excluded",
+  "changed_files": 30,
+  "added": 3303,
+  "removed": 149,
+  "unchanged_runtime_files": 54,
+  "unchanged_runtime_lines": 11659,
+  "unchanged_runtime": [
+    {
+      "path": "acps_sdk/__init__.py",
+      "lines": 13
+    },
+    {
+      "path": "acps_sdk/acs/__init__.py",
+      "lines": 48
+    },
+    {
+      "path": "acps_sdk/acs/models.py",
+      "lines": 642
+    },
+    {
+      "path": "acps_sdk/adp/__init__.py",
+      "lines": 236
+    },
+    {
+      "path": "acps_sdk/adp/constants.py",
+      "lines": 119
+    },
+    {
+      "path": "acps_sdk/adp/errors.py",
+      "lines": 285
+    },
+    {
+      "path": "acps_sdk/adp/models.py",
+      "lines": 775
+    },
+    {
+      "path": "acps_sdk/adp/validators.py",
+      "lines": 422
+    },
+    {
+      "path": "acps_sdk/aic/__init__.py",
+      "lines": 591
+    },
+    {
+      "path": "acps_sdk/aip/__init__.py",
+      "lines": 184
+    },
+    {
+      "path": "acps_sdk/aip/access_status.py",
+      "lines": 45
+    },
+    {
+      "path": "acps_sdk/aip/aip_base_model.py",
+      "lines": 181
+    },
+    {
+      "path": "acps_sdk/aip/aip_group_identity.py",
+      "lines": 110
+    },
+    {
+      "path": "acps_sdk/aip/aip_group_model.py",
+      "lines": 314
+    },
+    {
+      "path": "acps_sdk/aip/aip_group_runtime.py",
+      "lines": 204
+    },
+    {
+      "path": "acps_sdk/aip/aip_identity.py",
+      "lines": 291
+    },
+    {
+      "path": "acps_sdk/aip/aip_notification_client.py",
+      "lines": 345
+    },
+    {
+      "path": "acps_sdk/aip/aip_notification_model.py",
+      "lines": 138
+    },
+    {
+      "path": "acps_sdk/aip/aip_notification_server.py",
+      "lines": 622
+    },
+    {
+      "path": "acps_sdk/aip/aip_peer_cert.py",
+      "lines": 162
+    },
+    {
+      "path": "acps_sdk/aip/aip_rpc_client.py",
+      "lines": 329
+    },
+    {
+      "path": "acps_sdk/aip/aip_rpc_model.py",
+      "lines": 57
+    },
+    {
+      "path": "acps_sdk/aip/aip_rpc_server.py",
+      "lines": 453
+    },
+    {
+      "path": "acps_sdk/aip/aip_stream_client.py",
+      "lines": 356
+    },
+    {
+      "path": "acps_sdk/aip/aip_stream_model.py",
+      "lines": 114
+    },
+    {
+      "path": "acps_sdk/aip/aip_stream_server.py",
+      "lines": 502
+    },
+    {
+      "path": "acps_sdk/amp/access_emitter.py",
+      "lines": 80
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/__init__.py",
+      "lines": 43
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/bootstrap.py",
+      "lines": 58
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/engine.py",
+      "lines": 235
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/errors.py",
+      "lines": 32
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/models.py",
+      "lines": 26
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/snapshot.py",
+      "lines": 109
+    },
+    {
+      "path": "acps_sdk/amp/alive_sync/store.py",
+      "lines": 106
+    },
+    {
+      "path": "acps_sdk/amp/emitter.py",
+      "lines": 103
+    },
+    {
+      "path": "acps_sdk/amp/heartbeat_emitter.py",
+      "lines": 72
+    },
+    {
+      "path": "acps_sdk/amp/heartbeat_sync.py",
+      "lines": 191
+    },
+    {
+      "path": "acps_sdk/amp/metrics_catalog.py",
+      "lines": 232
+    },
+    {
+      "path": "acps_sdk/amp/metrics_demo.py",
+      "lines": 134
+    },
+    {
+      "path": "acps_sdk/amp/metrics_emitter.py",
+      "lines": 95
+    },
+    {
+      "path": "acps_sdk/amp/models.py",
+      "lines": 688
+    },
+    {
+      "path": "acps_sdk/amp/signer.py",
+      "lines": 227
+    },
+    {
+      "path": "acps_sdk/amp/system_emitter.py",
+      "lines": 94
+    },
+    {
+      "path": "acps_sdk/amp/trace_context.py",
+      "lines": 52
+    },
+    {
+      "path": "acps_sdk/oidc/__init__.py",
+      "lines": 105
+    },
+    {
+      "path": "acps_sdk/oidc/client.py",
+      "lines": 544
+    },
+    {
+      "path": "acps_sdk/oidc/config.py",
+      "lines": 114
+    },
+    {
+      "path": "acps_sdk/oidc/discovery.py",
+      "lines": 104
+    },
+    {
+      "path": "acps_sdk/oidc/errors.py",
+      "lines": 85
+    },
+    {
+      "path": "acps_sdk/oidc/fastapi.py",
+      "lines": 141
+    },
+    {
+      "path": "acps_sdk/oidc/jwks.py",
+      "lines": 98
+    },
+    {
+      "path": "acps_sdk/oidc/keycloak.py",
+      "lines": 159
+    },
+    {
+      "path": "acps_sdk/oidc/principal.py",
+      "lines": 59
+    },
+    {
+      "path": "acps_sdk/oidc/validator.py",
+      "lines": 135
+    }
+  ],
+  "pr_diffs": {
+    "13": {
+      "files": 14,
+      "added": 1599,
+      "removed": 11,
+      "paths": [
+        {
+          "path": "acps_sdk/aip/_task_order.py",
+          "added": 26,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/aip_group_leader.py",
+          "added": 44,
+          "removed": 8
+        },
+        {
+          "path": "acps_sdk/aip/aip_group_partner.py",
+          "added": 9,
+          "removed": 1
+        },
+        {
+          "path": "acps_sdk/aip/resumable/README.md",
+          "added": 152,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/resumable/__init__.py",
+          "added": 9,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/resumable/journal.py",
+          "added": 193,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/resumable/ledger.py",
+          "added": 287,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/resumable/partner.py",
+          "added": 57,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/aip/resumable/takeover.py",
+          "added": 181,
+          "removed": 0
+        },
+        {
+          "path": "acps_sdk/amp/group_access.py",
+          "added": 92,
+          "removed": 0
+        },
+        {
+          "path": "examples/resumable_group_demo.py",
+          "added": 80,
+          "removed": 0
+        },
+        {
+          "path": "tests/aip/test_task_ordering.py",
+          "added": 58,
+          "removed": 0
+        },
+        {
+          "path": "tests/amp/test_amp_metrics_emitter.py",
+          "added": 6,
+          "removed": 2
+        },
+        {
+          "path": "tests/resumable/test_resumable.py",
+          "added": 405,
+          "removed": 0
+        }
+      ]
+    },
+    "14": {
+      "files": 3,
+      "added": 159,
+      "removed": 5,
+      "paths": [
+        {
+          "path": "acps_sdk/amp/message_emitter.py",
+          "added": 18,
+          "removed": 3
+        },
+        {
+          "path": "tests/amp/test_amp_metrics_emitter.py",
+          "added": 6,
+          "removed": 2
+        },
+        {
+          "path": "tests/amp/test_message_emitter_concurrency.py",
+          "added": 135,
+          "removed": 0
+        }
+      ]
+    }
+  },
+  "modules": [
+    {
+      "模块": "acps_mcp_bridge",
+      "职责": "身份、策略、审批、审计与MCP调用桥接",
+      ".py文件数": 11,
+      "行数": 1253,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "acps-mcp-bridge",
+      "职责": "早期桥接演示入口，单列不当作当前核心模块",
+      ".py文件数": 1,
+      "行数": 9,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "incident",
+      "职责": "事故协调、候选选择、故障观察与恢复流程",
+      ".py文件数": 17,
+      "行数": 3786,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "business",
+      "职责": "订单业务及观察负载",
+      ".py文件数": 11,
+      "行数": 928,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "domains",
+      "职责": "各资源域执行体、描述与受控工具",
+      ".py文件数": 15,
+      "行数": 1323,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "eval",
+      "职责": "场景评估与结果统计",
+      ".py文件数": 37,
+      "行数": 7459,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "ops",
+      "职责": "部署后巡检、接入体检和运行维护",
+      ".py文件数": 8,
+      "行数": 1529,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "integration",
+      "职责": "真实平台接入探测与接管集成",
+      ".py文件数": 16,
+      "行数": 2616,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "deploy",
+      "职责": "部署、服务入口与云端采集",
+      ".py文件数": 27,
+      "行数": 5138,
+      "其中测试行数": 1228
+    },
+    {
+      "模块": "工作台",
+      "职责": "工作台服务及静态界面（表内仅计Python）",
+      ".py文件数": 2,
+      "行数": 601,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "tools",
+      "职责": "打包、分析及开发辅助工具",
+      ".py文件数": 17,
+      "行数": 2663,
+      "其中测试行数": 0
+    },
+    {
+      "模块": "tests",
+      "职责": "仓库公共测试；不重复分摊到业务模块",
+      ".py文件数": 91,
+      "行数": 16338,
+      "其中测试行数": 16338
+    },
+    {
+      "模块": "根目录其他Python",
+      "职责": "运行、验证和压力脚本",
+      ".py文件数": 9,
+      "行数": 2670,
+      "其中测试行数": 0
+    }
+  ],
+  "source_files": [
+    {
+      "path": "vendor/ACPs-community/acps-sdk/.gitignore",
+      "sha256": "46064321cf16930d8529802b189347c3f7c8f3472ea67ac746a69c82e759de11",
+      "physical_lines": 263
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/__init__.py",
+      "sha256": "0aec28dae6729200a7711082329e978341e558508b1994c019418b62d601ace8",
+      "physical_lines": 13
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/acs/__init__.py",
+      "sha256": "2696c8609ae8a7e0141c3ee9573caa11a168468ce3f4698e82df86f3c9b43747",
+      "physical_lines": 48
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/acs/models.py",
+      "sha256": "dd9145bd67bf04038dff2560b77f005530d732e4018d42517d52234bc5985675",
+      "physical_lines": 642
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/acs/README.md",
+      "sha256": "af48ed51b44a2b767f1054f94363fa51ba75114c0721b51b7f85638132692ee6",
+      "physical_lines": 43
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/__init__.py",
+      "sha256": "177515ae8a911517309b183061c95d4f5b93347697c41d594db34e8d14bf61a8",
+      "physical_lines": 236
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/constants.py",
+      "sha256": "eefcd6565fba4541dc867b0ece5be90431c4aea64410fb678098aa72f1db0c31",
+      "physical_lines": 119
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/errors.py",
+      "sha256": "f8b3f0e42c2aa1b5854279cb1770e3dc60aa17a81fbc4a398b2faae46bb9a9eb",
+      "physical_lines": 285
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/models.py",
+      "sha256": "d4868349bf0b8413a89271858c6b0d01fd60aa97659d2fb287d45b35e26942ab",
+      "physical_lines": 775
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/README.md",
+      "sha256": "2eeb30c8eba89a0f0b54a42910508046f534ab2a8e88da4559dd89fb81d9be08",
+      "physical_lines": 291
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/adp/validators.py",
+      "sha256": "40febd6ba871bc2c0321642bb4452f0c15727059aa91baec60022ed506dfe3fe",
+      "physical_lines": 422
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aic/__init__.py",
+      "sha256": "fd98fbfda12afdb6bfcbee5413d7a25ac2ef4d2a653a9139e0c80d8b8f49e6bf",
+      "physical_lines": 591
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aic/README.md",
+      "sha256": "a477b9e2e7e92b10bb98c843b2592e218ff84b6726dd88216f3dd9f007efdacc",
+      "physical_lines": 190
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/__init__.py",
+      "sha256": "ac9852f05e4b4cf767862ae2b7f017fa4e6aed3018f21310f70b7b320a359c34",
+      "physical_lines": 184
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/_task_order.py",
+      "sha256": "80c9f5102fc5d56ace17cc74f98ea0e4c2faba0f6a5b300cd02c54e75579ce46",
+      "physical_lines": 26
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/access_status.py",
+      "sha256": "c520a8215ba42d75007402d3aa4bcdc2dc8185c0c7105a90f44e544a6f266132",
+      "physical_lines": 45
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_base_model.py",
+      "sha256": "ab7f700d6841eeb7355e8d2ed58334422cdfcb6a5237ba5d649160d210a721bc",
+      "physical_lines": 181
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_auth.py",
+      "sha256": "974109431e3eee3fc3639a8f435a452a84e5be3416803d7b7f6f0b6369fd4996",
+      "physical_lines": 123
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_identity.py",
+      "sha256": "412eb6ce27bee8c00e893af39ea9e3b905786946fa6ae0bee4ef45d668667840",
+      "physical_lines": 110
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_leader.py",
+      "sha256": "b710eaab6ddab4fbf7390ac744ea57450b477350b73601c183d53881c176b10b",
+      "physical_lines": 2743
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_model.py",
+      "sha256": "bbd1edb7881d1829f49889bd9cde6560cf21f7fe75aac8b396e95a007fa5b74f",
+      "physical_lines": 314
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_partner.py",
+      "sha256": "7e38725068c3d0ad47ca61ae841dceaf8ffa63ba997dd4aca69ba66717c747e2",
+      "physical_lines": 1465
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_runtime.py",
+      "sha256": "1920f23b78dfd59b60a2b46cca8bc3a0507f2d166cab97d2d04d8d342608d056",
+      "physical_lines": 204
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_identity.py",
+      "sha256": "b8748abcd802d35cd625e2a611c0ad1b6db402c559c17ddc436715ebcab819b8",
+      "physical_lines": 291
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_client.py",
+      "sha256": "d1e0f48d9d676c2331ed558cce1f4dd2b59c4e1fa2f239b93414a1cbc5c6abfb",
+      "physical_lines": 345
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_model.py",
+      "sha256": "2065f84cd2adfde1b5d53a7b4f283a0dba846de5856894764d2f9b8ac74cec44",
+      "physical_lines": 138
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_notification_server.py",
+      "sha256": "0fe98e074f8ce48fcd14f449ddc54b3bfd5ae47ea17193f83e798b2cda6689df",
+      "physical_lines": 622
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_peer_cert.py",
+      "sha256": "173262a6ca72fc5095ded8d540f67da18f8a1d0734a9e1989df9b5d2520af326",
+      "physical_lines": 162
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_client.py",
+      "sha256": "be2ba338d37da586c1dd9aeeb4494c1dbc6633ec1803946e01e74af160dad51e",
+      "physical_lines": 329
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_model.py",
+      "sha256": "53a55bac835562ac3c180881cbb654d5bc544cd078b0e362fca7f193a1f0ce0f",
+      "physical_lines": 57
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_rpc_server.py",
+      "sha256": "871ee8b2ea5b54f97c4c91c475426f3e7a3b180da4eec926604dca69407c8aca",
+      "physical_lines": 453
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_client.py",
+      "sha256": "98fbb7ba11258337979c2eed950ba670af0c3738088634671b0fd1e4a92c3d7c",
+      "physical_lines": 356
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_model.py",
+      "sha256": "2fa17eb6817e99009e39bbafdb9af30697b6736442689a84fad35856262d51f8",
+      "physical_lines": 114
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_stream_server.py",
+      "sha256": "9e839f028e43a2211f87239e206a61a8952df9ac47d06143895538d81e03caf8",
+      "physical_lines": 502
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/README.md",
+      "sha256": "70f6c9359cd39c2c0950583a9756b792fbf64ce0a886246ffc47b9542b6d95ec",
+      "physical_lines": 170
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/__init__.py",
+      "sha256": "448f1225e8dacd7c3112ee1da8106a4bf6ac15402d51cef056689b41aff3d85b",
+      "physical_lines": 9
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py",
+      "sha256": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+      "physical_lines": 193
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py",
+      "sha256": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4",
+      "physical_lines": 287
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/partner.py",
+      "sha256": "8f9d13c8fef94288edcafca59ed59d5db41e5fdee8a725146e0593128409a6cd",
+      "physical_lines": 57
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/README.md",
+      "sha256": "d3334a25f6fbf5ab97491a031bdd78ebf74c32e005d19268a58c210bfe8e69ba",
+      "physical_lines": 152
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/takeover.py",
+      "sha256": "6827d843e286f95b246d85d619cf9254f91cf6ae07a9037a24de8586a50a2580",
+      "physical_lines": 181
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/__init__.py",
+      "sha256": "bf0a524474bcf2df493db341d61c200fa022e9c66a1134766fe3215afdc248b1",
+      "physical_lines": 217
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/_message_tap.py",
+      "sha256": "a06f9c6dd0514506d056b9b9698d887a2e351d27d835e7f8f5a4a876ec3031a9",
+      "physical_lines": 114
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/access_emitter.py",
+      "sha256": "79faa279e78c0d3adc00bc3a12a79d5269fabee7bbbd1f6e9b569f5e21c85158",
+      "physical_lines": 80
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/__init__.py",
+      "sha256": "f9661af53c666de74ff8c6f3a0b816e54b4a139c75c9ee50be0cc3dae5db038d",
+      "physical_lines": 43
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/bootstrap.py",
+      "sha256": "ab00a51149177527a2676bb810bc1648410c6c89f8f387079a3ba433fa046940",
+      "physical_lines": 58
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/engine.py",
+      "sha256": "7d34f32b2a795f21ca16ec536f953d55320d9e6babbaf19f1faa35678dd8259d",
+      "physical_lines": 235
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/errors.py",
+      "sha256": "81f8c65ab90acde835a511f2f94d119a0c22dc9e77a0f243e2bf099a91add953",
+      "physical_lines": 32
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/models.py",
+      "sha256": "c96e837e55f98273641c12f888d64f350faa3a940c731470e7df2b7e6d6ba97b",
+      "physical_lines": 26
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/snapshot.py",
+      "sha256": "c08e94ec7ae603f89dd17317e47e8150a5075025cb48739978bc67c26d26adee",
+      "physical_lines": 109
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/alive_sync/store.py",
+      "sha256": "5eb11cb8f8113c0442036141e1aecabeb5b1ba7fb2a1545e099707e1e96d3a50",
+      "physical_lines": 106
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/durable_access.py",
+      "sha256": "af78150a67b2112175bfb32235c1a210cd8aed85ae3b34b9c18ea9d77963c52a",
+      "physical_lines": 242
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/emitter.py",
+      "sha256": "c4f87b4325d00d5657e0b6ff83487e789e0974d3493956a4acbe72d657aaf447",
+      "physical_lines": 103
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/group_access.py",
+      "sha256": "a7de5a9b52c53210b13ea57fc5a156c285a32819d64b999a38e32b7a91d8337e",
+      "physical_lines": 115
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/heartbeat_emitter.py",
+      "sha256": "49ebbcb34a2b26bde46f66c8492481e3f07c2bd52712cda55873ec68989853d9",
+      "physical_lines": 72
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/heartbeat_sync.py",
+      "sha256": "11248094d164db8f31bbf788665ced1fbddcb24f8ff944aa158e374c8c5776cd",
+      "physical_lines": 191
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/message_emitter.py",
+      "sha256": "172f50a8f0610b996500692508a5c1e69fc45667376d9c0b7eb503ef488102fc",
+      "physical_lines": 95
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_catalog.py",
+      "sha256": "78133c82a46a761f62e863b78005f1a0198b89b2d7ee8e29654f3291a633ab69",
+      "physical_lines": 232
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_demo.py",
+      "sha256": "48979af37b773452af7c81666515157bfce07c9daec1434596094612232f89f4",
+      "physical_lines": 134
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/metrics_emitter.py",
+      "sha256": "99cc5c40e362b6a11a5985b776f911481a6b948b5fbff4d33f8d9c3ce0c29e00",
+      "physical_lines": 95
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/models.py",
+      "sha256": "b32d9766d1df46ee156f3150107f7ede34ce24a9d705c4f3c569b4b3d8651840",
+      "physical_lines": 688
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/signer.py",
+      "sha256": "11cdf45482f0f5a0fee55f8d6911f5927b91450ce61f7f93497f0a8e5be08c33",
+      "physical_lines": 227
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/system_emitter.py",
+      "sha256": "045027eda63130a2e8d2432e291c7241b19b32f940d39d141f4cb9c8a7dc7b04",
+      "physical_lines": 94
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/amp/trace_context.py",
+      "sha256": "945b3cd1b86faf5ccc7419fe7d6e71ad0e95a5f99e9b5b0452ea116ed74627c8",
+      "physical_lines": 52
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/__init__.py",
+      "sha256": "b581c51b86e42321bcbdf1e169ff146f8314c46786aa328073cb59e231a45da5",
+      "physical_lines": 105
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/client.py",
+      "sha256": "269fdc0e5c24c46e255a12688df69ee6eac3044549ba8f0e8d3702018665db97",
+      "physical_lines": 544
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/config.py",
+      "sha256": "05938bfd6c5b3e89086e6e18ad4bf568621de9f4a38b8d1f162801bf5ee5d307",
+      "physical_lines": 114
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/discovery.py",
+      "sha256": "011d98426240e602afa61dd7efc4184ba3aa122c066abbe1059a22d2a0415ad6",
+      "physical_lines": 104
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/errors.py",
+      "sha256": "1d86b48eef24037cf97a73aa8c5da6602c63638eefb7ed35325058ce6dc2cc47",
+      "physical_lines": 85
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/fastapi.py",
+      "sha256": "c6097bc4f51ac5a5acb97ff63888861704c604cc0ff14f65905c078b89286ab9",
+      "physical_lines": 141
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/jwks.py",
+      "sha256": "15114fecb012c24fc9eb51183f29d3f3ce433e251ebfd24b420850d7d84682fd",
+      "physical_lines": 98
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/keycloak.py",
+      "sha256": "b4d9de66a72c25e386860b6ccdb3d88ca8457a6d404b52d321bfe5e69b85e0d2",
+      "physical_lines": 159
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/principal.py",
+      "sha256": "087e084c7bcc2260d49db8a8a463e044533f542f6fd7ead5560f8efaa09ba5b4",
+      "physical_lines": 59
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/oidc/validator.py",
+      "sha256": "6e91ad0ca4623e64995fbf38a02a61e3371b19e486360b89c879c158af6f9c58",
+      "physical_lines": 135
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "physical_lines": 0
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/examples/resumable_group_demo.py",
+      "sha256": "4a7889ffd47ed85b058cbb1f71f50f2a864ed47da676d171dd935e1169c813e9",
+      "physical_lines": 80
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/LICENSE",
+      "sha256": "5ad340ea25b904a1b81cb896842bc5802bd88b9a145c8fcddd864a393f86c30b",
+      "physical_lines": 90
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/pyproject.toml",
+      "sha256": "d71a0e245bb084beb204896ff2bdd9b7fd12a5e68e9cdd8c4247ef2efc7203c8",
+      "physical_lines": 45
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/README.md",
+      "sha256": "f2fc99142e0914383909e42af841b29734acb95ca79df3d59c87e937a5dab44f",
+      "physical_lines": 114
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_aip_rpc_client_access.py",
+      "sha256": "8dd0d367cb6bf49f1e998943482e1c8122b343ecfe2d021c2190fb9c49e9d8f5",
+      "physical_lines": 167
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_group_leader_message.py",
+      "sha256": "5645f898739fcd766d8dc78c33f6d7a2f6bf5f375e19d33ade423c727d90a62d",
+      "physical_lines": 231
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_group_partner_message.py",
+      "sha256": "1893021002aa0e5162c5eb8e3c50493b981a37de5d652e80bc6d346378dd973d",
+      "physical_lines": 200
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/aip/test_task_ordering.py",
+      "sha256": "cd8573acaac6a0b754039dc63b619aaf1496997f4332cd331f0725012c674411",
+      "physical_lines": 58
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "physical_lines": 0
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/__init__.py",
+      "sha256": "d21d12fd6f8b9fa55f2419fe5ee5d8fe2eebffd99db8473f2229a6b299206907",
+      "physical_lines": 1
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/conftest.py",
+      "sha256": "20896c88b7d7eb737c4ccb8634a5cc205ee3759d0255ba9b509c22d60371648f",
+      "physical_lines": 103
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_adp_alive_map.py",
+      "sha256": "2488e4d864aa1165fc6834c3e2609cfbdeb884584dcc4966214a65c61b9a5ca3",
+      "physical_lines": 64
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_alive_sync_bootstrap.py",
+      "sha256": "220ea759c056ec7f08f8550a3689983c7b06eb1ba2bb89df49fd14a669b2a31c",
+      "physical_lines": 41
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_alive_sync_engine.py",
+      "sha256": "672d8f35f333fc1487dd7b819cef31e7924a23cc04f96a86eb7ef2530909c564",
+      "physical_lines": 244
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_alive_sync_errors.py",
+      "sha256": "f766229262f9a1032dedabbba9adcfb834fe92f3910c06c74e25eab2e1a4bcff",
+      "physical_lines": 49
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_alive_sync_snapshot_reader.py",
+      "sha256": "03421892a84e3bd46817dc69352e718b344d73efb33e1d31995eac454b96549f",
+      "physical_lines": 93
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_alive_view_models.py",
+      "sha256": "34510b80c18f6b00ca2eb5e47c857edc17bd5bd74aeef86052c4e1e19392ee01",
+      "physical_lines": 29
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/alive_sync/test_classify_delta.py",
+      "sha256": "e386e94592eae9a203bee8c6589324d482e310430c98598d5d4e0723705f8368",
+      "physical_lines": 106
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/fixtures/durable_access_process.py",
+      "sha256": "21a0e9c1a56043fa6d7f05f2a5db3a2b2466dbe76e83c81452204c3c10eae901",
+      "physical_lines": 62
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_access_models.py",
+      "sha256": "c0f2e840dd8f2bad8055befe24fd54386e96fa88ec97daafd83a2c2aef14e133",
+      "physical_lines": 94
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_amp_access_emitter.py",
+      "sha256": "fe2cb60e8838ce62c1b85d40e2d4aa27428328837d027a6a04f4051d9190ce21",
+      "physical_lines": 94
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_amp_message_emitter.py",
+      "sha256": "1982351ea7302e94ff6b3865d00c34eb2c740547bbfe33df38b33d460b82781b",
+      "physical_lines": 92
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_amp_metrics_demo.py",
+      "sha256": "341cef9cbfc3d8566afb18ca38223516eebb7fb8e4c925a462ed0fcd25a782a3",
+      "physical_lines": 110
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_amp_metrics_emitter.py",
+      "sha256": "559812c1ed5bc2bad5c381e3a0a64c38664f75a8216d7136bb49666d20265e09",
+      "physical_lines": 131
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_amp_system_emitter.py",
+      "sha256": "44b3375f3a007db3775ce45b4bec3306e4751fe5081c442c9853a1796fcf51d6",
+      "physical_lines": 125
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_durable_access.py",
+      "sha256": "6da76b2d5ac9e891a15f329246d00962a48c85d7bbe099de9d3169f8b177c053",
+      "physical_lines": 299
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_group_correlation.py",
+      "sha256": "150438959ae7032b1a439d07e10e99ca5378bd47a6e0953a0a51c14c01672458",
+      "physical_lines": 34
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_heartbeat_sync_models.py",
+      "sha256": "486c833ff1f57fb0315dd07fae8efd91d8dd79b96e695a950e0ba59fce49aa31",
+      "physical_lines": 269
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_message_emitter_concurrency.py",
+      "sha256": "12c4eb6a6879da7932cc29eb1b3b4a32d4dffe6f030549f83d87348f92806136",
+      "physical_lines": 135
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_message_tap.py",
+      "sha256": "4c14fc9e83c6146150f81d67cb2a5acedaa2819e4c6bd1476259dde0702f387d",
+      "physical_lines": 121
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_metrics_catalog.py",
+      "sha256": "f15d034bf72562bcf7cbd64ba5d6a342ab49de195ec26a0b8a58e4e743b996a4",
+      "physical_lines": 197
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/amp/test_trace_context.py",
+      "sha256": "40b83e4389cb3ddad87e1661e2f78a3a54a4393fdbf6d7a44bd985d537a133ab",
+      "physical_lines": 39
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/conftest.py",
+      "sha256": "30d34b32d7cf2574fdfbb17655561b8310b5990c5bca7f4354c0f4c20c89e3c5",
+      "physical_lines": 7
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/__init__.py",
+      "sha256": "0756f66a46ef50a43160d80b104ba81d179468234ebeea91ae04654285c70a0e",
+      "physical_lines": 1
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/_tls_test_utils.py",
+      "sha256": "ec305fdf2c5d9815b0be44261a18e2968a41194aa352906714fdf6361230e263",
+      "physical_lines": 124
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/test_aip_direct_mtls_identity.py",
+      "sha256": "844ceb2e2712a821224398ae51917cd700de4aab022bb11bcee7d09db38e8837",
+      "physical_lines": 192
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/test_aip_group_user_id_identity.py",
+      "sha256": "92f8564f7f153a5a64c5e6711e75d2a8f60986b4f4382d36957d2a723969bc7f",
+      "physical_lines": 171
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/test_aip_httpx_response_cert.py",
+      "sha256": "82fd0c42cbef3ae23ab64ced856b1d3353b19c5e7e368548d65b8e621af5d51c",
+      "physical_lines": 93
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/test_aip_notification_mtls_identity.py",
+      "sha256": "116445fb6bf51a2c4ce7ee225d2cf7074b2ba2d1ca2babe8ceb70380a716328e",
+      "physical_lines": 159
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/integration/test_aip_stream_mtls_identity.py",
+      "sha256": "c1e1ceff1ce730c4679f3f60fbe97fdb169edbf7b85adab7e37718114e44f417",
+      "physical_lines": 186
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_device_client.py",
+      "sha256": "7d1bd5739252a3f0a95db1b971e32c79615af2e7204b6ef632a5a6ead6fce933",
+      "physical_lines": 415
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_fastapi_dependencies.py",
+      "sha256": "25838cf17e0af00b3865057844fe6e8a1d093b009f4049612a5b70be881f0c88",
+      "physical_lines": 160
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_keycloak_claims.py",
+      "sha256": "6d7a686a1c6726fc6842f98c4bca901aba5adf48ffac0161db4d144f78d8e0b0",
+      "physical_lines": 78
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_package_exports.py",
+      "sha256": "fe41523cc66e0ee28998fb214cdeab920668cc8f77be75dcd58c27e7f716e063",
+      "physical_lines": 50
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_principal.py",
+      "sha256": "7b5232dfb4b4b1d8551faee15d6033975feb161e0e7820f68c64815005dccbdc",
+      "physical_lines": 65
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/oidc/test_validator_jwks.py",
+      "sha256": "daf8169396a1b593847b5d306abfa1d60df8099e470a4437e0a913195857bfac",
+      "physical_lines": 423
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/resumable/fixtures/coordinator_process.py",
+      "sha256": "ce68b27607de08ff2883c8c0e3a0bcec3e090d0404eb3c1a8f54ac28f00bd13e",
+      "physical_lines": 124
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/resumable/test_coordinator_process.py",
+      "sha256": "37833a0f132a9006f04bbc0274061fd0fe0a769cc482beaf1e7609e4847b5b91",
+      "physical_lines": 128
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/resumable/test_resumable.py",
+      "sha256": "ff130e7305657659cff51f9a68eaf4d9fcb4e7ac54f0980b0215a69002f6506e",
+      "physical_lines": 405
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_acs_models.py",
+      "sha256": "6ec74ff6473e9aea746595732c28aea50187f074f7ffc2e4d7764fac886c4340",
+      "physical_lines": 11
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aic.py",
+      "sha256": "6ef6104dfba226b045e9a4cdb664e4aabc71854db7bc4193b1b2d49cd131eae1",
+      "physical_lines": 95
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_exports.py",
+      "sha256": "d0d4bc4338d1f53eb8d54e22cce413368da604940824277a928befc643297a85",
+      "physical_lines": 255
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_group_identity.py",
+      "sha256": "2a634d5e382c7c1a5cbb39212d11eedb551b706c6373406b320d12af02adaaf9",
+      "physical_lines": 279
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_group_models_identity.py",
+      "sha256": "185453ddcd8df11fcc7c5192d05fb6409118104667f7bb7d0c8b4b25ca28561e",
+      "physical_lines": 125
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_identity.py",
+      "sha256": "f9a70b50e0c73cc30ebc5faf9cf006e6142d6b812ffc90811ba51c019e7ace39",
+      "physical_lines": 196
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_notification_identity.py",
+      "sha256": "6baadfedfa8d42428ac82c0133e840357704d5eceb5828dec5913ab8f449404b",
+      "physical_lines": 393
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_peer_cert.py",
+      "sha256": "c46369a235205389c441178965390c2f78c8c185476c1167b1607df5ff737a8f",
+      "physical_lines": 127
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_rpc_identity.py",
+      "sha256": "bd848033635d9d2f4e4c219bfa74b27571f71d652d5106cc402a8afb59810fef",
+      "physical_lines": 354
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_aip_stream_identity.py",
+      "sha256": "124b99e257c9f6e46129b3232fae2dad47c6afc84a4dd2587f07a6d836849ca5",
+      "physical_lines": 334
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_amp_emitter.py",
+      "sha256": "e7659999ae5ff67bcc62f6e0dd965c7286b8ae8066861f77e9af4563980578bf",
+      "physical_lines": 341
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_amp_heartbeat_emitter.py",
+      "sha256": "74d8e4eb838c90034a3fb53a7ddb41fff7824d9119587994b0ed8223f100ab3c",
+      "physical_lines": 195
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_invitation.py",
+      "sha256": "fa75246af2f6d9abe58108c422ce9245136b948634ad29f0f4dd90b76a622765",
+      "physical_lines": 544
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_leader.py",
+      "sha256": "fbfdf547c9ebb11b31d832f15aa13eb75089983f9223a1ae10e2391e302e01b8",
+      "physical_lines": 390
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_network_resilience.py",
+      "sha256": "b63b4ab666d3a4c09992feb551c87c242f0def65bc6b614b060e5c95da1f21fd",
+      "physical_lines": 249
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_group_runtime.py",
+      "sha256": "c3e1d5111d78d60e85d9aca5fd2b7cf37b24b0630bbeeef9931dce21b3a9df4e",
+      "physical_lines": 36
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_notification_client.py",
+      "sha256": "ea537f9d8bf0d79999dd2929ca5b983f034a65d083d3399ea01065528ae232ef",
+      "physical_lines": 320
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_notification_model.py",
+      "sha256": "f51f19e5abe4d3964f18175d5a1bda57b3184f27814473047287f854a74758a7",
+      "physical_lines": 160
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_notification_service.py",
+      "sha256": "2ed985cfbc53c19cd1e06b0eebc152f0259df4866d0fa09a15c886b4a9e6e35a",
+      "physical_lines": 366
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_notification_store.py",
+      "sha256": "a20aa7ee725e898766626a55d36d0e73c2194dae85ecd6b35f697d47e47a3d3a",
+      "physical_lines": 216
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_partner_cleanup_failures.py",
+      "sha256": "bf27944c6765dae3ff80445052f515a0185b12b9ad07bdf6e52d7ed7c9bec303",
+      "physical_lines": 121
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_stream_channel.py",
+      "sha256": "5f62d6250ba621b9a4fcd905242b318e315c0e9b75be9c725f4d6b603fd5be18",
+      "physical_lines": 233
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_stream_client.py",
+      "sha256": "2782473a9ab414da10cf99edeb847e13869db24097d70afd7e0c03119e68a9be",
+      "physical_lines": 447
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_stream_model.py",
+      "sha256": "38ddf06306be310a999b4ef532c98897d1084a4942dec040ce341174a2f82143",
+      "physical_lines": 202
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/tests/test_stream_server.py",
+      "sha256": "4eb53bf05ea8b0e7e8352854b9de34ba8e6d55f23cdcdc0aa2e8cad0b52d748e",
+      "physical_lines": 388
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/uv.lock",
+      "sha256": "809fdca9ef4366241b48434794373a1bdefcb9f659909f0b0fc619b69e1fb76e",
+      "physical_lines": 1407
+    },
+    {
+      "path": "acps_mcp_bridge/__init__.py",
+      "sha256": "1235fe3a18538997af92c0370e66ee78612fbcf6aaf8deb0c00f86caf02eb05b",
+      "physical_lines": 8
+    },
+    {
+      "path": "acps_mcp_bridge/__main__.py",
+      "sha256": "e8fc8ab77c325c86d77641c534da7e69e1986cbebda8799f422eecfe0bf41f28",
+      "physical_lines": 81
+    },
+    {
+      "path": "acps_mcp_bridge/acs_mapper.py",
+      "sha256": "1d7f2f021e47533c8e155cfe8c517b3c8eacf3198213493af44715c3f9fd93f3",
+      "physical_lines": 49
+    },
+    {
+      "path": "acps_mcp_bridge/approval.py",
+      "sha256": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+      "physical_lines": 43
+    },
+    {
+      "path": "acps_mcp_bridge/audit.py",
+      "sha256": "b0e6916f96910582b8295cce7948251b76a431973fcce5930561f5507c269deb",
+      "physical_lines": 25
+    },
+    {
+      "path": "acps_mcp_bridge/bridge.py",
+      "sha256": "2fdcbfcf20763031274ca3682660bc350bd24a07f9bc0d610e922233ad8dfa00",
+      "physical_lines": 467
+    },
+    {
+      "path": "acps_mcp_bridge/client.py",
+      "sha256": "5faca959a28633c5177f04099a625667f7d923798768dce791276630f4684f62",
+      "physical_lines": 68
+    },
+    {
+      "path": "acps_mcp_bridge/experiment.py",
+      "sha256": "bef753a69ca94df286e9401a3ff2fb820eac6bc32dedf42f6a94aeb10a9a253b",
+      "physical_lines": 251
+    },
+    {
+      "path": "acps_mcp_bridge/handover.py",
+      "sha256": "2d4df6c85e55df52fd77c2a914138e69b1ab046b00669b9d337748f6c2d1d46a",
+      "physical_lines": 10
+    },
+    {
+      "path": "acps_mcp_bridge/platform.py",
+      "sha256": "df5802c0ded3c5f65e054e9c4c120a3632f7e5e00d163517eeb21973616a0f87",
+      "physical_lines": 133
+    },
+    {
+      "path": "acps_mcp_bridge/policy.py",
+      "sha256": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+      "physical_lines": 118
+    },
+    {
+      "path": "acps-mcp-bridge/bridge.py",
+      "sha256": "83bf574c82306ef556b7130aae882bd40cbe09c4f4aae064dc99c07ac5076167",
+      "physical_lines": 9
+    },
+    {
+      "path": "incident/__init__.py",
+      "sha256": "b24071539daede4fb001b05b17e786a37800ad5bfdfddc3e1594463210f19aed",
+      "physical_lines": 1
+    },
+    {
+      "path": "incident/amp_setup.py",
+      "sha256": "724a6da15aead22212eab320e4cc7b544ba1b8ce60f0da72c77405ce2bafcbdd",
+      "physical_lines": 96
+    },
+    {
+      "path": "incident/contracts.py",
+      "sha256": "be196f91bed5118b9be3754f0f92f10c9b32b9fe20e369a5232fe62bb2f0d9bd",
+      "physical_lines": 73
+    },
+    {
+      "path": "incident/coordinator/__init__.py",
+      "sha256": "07840c19d5c9ca7b6646be0413813a64693cf4cf078978771783ee020f0bc2db",
+      "physical_lines": 1
+    },
+    {
+      "path": "incident/coordinator/amp_facts.py",
+      "sha256": "b9cb4fd7d6111312e2a68883b16e6fca07a9325df8ff35576c6a6abbb5773eb3",
+      "physical_lines": 219
+    },
+    {
+      "path": "incident/coordinator/engine.py",
+      "sha256": "ee3791c88704d0497b260453217719680dcfce90ad95cbc666e61b12a94f41df",
+      "physical_lines": 490
+    },
+    {
+      "path": "incident/coordinator/hypothesis.py",
+      "sha256": "04deee01e5003ef6830d4c4b3c032c85bb3642b7aab2dfcc6edc2bc53bf77aed",
+      "physical_lines": 208
+    },
+    {
+      "path": "incident/coordinator/incident_planner.py",
+      "sha256": "5bba6fd072b8dff9fdf0033b6f882626565ea3285176bc0fb5921dfc0c9f3f08",
+      "physical_lines": 94
+    },
+    {
+      "path": "incident/coordinator/planner.py",
+      "sha256": "8948bab9d9ff322dd1a5b510f79c02de4bce9133219c9edc2ecf9237a2ad38e6",
+      "physical_lines": 208
+    },
+    {
+      "path": "incident/local_transport.py",
+      "sha256": "bf11f011a52f8eb329f03997b0eea4091d9b388a5ed94345021d4bfd9e0ac621",
+      "physical_lines": 674
+    },
+    {
+      "path": "incident/local_worker.py",
+      "sha256": "837de3e31bdeeccd2cb665fcaa261e2c3e5ffe08b8d37d287e436e25a8e937fc",
+      "physical_lines": 304
+    },
+    {
+      "path": "incident/partners.py",
+      "sha256": "e1d016c9e895f7b6aaef7cdea9dd7a1b2f4f7aa27660ffd29cc208eff06084c2",
+      "physical_lines": 200
+    },
+    {
+      "path": "incident/platform_worker.py",
+      "sha256": "f117bd6e3412faf3597f56d347cd31bb6cd243a098ce1171e36fcbc7159b83ab",
+      "physical_lines": 386
+    },
+    {
+      "path": "incident/recover_access.py",
+      "sha256": "b363111af8f35c2e8ee6bf9b009dac0eee70447bab9fb1f5003ac57019e589e4",
+      "physical_lines": 85
+    },
+    {
+      "path": "incident/selection.py",
+      "sha256": "ceadb4191e650a64cc5fed6573c1d4d533dea6c9ef15093cba23b6d3fe7ad7b8",
+      "physical_lines": 107
+    },
+    {
+      "path": "incident/workbench_access.py",
+      "sha256": "2afb5574b4817f3fed3011cabb61417909a97d02e4fe64801cd897c8ea8d6dd3",
+      "physical_lines": 158
+    },
+    {
+      "path": "incident/wutong_transport.py",
+      "sha256": "c7cd2cf7f7a8edd26468e54a291fbff3dbfd284d00d531dfbc8659c42f589448",
+      "physical_lines": 482
+    },
+    {
+      "path": "business/__init__.py",
+      "sha256": "591e06c019c863e3f2adb120edc0ac5d51bd4a56b9586250ee5533eb4f148d0e",
+      "physical_lines": 1
+    },
+    {
+      "path": "business/fault_lock.py",
+      "sha256": "4fa12856d2c4c7f1c067806f936bab93050be9e55e1c7d6e8a9183d638b3d05c",
+      "physical_lines": 22
+    },
+    {
+      "path": "business/fault_reply_proxy.py",
+      "sha256": "c518cb786746a7f67ba824e4852d1b6eebf974e88301f634f0098dd57bc8ba9c",
+      "physical_lines": 50
+    },
+    {
+      "path": "business/load.py",
+      "sha256": "f2c427b28a7b8767a02205db0adab15502c1718a85683bc551e8ef47ffc774f1",
+      "physical_lines": 171
+    },
+    {
+      "path": "business/native_postgres.py",
+      "sha256": "bd1d53445b2bb7f0ed6f3703f5351d775c76e788df1932fc5a6473b092310a8f",
+      "physical_lines": 37
+    },
+    {
+      "path": "business/native_process.py",
+      "sha256": "1bf8b38ba9ca4e11f2464331355771634c319ad1b853e3ac88e6c92b8f9b3887",
+      "physical_lines": 291
+    },
+    {
+      "path": "business/order_app/__init__.py",
+      "sha256": "a61af4e97a3881f74a6488abf83dbd6136ff2d5080c907d9cd8be44f7d857e71",
+      "physical_lines": 1
+    },
+    {
+      "path": "business/order_app/main.py",
+      "sha256": "51e2fe243c5b2a62289e10da63b9b73ec6e1042d5245a60d66a569d40d076f5d",
+      "physical_lines": 135
+    },
+    {
+      "path": "business/order_app/store.py",
+      "sha256": "dd046738d899e9afb8a6acc6dafa597bf8efb3e39cd6b19b26dc7f9d244d30a4",
+      "physical_lines": 175
+    },
+    {
+      "path": "business/receipts.py",
+      "sha256": "bb5eb828565f7c832cab369f62c81c6873e93a57130ac5a4d6b76a65e530d255",
+      "physical_lines": 29
+    },
+    {
+      "path": "business/run_app.py",
+      "sha256": "dbe016fc62c622513ebbbb97c78b2cc306c4cbca239eb7353d51541c468e37a2",
+      "physical_lines": 16
+    },
+    {
+      "path": "domains/database/provision_local.py",
+      "sha256": "e6796640d4d5d102481d14453fdb0b1ae2658d187669f17d7839cd9a6632c155",
+      "physical_lines": 40
+    },
+    {
+      "path": "domains/database/verify_blocker.py",
+      "sha256": "60195c33eb9dbc7cb7d5e05b7448e90b9db749ee148e24e793ee0194e901e6a9",
+      "physical_lines": 114
+    },
+    {
+      "path": "domains/database/verify_local.py",
+      "sha256": "c331ea972dbdcb09b2eff3d6df4b5204d754a064b2f334b773f662a718fa7126",
+      "physical_lines": 76
+    },
+    {
+      "path": "domains/onboarding/__init__.py",
+      "sha256": "3b356aa9327a394c39eed60c6fa62412ff69c05248a99cf40a3d6e7b25c79310",
+      "physical_lines": 1
+    },
+    {
+      "path": "domains/onboarding/check.py",
+      "sha256": "0dbec2a8883294c2e42fed617a1dc8e3ec96ff5444f908e6990bc53102a7f4e4",
+      "physical_lines": 89
+    },
+    {
+      "path": "domains/onboarding/text.py",
+      "sha256": "8fb73cc726fd6b7cdf7ffee33a8a932d33f070d332f5e9bc1bd6ae8c89faf5a6",
+      "physical_lines": 75
+    },
+    {
+      "path": "domains/ops/guard.py",
+      "sha256": "f4c8675e99052a5ff32f32852b0daac4d87999ce805efdd5f2228612cb99dfb5",
+      "physical_lines": 55
+    },
+    {
+      "path": "domains/ops/native_mcp.py",
+      "sha256": "3e430b7a5a715f7b25fbd7bf5cdbbdadc4c37d55cc1b3f797f9df22bf654921f",
+      "physical_lines": 95
+    },
+    {
+      "path": "domains/ops/native_supervisor.py",
+      "sha256": "62a715b1d1bf4fdd1343be332704c734adeefa4a99ee0b577995bccb70597623",
+      "physical_lines": 91
+    },
+    {
+      "path": "domains/ops/route_mcp.py",
+      "sha256": "424103524cc3b28eeb0c963561ae2c6e3c2da7999818e8e06a26b543719f99f8",
+      "physical_lines": 128
+    },
+    {
+      "path": "domains/ops/verify_docker.py",
+      "sha256": "ffdd06c45d78a0897414449d8afdb02ce0c10d415b08c3ae4c9ec8406c0952ca",
+      "physical_lines": 85
+    },
+    {
+      "path": "domains/ops/verify_docker_label.py",
+      "sha256": "45141b7930fe4d7c6fe47c68cfa91160d91842b8de3548d429aad60c9f641cb0",
+      "physical_lines": 65
+    },
+    {
+      "path": "domains/ops/verify_local.py",
+      "sha256": "bc2aed39618a42ae4770a287ec43d3c9126eea32f0a71be36e5d90e54fb3d16b",
+      "physical_lines": 66
+    },
+    {
+      "path": "domains/setup_local.py",
+      "sha256": "5f101d616accd68258b5a78fdb014aaa51d03957a4d074a427df751b8e610e49",
+      "physical_lines": 129
+    },
+    {
+      "path": "domains/setup_platform.py",
+      "sha256": "faacfe899f12b478d0c1afb3c7e8b1bb2ea3c8e21b817ad6d112bf66889e1ead",
+      "physical_lines": 214
+    },
+    {
+      "path": "eval/__init__.py",
+      "sha256": "1cd26c3b359879a523746e4560e2eedf449bb48b07484c7d7426c8db350587f4",
+      "physical_lines": 1
+    },
+    {
+      "path": "eval/container_control.py",
+      "sha256": "2d6c3af476a6dae9ef6859f8483300201bb159c241c2e4dbdc8e0d2d37fad0f6",
+      "physical_lines": 52
+    },
+    {
+      "path": "eval/gateway_policy_experiment.py",
+      "sha256": "181a4eca5e779688f36b557cbeaabbeee4d90e04be1c9a5f1b80252cbd0c8072",
+      "physical_lines": 335
+    },
+    {
+      "path": "eval/handover_experiment.py",
+      "sha256": "91bf9cab27c945f75677e6d321b8860415ebec1d97f994dfe571da0edbbfed7c",
+      "physical_lines": 305
+    },
+    {
+      "path": "eval/inject.py",
+      "sha256": "637fbe932f06b21b9da0f891a5b6f4c06acba368c9e9ff5a0f0cde4957567399",
+      "physical_lines": 659
+    },
+    {
+      "path": "eval/leased_batch.py",
+      "sha256": "ec628eab5a64dab1f53a5d6d24e402bbc9f1fd04303b424ff8c01e46135c9c39",
+      "physical_lines": 49
+    },
+    {
+      "path": "eval/material_scan.py",
+      "sha256": "14522780adb1256de2cc24b309fcf851459e62e1d8738f0b58741a00427873f5",
+      "physical_lines": 96
+    },
+    {
+      "path": "eval/methods/__init__.py",
+      "sha256": "cd0152c3c590a4147315747226d4e1c77d0eb9a9f11bb582189e70a789aec6fe",
+      "physical_lines": 56
+    },
+    {
+      "path": "eval/methods/free_tools.py",
+      "sha256": "422768e8f867bbf1d5ddcfb2f0486db5c9b757b1571c85a2171af0f09843a429",
+      "physical_lines": 96
+    },
+    {
+      "path": "eval/methods/runbook.py",
+      "sha256": "bc79690e6b6dbf3db20516f48ce6d2fe8805ae7bdc2498a99a9fca4f43b3c6e1",
+      "physical_lines": 68
+    },
+    {
+      "path": "eval/observation.py",
+      "sha256": "7dfa0de206281bf8209c70dfda59723c901eb2d574ef395e1591ba0c8d4939ee",
+      "physical_lines": 118
+    },
+    {
+      "path": "eval/old_primary_replay_experiment.py",
+      "sha256": "c07ad224c6df3cc9f94f61725fc3319a49277fe2aa001f6b860606869887e0f5",
+      "physical_lines": 196
+    },
+    {
+      "path": "eval/old_primary_report.py",
+      "sha256": "21012d139151f8d32d2095701a904b741c7a9b884e28721e4a1465314639252e",
+      "physical_lines": 69
+    },
+    {
+      "path": "eval/participant_failure_experiment.py",
+      "sha256": "92e052366c6b4837798e121bb43c0b3532045cbeedca861fc49906fbe3d8b180",
+      "physical_lines": 291
+    },
+    {
+      "path": "eval/platform_batch.py",
+      "sha256": "5442bc3fab57bebc9deb2792631c4c215dac2b564593ab03735e8a51af35d9e3",
+      "physical_lines": 100
+    },
+    {
+      "path": "eval/platform_database_worker.py",
+      "sha256": "5ee504b0e600f6504faf1972d955e65cd29cc3b1e4c12451213f9159888e61bd",
+      "physical_lines": 162
+    },
+    {
+      "path": "eval/platform_e1c_controller.py",
+      "sha256": "384aa1b1b3ea717a963927269204058dce887c7be56c0a2a41f6c038fe785b58",
+      "physical_lines": 283
+    },
+    {
+      "path": "eval/platform_e1c_transport.py",
+      "sha256": "5b16d82778de881f3028465455b3de17048f028ae357299d1c1a77ec61b59650",
+      "physical_lines": 41
+    },
+    {
+      "path": "eval/platform_handover.py",
+      "sha256": "00259a38a281def36f496608bffbfacfa5db36a8061c05554ff55be7ea376ca1",
+      "physical_lines": 105
+    },
+    {
+      "path": "eval/platform_resume_experiment.py",
+      "sha256": "24bd57adef09aed169ce429d6cf95b8b12d2e4df66c3f035b5b73c204ebf8578",
+      "physical_lines": 967
+    },
+    {
+      "path": "eval/platform_smoke.py",
+      "sha256": "9f536e4d98db811684bf70e4d04818106af7f9f27c5836be0840eff806747fc2",
+      "physical_lines": 143
+    },
+    {
+      "path": "eval/plot_results.py",
+      "sha256": "51a3005d35a34000ed283c59088ec6740305b91ff9d73c55a4106b22de3286fa",
+      "physical_lines": 131
+    },
+    {
+      "path": "eval/prepare_platform_e1_worker.py",
+      "sha256": "4eec29fa6440989490352da184ad6499344ecb84a207b1e2c9723358ff5943df",
+      "physical_lines": 115
+    },
+    {
+      "path": "eval/receipt_reconciliation.py",
+      "sha256": "912d1ce13963721f952696da22f00aead7ef2e5756e4b1aca45615a6e0bc4baf",
+      "physical_lines": 286
+    },
+    {
+      "path": "eval/reconcile_access.py",
+      "sha256": "b9ab021b3c74f2702dba9db7caf55dad54b9820b2540f4af7e68a24429fabdc2",
+      "physical_lines": 111
+    },
+    {
+      "path": "eval/replay_local60.py",
+      "sha256": "d1b2d19696337f4d4ec9084ad6eded4b2b2ede00c21bfb08c09130969d12014e",
+      "physical_lines": 54
+    },
+    {
+      "path": "eval/resume_experiment.py",
+      "sha256": "592c43c8e4886381ab568156bddf9284ed3ce0be88e6bbc0e7e363f52f0e898d",
+      "physical_lines": 233
+    },
+    {
+      "path": "eval/resume_support.py",
+      "sha256": "543eea4373e120a7fbcc2144e4d4e7265f4eaf5adfc6cd21478d5d958dab5faf",
+      "physical_lines": 239
+    },
+    {
+      "path": "eval/run.py",
+      "sha256": "4a9a14aaeec492978c0778f6d28b2d52c12744a1a1666a08136e0553858d931a",
+      "physical_lines": 372
+    },
+    {
+      "path": "eval/scheduling_audit.py",
+      "sha256": "b970dbb98b6cae3e156be8f9b9fd7c96684d94f45f74bf96c05dcb56c6123412",
+      "physical_lines": 270
+    },
+    {
+      "path": "eval/scheduling_comparison.py",
+      "sha256": "b2f3e94872e4bf1a408fa936f195ba8e8d0d1549de3f6adf13afce77c3f04c76",
+      "physical_lines": 116
+    },
+    {
+      "path": "eval/scheduling_report.py",
+      "sha256": "e2fb1a5474d0f1ebf9f1699713a9e77d33a765d28f60267e36ba03017a207861",
+      "physical_lines": 191
+    },
+    {
+      "path": "eval/secret_scan.py",
+      "sha256": "397559b3626ae04fcdf702a5cfe3975f4b124acb93912b73ad56e493476c6b7d",
+      "physical_lines": 82
+    },
+    {
+      "path": "eval/stability_bundle.py",
+      "sha256": "a6d2dff072b89395c734ffb723ce9c3bc04c774c85a3229611f103c1f160cc31",
+      "physical_lines": 329
+    },
+    {
+      "path": "eval/stability_report.py",
+      "sha256": "a2f749cd0c3ebe2455069ad45f21cffb9ea23d5fedd5b6c5e6a90a916360295f",
+      "physical_lines": 173
+    },
+    {
+      "path": "eval/targets.py",
+      "sha256": "282dcb8d0bb266ed5bee9f1299d5e0afb30959ddb47f692d8ced9d24cc4e8acc",
+      "physical_lines": 136
+    },
+    {
+      "path": "eval/unknown_receipt_experiment.py",
+      "sha256": "7a3268c43bf725bd09b389b65807117affe35e173830e3a3339f49aef281f423",
+      "physical_lines": 429
+    },
+    {
+      "path": "ops/aic_lease.py",
+      "sha256": "3c17109a2699c78acd12d2c509c3577fc8eb635cf29827074d879d5e535ad9c8",
+      "physical_lines": 211
+    },
+    {
+      "path": "ops/domain_entry.py",
+      "sha256": "804d974cffee8129d22226cb6f22026717fc3053e37fe61eec94f8fa3f0bc5fc",
+      "physical_lines": 71
+    },
+    {
+      "path": "ops/external_rotation.py",
+      "sha256": "da7aa3a2bd46afce8206582e2b7ac92109550c54cbc3c58ab74a435f30e82588",
+      "physical_lines": 110
+    },
+    {
+      "path": "ops/external_rpc_once.py",
+      "sha256": "508f3e135e51b96c29792eae4af7a366d6644f990f972727e7ddacb62c26d5ef",
+      "physical_lines": 140
+    },
+    {
+      "path": "ops/longrun_host.py",
+      "sha256": "56abde281c7d3cea83b4f47c72d2220cbfd6886cd622562fb1638041efc89e46",
+      "physical_lines": 303
+    },
+    {
+      "path": "ops/longrun_status.py",
+      "sha256": "046724be75ba6242577ad318868a149dfe979d07e87ea021a0591b1478d0cab6",
+      "physical_lines": 189
+    },
+    {
+      "path": "ops/schedule.py",
+      "sha256": "fff249f7cbcea551da2e4e8946ad9f96d8ce01d3747624e5385517358a712b7f",
+      "physical_lines": 301
+    },
+    {
+      "path": "ops/startup.py",
+      "sha256": "72a7022392dbbf875c709b0447e5096508630cbe5a0ce6e7b6505a1c0a88b3c1",
+      "physical_lines": 204
+    },
+    {
+      "path": "integration/build_registration.py",
+      "sha256": "d90bd051c64f5cf37f859287e79c3414a4335788266159883fdc7f67f3d09106",
+      "physical_lines": 53
+    },
+    {
+      "path": "integration/check_build.py",
+      "sha256": "4fecf763b53cda15f494a713c03fe98502b4545aea9c5efec42405dd123b4974",
+      "physical_lines": 61
+    },
+    {
+      "path": "integration/check_wutong_dual_inbox.py",
+      "sha256": "eceab280be61f03308f1ec57348124790834da45a477b456c3ffec652d1c4404",
+      "physical_lines": 322
+    },
+    {
+      "path": "integration/check_wutong_incident.py",
+      "sha256": "daa0b6fa42d6d241a98a479a225477dab0d32c37ff34f3f2505d7c3427f99948",
+      "physical_lines": 81
+    },
+    {
+      "path": "integration/check_wutong_smoke.py",
+      "sha256": "567e0b112b0492d71157a1c35215c73341bd1f3403ae4f7b72654887041faa71",
+      "physical_lines": 77
+    },
+    {
+      "path": "integration/platform_probe.py",
+      "sha256": "82557a858f1efd07a60854a10c9bd200e63d0cb213d9ee43921fbbc41e029d1c",
+      "physical_lines": 300
+    },
+    {
+      "path": "integration/two-agent/acl-probe-20261017-route-research/extract_markdown.py",
+      "sha256": "db49b9e27d246a88825627496d209093781feb52af75b2df506d9968a773e332",
+      "physical_lines": 15
+    },
+    {
+      "path": "integration/two-agent/acl-probe-20261017-route-research/flux_public_probe.py",
+      "sha256": "56d8b3ed24ddbc24658cb1e5be1b15dba953bf1a6659f83d1406545452eba952",
+      "physical_lines": 26
+    },
+    {
+      "path": "integration/two-agent/acl-probe-20261017-route-research/public_route_probe.py",
+      "sha256": "9294d169c7d28eb579e34dfd1229bcdcca2d6e0dffcd860633f2b693e344cf22",
+      "physical_lines": 48
+    },
+    {
+      "path": "integration/two-agent/acl-probe-20261017-route-research/wit_package_lookup.py",
+      "sha256": "8407f2c4f303f0ec1581bf364846739ad17b227027ce6b158c4123097614a578",
+      "physical_lines": 31
+    },
+    {
+      "path": "integration/two-agent/endpoint-followup-20261017/public_read.py",
+      "sha256": "ad153d8384ff6beac0ef6b1cceb009de44597b6da4b81ae1614e021d6e5c1972",
+      "physical_lines": 34
+    },
+    {
+      "path": "integration/two-agent/rejection-research/probe.py",
+      "sha256": "3bdca392d95e1f6b9b79710abaabc802f9f38314282344b963a7be9f174955af",
+      "physical_lines": 54
+    },
+    {
+      "path": "integration/validate_acs.py",
+      "sha256": "54e0ce2beb31290cf4fad09414e6446c8d2ef9633746234aa77b9a5d691a6e62",
+      "physical_lines": 201
+    },
+    {
+      "path": "integration/wutong_discovery.py",
+      "sha256": "332fcd580347a83c20fe318eb90dbd60023ea1ee4d5d71a0f159bfdad227e397",
+      "physical_lines": 86
+    },
+    {
+      "path": "integration/wutong_incident.py",
+      "sha256": "d6ef6a2165801f892e85ffc4d7cbc41c96c6d9d33dde8f1e46744d6d63dbf3c4",
+      "physical_lines": 437
+    },
+    {
+      "path": "integration/wutong_smoke.py",
+      "sha256": "ae2adcb3b2968d0dc94d3ed7c7c61832f818779fdcc986de5a0d1f1e41df78c8",
+      "physical_lines": 790
+    },
+    {
+      "path": "deploy/check_container_agents.py",
+      "sha256": "1d688f95d9ee6b074e567e7114ff0b2bccf8f18bd56aee72b5c18981911119a8",
+      "physical_lines": 66
+    },
+    {
+      "path": "deploy/fluent-bit/prepare_linux_collector.py",
+      "sha256": "a921e07f83e493714fab3dd852e746f1124fa8d00591f703c20ae590362442dc",
+      "physical_lines": 213
+    },
+    {
+      "path": "deploy/fluent-bit/render.py",
+      "sha256": "4cf571b0b01177332fec9bd46f89bbb9b5f2a4dc83e5f69fcabcb0632abb4819",
+      "physical_lines": 386
+    },
+    {
+      "path": "deploy/fluent-bit/verify_collection.py",
+      "sha256": "3519cd75ee699ca2c5677d7f9e30085570cc7ee832f87aa1bb3a27c736088ea1",
+      "physical_lines": 407
+    },
+    {
+      "path": "deploy/fluent-bit/verify_local.py",
+      "sha256": "f394d699f1250d321f5a101abcfb115054fa75ab464c2f7ce756fb8f9c0c6e46",
+      "physical_lines": 78
+    },
+    {
+      "path": "deploy/prepare_agents.py",
+      "sha256": "575ad384480c056bb588d2bf3d609e3f931f658dd5836961ef1414731d49dbda",
+      "physical_lines": 213
+    },
+    {
+      "path": "deploy/prepare_deployment.py",
+      "sha256": "39c6fcb71f657bc99bd316fa28e75f34b1899b30c3bff4219fede8693b4ea557",
+      "physical_lines": 369
+    },
+    {
+      "path": "deploy/review.py",
+      "sha256": "635e0bfb9b2c456294f8bbcf3fdd766ccd8c339807f7279af8ba391e2746f323",
+      "physical_lines": 191
+    },
+    {
+      "path": "deploy/review_entry.py",
+      "sha256": "239487bd5be399903a84b8e82c55fcd247117f8324b165d623a1ee3e919c62d0",
+      "physical_lines": 80
+    },
+    {
+      "path": "deploy/server/capture_stability.py",
+      "sha256": "a2973c2b51b6fe3289c5bbe87411ee219a4d43ec1f97e6874fd95c05ba2c21da",
+      "physical_lines": 140
+    },
+    {
+      "path": "deploy/server/cloud_runtime.py",
+      "sha256": "90896a51c042cb8935ae8246ad4b0a1aca6caca727d2f7de346a0b87b6b93bd8",
+      "physical_lines": 261
+    },
+    {
+      "path": "deploy/server/daily_report.py",
+      "sha256": "f589014e0f13aefbbf93350c043ff59debf643d521e97b55ff5ee734c661474c",
+      "physical_lines": 294
+    },
+    {
+      "path": "deploy/server/deployment-20261020/cloud_collector.py",
+      "sha256": "1e63eec962be805779d03dbf802b946a599708dc2de59d566ec3d5f9ec691507",
+      "physical_lines": 457
+    },
+    {
+      "path": "deploy/server/deployment-20261020/cloud_healthy.py",
+      "sha256": "d5d30afc05f9ac91ff2f1c9eb42a73557ec4c66645847cd98413f5904ab51ead",
+      "physical_lines": 308
+    },
+    {
+      "path": "deploy/server/deployment-20261020/runtime_snapshot.py",
+      "sha256": "803c45ed63fb84f7e51e38467b4d618e8e5bcb9c4bbf1d567abdc0d202fbe4a0",
+      "physical_lines": 67
+    },
+    {
+      "path": "deploy/server/prepare_stage8_timer.py",
+      "sha256": "06d56bb2595d6b6da3a93a3a3eca730046f23b04156431b271988815f2267180",
+      "physical_lines": 29
+    },
+    {
+      "path": "deploy/server/stop_managed_host.py",
+      "sha256": "8f347d1810f9e76cacc5dd65953cb50eef34936111b6ebeced8b9fbac9fa2b56",
+      "physical_lines": 184
+    },
+    {
+      "path": "deploy/server/tests/test_capture_stability.py",
+      "sha256": "ac05cc63b6393f15419d8fe08891ff092a7fe4946e4a2a78cb5b690ddc720e60",
+      "physical_lines": 59
+    },
+    {
+      "path": "deploy/server/tests/test_cloud_collector.py",
+      "sha256": "e2a766ec70fc01f8791d0f1668936f82eac3ecb42f42f5040c2326e8057bd80d",
+      "physical_lines": 281
+    },
+    {
+      "path": "deploy/server/tests/test_cloud_healthy.py",
+      "sha256": "2a4485c8af838af9aaf621cc85eafa7eafa6df5b48565ffb41846c2bf469b04d",
+      "physical_lines": 218
+    },
+    {
+      "path": "deploy/server/tests/test_cloud_migration.py",
+      "sha256": "47fdcd021e1d1611fbb8a66682ba6c0d407b894a5dbed3a3c48b6ccb20c2297a",
+      "physical_lines": 74
+    },
+    {
+      "path": "deploy/server/tests/test_cloud_runtime.py",
+      "sha256": "a1515d004df00492488db3ba77f75d05d34b32b7cdf0c2108b8e99923713770e",
+      "physical_lines": 112
+    },
+    {
+      "path": "deploy/server/tests/test_daily_report.py",
+      "sha256": "57006369cc38e7caa58e80ddc35e4a49dadbfe5df133adc8328e863bf0e604ce",
+      "physical_lines": 291
+    },
+    {
+      "path": "deploy/server/tests/test_stop_managed_host.py",
+      "sha256": "8dafecca8d50faec757b796fc0d2d422abf0e86ad5c362daa4df0e348100bbdc",
+      "physical_lines": 146
+    },
+    {
+      "path": "deploy/server/tests/test_wait_cloud_workbench.py",
+      "sha256": "f086e9a44d89b1fd241fcb40ff463a3ae14800c1f4917806fb0464b7e6109733",
+      "physical_lines": 47
+    },
+    {
+      "path": "deploy/server/wait_cloud_workbench.py",
+      "sha256": "79f66659216d67ec3c9f1bf7e500a20f4bd0be36f84a9e91821a5c1e16856a9e",
+      "physical_lines": 45
+    },
+    {
+      "path": "deploy/verify.py",
+      "sha256": "d24784a5f6fb50400a7ef14715cd3fda2b753a73eb6a885ee09f38b34dc5e7b2",
+      "physical_lines": 122
+    },
+    {
+      "path": "demo_server.py",
+      "sha256": "d4846923bae007ee74359fdf62f96745a278710d1f12f9568345b032bb8312e6",
+      "physical_lines": 395
+    },
+    {
+      "path": "workbench_server.py",
+      "sha256": "88a68da1cd83d106cabdd301e30dd707310976886c5f5b22ec849658d606d276",
+      "physical_lines": 206
+    },
+    {
+      "path": "tools/check_alive.py",
+      "sha256": "db76fa0f897ee6316faddeb6c75836b7e3a18bbce727197ec4945466adee4b84",
+      "physical_lines": 83
+    },
+    {
+      "path": "tools/check_platform_docs.py",
+      "sha256": "2e3202f57b161cc7d66ac8bf3a3745671ccc27e5633affafeff4a6c7cde08c26",
+      "physical_lines": 67
+    },
+    {
+      "path": "tools/configure_local_coordinator.py",
+      "sha256": "0ac9c50b6aaa53f34c6cd587ed75a8afb2759e959dec928bee2dbb614c100113",
+      "physical_lines": 132
+    },
+    {
+      "path": "tools/download_native_runtime.py",
+      "sha256": "66d627dbc4528a5bab6159130f0f7905c54ef138ddffee7b9ff704625cbaf5a8",
+      "physical_lines": 65
+    },
+    {
+      "path": "tools/export_high_score_patch.py",
+      "sha256": "3dcac2252891d13ec5261bd784a5d60cdb6a9ca7acdab92b0fcf980f8bc1f8f5",
+      "physical_lines": 222
+    },
+    {
+      "path": "tools/issue_incident_certificates.py",
+      "sha256": "2ccf3bf4ca50354a08b70804bd971ac6e6368e6ee129cdda63fee6268911e965",
+      "physical_lines": 48
+    },
+    {
+      "path": "tools/local_model.py",
+      "sha256": "41ba0682e9ff7a4bec6354e375309ca4c2e9f7f7b19498c9c691b218c1a7d475",
+      "physical_lines": 123
+    },
+    {
+      "path": "tools/local_shutdown.py",
+      "sha256": "fb1f007cc456d0e301c3bd34cca14ddb6cae669c19ebf8efdc8985ac84087c82",
+      "physical_lines": 300
+    },
+    {
+      "path": "tools/onboarding_client.py",
+      "sha256": "c84de0480d681d811488840ce796d87be617b062f7f9e024d48ae2700ccb8a80",
+      "physical_lines": 77
+    },
+    {
+      "path": "tools/package_review.py",
+      "sha256": "61295bea2bb432ff3be8e4ad5e2cbf6b39568498b25600fdf84b62e9464efb6f",
+      "physical_lines": 362
+    },
+    {
+      "path": "tools/prepare_incident_platform.py",
+      "sha256": "c8e422a60cff246df57eb23307d2e6dffc2878f8803e7cb88e9b4f6b64edfd65",
+      "physical_lines": 81
+    },
+    {
+      "path": "tools/prepare_native_database.py",
+      "sha256": "fee363603e8f4816c3db01b95fc1fc531fdfc9d53f8f8e1b4de5a7053edb5934",
+      "physical_lines": 148
+    },
+    {
+      "path": "tools/prepare_team_upload.py",
+      "sha256": "dd8f92b530605b34bd0eee5b5a937b3b787218665388c35fa66a11533ea2a35b",
+      "physical_lines": 214
+    },
+    {
+      "path": "tools/save_incident_baseline.py",
+      "sha256": "c595da294c381557bb277f3cd485fc77178484a9146388c15ad24c44e176ada9",
+      "physical_lines": 103
+    },
+    {
+      "path": "tools/sdk-suite/run_sdk_suite.py",
+      "sha256": "9ced5840dbfd5ade9f00c98525921b31f56f6eda12cf2be6fb069093cbdb7fe0",
+      "physical_lines": 247
+    },
+    {
+      "path": "tools/sdk-suite/synthetic_tls.py",
+      "sha256": "63b471dd66ab7859dec0c64e72ac45da4baca48fd0800ee72153739cd2b1d6b8",
+      "physical_lines": 62
+    },
+    {
+      "path": "tools/workbench_host.py",
+      "sha256": "43fb692b54f8496caea091e10b2b5c6087ba5499c388bd42cfb86d283b8a1e6a",
+      "physical_lines": 329
+    },
+    {
+      "path": "tests/business_container_config_test.py",
+      "sha256": "515401f4e15cfac3be152456f551fdb11df61043babca7d6ad457a7a102186a7",
+      "physical_lines": 30
+    },
+    {
+      "path": "tests/business_container_preparation_test.py",
+      "sha256": "e91b577aac890cb9f4291d4a93ddcede3fc95717dcaac1ce135a3cf64fd26df7",
+      "physical_lines": 189
+    },
+    {
+      "path": "tests/business_native_acceptance.py",
+      "sha256": "23618365d6d9ebeca39a6bd92802fbcf0854df9fc96a5cba6482e0804f2558d0",
+      "physical_lines": 118
+    },
+    {
+      "path": "tests/business_test.py",
+      "sha256": "acef6c466ea5e559be6e99a2f66d637d2366b06aed49a20c0fb2379cf2421b0b",
+      "physical_lines": 105
+    },
+    {
+      "path": "tests/business_verification_test.py",
+      "sha256": "8fdd14af011e103428282c71560b6707de88c6391ed9fb8392b3e81a65e7feec",
+      "physical_lines": 163
+    },
+    {
+      "path": "tests/fixtures/bridge_mcp_server.py",
+      "sha256": "7b7927fd58166f1623f89e542cfe56fe81450ef1362710f639f99b14e77e88f9",
+      "physical_lines": 27
+    },
+    {
+      "path": "tests/fixtures/resume_fake_mcp.py",
+      "sha256": "ca94ad49dd4357dc7a6d6af17bc68c6892c918f52da5e70ad44e474366efc1e4",
+      "physical_lines": 25
+    },
+    {
+      "path": "tests/test_access_recovery.py",
+      "sha256": "f01684b09ac08f27bfdb0ba78a9dcfb6b78a17958a45b3a131d23541f2d2b683",
+      "physical_lines": 234
+    },
+    {
+      "path": "tests/test_acs_fixtures.py",
+      "sha256": "123809fd2ecbd49058bea6c9a2315b303fedec803c2f4344ad9c251001a0dd22",
+      "physical_lines": 50
+    },
+    {
+      "path": "tests/test_aic_lease.py",
+      "sha256": "e5760cb6ccde1de75e54f130f3bdc49bab74a83aa6e35fcdcf12156102581118",
+      "physical_lines": 179
+    },
+    {
+      "path": "tests/test_amp_facts.py",
+      "sha256": "6825d9bfa62b7962cd73729348c254156611c0b6da2d7c2b4221e7e96c465576",
+      "physical_lines": 208
+    },
+    {
+      "path": "tests/test_amp_message_concurrency.py",
+      "sha256": "3bfbda77a82b8cd9559c8b61b24df597460fa944617bc1312042d524b55565b5",
+      "physical_lines": 137
+    },
+    {
+      "path": "tests/test_bridge_docker_scope.py",
+      "sha256": "c0286a7be84133d02f888ce93dc67a2a28b624cd5700d9ea2218385816a5c571",
+      "physical_lines": 247
+    },
+    {
+      "path": "tests/test_bridge_gateway.py",
+      "sha256": "99ff70d143841e0944c24fc0b3fa5e1aee7688a0513a5e473761b5fa462dd747",
+      "physical_lines": 498
+    },
+    {
+      "path": "tests/test_bridge_platform_preparation.py",
+      "sha256": "7c3c66e0ee1d1b76bbfe912ac202dfd919843191c64776c1c739f0ab1155973a",
+      "physical_lines": 154
+    },
+    {
+      "path": "tests/test_carried_symptom_intents.py",
+      "sha256": "70bc2c667e7c6199c8f8ccffc577dab5da09b6d3d51cad1083b375cc88aec2aa",
+      "physical_lines": 126
+    },
+    {
+      "path": "tests/test_compose_entry.py",
+      "sha256": "87b7d186f83544850c9adb7230d71c5aa6aae92489fe87c8c993bf3df0a16342",
+      "physical_lines": 148
+    },
+    {
+      "path": "tests/test_coordinator.py",
+      "sha256": "dfc7e753eccbd9b11c421629b73873162dc503b4adab0df25afef5b5a71b0850",
+      "physical_lines": 409
+    },
+    {
+      "path": "tests/test_coordinator_participant_failure.py",
+      "sha256": "c5de0a471e53d786d57f8b6054e080ef32233e0e349e7a13af9beda73feec967",
+      "physical_lines": 173
+    },
+    {
+      "path": "tests/test_deployment_preparation.py",
+      "sha256": "20934e78d974748b81f2a7bb620ccee990b0f622f4fe2f90bc07cac480943e06",
+      "physical_lines": 322
+    },
+    {
+      "path": "tests/test_deployment_verify.py",
+      "sha256": "8a29188a56d7d41ef1108c6ddbd8a11a331f98146d7ea411f431d2222fb7e9b3",
+      "physical_lines": 120
+    },
+    {
+      "path": "tests/test_discovery_resilience.py",
+      "sha256": "c4576c5087645ecf157ee4cb8daa6d37a23808e6bd1e03bf29dac73bbecfd2b4",
+      "physical_lines": 65
+    },
+    {
+      "path": "tests/test_eval_platform.py",
+      "sha256": "8262b32d57e62d7c020d2c315793df3343ccea7550fc6913fbf8262f6121eef2",
+      "physical_lines": 441
+    },
+    {
+      "path": "tests/test_evaluation_report_integrity.py",
+      "sha256": "16ee7502dd38772801fb2c7b6cedd7522ba6d5544c6142e7692d27ada63df118",
+      "physical_lines": 181
+    },
+    {
+      "path": "tests/test_evaluation_reports.py",
+      "sha256": "2c2fae538d4c7519e91f865869396e7508ec4d51808af876080dcd46566d9fa3",
+      "physical_lines": 115
+    },
+    {
+      "path": "tests/test_export_high_score_patch.py",
+      "sha256": "1743a809ab131130996774d57cdd184492f4d7d2bf0e3bf14bc51cbc88eefebe",
+      "physical_lines": 80
+    },
+    {
+      "path": "tests/test_external_rotation.py",
+      "sha256": "f7e4cc6bcb68740f7f8850d1e928ad27ac6ad5fc43089f923dac4c2607d2ce68",
+      "physical_lines": 84
+    },
+    {
+      "path": "tests/test_f12_planner.py",
+      "sha256": "05de55cffc981c2a278667fd9ac710a1dcc813090348762ac5c3a3247caef513",
+      "physical_lines": 71
+    },
+    {
+      "path": "tests/test_f12_target.py",
+      "sha256": "a85c53c5608e26997ddefe62d1404c0dd8c052a7388a2674732fd63b77e8a411",
+      "physical_lines": 314
+    },
+    {
+      "path": "tests/test_fluent_bit_collection.py",
+      "sha256": "be8d9587a59df97aa05a65ff058a2cd676a4e0910314631efb6df75655a5c95c",
+      "physical_lines": 102
+    },
+    {
+      "path": "tests/test_fluent_bit_linux_collector.py",
+      "sha256": "a46e33bb89577cea7732abfdaa60563a721783413818f3b9e314728cda34de5a",
+      "physical_lines": 149
+    },
+    {
+      "path": "tests/test_fluent_bit_preparation.py",
+      "sha256": "24d84c598079f47f1b7a007bd5cfa5772120ff0b64cb054b0bc794f2a635aab0",
+      "physical_lines": 400
+    },
+    {
+      "path": "tests/test_formal_handover.py",
+      "sha256": "3dac095692e289be59c6010cb90c8ce32772a9c9285ead0d99dee731e1c36098",
+      "physical_lines": 256
+    },
+    {
+      "path": "tests/test_free_tool_engine.py",
+      "sha256": "6392e236a962fe30b17d98c6327a5c0328f6d604fbf0b143e91d02368fb8ad9c",
+      "physical_lines": 254
+    },
+    {
+      "path": "tests/test_free_tool_selector.py",
+      "sha256": "6e3d432c70a9cf8db2dd2727ebead8d429d1f39ebccda525b145a44e01a210ff",
+      "physical_lines": 79
+    },
+    {
+      "path": "tests/test_gateway_policy_experiment.py",
+      "sha256": "bd7cf7f64fd8bb62e338f7f0bebaca3f7caee6dba59cfbddd90bd6278efdf42b",
+      "physical_lines": 127
+    },
+    {
+      "path": "tests/test_gateway_selection.py",
+      "sha256": "2c83ec2681a8a9085d6baa79b5064c6536bd53c964e1e8eff6041563e95368df",
+      "physical_lines": 21
+    },
+    {
+      "path": "tests/test_handover_wire_contract.py",
+      "sha256": "ef87e842f12d7f0802b5283b2dff63719f65f5d459bd8e04b6f9b27f6479b8ad",
+      "physical_lines": 226
+    },
+    {
+      "path": "tests/test_innovation_heldout.py",
+      "sha256": "bbfd6c20c2e8867a6613b06b9d7fe6392e62679184c703a2740da498bf193911",
+      "physical_lines": 231
+    },
+    {
+      "path": "tests/test_leased_batch.py",
+      "sha256": "4e2a44fe23058d941d1262ba25ec7b7c8a0bb077cb8ea31009ab2fac8678ac6e",
+      "physical_lines": 130
+    },
+    {
+      "path": "tests/test_local_launcher.py",
+      "sha256": "511ee1cbcacc7a8b81998376101f75d390a715366b7f1ab884e7889620ff432a",
+      "physical_lines": 298
+    },
+    {
+      "path": "tests/test_local_shutdown.py",
+      "sha256": "7b2e8b04ff0d88790e17c3dc672f9efbbbc4c6464db90b95b00f7475e58e5fa5",
+      "physical_lines": 371
+    },
+    {
+      "path": "tests/test_longrun_status.py",
+      "sha256": "3eb4fc47b20ffeb5985062cdc8adebbe20fba0f2d88abc1d463f071b7c774258",
+      "physical_lines": 106
+    },
+    {
+      "path": "tests/test_managed_startup.py",
+      "sha256": "80b743ded33d576d210e70024aa6651dc6ec8681d975a81575e9a997beac6a6c",
+      "physical_lines": 48
+    },
+    {
+      "path": "tests/test_material_scan.py",
+      "sha256": "57345e6f34037077277dea08a95b8b357f9991703ac5e8292e8fe11ab057a507",
+      "physical_lines": 59
+    },
+    {
+      "path": "tests/test_model_eval.py",
+      "sha256": "74eaf2af977a8d55dee2bd1ed391331a18cd8312f8627d0452f951ac018f2944",
+      "physical_lines": 302
+    },
+    {
+      "path": "tests/test_native_app_stop.py",
+      "sha256": "663d7863da9e92fe33a74d77602414820dea21aa89bb3290fdd4a1b6f531919a",
+      "physical_lines": 346
+    },
+    {
+      "path": "tests/test_native_preparation.py",
+      "sha256": "fde7cb769bf4bf134368869c0b887e6d9b770ee3ed0e50e7b4b5c3b8383d615f",
+      "physical_lines": 347
+    },
+    {
+      "path": "tests/test_observer_key_bounds.py",
+      "sha256": "a6122da25d2deece53f9042862b071d3106e024f7350069bcbd32c12a83c7206",
+      "physical_lines": 180
+    },
+    {
+      "path": "tests/test_onboarding.py",
+      "sha256": "3bff5d083b22778e9696291e0152f68314e5c0dddcc3bc1ac3624cf954e548de",
+      "physical_lines": 65
+    },
+    {
+      "path": "tests/test_onboarding_client.py",
+      "sha256": "3fba28be90dd2a66964e416b3dcb18c1314f95257a6133d6f0db707047d33d46",
+      "physical_lines": 43
+    },
+    {
+      "path": "tests/test_onboarding_text.py",
+      "sha256": "b9f6457c6394e19806ff1b9cf6f84ae62e22272e79bccf9638d48d2782100cb7",
+      "physical_lines": 156
+    },
+    {
+      "path": "tests/test_p5_incident_scheduling.py",
+      "sha256": "6c58b8a0595e073b8d75ce72da0df77800fb2423fb3fc12ebfc864ff4ebed508",
+      "physical_lines": 424
+    },
+    {
+      "path": "tests/test_participant_failure_experiment.py",
+      "sha256": "9a72ee6ace7cfb905c96823c6d35ddeac6bc55782c8cb6107abbc9cd4479ec95",
+      "physical_lines": 161
+    },
+    {
+      "path": "tests/test_participant_health_transport.py",
+      "sha256": "d82d52657a91f7e9378a51122167cec78b5f613ac36e1c235e8def8a89de94f2",
+      "physical_lines": 255
+    },
+    {
+      "path": "tests/test_participant_selection.py",
+      "sha256": "c3e6d10d5c964f9b601fba8fbec28f6a5d08a8e5fa6e62bb065a175294dd1f89",
+      "physical_lines": 78
+    },
+    {
+      "path": "tests/test_planner_conflicts.py",
+      "sha256": "d396e4f6e1d9b10de846d2318062baa63d4c9e30cc2b17e560036a80c9feaf7f",
+      "physical_lines": 30
+    },
+    {
+      "path": "tests/test_platform_accounting_tools.py",
+      "sha256": "515ab8df9d449719fd2d751a41650ac48f2f0f1a3e754c96837bec5d7ab92b67",
+      "physical_lines": 89
+    },
+    {
+      "path": "tests/test_platform_batch.py",
+      "sha256": "dadc3dd972ee70af1f6010d6a6993e0031b98cd67f44153fdd75e9e20e6f8060",
+      "physical_lines": 77
+    },
+    {
+      "path": "tests/test_platform_e1_worker.py",
+      "sha256": "9ce8b956b8e8bdf4c084b01c6cb915270c6e21c813e192e00d39c83271127efc",
+      "physical_lines": 311
+    },
+    {
+      "path": "tests/test_platform_e1c_controller.py",
+      "sha256": "d40f42dabdfebaf8990feaba961bec63990fd068fb93be56be9eade9becba37f",
+      "physical_lines": 275
+    },
+    {
+      "path": "tests/test_platform_e1c_runner.py",
+      "sha256": "6d5b97b895d98491c19c360a9c03bc04df686199bb64237e3bf16e80157de4ae",
+      "physical_lines": 163
+    },
+    {
+      "path": "tests/test_platform_e1c_transport.py",
+      "sha256": "e2b3e4cba8f3ba12f955549266fa29bacd6824d17b7a9b2263e4cb9edfdd689c",
+      "physical_lines": 56
+    },
+    {
+      "path": "tests/test_platform_e1c_worker.py",
+      "sha256": "554a87c39f7fbd540ab11d5de5e55c9c3b26b7e0724eafaf9073bca2800ae77a",
+      "physical_lines": 274
+    },
+    {
+      "path": "tests/test_platform_handover.py",
+      "sha256": "ea2a696c12fe7063bb4a69389a683c5614b466d6c3c97a2ec42e8c251e5ded0c",
+      "physical_lines": 155
+    },
+    {
+      "path": "tests/test_platform_resume_experiment.py",
+      "sha256": "f9163c9e0581bbb755ce248c42330e931ef2e43926ada212d1a32603e258cb08",
+      "physical_lines": 704
+    },
+    {
+      "path": "tests/test_platform_smoke.py",
+      "sha256": "0fea20a91f9a5dfe58fe84c9897a5af07920376c4eddb4bba7ca869d4776b4b7",
+      "physical_lines": 87
+    },
+    {
+      "path": "tests/test_platform_worker.py",
+      "sha256": "f4e352a0bc6e71fa1d0cb4d490268b0bb8fb310ebde8afb8e432ba547feda89e",
+      "physical_lines": 296
+    },
+    {
+      "path": "tests/test_public_onboarding_groups.py",
+      "sha256": "cb9264bf34e542ba721b919fb2e291ecbfa307787c8991742f386fe5ba9781e1",
+      "physical_lines": 105
+    },
+    {
+      "path": "tests/test_public_order_version.py",
+      "sha256": "7d8e93d4aec0d1920e0b96ae3ae934a3e92dc3e41cd4727030269123bb4167ba",
+      "physical_lines": 162
+    },
+    {
+      "path": "tests/test_receipt_reconciliation.py",
+      "sha256": "f64a75258f8cf74194a2576697193b825e9dbc9c983e1dae1fc9dc64c9ab1ccf",
+      "physical_lines": 255
+    },
+    {
+      "path": "tests/test_receipt_resolution.py",
+      "sha256": "27c946df820e9b22dee9f9de8fb935eb651bc7a6e689ae40d62e78c595302168",
+      "physical_lines": 195
+    },
+    {
+      "path": "tests/test_resume_comparison.py",
+      "sha256": "36765fcb51ab19d9d85d0734045ba903db5df651efd6cf7b699414639944d814",
+      "physical_lines": 154
+    },
+    {
+      "path": "tests/test_resume_transport.py",
+      "sha256": "f0d551b716fdec3cbf720ec756e776eed06f4a1d392867e618f65f9d626a05ab",
+      "physical_lines": 157
+    },
+    {
+      "path": "tests/test_review_entry.py",
+      "sha256": "59801594c4ad1f95a4f587e7fa4f6b1e374d3cc06695c7be0c493f8edf4ea6b7",
+      "physical_lines": 64
+    },
+    {
+      "path": "tests/test_review_package.py",
+      "sha256": "82d60a8af02868505709dfc28cfaf8490a742b6bb37e8c096cf086bfe312e085",
+      "physical_lines": 119
+    },
+    {
+      "path": "tests/test_schedule.py",
+      "sha256": "ce01ae67121a7de1fa7fe4ad0816911ae1364d180578f10d94b5ed5325eb7169",
+      "physical_lines": 83
+    },
+    {
+      "path": "tests/test_schedule_rotation.py",
+      "sha256": "2e34a81a6549c228ebf19e36674ddb2d164efd16b32d9ac40a8900214a2c9885",
+      "physical_lines": 71
+    },
+    {
+      "path": "tests/test_secret_scan.py",
+      "sha256": "812c0165192890cb11ef85b6b7ff7408adcec882a549e514eb654a5dd2ab4d74",
+      "physical_lines": 68
+    },
+    {
+      "path": "tests/test_stability_bundle.py",
+      "sha256": "7edd8de6dac75c6a34c4bb4da01b04a83cb21cd8b735ae4bbaea76d427748732",
+      "physical_lines": 171
+    },
+    {
+      "path": "tests/test_stability_report.py",
+      "sha256": "ee8f28bafa771565369c1bccf34c6104a5ed48861e3bbebd5ccbc3091096a564",
+      "physical_lines": 85
+    },
+    {
+      "path": "tests/test_stability_report_window.py",
+      "sha256": "8bff54ad047f5e057fb0d6c56269dac28f05439e349ad5ce9452876f872692db",
+      "physical_lines": 160
+    },
+    {
+      "path": "tests/test_takeover_error_details.py",
+      "sha256": "725d6be1d00549f6ac79f2896354cedc94f669411f35e399538216914a9228d1",
+      "physical_lines": 91
+    },
+    {
+      "path": "tests/test_task_ordering.py",
+      "sha256": "fb32c76aac4c9e0c04cb54ff8e7054a7c341042434fe93e34372120b75f9c56c",
+      "physical_lines": 58
+    },
+    {
+      "path": "tests/test_unknown_receipt_target.py",
+      "sha256": "8fcbeca258c91f1f805806a26974cc05c140937fdbc508ec62b48583f7d160a9",
+      "physical_lines": 609
+    },
+    {
+      "path": "tests/test_windows_startup.py",
+      "sha256": "1d973f790b6a8c041e4642c6132468034aca9e166032e21cd56e51f9a67cba73",
+      "physical_lines": 126
+    },
+    {
+      "path": "tests/test_workbench.py",
+      "sha256": "22c5752906e99d74e3645e47657bf0c4c0d62e510a225eb3855cabf7f91b461a",
+      "physical_lines": 71
+    },
+    {
+      "path": "tests/test_workbench_access.py",
+      "sha256": "548efcb6b3a2061e8d08f84735c71f74fa76f9371650de701d6352c92c716563",
+      "physical_lines": 206
+    },
+    {
+      "path": "tests/test_workbench_host.py",
+      "sha256": "c3ed047f63d1a4bae79982afce33344a9071c397fd853a674b47077bd2b208e9",
+      "physical_lines": 215
+    },
+    {
+      "path": "tests/test_workbench_model_config.py",
+      "sha256": "71d71140e4511ceacf496c19d52013c40b6b4c02c6228b33768b37809b5a967e",
+      "physical_lines": 152
+    },
+    {
+      "path": "tests/test_wutong_transport.py",
+      "sha256": "0c414d6e728a805c682d711a711c00fea6e43effd7e10fbde1babaac70dcb018",
+      "physical_lines": 217
+    },
+    {
+      "path": "audit_stress.py",
+      "sha256": "98776669156f588cfd57110f537f6ad7b5f6923f64dcebc4e66d8b00de841492",
+      "physical_lines": 727
+    },
+    {
+      "path": "consistency_stress.py",
+      "sha256": "dd4f5136b7c2df44ab70673195dc85f2f94fab71794e9225843e42693e7150c1",
+      "physical_lines": 243
+    },
+    {
+      "path": "protocol_stress.py",
+      "sha256": "e5dba15d07e0db45d8db64944c2298a9d68265290693bcdf7c9da0898bb719c1",
+      "physical_lines": 514
+    },
+    {
+      "path": "resilience_stress.py",
+      "sha256": "37724ef4e6edc690bd2284b446ac5940c7316b586bd7abe66cfed443638aa819",
+      "physical_lines": 357
+    },
+    {
+      "path": "run_pilot.py",
+      "sha256": "f1b87074bbd281704a08d5c327efd452eb98419b592b20d155965f5064ee92f6",
+      "physical_lines": 321
+    },
+    {
+      "path": "services.py",
+      "sha256": "6e1d9fee378fe22507ad24e2e0e023402f35a545223aa82565a66f4e609d6187",
+      "physical_lines": 230
+    },
+    {
+      "path": "summarize_campaign.py",
+      "sha256": "416f7d0b822506555d0d1547f5ab43df90a5b6280a5c5cc150f1687b75442eab",
+      "physical_lines": 108
+    },
+    {
+      "path": "verify_demo_backend.py",
+      "sha256": "a41437477f1f0d58ce0e906cff7480f6a2e36248759f5678f2634ec24592a5c1",
+      "physical_lines": 120
+    },
+    {
+      "path": "verify_run.py",
+      "sha256": "235426f6aa6af46fac06315b2b2a07681c4806acab1face535288967c9133e52",
+      "physical_lines": 50
+    }
+  ]
+}

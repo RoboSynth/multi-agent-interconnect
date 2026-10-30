@@ -1,0 +1,39 @@
+domain: ops
+allowed_callers: []
+resources: {backend: native, process: app-v2, routes: [v1, v2], application: orders}
+rate_limit: {window_seconds: 60, max_calls: 90}
+tools:
+  ops.containers:
+    server: native
+    mcp_tool: process_status
+    risk: read
+    description: 观察本轮实验登记的 app-v2 进程命令行身份和运行状态，后端为本地 Windows 进程。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+  ops.restart:
+    server: native
+    mcp_tool: process_restart
+    risk: high
+    description: 经审批重启本项目 runtime 中登记且命令行核验通过的 app-v2；不接受任意 PID。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+  ops.route_status:
+    server: route
+    mcp_tool: route_status
+    risk: read
+    description: 观察当前本地 Nginx 订单上游版本 v1/v2。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+  ops.route_rollback:
+    server: route
+    mcp_tool: route_rollback
+    risk: write
+    description: 当前入口为 v1，或未登记且精确文件哈希仍相同、登记 v2 应用健康时，恢复固定 v2 并校验重载。
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        expected_route_version: {type: string, enum: [unknown]}
+        expected_route_sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+      dependentRequired:
+        expected_route_version: [expected_route_sha256]
+        expected_route_sha256: [expected_route_version]
+    fixed_arguments: {target_version: v2}
+    reconcile: {tool_alias: ops.route_status, expected_before: v1, expected_before_argument: expected_route_version, expected_after: v2}

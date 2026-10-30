@@ -1,0 +1,659 @@
+"""Apply real faults on this project's Docker or native Windows target.
+
+The evaluator's private record contains causes. No fault identifiers or cause
+flags are placed in order responses or domain observations.
+"""
+import argparse
+import hashlib
+import json
+import os
+import subprocess
+import sys
+import time
+import uuid
+from datetime import datetime, timezone
+from pathlib import Path
+
+import httpx
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from business.native_process import managed_app_family, managed_process
+from eval.targets import DockerTarget, DOMAIN_SERVICES, DOMAIN_SOURCE_FILES
+SCENARIOS = {
+    "H00": "healthy control; no mutation",
+    "F01": "stop active app-v2 process/container",
+    "F02": "route gateway to v1 (missing v2 response field)",
+    "F04": "exhaust the opt-in one-connection application pool without a database lock",
+    "F06": "hold real SHARE table lock, leaving reads available",
+    "F07": "set application role read-only and rebuild its connections",
+    "F10": "F02 and F07",
+    "F01_F07": "F01 and F07; application stopped after its database role is set read-only",
+    "F12": "gateway suppresses a successful committed create response",
+}
+UNSUPPORTED = {
+    "F15": "Requires the database participant's three precise interrupt hooks; use the resumable-task experiment runner. F07 alone is not an F15 result.",
+    "F19": "Use eval/participant_failure_experiment.py for the owned local operations worker and heartbeat experiment. This generic resource injector never infers or kills an external participant PID.",
+}
+
+
+def run_command(args, **kwargs):
+    result = subprocess.run([str(x) for x in args], capture_output=True, text=True, check=False, **kwargs)
+    if result.returncode:
+        # Callers contain no secret values in command arguments. Error text from tools may be verbose.
+        raise RuntimeError(f"{Path(str(args[0])).name} failed ({result.returncode}): {result.stderr[-1200:]}")
+    return result.stdout
+
+
+def child_environment(**values):
+    system_names = {"path", "systemroot", "windir", "temp", "tmp", "userprofile", "appdata", "localappdata",
+                    "homedrive", "homepath", "comspec", "pathext", "pythonutf8", "pythonioencoding",
+                    "number_of_processors", "processor_architecture", "os"}
+    return {**{key: value for key, value in os.environ.items() if key.lower() in system_names}, **values}
+
+
+class Injector:
+    def __init__(self, *, backend="docker", runtime=None, target_config=None, expected_compose_hashes=None,
+                 expected_sources=None, expected_domains=None):
+        if backend not in {"native", "docker"} or (target_config is not None and backend != "docker"):
+            raise ValueError("A container target requires the docker backend")
+        self.backend = backend
+        self.target = DockerTarget.from_file(target_config) if target_config is not None else None
+        self._f12 = None
+        self.expected_sources = expected_sources
+        self.expected_domains = expected_domains
+        self.runtime_path = Path(runtime or ROOT / "deploy/native-runtime.json")
+        self.runtime = json.loads(self.runtime_path.read_text(encoding="utf-8-sig")) if backend == "native" else {}
+        if backend == "native" and self.runtime.get("native_drive"):
+            drive = self.runtime["native_drive"]
+            if not Path(drive + "\\").exists():
+                run_command(["subst.exe", drive, ROOT])
+        self.compose = ["docker", "compose", "--env-file", ROOT / "deploy/.env", "-f", ROOT / "deploy/compose.yml"]
+        if self.target:
+            self.expected_sources = expected_sources if expected_sources is not None else {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in DOMAIN_SOURCE_FILES}
+            if set(self.expected_sources) != set(DOMAIN_SOURCE_FILES):
+                raise ValueError("All fixed domain source fingerprints are required")
+            compose_hashes = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in self.target.compose_files}
+            if expected_compose_hashes is not None and compose_hashes != expected_compose_hashes:
+                raise ValueError("Explicit Compose inputs changed before the target operation")
+            self.compose = self.target.compose
+            self.runtime = {"app_v1_port": self.target.ports["app_v1"], "app_v2_port": self.target.ports["app_v2"],
+                            "order_port": self.target.ports["order"]}
+            self.verify_target()
+            self.target_proof["compose_sha256"] = compose_hashes
+            self._target_input_paths = (*self.target.compose_files, self.target.env_file,
+                (ROOT / target_config).resolve())
+            self._target_input_hashes = self._input_hashes()
+            self._initial_target_states = dict(self._target_states)
+        if backend == "native":
+            # Domain-local credential files are generated by local setup and excluded from delivery.
+            for env_path in (ROOT / "runtime/private/application.env", ROOT / "runtime/private/postgres-superuser.env"):
+                if env_path.exists():
+                    for line in env_path.read_text(encoding="utf-8-sig").splitlines():
+                        if "=" in line and not line.lstrip().startswith("#"):
+                            key, value = line.split("=", 1)
+                            key = key.strip()
+                            if key in {"PGPASSWORD", "PGADMINPASSWORD", "APP_ADMIN_TOKEN", "POSTGRES_PASSWORD"}:
+                                if env_path.name == "postgres-superuser.env" and key in {"PGPASSWORD", "POSTGRES_PASSWORD"}:
+                                    key = "PGADMINPASSWORD"
+                                os.environ.setdefault(key, value.strip().strip("\"'"))
+
+    def verify_target(self):
+        """Inspect labels, bindings and mounts before any explicitly targeted write.
+
+        Docker inspect contains environment values: only the selected proof below
+        leaves this method; complete inspect output is never logged.
+        """
+        ids = run_command(self.compose + ["ps", "-a", "-q"]).split()
+        if not ids:
+            raise ValueError("Explicit container project has no existing services")
+        records = json.loads(run_command(self.target.docker + ["inspect", *ids]))
+        services = {}
+        for record in records:
+            labels = record.get("Config", {}).get("Labels") or {}
+            if labels.get("incident-pilot") != "true" or labels.get("com.docker.compose.project") != self.target.project:
+                raise ValueError("Container is outside the explicit incident-pilot project")
+            service = labels.get("com.docker.compose.service")
+            # Retained one-off F12 containers are not members of the ten-service
+            # baseline. F12 checks every proxy separately before starting one.
+            if service == "reply-drop" and labels.get("incident-pilot.f12.session"):
+                continue
+            if service in services:
+                raise ValueError("Target service has multiple instances")
+            services[service] = record
+        if not {"postgres", "app-v1", "app-v2", "nginx", *DOMAIN_SERVICES} <= services.keys():
+            raise ValueError("Explicit project lacks required business or registered domain services")
+        for service, internal, key in (("app-v1", "8000/tcp", "app_v1"), ("app-v2", "8000/tcp", "app_v2"), ("nginx", "80/tcp", "order")):
+            bindings = services[service].get("HostConfig", {}).get("PortBindings", {}).get(internal) or []
+            if len(bindings) != 1 or bindings[0].get("HostIp") != "127.0.0.1" or bindings[0].get("HostPort") != str(self.target.ports[key]):
+                raise ValueError("Container host binding differs from the explicit loopback target")
+        expected = self.target.docker_path(self.target.route_file.parent).replace("\\", "/").rstrip("/")
+        for service, destination in (("nginx", "/etc/nginx/runtime"), ("ops-agent", "/route")):
+            mounts = [item for item in services[service].get("Mounts", []) if item.get("Destination") == destination]
+            if (len(mounts) != 1 or mounts[0].get("Type") != "bind"
+                    or mounts[0].get("Source", "").replace("\\", "/").rstrip("/") != expected):
+                raise ValueError("Gateway/operations route mount differs from the explicit target")
+        data = [item for item in services["postgres"].get("Mounts", []) if item.get("Destination") == "/var/lib/postgresql/data"]
+        if len(data) != 1 or data[0].get("Type") != "volume" or not data[0].get("Name", "").startswith(self.target.project + "_"):
+            raise ValueError("Database data volume is not isolated to the explicit project")
+        domains = {}
+        if self.expected_domains is not None and set(self.expected_domains) != set(DOMAIN_SERVICES):
+            raise ValueError("Initial domain source attestation is incomplete")
+        for service, role in DOMAIN_SERVICES.items():
+            record = services[service]
+            started_at = record.get("State", {}).get("StartedAt")
+            if not isinstance(started_at, str) or not started_at:
+                raise ValueError("Domain start timestamp is missing")
+            if record.get("HostConfig", {}).get("ReadonlyRootfs") is not True:
+                raise ValueError("Domain source digest reuse requires a read-only image filesystem")
+            mounts = record.get("Mounts", [])
+            if any(item.get("Destination") in {"/", "/srv"} or item.get("Destination", "").startswith("/srv/") for item in mounts):
+                raise ValueError("Domain image source is shadowed by a mutable mount")
+            domain_mounts = [item for item in mounts if item.get("Destination") == "/domain"]
+            if len(domain_mounts) != 1 or domain_mounts[0].get("Type") != "bind" or domain_mounts[0].get("RW") is not False:
+                raise ValueError("Domain configuration must be a fixed read-only bind mount")
+            if set(record.get("NetworkSettings", {}).get("Networks", {})) != {self.target.project+"_default"}:
+                raise ValueError("Domain container is outside the target's isolated network")
+            if self.expected_domains is not None:
+                previous = self.expected_domains[service]
+                if previous.get("container_id") != record["Id"] or previous.get("image_id") != record.get("Image"):
+                    raise ValueError("Domain container/image changed during the frozen experiment")
+                if previous.get("started_at") != started_at:
+                    raise ValueError("Domain restarted during the frozen experiment")
+                identity = self.runtime_domain(record["Id"], service, include_sources=False)
+                if any(identity.get(key) != previous.get(key) for key in ("aic", "role", "base_url")):
+                    raise ValueError("Public domain configuration changed during the frozen experiment")
+                identity["source_sha256"] = previous["source_sha256"]
+            else:
+                identity = self.runtime_domain(record["Id"], service)
+            if identity.get("source_sha256") != self.expected_sources:
+                raise ValueError("Running domain image source differs from the frozen evaluator source")
+            if identity.get("role") != role or not isinstance(identity.get("aic"), str) or not identity["aic"].strip():
+                raise ValueError("Running domain identity differs from its registered service role")
+            if service == "application-agent" and identity.get("base_url", "").rstrip("/") != "http://app-v2:8000":
+                raise ValueError("Application domain points outside this project's application service")
+            if service == "verification-agent" and identity.get("base_url", "").rstrip("/") not in {"http://nginx", "http://nginx:80"}:
+                raise ValueError("Verification domain points outside this project's gateway")
+            domains[service] = {**identity, "container_id": record["Id"], "image_id": record.get("Image"),
+                                "started_at": started_at, "source_digest_reused": self.expected_domains is not None}
+        if len({row["aic"] for row in domains.values()}) != len(domains):
+            raise ValueError("Registered domain services must use distinct identities")
+        self.target_proof = {"project": self.target.project, "ports": self.target.ports,
+            "services": {name: {"container_id": row["Id"], "image_id": row.get("Image")} for name, row in services.items()},
+            "route_mount_matches": True, "database_volume": data[0]["Name"], "domains": domains}
+        self._target_states = {name: {"container_id": row["Id"], "image_id": row.get("Image"),
+            "started_at": row.get("State", {}).get("StartedAt"), "running": row.get("State", {}).get("Running")}
+            for name, row in services.items() if name in {"postgres", "app-v1", "app-v2", "nginx", *DOMAIN_SERVICES}}
+
+    def runtime_domain(self, container_id, service, *, include_sources=True):
+        bridge = service in {"database-agent", "database-backup-agent", "ops-agent"}
+        config = "/domain/bridge.json" if bridge else "/domain/config.json"
+        # Fixed files only. Never read env, key/cert files or return the config.
+        code = ("import hashlib,json;from pathlib import Path;"
+            + "c=json.loads(Path("+repr(config)+").read_text(encoding='utf-8-sig'));p=c.get('platform',{});"
+            + "r={'aic':c.get('executor_aic') if "+repr(bridge)+" else c.get('aic'),"
+            + "'role':p.get('role') if "+repr(bridge)+" else c.get('role'),'base_url':c.get('base_url')};")
+        if include_sources:
+            code += "r['source_sha256']={n:hashlib.sha256((Path('/srv')/n).read_bytes()).hexdigest() for n in "+repr(DOMAIN_SOURCE_FILES)+"};"
+        code += "print(json.dumps(r))"
+        return json.loads(run_command(self.target.docker + ["exec", container_id, "python", "-c", code]))
+
+    def _save(self):
+        self.runtime_path.write_text(json.dumps(self.runtime, indent=2), encoding="utf-8")
+
+    def _environment(self, name):
+        # Explicit container targets use their own file, never inherited native
+        # resource credentials. This executes only in the separate injector.
+        value = None if self.target else os.environ.get(name)
+        env_path = self.target.env_file if self.target else ROOT / "deploy/.env"
+        if not value and self.backend == "docker" and env_path.exists():
+            for line in env_path.read_text(encoding="utf-8-sig").splitlines():
+                if line.strip().startswith(name + "="):
+                    value = line.split("=", 1)[1].strip().strip("\"'")
+        if not value:
+            raise RuntimeError(f"Required domain environment variable is missing: {name}")
+        return value
+
+    def sql(self, statement):
+        if self.backend == "docker":
+            return run_command(self.compose + ["exec", "-T", "postgres", "psql", "-U", "postgres", "-d", "orders", "-v", "ON_ERROR_STOP=1", "-At", "-c", statement])
+        env = dict(os.environ, PGPASSWORD=self._environment("PGADMINPASSWORD"))
+        return run_command([Path(self.runtime["postgres_bin"]) / "psql.exe", "-h", "127.0.0.1", "-p", self.runtime["pgport"],
+                            "-U", "postgres", "-d", "orders", "-v", "ON_ERROR_STOP=1", "-At", "-c", statement], env=env)
+
+    def rebuild_pools(self):
+        headers = {"Authorization": "Bearer " + self._environment("APP_ADMIN_TOKEN")}
+        with httpx.Client(timeout=12, trust_env=False) as client:
+            for version in ("v1", "v2"):
+                port = self.runtime.get(f"app_{version}_port", 8081 if version == "v1" else 8082)
+                response = client.post(f"http://127.0.0.1:{port}/admin/pool/rebuild", json={}, headers=headers)
+                response.raise_for_status()
+
+    def route(self, target, *, contents=None):
+        if target not in {"v1", "v2", "reply-drop"}:
+            raise ValueError("route target is not allowlisted")
+        if self.backend == "docker":
+            upstream = "reply-drop:8090" if target == "reply-drop" else f"app-{target}:8000"
+            route_file = self.target.route_file if self.target else ROOT / "deploy/nginx/runtime/route.conf"
+        else:
+            port = 8090 if target == "reply-drop" else self.runtime[f"app_{target}_port"]
+            upstream = f"127.0.0.1:{port}"
+            route_file = Path(self.runtime["nginx_prefix"]) / "conf/route.conf"
+        route_file.write_bytes(contents if contents is not None else f"set $order_upstream {upstream};\n".encode("ascii"))
+        if self.backend == "docker":
+            run_command(self.compose + ["exec", "-T", "nginx", "nginx", "-t"])
+            run_command(self.compose + ["exec", "-T", "nginx", "nginx", "-s", "reload"])
+        else:
+            prefix = str(self.runtime["nginx_prefix"]).replace("\\", "/") + "/"
+            run_command([self.runtime["nginx_bin"], "-p", prefix, "-t"])
+            run_command([self.runtime["nginx_bin"], "-p", prefix, "-s", "reload"])
+        # Windows nginx signals a worker asynchronously. Confirm the public route
+        # on fresh connections; a successful signal command alone is insufficient.
+        expected = "v1" if target == "v1" else "v2"
+        port = self.runtime.get("order_port", int(os.environ.get("ORDER_PORT", "8088")))
+        started = time.monotonic()
+        with httpx.Client(timeout=2, trust_env=False, headers={"Connection": "close"}) as client:
+            for _ in range(40):
+                try:
+                    response = client.get(f"http://127.0.0.1:{port}/health")
+                    relay_visible = response.headers.get("via") == "1.1 incident-pilot-relay"
+                    route_matches = relay_visible if target == "reply-drop" else not relay_visible
+                    if response.status_code == 200 and response.json().get("api_version") == expected and route_matches and time.monotonic() - started >= 0.8:
+                        return
+                except (httpx.TransportError, ValueError):
+                    pass
+                time.sleep(0.1)
+        raise RuntimeError("Nginx reload did not expose the expected application version")
+
+    def readonly(self, enabled):
+        self.sql("ALTER ROLE orders_app SET default_transaction_read_only = " + ("'on'" if enabled else "'off'") + ";")
+        self.rebuild_pools()
+
+    def _native_stop(self, name, marker):
+        pid = self.runtime.get("managed", {}).get(name)
+        if not pid:
+            return
+        if name in {"v1", "v2"}:
+            managed_app_family(int(pid), version=name, port=self.runtime[f"app_{name}_port"],
+                               python_executable=self.runtime["app_python"], terminate=True)
+        else:
+            managed_process(int(pid), script_name=marker, terminate=True)
+        self.runtime["managed"].pop(name, None)
+        self._save()
+
+    def _native_start(self, name, script_name, *, env=None, extra=()):
+        self._native_stop(name, script_name)
+        logdir = ROOT / "runtime"
+        logdir.mkdir(exist_ok=True)
+        executable = self.runtime["app_python"]
+        if name == "fault-locker" and os.name == "nt":
+            # Register the actual lock holder, avoiding the Windows venv shim
+            # whose child would otherwise survive a single-PID restore.
+            if not Path(executable).samefile(sys.executable):
+                raise ValueError("Native lock injection must use its registered Python environment")
+            env = {**(env or os.environ), "__PYVENV_LAUNCHER__": executable}
+            executable = sys._base_executable
+        with (logdir / f"{name}.stdout.log").open("ab") as out, (logdir / f"{name}.stderr.log").open("ab") as err:
+            process = subprocess.Popen([executable, str(ROOT / "business" / script_name), *extra],
+                                       cwd=ROOT, env=env, stdout=out, stderr=err,
+                                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        self.runtime.setdefault("managed", {})[name] = process.pid
+        self._save()
+        return process
+
+    def application(self, running):
+        if self.backend == "docker":
+            run_command(self.compose + ["start" if running else "stop", "app-v2"])
+        elif running:
+            env = child_environment(PGHOST="127.0.0.1", PGPORT=str(self.runtime["pgport"]), PGDATABASE="orders", PGUSER="orders_app",
+                                    PGPASSWORD=self._environment("PGPASSWORD"), APP_ADMIN_TOKEN=self._environment("APP_ADMIN_TOKEN"))
+            self._native_start("v2", "run_app.py", env=env, extra=("--version", "v2", "--port", str(self.runtime["app_v2_port"])))
+        else:
+            self._native_stop("v2", "run_app.py")
+        if running:
+            port = self.runtime.get("app_v2_port", 8082)
+            with httpx.Client(timeout=1, trust_env=False) as client:
+                for _ in range(40):
+                    try:
+                        if client.get(f"http://127.0.0.1:{port}/ready").status_code == 200:
+                            return
+                    except httpx.TransportError:
+                        pass
+                    time.sleep(0.25)
+            raise RuntimeError("app-v2 did not become ready after restart")
+
+    def pool_exhaustion(self, enabled):
+        """F04 uses only the fixed app-v2 endpoint and a revision-checked config.
+
+        The application must explicitly enable its test fixture. Restore accepts
+        only stable or this exact fixture; it never replaces an unrelated config.
+        """
+        headers = {"Authorization": "Bearer " + self._environment("APP_ADMIN_TOKEN")}
+        port = self.runtime.get("app_v2_port", 8082)
+        url = f"http://127.0.0.1:{port}"
+        with httpx.Client(timeout=12, trust_env=False) as client:
+            response = client.get(url + "/admin/status", headers=headers)
+            response.raise_for_status()
+            status = response.json()
+            version = status.get("config_version")
+            if version not in {"stable", "candidate"} or (enabled and version != "stable"):
+                raise ValueError("F04 requires stable or its own known pool configuration")
+            if not enabled and version == "stable":
+                return
+            if not enabled and (status.get("pool", {}).get("max_size") != 1
+                                or status.get("pool_exhausted") is not True):
+                raise ValueError("F04 refuses to restore an unrelated candidate configuration")
+            path = "/admin/config/test-pool-exhaustion" if enabled else "/admin/config/rollback"
+            response = client.post(url + path, json={"expected_revision": status["config_revision"]}, headers=headers)
+            response.raise_for_status()
+            expected = "candidate" if enabled else "stable"
+            if response.json().get("config_version") != expected:
+                raise RuntimeError("F04 pool configuration transition was not confirmed")
+
+    def lock(self, enabled):
+        if self.backend == "docker":
+            if enabled:
+                run_command(self.compose + ["--profile", "faults", "up", "-d", "fault-locker"])
+            else:
+                run_command(self.compose + ["--profile", "faults", "stop", "fault-locker"])
+        elif enabled:
+            env = child_environment(PGHOST="127.0.0.1", PGPORT=str(self.runtime["pgport"]), PGDATABASE="orders", PGUSER="orders_app",
+                                    PGPASSWORD=self._environment("PGPASSWORD"))
+            self._native_start("fault-locker", "fault_lock.py", env=env)
+        else:
+            self._native_stop("fault-locker", "fault_lock.py")
+        if enabled:
+            for _ in range(40):
+                observed = self.sql("SELECT count(*) FROM pg_locks l JOIN pg_stat_activity a ON a.pid=l.pid WHERE a.application_name='incident-pilot-F06-locker' AND l.mode='ShareLock' AND l.granted;")
+                if observed.strip() != "0":
+                    return
+                time.sleep(0.25)
+            raise RuntimeError("F06 holder failed to acquire the actual table lock")
+
+    def _input_hashes(self):
+        return {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in self._target_input_paths}
+
+    def _f12_command(self, args):
+        # Compose interpolation must come from the pinned file, not a developer's
+        # resource/Compose environment. WSL also has its own inherited variables.
+        if self.target.wsl_distro:
+            names = {"APP_V1_PORT", "APP_V2_PORT", "ORDER_PORT", "ORDER_BIND", "REPLY_DROP_PORT",
+                "POSTGRES_PASSWORD", "ORDERS_DB_PASSWORD", "APP_ADMIN_TOKEN", "BRIDGE_APPROVAL_KEY",
+                "COMPOSE_FILE", "COMPOSE_PROJECT_NAME", "COMPOSE_PROFILES", "COMPOSE_ENV_FILES",
+                "COMPOSE_DISABLE_ENV_FILE", "COMPOSE_PATH_SEPARATOR", "COMPOSE_CONVERT_WINDOWS_PATHS"}
+            args = args[:4] + ["env", *[part for name in sorted(names) for part in ("-u", name)], *args[4:]]
+        return run_command(args, env=child_environment())
+
+    def _f12_scope(self):
+        if self._input_hashes() != self._target_input_hashes:
+            raise ValueError("F12 target/Compose/environment inputs changed")
+        self.verify_target()
+        if self._target_states != self._initial_target_states:
+            raise ValueError("F12 baseline container/image/start identity changed")
+        if any(row["running"] is not True or not row["started_at"] for row in self._target_states.values()):
+            raise ValueError("F12 requires all ten baseline services running")
+
+    def _f12_existing(self):
+        ids = self._f12_command(self.target.docker + ["ps", "-a", "-q", "--filter",
+            "label=com.docker.compose.project="+self.target.project, "--filter",
+            "label=com.docker.compose.service=reply-drop"]).split()
+        return json.loads(self._f12_command(self.target.docker + ["inspect", *ids])) if ids else []
+
+    def _f12_render(self):
+        document = json.loads(self._f12_command(self.compose + ["--profile", "faults", "config", "--format", "json"]))
+        service = document.get("services", {}).get("reply-drop", {})
+        ports = service.get("ports", [])
+        expected_port = self.target.ports["reply_drop"]
+        if (len(ports) != 1 or ports[0].get("host_ip") != "127.0.0.1"
+                or str(ports[0].get("published")) != str(expected_port) or ports[0].get("target") != 8090
+                or ports[0].get("protocol", "tcp") != "tcp"):
+            raise ValueError("F12 proxy port differs from its explicit loopback target")
+        if (service.get("command") != ["python", "-m", "business.fault_reply_proxy"]
+                or service.get("environment") != {"FAULT_UPSTREAM": "http://app-v2:8000", "FAULT_REPLY_DELAY": "60"}
+                or set(service.get("networks", {})) != {"default"}
+                or service.get("networks", {}).get("default") not in (None, {})
+                or service.get("entrypoint") or service.get("user")
+                or any(service.get(key) for key in ("volumes", "volumes_from", "configs", "secrets", "devices", "cap_add",
+                    "privileged", "network_mode", "pid", "ipc", "uts", "security_opt", "extra_hosts", "post_start", "pre_stop"))):
+            raise ValueError("F12 proxy command/environment/mount/network scope differs")
+        network = document.get("networks", {}).get("default", {})
+        if network.get("name") != self.target.project+"_default" or network.get("external"):
+            raise ValueError("F12 proxy network is not isolated to its project")
+        image = service.get("image")
+        if not isinstance(image, str) or not image or image.startswith("-"):
+            raise ValueError("F12 proxy requires an explicit existing application image")
+        records = json.loads(self._f12_command(self.target.docker + ["image", "inspect", image]))
+        if len(records) != 1 or records[0].get("Id") != self._initial_target_states["app-v2"]["image_id"]:
+            raise ValueError("F12 proxy image differs from the running app-v2 image")
+        return records[0]["Id"]
+
+    def _f12_owned(self):
+        rows = [row for row in self._f12_existing() if row.get("Name", "").lstrip("/") == self._f12["name"]]
+        if not rows:
+            return None
+        if len(rows) != 1:
+            raise ValueError("F12 session name is ambiguous")
+        row = rows[0]
+        labels = row.get("Config", {}).get("Labels") or {}
+        bindings = row.get("HostConfig", {}).get("PortBindings") or {}
+        started = row.get("State", {}).get("StartedAt")
+        if (labels.get("incident-pilot") != "true" or labels.get("com.docker.compose.project") != self.target.project
+                or labels.get("com.docker.compose.service") != "reply-drop"
+                or labels.get("incident-pilot.f12.session") != self._f12["session"]
+                or row.get("Image") != self._f12["image_id"]
+                or row.get("Mounts") or set(row.get("NetworkSettings", {}).get("Networks", {})) != {self.target.project+"_default"}
+                or bindings != {"8090/tcp": [{"HostIp": "127.0.0.1", "HostPort": str(self.target.ports["reply_drop"])}]}
+                or not row.get("Id") or not started):
+            raise ValueError("F12 proxy session/identity/image/start/network/port ownership mismatch")
+        identity = {"container_id": row["Id"], "image_id": row["Image"], "started_at": started}
+        if self._f12.get("proxy") not in (None, identity):
+            raise ValueError("F12 proxy immutable identity changed")
+        self._f12["proxy"] = identity
+        self.f12_proof["proxy"] = identity
+        return row
+
+    def _f12_stop_owned(self):
+        row = self._f12_owned()
+        if row is None and self._f12.get("proxy") is not None:
+            raise RuntimeError("F12 owned proxy disappeared before stop could be confirmed")
+        if row is not None and row.get("State", {}).get("Running"):
+            self._f12_command(self.target.docker + ["stop", row["Id"]])
+            row = self._f12_owned()
+            if row is None or row.get("State", {}).get("Running"):
+                raise RuntimeError("F12 owned proxy did not stop")
+        self.f12_proof["proxy_stopped"] = True
+
+    def _f12_public_v2(self):
+        with httpx.Client(timeout=2, trust_env=False, headers={"Connection": "close"}) as client:
+            response = client.get(self.target.order_url+"/ready")
+            response.raise_for_status()
+            if (response.json().get("ok") is not True or response.json().get("api_version") != "v2"
+                    or response.headers.get("via") == "1.1 incident-pilot-relay"):
+                raise ValueError("F12 requires a healthy public v2 route")
+
+    def _apply_f12(self):
+        self.target.reply_drop_url  # Missing fourth port fails before mutation.
+        if self._f12 is not None:
+            raise ValueError("One Injector instance permits only one F12 session")
+        self._f12_scope()
+        if any(row.get("State", {}).get("Running") for row in self._f12_existing()):
+            raise ValueError("An existing running reply-drop proxy cannot be adopted")
+        image_id = self._f12_render()
+        original = self.target.route_file.read_bytes()
+        if original.strip() != b"set $order_upstream app-v2:8000;":
+            raise ValueError("F12 original route must target this project's app-v2")
+        self._f12_public_v2()
+        session = uuid.uuid4().hex
+        self._f12 = {"session": session, "name": self.target.project+"-f12-"+session,
+            "image_id": image_id, "route_bytes": original, "route_attempted": False, "restored": False}
+        self.f12_proof = {"session": session, "project": self.target.project, "input_sha256": self._target_input_hashes,
+            "original_route_sha256": hashlib.sha256(original).hexdigest(), "proxy": None, "proxy_stopped": False}
+        try:
+            self._f12_command(self.compose + ["--profile", "faults", "run", "-d", "--no-deps", "--service-ports",
+                "--use-aliases", "--pull", "never", "--name", self._f12["name"], "--label",
+                "incident-pilot.f12.session="+session, "reply-drop"])
+            row = self._f12_owned()
+            if row is None or not row.get("State", {}).get("Running"):
+                raise RuntimeError("F12 owned proxy did not start")
+            with httpx.Client(timeout=1, trust_env=False) as client:
+                for _ in range(30):
+                    try:
+                        response = client.get(self.target.reply_drop_url+"/health")
+                        if (response.status_code == 200 and response.json().get("api_version") == "v2"
+                                and response.headers.get("via") == "1.1 incident-pilot-relay"):
+                            break
+                    except (httpx.TransportError, ValueError):
+                        pass
+                    time.sleep(0.2)
+                else:
+                    raise RuntimeError("F12 gateway process is not ready")
+            self._f12_scope()
+            self._f12["route_attempted"] = True
+            self.route("reply-drop")
+        except Exception as failure:
+            try:
+                self._restore_f12()
+            except Exception as cleanup:
+                raise ExceptionGroup("F12 apply failed and cleanup was incomplete", [failure, cleanup]) from failure
+            raise
+
+    def _restore_f12(self):
+        self.target.reply_drop_url
+        if self._f12 is None or self._f12["restored"]:
+            return
+        try:
+            self._f12_scope()
+            if self._f12["route_attempted"]:
+                self.route("v2", contents=self._f12["route_bytes"])
+            if self.target.route_file.read_bytes() != self._f12["route_bytes"]:
+                raise RuntimeError("F12 original route bytes were not restored")
+            self._f12_public_v2()
+            self.f12_proof["route_restored"] = True
+        finally:
+            self._f12_stop_owned()
+        self._f12["restored"] = True
+
+    def reply_drop(self, enabled):
+        if self.backend == "docker":
+            run_command(self.compose + ["--profile", "faults", "up", "-d", "reply-drop"] if enabled else self.compose + ["--profile", "faults", "stop", "reply-drop"])
+        elif enabled:
+            env = child_environment(FAULT_UPSTREAM=f"http://127.0.0.1:{self.runtime['app_v2_port']}", FAULT_BIND="127.0.0.1")
+            self._native_start("reply-drop", "fault_reply_proxy.py", env=env)
+        else:
+            self._native_stop("reply-drop", "fault_reply_proxy.py")
+        if enabled:
+            with httpx.Client(timeout=1, trust_env=False) as client:
+                for _ in range(30):
+                    try:
+                        if client.get("http://127.0.0.1:8090/health").status_code == 200:
+                            self.route("reply-drop")
+                            return
+                    except httpx.TransportError:
+                        pass
+                    time.sleep(0.2)
+            raise RuntimeError("F12 gateway process is not ready")
+
+    def apply(self, scenario):
+        if self.target and scenario == "F12":
+            return self._apply_f12()
+        if scenario in UNSUPPORTED:
+            raise NotImplementedError(UNSUPPORTED[scenario])
+        if scenario not in SCENARIOS:
+            raise ValueError("unknown scenario")
+        if scenario == "F01":
+            self.application(False)
+        elif scenario == "F02":
+            self.route("v1")
+        elif scenario == "F04":
+            self.pool_exhaustion(True)
+        elif scenario == "F06":
+            self.lock(True)
+        elif scenario == "F07":
+            self.readonly(True)
+        elif scenario == "F10":
+            self.readonly(True)
+            self.route("v1")
+        elif scenario == "F01_F07":
+            self.readonly(True)
+            self.application(False)
+        elif scenario == "F12":
+            self.reply_drop(True)
+
+    def restore(self, scenario):
+        if self.target and scenario == "F12":
+            return self._restore_f12()
+        if scenario in UNSUPPORTED:
+            raise NotImplementedError(UNSUPPORTED[scenario])
+        if scenario not in SCENARIOS:
+            raise ValueError("unknown scenario")
+        if scenario == "F01":
+            self.application(True)
+        elif scenario == "F02":
+            self.route("v2")
+        elif scenario == "F04":
+            self.pool_exhaustion(False)
+        elif scenario == "F06":
+            self.lock(False)
+        elif scenario == "F07":
+            self.readonly(False)
+        elif scenario == "F10":
+            self.readonly(False)
+            self.route("v2")
+        elif scenario == "F01_F07":
+            # The app must be running before readonly(False) rebuilds its pool.
+            self.application(True)
+            self.readonly(False)
+        elif scenario == "F12":
+            self.route("v2")
+            self.reply_drop(False)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("scenario", choices=[*SCENARIOS, *UNSUPPORTED])
+    parser.add_argument("action", choices=["apply", "restore", "check"])
+    parser.add_argument("--backend", choices=["docker", "native"], default="docker")
+    parser.add_argument("--runtime", type=Path)
+    parser.add_argument("--target-config", type=Path, help="Nonsecret incident-evaluator-target/1.0 container paths and ports")
+    parser.add_argument("--expected-compose-hashes", help="Nonsecret path/hash map from this run's initial target preflight")
+    parser.add_argument("--expected-sources", help="Frozen fixed-domain source fingerprints, no source contents")
+    parser.add_argument("--expected-domains", help="Reuse initial domain digests only when container/image identities remain stable")
+    parser.add_argument("--record", type=Path, default=ROOT / "eval/results/private/injections.jsonl")
+    parser.add_argument("--pool-rebuilds", type=int, choices=range(3), default=0,
+                        help="Held-out precondition: extra healthy connection-pool revisions before injection")
+    args = parser.parse_args()
+    if args.action == "check" and (args.backend != "docker" or args.target_config is None):
+        raise ValueError("Target preflight requires an explicit docker profile")
+    if args.scenario == "F12" and args.target_config is not None and args.action != "check":
+        raise ValueError("Explicit-target F12 requires one in-process Injector session; CLI mutation is disabled")
+    injector = Injector(backend=args.backend, runtime=args.runtime, target_config=args.target_config,
+        expected_compose_hashes=json.loads(args.expected_compose_hashes) if args.expected_compose_hashes is not None else None,
+        expected_sources=json.loads(args.expected_sources) if args.expected_sources is not None else None,
+        expected_domains=json.loads(args.expected_domains) if args.expected_domains is not None else None)
+    if args.scenario == "F12" and args.target_config is not None:
+        injector.target.reply_drop_url
+    if args.action == "apply":
+        for _ in range(args.pool_rebuilds):
+            injector.rebuild_pools()
+    injection_started = time.monotonic()
+    if args.action != "check":
+        getattr(injector, args.action)(args.scenario)
+    injection_applied = time.monotonic()
+    record = {"scenario": args.scenario, "action": args.action, "backend": args.backend,
+              "cause": SCENARIOS.get(args.scenario), "precondition_pool_rebuilds": args.pool_rebuilds,
+              "completed_at": datetime.now(timezone.utc).isoformat()}
+    args.record.parent.mkdir(parents=True, exist_ok=True)
+    with args.record.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record) + "\n")
+    print(json.dumps({"scenario": args.scenario, "action": args.action, "backend": args.backend,
+                      "status": "validated" if args.action == "check" else "applied",
+                      "started_monotonic": injection_started, "applied_monotonic": injection_applied,
+                      **({"target_proof": injector.target_proof} if injector.target else {})}))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except (RuntimeError, NotImplementedError, ValueError, OSError, httpx.HTTPError) as exc:
+        print(json.dumps({"status": "failed", "error": str(exc)}), file=sys.stderr)
+        raise SystemExit(1)

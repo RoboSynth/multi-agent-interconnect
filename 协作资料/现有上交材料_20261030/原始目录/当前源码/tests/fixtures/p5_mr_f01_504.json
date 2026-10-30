@@ -1,0 +1,64 @@
+{
+  "provenance": {
+    "source": "p5-local60-20261020/matrix-r1/incidents/inc-3c9541e9e9594ac6.json",
+    "case": "F01/MR/repeat1",
+    "scope": "Recorded public symptom summary only; offline fixture, not a new runtime result"
+  },
+  "summary": {
+    "run_id": "quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57",
+    "duration_seconds": 6.219,
+    "requests": 3,
+    "success": 0,
+    "failed": 0,
+    "unknown": 3,
+    "completed_workflows": 0,
+    "unresolved_intents": 1,
+    "resolved_unknown_intents": 0,
+    "passed": false,
+    "events": [
+      {
+        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
+        "phase": "create",
+        "method": "POST",
+        "path": "/orders",
+        "elapsed_seconds": 0.11,
+        "http_status": 504,
+        "outcome": "unknown"
+      },
+      {
+        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
+        "phase": "resolve",
+        "method": "GET",
+        "path": "/receipts/load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
+        "elapsed_seconds": 2.156,
+        "http_status": 504,
+        "outcome": "unknown"
+      },
+      {
+        "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
+        "phase": "create",
+        "method": "POST",
+        "path": "/orders",
+        "elapsed_seconds": 4.188,
+        "http_status": 504,
+        "outcome": "unknown"
+      }
+    ],
+    "state": {
+      "pending": [
+        {
+          "request_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000",
+          "operation_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000-cancel",
+          "item": "keyboard",
+          "quantity": 2,
+          "phase": "resolve",
+          "was_unknown": true,
+          "resume_phase": "create",
+          "unknown_key": "load-quick-inc-3c9541e9e9594ac6-lt-0c31e166eb57-000000"
+        }
+      ],
+      "completed": [],
+      "next_index": 1
+    }
+  }
+}

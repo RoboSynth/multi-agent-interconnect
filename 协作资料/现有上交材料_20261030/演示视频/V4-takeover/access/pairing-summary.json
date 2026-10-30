@@ -1,0 +1,369 @@
+{
+  "schema": "same-run-two-sided-access/1",
+  "batch_id": "video-two-20261029-f3e6ef0bc1",
+  "case_key": "e1a-after_applied-r1",
+  "incident_id": "video-two-20261029-f3e6ef0bc1-e1a-after_applied-r1",
+  "retrieved_at_utc": "2026-10-29T09:49:35.972467+00:00",
+  "selection": "Exact trace_id or correlation_id from this case coordinator access; no date-only or historical matching.",
+  "timestamp_basis": "Native AMP timestamp on each endpoint; domain files read from the currently inspected Docker /state volume mounts.",
+  "coordinator_count": 13,
+  "domain_count": 13,
+  "paired_count": 13,
+  "unmatched_coordinator": [],
+  "unmatched_domain": [],
+  "domain_roles": {
+    "A02": 3,
+    "A03": 3,
+    "A05": 1,
+    "A06": 3,
+    "A07": 1,
+    "A04": 2
+  },
+  "source_records": [
+    {
+      "file": "amp_access_application.jsonl",
+      "line": 1177,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-cdcbb02efac54582825e3f3bfdef8acb"
+    },
+    {
+      "file": "amp_access_application.jsonl",
+      "line": 1178,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-8755fad3149e45768ef6e59e5fab5c04"
+    },
+    {
+      "file": "amp_access_application.jsonl",
+      "line": 1179,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-814c4656fd434db0af71177cb457d6d7"
+    },
+    {
+      "file": "amp_access_database.jsonl",
+      "line": 2324,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-58e58256bef144f0b30993d0b5d7fdef"
+    },
+    {
+      "file": "amp_access_database.jsonl",
+      "line": 2325,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-38497eaa1efc4645b2c1f63c612e831e"
+    },
+    {
+      "file": "amp_access_database.jsonl",
+      "line": 2326,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-c0d9c82c7721450bb1d1bb857f48856a"
+    },
+    {
+      "file": "amp_access_database-backup.jsonl",
+      "line": 15,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-bdc755212d5e47f1b5332f2181927d1e"
+    },
+    {
+      "file": "amp_access_database-backup.jsonl",
+      "line": 16,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-57e6c3b5b6d342338b6e6c8b64251989"
+    },
+    {
+      "file": "amp_access_onboarding.jsonl",
+      "line": 23,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-7b4f8097edf94eccb32005d4862caf58"
+    },
+    {
+      "file": "amp_access_ops.jsonl",
+      "line": 2317,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-908aa1fa4116414ea58b1958191145e5"
+    },
+    {
+      "file": "amp_access_verification.jsonl",
+      "line": 1175,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-294894b8d6eb48e3a2afdb2bb9e3b9cd"
+    },
+    {
+      "file": "amp_access_verification.jsonl",
+      "line": 1176,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-4619adcd48d841789013173fc4343b62"
+    },
+    {
+      "file": "amp_access_verification.jsonl",
+      "line": 1177,
+      "match_basis": [
+        "trace_id",
+        "correlation_id"
+      ],
+      "correlation_id": "aip-e31baae596944c6a9317151c7885085c"
+    }
+  ],
+  "pairs": [
+    {
+      "correlation_id": "aip-cdcbb02efac54582825e3f3bfdef8acb",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A02"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:09.398279Z",
+      "domain_timestamp": "2026-10-29T09:41:09.606952Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-58e58256bef144f0b30993d0b5d7fdef",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A03"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:09.981631Z",
+      "domain_timestamp": "2026-10-29T09:41:10.008779Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-908aa1fa4116414ea58b1958191145e5",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A05"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:10.559121Z",
+      "domain_timestamp": "2026-10-29T09:41:10.586404Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-294894b8d6eb48e3a2afdb2bb9e3b9cd",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A06"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:11.172826Z",
+      "domain_timestamp": "2026-10-29T09:41:11.204806Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-7b4f8097edf94eccb32005d4862caf58",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A07"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:11.797986Z",
+      "domain_timestamp": "2026-10-29T09:41:11.830824Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-4619adcd48d841789013173fc4343b62",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "incident.verification",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A06"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:12.270537Z",
+      "domain_timestamp": "2026-10-29T09:41:42.302875Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-38497eaa1efc4645b2c1f63c612e831e",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "db.read_only_status",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A03"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:43.901575Z",
+      "domain_timestamp": "2026-10-29T09:41:43.999896Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-c0d9c82c7721450bb1d1bb857f48856a",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "db.restore_writes",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A03"
+      },
+      "coordinator_timestamp": "2026-10-29T09:41:44.370021Z",
+      "domain_timestamp": "2026-10-29T09:42:42.760724Z",
+      "coordinator_status": 202,
+      "domain_status": null,
+      "coordinator_error": null,
+      "domain_error": {
+        "code": "OutcomeUnconfirmed",
+        "message": "Recovery observed no durable outcome for an inactive request"
+      }
+    },
+    {
+      "correlation_id": "aip-bdc755212d5e47f1b5332f2181927d1e",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "describe",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A04"
+      },
+      "coordinator_timestamp": "2026-10-29T09:42:04.621304Z",
+      "domain_timestamp": "2026-10-29T09:42:04.657878Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-57e6c3b5b6d342338b6e6c8b64251989",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "db.restore_writes",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A04"
+      },
+      "coordinator_timestamp": "2026-10-29T09:42:05.115206Z",
+      "domain_timestamp": "2026-10-29T09:42:05.146528Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-8755fad3149e45768ef6e59e5fab5c04",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "application.status",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A02"
+      },
+      "coordinator_timestamp": "2026-10-29T09:42:07.290822Z",
+      "domain_timestamp": "2026-10-29T09:42:07.353077Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-814c4656fd434db0af71177cb457d6d7",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "application.pool_rebuild",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A02"
+      },
+      "coordinator_timestamp": "2026-10-29T09:42:07.756557Z",
+      "domain_timestamp": "2026-10-29T09:42:07.876555Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    },
+    {
+      "correlation_id": "aip-e31baae596944c6a9317151c7885085c",
+      "trace_id": "incident-17e39426c1fa46deae0ce2456b2b67b7",
+      "route": "incident.verification",
+      "caller": {
+        "aic": "A01"
+      },
+      "callee": {
+        "aic": "A06"
+      },
+      "coordinator_timestamp": "2026-10-29T09:42:08.243154Z",
+      "domain_timestamp": "2026-10-29T09:42:38.288839Z",
+      "coordinator_status": 202,
+      "domain_status": 200,
+      "coordinator_error": null,
+      "domain_error": null
+    }
+  ],
+  "interpretation": "Caller 202 can be an accepted asynchronous task while the domain later records a final response or an error. Pairing proves the same request at both endpoints; it does not by itself prove successful business recovery or platform scoring.",
+  "outcome_uncertainty": "The crashed primary has an OutcomeUnconfirmed recovery record and no response status; that uncertainty is retained."
+}

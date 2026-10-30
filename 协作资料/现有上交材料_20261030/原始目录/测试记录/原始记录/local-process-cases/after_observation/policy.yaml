@@ -1,0 +1,18 @@
+domain: db
+resources: {database: temporary-unittest-resource}
+tools:
+  db.read_only_status:
+    server: fixture
+    mcp_tool: execute_sql
+    risk: read
+    description: Read only the isolated fixture state
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    sql_template: SELECT read_only
+  db.restore_writes:
+    server: fixture
+    mcp_tool: execute_sql
+    risk: high
+    description: Modify only the isolated fixture state
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    sql_template: SELECT restore_writes
+    reconcile: {tool_alias: db.read_only_status, expected_after: false}

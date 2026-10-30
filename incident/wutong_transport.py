@@ -179,7 +179,16 @@ class WutongTransport:
             self.amp.sampler.active -= 1
             self.amp.sampler.record((time.monotonic()-started)*1000, success)
 
+    @property
+    def connection_ready(self):
+        client = getattr(self.session, "leader_mq_client", None)
+        channel = getattr(client, "_channel", None)
+        return (not self.closing and self.runtime is not None and channel is not None
+                and not channel.is_closed and getattr(client, "_exchange", None) is not None)
+
     async def _dispatch(self, payload, target):
+        if not self.connection_ready:
+            raise RuntimeError("AMQP group channel is unavailable; no task dispatched; transport recovery required")
         task_id = "aip-" + uuid.uuid4().hex
         session_id = self.session.session_id
         timeout = payload.get("budget", {}).get("deadline_ms", 15000)/1000 + 5

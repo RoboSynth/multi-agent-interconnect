@@ -1,0 +1,30 @@
+跨域接入体检智能体：公开说明与文本模式更新包
+
+对象：跨域接入体检智能体 版本 1.0.0
+AIC：1.2.156.3088.1.0000.000000.000000.000000.0007
+
+拟发布说明：
+面向梧桐平台开发者的公开接入体检服务。输入目标 AIC，返回发现状态、协议与技能信息、入口格式和接入建议。支持普通文本和 ifc/1.0 JSON 请求，并提供中文结果。
+
+普通文本示例：
+请检查 1.2.156.3088.1.0000.000000.000000.000000.0001 的公开元数据
+
+共七项变更：四处输入输出模式追加 text/plain；更新服务与技能说明；追加一条普通文本示例。保留 application/json、原有 JSON 示例、AIC、提供方、版本、端点和安全方案。
+
+文件：
+onboarding.current.acs.json：本次公开接口读取的原记录。
+onboarding.proposed.acs.json：完整新 ACS。
+onboarding.proposed.patch.json：七项差异，供审阅与迁移参考。
+owner-update.request.json：按官方 AgentUpdate 结构准备的请求体。
+structure-and-example-results.json：官方固定 schema、SDK 结构和文本示例解析结果。
+platform-update-status.json：读取时间、来源及当前编辑限制。
+
+发布状态：尚未发布。官方 PUT /api/v1/agent/client/{agent_id} 明确写明：更新 Agent，审核通过的不能再更新（仅限 CLIENT 角色）。
+需由平台管理员提供已批准记录的编辑流程，在现有身份上更新。JSON Patch 文件是差异说明，不是平台 PATCH 接口。
+
+交给平台处理的文字：
+请协助更新上述已批准智能体的公开 ACS。新运行时支持普通文本接入体检；现有公开描述仍为“仅接受获准协调者”，且只声明 application/json。请在保留现有 AIC、提供方、版本、端点和安全配置的基础上，应用本包七项变更并同步 ATR/Discovery。附件包含当前快照、完整新 ACS 和字段差异。
+
+发布后查看：
+https://wt.ioa.pub/registry-server/acps-atr-v2/acs/1.2.156.3088.1.0000.000000.000000.000000.0007
+确认公开说明、四处文本模式和文本示例已展示，再由队外身份发起一次实际调用。

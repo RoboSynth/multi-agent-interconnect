@@ -1,0 +1,64 @@
+{
+  "aic": "A02",
+  "name": "跨域订单应用智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "incident.application",
+      "name": "PostgreSQL 订单应用诊断与受控恢复",
+      "tags": [
+        "incident-pilot",
+        "ifc/1.0",
+        "application"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "以 ifc/1.0 返回订单应用版本、错误和连接池证据；执行登记配置回退及连接池重建；资源凭据只在应用域，修改经操作账本与隔离令牌。",
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "项目团队"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_A02",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:32:58.282892+08:00",
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ]
+}

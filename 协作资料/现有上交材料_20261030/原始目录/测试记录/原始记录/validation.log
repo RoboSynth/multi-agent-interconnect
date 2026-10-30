@@ -1,0 +1,352 @@
+{
+  "schema": "fresh-submission-validation/1",
+  "started_utc": "2026-10-29T08:18:35.641804+00:00",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "python_executable": "${REPO}\\.venv\\Scripts\\python.exe",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "head": "c88b203ff417dca0b028784a569e741d62db2c02",
+  "git_status_before": "M deploy/SERVER.md\n M docs/接入体检_ACS模式更新说明_20261020.md\n M docs/接入体检使用说明.md\n M domains/onboarding/text.py\n M incident/wutong_transport.py\n M tests/test_onboarding_text.py\n M tests/test_workbench.py\n M tests/test_wutong_transport.py\n M workbench_server.py\n?? docs/onboarding-public-update-20261026/\n?? docs/评分对照与优先事项_20261023.md\n?? evidence/dingdang-external-20261020/sender-fix-example/\n?? evidence/dingdang-external-20261026/\n?? ops/external_rotation.py\n?? ops/external_rpc_once.py\n?? tests/test_external_rotation.py",
+  "groups": {
+    "protocol_and_discovery": [
+      "test_wutong_transport",
+      "test_discovery_resilience",
+      "test_participant_selection",
+      "test_task_ordering"
+    ],
+    "takeover_and_identity": [
+      "test_formal_handover",
+      "test_handover_wire_contract",
+      "test_resume_transport",
+      "test_takeover_error_details",
+      "test_aic_lease"
+    ],
+    "tool_policy_and_audit": [
+      "test_bridge_gateway",
+      "test_gateway_policy_experiment"
+    ],
+    "business_receipt_resolution": [
+      "test_receipt_reconciliation",
+      "test_receipt_resolution"
+    ],
+    "workbench_state_and_evidence": [
+      "test_workbench",
+      "test_workbench_access"
+    ],
+    "onboarding_and_rotation": [
+      "test_onboarding_text",
+      "test_external_rotation"
+    ]
+  },
+  "scope": "Selected offline tests; includes isolated local stdio subprocess fixtures. Mocked Wutong transport is not live platform proof.",
+  "command": "\"${REPO}\\.venv\\Scripts\\python.exe\" -X utf8 -B \"${RECORDS}\\run_current_validation.py\""
+}
+
+GROUP protocol_and_discovery
+test_applied_operation_is_reconciled_without_second_modification (test_wutong_transport.WutongTakeoverTests.test_applied_operation_is_reconciled_without_second_modification) ... Executing <Task finished name='Task-2' coro=<WutongTakeoverTests.test_applied_operation_is_reconciled_without_second_modification() done, defined at ${REPO}\tests\test_wutong_transport.py:73> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.140 seconds
+ok
+test_candidate_deadline_records_the_invitation_phase (test_wutong_transport.WutongTakeoverTests.test_candidate_deadline_records_the_invitation_phase) ... Executing <Task pending name='Task-7' coro=<WutongTakeoverTests.test_candidate_deadline_records_the_invitation_phase() running at ${REPO}\tests\test_wutong_transport.py:149> wait_for=<Future pending cb=[Task.task_wakeup()] created at ${REPO}\tests\test_wutong_transport.py:144> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_closed_channel_creates_no_dispatch_or_unknown_attempt (test_wutong_transport.WutongTakeoverTests.test_closed_channel_creates_no_dispatch_or_unknown_attempt) ... ok
+test_coordinator_term_persists_across_output_directories (test_wutong_transport.WutongTakeoverTests.test_coordinator_term_persists_across_output_directories) ... Executing <Task finished name='Task-17' coro=<WutongTakeoverTests.test_coordinator_term_persists_across_output_directories() done, defined at ${REPO}\tests\test_wutong_transport.py:67> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.203 seconds
+ok
+test_handover_does_not_refresh_old_evidence (test_wutong_transport.WutongTakeoverTests.test_handover_does_not_refresh_old_evidence) ... ok
+test_initial_primary_does_not_depend_on_aic_sort_order (test_wutong_transport.WutongTakeoverTests.test_initial_primary_does_not_depend_on_aic_sort_order) ... Executing <Task finished name='Task-27' coro=<WutongTakeoverTests.test_initial_primary_does_not_depend_on_aic_sort_order() done, defined at ${REPO}\tests\test_wutong_transport.py:158> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+ok
+test_missing_or_untrusted_initial_primary_never_invites_backup (test_wutong_transport.WutongTakeoverTests.test_missing_or_untrusted_initial_primary_never_invites_backup) ... Executing <Task finished name='Task-32' coro=<WutongTakeoverTests.test_missing_or_untrusted_initial_primary_never_invites_backup() done, defined at ${REPO}\tests\test_wutong_transport.py:173> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.110 seconds
+ok
+test_onboarding_is_selected_for_public_metadata_resource_only (test_wutong_transport.WutongTakeoverTests.test_onboarding_is_selected_for_public_metadata_resource_only) ... ok
+test_onboarding_observation_routes_to_confirmed_onboarding_identity (test_wutong_transport.WutongTakeoverTests.test_onboarding_observation_routes_to_confirmed_onboarding_identity) ... ok
+test_received_operation_reuses_identity_with_confirmed_fence (test_wutong_transport.WutongTakeoverTests.test_received_operation_reuses_identity_with_confirmed_fence) ... Executing <Task finished name='Task-47' coro=<WutongTakeoverTests.test_received_operation_reuses_identity_with_confirmed_fence() done, defined at ${REPO}\tests\test_wutong_transport.py:87> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.157 seconds
+ok
+test_same_skill_on_different_resource_cannot_take_over (test_wutong_transport.WutongTakeoverTests.test_same_skill_on_different_resource_cannot_take_over) ... Executing <Task finished name='Task-52' coro=<WutongTakeoverTests.test_same_skill_on_different_resource_cannot_take_over() done, defined at ${REPO}\tests\test_wutong_transport.py:96> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.157 seconds
+ok
+test_trusted_role_aics_are_filtered_before_any_invitation (test_wutong_transport.WutongTakeoverTests.test_trusted_role_aics_are_filtered_before_any_invitation) ... Executing <Task finished name='Task-57' coro=<WutongTakeoverTests.test_trusted_role_aics_are_filtered_before_any_invitation() done, defined at ${REPO}\tests\test_wutong_transport.py:121> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.110 seconds
+ok
+test_unknown_effect_is_not_retried (test_wutong_transport.WutongTakeoverTests.test_unknown_effect_is_not_retried) ... Executing <Task finished name='Task-62' coro=<WutongTakeoverTests.test_unknown_effect_is_not_retried() done, defined at ${REPO}\tests\test_wutong_transport.py:82> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.140 seconds
+ok
+test_exhausted_discovery_preserves_transport_error (test_discovery_resilience.DiscoveryRetryTests.test_exhausted_discovery_preserves_transport_error) ... ok
+test_owned_client_disables_ambient_proxy_and_has_phase_timeouts (test_discovery_resilience.DiscoveryRetryTests.test_owned_client_disables_ambient_proxy_and_has_phase_timeouts) ... ok
+test_server_failure_retries_but_client_error_does_not (test_discovery_resilience.DiscoveryRetryTests.test_server_failure_retries_but_client_error_does_not) ... ok
+test_two_connect_timeouts_then_success (test_discovery_resilience.DiscoveryRetryTests.test_two_connect_timeouts_then_success) ... ok
+test_allowlist_filters_before_describe_and_empty_denies_all (test_participant_selection.ParticipantSelectionTests.test_allowlist_filters_before_describe_and_empty_denies_all) ... ok
+test_allowlist_is_exact_and_invalid_deadlines_fail_before_describe (test_participant_selection.ParticipantSelectionTests.test_allowlist_is_exact_and_invalid_deadlines_fail_before_describe) ... ok
+test_none_retains_candidate_scope_and_existing_sorted_winner (test_participant_selection.ParticipantSelectionTests.test_none_retains_candidate_scope_and_existing_sorted_winner) ... ok
+test_unresponsive_candidate_times_out_then_available_candidate_is_confirmed (test_participant_selection.ParticipantSelectionTests.test_unresponsive_candidate_times_out_then_available_candidate_is_confirmed) ... ok
+test_a_genuine_later_continue_can_return_to_working (test_task_ordering.TaskOrderingTests.test_a_genuine_later_continue_can_return_to_working) ... ok
+test_durable_state_retains_late_events_without_regression (test_task_ordering.TaskOrderingTests.test_durable_state_retains_late_events_without_regression) ... Executing <Task finished name='Task-113' coro=<TaskOrderingTests.test_durable_state_retains_late_events_without_regression() done, defined at ${REPO}\tests\test_task_ordering.py:41> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+ok
+test_late_working_cannot_hide_an_actual_product_ready_state (test_task_ordering.TaskOrderingTests.test_late_working_cannot_hide_an_actual_product_ready_state) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 4.091s
+
+OK
+
+GROUP takeover_and_identity
+test_async_information_factory_receives_copies_and_preserves_envelope (test_formal_handover.FormalFactoryTests.test_async_information_factory_receives_copies_and_preserves_envelope) ... Executing <Task finished name='Task-123' coro=<FormalFactoryTests.test_async_information_factory_receives_copies_and_preserves_envelope() done, defined at ${REPO}\tests\test_formal_handover.py:76> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.188 seconds
+ok
+test_control_approval_budget_identity_and_package_mutations_are_rejected (test_formal_handover.FormalFactoryTests.test_control_approval_budget_identity_and_package_mutations_are_rejected) ... Executing <Task finished name='Task-128' coro=<FormalFactoryTests.test_control_approval_budget_identity_and_package_mutations_are_rejected() done, defined at ${REPO}\tests\test_formal_handover.py:94> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.109 seconds
+ok
+test_default_factory_keeps_original_payload (test_formal_handover.FormalFactoryTests.test_default_factory_keeps_original_payload) ... ok
+test_takeover_uses_factory_and_freezes_history_before_discovery (test_formal_handover.FormalFactoryTests.test_takeover_uses_factory_and_freezes_history_before_discovery) ... Executing <Task finished name='Task-138' coro=<FormalFactoryTests.test_takeover_uses_factory_and_freezes_history_before_discovery() done, defined at ${REPO}\tests\test_formal_handover.py:128> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.172 seconds
+ok
+test_conflicting_reuse_of_group_task_cannot_supply_another_incident_request (test_formal_handover.FormalHistoryTests.test_conflicting_reuse_of_group_task_cannot_supply_another_incident_request) ... ok
+test_cutoff_ignores_later_bytes_and_rejects_invalid_or_partial_boundaries (test_formal_handover.FormalHistoryTests.test_cutoff_ignores_later_bytes_and_rejects_invalid_or_partial_boundaries) ... ok
+test_group_incident_separation_out_of_order_and_duplicate_products (test_formal_handover.FormalHistoryTests.test_group_incident_separation_out_of_order_and_duplicate_products) ... ok
+test_orphan_wrong_session_incident_and_logical_products_are_excluded (test_formal_handover.FormalHistoryTests.test_orphan_wrong_session_incident_and_logical_products_are_excluded) ... ok
+test_recorder_default_preserves_local_history_behavior (test_formal_handover.FormalHistoryTests.test_recorder_default_preserves_local_history_behavior) ... ok
+test_recorder_requires_original_incident_and_logical_task_even_for_same_operation (test_formal_handover.FormalHistoryTests.test_recorder_requires_original_incident_and_logical_task_even_for_same_operation) ... ok
+test_formal_multisession_history_reaches_real_bridge_and_shared_ledger (test_handover_wire_contract.HistoryBridgeContractTests.test_formal_multisession_history_reaches_real_bridge_and_shared_ledger) ... ok
+test_legacy_entries_still_work_and_only_valid_optional_session_is_allowed (test_handover_wire_contract.HistoryBridgeContractTests.test_legacy_entries_still_work_and_only_valid_optional_session_is_allowed) ... ok
+test_rejected_sdk_product_with_null_operation_preserves_reason (test_handover_wire_contract.ResumeControlParsingTests.test_rejected_sdk_product_with_null_operation_preserves_reason) ... Executing <Task finished name='Task-153' coro=<ResumeControlParsingTests.test_rejected_sdk_product_with_null_operation_preserves_reason() done, defined at ${REPO}\tests\test_handover_wire_contract.py:215> exception=RuntimeError('AMQP group channel is unavailable; no task dispatched; transport recovery required') created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.109 seconds
+ERROR
+test_tool_error_does_not_activate_candidate_even_with_a_reported_fence (test_handover_wire_contract.ResumeControlParsingTests.test_tool_error_does_not_activate_candidate_even_with_a_reported_fence) ... Executing <Task finished name='Task-158' coro=<ResumeControlParsingTests.test_tool_error_does_not_activate_candidate_even_with_a_reported_fence() done, defined at ${REPO}\tests\test_handover_wire_contract.py:218> exception=RuntimeError('AMQP group channel is unavailable; no task dispatched; transport recovery required') created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ERROR
+test_unknown_null_operation_keeps_existing_no_retry_semantics (test_handover_wire_contract.ResumeControlParsingTests.test_unknown_null_operation_keeps_existing_no_retry_semantics) ... Executing <Task finished name='Task-163' coro=<ResumeControlParsingTests.test_unknown_null_operation_keeps_existing_no_retry_semantics() done, defined at ${REPO}\tests\test_handover_wire_contract.py:221> exception=RuntimeError('AMQP group channel is unavailable; no task dispatched; transport recovery required') created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.110 seconds
+ERROR
+test_after_applied_process_exit_skips_modification_on_backup (test_resume_transport.LocalTakeoverTests.test_after_applied_process_exit_skips_modification_on_backup) ... Executing <Task pending name='Task-168' coro=<LocalTakeoverTests.test_after_applied_process_exit_skips_modification_on_backup() running at ${REPO}\tests\test_resume_transport.py:124> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+Executing <Task pending name='Task-168' coro=<LocalTakeoverTests.test_after_applied_process_exit_skips_modification_on_backup() running at ${REPO}\tests\test_resume_transport.py:124> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+Executing <Task pending name='Task-168' coro=<LocalTakeoverTests.test_after_applied_process_exit_skips_modification_on_backup() running at ${REPO}\tests\test_resume_transport.py:124> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+ok
+test_after_observation_process_exit_resumes_on_confirmed_backup (test_resume_transport.LocalTakeoverTests.test_after_observation_process_exit_resumes_on_confirmed_backup) ... Executing <Task pending name='Task-180' coro=<LocalTakeoverTests.test_after_observation_process_exit_resumes_on_confirmed_backup() running at ${REPO}\tests\test_resume_transport.py:118> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+Executing <Task pending name='Task-180' coro=<LocalTakeoverTests.test_after_observation_process_exit_resumes_on_confirmed_backup() running at ${REPO}\tests\test_resume_transport.py:118> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.141 seconds
+ok
+test_before_modification_process_exit_executes_received_once (test_resume_transport.LocalTakeoverTests.test_before_modification_process_exit_executes_received_once) ... Executing <Task pending name='Task-192' coro=<LocalTakeoverTests.test_before_modification_process_exit_executes_received_once() running at ${REPO}\tests\test_resume_transport.py:121> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+Executing <Task pending name='Task-192' coro=<LocalTakeoverTests.test_before_modification_process_exit_executes_received_once() running at ${REPO}\tests\test_resume_transport.py:121> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_term_journal_is_shared_while_attempt_journals_are_isolated (test_resume_transport.LocalTakeoverTests.test_term_journal_is_shared_while_attempt_journals_are_isolated) ... ok
+test_unknown_resume_never_issues_an_action (test_resume_transport.LocalTakeoverTests.test_unknown_resume_never_issues_an_action) ... Executing <Task finished name='Task-208' coro=<LocalTakeoverTests.test_unknown_resume_never_issues_an_action() done, defined at ${REPO}\tests\test_resume_transport.py:126> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.172 seconds
+ok
+test_local_rejection_with_null_operation_preserves_reason (test_takeover_error_details.TakeoverErrorDetailsTests.test_local_rejection_with_null_operation_preserves_reason) ... Executing <Task finished name='Task-213' coro=<TakeoverErrorDetailsTests.test_local_rejection_with_null_operation_preserves_reason() done, defined at ${REPO}\tests\test_takeover_error_details.py:81> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+ok
+test_local_unknown_null_operation_does_not_replay_modification (test_takeover_error_details.TakeoverErrorDetailsTests.test_local_unknown_null_operation_does_not_replay_modification) ... Executing <Task finished name='Task-218' coro=<TakeoverErrorDetailsTests.test_local_unknown_null_operation_does_not_replay_modification() done, defined at ${REPO}\tests\test_takeover_error_details.py:87> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.203 seconds
+ok
+test_platform_rejection_with_null_operation_preserves_reason (test_takeover_error_details.TakeoverErrorDetailsTests.test_platform_rejection_with_null_operation_preserves_reason) ... Executing <Task finished name='Task-223' coro=<TakeoverErrorDetailsTests.test_platform_rejection_with_null_operation_preserves_reason() done, defined at ${REPO}\tests\test_takeover_error_details.py:84> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.203 seconds
+ok
+test_platform_unknown_null_operation_does_not_replay_modification (test_takeover_error_details.TakeoverErrorDetailsTests.test_platform_unknown_null_operation_does_not_replay_modification) ... Executing <Task finished name='Task-228' coro=<TakeoverErrorDetailsTests.test_platform_unknown_null_operation_does_not_replay_modification() done, defined at ${REPO}\tests\test_takeover_error_details.py:90> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.203 seconds
+ok
+test_final_server_error_quarantines_and_always_releases_lease (test_aic_lease.HandoffTests.test_final_server_error_quarantines_and_always_releases_lease) ... ok
+test_nonzero_owned_consumer_exit_cannot_acknowledge_close (test_aic_lease.HandoffTests.test_nonzero_owned_consumer_exit_cannot_acknowledge_close) ... ok
+test_outer_cancellation_waits_for_domain_cleanup_and_preserves_its_error (test_aic_lease.HandoffTests.test_outer_cancellation_waits_for_domain_cleanup_and_preserves_its_error) ... ok
+test_owned_container_replacement_is_never_stopped (test_aic_lease.HandoffTests.test_owned_container_replacement_is_never_stopped) ... ok
+test_pause_closes_consumer_before_waiting_for_lease_and_resumes (test_aic_lease.HandoffTests.test_pause_closes_consumer_before_waiting_for_lease_and_resumes) ... Executing <Task finished name='Task-260' coro=<HandoffTests.test_pause_closes_consumer_before_waiting_for_lease_and_resumes() done, defined at ${REPO}\tests\test_aic_lease.py:72> result=None created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.141 seconds
+ok
+test_pause_timeout_cancels_request_and_does_not_touch_holder (test_aic_lease.HandoffTests.test_pause_timeout_cancels_request_and_does_not_touch_holder) ... ok
+test_scheduler_does_not_dispatch_while_host_drains (test_aic_lease.HandoffTests.test_scheduler_does_not_dispatch_while_host_drains) ... {"at": "2026-10-29T08:19:10.264170+00:00", "event": "job_skipped_host_unavailable", "kind": "inspect", "host_status": "draining"}
+ok
+test_signal_adapter_waits_for_existing_cleanup_and_propagates_failure (test_aic_lease.HandoffTests.test_signal_adapter_waits_for_existing_cleanup_and_propagates_failure) ... ok
+test_unknown_cleanup_blocks_reuse_even_when_h00_passed (test_aic_lease.HandoffTests.test_unknown_cleanup_blocks_reuse_even_when_h00_passed) ... ok
+test_wsl_command_passes_session_without_relying_on_windows_environment_forwarding (test_aic_lease.HandoffTests.test_wsl_command_passes_session_without_relying_on_windows_environment_forwarding) ... ok
+test_all_or_none_lock_and_diagnostic_owner (test_aic_lease.LeaseTests.test_all_or_none_lock_and_diagnostic_owner) ... ok
+test_quarantine_survives_os_release (test_aic_lease.LeaseTests.test_quarantine_survives_os_release) ... ok
+
+======================================================================
+ERROR: test_rejected_sdk_product_with_null_operation_preserves_reason (test_handover_wire_contract.ResumeControlParsingTests.test_rejected_sdk_product_with_null_operation_preserves_reason)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 216, in test_rejected_sdk_product_with_null_operation_preserves_reason
+    await self.exercise("rejected", "invalid handover conversation entry")
+  File "${REPO}\tests\test_handover_wire_contract.py", line 192, in exercise
+    await transport.call(action(transport.term))
+  File "${REPO}\incident\wutong_transport.py", line 242, in call
+    result = await self._send(value, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 184, in observed_send
+    result = await actual_send(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 174, in _send
+    result = await self._dispatch(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 191, in _dispatch
+    raise RuntimeError("AMQP group channel is unavailable; no task dispatched; transport recovery required")
+RuntimeError: AMQP group channel is unavailable; no task dispatched; transport recovery required
+
+======================================================================
+ERROR: test_tool_error_does_not_activate_candidate_even_with_a_reported_fence (test_handover_wire_contract.ResumeControlParsingTests.test_tool_error_does_not_activate_candidate_even_with_a_reported_fence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 219, in test_tool_error_does_not_activate_candidate_even_with_a_reported_fence
+    await self.exercise("tool_error", "replacement tool unavailable", confirmed_fence=True)
+  File "${REPO}\tests\test_handover_wire_contract.py", line 192, in exercise
+    await transport.call(action(transport.term))
+  File "${REPO}\incident\wutong_transport.py", line 242, in call
+    result = await self._send(value, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 184, in observed_send
+    result = await actual_send(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 174, in _send
+    result = await self._dispatch(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 191, in _dispatch
+    raise RuntimeError("AMQP group channel is unavailable; no task dispatched; transport recovery required")
+RuntimeError: AMQP group channel is unavailable; no task dispatched; transport recovery required
+
+======================================================================
+ERROR: test_unknown_null_operation_keeps_existing_no_retry_semantics (test_handover_wire_contract.ResumeControlParsingTests.test_unknown_null_operation_keeps_existing_no_retry_semantics)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 222, in test_unknown_null_operation_keeps_existing_no_retry_semantics
+    await self.exercise("unknown", confirmed_fence=True)
+  File "${REPO}\tests\test_handover_wire_contract.py", line 205, in exercise
+    result = await transport.call(action(transport.term))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 242, in call
+    result = await self._send(value, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\tests\test_handover_wire_contract.py", line 184, in observed_send
+    result = await actual_send(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 174, in _send
+    result = await self._dispatch(payload, target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "${REPO}\incident\wutong_transport.py", line 191, in _dispatch
+    raise RuntimeError("AMQP group channel is unavailable; no task dispatched; transport recovery required")
+RuntimeError: AMQP group channel is unavailable; no task dispatched; transport recovery required
+
+----------------------------------------------------------------------
+Ran 36 tests in 28.535s
+
+FAILED (errors=3)
+
+GROUP tool_policy_and_audit
+test_arbitrary_sql_is_never_forwarded (test_bridge_gateway.BridgePolicyTests.test_arbitrary_sql_is_never_forwarded) ... ok
+test_binding_requires_identity_validation (test_bridge_gateway.BridgePolicyTests.test_binding_requires_identity_validation) ... ok
+test_container_guard_denies_without_docker (test_bridge_gateway.BridgePolicyTests.test_container_guard_denies_without_docker) ... ok
+test_credentials_are_scrubbed (test_bridge_gateway.BridgePolicyTests.test_credentials_are_scrubbed) ... ok
+test_describe_inventory_and_acs_official_schema (test_bridge_gateway.BridgePolicyTests.test_describe_inventory_and_acs_official_schema) ... ok
+test_handover_cannot_expand_resume_arguments_or_bypass_identity (test_bridge_gateway.BridgePolicyTests.test_handover_cannot_expand_resume_arguments_or_bypass_identity) ... ok
+test_invalid_handover_rejected_before_advancing_fence (test_bridge_gateway.BridgePolicyTests.test_invalid_handover_rejected_before_advancing_fence) ... ok
+test_invalid_history_and_package_rejected_before_advancing_fence (test_bridge_gateway.BridgePolicyTests.test_invalid_history_and_package_rejected_before_advancing_fence) ... ok
+test_kind_cannot_disguise_write_as_read (test_bridge_gateway.BridgePolicyTests.test_kind_cannot_disguise_write_as_read) ... ok
+test_old_fence_is_rejected_with_audit (test_bridge_gateway.BridgePolicyTests.test_old_fence_is_rejected_with_audit) ... ok
+test_postgres_text_errors_and_python_rows (test_bridge_gateway.BridgePolicyTests.test_postgres_text_errors_and_python_rows) ... ok
+test_primary_and_backup_use_same_ledger (test_bridge_gateway.BridgePolicyTests.test_primary_and_backup_use_same_ledger) ... ok
+test_rate_limit (test_bridge_gateway.BridgePolicyTests.test_rate_limit) ... ok
+test_read_returns_normalized_fact_and_hypothesis (test_bridge_gateway.BridgePolicyTests.test_read_returns_normalized_fact_and_hypothesis) ... ok
+test_real_aip_models_product_and_start_replay (test_bridge_gateway.BridgePolicyTests.test_real_aip_models_product_and_start_replay) ... ok
+test_resume_advances_fence_without_executing_received (test_bridge_gateway.BridgePolicyTests.test_resume_advances_fence_without_executing_received) ... ok
+test_resume_handover_strategies_acknowledge_data_without_executing_it (test_bridge_gateway.BridgePolicyTests.test_resume_handover_strategies_acknowledge_data_without_executing_it) ... ok
+test_resume_minimal_handover_is_compatible (test_bridge_gateway.BridgePolicyTests.test_resume_minimal_handover_is_compatible) ... ok
+test_resume_rejects_old_fence_and_unauthorized_caller (test_bridge_gateway.BridgePolicyTests.test_resume_rejects_old_fence_and_unauthorized_caller) ... ok
+test_resume_unknown_only_inspects_and_reconciles (test_bridge_gateway.BridgePolicyTests.test_resume_unknown_only_inspects_and_reconciles) ... ok
+test_self_declared_approval_rejected (test_bridge_gateway.BridgePolicyTests.test_self_declared_approval_rejected) ... ok
+test_start_returns_business_rejection_to_access_middleware (test_bridge_gateway.BridgePolicyTests.test_start_returns_business_rejection_to_access_middleware) ... ok
+test_tampered_approval_rejected (test_bridge_gateway.BridgePolicyTests.test_tampered_approval_rejected) ... ok
+test_terminate_nonblocking_pid_rejected_before_modification (test_bridge_gateway.BridgePolicyTests.test_terminate_nonblocking_pid_rejected_before_modification) ... ok
+test_unknown_caller_rejected_and_audited (test_bridge_gateway.BridgePolicyTests.test_unknown_caller_rejected_and_audited) ... ok
+test_unknown_effect_reconciles_by_real_postcondition (test_bridge_gateway.BridgePolicyTests.test_unknown_effect_reconciles_by_real_postcondition) ... ok
+test_write_requires_fence_and_operation (test_bridge_gateway.BridgePolicyTests.test_write_requires_fence_and_operation) ... ok
+test_official_sdk_tools_list_call_and_durable_replay (test_bridge_gateway.RealStdioTests.test_official_sdk_tools_list_call_and_durable_replay) ... Executing <Task pending name='Task-430' coro=<RealStdioTests.test_official_sdk_tools_list_call_and_durable_replay() running at ${REPO}\tests\test_bridge_gateway.py:480> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.531 seconds
+Processing request of type ListToolsRequest
+Processing request of type ListToolsRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+Processing request of type CallToolRequest
+ok
+test_already_v2_or_unknown_rejected_without_modifying_mcp_call (test_bridge_gateway.RoutePreconditionTests.test_already_v2_or_unknown_rejected_without_modifying_mcp_call) ... Executing <Task pending name='Task-436' coro=<RoutePreconditionTests.test_already_v2_or_unknown_rejected_without_modifying_mcp_call() running at ${REPO}\tests\test_bridge_gateway.py:417> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.110 seconds
+Executing <Task pending name='Task-436' coro=<RoutePreconditionTests.test_already_v2_or_unknown_rejected_without_modifying_mcp_call() running at ${REPO}\tests\test_bridge_gateway.py:417> wait_for=<Future pending cb=[_chain_future.<locals>._call_check_cancel() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\futures.py:389, Task.task_wakeup()] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:448> cb=[_run_until_complete_cb() at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at ${USER_HOME}\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_stale_route_fence_stops_before_inspection_or_modification (test_bridge_gateway.RoutePreconditionTests.test_stale_route_fence_stops_before_inspection_or_modification) ... ok
+test_unknown_effect_only_reconciles_after_v2_without_another_modification (test_bridge_gateway.RoutePreconditionTests.test_unknown_effect_only_reconciles_after_v2_without_another_modification) ... ok
+test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries (test_bridge_gateway.RoutePreconditionTests.test_unknown_unchanged_v1_stays_uncertain_and_never_blindly_retries) ... ok
+test_v1_changes_once_and_applied_replay_skips_new_precondition (test_bridge_gateway.RoutePreconditionTests.test_v1_changes_once_and_applied_replay_skips_new_precondition) ... ok
+test_actual_signing_failure_fallback_is_not_verified_signed_audit (test_gateway_policy_experiment.GatewayPolicyEvidenceTests.test_actual_signing_failure_fallback_is_not_verified_signed_audit) ... ok
+test_missing_duplicate_tampered_and_unsigned_readback_cannot_pass (test_gateway_policy_experiment.GatewayPolicyEvidenceTests.test_missing_duplicate_tampered_and_unsigned_readback_cannot_pass) ... ok
+test_silent_write_failure_is_failed_even_with_bridge_evidence_ref (test_gateway_policy_experiment.GatewayPolicyEvidenceTests.test_silent_write_failure_is_failed_even_with_bridge_evidence_ref) ... ok
+test_valid_signature_cannot_hide_wrong_audit_binding_or_reference (test_gateway_policy_experiment.GatewayPolicyEvidenceTests.test_valid_signature_cannot_hide_wrong_audit_binding_or_reference) ... ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 9.623s
+
+OK
+
+GROUP business_receipt_resolution
+test_404_is_one_get_unknown_and_never_retried (test_receipt_reconciliation.ReceiptReconciliationTests.test_404_is_one_get_unknown_and_never_retried) ... ok
+test_arbitrary_key_or_successful_post_is_not_an_unknown_intent (test_receipt_reconciliation.ReceiptReconciliationTests.test_arbitrary_key_or_successful_post_is_not_an_unknown_intent) ... ok
+test_cancel_requires_original_create_key_content_and_known_order_id (test_receipt_reconciliation.ReceiptReconciliationTests.test_cancel_requires_original_create_key_content_and_known_order_id) ... ok
+test_changed_source_or_summary_trace_disagreement_is_rejected (test_receipt_reconciliation.ReceiptReconciliationTests.test_changed_source_or_summary_trace_disagreement_is_rejected) ... ok
+test_continuous_summary_counts_fault_window_and_replays_full_original_trace (test_receipt_reconciliation.ReceiptReconciliationTests.test_continuous_summary_counts_fault_window_and_replays_full_original_trace) ... ok
+test_create_commit_is_one_get_but_does_not_complete_workflow (test_receipt_reconciliation.ReceiptReconciliationTests.test_create_commit_is_one_get_but_does_not_complete_workflow) ... ok
+test_default_describe_never_constructs_http_client_or_writes_output (test_receipt_reconciliation.ReceiptReconciliationTests.test_default_describe_never_constructs_http_client_or_writes_output) ... ok
+test_midrun_source_change_is_saved_as_failed_preservation (test_receipt_reconciliation.ReceiptReconciliationTests.test_midrun_source_change_is_saved_as_failed_preservation) ... ok
+test_redirect_timeout_invalid_json_each_get_once (test_receipt_reconciliation.ReceiptReconciliationTests.test_redirect_timeout_invalid_json_each_get_once) ... ok
+test_run_disables_environment_proxy_and_redirects (test_receipt_reconciliation.ReceiptReconciliationTests.test_run_disables_environment_proxy_and_redirects) ... ok
+test_target_output_and_source_change_protections (test_receipt_reconciliation.ReceiptReconciliationTests.test_target_output_and_source_change_protections) ... ok
+test_total_deadline_cancels_slow_get_and_continues_next_intent (test_receipt_reconciliation.ReceiptReconciliationTests.test_total_deadline_cancels_slow_get_and_continues_next_intent) ... ok
+test_unsent_cancel_is_not_submitted_and_causes_no_request (test_receipt_reconciliation.ReceiptReconciliationTests.test_unsent_cancel_is_not_submitted_and_causes_no_request) ... ok
+test_wrong_committed_receipt_bindings_remain_unknown (test_receipt_reconciliation.ReceiptReconciliationTests.test_wrong_committed_receipt_bindings_remain_unknown) ... ok
+test_real_partner_and_coordinator_keep_invalid_original_receipt_unresolved (test_receipt_resolution.ReceiptResolutionTests.test_real_partner_and_coordinator_keep_invalid_original_receipt_unresolved) ... ok
+test_unknown_cancel_rejects_other_order_then_accepts_same_key_unchanged_cancel (test_receipt_resolution.ReceiptResolutionTests.test_unknown_cancel_rejects_other_order_then_accepts_same_key_unchanged_cancel) ... ok
+test_unknown_create_rejects_wrong_receipts_then_resolves_the_same_original_key (test_receipt_resolution.ReceiptResolutionTests.test_unknown_create_rejects_wrong_receipts_then_resolves_the_same_original_key) ... ok
+test_valid_cancel_receipt_accepts_distinct_creation_key_and_changed_false (test_receipt_resolution.ReceiptResolutionTests.test_valid_cancel_receipt_accepts_distinct_creation_key_and_changed_false) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 1.416s
+
+OK
+
+GROUP workbench_state_and_evidence
+test_approval_rejects_string_false_and_foreign_origin (test_workbench.WorkbenchTests.test_approval_rejects_string_false_and_foreign_origin) ... ok
+test_disconnected_group_reports_unhealthy_and_rejects_new_inspection (test_workbench.WorkbenchTests.test_disconnected_group_reports_unhealthy_and_rejects_new_inspection) ... ok
+test_original_intent_input_is_strict_and_reaches_incident_state (test_workbench.WorkbenchTests.test_original_intent_input_is_strict_and_reaches_incident_state) ... ok
+test_unconfigured_workbench_explains_missing_participants (test_workbench.WorkbenchTests.test_unconfigured_workbench_explains_missing_participants) ... ok
+test_absent_capture_is_unknown_rather_than_zero_verified_access (test_workbench_access.WorkbenchAccessTests.test_absent_capture_is_unknown_rather_than_zero_verified_access) ... ok
+test_api_history_uses_selected_run_and_never_changes_saved_runs (test_workbench_access.WorkbenchAccessTests.test_api_history_uses_selected_run_and_never_changes_saved_runs) ... ok
+test_bad_json_and_malformed_fields_do_not_disappear_or_leak (test_workbench_access.WorkbenchAccessTests.test_bad_json_and_malformed_fields_do_not_disappear_or_leak) ... ok
+test_coordinator_only_capture_is_missing_the_peer_endpoint (test_workbench_access.WorkbenchAccessTests.test_coordinator_only_capture_is_missing_the_peer_endpoint) ... ok
+test_duplicate_access_and_missing_lifecycle_are_reported (test_workbench_access.WorkbenchAccessTests.test_duplicate_access_and_missing_lifecycle_are_reported) ... ok
+test_malformed_start_data_items_do_not_fail_the_whole_api (test_workbench_access.WorkbenchAccessTests.test_malformed_start_data_items_do_not_fail_the_whole_api) ... ok
+test_reloaded_history_uses_started_at_and_id_without_rewriting_files (test_workbench_access.WorkbenchAccessTests.test_reloaded_history_uses_started_at_and_id_without_rewriting_files) ... ok
+test_session_collision_and_other_incident_are_excluded (test_workbench_access.WorkbenchAccessTests.test_session_collision_and_other_incident_are_excluded) ... ok
+test_twelve_starts_and_twenty_four_access_match_existing_reconciler (test_workbench_access.WorkbenchAccessTests.test_twelve_starts_and_twenty_four_access_match_existing_reconciler) ... ok
+test_unterminated_valid_tail_is_counted_but_never_complete (test_workbench_access.WorkbenchAccessTests.test_unterminated_valid_tail_is_counted_but_never_complete) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 2.036s
+
+OK
+
+GROUP onboarding_and_rotation
+test_active_intent_returns_read_only_refusal_without_discovery (test_onboarding_text.OnboardingTextTests.test_active_intent_returns_read_only_refusal_without_discovery) ... ok
+test_dangerous_and_oversized_text_never_normalizes_to_a_check (test_onboarding_text.OnboardingTextTests.test_dangerous_and_oversized_text_never_normalizes_to_a_check) ... ok
+test_disclaimers_do_not_supply_missing_or_unique_target (test_onboarding_text.OnboardingTextTests.test_disclaimers_do_not_supply_missing_or_unique_target) ... ok
+test_explicit_negative_clauses_keep_public_metadata_only_request (test_onboarding_text.OnboardingTextTests.test_explicit_negative_clauses_keep_public_metadata_only_request) ... ok
+test_malformed_json_and_multiple_items_still_reject (test_onboarding_text.OnboardingTextTests.test_malformed_json_and_multiple_items_still_reject) ... ok
+test_multiple_targets_return_help_without_discovery (test_onboarding_text.OnboardingTextTests.test_multiple_targets_return_help_without_discovery) ... ok
+test_negative_clause_does_not_hide_positive_or_extended_instruction (test_onboarding_text.OnboardingTextTests.test_negative_clause_does_not_hide_positive_or_extended_instruction) ... ok
+test_no_target_returns_help_without_discovery (test_onboarding_text.OnboardingTextTests.test_no_target_returns_help_without_discovery) ... ok
+test_normalization_only_produces_read_only_check_and_stable_identity (test_onboarding_text.OnboardingTextTests.test_normalization_only_produces_read_only_check_and_stable_identity) ... ok
+test_original_json_text_and_structured_ifc_keep_one_item (test_onboarding_text.OnboardingTextTests.test_original_json_text_and_structured_ifc_keep_one_item) ... ok
+test_plain_text_checks_one_aic_and_returns_structured_and_readable_result (test_onboarding_text.OnboardingTextTests.test_plain_text_checks_one_aic_and_returns_structured_and_readable_result) ... ok
+test_private_onboarding_and_other_domains_still_reject_plain_text (test_onboarding_text.OnboardingTextTests.test_private_onboarding_and_other_domains_still_reject_plain_text) ... ok
+test_query_failure_does_not_claim_target_fault (test_onboarding_text.OnboardingTextTests.test_query_failure_does_not_claim_target_fault) ... ok
+test_empty_completion_is_not_reported_as_a_useful_result (test_external_rotation.ExternalRotationTests.test_empty_completion_is_not_reported_as_a_useful_result) ... ok
+test_failed_service_is_skipped_while_other_service_runs (test_external_rotation.ExternalRotationTests.test_failed_service_is_skipped_while_other_service_runs) ... ok
+test_queue_completion_disables_its_own_timer (test_external_rotation.ExternalRotationTests.test_queue_completion_disables_its_own_timer) ... ok
+test_ticks_advance_queue_and_do_not_repeat_finished_jobs (test_external_rotation.ExternalRotationTests.test_ticks_advance_queue_and_do_not_repeat_finished_jobs) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.777s
+
+OK

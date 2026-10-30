@@ -1,0 +1,107 @@
+{
+  "schema": "official-public-status-observation/1",
+  "capturedAtUtc": "2026-10-29T13:08:45.917Z",
+  "source": "https://wt.ioa.pub/",
+  "capture_kind": "live_public_UI",
+  "authenticated_management_backend": false,
+  "display_adaptation": "Original status panel repositioned to the page center because its built-in positioning clips at CSS zoom 125%; data and labels are unchanged.",
+  "statistics_source": "Official query UI; WutongCumulativeRanking.getStatistics uses /api/rankings/top segment aggregation; no displayed values replaced.",
+  "registry_inspection": "Authenticated registry navigation exposed My Agents only; no separate access monitor dashboard was identified.",
+  "official_requirement_boundary": "This is an official access-data query screenshot, not an authenticated management-dashboard screenshot. Organizer acceptance of this public statistics view is not inferred.",
+  "observations": [
+    {
+      "message": "跨域故障协调智能体 · 最近心跳：2026/10/29 21:08:15",
+      "values": {
+        "queryAlive": "在线（true）",
+        "queryCaller": "32,620",
+        "queryCallee": "0",
+        "queryCallerExternal": "612",
+        "queryCalleeExternal": "0",
+        "queryStatsRange": "2026/9/9 00:00 — 2026/10/29 22:00"
+      },
+      "panelBox": {
+        "x": 716.25,
+        "y": 125,
+        "width": 487.5,
+        "height": 624.125
+      },
+      "alias": "A01",
+      "observedAtUtc": "2026-10-29T13:08:56.964Z",
+      "observedAtBeijing": "2026-10-29 21:08:56 +08:00",
+      "screenshot": "status-A01.png"
+    },
+    {
+      "message": "跨域数据库协同智能体 · 最近心跳：2026/10/29 21:09:00",
+      "values": {
+        "queryAlive": "在线（true）",
+        "queryCaller": "0",
+        "queryCallee": "8,099",
+        "queryCallerExternal": "0",
+        "queryCalleeExternal": "0",
+        "queryStatsRange": "2026/9/9 00:00 — 2026/10/29 22:00"
+      },
+      "panelBox": {
+        "x": 716.25,
+        "y": 125,
+        "width": 487.5,
+        "height": 624.125
+      },
+      "alias": "A03",
+      "observedAtUtc": "2026-10-29T13:09:05.704Z",
+      "observedAtBeijing": "2026-10-29 21:09:05 +08:00",
+      "screenshot": "status-A03.png"
+    }
+  ],
+  "network": [
+    {
+      "url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-09-09T00%3A00%3A00%2B08%3A00&endAt=2026-10-10T00%3A00%3A00%2B08%3A00&n=1000",
+      "status": 200,
+      "receivedAtUtc": "2026-10-29T13:08:56.416Z",
+      "bodySavedPrivately": true
+    },
+    {
+      "url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-10-10T00%3A00%3A00%2B08%3A00&endAt=2026-10-29T22%3A00%3A00%2B08%3A00&n=1000",
+      "status": 200,
+      "receivedAtUtc": "2026-10-29T13:08:56.417Z",
+      "bodySavedPrivately": true
+    },
+    {
+      "url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-09-09T00%3A00%3A00%2B08%3A00&endAt=2026-10-10T00%3A00%3A00%2B08%3A00&n=1000",
+      "status": 200,
+      "receivedAtUtc": "2026-10-29T13:09:00.793Z",
+      "bodySavedPrivately": true
+    },
+    {
+      "url": "https://wt.ioa.pub/api/rankings/top?startAt=2026-10-10T00%3A00%3A00%2B08%3A00&endAt=2026-10-29T22%3A00%3A00%2B08%3A00&n=1000",
+      "status": 200,
+      "receivedAtUtc": "2026-10-29T13:09:00.842Z",
+      "bodySavedPrivately": true
+    }
+  ],
+  "error": null,
+  "preparation_attempts": [
+    {
+      "attempt": 1,
+      "result": "navigation_timeout_before_query",
+      "included_in_shared_media": false
+    },
+    {
+      "attempt": 2,
+      "result": "query_succeeded_but_popup_was_clipped_at_CSS_zoom125",
+      "included_in_shared_media": false
+    },
+    {
+      "attempt": 3,
+      "result": "navigation_timeout_before_query",
+      "included_in_shared_media": false
+    },
+    {
+      "attempt": 4,
+      "result": "complete_original_panel_visible_after_position_only_CSS_adjustment",
+      "included_in_shared_media": true
+    }
+  ],
+  "source_recording": "status-video.webm",
+  "data_boundary": "Values are the official UI response at capture time; the page rounds the displayed end boundary up to 22:00. This is not a claim that observation continued until 22:00.",
+  "privacy": "AIC field and school logos covered before capture; no authentication state or full backend responses exported."
+}

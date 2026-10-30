@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>协同修复工作台 · 互联流程演示</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='steelblue'/%3E%3Cpath d='M9 9 24 16 9 23Z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="协同修复工作台首页">
+      <svg viewBox="0 0 36 36" width="34" height="34" fill="none" aria-hidden="true"><path d="M9 10.5 27 18 9 25.5V10.5Z" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="10.5" r="4" fill="currentColor"/><circle cx="27" cy="18" r="4" fill="currentColor"/><circle cx="9" cy="25.5" r="4" fill="currentColor"/></svg>
+      <span>协同修复工作台</span>
+    </a>
+    <span class="edition">早期互联验证</span>
+  </header>
+
+  <main class="page">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">看见一次故障<br class="mobile-break">如何被协作解决。</h1>
+        <p>网站出故障后，协调者找到合适的智能体，收集证据、安排修复，再由独立智能体确认结果。</p>
+      </div>
+      <div class="local-indicator"><span class="status-dot" id="local-dot"></span><div><strong id="local-label">正在连接演示服务</strong><span id="local-caption">等待本地服务响应</span></div></div>
+    </section>
+
+    <section class="platform-strip" aria-labelledby="platform-title">
+      <div class="platform-heading"><h2 id="platform-title">梧桐正式接入</h2><span class="small-label">与下方本地协作分开核验</span></div>
+      <ol class="platform-checks" id="platform-checks">
+        <li data-platform="registered"><span class="check-symbol">○</span><span>注册</span><b>待验证</b></li>
+        <li data-platform="aic"><span class="check-symbol">○</span><span>AIC 标识</span><b>待验证</b></li>
+        <li data-platform="certificate"><span class="check-symbol">○</span><span>身份认证</span><b>待验证</b></li>
+        <li data-platform="discovery"><span class="check-symbol">○</span><span>能力发现</span><b>待验证</b></li>
+        <li data-platform="connection"><span class="check-symbol">○</span><span>互通验证</span><b>待验证</b></li>
+      </ol>
+      <p class="platform-note" id="platform-note">正式平台状态以实际返回的接入证据为准。</p>
+      <details class="platform-detail"><summary>查看接入状态原文</summary><pre id="platform-raw">尚未获取</pre></details>
+    </section>
+
+    <div class="workspace">
+      <aside class="task-rail" aria-label="演示任务设置">
+        <section class="task-panel">
+          <div class="section-title"><span class="section-square" aria-hidden="true"></span><h2>给系统一个真实任务</h2></div>
+          <blockquote>“订单网站打不开了，<br>请查明原因并恢复服务。”</blockquote>
+          <form id="run-form">
+            <label class="field-label" for="scenario">选择要注入的故障</label>
+            <select id="scenario" name="scenario">
+              <option value="stale_endpoint">数据库连接地址错误</option>
+              <option value="database_paused">数据库暂停服务</option>
+              <option value="combined">地址错误 + 数据库暂停</option>
+              <option value="agent_offline">原智能体退出，寻找替代者</option>
+              <option value="unknown_fault">未知业务故障</option>
+            </select>
+            <p class="scenario-hint" id="scenario-hint">应用与数据库分别提供证据，协调者据此修正连接地址。</p>
+            <button class="start-button" id="start-button" type="submit"><span id="start-button-label">开始一次协同修复</span><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7 4 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </form>
+          <p class="task-footnote">在隔离的演示服务中执行，结果来自实际运行。</p>
+        </section>
+
+        <section class="agents-panel" aria-labelledby="agents-title">
+          <div class="section-title"><span class="section-square" aria-hidden="true"></span><h2 id="agents-title">参与协作的智能体</h2></div>
+          <div id="agents-list" class="agents-list"><p class="empty-agents">正在读取服务名单…</p></div>
+          <p class="agent-explanation">每位成员负责自己的服务与证据，由协调者把它们连成一次完整行动。</p>
+        </section>
+      </aside>
+
+      <section class="workflow-panel" aria-labelledby="workflow-title">
+        <div class="workflow-header"><div><h2 id="workflow-title">从故障到交付的六步协作</h2><p id="run-caption">选一个场景，观察每一步真实发生的变化。</p></div><span class="run-status" id="run-status">等待开始</span></div>
+        <p class="error-banner" id="error-banner" role="alert" hidden></p>
+        <ol class="workflow" id="workflow">
+          <li class="workflow-step" data-step="0"><div class="step-marker"><span>1</span></div><div class="step-content"><div class="step-heading"><h3>注入故障</h3><span class="step-status">等待开始</span></div><p class="step-detail">在演示网站中制造一个可复现的问题。</p><div class="step-footer"><span class="step-agent">演示环境</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+          <li class="workflow-step" data-step="1"><div class="step-marker"><span>2</span></div><div class="step-content"><div class="step-heading"><h3>发现能力</h3><span class="step-status">等待开始</span></div><p class="step-detail">寻找能检查应用、数据库和验证结果的成员。</p><div class="step-footer"><span class="step-agent">协调者</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+          <li class="workflow-step" data-step="2"><div class="step-marker"><span>3</span></div><div class="step-content"><div class="step-heading"><h3>收集证据</h3><span class="step-status">等待开始</span></div><p class="step-detail">各智能体独立检查自己负责的服务，返回现场信息。</p><div class="step-footer"><span class="step-agent">应用 / 数据库智能体</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+          <li class="workflow-step" data-step="3"><div class="step-marker"><span>4</span></div><div class="step-content"><div class="step-heading"><h3>协调修复</h3><span class="step-status">等待开始</span></div><p class="step-detail">根据证据安排行动，无法确认的问题交给人工。</p><div class="step-footer"><span class="step-agent">协调者 / 执行智能体</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+          <li class="workflow-step" data-step="4"><div class="step-marker"><span>5</span></div><div class="step-content"><div class="step-heading"><h3>独立复核</h3><span class="step-status">等待开始</span></div><p class="step-detail">重新访问网站，检查服务状态与订单数据。</p><div class="step-footer"><span class="step-agent">验证智能体</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+          <li class="workflow-step" data-step="5"><div class="step-marker"><span>6</span></div><div class="step-content"><div class="step-heading"><h3>交付结果</h3><span class="step-status">等待开始</span></div><p class="step-detail">给出恢复结论，保留本次行动的完整记录。</p><div class="step-footer"><span class="step-agent">协调者</span><details class="step-evidence" hidden><summary>查看证据</summary><pre></pre></details></div></div></li>
+        </ol>
+        <section class="result-panel" id="result-panel" aria-labelledby="result-title" hidden><div class="result-head"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="11" stroke="currentColor" stroke-width="1.6"/><path d="m8.5 14 3.6 3.7 7.4-7.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h3 id="result-title">本次协作已完成</h3><p id="result-description"></p></div></div><dl class="result-facts"><div><dt>修复前</dt><dd id="before-status">—</dd></div><div><dt>修复后</dt><dd id="after-status">—</dd></div><div><dt>执行修改</dt><dd id="mutation-count">—</dd></div><div><dt>订单数据</dt><dd id="data-status">—</dd></div></dl></section>
+        <details class="run-record" id="run-record" hidden><summary>查看本次完整运行记录</summary><pre id="run-raw"></pre></details>
+      </section>
+    </div>
+    <footer class="page-footer"><span>从独立服务，到共同完成一个任务。</span><span>当前为早期演示，正式接入状态见上方核验栏。</span></footer>
+    <div class="sr-only" id="live-status" aria-live="polite" aria-atomic="true"></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/before_modification_retry1/transport/amp/amp_access_primary.outbox.sqlite3",
+  "immutable_read": true,
+  "tables": {
+    "attempts": {
+      "create_sql": "CREATE TABLE attempts (event_key TEXT PRIMARY KEY, log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)",
+      "rows": [
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-9d1f8524816846cc94e1259288aef5ba\",\"receive\"]",
+          "log_id": "5fde55da-d40c-4745-9499-5baa7743d2a9",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.read_only_status\"}},\"received_at\":\"2026-10-29T08:21:48.273878+00:00\",\"trace\":{\"correlation_id\":\"aip-9d1f8524816846cc94e1259288aef5ba\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": "{\"aic\":\"test-database-primary\",\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":16.000000000076398,\"request\":{\"method\":\"start\",\"route\":\"db.read_only_status\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-9d1f8524816846cc94e1259288aef5ba\",\"log_id\":\"5fde55da-d40c-4745-9499-5baa7743d2a9\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:21:48.310416Z\",\"trace_id\":\"fresh-local-before_modification\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-1008b2a58a7a4cf5ac7317434d05f2ff\",\"receive\"]",
+          "log_id": "8c3aad74-ab39-474f-b3de-1282677b0f19",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-primary\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:21:48.552623+00:00\",\"trace\":{\"correlation_id\":\"aip-1008b2a58a7a4cf5ac7317434d05f2ff\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": null,
+          "written": 0
+        }
+      ]
+    },
+    "owner": {
+      "create_sql": "CREATE TABLE owner (aic TEXT, log_path TEXT)",
+      "rows": [
+        {
+          "aic": "test-database-primary",
+          "log_path": "${RECORDS}\\local-process-cases\\before_modification_retry1\\transport\\amp\\amp_access_primary.jsonl"
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

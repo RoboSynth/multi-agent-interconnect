@@ -6,7 +6,7 @@ import subprocess
 from datetime import datetime, timezone
 
 HERE = Path(__file__).resolve().parent
-GIT = r"C:\Users\16080\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd\git.exe"
+GIT = r"C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd\git.exe"
 WORK = HERE / "integration-checkout"
 TEAM = Path(r"D:\AI + 开源\team-repository-multi-agent-interconnect")
 def git(root, *args):

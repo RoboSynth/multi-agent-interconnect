@@ -1,5 +1,34 @@
 # NEW7 云服务器接手说明
 
+## 2026-10-26 外部智能体轮流调用
+
+服务器运行 `incident-external-rotation.service` 与 `incident-external-rotation.timer`。定时器已由每 30 分钟调整为每 5 分钟执行一个任务，在信息来源与事实核验、论文评审与学术写作、笔试训练、校园学习生活助手四个外部智能体之间轮换。
+
+首批 12 项的结果已保存。后续按各服务公布的能力修订为 24 项不同请求，任务 ID 为 `aligned-01-1` 至 `aligned-06-4`，分别用于来源事实核验、研究内容评审、校招四选一训练及大学生学习规划；完成后停用定时器。原有成功、拒绝、失败和调度跳过记录继续保留，旧版未执行任务标记为 `superseded_before_execution`。本轮修订为新请求恢复三项服务，后续单个服务执行失败时仍跳过其剩余任务。
+
+频率部署记录和当前请求列表见 `artifacts/external-call-20261026/frequency-update-*.json`、`aligned-update-*.json` 与 `aligned-five-minute-jobs.json`。服务器保留修改前的计划、状态及定时器副本，位于原计划目录的 `frequency-backup-*`、`scope-backup-*` 子目录。
+
+- 运行器：`ops/external_rotation.py`、`ops/external_rpc_once.py`。
+- 计划与状态：`runtime/private/external-rotation-20261026/plan.json`、`state.json`。
+- 任务输入、返回原件和文本结果：`evidence/external-rotation-20261026/<任务编号>/`。
+- 调用采用官方 SDK 的 HTTPS/mTLS RPC，通过现有协调者身份和采集目录记录实际访问。
+
+查看队列与下次执行时间：
+
+```sh
+sudo /opt/incident-pilot/.venv/bin/python -B /opt/incident-pilot/ops/external_rotation.py --plan /opt/incident-pilot/runtime/private/external-rotation-20261026/plan.json --status
+sudo systemctl list-timers incident-external-rotation.timer --all --no-pager
+sudo journalctl -u incident-external-rotation.service -n 30 --no-pager
+```
+
+停止后续轮询：
+
+```sh
+sudo systemctl disable --now incident-external-rotation.timer
+```
+
+已经开始的任务会按本次执行的时限结束并保存结果。首次五服务试运行有四项完成、一项文献任务超时；文献服务未进入上述轮询名单。平台外部访问计数与业务成功数分别记录。
+
 正式七身份只在服务器运行。本地电脑用于开发和离线实验，不启动正式 NEW7、8877 工作台或同身份的其他消费者。工作台仅监听 `127.0.0.1:8877`，订单业务端口不对公网开放。
 
 ## 目录与服务

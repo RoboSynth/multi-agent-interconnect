@@ -1,0 +1,104 @@
+{
+  "received_at_utc": "2026-10-29T09:38:59.685571+00:00",
+  "role": "A05",
+  "description": {
+    "schema_version": "ifc/1.0",
+    "interface_version": "1.0",
+    "domain": "ops",
+    "resource_scope": {
+      "label": "incident-pilot",
+      "routes": [
+        "v1",
+        "v2"
+      ],
+      "application": "orders",
+      "compose_project": "incident-pilot-new7-cloud-20261019",
+      "compose_service": "app-v2",
+      "container_name": "incident-pilot-new7-cloud-20261019-app-v2-1"
+    },
+    "skills": [
+      "ops.observe",
+      "ops.act"
+    ],
+    "resources": [
+      "orders"
+    ],
+    "tools": [
+      {
+        "name": "ops.containers",
+        "risk": "read",
+        "description": "只观察本域登记的 Compose 项目和 app-v2 固定容器，返回运行状态。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "list_containers"
+      },
+      {
+        "name": "ops.logs",
+        "risk": "read",
+        "description": "读取经标签核验的实验容器最后 100 行日志。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "mcp_tool": "fetch_container_logs"
+      },
+      {
+        "name": "ops.restart",
+        "risk": "high",
+        "description": "经审批停止再启动本域登记的固定 app-v2，核验项目、服务与名称并以不可变 ID 执行。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "mcp_tool": "start_container"
+      },
+      {
+        "name": "ops.route_status",
+        "risk": "read",
+        "description": "观察当前 Nginx 订单上游版本。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "route_status"
+      },
+      {
+        "name": "ops.route_rollback",
+        "risk": "write",
+        "description": "当前入口为 v1，或未登记且精确文件哈希仍相同、登记 v2 应用健康时，恢复固定 v2 并校验重载。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_route_version": {
+              "type": "string",
+              "enum": [
+                "unknown"
+              ]
+            },
+            "expected_route_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "dependentRequired": {
+            "expected_route_version": [
+              "expected_route_sha256"
+            ],
+            "expected_route_sha256": [
+              "expected_route_version"
+            ]
+          }
+        },
+        "mcp_tool": "route_rollback"
+      }
+    ],
+    "executor_aic": "A05"
+  }
+}

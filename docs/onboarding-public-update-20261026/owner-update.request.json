@@ -1,0 +1,73 @@
+{
+  "description": "面向梧桐平台开发者的公开接入体检服务。输入目标 AIC，返回发现状态、协议与技能信息、入口格式和接入建议。支持普通文本和 ifc/1.0 JSON 请求，并提供中文结果。",
+  "acs": {
+    "aic": "1.2.156.3088.1.0000.000000.000000.000000.0007",
+    "name": "跨域接入体检智能体",
+    "active": true,
+    "skills": [
+      {
+        "id": "aip.onboarding.check",
+        "name": "AIP 接入只读体检",
+        "tags": [
+          "incident-pilot",
+          "onboarding",
+          "ADP",
+          "ACS"
+        ],
+        "version": "1.0.0",
+        "examples": [
+          "{\"schema_version\":\"ifc/1.0\",\"kind\":\"observe\",\"tool\":\"aip.onboarding.check\",\"args\":{\"target_aic\":\"<registered AIC>\",\"deep\":false}}",
+          "请检查 1.2.156.3088.1.0000.000000.000000.000000.0001 的公开元数据"
+        ],
+        "inputModes": [
+          "application/json",
+          "text/plain"
+        ],
+        "description": "面向梧桐平台开发者的公开接入体检服务。输入目标 AIC，返回发现状态、协议与技能信息、入口格式和接入建议。支持普通文本和 ifc/1.0 JSON 请求，并提供中文结果。",
+        "outputModes": [
+          "application/json",
+          "text/plain"
+        ]
+      }
+    ],
+    "version": "1.0.0",
+    "provider": {
+      "name": "匿名提供者"
+    },
+    "endPoints": [
+      {
+        "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_1.2.156.3088.1.0000.000000.000000.000000.0007",
+        "security": [
+          {
+            "mtls": []
+          }
+        ],
+        "transport": "AMQP"
+      }
+    ],
+    "description": "面向梧桐平台开发者的公开接入体检服务。输入目标 AIC，返回发现状态、协议与技能信息、入口格式和接入建议。支持普通文本和 ifc/1.0 JSON 请求，并提供中文结果。",
+    "capabilities": {
+      "streaming": false,
+      "messageQueue": [
+        "amqp:0.9.1"
+      ],
+      "notification": false
+    },
+    "protocolVersion": "02.02",
+    "securitySchemes": {
+      "mtls": {
+        "type": "mutualTLS",
+        "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+      }
+    },
+    "lastModifiedTime": "2026-10-17T18:32:51.202042+08:00",
+    "defaultInputModes": [
+      "application/json",
+      "text/plain"
+    ],
+    "defaultOutputModes": [
+      "application/json",
+      "text/plain"
+    ]
+  }
+}

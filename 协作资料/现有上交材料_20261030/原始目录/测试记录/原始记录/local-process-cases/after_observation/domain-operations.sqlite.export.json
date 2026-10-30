@@ -1,0 +1,38 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/after_observation/domain-operations.sqlite",
+  "immutable_read": true,
+  "tables": {
+    "operation_fences": {
+      "create_sql": "CREATE TABLE operation_fences (\n                    resource_domain TEXT PRIMARY KEY, coordinator_term INTEGER NOT NULL,\n                    takeover_version INTEGER NOT NULL)",
+      "rows": [
+        {
+          "resource_domain": "database",
+          "coordinator_term": 1,
+          "takeover_version": 1
+        }
+      ]
+    },
+    "operations": {
+      "create_sql": "CREATE TABLE operations (\n                    resource_domain TEXT NOT NULL, operation_id TEXT NOT NULL,\n                    parameters_digest TEXT NOT NULL, parameters TEXT NOT NULL,\n                    state TEXT NOT NULL, result TEXT, before_state TEXT, after_state TEXT,\n                    coordinator_term INTEGER NOT NULL, takeover_version INTEGER NOT NULL,\n                    owner TEXT, error TEXT, updated_at REAL NOT NULL,\n                    PRIMARY KEY(resource_domain, operation_id))",
+      "rows": [
+        {
+          "resource_domain": "database",
+          "operation_id": "fresh-local-after_observation:repair",
+          "parameters_digest": "da1ce3b054d5f258e6adebbccf2d2e8e505a627a83786cee5eb9ac56a86e8c21",
+          "parameters": "{\"args\":{},\"resources\":{\"database\":\"temporary-unittest-resource\"},\"tool\":\"db.restore_writes\"}",
+          "state": "applied",
+          "result": "[{\"key\":\"read_only\",\"observed_at\":\"2026-10-29T08:20:34.042865+00:00\",\"source\":\"db.restore_writes\",\"value\":false}]",
+          "before_state": "true",
+          "after_state": "false",
+          "coordinator_term": 1,
+          "takeover_version": 1,
+          "owner": "2b600e92-aefe-44e6-a856-b9a444d71e90",
+          "error": null,
+          "updated_at": 1793262034.0438583
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

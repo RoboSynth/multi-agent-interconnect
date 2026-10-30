@@ -1,0 +1,86 @@
+{
+  "aic": "A03",
+  "name": "跨域数据库协同智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "db.observe",
+      "name": "db observe",
+      "tags": [
+        "incident-pilot",
+        "MCP",
+        "db",
+        "observe"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"db.health\", \"args\": {}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "检查订单库连接健康，不接收任意 SQL。；检查 orders 数据库或 orders_app 角色是否配置默认只读。；观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "db.act",
+      "name": "db act",
+      "tags": [
+        "incident-pilot",
+        "MCP",
+        "db",
+        "act"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"db.restore_writes\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。；经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "项目团队"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_A03",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:33:05.319665+08:00",
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "aic": "A05",
+  "name": "跨域入口运维智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "ops.observe",
+      "name": "ops observe",
+      "tags": [
+        "incident-pilot",
+        "MCP",
+        "ops",
+        "observe"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"observe\", \"tool\": \"ops.containers\", \"args\": {}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "观察本轮实验登记的 app-v2 进程命令行身份和运行状态，后端为本地 Windows 进程。；观察当前本地 Nginx 订单上游版本 v1/v2。",
+      "outputModes": [
+        "application/json"
+      ]
+    },
+    {
+      "id": "ops.act",
+      "name": "ops act",
+      "tags": [
+        "incident-pilot",
+        "MCP",
+        "ops",
+        "act"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-example\", \"kind\": \"act\", \"tool\": \"ops.restart\", \"args\": {}, \"operation_id\": \"op-example\", \"fence\": {\"coordinator_term\": 1, \"takeover_version\": 0}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "经审批重启本项目 runtime 中登记且命令行核验通过的 app-v2；不接受任意 PID。；将本地订单入口回退到已登记的 v2 端口并校验重载本项目 Nginx。",
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "项目团队"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_A05",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "为用户自有订单实验环境提供入口运维域能力。通过ifc/1.0任务观察应用运行状态与Nginx上游版本；仅对已登记项目资源执行重启或回退v2。使用独立AIC和客户端证书通过梧桐AMQPS群组收发任务，资源凭据留在运维域；高风险动作校验审批、操作账本和fence，协调者不能传入任意PID或容器。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:33:10.667953+08:00",
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ]
+}

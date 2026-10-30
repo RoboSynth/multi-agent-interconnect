@@ -14,6 +14,16 @@ from workbench_server import create_app
 
 
 class WorkbenchTests(unittest.TestCase):
+    def test_disconnected_group_reports_unhealthy_and_rejects_new_inspection(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = SimpleNamespace(mode="fake_test_transport", participants=[],
+                                        connection_ready=False, close=AsyncMock())
+            with patch("workbench_server.IncidentCoordinator.run", new=AsyncMock()) as run:
+                with TestClient(create_app(Path(directory)/"absent.json", Path(directory)/"output", transport)) as client:
+                    self.assertFalse(client.get("/api/state").json()["connected"])
+                    self.assertEqual(client.post("/api/incidents", json={"symptom": "巡检"}).status_code, 503)
+                    run.assert_not_awaited()
+
     def test_original_intent_input_is_strict_and_reaches_incident_state(self):
         cases = [({}, False), ({"original_request_unknown": True}, True),
                  ({"original_request_key": "request-one"}, True)]

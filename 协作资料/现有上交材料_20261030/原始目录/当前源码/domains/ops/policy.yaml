@@ -1,0 +1,64 @@
+domain: ops
+allowed_callers: []
+resources:
+  label: incident-pilot
+  routes: [v1, v2]
+  application: orders
+  compose_project: incident-pilot-container
+  compose_service: app-v2
+  container_name: incident-pilot-container-app-v2-1
+rate_limit: {window_seconds: 60, max_calls: 90}
+tools:
+  ops.containers:
+    server: docker
+    mcp_tool: list_containers
+    risk: read
+    description: 只观察本域登记的 Compose 项目和 app-v2 固定容器，返回运行状态。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    fixed_arguments:
+      all: true
+      filters:
+        label: [incident-pilot, com.docker.compose.project=incident-pilot-container, com.docker.compose.service=app-v2]
+  ops.logs:
+    server: docker
+    mcp_tool: fetch_container_logs
+    risk: read
+    container_guard: true
+    description: 读取经标签核验的实验容器最后 100 行日志。
+    input_schema:
+      type: object
+      additionalProperties: false
+      required: [container_id]
+      properties: {container_id: {type: string, pattern: '^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}$'}}
+    fixed_arguments: {tail: 100}
+  ops.restart:
+    server: docker
+    mcp_tool: start_container
+    risk: high
+    container_guard: true
+    restart_sequence: true
+    description: 经审批停止再启动本域登记的固定 app-v2，核验项目、服务与名称并以不可变 ID 执行。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    fixed_arguments: {container_id: incident-pilot-container-app-v2-1}
+  ops.route_status:
+    server: route
+    mcp_tool: route_status
+    risk: read
+    description: 观察当前 Nginx 订单上游版本。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+  ops.route_rollback:
+    server: route
+    mcp_tool: route_rollback
+    risk: write
+    description: 当前入口为 v1，或未登记且精确文件哈希仍相同、登记 v2 应用健康时，恢复固定 v2 并校验重载。
+    input_schema:
+      type: object
+      additionalProperties: false
+      properties:
+        expected_route_version: {type: string, enum: [unknown]}
+        expected_route_sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+      dependentRequired:
+        expected_route_version: [expected_route_sha256]
+        expected_route_sha256: [expected_route_version]
+    fixed_arguments: {target_version: v2}
+    reconcile: {tool_alias: ops.route_status, expected_before: v1, expected_before_argument: expected_route_version, expected_after: v2}

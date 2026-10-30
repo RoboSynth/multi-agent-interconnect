@@ -1,0 +1,514 @@
+{
+  "schema": "current-code-audit/1",
+  "captured_at": "2026-10-29T16:22:34.820954+08:00",
+  "git_head": "c88b203ff417dca0b028784a569e741d62db2c02",
+  "working_tree_dirty": true,
+  "evidence_level": "current source inspection only; no runtime claim",
+  "old_reports_or_old_experiments_used": false,
+  "files": [
+    {
+      "path": "acps_mcp_bridge/approval.py",
+      "bytes": 2184,
+      "sha256": "eb155338774fdac689dc49687214afe0ed6e372e4227cdaaf54057d7e2843c30",
+      "line_count": 43,
+      "references": [
+        {
+          "line": 10,
+          "text": "def action_binding(payload: dict, caller_aic: str) -> dict:"
+        },
+        {
+          "line": 25,
+          "text": "    def issue(self, payload: dict, caller_aic: str, *, approved_by: str, ttl_seconds: int = 300) -> dict:"
+        }
+      ]
+    },
+    {
+      "path": "acps_mcp_bridge/bridge.py",
+      "bytes": 29275,
+      "sha256": "2fdcbfcf20763031274ca3682660bc350bd24a07f9bc0d610e922233ad8dfa00",
+      "line_count": 467,
+      "references": [
+        {
+          "line": 167,
+          "text": "    async def initialize(self):"
+        },
+        {
+          "line": 221,
+          "text": "                reconciled = None"
+        },
+        {
+          "line": 254,
+          "text": "                if call.specification.get(\"container_guard\"):"
+        },
+        {
+          "line": 259,
+          "text": "                if call.specification.get(\"blocker_guard\"):"
+        }
+      ]
+    },
+    {
+      "path": "acps_mcp_bridge/client.py",
+      "bytes": 2549,
+      "sha256": "5faca959a28633c5177f04099a625667f7d923798768dce791276630f4684f62",
+      "line_count": 68,
+      "references": [
+        {
+          "line": 26,
+          "text": "    async def __aenter__(self):"
+        },
+        {
+          "line": 53,
+          "text": "    async def tools(self) -> list[dict[str, Any]]:"
+        }
+      ]
+    },
+    {
+      "path": "acps_mcp_bridge/policy.py",
+      "bytes": 5869,
+      "sha256": "d59f7e559b7020e9afd56efba3d93835e05718b7eff83b7d5a5821384ce03c0c",
+      "line_count": 118,
+      "references": [
+        {
+          "line": 61,
+          "text": "    def authorize_caller(self, caller_aic: str):"
+        },
+        {
+          "line": 65,
+          "text": "    def authorize(self, payload: dict, caller_aic: str) -> AuthorizedCall:"
+        },
+        {
+          "line": 100,
+          "text": "        if \"sql_template\" in spec:"
+        }
+      ]
+    },
+    {
+      "path": "business/load.py",
+      "bytes": 9493,
+      "sha256": "f2c427b28a7b8767a02205db0adab15502c1718a85683bc551e8ef47ffc774f1",
+      "line_count": 171,
+      "references": [
+        {
+          "line": 57,
+          "text": "    async def observe(self, *, duration=30, requests_per_second=1, min_complete=10, stop_after_completed=None,"
+        },
+        {
+          "line": 136,
+          "text": "        completed = len(self.state[\"completed\"]) - before"
+        }
+      ]
+    },
+    {
+      "path": "business/order_app/store.py",
+      "bytes": 7781,
+      "sha256": "dd046738d899e9afb8a6acc6dafa597bf8efb3e39cd6b19b26dc7f9d244d30a4",
+      "line_count": 175,
+      "references": [
+        {
+          "line": 140,
+          "text": "    async def execute(self, kind, key, payload):"
+        },
+        {
+          "line": 145,
+          "text": "                await conn.execute(\"SELECT pg_advisory_xact_lock(hashtextextended($1, 0))\", key)"
+        },
+        {
+          "line": 170,
+          "text": "                result = {\"operation_key\": key, \"operation_kind\": kind, \"outcome\": \"committed\","
+        }
+      ]
+    },
+    {
+      "path": "deploy/compose.yml",
+      "bytes": 3217,
+      "sha256": "b9c417ff3b1d69a88d0940603f6f4d0b942047fec10318d6ed72bc639110f2af",
+      "line_count": 117,
+      "references": [
+        {
+          "line": 25,
+          "text": "services:"
+        },
+        {
+          "line": 48,
+          "text": "  app-v1:"
+        },
+        {
+          "line": 58,
+          "text": "  app-v2:"
+        },
+        {
+          "line": 68,
+          "text": "  nginx:"
+        }
+      ]
+    },
+    {
+      "path": "deploy/review.py",
+      "bytes": 9024,
+      "sha256": "635e0bfb9b2c456294f8bbcf3fdd766ccd8c339807f7279af8ba391e2746f323",
+      "line_count": 191,
+      "references": [
+        {
+          "line": 61,
+          "text": "def docker_command():"
+        },
+        {
+          "line": 158,
+          "text": "    parser.add_argument(\"action\", choices=[\"up\", \"down\", \"demo\", \"status\", \"logs\", \"prepare\"], nargs=\"?\", default=\"up\")"
+        }
+      ]
+    },
+    {
+      "path": "domains/database/requirements.txt",
+      "bytes": 988,
+      "sha256": "1bc30f5a8dd2007e1641f4da3bb1dde101200f557e9a675ceba76bd9145ebf7c",
+      "line_count": 8,
+      "references": [
+        {
+          "line": 6,
+          "text": "postgres-mcp==0.3.0"
+        }
+      ]
+    },
+    {
+      "path": "domains/onboarding/check.py",
+      "bytes": 5664,
+      "sha256": "0dbec2a8883294c2e42fed617a1dc8e3ec96ff5444f908e6990bc53102a7f4e4",
+      "line_count": 89,
+      "references": [
+        {
+          "line": 33,
+          "text": "    async def execute(self, payload, caller_aic):"
+        }
+      ]
+    },
+    {
+      "path": "domains/ops/requirements.txt",
+      "bytes": 142,
+      "sha256": "1198d49e943f0588f5032bc266c32d1c653d0d1c3d057e8cd2a96f1dc5b25f8f",
+      "line_count": 3,
+      "references": [
+        {
+          "line": 1,
+          "text": "# Separate environment: this upstream release uses MCP SDK v2."
+        }
+      ]
+    },
+    {
+      "path": "domains/setup_platform.py",
+      "bytes": 14728,
+      "sha256": "faacfe899f12b478d0c1afb3c7e8b1bb2ea3c8e21b817ad6d112bf66889e1ead",
+      "line_count": 214,
+      "references": [
+        {
+          "line": 94,
+          "text": "    discovery = public_url(source[\"discovery_url\"], {\"https\"})"
+        },
+        {
+          "line": 101,
+          "text": "    coordinator = {\"mode\": \"wutong-amqps\", \"leader\": identity(source[\"agents\"][\"leader\"]),"
+        },
+        {
+          "line": 121,
+          "text": "    roles = [(\"application\", \"application\"), (\"database\", \"database\"), (\"verification\", \"verification\"),"
+        },
+        {
+          "line": 130,
+          "text": "        domain = \"database\" if role == \"database-backup\" else role"
+        },
+        {
+          "line": 192,
+          "text": "    # Public coordinator has its own identity and public skill filters only."
+        }
+      ]
+    },
+    {
+      "path": "eval/run.py",
+      "bytes": 28032,
+      "sha256": "4a9a14aaeec492978c0778f6d28b2d52c12744a1a1666a08136e0553858d931a",
+      "line_count": 372,
+      "references": [
+        {
+          "line": 235,
+          "text": "                        if method == \"M2v2\":"
+        }
+      ]
+    },
+    {
+      "path": "incident/coordinator/engine.py",
+      "bytes": 30521,
+      "sha256": "ee3791c88704d0497b260453217719680dcfce90ad95cbc666e61b12a94f41df",
+      "line_count": 490,
+      "references": [
+        {
+          "line": 17,
+          "text": "    def __init__(self, transport, directory, *, hypothesis=None, approval_issuer=None,"
+        },
+        {
+          "line": 49,
+          "text": "    def new(self, symptom, *, original_request_key=None, original_request_unknown=False):"
+        },
+        {
+          "line": 63,
+          "text": "    async def _call(self, state, tool, *, kind=\"observe\", args=None, node=None, feedback=False):"
+        },
+        {
+          "line": 160,
+          "text": "    async def _approval(self, state, payload, row, reason):"
+        },
+        {
+          "line": 200,
+          "text": "        if verified[\"status\"] != \"ok\":"
+        },
+        {
+          "line": 274,
+          "text": "    async def _observe_batch(self, state, planner, tools, local_hypotheses):"
+        },
+        {
+          "line": 310,
+          "text": "    async def _run_incident_planning(self, state, planner, available, local_hypotheses):"
+        }
+      ]
+    },
+    {
+      "path": "incident/coordinator/hypothesis.py",
+      "bytes": 11719,
+      "sha256": "04deee01e5003ef6830d4c4b3c032c85bb3642b7aab2dfcc6edc2bc53bf77aed",
+      "line_count": 208,
+      "references": [
+        {
+          "line": 17,
+          "text": "OBSERVABLE_TOOLS = {"
+        },
+        {
+          "line": 80,
+          "text": "class HypothesisEngine:"
+        },
+        {
+          "line": 106,
+          "text": "    async def request_json(self, system, context, schema):"
+        },
+        {
+          "line": 172,
+          "text": "    async def generate(self, symptom: str, facts: list[dict], tools: list[str], local_hypotheses=None, *, max_attempts=2,"
+        },
+        {
+          "line": 185,
+          "text": "                    result = await self.request_json(\"Return plausible competing fault hypotheses with predictions of observed categories. \""
+        }
+      ]
+    },
+    {
+      "path": "incident/coordinator/incident_planner.py",
+      "bytes": 4855,
+      "sha256": "5bba6fd072b8dff9fdf0033b6f882626565ea3285176bc0fb5921dfc0c9f3f08",
+      "line_count": 94,
+      "references": [
+        {
+          "line": 21,
+          "text": "    def candidates(self, hypotheses):"
+        },
+        {
+          "line": 57,
+          "text": "    def next_probes(self, hypotheses, available=None, *, maximum=3):"
+        }
+      ]
+    },
+    {
+      "path": "incident/coordinator/planner.py",
+      "bytes": 10666,
+      "sha256": "8948bab9d9ff322dd1a5b510f79c02de4bce9133219c9edc2ecf9237a2ad38e6",
+      "line_count": 208,
+      "references": [
+        {
+          "line": 73,
+          "text": "def rank_probes(hypotheses: list[Hypothesis], probes: list[Probe]):"
+        },
+        {
+          "line": 160,
+          "text": "    def actions(self):"
+        },
+        {
+          "line": 198,
+          "text": "    def action_completed(self, node):"
+        }
+      ]
+    },
+    {
+      "path": "incident/partners.py",
+      "bytes": 13448,
+      "sha256": "e1d016c9e895f7b6aaef7cdea9dd7a1b2f4f7aa27660ffd29cc208eff06084c2",
+      "line_count": 200,
+      "references": [
+        {
+          "line": 150,
+          "text": "        original_unknown = task.args.get(\"original_request_unknown\", False)"
+        },
+        {
+          "line": 169,
+          "text": "        # A repeated verification must exercise fresh writes, not replay receipts"
+        },
+        {
+          "line": 185,
+          "text": "        summary = await OrderObserver(self.base_url, run_id=observation_id, expected_api_version=\"v2\").observe("
+        }
+      ]
+    },
+    {
+      "path": "incident/platform_worker.py",
+      "bytes": 22448,
+      "sha256": "f117bd6e3412faf3597f56d347cd31bb6cd243a098ce1171e36fcbc7159b83ab",
+      "line_count": 386,
+      "references": [
+        {
+          "line": 45,
+          "text": "    if not isinstance(config, dict) or config.get(\"role\") not in (\"application\", \"verification\", \"onboarding\"):"
+        },
+        {
+          "line": 295,
+          "text": "        if type(public) is not bool or public and (self.config[\"role\"] != \"onboarding\" or self.config.get(\"env_file\")):"
+        }
+      ]
+    },
+    {
+      "path": "incident/selection.py",
+      "bytes": 5459,
+      "sha256": "ceadb4191e650a64cc5fed6573c1d4d533dea6c9ef15093cba23b6d3fe7ad7b8",
+      "line_count": 107,
+      "references": [
+        {
+          "line": 30,
+          "text": "async def discover_candidates(url, skill_id, *, client=None, record=None):"
+        },
+        {
+          "line": 61,
+          "text": "async def select_participant(candidates, *, resource, tool, describe, excluded=(),"
+        }
+      ]
+    },
+    {
+      "path": "incident/wutong_transport.py",
+      "bytes": 30608,
+      "sha256": "c7cd2cf7f7a8edd26468e54a291fbff3dbfd284d00d531dfbc8659c42f589448",
+      "line_count": 482,
+      "references": [
+        {
+          "line": 71,
+          "text": "    async def _describe(self, acs):"
+        },
+        {
+          "line": 117,
+          "text": "    async def start(self):"
+        },
+        {
+          "line": 189,
+          "text": "    async def _dispatch(self, payload, target):"
+        },
+        {
+          "line": 345,
+          "text": "    async def _takeover(self, role, failed, original, reason):"
+        },
+        {
+          "line": 360,
+          "text": "            candidates = await self._discover_candidates(role, skill)"
+        },
+        {
+          "line": 370,
+          "text": "                    if description.get(\"resource_scope\", description.get(\"resources\")) != previous_scope:"
+        },
+        {
+          "line": 397,
+          "text": "                    confirmed = control.get(\"active_fence\") or operation.get(\"active_fence\")"
+        },
+        {
+          "line": 406,
+          "text": "                    state = operation.get(\"state\", \"unknown\")"
+        }
+      ]
+    },
+    {
+      "path": "requirements-high-score.txt",
+      "bytes": 164,
+      "sha256": "7f06d2aa868c947370b1a8042fcb50adacc4adc9de9ac63543a5449d9cdc5cf0",
+      "line_count": 6,
+      "references": [
+        {
+          "line": 3,
+          "text": "mcp==1.30.0"
+        }
+      ]
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_group_identity.py",
+      "bytes": 3838,
+      "sha256": "412eb6ce27bee8c00e893af39ea9e3b905786946fa6ae0bee4ef45d668667840",
+      "line_count": 110,
+      "references": [
+        {
+          "line": 37,
+          "text": "def assert_incoming_group_message_identity("
+        }
+      ]
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/aip_identity.py",
+      "bytes": 9635,
+      "sha256": "b8748abcd802d35cd625e2a611c0ad1b6db402c559c17ddc436715ebcab819b8",
+      "line_count": 291,
+      "references": [
+        {
+          "line": 86,
+          "text": "def extract_common_name(peer_certificate: dict[str, Any] | None) -> str | None:"
+        }
+      ]
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/journal.py",
+      "bytes": 11434,
+      "sha256": "7af0bff95e5e857b8f7d9ae1cdb64170132a1a966de438327206a584314be26c",
+      "line_count": 193,
+      "references": [
+        {
+          "line": 152,
+          "text": "    async def _dispatch(self, command: str, session_id: str, task_id: str, logical_task_id: str,"
+        }
+      ]
+    },
+    {
+      "path": "vendor/ACPs-community/acps-sdk/acps_sdk/aip/resumable/ledger.py",
+      "bytes": 14179,
+      "sha256": "cf43699748837e7dd8298246ceafd64da4f82144b04e8aed8580435905d508d4",
+      "line_count": 287,
+      "references": [
+        {
+          "line": 55,
+          "text": "class OperationLedger:"
+        },
+        {
+          "line": 194,
+          "text": "    async def execute(self, operation_id: str, parameters: Any, fence: Fence,"
+        },
+        {
+          "line": 224,
+          "text": "            if row and row[\"state\"] in (\"executing\", \"unknown\", \"failed\"):"
+        }
+      ]
+    },
+    {
+      "path": "workbench_server.py",
+      "bytes": 10873,
+      "sha256": "88a68da1cd83d106cabdd301e30dd707310976886c5f5b22ec849658d606d276",
+      "line_count": 206,
+      "references": [
+        {
+          "line": 76,
+          "text": "        engine = IncidentCoordinator(active_transport, output / \"incidents\", term=int(term),"
+        },
+        {
+          "line": 182,
+          "text": "    @app.post(\"/api/approvals/{approval_id}\")"
+        }
+      ]
+    }
+  ]
+}

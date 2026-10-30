@@ -1,0 +1,50 @@
+{
+  "kind": "read_only_logical_export",
+  "source_relative": "local-process-cases/before_modification_retry1/transport/amp/amp_access_backup.outbox.sqlite3",
+  "immutable_read": true,
+  "tables": {
+    "attempts": {
+      "create_sql": "CREATE TABLE attempts (event_key TEXT PRIMARY KEY, log_id TEXT UNIQUE NOT NULL, intent TEXT NOT NULL, record TEXT, written INTEGER NOT NULL DEFAULT 0)",
+      "rows": [
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-e81430b2e92f42fb992be5033aff0a34\",\"receive\"]",
+          "log_id": "7c8ae1d6-ff9b-4b75-863f-e0f4f8908cdc",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:21:48.692876+00:00\",\"trace\":{\"correlation_id\":\"aip-e81430b2e92f42fb992be5033aff0a34\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":15.999999999849024,\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-e81430b2e92f42fb992be5033aff0a34\",\"log_id\":\"7c8ae1d6-ff9b-4b75-863f-e0f4f8908cdc\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:21:48.712163Z\",\"trace_id\":\"fresh-local-before_modification\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-c3574194ba8e443e8a6d08e7ab123ade\",\"receive\"]",
+          "log_id": "b4a72119-6580-4e62-b72c-e5f3d191d701",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:21:48.827795+00:00\",\"trace\":{\"correlation_id\":\"aip-c3574194ba8e443e8a6d08e7ab123ade\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":47.000000000025466,\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-c3574194ba8e443e8a6d08e7ab123ade\",\"log_id\":\"b4a72119-6580-4e62-b72c-e5f3d191d701\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:21:48.890644Z\",\"trace_id\":\"fresh-local-before_modification\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-ce1c1f8c78bd40f78a4d085d53cefb97\",\"receive\"]",
+          "log_id": "d7f5d882-2dfa-4a0c-854f-ab21bdf28284",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:21:49.009557+00:00\",\"trace\":{\"correlation_id\":\"aip-ce1c1f8c78bd40f78a4d085d53cefb97\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":77.99999999997453,\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":200}},\"correlation_id\":\"aip-ce1c1f8c78bd40f78a4d085d53cefb97\",\"log_id\":\"d7f5d882-2dfa-4a0c-854f-ab21bdf28284\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:21:49.110580Z\",\"trace_id\":\"fresh-local-before_modification\"}",
+          "written": 1
+        },
+        {
+          "event_key": "[\"fresh-local-before_modification\",\"aip-e0a043b484cb4f6397c0dcc88a1003fa\",\"receive\"]",
+          "log_id": "bfcfc6b0-1a38-46ab-96ad-72d0ee9bacc3",
+          "intent": "{\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"}},\"received_at\":\"2026-10-29T08:21:49.232605+00:00\",\"trace\":{\"correlation_id\":\"aip-e0a043b484cb4f6397c0dcc88a1003fa\",\"trace_id\":\"fresh-local-before_modification\"}}",
+          "record": "{\"aic\":\"test-database-backup\",\"body\":{\"callee\":{\"aic\":\"test-database-backup\"},\"caller\":{\"aic\":\"test-coordinator\"},\"durationMs\":16.000000000076398,\"error\":{\"code\":\"rejected\",\"message\":\"rejected\"},\"request\":{\"method\":\"start\",\"route\":\"db.restore_writes\"},\"response\":{\"statusCode\":500}},\"correlation_id\":\"aip-e0a043b484cb4f6397c0dcc88a1003fa\",\"log_id\":\"bfcfc6b0-1a38-46ab-96ad-72d0ee9bacc3\",\"log_type\":\"access\",\"schema_version\":\"1.0\",\"timestamp\":\"2026-10-29T08:21:49.264459Z\",\"trace_id\":\"fresh-local-before_modification\"}",
+          "written": 1
+        }
+      ]
+    },
+    "owner": {
+      "create_sql": "CREATE TABLE owner (aic TEXT, log_path TEXT)",
+      "rows": [
+        {
+          "aic": "test-database-backup",
+          "log_path": "${RECORDS}\\local-process-cases\\before_modification_retry1\\transport\\amp\\amp_access_backup.jsonl"
+        }
+      ]
+    }
+  },
+  "note": "Logical records exported without changing the source DB; rollback journals were not replayed."
+}

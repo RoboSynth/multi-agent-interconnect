@@ -1,0 +1,82 @@
+from datetime import datetime, timezone, timedelta
+import json
+from pathlib import Path
+
+OUT = Path(__file__).resolve().parent
+original = json.loads((OUT / "validation-results.json").read_text(encoding="utf-8"))
+diagnostic = json.loads((OUT / "fixture-diagnostic.json").read_text(encoding="utf-8"))
+source = json.loads((OUT / "source-manifest.json").read_text(encoding="utf-8"))
+cases = []
+labels = {
+    "after_observation": "观察结果返回后主执行体退出",
+    "before_modification": "实际修改前主执行体退出",
+    "after_applied": "修改已完成后主执行体退出",
+    "before_modification_retry1": "实际修改前主执行体退出 独立重试",
+}
+for folder in ("after_observation", "before_modification", "after_applied", "before_modification_retry1"):
+    path = OUT / "local-process-cases" / folder / "case-result.json"
+    case = json.loads(path.read_text(encoding="utf-8"))
+    response = case.get("response", {})
+    takeover = (case.get("takeovers") or [{}])[0]
+    cases.append({"case": folder, "label": labels[folder], "passed": case["passed"], "started_utc": case["started_utc"],
+                  "evidence_file": str(path.relative_to(OUT)).replace("\\", "/"), "checks": case["checks"],
+                  "tool_modifications": case.get("modifying_event_count"), "operation_state": response.get("operation", {}).get("state"),
+                  "stale_fence_result": case.get("stale_replay_response", {}).get("operation", {}).get("state"),
+                  "fixture_resource_after": case.get("resource_after"), "takeover_seconds": takeover.get("elapsed_seconds"),
+                  "executor": "备用执行体" if case["passed"] else None,
+                  "failure": case.get("error"), "duration_seconds": case["duration_seconds"]})
+
+summary = {
+    "evidence_id": "CV-20261029", "created_utc": datetime.now(timezone.utc).isoformat(),
+    "code_head": source["head"], "working_tree_dirty": bool(source["git_status_before"]),
+    "source_files_hashed": len(source["source_hashes"]), "source_changed_during_original_run": original["source_changed_during_run"],
+    "fresh_collection": True, "reuses_previous_measurements": False,
+    "original_suite": {"started_utc": original["started_utc"], "finished_utc": original["finished_utc"],
+                       "totals": original["totals"], "groups": original["group_results"],
+                       "source": "validation-results.json", "log": "validation.log",
+                       "level": "离线单元与组件验证 含隔离本地进程测试"},
+    "fixture_diagnostic": {"passed": diagnostic["passed"], "count": diagnostic["count"], "errors": diagnostic["errors"],
+                           "source": "fixture-diagnostic.json", "production_code_modified": False,
+                           "explanation": "原有恢复回执解析测试没有提供新增健康通道检查所需的会话字段；仅在补充诊断脚本中构造健康通道后3项通过。原始143/146结果不改写。",
+                           "harness_note": "补充诊断首次调用因嵌套事件循环失败，已保留fixture-diagnostic-harness-error.log；修正诊断执行入口后独立运行。"},
+    "fresh_process_cases": {"execution_count": len(cases), "passed": sum(case["passed"] for case in cases),
+                            "failed": sum(not case["passed"] for case in cases), "distinct_checkpoints_with_success": 3,
+                            "level": "真实本地AIP stdio和MCP子进程 隔离JSON文件资源",
+                            "cases": cases,
+                            "conclusion": "3种中断点均取得一次成功验证；成功案例中修改计数为1，旧fence重放被拒绝。修改前中断场景首次因工作进程启动异常失败，原件保留，独立重试成功。",
+                            "limitation": "此结果不能证明真实PostgreSQL故障恢复、梧桐网络传输、生产平台安全或高并发可靠性；单次耗时仅供追溯，不作为性能优势结论。"},
+    "privacy": {"summary_has_absolute_paths": False, "summary_has_real_credentials": False,
+                "role_labels": ["协调体", "主执行体", "备用执行体"],
+                "raw_files": "仅内部核验，不直接并入公开材料；配置与日志可能含本机路径及测试用审批值。"},
+}
+(OUT / "submission-validation-summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+
+table = "\n".join(f"| {case['label']} | {'通过' if case['passed'] else '启动失败'} | {case['tool_modifications'] if case['tool_modifications'] is not None else '未进入任务'} | {case['operation_state'] or '-'} | {case['stale_fence_result'] or '-'} |" for case in cases)
+text = f"""# 本次新采验证结果
+
+采集日：2026年10月29日。当前代码提交为 `{source['head']}`，包含未提交改动。核验期间选定的 {len(source['source_hashes'])} 个源码与配置文件没有改变。
+
+## 原始核心测试
+
+北京时间16:18:35至16:19:25，新执行17个模块、146项测试：143通过、3错误、0跳过。原始日志与逐项结果分别为 `validation.log`、`validation-results.json`。这些结果是离线单元与组件测试；其中本地stdio接管包含真实子进程，梧桐路径使用模拟传输，不能称为梧桐平台验收。
+
+3项错误来自 `tests/test_handover_wire_contract.py` 的会话夹具未设置 `leader_mq_client`，触发 `incident/wutong_transport.py:183` 新增的健康通道检查。补充脚本只为夹具提供健康通道字段，生产代码与仓库测试均未修改，3项独立诊断通过。补充通过不覆盖或替换原始错误。
+
+## 保留原始过程的本地接管验证
+
+新运行4次，共3次通过、1次启动失败，覆盖3种不同中断点。执行资源为隔离JSON文件，智能体与MCP服务为真实本地stdio子进程。
+
+| 场景 | 结果 | 修改次数 | 操作回执 | 旧fence重放 |
+| --- | --- | ---: | --- | --- |
+{table}
+
+成功案例的文件终态均为 `read_only=false`、`modifying_calls=1`。它证明当前控制流程可在这三个隔离场景中接续，且拒绝旧fence的重复修改。它不证明PostgreSQL物理恢复、梧桐网络通信或生产平台安全。修改前中断场景首次在进程启动阶段报 `domain worker failed: RuntimeError`，未进入任务；原因尚未确定，原始失败与独立重试均保留。
+
+## 给材料编写者的入口
+
+`submission-validation-summary.json` 仅用匿名角色和相对路径，可供报告排版引用。`source-manifest.json`、原始日志、配置和逐项结果仅作内部追溯，不直接公开，以避免本机路径和测试审批值进入交付材料。
+
+所有结果均为本任务重新执行获得，没有引用历史测试或旧报告统计。没有修改项目源码，没有连接云端或向外部智能体发起任务，没有上传材料。
+"""
+(OUT / "验证结果说明.md").write_text(text, encoding="utf-8")
+print(json.dumps({"summary": "submission-validation-summary.json", "readme": "验证结果说明.md", "test_totals": original["totals"], "local_cases": {"executions": 4, "passed": 3}}, ensure_ascii=False))

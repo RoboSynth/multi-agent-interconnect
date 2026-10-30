@@ -1,0 +1,77 @@
+FILE test_onboarding_text.py
+test_active_intent_returns_read_only_refusal_without_discovery (test_onboarding_text.OnboardingTextTests.test_active_intent_returns_read_only_refusal_without_discovery) ... ok
+test_dangerous_and_oversized_text_never_normalizes_to_a_check (test_onboarding_text.OnboardingTextTests.test_dangerous_and_oversized_text_never_normalizes_to_a_check) ... ok
+test_disclaimers_do_not_supply_missing_or_unique_target (test_onboarding_text.OnboardingTextTests.test_disclaimers_do_not_supply_missing_or_unique_target) ... ok
+test_explicit_negative_clauses_keep_public_metadata_only_request (test_onboarding_text.OnboardingTextTests.test_explicit_negative_clauses_keep_public_metadata_only_request) ... ok
+test_malformed_json_and_multiple_items_still_reject (test_onboarding_text.OnboardingTextTests.test_malformed_json_and_multiple_items_still_reject) ... ok
+test_multiple_targets_return_help_without_discovery (test_onboarding_text.OnboardingTextTests.test_multiple_targets_return_help_without_discovery) ... ok
+test_negative_clause_does_not_hide_positive_or_extended_instruction (test_onboarding_text.OnboardingTextTests.test_negative_clause_does_not_hide_positive_or_extended_instruction) ... ok
+test_no_target_returns_help_without_discovery (test_onboarding_text.OnboardingTextTests.test_no_target_returns_help_without_discovery) ... ok
+test_normalization_only_produces_read_only_check_and_stable_identity (test_onboarding_text.OnboardingTextTests.test_normalization_only_produces_read_only_check_and_stable_identity) ... ok
+test_original_json_text_and_structured_ifc_keep_one_item (test_onboarding_text.OnboardingTextTests.test_original_json_text_and_structured_ifc_keep_one_item) ... ok
+test_plain_text_checks_one_aic_and_returns_structured_and_readable_result (test_onboarding_text.OnboardingTextTests.test_plain_text_checks_one_aic_and_returns_structured_and_readable_result) ... ok
+test_private_onboarding_and_other_domains_still_reject_plain_text (test_onboarding_text.OnboardingTextTests.test_private_onboarding_and_other_domains_still_reject_plain_text) ... ok
+test_query_failure_does_not_claim_target_fault (test_onboarding_text.OnboardingTextTests.test_query_failure_does_not_claim_target_fault) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.601s
+
+OK
+
+
+FILE test_workbench.py
+test_approval_rejects_string_false_and_foreign_origin (test_workbench.WorkbenchTests.test_approval_rejects_string_false_and_foreign_origin) ... ok
+test_disconnected_group_reports_unhealthy_and_rejects_new_inspection (test_workbench.WorkbenchTests.test_disconnected_group_reports_unhealthy_and_rejects_new_inspection) ... ok
+test_original_intent_input_is_strict_and_reaches_incident_state (test_workbench.WorkbenchTests.test_original_intent_input_is_strict_and_reaches_incident_state) ... ok
+test_unconfigured_workbench_explains_missing_participants (test_workbench.WorkbenchTests.test_unconfigured_workbench_explains_missing_participants) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.700s
+
+OK
+
+
+FILE test_wutong_transport.py
+test_applied_operation_is_reconciled_without_second_modification (test_wutong_transport.WutongTakeoverTests.test_applied_operation_is_reconciled_without_second_modification) ... Executing <Task finished name='Task-86' coro=<WutongTakeoverTests.test_applied_operation_is_reconciled_without_second_modification() done, defined at .\tests\test_wutong_transport.py:73> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.172 seconds
+ok
+test_candidate_deadline_records_the_invitation_phase (test_wutong_transport.WutongTakeoverTests.test_candidate_deadline_records_the_invitation_phase) ... Executing <Task pending name='Task-91' coro=<WutongTakeoverTests.test_candidate_deadline_records_the_invitation_phase() running at .\tests\test_wutong_transport.py:149> wait_for=<Future pending cb=[Task.task_wakeup()] created at .\tests\test_wutong_transport.py:144> cb=[_run_until_complete_cb() at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\base_events.py:181] created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_closed_channel_creates_no_dispatch_or_unknown_attempt (test_wutong_transport.WutongTakeoverTests.test_closed_channel_creates_no_dispatch_or_unknown_attempt) ... Executing <Task finished name='Task-96' coro=<WutongTakeoverTests.test_closed_channel_creates_no_dispatch_or_unknown_attempt() done, defined at .\tests\test_wutong_transport.py:17> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_coordinator_term_persists_across_output_directories (test_wutong_transport.WutongTakeoverTests.test_coordinator_term_persists_across_output_directories) ... Executing <Task finished name='Task-101' coro=<WutongTakeoverTests.test_coordinator_term_persists_across_output_directories() done, defined at .\tests\test_wutong_transport.py:67> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.188 seconds
+ok
+test_handover_does_not_refresh_old_evidence (test_wutong_transport.WutongTakeoverTests.test_handover_does_not_refresh_old_evidence) ... Executing <Task finished name='Task-106' coro=<WutongTakeoverTests.test_handover_does_not_refresh_old_evidence() done, defined at .\tests\test_wutong_transport.py:108> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_initial_primary_does_not_depend_on_aic_sort_order (test_wutong_transport.WutongTakeoverTests.test_initial_primary_does_not_depend_on_aic_sort_order) ... Executing <Task finished name='Task-111' coro=<WutongTakeoverTests.test_initial_primary_does_not_depend_on_aic_sort_order() done, defined at .\tests\test_wutong_transport.py:158> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_missing_or_untrusted_initial_primary_never_invites_backup (test_wutong_transport.WutongTakeoverTests.test_missing_or_untrusted_initial_primary_never_invites_backup) ... Executing <Task finished name='Task-116' coro=<WutongTakeoverTests.test_missing_or_untrusted_initial_primary_never_invites_backup() done, defined at .\tests\test_wutong_transport.py:173> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_onboarding_is_selected_for_public_metadata_resource_only (test_wutong_transport.WutongTakeoverTests.test_onboarding_is_selected_for_public_metadata_resource_only) ... Executing <Task finished name='Task-121' coro=<WutongTakeoverTests.test_onboarding_is_selected_for_public_metadata_resource_only() done, defined at .\tests\test_wutong_transport.py:189> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_onboarding_observation_routes_to_confirmed_onboarding_identity (test_wutong_transport.WutongTakeoverTests.test_onboarding_observation_routes_to_confirmed_onboarding_identity) ... Executing <Task finished name='Task-126' coro=<WutongTakeoverTests.test_onboarding_observation_routes_to_confirmed_onboarding_identity() done, defined at .\tests\test_wutong_transport.py:203> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_received_operation_reuses_identity_with_confirmed_fence (test_wutong_transport.WutongTakeoverTests.test_received_operation_reuses_identity_with_confirmed_fence) ... Executing <Task finished name='Task-131' coro=<WutongTakeoverTests.test_received_operation_reuses_identity_with_confirmed_fence() done, defined at .\tests\test_wutong_transport.py:87> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.281 seconds
+ok
+test_same_skill_on_different_resource_cannot_take_over (test_wutong_transport.WutongTakeoverTests.test_same_skill_on_different_resource_cannot_take_over) ... Executing <Task finished name='Task-136' coro=<WutongTakeoverTests.test_same_skill_on_different_resource_cannot_take_over() done, defined at .\tests\test_wutong_transport.py:96> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.156 seconds
+ok
+test_trusted_role_aics_are_filtered_before_any_invitation (test_wutong_transport.WutongTakeoverTests.test_trusted_role_aics_are_filtered_before_any_invitation) ... Executing <Task finished name='Task-141' coro=<WutongTakeoverTests.test_trusted_role_aics_are_filtered_before_any_invitation() done, defined at .\tests\test_wutong_transport.py:121> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.125 seconds
+ok
+test_unknown_effect_is_not_retried (test_wutong_transport.WutongTakeoverTests.test_unknown_effect_is_not_retried) ... Executing <Task finished name='Task-146' coro=<WutongTakeoverTests.test_unknown_effect_is_not_retried() done, defined at .\tests\test_wutong_transport.py:82> result=None created at C:\Users\shared-user\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\asyncio\runners.py:100> took 0.172 seconds
+ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 2.405s
+
+OK
+
+
+FILE test_external_rotation.py
+test_empty_completion_is_not_reported_as_a_useful_result (test_external_rotation.ExternalRotationTests.test_empty_completion_is_not_reported_as_a_useful_result) ... ok
+test_failed_service_is_skipped_while_other_service_runs (test_external_rotation.ExternalRotationTests.test_failed_service_is_skipped_while_other_service_runs) ... ok
+test_queue_completion_disables_its_own_timer (test_external_rotation.ExternalRotationTests.test_queue_completion_disables_its_own_timer) ... ok
+test_ticks_advance_queue_and_do_not_repeat_finished_jobs (test_external_rotation.ExternalRotationTests.test_ticks_advance_queue_and_do_not_repeat_finished_jobs) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.157s
+
+OK

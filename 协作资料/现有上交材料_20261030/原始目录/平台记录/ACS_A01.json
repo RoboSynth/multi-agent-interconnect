@@ -1,0 +1,64 @@
+{
+  "aic": "A01",
+  "name": "跨域故障协调智能体",
+  "active": true,
+  "skills": [
+    {
+      "id": "incident.coordinate",
+      "name": "凭据不出域的跨资源域事故协调",
+      "tags": [
+        "incident-pilot",
+        "ifc/1.0",
+        "leader"
+      ],
+      "version": "1.0.0",
+      "examples": [
+        "{\"schema_version\": \"ifc/1.0\", \"incident_id\": \"inc-example\", \"logical_task_id\": \"lt-describe\", \"kind\": \"describe\", \"tool\": \"describe\", \"args\": {}}"
+      ],
+      "inputModes": [
+        "application/json"
+      ],
+      "description": "以 ifc/1.0 群组任务组织资源能力确认、证据探测、审批、幂等恢复与接续；协调方只持本身份和审批能力，不持应用或数据库凭据。",
+      "outputModes": [
+        "application/json"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "provider": {
+    "name": "项目团队"
+  },
+  "endPoints": [
+    {
+      "url": "amqps://wt.ioa.pub:5671/acps?inbox=inbox_A01",
+      "security": [
+        {
+          "mtls": []
+        }
+      ],
+      "transport": "AMQP"
+    }
+  ],
+  "description": "跨资源域故障协同；经标准身份、能力发现和群组任务提供受控诊断恢复。",
+  "capabilities": {
+    "streaming": false,
+    "messageQueue": [
+      "amqp:0.9.1"
+    ],
+    "notification": false
+  },
+  "protocolVersion": "02.02",
+  "securitySchemes": {
+    "mtls": {
+      "type": "mutualTLS",
+      "description": "独立 AIC clientAuth 证书与 AMQPS mTLS"
+    }
+  },
+  "lastModifiedTime": "2026-10-17T18:33:00.786710+08:00",
+  "defaultInputModes": [
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "application/json"
+  ]
+}

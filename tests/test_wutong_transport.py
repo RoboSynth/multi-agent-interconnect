@@ -14,6 +14,22 @@ from incident.wutong_transport import WutongTransport
 
 
 class WutongTakeoverTests(unittest.IsolatedAsyncioTestCase):
+    async def test_closed_channel_creates_no_dispatch_or_unknown_attempt(self):
+        with tempfile.TemporaryDirectory() as directory:
+            transport = self.transport(directory)
+            transport.session.leader_mq_client = SimpleNamespace(
+                _channel=SimpleNamespace(is_closed=True), _exchange=object())
+            transport.runtime.start_task = AsyncMock()
+            self.assertFalse(transport.connection_ready)
+            with self.assertRaisesRegex(RuntimeError, "no task dispatched"):
+                await transport._dispatch(self.payload(transport), "primary")
+            transport.runtime.start_task.assert_not_awaited()
+            self.assertEqual(transport.journal.list_tasks(), [])
+            transport.session.leader_mq_client._channel.is_closed = False
+            self.assertTrue(transport.connection_ready)
+            transport.closing = True
+            self.assertFalse(transport.connection_ready)
+
     def transport(self, directory, name="run"):
         config = {"leader": {"aic": "coordinator", "cert": "unused", "key": "unused"},
                   "term_journal_path": str(Path(directory) / "terms.sqlite"),

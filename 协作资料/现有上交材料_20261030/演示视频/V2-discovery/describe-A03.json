@@ -1,0 +1,87 @@
+{
+  "received_at_utc": "2026-10-29T09:38:58.489482+00:00",
+  "role": "A03",
+  "description": {
+    "schema_version": "ifc/1.0",
+    "interface_version": "1.0",
+    "domain": "db",
+    "resource_scope": {
+      "database": "orders",
+      "application_role": "orders_app"
+    },
+    "skills": [
+      "db.observe",
+      "db.act"
+    ],
+    "resources": [
+      "orders"
+    ],
+    "tools": [
+      {
+        "name": "db.health",
+        "risk": "read",
+        "description": "检查订单库连接健康，不接收任意 SQL。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "analyze_db_health"
+      },
+      {
+        "name": "db.read_only_status",
+        "risk": "read",
+        "description": "检查 orders 数据库或 orders_app 角色是否配置默认只读。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "execute_sql"
+      },
+      {
+        "name": "db.blocking_sessions",
+        "risk": "read",
+        "description": "观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "execute_sql"
+      },
+      {
+        "name": "db.restore_writes",
+        "risk": "high",
+        "description": "经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "mcp_tool": "execute_sql"
+      },
+      {
+        "name": "db.terminate_blocker",
+        "risk": "high",
+        "description": "经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pid"
+          ],
+          "properties": {
+            "pid": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 2147483647
+            }
+          }
+        },
+        "mcp_tool": "execute_sql"
+      }
+    ],
+    "executor_aic": "A03"
+  }
+}

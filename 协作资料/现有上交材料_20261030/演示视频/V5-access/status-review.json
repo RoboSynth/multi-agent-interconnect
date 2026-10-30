@@ -1,0 +1,40 @@
+{
+  "schema": "official-access-query-review/1",
+  "video": "status-video.webm",
+  "sampled_frame_seconds": [
+    0.2,
+    7.977740966796875,
+    8.26014111328125,
+    8.477740966796876,
+    8.76014111328125,
+    17.833841064453125,
+    18.967541015625002,
+    19.467541015625002,
+    26.554841064453125
+  ],
+  "screenshots_reviewed": [
+    "status-A01.png",
+    "status-A03.png"
+  ],
+  "all_frames_reviewed": false,
+  "popup_position": "centered original DOM for CSS zoom125",
+  "data_fields_replaced": false,
+  "reviewed_at_utc": "2026-10-29T13:13:30.488824+00:00",
+  "status": "passed_for_sampled_visual_review",
+  "method": "Independent visual inspection using view_image; not OCR-only",
+  "sampled_frame_count": 9,
+  "screenshot_count": 2,
+  "findings": [],
+  "observations": [
+    "AIC input is fully masked in the inspected pre-query, querying, A01-result and A03-result frames; no identity exposure was observed in these samples.",
+    "The result panel is fully inside the viewport. Role name, online state, four access counters and statistics range are readable.",
+    "No school name, school logo, teacher information, personal account details or credentials were visible in the inspected images.",
+    "The generic Contributor navigation label is visible, but its panel is not opened and no personal contributor information is shown.",
+    "The first sampled frame is blank and the next two show page loading; these are retained in the source recording, not recommended as final-video shots."
+  ],
+  "limits": [
+    "Nine sampled frames and two screenshots were reviewed, not every encoded frame; this does not prove absence of a transient leak between samples.",
+    "This review covers visual privacy and panel completeness, not organizer acceptance of the public access-query view as the required backend screenshot.",
+    "The statistics interval is retained exactly as shown by the platform; it is separate from the actual capture timestamp."
+  ]
+}

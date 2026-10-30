@@ -1,0 +1,770 @@
+{
+  "schema": "ppt-existing-evidence-metrics/1",
+  "calculation": "median; P90 nearest rank ceil(0.9*n); milliseconds; missing durations not imputed",
+  "summaries": {
+    "V3-f10": {
+      "coordinator": {
+        "records": 18,
+        "timed_records": 18,
+        "missing_duration": 0,
+        "median_ms": 9.429264,
+        "p90_ms": 16.413906,
+        "max_ms": 227.633225,
+        "statuses": {
+          "202": 18
+        },
+        "errors": {}
+      },
+      "domain": {
+        "records": 18,
+        "timed_records": 18,
+        "missing_duration": 0,
+        "median_ms": 97.912563,
+        "p90_ms": 2463.07603,
+        "max_ms": 30895.048969,
+        "statuses": {
+          "200": 18
+        },
+        "errors": {}
+      },
+      "roles": {
+        "A02": 4,
+        "A03": 6,
+        "A04": 1,
+        "A05": 5,
+        "A06": 2
+      }
+    },
+    "V4-takeover": {
+      "coordinator": {
+        "records": 13,
+        "timed_records": 13,
+        "missing_duration": 0,
+        "median_ms": 6.20377,
+        "p90_ms": 9.138926,
+        "max_ms": 11.047021,
+        "statuses": {
+          "202": 13
+        },
+        "errors": {}
+      },
+      "domain": {
+        "records": 13,
+        "timed_records": 12,
+        "missing_duration": 1,
+        "median_ms": 27.733326,
+        "p90_ms": 30032.069052,
+        "max_ms": 30041.868501,
+        "statuses": {
+          "200": 12,
+          "missing": 1
+        },
+        "errors": {
+          "OutcomeUnconfirmed": 1
+        }
+      },
+      "roles": {
+        "A02": 3,
+        "A03": 3,
+        "A04": 2,
+        "A05": 1,
+        "A06": 3,
+        "A07": 1
+      }
+    },
+    "f10_task_intervals": {
+      "count": 13,
+      "peak_observed_inflight": 1,
+      "source": "V3-f10/events.jsonl",
+      "clock": "same coordinator native at timestamp",
+      "boundary": "Only task_started to task_returned; excludes discovery and worker internals",
+      "intervals": [
+        {
+          "logical_task_id": "lt-745ac80b11cd",
+          "tool": "ops.containers",
+          "started_at_utc": "2026-10-29T09:39:13.350072+00:00",
+          "returned_at_utc": "2026-10-29T09:39:13.820428+00:00",
+          "seconds": 0.470356,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-80c43ad7132e",
+          "tool": "ops.route_status",
+          "started_at_utc": "2026-10-29T09:39:13.822273+00:00",
+          "returned_at_utc": "2026-10-29T09:39:14.302307+00:00",
+          "seconds": 0.480034,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-bcd8665ce446",
+          "tool": "application.status",
+          "started_at_utc": "2026-10-29T09:39:14.304372+00:00",
+          "returned_at_utc": "2026-10-29T09:39:14.780774+00:00",
+          "seconds": 0.476402,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-abba0ac0623d",
+          "tool": "db.read_only_status",
+          "started_at_utc": "2026-10-29T09:39:14.783235+00:00",
+          "returned_at_utc": "2026-10-29T09:39:15.257248+00:00",
+          "seconds": 0.474013,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-9551bdf3ed6d",
+          "tool": "db.blocking_sessions",
+          "started_at_utc": "2026-10-29T09:39:15.259907+00:00",
+          "returned_at_utc": "2026-10-29T09:39:15.743032+00:00",
+          "seconds": 0.483125,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-31e3c6c4cd19",
+          "tool": "ops.route_rollback",
+          "started_at_utc": "2026-10-29T09:39:15.746068+00:00",
+          "returned_at_utc": "2026-10-29T09:39:18.636255+00:00",
+          "seconds": 2.890187,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-eb09993e4f49",
+          "tool": "db.restore_writes",
+          "started_at_utc": "2026-10-29T09:39:21.960589+00:00",
+          "returned_at_utc": "2026-10-29T09:39:22.641633+00:00",
+          "seconds": 0.681044,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-01c2346d2d5d",
+          "tool": "ops.route_status",
+          "started_at_utc": "2026-10-29T09:39:22.644596+00:00",
+          "returned_at_utc": "2026-10-29T09:39:23.128276+00:00",
+          "seconds": 0.48368,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-b31812684089",
+          "tool": "db.read_only_status",
+          "started_at_utc": "2026-10-29T09:39:23.143479+00:00",
+          "returned_at_utc": "2026-10-29T09:39:23.626479+00:00",
+          "seconds": 0.483,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-7778aa671a6b",
+          "tool": "db.read_only_status",
+          "started_at_utc": "2026-10-29T09:39:23.630861+00:00",
+          "returned_at_utc": "2026-10-29T09:39:24.119439+00:00",
+          "seconds": 0.488578,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-314eb30394f7",
+          "tool": "application.pool_rebuild",
+          "started_at_utc": "2026-10-29T09:39:24.126237+00:00",
+          "returned_at_utc": "2026-10-29T09:39:24.602676+00:00",
+          "seconds": 0.476439,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-401f37ff7d1f",
+          "tool": "application.status",
+          "started_at_utc": "2026-10-29T09:39:24.605974+00:00",
+          "returned_at_utc": "2026-10-29T09:39:25.085635+00:00",
+          "seconds": 0.479661,
+          "status": "ok"
+        },
+        {
+          "logical_task_id": "lt-301729b52693",
+          "tool": "incident.verification",
+          "started_at_utc": "2026-10-29T09:39:25.089535+00:00",
+          "returned_at_utc": "2026-10-29T09:39:56.094648+00:00",
+          "seconds": 31.005113,
+          "status": "ok"
+        }
+      ]
+    },
+    "v2_capture_window": {
+      "seconds": 7.532016,
+      "discovery_responses": 5,
+      "described_roles": [
+        "A02",
+        "A03",
+        "A04",
+        "A05",
+        "A06"
+      ],
+      "boundary": "capture start to finish; not an ADP request latency"
+    },
+    "latest_platform_observations": [
+      {
+        "role": "A01",
+        "observed_at": "2026-10-29 21:08:56 +08:00",
+        "caller": 32620,
+        "caller_external": 612,
+        "callee": 0,
+        "callee_external": 0,
+        "displayed_window": "2026/9/9 00:00 — 2026/10/29 22:00"
+      },
+      {
+        "role": "A03",
+        "observed_at": "2026-10-29 21:09:05 +08:00",
+        "caller": 0,
+        "caller_external": 0,
+        "callee": 8099,
+        "callee_external": 0,
+        "displayed_window": "2026/9/9 00:00 — 2026/10/29 22:00"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "application.pool_rebuild",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 9.463903,
+      "p90_ms": 9.463903,
+      "max_ms": 9.463903,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "application.status",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 11.259799,
+      "p90_ms": 12.816365,
+      "max_ms": 12.816365,
+      "statuses": {
+        "202": 2
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "db.blocking_sessions",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 8.025146,
+      "p90_ms": 8.025146,
+      "max_ms": 8.025146,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "db.read_only_status",
+      "method": "start",
+      "records": 3,
+      "timed_records": 3,
+      "missing_duration": 0,
+      "median_ms": 9.330317,
+      "p90_ms": 10.744395,
+      "max_ms": 10.744395,
+      "statuses": {
+        "202": 3
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "db.restore_writes",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 10.333447,
+      "p90_ms": 10.333447,
+      "max_ms": 10.333447,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "describe",
+      "method": "start",
+      "records": 5,
+      "timed_records": 5,
+      "missing_duration": 0,
+      "median_ms": 8.156076,
+      "p90_ms": 227.633225,
+      "max_ms": 227.633225,
+      "statuses": {
+        "202": 5
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "incident.verification",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 16.413906,
+      "p90_ms": 16.413906,
+      "max_ms": 16.413906,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "ops.containers",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 10.843379,
+      "p90_ms": 10.843379,
+      "max_ms": 10.843379,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "ops.route_rollback",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 9.821204,
+      "p90_ms": 9.821204,
+      "max_ms": 9.821204,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "coordinator",
+      "route": "ops.route_status",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 8.281813,
+      "p90_ms": 9.394625,
+      "max_ms": 9.394625,
+      "statuses": {
+        "202": 2
+      },
+      "errors": {},
+      "source": "V3-f10/access/coordinator.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "application.pool_rebuild",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 144.229335,
+      "p90_ms": 144.229335,
+      "max_ms": 144.229335,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "application.status",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 46.161843,
+      "p90_ms": 53.71323,
+      "max_ms": 53.71323,
+      "statuses": {
+        "200": 2
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "db.blocking_sessions",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 101.352434,
+      "p90_ms": 101.352434,
+      "max_ms": 101.352434,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "db.read_only_status",
+      "method": "start",
+      "records": 3,
+      "timed_records": 3,
+      "missing_duration": 0,
+      "median_ms": 100.261866,
+      "p90_ms": 106.682663,
+      "max_ms": 106.682663,
+      "statuses": {
+        "200": 3
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "db.restore_writes",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 420.161631,
+      "p90_ms": 420.161631,
+      "max_ms": 420.161631,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "describe",
+      "method": "start",
+      "records": 5,
+      "timed_records": 5,
+      "missing_duration": 0,
+      "median_ms": 23.628227,
+      "p90_ms": 451.564215,
+      "max_ms": 451.564215,
+      "statuses": {
+        "200": 5
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "incident.verification",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 30895.048969,
+      "p90_ms": 30895.048969,
+      "max_ms": 30895.048969,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "ops.containers",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 59.975718,
+      "p90_ms": 59.975718,
+      "max_ms": 59.975718,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "ops.route_rollback",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 2463.07603,
+      "p90_ms": 2463.07603,
+      "max_ms": 2463.07603,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V3-f10",
+      "side": "domain",
+      "route": "ops.route_status",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 25.391639,
+      "p90_ms": 28.333429,
+      "max_ms": 28.333429,
+      "statuses": {
+        "200": 2
+      },
+      "errors": {},
+      "source": "V3-f10/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "application.pool_rebuild",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 8.062442,
+      "p90_ms": 8.062442,
+      "max_ms": 8.062442,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "application.status",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 5.45475,
+      "p90_ms": 5.45475,
+      "max_ms": 5.45475,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "db.read_only_status",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 6.20377,
+      "p90_ms": 6.20377,
+      "max_ms": 6.20377,
+      "statuses": {
+        "202": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "db.restore_writes",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 8.082966,
+      "p90_ms": 11.047021,
+      "max_ms": 11.047021,
+      "statuses": {
+        "202": 2
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "describe",
+      "method": "start",
+      "records": 6,
+      "timed_records": 6,
+      "missing_duration": 0,
+      "median_ms": 5.385166,
+      "p90_ms": 8.476174,
+      "max_ms": 8.476174,
+      "statuses": {
+        "202": 6
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "coordinator",
+      "route": "incident.verification",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 8.175873,
+      "p90_ms": 9.138926,
+      "max_ms": 9.138926,
+      "statuses": {
+        "202": 2
+      },
+      "errors": {},
+      "source": "V4-takeover/access/coordinator.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "application.pool_rebuild",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 115.143498,
+      "p90_ms": 115.143498,
+      "max_ms": 115.143498,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "application.status",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 53.597661,
+      "p90_ms": 53.597661,
+      "max_ms": 53.597661,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "db.read_only_status",
+      "method": "start",
+      "records": 1,
+      "timed_records": 1,
+      "missing_duration": 0,
+      "median_ms": 93.570079,
+      "p90_ms": 93.570079,
+      "max_ms": 93.570079,
+      "statuses": {
+        "200": 1
+      },
+      "errors": {},
+      "source": "V4-takeover/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "db.restore_writes",
+      "method": "start",
+      "records": 2,
+      "timed_records": 1,
+      "missing_duration": 1,
+      "median_ms": 28.08705,
+      "p90_ms": 28.08705,
+      "max_ms": 28.08705,
+      "statuses": {
+        "200": 1,
+        "missing": 1
+      },
+      "errors": {
+        "OutcomeUnconfirmed": 1
+      },
+      "source": "V4-takeover/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "describe",
+      "method": "start",
+      "records": 6,
+      "timed_records": 6,
+      "missing_duration": 0,
+      "median_ms": 22.726525,
+      "p90_ms": 27.379602,
+      "max_ms": 27.379602,
+      "statuses": {
+        "200": 6
+      },
+      "errors": {},
+      "source": "V4-takeover/access/domain.jsonl"
+    },
+    {
+      "case": "V4-takeover",
+      "side": "domain",
+      "route": "incident.verification",
+      "method": "start",
+      "records": 2,
+      "timed_records": 2,
+      "missing_duration": 0,
+      "median_ms": 30036.968777,
+      "p90_ms": 30041.868501,
+      "max_ms": 30041.868501,
+      "statuses": {
+        "200": 2
+      },
+      "errors": {},
+      "source": "V4-takeover/access/domain.jsonl"
+    }
+  ]
+}

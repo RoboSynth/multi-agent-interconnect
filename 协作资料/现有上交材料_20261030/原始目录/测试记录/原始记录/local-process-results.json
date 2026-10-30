@@ -1,0 +1,204 @@
+{
+  "count": 3,
+  "passed": 2,
+  "cases": [
+    {
+      "crash_point": "after_observation",
+      "started_utc": "2026-10-29T08:20:29.972914+00:00",
+      "evidence_level": "real local AIP stdio and MCP subprocesses; isolated JSON file resource, not PostgreSQL or Wutong",
+      "checks": {
+        "observation_succeeded": true,
+        "action_succeeded": true,
+        "resource_changed_once": true,
+        "modification_event_once": true,
+        "takeover_completed_once": true,
+        "correct_backup": true,
+        "stale_fence_rejected": true,
+        "replay_did_not_modify_again": true,
+        "no_in_flight_tasks": true
+      },
+      "response": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "fresh-local-after_observation",
+        "logical_task_id": "logical-action",
+        "executor_aic": "test-database-backup",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-29T08:20:34.042865+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "fresh-local-after_observation:repair",
+          "state": "applied",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:c3785328-5b1c-4010-88c9-2aa3c030bb4e"
+      },
+      "stale_replay_response": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "fresh-local-after_observation",
+        "logical_task_id": "logical-action",
+        "executor_aic": "test-database-backup",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "fresh-local-after_observation:repair",
+          "state": "rejected_stale_fence",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:4631e728-98c6-46d0-a57f-b4bc2b70b655"
+      },
+      "resource_after": {
+        "read_only": false,
+        "modifying_calls": 1
+      },
+      "takeovers": [
+        {
+          "event": "takeover_completed",
+          "transport": "local-aip-stdio",
+          "incident_id": "fresh-local-after_observation",
+          "logical_task_id": "logical-observation",
+          "failed_aic": "test-database-primary",
+          "replacement_aic": "test-database-backup",
+          "fence": {
+            "coordinator_term": 1,
+            "takeover_version": 1
+          },
+          "operation_state": null,
+          "status": "ok",
+          "elapsed_seconds": 0.562,
+          "discovery": "local process directory"
+        }
+      ],
+      "modifying_event_count": 1,
+      "transport_event_count": 25,
+      "passed": true,
+      "duration_seconds": 4.625,
+      "finished_utc": "2026-10-29T08:20:34.594940+00:00"
+    },
+    {
+      "crash_point": "before_modification",
+      "started_utc": "2026-10-29T08:20:34.692301+00:00",
+      "evidence_level": "real local AIP stdio and MCP subprocesses; isolated JSON file resource, not PostgreSQL or Wutong",
+      "checks": {},
+      "error": {
+        "class": "RuntimeError",
+        "message": "domain worker failed: RuntimeError"
+      },
+      "passed": false,
+      "duration_seconds": 3.437,
+      "finished_utc": "2026-10-29T08:20:38.125499+00:00"
+    },
+    {
+      "crash_point": "after_applied",
+      "started_utc": "2026-10-29T08:20:38.215731+00:00",
+      "evidence_level": "real local AIP stdio and MCP subprocesses; isolated JSON file resource, not PostgreSQL or Wutong",
+      "checks": {
+        "observation_succeeded": true,
+        "action_succeeded": true,
+        "resource_changed_once": true,
+        "modification_event_once": true,
+        "takeover_completed_once": true,
+        "correct_backup": true,
+        "stale_fence_rejected": true,
+        "replay_did_not_modify_again": true,
+        "no_in_flight_tasks": true,
+        "applied_operation_not_reexecuted": true
+      },
+      "response": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "fresh-local-after_applied",
+        "logical_task_id": "logical-action",
+        "executor_aic": "test-database-backup",
+        "status": "ok",
+        "facts": [
+          {
+            "key": "read_only",
+            "value": false,
+            "source": "db.restore_writes",
+            "observed_at": "2026-10-29T08:20:41.691537+00:00"
+          }
+        ],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "fresh-local-after_applied:repair",
+          "state": "skipped_already_applied",
+          "active_fence": {
+            "coordinator_term": 1,
+            "takeover_version": 1
+          }
+        },
+        "evidence_ref": "amp:audit:fac0ea5a-6e02-4c8c-ac5e-04268435e5e3",
+        "active_fence": {
+          "coordinator_term": 1,
+          "takeover_version": 1
+        },
+        "initial_error_class": "ConnectionError",
+        "takeover_error_class": null
+      },
+      "stale_replay_response": {
+        "schema_version": "ifc/1.0",
+        "incident_id": "fresh-local-after_applied",
+        "logical_task_id": "logical-action",
+        "executor_aic": "test-database-backup",
+        "status": "rejected",
+        "facts": [],
+        "local_hypotheses": [],
+        "operation": {
+          "operation_id": "fresh-local-after_applied:repair",
+          "state": "rejected_stale_fence",
+          "before": {
+            "value": true
+          },
+          "after": {
+            "value": false
+          }
+        },
+        "evidence_ref": "amp:audit:e7726485-7971-4cb8-9cc8-6371e7612ba6"
+      },
+      "resource_after": {
+        "read_only": false,
+        "modifying_calls": 1
+      },
+      "takeovers": [
+        {
+          "event": "takeover_completed",
+          "transport": "local-aip-stdio",
+          "incident_id": "fresh-local-after_applied",
+          "logical_task_id": "logical-action",
+          "failed_aic": "test-database-primary",
+          "replacement_aic": "test-database-backup",
+          "fence": {
+            "coordinator_term": 1,
+            "takeover_version": 1
+          },
+          "operation_state": "skipped_already_applied",
+          "status": "ok",
+          "elapsed_seconds": 0.5,
+          "discovery": "local process directory"
+        }
+      ],
+      "modifying_event_count": 1,
+      "transport_event_count": 21,
+      "passed": true,
+      "duration_seconds": 4.469,
+      "finished_utc": "2026-10-29T08:20:42.691986+00:00"
+    }
+  ]
+}

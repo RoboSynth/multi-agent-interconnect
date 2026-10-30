@@ -1,0 +1,15 @@
+{
+  "brokers": null,
+  "rdkafka": {
+    "security.protocol": null
+  },
+  "status": "待赛方确认 broker、TLS/SASL 或 mTLS、权限和六类 topic；不能把本地官方示例 localhost:19092 当成梧桐配置",
+  "optional_properties_after_confirmation": {
+    "ssl.ca.location": "ABSOLUTE_CA_PATH_IF_REQUIRED",
+    "ssl.certificate.location": "ABSOLUTE_CLIENT_CERT_IF_REQUIRED",
+    "ssl.key.location": "ABSOLUTE_CLIENT_KEY_IF_REQUIRED",
+    "sasl.mechanism": "CONFIRMED_MECHANISM_IF_REQUIRED",
+    "sasl.username": "${AMP_KAFKA_USERNAME}",
+    "sasl.password": "${AMP_KAFKA_PASSWORD}"
+  }
+}

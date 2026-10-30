@@ -3,7 +3,7 @@
 2026-10-20 13:27:55 UTC，已登录叮当，从界面发现并选择本队接入体检服务，实际发起一次调用。**本次未成功，外部成功调用数为 0。**
 
 - 会话：`3101`；运行：`collab_c85a6bb5307d`。
-- 服务：`1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF`。
+- 服务：`1.2.156.3088.1.0000.000000.000000.000000.0007`。
 - 前端请求：`POST /dingdang/api/agent/execute`，HTTP 200 为 SSE 连接成功；最终执行状态为失败。
 - 叮当提示邀请已进入 Inbox，但没有收到入群确认；未产生 `taskId` 或 Product。
 - 同一时间、同一服务的 AMP system 记录：`PeerAicMissingError: AMQP user_id is required for group identity binding`。
@@ -17,7 +17,7 @@
 
 可将以下内容转给叮当维护人员；本仓库尚未代发：
 
-> 叮当能发现接入体检服务，但真实调用卡在入群。2026-10-20 13:27:55 UTC，会话 3101，run_id=collab_c85a6bb5307d，目标 AIC=1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF。叮当提示 Inbox 邀请已送达但没有入群确认；接收端同刻记录 PeerAicMissingError: AMQP user_id is required for group identity binding。请检查发送 group invitation 时是否通过认证连接携带与调用者 AIC 一致、可被 Broker 验证的 AMQP user_id；若叮当使用不同身份绑定规范，请提供正式的兼容方式。接收端将保留认证发送方校验。
+> 叮当能发现接入体检服务，但真实调用卡在入群。2026-10-20 13:27:55 UTC，会话 3101，run_id=collab_c85a6bb5307d，目标 AIC=1.2.156.3088.1.0000.000000.000000.000000.0007。叮当提示 Inbox 邀请已送达但没有入群确认；接收端同刻记录 PeerAicMissingError: AMQP user_id is required for group identity binding。请检查发送 group invitation 时是否通过认证连接携带与调用者 AIC 一致、可被 Broker 验证的 AMQP user_id；若叮当使用不同身份绑定规范，请提供正式的兼容方式。接收端将保留认证发送方校验。
 
 项目中的拒绝位置可从 `integration/wutong_smoke.py` 的 `_dispatch_inbox` 和 SDK `PeerAicMissingError` 定义定位。当前只确认接收端看到的 `user_id` 缺失；尚无叮当发送端抓包，不能进一步确定是发送遗漏还是中间环节丢失。
 
@@ -25,7 +25,7 @@
 
 ## 修复后的验收
 
-1. 新建叮当会话，选择同一服务，输入：`请检查 1.2.156.3088.1.BUPT.8N4WSS.46ZKB8.5GNEFA.03KF 的公开元数据`。
+1. 新建叮当会话，选择同一服务，输入：`请检查 1.2.156.3088.1.0000.000000.000000.000000.0007 的公开元数据`。
 2. 确认认证邀请、入群、Start、非空 taskId、最终 Product/中文结果和群组正常关闭。
 3. 单独核对外部调用者身份及双方 access/taskId。平台外部榜计数需另取平台记录。
 

@@ -1,0 +1,56 @@
+domain: db
+allowed_callers: []  # Runtime supplies only the registered coordinator AIC.
+resources: {database: orders, application_role: orders_app}
+rate_limit: {window_seconds: 60, max_calls: 90}
+tools:
+  db.health:
+    server: postgres
+    mcp_tool: analyze_db_health
+    risk: read
+    description: 检查订单库连接健康，不接收任意 SQL。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    fixed_arguments: {health_type: connection}
+  db.read_only_status:
+    server: postgres
+    mcp_tool: execute_sql
+    risk: read
+    description: 检查 orders 数据库或 orders_app 角色是否配置默认只读。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    sql_template: >-
+      SELECT COALESCE((SELECT split_part(setting, '=', 2) = 'on'
+      FROM pg_db_role_setting s, LATERAL unnest(s.setconfig) setting
+      WHERE s.setdatabase IN (0, (SELECT oid FROM pg_database WHERE datname = 'orders'))
+      AND s.setrole IN (0, (SELECT oid FROM pg_roles WHERE rolname = 'orders_app'))
+      AND setting LIKE 'default_transaction_read_only=%'
+      ORDER BY (s.setrole <> 0) DESC, (s.setdatabase <> 0) DESC LIMIT 1),
+      current_setting('default_transaction_read_only') = 'on') AS read_only
+  db.blocking_sessions:
+    server: postgres
+    mcp_tool: execute_sql
+    risk: read
+    description: 观察订单应用会话的阻塞 PID 与状态，不返回 SQL 原文。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    sql_template: >-
+      SELECT pid, state, wait_event_type, pg_blocking_pids(pid) AS blocking_pids
+      FROM pg_stat_activity WHERE datname = 'orders' AND usename = 'orders_app'
+      AND cardinality(pg_blocking_pids(pid)) > 0
+  db.restore_writes:
+    server: postgres
+    mcp_tool: execute_sql
+    risk: high
+    description: 经审批调用固定恢复函数，清除实验库与应用角色默认只读；应用随后重建连接池。
+    input_schema: {type: object, additionalProperties: false, properties: {}}
+    sql_template: SELECT incident_ops.restore_writes() AS read_only
+    reconcile: {tool_alias: db.read_only_status, expected_after: false}
+  db.terminate_blocker:
+    server: postgres
+    mcp_tool: execute_sql
+    risk: high
+    blocker_guard: true
+    description: 经审批结束实际阻塞 orders_app 的指定实验会话，函数内再次核验角色、数据库与阻塞关系。
+    input_schema:
+      type: object
+      additionalProperties: false
+      required: [pid]
+      properties: {pid: {type: integer, minimum: 1, maximum: 2147483647}}
+    sql_template: SELECT incident_ops.terminate_blocker({pid}) AS blocking_session_terminated

@@ -1,0 +1,29 @@
+FROM docker:29-cli AS docker-cli
+FROM python:3.12-slim
+WORKDIR /srv
+COPY requirements-lock.txt requirements-high-score.txt /srv/
+COPY vendor/ACPs-community/acps-sdk /srv/vendor/ACPs-community/acps-sdk
+RUN pip install --no-cache-dir -r requirements-high-score.txt \
+    && pip install --no-cache-dir './vendor/ACPs-community/acps-sdk[amp-sign]'
+COPY domains/database/requirements.txt /tmp/database-requirements.txt
+COPY domains/ops/requirements.txt /tmp/docker-requirements.txt
+RUN python -m venv /opt/postgres-mcp \
+    && /opt/postgres-mcp/bin/pip install --no-cache-dir -r /tmp/database-requirements.txt \
+    && python -m venv /opt/docker-mcp \
+    && /opt/docker-mcp/bin/pip install --no-cache-dir -r /tmp/docker-requirements.txt
+COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
+COPY business /srv/business
+COPY incident /srv/incident
+COPY acps_mcp_bridge /srv/acps_mcp_bridge
+COPY domains /srv/domains
+COPY integration/*.py /srv/integration/
+COPY vendor/ACPs-community/registry-server/app/agent/acsSchema.json /srv/vendor/ACPs-community/registry-server/app/agent/acsSchema.json
+COPY vendor/ACPs-community/registry-server/LICENSE /srv/vendor/ACPs-community/registry-server/LICENSE
+COPY tools/configure_local_coordinator.py /srv/tools/configure_local_coordinator.py
+COPY workbench_server.py /srv/workbench_server.py
+COPY deploy/review_entry.py /srv/deploy/review_entry.py
+COPY demo-ui /srv/demo-ui
+RUN mkdir /state && chown 65534:65534 /state
+ENV PYTHONUNBUFFERED=1
+USER 65534:65534
+CMD ["python", "incident/platform_worker.py", "--config", "/domain/config.json"]

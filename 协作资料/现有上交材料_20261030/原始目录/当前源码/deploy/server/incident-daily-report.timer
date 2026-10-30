@@ -1,0 +1,11 @@
+[Unit]
+Description=Record Incident Pilot team evidence each day in Asia/Shanghai
+
+[Timer]
+OnCalendar=*-*-* 00:15:00 Asia/Shanghai
+Persistent=true
+AccuracySec=1min
+Unit=incident-daily-report.service
+
+[Install]
+WantedBy=timers.target

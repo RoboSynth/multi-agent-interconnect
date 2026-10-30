@@ -1,0 +1,22 @@
+{
+  "executor_aic": "test-database-primary",
+  "allowed_callers": [
+    "test-coordinator"
+  ],
+  "policy": "${RECORDS}\\local-process-cases\\before_modification_retry1\\policy.yaml",
+  "ledger_path": "${RECORDS}\\local-process-cases\\before_modification_retry1\\domain-operations.sqlite",
+  "ledger_domain": "database",
+  "approval_secret_env": "INCIDENT_APPROVAL_SECRET",
+  "env_files": [
+    "${RECORDS}\\local-process-cases\\before_modification_retry1\\approval.env"
+  ],
+  "servers": {
+    "fixture": {
+      "command": "${REPO}\\.venv\\Scripts\\python.exe",
+      "args": [
+        "${REPO}\\tests\\fixtures\\resume_fake_mcp.py",
+        "${RECORDS}\\local-process-cases\\before_modification_retry1\\resource.json"
+      ]
+    }
+  }
+}

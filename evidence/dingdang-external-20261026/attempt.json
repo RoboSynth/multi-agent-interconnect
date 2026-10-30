@@ -1,0 +1,33 @@
+{
+  "schema_version": "dingdang-external-attempt/2",
+  "invoked_at_beijing": "2026-10-26T12:38:24+08:00",
+  "final_observed_at_beijing": "2026-10-26T12:40:42+08:00",
+  "status": "failed_before_group_join",
+  "service_aic": "1.2.156.3088.1.0000.000000.000000.000000.0007",
+  "target_aic": "1.2.156.3088.1.0000.000000.000000.000000.0001",
+  "entry": "https://wt.ioa.pub/dingdang/",
+  "browser": "Microsoft Edge existing logged-in window",
+  "discovered": true,
+  "selected_agents": 1,
+  "ui_final_state": "failed",
+  "ui_error": "群组邀请已进入智能体 inbox，但未收到入群确认；请检查智能体是否正在消费该队列",
+  "service_event": {
+    "timestamp": "2026-10-26T04:38:27.072896Z",
+    "file": "amp_system_onboarding.jsonl",
+    "log_type": "system",
+    "body": {
+      "event": "inbox_invalid_message",
+      "error": "PeerAicMissingError: AMQP user_id is required for group identity binding"
+    },
+    "body_keys": [
+      "event",
+      "aic",
+      "error"
+    ]
+  },
+  "task_id_observed": false,
+  "product_observed": false,
+  "successful_external_calls_this_attempt": 0,
+  "correlation_basis": "service AIC, one selected agent, invocation time and contemporaneous receiving error; no task-level pairing",
+  "acs_updated": false
+}

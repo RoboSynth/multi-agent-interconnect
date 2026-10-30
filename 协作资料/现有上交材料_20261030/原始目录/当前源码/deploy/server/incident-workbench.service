@@ -1,0 +1,27 @@
+[Unit]
+Description=Incident Pilot NEW7 managed workbench and exclusive domain consumers
+Wants=network-online.target
+After=network-online.target docker.service
+Requires=docker.service
+Before=incident-scheduler.service incident-collector.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/incident-pilot
+Environment=PYTHONUTF8=1
+Environment=NO_PROXY=wt.ioa.pub,127.0.0.1,localhost
+ExecStartPre=/opt/incident-pilot/.venv/bin/python -B /etc/incident-pilot/cloud_runtime.py business --project-root /opt/incident-pilot --host-config /opt/incident-pilot/runtime/private/cloud-longrun/host.json --execute
+ExecStart=/opt/incident-pilot/.venv/bin/python -B /opt/incident-pilot/ops/startup.py --config /opt/incident-pilot/runtime/private/cloud-longrun/host.json --stage workbench
+ExecStop=/opt/incident-pilot/.venv/bin/python -B /etc/incident-pilot/stop_managed_host.py --project-root /opt/incident-pilot --host-config /opt/incident-pilot/runtime/private/cloud-longrun/host.json --timeout 840 --exit-timeout 15 --report /opt/incident-pilot/runtime/private/cloud-longrun/control/last-stop.json
+Restart=always
+RestartSec=15
+TimeoutStartSec=300
+# ManagedHost owns all consumer shutdowns. ExecStop sends SIGTERM only once its
+# exact PID reports normal SDK close and lease release. No broad fallback kill.
+KillMode=none
+TimeoutStopSec=900
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

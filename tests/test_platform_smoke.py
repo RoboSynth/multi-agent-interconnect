@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT), str(ROOT / "vendor/ACPs-community/acps-sdk")]
 from eval.platform_smoke import observation_arguments, run
 
-TARGET_AIC = "1.2.156.3088.1.BUPT.8N4WSS.GHBD0W.7K98MJ.0WS5"
+TARGET_AIC = "1.2.156.3088.1.0000.000000.000000.000000.0002"
 
 
 class PlatformSmokeArgumentsTests(unittest.IsolatedAsyncioTestCase):
